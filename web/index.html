@@ -15,63 +15,24 @@
   </head>
   <body>
     <header class="topbar">
-      <a class="top-brand" href="/" aria-label="Community Pulse 首页">
-        <span class="brand-github">◉</span><span class="brand-vibe">▣</span><span class="brand-product">P</span><span class="brand-markdown">M↓</span>
-        <b class="brand-name">Community Pulse</b>
-      </a>
-      <nav class="github-nav"><span>Explore</span><span>Topics</span><b>Trending</b><span>Collections</span><span>Events</span><span>GitHub Sponsors</span></nav>
-      <nav class="product-nav"><b>Best Products⌄</b><b>Launches⌄</b><b>News⌄</b><b>Forums⌄</b><b>Advertise</b></nav>
-      <div class="top-controls">
-        <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索项目、作者或标签" autocomplete="off" /></label>
-        <label class="control-select date-control"><span class="sr-only">选择日期</span><select id="date-select" aria-label="选择日期"></select></label>
-        <label class="control-select style-control"><span class="sr-only">切换展示风格</span><select id="style-select" aria-label="切换展示风格"><option value="github">GitHub Trending</option><option value="vibecafe">VibeCafé</option><option value="producthunt">Product Hunt</option><option value="markdown">Markdown</option></select></label>
+      <a class="brand" href="/" aria-label="Community Pulse 首页"><span>◉</span><b>Community Pulse</b></a>
+      <div class="controls">
+        <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索项目、作者或标签" autocomplete="off" /></label>
+        <label><span class="sr-only">选择日期</span><select id="date-select" aria-label="选择日期"></select></label>
+        <label><span class="sr-only">筛选来源</span><select id="source-select" aria-label="筛选来源"></select></label>
+        <label><span class="sr-only">切换展示风格</span><select id="style-select" aria-label="切换展示风格"><option value="github">GitHub Trending</option><option value="vibecafe">VibeCafé</option><option value="producthunt">Product Hunt</option><option value="markdown">Markdown</option></select></label>
       </div>
     </header>
 
-    <aside class="vibe-sidebar" aria-label="VibeCafé 风格侧栏">
-      <a class="vibe-logo" href="/"><span>▣</span> VibeCafé</a>
-      <nav>
-        <button data-vibe-source="all"><span>⌂</span> 今日动态 <i>›</i></button>
-        <button data-vibe-source="github-trending-cn"><span>♜</span> 排行榜 <i>›</i></button>
-        <button data-vibe-source="github-trending"><span>▥</span> GitHub 热榜 <i>›</i></button>
-        <button class="active" data-vibe-source="all"><span>♨</span> Vibe 作品 <i>›</i></button>
-        <button data-vibe-source="weekly-issues"><span>▤</span> 社区投稿 <i>›</i></button>
-        <button data-vibe-source="producthunt"><span>Ⓟ</span> Product Hunt <i>↗</i></button>
-      </nav>
-      <div class="vibe-sidebar-foot"><span>◌ 通知</span><span>♢ 想法</span><span>⚙ 设置</span><b>return pulse;<small>@community_pulse</small></b></div>
-    </aside>
-
     <main class="workspace">
-      <section class="vibe-heading theme-heading">
-        <div><h1>Vibe 作品</h1><p>看看开发者和创作者今天做出了什么</p></div>
-        <div class="vibe-heading-actions"><button>我的收藏</button><button>排行榜</button><button class="dark">分享日报</button></div>
-      </section>
-      <section class="github-heading theme-heading">
-        <div class="github-tabs"><b>Repositories</b><span>Developers</span></div>
-        <div class="github-filters"><label>来源: <select id="github-source-select" aria-label="筛选来源"></select></label><span>Language: <b>Any</b>⌄</span><span>Date range: <b>Daily</b>⌄</span></div>
-      </section>
-      <section class="product-heading theme-heading"><h1>Top Products Launching Today</h1><p>来自独立开发者、开源社区与产品平台的今日发布。</p></section>
-
-      <section class="feed-toolbar">
-        <div class="toolbar-left"><span class="view-toggle">▦ <b>☷</b></span><span class="toolbar-pill">日期 <b id="toolbar-date"></b>⌄</span><label class="toolbar-pill">来源 <select id="toolbar-source-select" aria-label="筛选来源"></select></label></div>
-        <label class="toolbar-search"><span>⌕</span><input id="toolbar-search-input" type="search" placeholder="搜索作品" /></label>
-      </section>
-      <section class="mobile-controls" aria-label="筛选日报">
-        <label><span class="sr-only">选择日期</span><select id="mobile-date-select"></select></label>
-        <label><span class="sr-only">切换展示风格</span><select id="mobile-style-select"><option value="github">GitHub Trending</option><option value="vibecafe">VibeCafé</option><option value="producthunt">Product Hunt</option><option value="markdown">Markdown</option></select></label>
-        <label><span class="sr-only">筛选来源</span><select id="mobile-source-select" aria-label="筛选来源"></select></label>
-      </section>
-
-      <div class="content-layout">
-        <section class="feed-column">
-          <div class="section-label"><b id="section-date">今日</b><span id="report-stat" aria-live="polite"></span></div>
-          <div id="source-chips" class="source-chips" aria-label="筛选数据来源"></div>
-          <div id="feed" class="feed" aria-live="polite"></div>
-          <article id="markdown-view" class="markdown-body" hidden></article>
-          <div id="empty" class="empty" hidden><h2>没有找到相关项目</h2><p>换一个关键词或来源试试。</p></div>
-        </section>
-        <aside class="product-rail"><h2>Today’s Communities</h2><div id="community-list"></div><button class="rail-button">View all sources</button><div class="streak"><small>YOU’RE ON</small><b id="history-count">— day archive ✨</b><p>每天发现一点新东西。</p></div></aside>
+      <div class="page-heading">
+        <div><p>COMMUNITY PULSE</p><h1>大家都在做什么</h1></div>
+        <div class="report-meta"><b id="section-date"></b><span id="report-stat" aria-live="polite"></span></div>
       </div>
+      <div id="source-chips" class="source-chips" aria-label="筛选数据来源"></div>
+      <div id="feed" class="feed" aria-live="polite"></div>
+      <article id="markdown-view" class="markdown-body" hidden></article>
+      <div id="empty" class="empty" hidden><h2>没有找到相关项目</h2><p>换一个关键词或来源试试。</p></div>
     </main>
     <script src="/app.js" defer></script>
   </body>

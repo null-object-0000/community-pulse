@@ -4,10 +4,8 @@ const state = {
 };
 
 const ids = [
-  'date-select', 'style-select', 'mobile-date-select', 'mobile-style-select',
-  'search', 'toolbar-search-input', 'toolbar-date', 'toolbar-source-select',
-  'github-source-select', 'mobile-source-select', 'section-date', 'report-stat', 'source-chips',
-  'feed', 'markdown-view', 'empty', 'community-list', 'history-count',
+  'date-select', 'source-select', 'style-select', 'search', 'section-date',
+  'report-stat', 'source-chips', 'feed', 'markdown-view', 'empty',
 ];
 const els = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const sourceMarks = {
@@ -76,11 +74,8 @@ function renderSourceControls() {
   const total = list.reduce((sum, source) => sum + source.count, 0);
   const options = [{ id: 'all', name: '全部', count: total, mark: '◎' }, ...list];
   const selectOptions = options.map((source) => '<option value="' + escapeHtml(source.id) + '">' + escapeHtml(source.name) + ' (' + source.count + ')</option>').join('');
-  ['github-source-select', 'toolbar-source-select', 'mobile-source-select'].forEach((id) => {
-    els[id].innerHTML = selectOptions;
-    els[id].value = state.source;
-    els[id].onchange = () => selectSource(els[id].value);
-  });
+  els['source-select'].innerHTML = selectOptions;
+  els['source-select'].value = state.source;
   els['source-chips'].innerHTML = options.map((source) =>
     '<button data-source="' + escapeHtml(source.id) + '" class="' + (state.source === source.id ? 'active' : '') +
     '" aria-pressed="' + (state.source === source.id) + '"><span>' + escapeHtml(source.name) +
@@ -89,28 +84,12 @@ function renderSourceControls() {
   document.querySelectorAll('[data-source]').forEach((button) => {
     button.addEventListener('click', () => selectSource(button.dataset.source));
   });
-  document.querySelectorAll('[data-vibe-source]').forEach((button) => {
-    button.classList.toggle('active', button.dataset.vibeSource === state.source);
-    button.onclick = () => selectSource(button.dataset.vibeSource);
-  });
 }
 
 function selectSource(source) {
   state.source = source;
   renderSourceControls();
   renderFeed();
-}
-
-function renderCommunityRail() {
-  els['community-list'].innerHTML = sources().slice(0, 6).map((source, index) =>
-    '<button data-rail-source="' + escapeHtml(source.id) + '"><span class="rail-mark">' +
-    escapeHtml(source.mark) + '</span><span><small>p/' + escapeHtml(source.id) + '</small><b>' +
-    escapeHtml(source.name) + '</b><em>' + source.count + ' 条今日动态 · ' + (index + 1) +
-    ' 个信号源</em></span></button>',
-  ).join('');
-  document.querySelectorAll('[data-rail-source]').forEach((button) => {
-    button.addEventListener('click', () => selectSource(button.dataset.railSource));
-  });
 }
 
 function renderItem(item, index) {
@@ -125,7 +104,7 @@ function renderItem(item, index) {
   const summary = item.summary || item.tagline || item.content || '暂无简介';
   const tags = (item.tags || []).filter((tag) => !['product', 'vibecafe'].includes(tag)).slice(0, 3);
   const visual = item.image
-    ? '<img class="item-visual" src="' + escapeHtml(item.image) + '" alt="" loading="lazy" referrerpolicy="no-referrer" />'
+    ? '<img class="item-visual" src="' + escapeHtml(item.image) + '" data-fallback="' + escapeHtml(sourceMarks[item.sourceId] || '•') + '" alt="" loading="lazy" referrerpolicy="no-referrer" />'
     : '<div class="item-visual item-fallback" aria-hidden="true">' + escapeHtml(sourceMarks[item.sourceId] || '•') + '</div>';
   const metrics = [
     language ? '<span><i class="language-dot"></i>' + escapeHtml(language) + '</span>' : '',
@@ -207,6 +186,14 @@ function renderFeed() {
   }
   const items = filteredItems();
   els.feed.innerHTML = items.map(renderItem).join('');
+  els.feed.querySelectorAll('img.item-visual').forEach((image) => {
+    image.addEventListener('error', () => {
+      const fallback = document.createElement('div');
+      fallback.className = 'item-visual item-fallback';
+      fallback.textContent = image.dataset.fallback || '•';
+      image.replaceWith(fallback);
+    }, { once: true });
+  });
   els.feed.hidden = items.length === 0;
   els.empty.hidden = items.length !== 0;
   els['report-stat'].textContent = items.length + ' 条';
@@ -217,7 +204,6 @@ function applyStyle(style) {
   document.documentElement.dataset.style = style;
   localStorage.setItem('pulse-style', style);
   els['style-select'].value = style;
-  els['mobile-style-select'].value = style;
   const url = new URL(location.href);
   url.searchParams.set('style', style);
   history.replaceState({}, '', url);
@@ -236,35 +222,23 @@ async function loadReport(date, updateUrl = true) {
   state.markdown = markdownResponse.ok ? await markdownResponse.text() : '# 大家都在做什么 · ' + date + '\n\n当天暂无 Markdown 日报。';
   state.source = 'all';
   els['date-select'].value = date;
-  els['mobile-date-select'].value = date;
-  els['toolbar-date'].textContent = date;
-  els['section-date'].textContent = '日报：' + date;
+  els['section-date'].textContent = date;
   if (updateUrl) {
     const url = new URL(location.href);
     url.searchParams.set('date', date);
     history.replaceState({}, '', url);
   }
   renderSourceControls();
-  renderCommunityRail();
   renderFeed();
 }
 
 function bindInputs() {
-  [['date-select', 'mobile-date-select'], ['mobile-date-select', 'date-select']].forEach(([source, mirror]) => {
-    els[source].addEventListener('change', () => {
-      els[mirror].value = els[source].value;
-      loadReport(els[source].value);
-    });
-  });
-  ['style-select', 'mobile-style-select'].forEach((source) => {
-    els[source].addEventListener('change', () => applyStyle(els[source].value));
-  });
-  [['search', 'toolbar-search-input'], ['toolbar-search-input', 'search']].forEach(([source, mirror]) => {
-    els[source].addEventListener('input', () => {
-      state.query = els[source].value;
-      els[mirror].value = state.query;
-      renderFeed();
-    });
+  els['date-select'].addEventListener('change', () => loadReport(els['date-select'].value));
+  els['source-select'].addEventListener('change', () => selectSource(els['source-select'].value));
+  els['style-select'].addEventListener('change', () => applyStyle(els['style-select'].value));
+  els.search.addEventListener('input', () => {
+    state.query = els.search.value;
+    renderFeed();
   });
 }
 
@@ -273,10 +247,7 @@ async function init() {
     state.index = await fetch('/data/index.json').then((response) => response.json());
     const options = state.index.dates.map((date) => '<option value="' + date + '">' + date + '</option>').join('');
     els['date-select'].innerHTML = options;
-    els['mobile-date-select'].innerHTML = options;
-    els['history-count'].textContent = state.index.dates.length + ' day archive ✨';
     els['style-select'].value = state.style;
-    els['mobile-style-select'].value = state.style;
     bindInputs();
     const requested = new URL(location.href).searchParams.get('date');
     await loadReport(state.index.dates.includes(requested) ? requested : state.index.latest, false);

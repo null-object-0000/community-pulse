@@ -2,199 +2,101 @@
   color-scheme: light;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  --text: #1f2328; --muted: #656d76; --line: #d0d7de; --panel: #fff; --soft: #f6f8fa; --accent: #0969da;
+  --text: #1f2328; --muted: #656d76; --line: #d0d7de; --soft: #f6f8fa; --blue: #0969da;
 }
 * { box-sizing: border-box; }
-html { min-width: 320px; background: #fff; }
-body { margin: 0; color: var(--text); background: #fff; font: 16px/1.5 var(--sans); }
+html { min-width: 320px; background: #f6f8fa; }
+body { margin: 0; color: var(--text); background: #f6f8fa; font: 16px/1.5 var(--sans); }
 a { color: inherit; }
 button, input, select { font: inherit; }
 button, select { cursor: pointer; }
-.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 [hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 
 .topbar {
-  height: 64px; padding: 0 max(20px, calc((100vw - 1216px) / 2));
-  display: flex; align-items: center; gap: 28px; border-bottom: 1px solid #d8dee4; background: #fff;
+  min-height: 64px; padding: 10px max(20px, calc((100vw - 1200px) / 2));
+  display: flex; align-items: center; gap: 20px; border-bottom: 1px solid var(--line); background: #fff;
 }
-.top-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; white-space: nowrap; }
-.top-brand > span { width: 32px; height: 32px; display: none; place-items: center; border-radius: 50%; font-weight: 800; }
-.top-brand .brand-github { display: grid; color: #fff; background: #24292f; }
-.brand-name { font-size: 15px; }
-.github-nav { height: 100%; display: flex; align-items: center; gap: 30px; color: #57606a; font-size: 14px; }
-.github-nav b { height: 100%; display: flex; align-items: center; color: #24292f; border-bottom: 2px solid #0969da; }
-.product-nav { display: none; }
-.top-controls { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.search-box { display: none; height: 40px; align-items: center; gap: 8px; padding: 0 14px; color: #8c959f; border-radius: 22px; background: #f3f4f6; }
-.search-box input { width: 180px; border: 0; outline: 0; background: transparent; }
-.control-select select { height: 36px; padding: 0 28px 0 10px; color: #24292f; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; }
-
-.vibe-sidebar { display: none; }
-.workspace { width: min(1216px, calc(100% - 32px)); margin: 20px auto 70px; }
-.theme-heading { display: none; }
-.github-heading {
-  min-height: 80px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between;
-  color: #57606a; border: 1px solid var(--line); border-radius: 6px 6px 0 0; background: var(--soft);
-}
-.github-tabs { display: flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
-.github-tabs > * { padding: 8px 18px; color: #24292f; background: #fff; }
-.github-tabs b { color: #fff; background: #0969da; }
-.github-filters { display: flex; gap: 34px; font-size: 14px; }
-.github-filters b { color: #24292f; }
-.github-filters label { white-space: nowrap; }
-.github-filters select { padding: 0 15px 0 3px; color: #24292f; font-weight: 700; border: 0; background: transparent; }
-.feed-toolbar, .mobile-controls, .source-chips, .product-rail { display: none; }
-.content-layout { display: block; }
-.section-label { display: none; }
-.feed { border: 1px solid var(--line); border-top: 0; border-radius: 0 0 6px 6px; overflow: hidden; background: #fff; }
-.feed-item { position: relative; min-height: 138px; padding: 22px 170px 20px 20px; border-bottom: 1px solid #d8dee4; }
-.feed-item:last-child { border-bottom: 0; }
-.item-visual { display: none; }
-.item-source { display: none; }
-.item-content h2 { margin: 0 0 6px; color: #0969da; font-size: 21px; line-height: 1.3; font-weight: 600; }
+.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; white-space: nowrap; }
+.brand span { width: 30px; height: 30px; display: grid; place-items: center; color: #fff; border-radius: 7px; background: #24292f; }
+.controls { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.controls select { height: 40px; max-width: 190px; padding: 0 30px 0 11px; color: var(--text); border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.search { width: min(320px, 28vw); height: 40px; padding: 0 12px; display: flex; align-items: center; gap: 7px; color: var(--muted); border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.search:focus-within { outline: 2px solid #b6d7ff; border-color: var(--blue); }
+.search input { width: 100%; min-width: 0; color: var(--text); border: 0; outline: 0; background: transparent; }
+.workspace { width: min(1200px, calc(100% - 32px)); margin: 30px auto 72px; }
+.page-heading { margin-bottom: 18px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.page-heading p { margin: 0 0 7px; color: var(--muted); font: 700 12px/1 var(--mono); letter-spacing: .08em; }
+.page-heading h1 { margin: 0; font-size: 30px; line-height: 1.2; letter-spacing: -.03em; }
+.report-meta { display: flex; gap: 14px; color: var(--muted); font: 13px/1.4 var(--mono); }
+.source-chips { margin-bottom: 14px; display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; }
+.source-chips::-webkit-scrollbar { display: none; }
+.source-chips button { padding: 6px 10px; display: flex; gap: 7px; flex: 0 0 auto; color: var(--muted); border: 1px solid var(--line); border-radius: 7px; background: #fff; }
+.source-chips button.active { color: #fff; border-color: #24292f; background: #24292f; }
+.source-chips b { font-size: 12px; }
+.feed { background: #fff; }
+.feed-item { position: relative; }
+.item-content h2 { margin: 0; }
 .item-content h2 a { text-decoration: none; }
-.item-content h2 a:hover { text-decoration: underline; }
-.repo-icon { margin-right: 10px; color: #57606a; font-size: 15px; }
-.summary { max-width: 840px; margin: 0 0 10px; color: #57606a; line-height: 1.5; }
-html[data-style="github"] .summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.item-meta, .metrics, .links { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
-.metrics { color: #57606a; font-size: 13px; }
-.links { font-size: 13px; }
-.links a { color: #0969da; text-decoration: none; }
-.tag { display: none; }
-.language-dot { width: 12px; height: 12px; margin-right: 5px; display: inline-block; border-radius: 50%; background: #3572a5; vertical-align: -1px; }
-.github-item-actions { position: absolute; inset: 18px 20px 18px auto; min-width: 135px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
-.github-item-actions a { padding: 5px 14px; text-decoration: none; border: 1px solid #d0d7de; border-radius: 6px; background: #f6f8fa; }
-.github-item-actions b { color: #57606a; font-size: 13px; font-weight: 400; }
-.ph-item-actions, .item-number { display: none; }
-.loading-card { height: 138px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fff 15%, #f6f8fa 50%, #fff 85%); background-size: 300% 100%; animation: load 1.3s infinite; }
-.empty, .error { padding: 70px 20px; color: #656d76; text-align: center; border: 1px solid var(--line); }
+.item-meta, .metrics, .links { display: flex; align-items: center; flex-wrap: wrap; }
+.links a { color: var(--blue); text-decoration: none; }
+.language-dot { width: 11px; height: 11px; margin-right: 5px; display: inline-block; border-radius: 50%; background: #3572a5; vertical-align: -1px; }
+.loading-card { height: 130px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fff 15%, #f2f4f6 50%, #fff 85%); background-size: 300% 100%; animation: load 1.3s infinite; }
+.empty, .error { padding: 70px 20px; color: var(--muted); text-align: center; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
 @keyframes load { to { background-position: -150% 0; } }
 
-/* VibeCafé: fixed navigation, monospaced product list, pale gray canvas. */
-html[data-style="vibecafe"] {
-  --text: #17191d; --muted: #6e737d; --line: #dedfe3; --soft: #f0f1f3;
-  background: #f4f4f6;
-}
-html[data-style="vibecafe"] body { background: #f4f4f6; font-family: var(--mono); }
-html[data-style="vibecafe"] .topbar { display: none; }
-html[data-style="vibecafe"] .vibe-sidebar {
-  position: fixed; inset: 0 auto 0 0; width: 288px; padding: 28px 12px 22px;
-  display: flex; flex-direction: column; border-right: 1px solid #e2e2e4; background: #f2f2f4;
-}
-.vibe-logo { margin: 0 14px 38px; display: flex; align-items: center; gap: 9px; color: #111318; text-decoration: none; font-size: 21px; font-weight: 800; }
-.vibe-sidebar nav { display: grid; gap: 6px; }
-.vibe-sidebar nav button {
-  min-height: 46px; padding: 0 14px; display: grid; grid-template-columns: 28px 1fr auto; align-items: center;
-  color: #5f646e; text-align: left; border: 0; border-radius: 10px; background: transparent;
-}
-.vibe-sidebar nav button.active, .vibe-sidebar nav button:hover { color: #15171b; background: #fff; }
-.vibe-sidebar nav i { font-style: normal; color: #a3a5aa; }
-.vibe-sidebar-foot { margin-top: auto; display: grid; gap: 20px; padding: 0 14px; color: #666b74; }
-.vibe-sidebar-foot b { margin-top: 10px; display: grid; color: #2b2d31; font-size: 14px; }
-.vibe-sidebar-foot small { color: #81858e; font-weight: 400; }
-html[data-style="vibecafe"] .workspace { width: auto; margin: 0 40px 70px 328px; padding-top: 35px; }
-html[data-style="vibecafe"] .vibe-heading { display: flex; align-items: flex-start; justify-content: space-between; }
-.vibe-heading h1 { margin: 0; font-size: 34px; line-height: 1.2; letter-spacing: -.04em; }
-.vibe-heading p { margin: 8px 0 0; color: #5f646e; }
-.vibe-heading-actions { display: flex; gap: 8px; }
-.vibe-heading-actions button { padding: 7px 15px; border: 1px solid #dedfe3; border-radius: 9px; background: transparent; }
-.vibe-heading-actions button.dark { color: #fff; background: #202124; }
-html[data-style="vibecafe"] .github-heading { display: none; }
-html[data-style="vibecafe"] .feed-toolbar {
-  margin: 42px 0 25px; display: flex; align-items: center; justify-content: space-between;
-}
-.toolbar-left { display: flex; align-items: center; gap: 12px; }
-.view-toggle, .toolbar-pill { padding: 6px 14px; color: #676c75; border-radius: 20px; background: #e4e5e8; font-size: 13px; }
-.toolbar-pill select { max-width: 160px; color: #30333a; font-weight: 700; border: 0; background: transparent; }
-.view-toggle b { margin-left: 10px; padding: 3px 11px; color: #fff; border-radius: 14px; background: #202124; }
-.toolbar-search { width: 260px; height: 36px; padding: 0 14px; display: flex; align-items: center; gap: 8px; color: #777b84; border-radius: 20px; background: #e3e4e7; }
-.toolbar-search input { width: 100%; border: 0; outline: 0; background: transparent; }
-html[data-style="vibecafe"] .section-label { margin-bottom: 20px; padding-bottom: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid #dedfe3; }
-html[data-style="vibecafe"] .feed { display: grid; gap: 10px; border: 0; border-radius: 0; overflow: visible; background: transparent; }
+/* GitHub Trending list */
+html[data-style="github"] .feed { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+html[data-style="github"] .feed-item { min-height: 132px; padding: 21px 176px 19px 20px; border-bottom: 1px solid #d8dee4; }
+html[data-style="github"] .feed-item:last-child { border-bottom: 0; }
+html[data-style="github"] .item-visual, html[data-style="github"] .item-source, html[data-style="github"] .ph-item-actions, html[data-style="github"] .item-number { display: none; }
+html[data-style="github"] .item-content h2 { margin-bottom: 4px; color: #0969da; font-size: 21px; line-height: 1.35; font-weight: 600; }
+html[data-style="github"] .repo-icon { margin-right: 10px; color: #57606a; font-size: 14px; }
+html[data-style="github"] .summary { max-width: 850px; margin: 0 0 11px; color: #57606a; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html[data-style="github"] .item-meta { gap: 18px; }
+html[data-style="github"] .metrics, html[data-style="github"] .links { gap: 16px; color: #57606a; font-size: 13px; }
+html[data-style="github"] .tag { display: none; }
+html[data-style="github"] .github-item-actions { position: absolute; inset: 18px 20px 17px auto; min-width: 140px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
+html[data-style="github"] .github-item-actions a { padding: 5px 15px; text-decoration: none; border: 1px solid var(--line); border-radius: 6px; background: #f6f8fa; }
+html[data-style="github"] .github-item-actions b { color: #57606a; font-size: 13px; font-weight: 400; }
+
+/* VibeCafé product list */
+html[data-style="vibecafe"] .feed { display: grid; gap: 10px; background: transparent; }
 html[data-style="vibecafe"] .feed-item {
-  min-height: 126px; padding: 20px 24px; display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 18px;
-  border: 1px solid #dedfe3; border-radius: 11px; background: #f8f8fa;
+  min-height: 126px; padding: 20px 24px; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 18px;
+  font-family: var(--mono); border: 1px solid #dedfe3; border-radius: 11px; background: #fafafa;
 }
 html[data-style="vibecafe"] .item-visual { width: 64px; height: 64px; display: block; object-fit: cover; border-radius: 12px; background: #17191d; }
 html[data-style="vibecafe"] .item-fallback { display: grid; place-items: center; color: #fff; font-weight: 800; }
 html[data-style="vibecafe"] .item-source { display: flex; gap: 9px; color: #777b84; font-size: 13px; }
-html[data-style="vibecafe"] .item-content h2 { margin: 0 0 5px; color: #17191d; font-size: 18px; }
-html[data-style="vibecafe"] .repo-icon { display: none; }
-html[data-style="vibecafe"] .summary { margin-bottom: 5px; max-width: none; color: #5f646e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-html[data-style="vibecafe"] .item-meta { display: block; }
-html[data-style="vibecafe"] .metrics { display: none; }
-html[data-style="vibecafe"] .links { gap: 12px; }
+html[data-style="vibecafe"] .item-content h2 { margin: 0 0 4px; color: #17191d; font-size: 18px; line-height: 1.35; }
+html[data-style="vibecafe"] .repo-icon, html[data-style="vibecafe"] .metrics, html[data-style="vibecafe"] .github-item-actions, html[data-style="vibecafe"] .ph-item-actions, html[data-style="vibecafe"] .item-number { display: none; }
+html[data-style="vibecafe"] .summary { margin: 0 0 5px; color: #5f646e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html[data-style="vibecafe"] .links { gap: 13px; font-size: 13px; }
 html[data-style="vibecafe"] .links a { color: #727780; }
-html[data-style="vibecafe"] .github-item-actions { display: none; }
 
-/* Product Hunt: strong top navigation, open list, secondary community rail. */
-html[data-style="producthunt"] { --text: #1d2538; --muted: #536079; --line: #e1e4e8; --accent: #ff6154; }
-html[data-style="producthunt"] .topbar { height: 100px; padding: 0 max(24px, calc((100vw - 1500px) / 2)); gap: 36px; }
-html[data-style="producthunt"] .top-brand > span { display: none; }
-html[data-style="producthunt"] .top-brand .brand-product { width: 48px; height: 48px; display: grid; color: #fff; background: #ff6154; font-size: 28px; }
-html[data-style="producthunt"] .brand-name, html[data-style="producthunt"] .github-nav { display: none; }
-html[data-style="producthunt"] .product-nav { display: flex; align-items: center; gap: 42px; white-space: nowrap; }
-html[data-style="producthunt"] .search-box { order: -1; display: flex; }
-html[data-style="producthunt"] .top-controls { margin-left: auto; }
-html[data-style="producthunt"] .control-select select { border-radius: 22px; background: #fff; }
-html[data-style="producthunt"] .workspace { width: min(1500px, calc(100% - 48px)); margin-top: 42px; }
-html[data-style="producthunt"] .product-heading { display: block; }
-.product-heading h1 { margin: 0; font-size: 28px; line-height: 1.25; }
-.product-heading p { margin: 25px 0 32px; color: #45526a; }
-html[data-style="producthunt"] .github-heading { display: none; }
-html[data-style="producthunt"] .content-layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 64px; }
-html[data-style="producthunt"] .section-label { display: flex; justify-content: space-between; }
-html[data-style="producthunt"] .section-label b { display: none; }
-html[data-style="producthunt"] .section-label span { margin-left: auto; color: #69758b; }
-html[data-style="producthunt"] .feed { border: 0; border-radius: 0; }
-html[data-style="producthunt"] .feed-item {
-  min-height: 128px; padding: 16px 150px 16px 80px; border: 0; background: #fff;
-}
-html[data-style="producthunt"] .item-visual {
-  position: absolute; left: 0; top: 17px; width: 60px; height: 60px; display: block; object-fit: cover; border-radius: 12px; background: #f1f2f4;
-}
+/* Product Hunt launch list */
+html[data-style="producthunt"] .feed { background: #fff; }
+html[data-style="producthunt"] .feed-item { min-height: 130px; padding: 18px 145px 18px 82px; }
+html[data-style="producthunt"] .item-visual { position: absolute; left: 0; top: 18px; width: 60px; height: 60px; display: block; object-fit: cover; border-radius: 12px; background: #f1f2f4; }
 html[data-style="producthunt"] .item-fallback { display: grid; place-items: center; font-weight: 800; }
-html[data-style="producthunt"] .item-source { display: none; }
-html[data-style="producthunt"] .item-content h2 { margin: 0 0 3px; color: #172038; font-size: 17px; font-weight: 700; }
-html[data-style="producthunt"] .repo-icon { display: none; }
+html[data-style="producthunt"] .item-source, html[data-style="producthunt"] .repo-icon, html[data-style="producthunt"] .github-item-actions, html[data-style="producthunt"] .links, html[data-style="producthunt"] .item-number { display: none; }
+html[data-style="producthunt"] .item-content h2 { margin: 0 0 3px; color: #172038; font-size: 17px; line-height: 1.4; font-weight: 700; }
 html[data-style="producthunt"] .summary { margin: 0 0 7px; color: #45526a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-html[data-style="producthunt"] .metrics { gap: 8px; }
+html[data-style="producthunt"] .metrics { gap: 8px; font-size: 13px; }
 html[data-style="producthunt"] .metrics span { color: #26324a; }
 html[data-style="producthunt"] .metrics span::after { content: " ·"; color: #99a0ad; }
 html[data-style="producthunt"] .metrics .tag { display: inline; }
-html[data-style="producthunt"] .links, html[data-style="producthunt"] .github-item-actions { display: none; }
-html[data-style="producthunt"] .ph-item-actions { position: absolute; right: 0; top: 17px; display: flex; gap: 14px; }
+html[data-style="producthunt"] .ph-item-actions { position: absolute; right: 0; top: 18px; display: flex; gap: 14px; }
 html[data-style="producthunt"] .ph-item-actions > * {
   width: 58px; height: 62px; display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: #26324a; text-decoration: none; border: 1px solid #dfe3e8; border-radius: 12px; background: #fff;
 }
 html[data-style="producthunt"] .ph-item-actions b { font-size: 12px; }
-html[data-style="producthunt"] .product-rail { display: block; }
-.product-rail h2 { margin: 0 0 32px; font-size: 20px; }
-#community-list { display: grid; gap: 28px; }
-#community-list button { padding: 0; display: grid; grid-template-columns: 34px 1fr; gap: 10px; text-align: left; border: 0; background: transparent; }
-.rail-mark { width: 24px; height: 24px; display: grid; place-items: center; color: #fff; border-radius: 6px; background: #1f2937; font-size: 10px; }
-#community-list button > span:last-child { display: grid; }
-#community-list small { color: #3e4a60; }
-#community-list b { margin: 5px 0; font-size: 15px; }
-#community-list em { color: #69758b; font-size: 12px; font-style: normal; }
-.rail-button { width: 100%; height: 50px; margin: 35px 0 28px; border: 1px solid #dfe3e8; border-radius: 25px; background: #fff; font-weight: 700; }
-.streak { padding-top: 22px; border-top: 1px solid #eceef1; }
-.streak small { display: block; font-size: 11px; font-weight: 700; }
-.streak b { display: block; margin: 6px 0; font-size: 18px; }
-.streak p { color: #69758b; }
 
-/* Markdown: the source file is fetched and rendered as a document. */
-html[data-style="markdown"] { background: #fff; }
-html[data-style="markdown"] body { color: #24292f; background: #fff; }
-html[data-style="markdown"] .topbar { position: sticky; top: 0; z-index: 5; height: 58px; }
-html[data-style="markdown"] .top-brand > span { display: none; }
-html[data-style="markdown"] .top-brand .brand-markdown { display: grid; color: #fff; border-radius: 6px; background: #24292f; font: 700 12px/1 var(--mono); }
-html[data-style="markdown"] .github-nav, html[data-style="markdown"] .search-box, html[data-style="markdown"] .brand-github { display: none; }
-html[data-style="markdown"] .workspace { width: min(900px, calc(100% - 40px)); margin-top: 45px; }
-html[data-style="markdown"] .github-heading, html[data-style="markdown"] .section-label, html[data-style="markdown"] .source-chips { display: none; }
-.markdown-body { font-size: 16px; line-height: 1.65; overflow-wrap: break-word; }
+/* Rendered Markdown document */
+html[data-style="markdown"] .source-chips, html[data-style="markdown"] #source-select, html[data-style="markdown"] .search { display: none; }
+.markdown-body { max-width: 900px; margin: 0 auto; padding: 36px 44px 70px; font-size: 16px; line-height: 1.65; overflow-wrap: break-word; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
 .markdown-body > :first-child { margin-top: 0; }
 .markdown-body h1, .markdown-body h2 { padding-bottom: .3em; border-bottom: 1px solid #d8dee4; }
 .markdown-body h1 { margin: 0 0 24px; font-size: 2em; }
@@ -208,59 +110,39 @@ html[data-style="markdown"] .github-heading, html[data-style="markdown"] .sectio
 .markdown-body ul { padding-left: 2em; }
 .markdown-body img { max-width: 100%; }
 
-.mobile-controls { display: none; }
-@media (max-width: 980px) {
-  .github-nav, .product-nav { display: none !important; }
-  .topbar { height: auto; min-height: 64px; padding: 10px 16px; flex-wrap: wrap; }
-  .top-controls { flex: 1; justify-content: flex-end; }
-  .brand-name { display: none; }
-  .workspace { width: calc(100% - 28px) !important; margin: 18px 14px 50px !important; padding: 0 !important; }
-  .control-select { display: none; }
-  .mobile-controls { margin-bottom: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .mobile-controls label:last-child { grid-column: 1 / -1; }
-  .mobile-controls select { width: 100%; height: 42px; padding: 0 10px; border: 1px solid #d0d7de; border-radius: 8px; background: #fff; }
-  .github-heading { min-height: 64px; padding: 12px; }
-  .github-filters { display: none; }
-  .github-tabs > * { padding: 7px 12px; }
-  .feed-item { min-height: 0; padding: 18px 14px 18px 14px; }
-  .github-item-actions { position: static; margin-top: 12px; align-items: flex-start; gap: 10px; }
-  .github-item-actions b { display: none; }
-  .item-content h2 { font-size: 18px; }
-  .vibe-sidebar { display: none !important; }
-  html[data-style="vibecafe"] .vibe-heading { display: block; }
-  html[data-style="vibecafe"] .vibe-heading-actions { display: none; }
-  html[data-style="vibecafe"] .feed-toolbar { margin: 24px 0 16px; }
-  html[data-style="vibecafe"] .toolbar-left { display: none; }
-  html[data-style="vibecafe"] .toolbar-search { width: 100%; }
-  html[data-style="vibecafe"] .feed-item { min-height: 110px; padding: 16px; grid-template-columns: 52px minmax(0,1fr); gap: 12px; }
+@media (max-width: 820px) {
+  .topbar { align-items: flex-start; flex-wrap: wrap; }
+  .brand { width: 100%; }
+  .controls { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+  .search { width: 100%; grid-column: 1 / -1; }
+  .controls label:not(.search) select { width: 100%; max-width: none; }
+  .workspace { margin-top: 20px; }
+  .page-heading h1 { font-size: 25px; }
+  .report-meta { flex-direction: column; gap: 2px; text-align: right; }
+  html[data-style="github"] .feed-item { padding: 18px 14px; }
+  html[data-style="github"] .github-item-actions { position: static; margin-top: 12px; align-items: flex-start; gap: 8px; }
+  html[data-style="github"] .github-item-actions b { display: none; }
+  html[data-style="github"] .item-content h2 { font-size: 18px; }
+  html[data-style="vibecafe"] .feed-item { min-height: 110px; padding: 16px; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; }
   html[data-style="vibecafe"] .item-visual { width: 52px; height: 52px; }
-  html[data-style="producthunt"] .topbar { height: auto; }
-  html[data-style="producthunt"] .search-box { order: 0; margin-left: auto; }
-  html[data-style="producthunt"] .content-layout { display: block; }
-  html[data-style="producthunt"] .product-rail { display: none; }
-  html[data-style="producthunt"] .product-heading p { margin: 12px 0 24px; }
-}
-
-@media (max-width: 620px) {
-  html[data-style="github"] .topbar, html[data-style="markdown"] .topbar { display: none; }
-  .top-brand { display: none; }
-  .top-controls { width: 100%; }
-  .search-box { width: 100%; }
-  .search-box input { width: 100%; }
-  .github-heading { border-radius: 6px 6px 0 0; }
-  .metrics { gap: 10px; }
-  .item-meta { align-items: flex-start; }
-  html[data-style="vibecafe"] .vibe-heading h1 { font-size: 28px; }
-  html[data-style="vibecafe"] .section-label { font-size: 13px; }
-  html[data-style="producthunt"] .product-heading h1 { font-size: 24px; }
-  html[data-style="producthunt"] .feed-item { padding: 14px 108px 14px 60px; }
+  html[data-style="vibecafe"] .item-content h2 { font-size: 16px; }
+  html[data-style="producthunt"] .feed-item { padding: 15px 108px 15px 62px; }
   html[data-style="producthunt"] .item-visual { width: 48px; height: 48px; }
   html[data-style="producthunt"] .ph-item-actions { gap: 6px; }
   html[data-style="producthunt"] .ph-item-actions > * { width: 46px; height: 52px; }
   html[data-style="producthunt"] .summary { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-  html[data-style="markdown"] .workspace { width: calc(100% - 32px) !important; margin: 28px 16px 50px !important; }
-  html[data-style="markdown"] .mobile-controls label:last-child { display: none; }
-  .markdown-body { font-size: 16px; }
+  .markdown-body { padding: 28px 22px 60px; }
+}
+
+@media (max-width: 520px) {
+  .brand b { font-size: 15px; }
+  .controls { grid-template-columns: 1fr; }
+  .search, .controls label { grid-column: auto; }
+  .page-heading { align-items: flex-start; }
+  .page-heading h1 { font-size: 23px; }
+  .page-heading p { display: none; }
+  html[data-style="producthunt"] .feed-item { padding-right: 56px; }
+  html[data-style="producthunt"] .ph-item-actions span { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
