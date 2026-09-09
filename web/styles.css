@@ -43,6 +43,9 @@ button, select { cursor: pointer; }
 .item-type-icon { width: 16px; height: 16px; margin-right: 8px; display: inline-flex; color: #57606a; vertical-align: -2px; }
 .item-type-icon svg { display: block; fill: currentColor; }
 .item-meta, .metrics, .links { display: flex; align-items: center; flex-wrap: wrap; }
+.octicon { display: inline-block; fill: currentColor; vertical-align: text-bottom; }
+.metrics span, .github-item-actions b, .favorite-button { gap: 5px; align-items: center; }
+.metrics span, .github-item-actions b { display: inline-flex; }
 .links a { color: var(--blue); text-decoration: none; }
 .language-dot { width: 11px; height: 11px; margin-right: 5px; display: inline-block; border-radius: 50%; background: #3572a5; vertical-align: -1px; }
 .loading-card { height: 130px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fff 15%, #f2f4f6 50%, #fff 85%); background-size: 300% 100%; animation: load 1.3s infinite; }
@@ -63,7 +66,7 @@ html[data-style="github"] .metrics, html[data-style="github"] .links { gap: 16px
 html[data-style="github"] .tag { display: none; }
 html[data-style="github"] .item-link-github { display: none; }
 html[data-style="github"] .github-item-actions { position: absolute; inset: 18px 20px 17px auto; min-width: 140px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
-html[data-style="github"] .favorite-button { padding: 5px 15px; color: #24292f; border: 1px solid rgba(27,31,36,.15); border-radius: 6px; background: #f6f8fa; box-shadow: 0 1px 0 rgba(27,31,36,.04), inset 0 1px 0 rgba(255,255,255,.25); font-size: 14px; font-weight: 500; line-height: 20px; }
+html[data-style="github"] .favorite-button { padding: 5px 15px; display: inline-flex; color: #24292f; border: 1px solid rgba(27,31,36,.15); border-radius: 6px; background: #f6f8fa; box-shadow: 0 1px 0 rgba(27,31,36,.04), inset 0 1px 0 rgba(255,255,255,.25); font-size: 14px; font-weight: 500; line-height: 20px; }
 html[data-style="github"] .favorite-button:hover { background: #f3f4f6; border-color: rgba(27,31,36,.15); }
 html[data-style="github"] .favorite-button.active { color: #8250df; border-color: #d8c7f7; background: #f7f2ff; }
 html[data-style="github"] .favorite-button:focus-visible { outline: 2px solid #0969da; outline-offset: 2px; }
