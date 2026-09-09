@@ -1,0 +1,110 @@
+name: 大家都在做什么·日报
+
+on:
+  schedule:
+    # 每天 00:07 北京时间 = 前一天 16:07 UTC。
+    # 零点后昨日北京日已完整结束；错开整点减少 GitHub 调度拥堵。
+    - cron: '7 16 * * *'
+  workflow_dispatch: # 手动触发
+    inputs:
+      DATE:
+        description: '回溯日期 YYYY-MM-DD (默认昨日)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # 供来源层 GitHub 采集脚本使用
+  COMMUNITY_PULSE_PROXY: ''               # Actions 环境不走代理 (runner 直连/gh 认证)
+  PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}  # Product Hunt API token (账号1, GitHub授权主)
+  PRODUCT_HUNT_TOKEN_2: ${{ secrets.PRODUCT_HUNT_TOKEN_2 }}  # 账号2 Google/icloud
+  PRODUCT_HUNT_TOKEN_3: ${{ secrets.PRODUCT_HUNT_TOKEN_3 }}  # 账号3 Google/me
+  PRODUCT_HUNT_TOKEN_4: ${{ secrets.PRODUCT_HUNT_TOKEN_4 }}  # 账号4 Google/tripwhims
+  PRODUCT_HUNT_TOKEN_5: ${{ secrets.PRODUCT_HUNT_TOKEN_5 }}  # 账号5 Google/hopegoo
+
+jobs:
+  daily-report:
+    runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.setdate.outputs.date }}
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 安装 gh CLI (已随 ubuntu-latest 自带, 此步兼容旧runner)
+        run: gh --version || (curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && sudo apt update && sudo apt install gh -y)
+
+      - name: gh 认证 (内置 token)
+        run: gh auth status
+
+      - name: 确定目标日期 (输入参数或昨日)
+        id: setdate
+        run: |
+          if [ -n "${{ github.event.inputs.DATE }}" ]; then
+            echo "date=${{ github.event.inputs.DATE }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "date=$(TZ=Asia/Shanghai date -d 'yesterday' +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 补齐并校验来源层原始日数据
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          cd .agents/skills/community-pulse
+          # 各来源从自己的起始日寻找最早缺失日；正常情况下只抓北京时间昨天。
+          node scripts/capture_vibecafe_raw.js --resume --end "$TARGET"
+          node scripts/validate_vibecafe_raw.js --start 2026-06-02 --end "$TARGET"
+          node scripts/capture_chinese_indie_raw.js --resume --end "$TARGET"
+          node scripts/validate_chinese_indie_raw.js --start 2026-01-01 --end "$TARGET"
+          node scripts/capture_github_issues_raw.js --resume --end "$TARGET"
+          node scripts/validate_github_issues_raw.js --start 2026-01-01 --end "$TARGET"
+          node scripts/capture_periodicals_raw.js --resume --end "$TARGET"
+          node scripts/validate_periodicals_raw.js --start 2026-01-01 --end "$TARGET"
+          # Trending 没有历史日期接口：保存运行时当天的完整页面快照，不冒充 TARGET 的历史数据。
+          OBSERVED="$(TZ=Asia/Shanghai date +%F)"
+          node scripts/capture_github_trending_raw.js --date "$OBSERVED"
+          node scripts/validate_github_trending_raw.js --date "$OBSERVED"
+          # Product Hunt GraphQL 按应用每 15 分钟限制 complexity；多应用逐页轮询。
+          # 历史缺口由 capture_producthunt_raw.js --resume --wait-on-rate-limit 专门回填。
+          node scripts/capture_producthunt_raw.js --date "$TARGET"
+          node scripts/validate_producthunt_raw.js --start "$TARGET" --end "$TARGET"
+          # 统一发现所有来源中的 GitHub 仓库，并将 API 原对象按报告日落盘。
+          node scripts/capture_github_repositories_raw.js --date "$TARGET" --observed-date "$OBSERVED"
+          node scripts/validate_github_repositories_raw.js --date "$TARGET"
+
+      - name: 生成日报 (md + json, 存 raw/)
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          OBSERVED="$(TZ=Asia/Shanghai date +%F)"
+          echo "目标日期: $TARGET"
+          mkdir -p "知识/大家都在做什么/raw"
+          cd .agents/skills/community-pulse
+          # 后续处理只读取上一步已校验的 source-raw，不再访问任何源站。
+          # Trending 读实际观察日，其余来源读 TARGET 日分区。
+          node scripts/collect.js --strict --require-github-repositories --date "$TARGET" --observed-date "$OBSERVED" --markdown --out "../../../知识/大家都在做什么/raw/$TARGET.md" --json-out "../../../知识/大家都在做什么/raw/$TARGET.json"
+          ls -la "../../../知识/大家都在做什么/raw/$TARGET."*
+
+      - name: 提交并推送
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 来源层可能顺手修复更早的缺口，因此提交所有来源的日分区目录。
+          git add "知识/大家都在做什么/raw/$TARGET.md" "知识/大家都在做什么/raw/$TARGET.json" "知识/大家都在做什么/source-raw/"
+          git commit -m "docs: $TARGET 大家都在做什么日报(raw)" || echo "无变更可提交"
+          # 并发 push 可能冲突: pull --rebase 后再推 (最多重试 3 次)
+          for i in 1 2 3; do
+            if git push; then
+              break
+            else
+              echo "push 冲突, 第 ${i} 次 pull --rebase 后重试"
+              git pull --rebase origin main || true
+              sleep 2
+            fi
+          done
