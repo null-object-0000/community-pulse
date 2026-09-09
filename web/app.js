@@ -143,6 +143,27 @@ function favoriteId(item) {
   return String(identity).replace(/#.*$/, '').replace(/\/$/, '');
 }
 
+function analyticsItemId(item) {
+  return String(item.externalId || item.vibecafeId || favoriteId(item) || item.title || 'item').slice(0, 160);
+}
+
+function trackOutboundClick(link) {
+  if (typeof window.gtag !== 'function') return;
+  try {
+    const url = new URL(link.href, location.href);
+    if (!['http:', 'https:'].includes(url.protocol) || url.origin === location.origin) return;
+    const item = link.closest('.feed-item');
+    window.gtag('event', 'outbound_project_click', {
+      link_url: url.toString(),
+      link_domain: url.hostname,
+      link_text: (link.textContent || link.getAttribute('aria-label') || '').trim().slice(0, 100),
+      report_date: state.date || 'favorites',
+      source_id: item?.dataset.sourceId || '',
+      item_id: item?.dataset.itemId || '',
+    });
+  } catch {}
+}
+
 function readFavorites() {
   try {
     const stored = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
@@ -302,7 +323,7 @@ function renderItem(item, index, favoriteIds) {
   const todayHtml = today !== null ? '<b>' + starIcon(true) + compact(today) + ' stars today</b>' : '';
   const titleDefault = '<a class="title-link-default" href="' + escapeHtml(trackedPrimary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
   const titleGithub = '<a class="title-link-github" href="' + escapeHtml(trackedGithubTitleUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(githubTitle) + '</a>';
-  return '<article class="feed-item">' + visual +
+  return '<article class="feed-item" data-source-id="' + escapeHtml(item.sourceId || '') + '" data-item-id="' + escapeHtml(analyticsItemId(item)) + '">' + visual +
     '<div class="item-content"><div class="item-source">' + source + '</div><h2>' + itemTypeIcon(item) +
     titleDefault + titleGithub + '</h2><p class="summary">' + escapeHtml(summary) + '</p><div class="item-meta"><div class="metrics">' +
     metrics + tagHtml + submissionEntry(item) + '</div><div class="links">' + linkHtml + '</div></div></div>' +
@@ -493,6 +514,10 @@ function bindInputs() {
     state.query = els.search.value;
     renderFeed();
   });
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest?.('a[href]');
+    if (link) trackOutboundClick(link);
+  }, { passive: true });
 }
 
 async function init() {
