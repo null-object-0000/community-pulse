@@ -1,0 +1,111 @@
+name: Product Hunt 历史全量回溯
+
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: '开始日期 YYYY-MM-DD'
+        required: true
+        default: '2026-08-01'
+      end:
+        description: '结束日期 YYYY-MM-DD'
+        required: true
+        default: '2026-08-31'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: producthunt-backfill
+  cancel-in-progress: false
+
+env:
+  COMMUNITY_PULSE_PROXY: ''
+  PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
+  PRODUCT_HUNT_TOKEN_2: ${{ secrets.PRODUCT_HUNT_TOKEN_2 }}
+  PRODUCT_HUNT_TOKEN_3: ${{ secrets.PRODUCT_HUNT_TOKEN_3 }}
+  PRODUCT_HUNT_TOKEN_4: ${{ secrets.PRODUCT_HUNT_TOKEN_4 }}
+  PRODUCT_HUNT_TOKEN_5: ${{ secrets.PRODUCT_HUNT_TOKEN_5 }}
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 配置 Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: 分批回溯、校验并保存
+        env:
+          START_DATE: ${{ inputs.start }}
+          END_DATE: ${{ inputs.end }}
+        run: |
+          set -euo pipefail
+          SKILL_DIR="$GITHUB_WORKSPACE/.agents/skills/community-pulse"
+          SOURCE_DIR="$GITHUB_WORKSPACE/知识/大家都在做什么/source-raw/producthunt"
+
+          commit_and_push() {
+            git -C "$GITHUB_WORKSPACE" add "$SOURCE_DIR"
+            if git -C "$GITHUB_WORKSPACE" diff --cached --quiet; then
+              return
+            fi
+            git -C "$GITHUB_WORKSPACE" commit -m "data: 回溯 Product Hunt ${START_DATE} 至 ${END_DATE}"
+            for attempt in 1 2 3; do
+              if git -C "$GITHUB_WORKSPACE" push; then
+                return
+              fi
+              echo "push 冲突，第 ${attempt} 次 rebase 后重试"
+              git -C "$GITHUB_WORKSPACE" pull --rebase origin main
+            done
+            echo "三次 push 均失败" >&2
+            return 1
+          }
+
+          validate_existing_days() {
+            local day="$START_DATE"
+            while [[ "$day" < "$END_DATE" || "$day" == "$END_DATE" ]]; do
+              if [[ -f "$SOURCE_DIR/$day.json" ]]; then
+                node "$SKILL_DIR/scripts/validate_producthunt_raw.js" --start "$day" --end "$day"
+              fi
+              day="$(date -u -d "$day + 1 day" +%F)"
+            done
+          }
+
+          while true; do
+            result_file="$(mktemp)"
+            node "$SKILL_DIR/scripts/capture_producthunt_raw.js" \
+              --start "$START_DATE" \
+              --end "$END_DATE" \
+              --reverse \
+              --resume \
+              --stop-on-rate-limit | tee "$result_file"
+
+            validate_existing_days
+            commit_and_push
+
+            finished="$(node -e '
+              const fs = require("fs");
+              const result = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+              process.stdout.write(result.noOp || result.stoppedAt === null ? "yes" : "no");
+            ' "$result_file")"
+            if [[ "$finished" == "yes" ]]; then
+              break
+            fi
+
+            echo "全部账号均已触发限流；已保存完整日期，等待 15 分 20 秒后续跑"
+            sleep 920
+          done
+
+          node "$SKILL_DIR/scripts/validate_producthunt_raw.js" \
+            --start "$START_DATE" --end "$END_DATE"
+          commit_and_push
