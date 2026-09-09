@@ -201,6 +201,7 @@ function renderItem(item, index, favoriteIds) {
   const links = itemLinks(item);
   const primary = links[0]?.[1] || item.url || '#';
   const repositoryUrl = githubRepositoryUrl(item);
+  const githubTitleUrl = repositoryUrl || primary;
   const saved = favoriteIds.has(favoriteId(item));
   const summary = item.summary || item.tagline || item.content || '暂无简介';
   const tags = (item.tags || []).filter((tag) => !['product', 'vibecafe'].includes(tag)).slice(0, 3);
@@ -216,12 +217,12 @@ function renderItem(item, index, favoriteIds) {
   ].filter(Boolean).join('');
   const source = escapeHtml(item.sourceName) + (item.author ? '<span>by ' + escapeHtml(item.author) + '</span>' : '');
   const linkHtml = links.map(([label, url]) =>
-    '<a class="item-link' + (label === 'GitHub' ? ' item-link-github' : '') + '" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label) + ' ↗</a>',
+    '<a class="item-link' + (label === 'GitHub' ? ' item-link-github' : '') + (url === githubTitleUrl ? ' item-link-title-target' : '') + '" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label) + ' ↗</a>',
   ).join('');
   const tagHtml = tags.map((tag) => '<span class="tag">' + escapeHtml(tag) + '</span>').join('');
   const todayHtml = today !== null ? '<b>' + starIcon(true) + compact(today) + ' stars today</b>' : '';
   const titleDefault = '<a class="title-link-default" href="' + escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
-  const titleGithub = '<a class="title-link-github" href="' + escapeHtml(repositoryUrl || primary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
+  const titleGithub = '<a class="title-link-github" href="' + escapeHtml(githubTitleUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
   return '<article class="feed-item">' + visual +
     '<div class="item-content"><div class="item-source">' + source + '</div><h2>' + itemTypeIcon(item) +
     titleDefault + titleGithub + '</h2><p class="summary">' + escapeHtml(summary) + '</p><div class="item-meta"><div class="metrics">' +

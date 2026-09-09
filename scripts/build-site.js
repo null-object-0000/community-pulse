@@ -159,9 +159,9 @@ function renderSeoItem(item) {
     ? `<img class="item-visual" src="${escapeHtml(item.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" />`
     : `<div class="item-visual item-fallback" aria-hidden="true">${escapeHtml((item.sourceId || '•').slice(0, 2))}</div>`;
 
-  const secondaryLink = repositoryUrl && itemUrl(item) === repositoryUrl
-    ? ''
-    : `<a href="${url}" target="_blank" rel="noopener noreferrer">${repositoryUrl ? '官网' : '查看'} ↗</a>`;
+  const secondaryLink = repositoryUrl && itemUrl(item) !== repositoryUrl
+    ? `<a href="${url}" target="_blank" rel="noopener noreferrer">官网 ↗</a>`
+    : '';
   return `<article class="feed-item">${visual}<div class="item-content"><div class="item-source">${source}${author}</div><h2>${itemTypeIcon(item)}<a class="title-link-github" href="${titleUrl}" target="_blank" rel="noopener noreferrer">${title}</a><a class="title-link-default" href="${url}" target="_blank" rel="noopener noreferrer">${title}</a></h2><p class="summary">${summary}</p><div class="item-meta"><div class="metrics">${metrics}</div><div class="links">${secondaryLink}</div></div></div><div class="github-item-actions"><button type="button" class="favorite-button" data-favorite-id="${escapeHtml(favoriteId(item))}" aria-pressed="false" aria-label="收藏 ${title}">${starIcon(true)}收藏</button>${repositoryUrl && today !== undefined ? `<b>${starIcon(true)}${escapeHtml(today)} stars today</b>` : ''}</div><div class="ph-item-actions"><span>◌<b>${escapeHtml(comments ?? '—')}</b></span><a href="${url}" target="_blank" rel="noopener noreferrer">△<b>${escapeHtml(votes ?? '—')}</b></a></div></article>`;
 }
 
