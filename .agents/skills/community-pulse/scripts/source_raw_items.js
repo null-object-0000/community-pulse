@@ -67,6 +67,39 @@ function extractJsonStringField(text, anchor, field) {
   return '';
 }
 
+function extractJsonStringBefore(text, marker, field, maxDistance = 2000) {
+  const markerIndex = text.indexOf(marker);
+  if (markerIndex < 0) return '';
+  const key = `"${field}":`;
+  const keyIndex = text.lastIndexOf(key, markerIndex);
+  if (keyIndex < 0 || markerIndex - keyIndex > maxDistance) return '';
+  const start = text.indexOf('"', keyIndex + key.length);
+  if (start < 0 || start > markerIndex) return '';
+  let escaped = false;
+  for (let index = start + 1; index < markerIndex; index += 1) {
+    const char = text[index];
+    if (escaped) { escaped = false; continue; }
+    if (char === '\\') { escaped = true; continue; }
+    if (char === '"') {
+      try { return JSON.parse(text.slice(start, index + 1)); } catch (_) { return ''; }
+    }
+  }
+  return '';
+}
+
+function cleanWebsiteUrl(value) {
+  if (!value) return '';
+  try {
+    const url = new URL(value);
+    for (const key of [...url.searchParams.keys()]) {
+      if (/^utm_/i.test(key)) url.searchParams.delete(key);
+    }
+    return url.toString();
+  } catch (_) {
+    return value;
+  }
+}
+
 function issueSummary(body) {
   const clean = (body || '')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
@@ -160,7 +193,14 @@ function vibecafeItems(document, src) {
       ? detailDescription.trim()
       : '';
     const summary = (usableDetailDescription || product.tagline || '').replace(/\s+/g, ' ').trim();
-    const websiteUrl = product.websiteUrl || product.owner?.selectedProduct?.websiteUrl || '';
+    // `owner.selectedProduct` describes the author's profile selection, which
+    // may be a completely different product. The current product's canonical
+    // website is the link attached to the detail page's "体验作品" action.
+    const detailWebsiteUrl = extractJsonStringBefore(detailText, '"children":"体验作品 ↗"', 'href');
+    const selectedProductWebsite = product.owner?.selectedProduct?.id === product.id
+      ? product.owner.selectedProduct.websiteUrl
+      : '';
+    const websiteUrl = cleanWebsiteUrl(product.websiteUrl || detailWebsiteUrl || selectedProductWebsite || '');
     const vibecafeUrl = `https://vibecafe.ai/products/${product.id}`;
     return {
       sourceId: src.id,
