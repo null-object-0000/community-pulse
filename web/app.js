@@ -13,6 +13,7 @@ const sourceMarks = {
   'weekly-issue': '周', 'hellogithub-issues': 'H', 'hellogithub-issue': '月',
   'github-trending': 'GH', 'github-trending-cn': 'CN', producthunt: 'P',
 };
+const siteOrigin = 'https://devtrends.site';
 
 const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
@@ -225,11 +226,23 @@ async function loadReport(date, updateUrl = true) {
   els['section-date'].textContent = date;
   if (updateUrl) {
     const url = new URL(location.href);
-    url.searchParams.set('date', date);
-    history.replaceState({}, '', url);
+    history.replaceState({}, '', '/reports/' + date + '/' + url.search);
   }
   renderSourceControls();
   renderFeed();
+  const itemCount = allItems().length;
+  const canonicalPath = location.pathname.match(/^\/reports\/\d{4}-\d{2}-\d{2}\/$/) ? location.pathname : '/';
+  const canonicalUrl = siteOrigin + canonicalPath;
+  const title = '大家都在做什么 · ' + date + ' 开发者趋势 | DevTrends';
+  const description = date + ' 开发者趋势日报，共收录 ' + itemCount + ' 条来自 GitHub Trending、VibeCafé、Product Hunt 和中文开发者社区的动态。';
+  document.title = title;
+  document.querySelector('link[rel="canonical"]').href = canonicalUrl;
+  document.querySelector('meta[name="description"]').content = description;
+  document.querySelector('meta[property="og:title"]').content = title;
+  document.querySelector('meta[property="og:description"]').content = description;
+  document.querySelector('meta[property="og:url"]').content = canonicalUrl;
+  document.querySelector('meta[name="twitter:title"]').content = title;
+  document.querySelector('meta[name="twitter:description"]').content = description;
 }
 
 function bindInputs() {
@@ -249,7 +262,8 @@ async function init() {
     els['date-select'].innerHTML = options;
     els['style-select'].value = state.style;
     bindInputs();
-    const requested = new URL(location.href).searchParams.get('date');
+    const pathDate = location.pathname.match(/^\/reports\/(\d{4}-\d{2}-\d{2})\/?$/)?.[1];
+    const requested = pathDate || new URL(location.href).searchParams.get('date');
     await loadReport(state.index.dates.includes(requested) ? requested : state.index.latest, false);
   } catch (error) {
     els.feed.innerHTML = '<div class="error"><h2>日报暂时没有加载出来</h2><p>' + escapeHtml(error.message) + '</p></div>';
