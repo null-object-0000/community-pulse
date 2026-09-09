@@ -28,6 +28,8 @@ npm run build
 npm run preview
 ```
 
+GitHub Trending 风格中的“收藏”只写入当前浏览器的 `localStorage`（键名 `devtrends-favorites-v1`），不会上传服务器；日期选择器中的“我的收藏”或 `/favorites/` 可查看收藏内容。GitHub 仓库项目的标题在该风格下直接链接仓库，不再重复展示 GitHub 入口。
+
 构建产物在 `dist/`。`wrangler.toml` 已配置为 Cloudflare Workers 静态资源站点。Cloudflare Workers Builds 连接本仓库的 `main` 分支后，每次推送（包括每日数据任务的提交）都会自动构建并发布。
 
 绑定域名时在 `wrangler.toml` 增加 Custom Domain 配置，例如：

@@ -25,6 +25,8 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 
 网站源码在 `web/`，`scripts/build-site.js` 会读取 `知识/大家都在做什么/raw/*.json`的结构化数据，并在同日 `final/*.md` 存在时将 LLM 增强摘要合并进列表 JSON；只有没有 final 的日期才回退到 raw 摘要。网站支持 GitHub Trending、VibeCafé、Product Hunt 和 Markdown 四种展示风格。
 
+GitHub Trending 风格的收藏使用浏览器本地 `localStorage`（键名 `devtrends-favorites-v1`），不上传服务端；日期选择器可切换到“我的收藏”，对应路径为 `/favorites/`。GitHub 仓库项目在此风格下由标题直接链接仓库，并隐藏重复的 GitHub 链接。
+
 部署后至少检查：
 
 - `/` 返回 HTML 200

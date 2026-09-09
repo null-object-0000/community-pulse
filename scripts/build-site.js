@@ -98,6 +98,12 @@ function githubRepositoryUrl(item) {
   return '';
 }
 
+function favoriteId(item) {
+  const identity = githubRepositoryUrl(item) || item.websiteUrl || item.url ||
+    `${item.sourceId || 'item'}:${item.externalId || item.title || 'untitled'}`;
+  return String(identity).replace(/#.*$/, '').replace(/\/$/, '');
+}
+
 function itemTypeIcon(item) {
   const sourceId = item.sourceId || '';
   const githubUrl = githubRepositoryUrl(item);
@@ -129,6 +135,7 @@ function itemTypeIcon(item) {
 function renderSeoItem(item) {
   const url = escapeHtml(itemUrl(item));
   const repositoryUrl = githubRepositoryUrl(item);
+  const titleUrl = escapeHtml(repositoryUrl || itemUrl(item));
   const title = escapeHtml(item.title || '未命名项目');
   const summary = escapeHtml(item.summary || item.tagline || item.content || '暂无简介');
   const source = escapeHtml(item.sourceName || item.sourceId || '社区动态');
@@ -150,7 +157,25 @@ function renderSeoItem(item) {
     ? `<img class="item-visual" src="${escapeHtml(item.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" />`
     : `<div class="item-visual item-fallback" aria-hidden="true">${escapeHtml((item.sourceId || '•').slice(0, 2))}</div>`;
 
-  return `<article class="feed-item">${visual}<div class="item-content"><div class="item-source">${source}${author}</div><h2>${itemTypeIcon(item)}<a href="${url}" target="_blank" rel="noopener noreferrer">${title}</a></h2><p class="summary">${summary}</p><div class="item-meta"><div class="metrics">${metrics}</div><div class="links"><a href="${url}" target="_blank" rel="noopener noreferrer">查看 ↗</a></div></div></div><div class="github-item-actions"><a href="${escapeHtml(repositoryUrl || itemUrl(item))}" target="_blank" rel="noopener noreferrer">${repositoryUrl ? '☆&nbsp; Star' : '查看&nbsp; ↗'}</a>${repositoryUrl && today !== undefined ? `<b>☆ ${escapeHtml(today)} stars today</b>` : ''}</div><div class="ph-item-actions"><span>◌<b>${escapeHtml(comments ?? '—')}</b></span><a href="${url}" target="_blank" rel="noopener noreferrer">△<b>${escapeHtml(votes ?? '—')}</b></a></div></article>`;
+  const secondaryLink = repositoryUrl && itemUrl(item) === repositoryUrl
+    ? ''
+    : `<a href="${url}" target="_blank" rel="noopener noreferrer">${repositoryUrl ? '官网' : '查看'} ↗</a>`;
+  return `<article class="feed-item">${visual}<div class="item-content"><div class="item-source">${source}${author}</div><h2>${itemTypeIcon(item)}<a class="title-link-github" href="${titleUrl}" target="_blank" rel="noopener noreferrer">${title}</a><a class="title-link-default" href="${url}" target="_blank" rel="noopener noreferrer">${title}</a></h2><p class="summary">${summary}</p><div class="item-meta"><div class="metrics">${metrics}</div><div class="links">${secondaryLink}</div></div></div><div class="github-item-actions"><button type="button" class="favorite-button" data-favorite-id="${escapeHtml(favoriteId(item))}" aria-pressed="false" aria-label="收藏 ${title}"><span aria-hidden="true">☆</span>&nbsp; 收藏</button>${repositoryUrl && today !== undefined ? `<b>☆ ${escapeHtml(today)} stars today</b>` : ''}</div><div class="ph-item-actions"><span>◌<b>${escapeHtml(comments ?? '—')}</b></span><a href="${url}" target="_blank" rel="noopener noreferrer">△<b>${escapeHtml(votes ?? '—')}</b></a></div></article>`;
+}
+
+function renderFavoritesPage(template) {
+  const title = '我的收藏｜DevTrends';
+  const description = '保存在当前浏览器中的 DevTrends 项目收藏。';
+  return template
+    .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${description}" />`)
+    .replace(/<meta name="robots" content="[^"]*" \/>/, '<meta name="robots" content="noindex, nofollow" />')
+    .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${title}" />`)
+    .replace(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${description}" />`)
+    .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${title}" />`)
+    .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${description}" />`)
+    .replace('<h1 id="page-title">大家都在做什么</h1>', '<h1 id="page-title">我的收藏</h1>')
+    .replace('<b id="section-date"></b>', '<b id="section-date">我的收藏</b>');
 }
 
 function renderPage(template, report, date, canonicalUrl) {
@@ -246,6 +271,10 @@ if (latest) {
 } else {
   fs.writeFileSync(path.join(outputDir, 'index.html'), htmlTemplate);
 }
+
+const favoritesDir = path.join(outputDir, 'favorites');
+fs.mkdirSync(favoritesDir, { recursive: true });
+fs.writeFileSync(path.join(favoritesDir, 'index.html'), renderFavoritesPage(htmlTemplate));
 
 fs.writeFileSync(
   path.join(outputDir, 'data', 'index.json'),

@@ -1,11 +1,13 @@
 const state = {
   index: null, report: null, markdown: '', source: 'all', query: '',
+  view: 'report', date: null,
   style: document.documentElement.dataset.style || 'github',
 };
 
 const ids = [
   'date-select', 'source-select', 'style-select', 'search', 'section-date',
-  'report-stat', 'source-chips', 'feed', 'markdown-view', 'empty',
+  'report-stat', 'source-chips', 'feed', 'markdown-view', 'empty', 'page-title',
+  'empty-title', 'empty-hint',
 ];
 const els = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const sourceMarks = {
@@ -14,6 +16,7 @@ const sourceMarks = {
   'github-trending': 'GH', 'github-trending-cn': 'CN', producthunt: 'P',
 };
 const siteOrigin = 'https://devtrends.site';
+const favoritesKey = 'devtrends-favorites-v1';
 
 const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
@@ -58,6 +61,57 @@ function githubRepositoryUrl(item) {
     } catch {}
   }
   return '';
+}
+
+function favoriteId(item) {
+  const identity = githubRepositoryUrl(item) || item.websiteUrl || item.url ||
+    `${item.sourceId || 'item'}:${item.externalId || item.title || 'untitled'}`;
+  return String(identity).replace(/#.*$/, '').replace(/\/$/, '');
+}
+
+function readFavorites() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(favoritesKey) || '[]');
+    return Array.isArray(stored) ? stored.filter((entry) => entry?.id && entry?.item) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeFavorites(favorites) {
+  try {
+    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function favoritesReport() {
+  const groups = new Map();
+  for (const favorite of readFavorites()) {
+    const item = { ...favorite.item, favoriteId: favorite.id, savedAt: favorite.savedAt };
+    const sourceId = item.sourceId || 'favorites';
+    if (!groups.has(sourceId)) groups.set(sourceId, { sourceId, sourceName: item.sourceName || '其他收藏', items: [] });
+    groups.get(sourceId).items.push(item);
+  }
+  return { date: null, presentation: { summarySource: 'local-favorites' }, results: [...groups.values()] };
+}
+
+function favoritesMarkdown(items) {
+  if (!items.length) return '# 我的收藏\n\n还没有收藏项目。';
+  return '# 我的收藏\n\n' + items.map((item) => {
+    const url = githubRepositoryUrl(item) || item.websiteUrl || item.url || '#';
+    const title = String(item.title || '未命名项目').replace(/[\[\]]/g, '\\$&');
+    return `## [${title}](${url})\n\n> ${item.summary || '暂无简介'}\n\n${item.sourceName || ''}`;
+  }).join('\n\n');
+}
+
+function renderDateOptions(selected) {
+  const favoriteCount = readFavorites().length;
+  const dates = (state.index?.dates || []).map((date) => '<option value="' + date + '">' + date + '</option>').join('');
+  els['date-select'].innerHTML = '<option value="favorites">★ 我的收藏 (' + favoriteCount + ')</option><optgroup label="日报日期">' + dates + '</optgroup>';
+  els['date-select'].value = selected;
 }
 
 function itemTypeIcon(item) {
@@ -134,7 +188,7 @@ function selectSource(source) {
   renderFeed();
 }
 
-function renderItem(item, index) {
+function renderItem(item, index, favoriteIds) {
   const stars = readMetric(item, ['stars', 'stargazers_count', 'totalStars']);
   const forks = readMetric(item, ['forks', 'forks_count']);
   const today = readMetric(item, ['today', 'starsToday', 'todayStars']);
@@ -144,6 +198,7 @@ function renderItem(item, index) {
   const links = itemLinks(item);
   const primary = links[0]?.[1] || item.url || '#';
   const repositoryUrl = githubRepositoryUrl(item);
+  const saved = favoriteIds.has(favoriteId(item));
   const summary = item.summary || item.tagline || item.content || '暂无简介';
   const tags = (item.tags || []).filter((tag) => !['product', 'vibecafe'].includes(tag)).slice(0, 3);
   const visual = item.image
@@ -158,17 +213,17 @@ function renderItem(item, index) {
   ].filter(Boolean).join('');
   const source = escapeHtml(item.sourceName) + (item.author ? '<span>by ' + escapeHtml(item.author) + '</span>' : '');
   const linkHtml = links.map(([label, url]) =>
-    '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label) + ' ↗</a>',
+    '<a class="item-link' + (label === 'GitHub' ? ' item-link-github' : '') + '" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label) + ' ↗</a>',
   ).join('');
   const tagHtml = tags.map((tag) => '<span class="tag">' + escapeHtml(tag) + '</span>').join('');
   const todayHtml = today !== null ? '<b>☆ ' + compact(today) + ' stars today</b>' : '';
+  const titleDefault = '<a class="title-link-default" href="' + escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
+  const titleGithub = '<a class="title-link-github" href="' + escapeHtml(repositoryUrl || primary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
   return '<article class="feed-item">' + visual +
     '<div class="item-content"><div class="item-source">' + source + '</div><h2>' + itemTypeIcon(item) +
-    '<a href="' + escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) +
-    '</a></h2><p class="summary">' + escapeHtml(summary) + '</p><div class="item-meta"><div class="metrics">' +
+    titleDefault + titleGithub + '</h2><p class="summary">' + escapeHtml(summary) + '</p><div class="item-meta"><div class="metrics">' +
     metrics + tagHtml + '</div><div class="links">' + linkHtml + '</div></div></div>' +
-    '<div class="github-item-actions"><a href="' + escapeHtml(repositoryUrl || primary) +
-    '" target="_blank" rel="noopener noreferrer">' + (repositoryUrl ? '☆&nbsp; Star' : '查看&nbsp; ↗') + '</a>' + (repositoryUrl ? todayHtml : '') + '</div>' +
+    '<div class="github-item-actions"><button type="button" class="favorite-button' + (saved ? ' active' : '') + '" data-favorite-id="' + escapeHtml(favoriteId(item)) + '" aria-pressed="' + saved + '" aria-label="' + (saved ? '取消收藏' : '收藏') + ' ' + escapeHtml(item.title) + '"><span aria-hidden="true">' + (saved ? '★' : '☆') + '</span>&nbsp; ' + (saved ? '已收藏' : '收藏') + '</button>' + (repositoryUrl ? todayHtml : '') + '</div>' +
     '<div class="ph-item-actions"><span>◌<b>' + (compact(comments) || '—') + '</b></span><a href="' +
     escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">△<b>' + (compact(votes) || '—') +
     '</b></a></div><span class="item-number">' + String(index + 1).padStart(2, '0') + '</span></article>';
@@ -228,7 +283,14 @@ function renderFeed() {
     return;
   }
   const items = filteredItems();
-  els.feed.innerHTML = items.map(renderItem).join('');
+  els['empty-title'].textContent = state.view === 'favorites' ? '还没有符合条件的收藏' : '没有找到相关项目';
+  els['empty-hint'].textContent = state.view === 'favorites' ? '在 GitHub Trending 风格中点击“收藏”，项目就会保存在这个浏览器里。' : '换一个关键词或来源试试。';
+  const favoriteIds = new Set(readFavorites().map((favorite) => favorite.id));
+  const itemsByFavoriteId = new Map(items.map((item) => [favoriteId(item), item]));
+  els.feed.innerHTML = items.map((item, index) => renderItem(item, index, favoriteIds)).join('');
+  els.feed.querySelectorAll('[data-favorite-id]').forEach((button) => {
+    button.addEventListener('click', () => toggleFavorite(itemsByFavoriteId.get(button.dataset.favoriteId)));
+  });
   els.feed.querySelectorAll('img.item-visual').forEach((image) => {
     image.addEventListener('error', () => {
       const fallback = document.createElement('div');
@@ -240,6 +302,68 @@ function renderFeed() {
   els.feed.hidden = items.length === 0;
   els.empty.hidden = items.length !== 0;
   els['report-stat'].textContent = items.length + ' 条';
+}
+
+function toggleFavorite(item) {
+  if (!item) return;
+  const id = favoriteId(item);
+  const favorites = readFavorites();
+  const existingIndex = favorites.findIndex((favorite) => favorite.id === id);
+  if (existingIndex >= 0) {
+    favorites.splice(existingIndex, 1);
+  } else {
+    const snapshot = JSON.parse(JSON.stringify({ ...item, content: '', reportDate: state.date }));
+    favorites.unshift({ id, savedAt: new Date().toISOString(), item: snapshot });
+  }
+  if (!writeFavorites(favorites)) {
+    els['report-stat'].textContent = '浏览器本地收藏不可用';
+    return;
+  }
+  renderDateOptions(state.view === 'favorites' ? 'favorites' : state.date);
+  if (state.view === 'favorites') {
+    loadFavorites(false);
+  } else {
+    renderFeed();
+  }
+}
+
+function updateMetadata(date, itemCount, favorites = false) {
+  const canonicalUrl = favorites ? siteOrigin + '/' : siteOrigin + (location.pathname.match(/^\/reports\/\d{4}-\d{2}-\d{2}\/$/) ? location.pathname : '/');
+  const isHomepage = !favorites && canonicalUrl === siteOrigin + '/';
+  const title = favorites ? '我的收藏｜DevTrends' : (isHomepage ? 'DevTrends 开发者趋势｜大家都在做什么' : date + ' 开发者趋势日报｜DevTrends');
+  const description = favorites ? '保存在当前浏览器中的 DevTrends 项目收藏。' : (isHomepage
+    ? '每日聚合 GitHub Trending、VibeCafé、Product Hunt 与中文独立开发者社区的新项目、新产品和开源趋势。'
+    : date + ' 开发者趋势日报，共收录 ' + itemCount + ' 条来自 GitHub Trending、VibeCafé、Product Hunt 和中文开发者社区的动态。');
+  document.title = title;
+  document.querySelector('link[rel="canonical"]').href = canonicalUrl;
+  document.querySelector('meta[name="robots"]').content = favorites ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+  document.querySelector('meta[name="description"]').content = description;
+  document.querySelector('meta[property="og:title"]').content = title;
+  document.querySelector('meta[property="og:description"]').content = description;
+  document.querySelector('meta[property="og:url"]').content = canonicalUrl;
+  document.querySelector('meta[name="twitter:title"]').content = title;
+  document.querySelector('meta[name="twitter:description"]').content = description;
+}
+
+function loadFavorites(updateUrl = true) {
+  state.view = 'favorites';
+  state.date = null;
+  state.report = favoritesReport();
+  state.source = 'all';
+  const items = allItems();
+  state.markdown = favoritesMarkdown(items);
+  renderDateOptions('favorites');
+  els['page-title'].textContent = '我的收藏';
+  els['section-date'].textContent = '我的收藏';
+  if (updateUrl) {
+    const url = new URL(location.href);
+    url.pathname = '/favorites/';
+    url.searchParams.delete('date');
+    history.replaceState({}, '', url);
+  }
+  renderSourceControls();
+  renderFeed();
+  updateMetadata(null, items.length, true);
 }
 
 function applyStyle(style) {
@@ -263,8 +387,11 @@ async function loadReport(date, updateUrl = true) {
   if (!reportResponse.ok) throw new Error('无法读取 ' + date + ' 日报');
   state.report = await reportResponse.json();
   state.markdown = markdownResponse.ok ? await markdownResponse.text() : '# 大家都在做什么 · ' + date + '\n\n当天暂无 Markdown 日报。';
+  state.view = 'report';
+  state.date = date;
   state.source = 'all';
-  els['date-select'].value = date;
+  renderDateOptions(date);
+  els['page-title'].textContent = '大家都在做什么';
   els['section-date'].textContent = date;
   if (updateUrl) {
     const url = new URL(location.href);
@@ -272,26 +399,14 @@ async function loadReport(date, updateUrl = true) {
   }
   renderSourceControls();
   renderFeed();
-  const itemCount = allItems().length;
-  const canonicalPath = location.pathname.match(/^\/reports\/\d{4}-\d{2}-\d{2}\/$/) ? location.pathname : '/';
-  const canonicalUrl = siteOrigin + canonicalPath;
-  const isHomepage = canonicalPath === '/';
-  const title = isHomepage ? 'DevTrends 开发者趋势｜大家都在做什么' : date + ' 开发者趋势日报｜DevTrends';
-  const description = isHomepage
-    ? '每日聚合 GitHub Trending、VibeCafé、Product Hunt 与中文独立开发者社区的新项目、新产品和开源趋势。'
-    : date + ' 开发者趋势日报，共收录 ' + itemCount + ' 条来自 GitHub Trending、VibeCafé、Product Hunt 和中文开发者社区的动态。';
-  document.title = title;
-  document.querySelector('link[rel="canonical"]').href = canonicalUrl;
-  document.querySelector('meta[name="description"]').content = description;
-  document.querySelector('meta[property="og:title"]').content = title;
-  document.querySelector('meta[property="og:description"]').content = description;
-  document.querySelector('meta[property="og:url"]').content = canonicalUrl;
-  document.querySelector('meta[name="twitter:title"]').content = title;
-  document.querySelector('meta[name="twitter:description"]').content = description;
+  updateMetadata(date, allItems().length);
 }
 
 function bindInputs() {
-  els['date-select'].addEventListener('change', () => loadReport(els['date-select'].value));
+  els['date-select'].addEventListener('change', () => {
+    if (els['date-select'].value === 'favorites') loadFavorites();
+    else loadReport(els['date-select'].value);
+  });
   els['source-select'].addEventListener('change', () => selectSource(els['source-select'].value));
   els['style-select'].addEventListener('change', () => applyStyle(els['style-select'].value));
   els.search.addEventListener('input', () => {
@@ -303,10 +418,13 @@ function bindInputs() {
 async function init() {
   try {
     state.index = await fetch('/data/index.json').then((response) => response.json());
-    const options = state.index.dates.map((date) => '<option value="' + date + '">' + date + '</option>').join('');
-    els['date-select'].innerHTML = options;
+    renderDateOptions(state.index.latest);
     els['style-select'].value = state.style;
     bindInputs();
+    if (location.pathname === '/favorites/' || location.pathname === '/favorites') {
+      loadFavorites(false);
+      return;
+    }
     const pathDate = location.pathname.match(/^\/reports\/(\d{4}-\d{2}-\d{2})\/?$/)?.[1];
     const requested = pathDate || new URL(location.href).searchParams.get('date');
     await loadReport(state.index.dates.includes(requested) ? requested : state.index.latest, false);

@@ -31,7 +31,7 @@
       <a class="brand" href="/" aria-label="DevTrends 开发者趋势首页"><img src="/logo.svg" alt="" width="34" height="34" /><b>DevTrends</b></a>
       <div class="controls">
         <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索项目、作者或标签" autocomplete="off" /></label>
-        <label><span class="sr-only">选择日期</span><select id="date-select" aria-label="选择日期"></select></label>
+        <label><span class="sr-only">选择日报或收藏</span><select id="date-select" aria-label="选择日报或收藏"></select></label>
         <label><span class="sr-only">筛选来源</span><select id="source-select" aria-label="筛选来源"></select></label>
         <label><span class="sr-only">切换展示风格</span><select id="style-select" aria-label="切换展示风格"><option value="github">GitHub Trending</option><option value="vibecafe">VibeCafé</option><option value="producthunt">Product Hunt</option><option value="markdown">Markdown</option></select></label>
       </div>
@@ -39,13 +39,13 @@
 
     <main class="workspace">
       <div class="page-heading">
-        <div><p>DEV TRENDS · 开发者趋势</p><h1>大家都在做什么</h1></div>
+        <div><p>DEV TRENDS · 开发者趋势</p><h1 id="page-title">大家都在做什么</h1></div>
         <div class="report-meta"><b id="section-date"></b><span id="report-stat" aria-live="polite"></span></div>
       </div>
       <div id="source-chips" class="source-chips" aria-label="筛选数据来源"></div>
       <div id="feed" class="feed" aria-live="polite"></div>
       <article id="markdown-view" class="markdown-body" hidden></article>
-      <div id="empty" class="empty" hidden><h2>没有找到相关项目</h2><p>换一个关键词或来源试试。</p></div>
+      <div id="empty" class="empty" hidden><h2 id="empty-title">没有找到相关项目</h2><p id="empty-hint">换一个关键词或来源试试。</p></div>
     </main>
     <script src="/app.js" defer></script>
   </body>
