@@ -6,6 +6,7 @@
 - 英文品牌：`DevTrends`
 - 中文品牌：`开发者趋势`
 - 主栏目 / Slogan：`大家都在做什么`
+- 品牌标志：`web/logo.svg`（深色 D 字母 + 蓝色上升趋势线）
 - Cloudflare Workers 生产地址：<https://community-pulse.nichangen.workers.dev>
 - Cloudflare 预览地址规则：`*-community-pulse.nichangen.workers.dev`
 - Cloudflare Worker / 项目名称：`community-pulse`

@@ -68,6 +68,12 @@ function renderPage(template, report, date, canonicalUrl) {
     url: canonicalUrl,
     inLanguage: 'zh-CN',
     datePublished: date,
+    publisher: {
+      '@type': 'Organization',
+      name: 'DevTrends 开发者趋势',
+      url: siteOrigin,
+      logo: `${siteOrigin}/logo.svg`,
+    },
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: items.length,
@@ -96,7 +102,7 @@ fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(reportsDir, { recursive: true });
 fs.mkdirSync(markdownDir, { recursive: true });
 
-for (const name of ['styles.css', 'app.js']) {
+for (const name of ['styles.css', 'app.js', 'logo.svg']) {
   fs.copyFileSync(path.join(webDir, name), path.join(outputDir, name));
 }
 
