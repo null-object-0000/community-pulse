@@ -23,14 +23,14 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 - 静态资源输出目录：`dist/`（构建产物，不提交 Git）
 - Workers 静态资源配置：`wrangler.toml`
 
-网站源码在 `web/`，`scripts/build-site.js` 会读取 `知识/大家都在做什么/raw/*.json`，生成日期索引并复制全部日报到 `dist/data/reports/`。网站支持 GitHub Trending、VibeCafé、Product Hunt 和 Markdown 四种展示风格。
+网站源码在 `web/`，`scripts/build-site.js` 会读取 `知识/大家都在做什么/raw/*.json`的结构化数据，并在同日 `final/*.md` 存在时将 LLM 增强摘要合并进列表 JSON；只有没有 final 的日期才回退到 raw 摘要。网站支持 GitHub Trending、VibeCafé、Product Hunt 和 Markdown 四种展示风格。
 
 部署后至少检查：
 
 - `/` 返回 HTML 200
 - `/styles.css` 与 `/app.js` 返回 200
 - `/data/index.json` 返回最新日期和历史日期列表
-- `/data/reports/<latest>.json` 返回最新日报
+- `/data/reports/<latest>.json` 返回最新日报；存在同日 final 时 `presentation.summarySource` 必须为 `llm-final`
 
 对外链接、canonical、站点地图和分享元数据统一使用 `https://devtrends.site`；旧域名不再作为对外地址。`workers.dev` 地址仅作为生产备用入口。
 

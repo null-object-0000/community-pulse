@@ -22,6 +22,65 @@ function reportItems(report) {
   );
 }
 
+function parseEnhancedMarkdown(markdown) {
+  const sections = new Map();
+  let currentSection = null;
+  let currentItem = null;
+
+  for (const line of markdown.split(/\r?\n/)) {
+    if (line.startsWith('## ')) {
+      currentSection = line.slice(3).replace(/（\d+\s*条）\s*$/, '').trim();
+      sections.set(currentSection, []);
+      currentItem = null;
+      continue;
+    }
+    if (!currentSection) continue;
+    if (line.startsWith('### ')) {
+      currentItem = { heading: line.slice(4).trim(), summary: null, used: false };
+      sections.get(currentSection).push(currentItem);
+      continue;
+    }
+    if (currentItem && line.startsWith('> ')) {
+      currentItem.summary = line.slice(2).trim();
+      currentItem = null;
+    }
+  }
+  return sections;
+}
+
+function applyEnhancedMarkdown(report, markdown, date) {
+  const enhanced = JSON.parse(JSON.stringify(report));
+  const sections = parseEnhancedMarkdown(markdown);
+  let enhancedCount = 0;
+  let totalCount = 0;
+
+  for (const source of enhanced.results || []) {
+    if (!source.items?.length) continue;
+    const entries = sections.get(source.sourceName) || [];
+    source.items.forEach((item) => {
+      totalCount += 1;
+      const expectedHeading = `${item.title}${item.author ? ` 👤 ${item.author}` : ''}`;
+      const entry = entries.find((candidate) => candidate.heading === expectedHeading && !candidate.used);
+      if (entry?.summary !== null && entry?.summary !== undefined) {
+        item.summary = entry.summary;
+        item.summarySource = 'llm-final';
+        entry.used = true;
+        enhancedCount += 1;
+      } else {
+        item.summarySource = 'raw';
+      }
+    });
+  }
+
+  enhanced.presentation = {
+    summarySource: enhancedCount === totalCount ? 'llm-final' : (enhancedCount ? 'mixed' : 'raw'),
+    enhancedItemCount: enhancedCount,
+    totalItemCount: totalCount,
+    finalDate: date,
+  };
+  return enhanced;
+}
+
 function itemUrl(item) {
   return item.websiteUrl || item.githubUrl || item.github?.url || item.url || siteOrigin;
 }
@@ -116,14 +175,23 @@ const dates = fs.readdirSync(sourceDir)
 
 for (const date of dates) {
   const reportPath = path.join(sourceDir, `${date}.json`);
-  fs.copyFileSync(reportPath, path.join(reportsDir, `${date}.json`));
   const enhancedMarkdown = path.join(finalDir, `${date}.md`);
   const rawMarkdown = path.join(sourceDir, `${date}.md`);
   const markdownSource = fs.existsSync(enhancedMarkdown) ? enhancedMarkdown : rawMarkdown;
+  let report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+  if (fs.existsSync(enhancedMarkdown)) {
+    report = applyEnhancedMarkdown(report, fs.readFileSync(enhancedMarkdown, 'utf8'), date);
+  } else {
+    report.presentation = {
+      summarySource: 'raw',
+      enhancedItemCount: 0,
+      totalItemCount: reportItems(report).length,
+    };
+  }
+  fs.writeFileSync(path.join(reportsDir, `${date}.json`), `${JSON.stringify(report)}\n`);
   if (fs.existsSync(markdownSource)) {
     fs.copyFileSync(markdownSource, path.join(markdownDir, `${date}.md`));
   }
-  const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
   const pageDir = path.join(outputDir, 'reports', date);
   fs.mkdirSync(pageDir, { recursive: true });
   fs.writeFileSync(path.join(pageDir, 'index.html'), renderPage(htmlTemplate, report, date, `${siteOrigin}/reports/${date}/`));
@@ -131,7 +199,7 @@ for (const date of dates) {
 
 const latest = dates[0] || null;
 if (latest) {
-  const latestReport = JSON.parse(fs.readFileSync(path.join(sourceDir, `${latest}.json`), 'utf8'));
+  const latestReport = JSON.parse(fs.readFileSync(path.join(reportsDir, `${latest}.json`), 'utf8'));
   fs.writeFileSync(path.join(outputDir, 'index.html'), renderPage(htmlTemplate, latestReport, latest, `${siteOrigin}/`));
 } else {
   fs.writeFileSync(path.join(outputDir, 'index.html'), htmlTemplate);
