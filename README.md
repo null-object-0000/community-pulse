@@ -1,0 +1,20 @@
+# community-pulse（大家都在做什么）
+
+「大家都在做什么」社区日报的独立工作区与独立 Hermes agent（profile: `communitypulse`）。
+
+## 职责边界
+
+- **采集层**：仅由 GitHub Actions 每天北京时间 00:07 执行（`cron: 7 16 * * *`），负责来源采集 → source-raw 校验 → raw 日报生成（md + json）→ 提交推送。
+- **交付层**：Hermes `communitypulse` profile 每天北京时间 07:30 执行 `~/.hermes/scripts/community_pulse_send.sh`，git pull → 校验 raw 完整 → LLM 增强（`enhance.js`）→ 写 final/ → 输出 final 路径，由 agent 用 MEDIA: 发送飞书。
+- 交付层**禁止**：调用任何来源 API、重跑/dispatch Actions、探测 Product Hunt、把 raw 复制成 final、发送缺源/过期/未增强文件。脚本失败只报告原始错误并停止。
+
+## 目录
+
+- `知识/大家都在做什么/source-raw/<source>/YYYY-MM-DD.json` — 不可变来源原始层
+- `知识/大家都在做什么/raw/YYYY-MM-DD.{md,json}` — Actions 生成的当日日报
+- `知识/大家都在做什么/final/YYYY-MM-DD.md` — 本地 LLM 增强后的最终日报
+- `.agents/skills/community-pulse/` — 技能（采集/校验/增强脚本 + SKILL.md）
+
+## 迁移自
+
+2026-09-09 从 MyVault 独立出来（原 `知识/大家都在做什么/` + `.agents/skills/community-pulse/`），原因：日报数据量大（source-raw 28M + raw 22M）且需独立 profile 隔离，myvault 不再维护日报。
