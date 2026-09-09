@@ -186,7 +186,9 @@ function itemTypeIcon(item) {
     label = 'GitHub 仓库';
     kind = 'repository';
     pathData = '<path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/>';
-  } else if (['vibecafe', 'producthunt', 'chinese-indie-dev'].includes(sourceId)) {
+  } else if (sourceId === 'vibecafe') {
+    return '<span class="item-type-icon item-type-vibecafe" role="img" aria-label="VibeCafé 作品" title="VibeCafé 作品"><img src="https://vibecafe.ai/favicon.svg" width="16" height="16" alt="" loading="lazy" referrerpolicy="no-referrer" /></span>';
+  } else if (['producthunt', 'chinese-indie-dev'].includes(sourceId)) {
     label = '产品发布';
     kind = 'product';
     pathData = '<path d="M8 1 14 4.25v7.5L8 15l-6-3.25v-7.5L8 1Zm0 1.7L4.15 4.78 8 6.86l3.85-2.08L8 2.7ZM3.5 6.04v4.82l3.75 2.03V8.07L3.5 6.04Zm9 0L8.75 8.07v4.82l3.75-2.03V6.04Z"/>';
