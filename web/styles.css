@@ -39,6 +39,8 @@ button, select { cursor: pointer; }
 .feed-item { position: relative; }
 .item-content h2 { margin: 0; }
 .item-content h2 a { text-decoration: none; }
+.item-type-icon { width: 16px; height: 16px; margin-right: 8px; display: inline-flex; color: #57606a; vertical-align: -2px; }
+.item-type-icon svg { display: block; fill: currentColor; }
 .item-meta, .metrics, .links { display: flex; align-items: center; flex-wrap: wrap; }
 .links a { color: var(--blue); text-decoration: none; }
 .language-dot { width: 11px; height: 11px; margin-right: 5px; display: inline-block; border-radius: 50%; background: #3572a5; vertical-align: -1px; }
@@ -52,7 +54,6 @@ html[data-style="github"] .feed-item { min-height: 132px; padding: 21px 176px 19
 html[data-style="github"] .feed-item:last-child { border-bottom: 0; }
 html[data-style="github"] .item-visual, html[data-style="github"] .item-source, html[data-style="github"] .ph-item-actions, html[data-style="github"] .item-number { display: none; }
 html[data-style="github"] .item-content h2 { margin-bottom: 4px; color: #0969da; font-size: 21px; line-height: 1.35; font-weight: 600; }
-html[data-style="github"] .repo-icon { margin-right: 10px; color: #57606a; font-size: 14px; }
 html[data-style="github"] .summary { max-width: 850px; margin: 0 0 11px; color: #57606a; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 html[data-style="github"] .item-meta { gap: 18px; }
 html[data-style="github"] .metrics, html[data-style="github"] .links { gap: 16px; color: #57606a; font-size: 13px; }
@@ -71,7 +72,7 @@ html[data-style="vibecafe"] .item-visual { width: 64px; height: 64px; display: b
 html[data-style="vibecafe"] .item-fallback { display: grid; place-items: center; color: #fff; font-weight: 800; }
 html[data-style="vibecafe"] .item-source { display: flex; gap: 9px; color: #777b84; font-size: 13px; }
 html[data-style="vibecafe"] .item-content h2 { margin: 0 0 4px; color: #17191d; font-size: 18px; line-height: 1.35; }
-html[data-style="vibecafe"] .repo-icon, html[data-style="vibecafe"] .metrics, html[data-style="vibecafe"] .github-item-actions, html[data-style="vibecafe"] .ph-item-actions, html[data-style="vibecafe"] .item-number { display: none; }
+html[data-style="vibecafe"] .item-type-icon, html[data-style="vibecafe"] .metrics, html[data-style="vibecafe"] .github-item-actions, html[data-style="vibecafe"] .ph-item-actions, html[data-style="vibecafe"] .item-number { display: none; }
 html[data-style="vibecafe"] .summary { margin: 0 0 5px; color: #5f646e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 html[data-style="vibecafe"] .links { gap: 13px; font-size: 13px; }
 html[data-style="vibecafe"] .links a { color: #727780; }
@@ -81,7 +82,7 @@ html[data-style="producthunt"] .feed { background: #fff; }
 html[data-style="producthunt"] .feed-item { min-height: 130px; padding: 18px 145px 18px 82px; }
 html[data-style="producthunt"] .item-visual { position: absolute; left: 0; top: 18px; width: 60px; height: 60px; display: block; object-fit: cover; border-radius: 12px; background: #f1f2f4; }
 html[data-style="producthunt"] .item-fallback { display: grid; place-items: center; font-weight: 800; }
-html[data-style="producthunt"] .item-source, html[data-style="producthunt"] .repo-icon, html[data-style="producthunt"] .github-item-actions, html[data-style="producthunt"] .links, html[data-style="producthunt"] .item-number { display: none; }
+html[data-style="producthunt"] .item-source, html[data-style="producthunt"] .item-type-icon, html[data-style="producthunt"] .github-item-actions, html[data-style="producthunt"] .links, html[data-style="producthunt"] .item-number { display: none; }
 html[data-style="producthunt"] .item-content h2 { margin: 0 0 3px; color: #172038; font-size: 17px; line-height: 1.4; font-weight: 700; }
 html[data-style="producthunt"] .summary { margin: 0 0 7px; color: #45526a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 html[data-style="producthunt"] .metrics { gap: 8px; font-size: 13px; }

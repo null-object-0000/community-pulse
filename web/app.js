@@ -47,6 +47,47 @@ function itemLinks(item) {
   return candidates.filter(([, url]) => url && !seen.has(url) && seen.add(url));
 }
 
+function githubRepositoryUrl(item) {
+  const direct = item.githubUrl || item.github?.url;
+  if (direct) return direct;
+  for (const candidate of [item.url, item.websiteUrl]) {
+    try {
+      const url = new URL(candidate);
+      const parts = url.pathname.split('/').filter(Boolean);
+      if (url.hostname.toLowerCase() === 'github.com' && parts.length === 2) return candidate;
+    } catch {}
+  }
+  return '';
+}
+
+function itemTypeIcon(item) {
+  const sourceId = item.sourceId || '';
+  const githubUrl = githubRepositoryUrl(item);
+  let label = '外部项目';
+  let kind = 'link';
+  let path = '<path d="M7.775 3.275a.75.75 0 0 0-1.06-1.06l-3.5 3.5a3.25 3.25 0 0 0 4.596 4.596l1-1a.75.75 0 0 0-1.06-1.06l-1 1a1.75 1.75 0 1 1-2.476-2.476l3.5-3.5Z"/><path d="M8.25 7.75a.75.75 0 0 0 0 1.06 1.75 1.75 0 0 1 2.475 2.475l-3.5 3.5a.75.75 0 0 0 1.06 1.06l3.5-3.5A3.25 3.25 0 0 0 7.19 7.75a.75.75 0 0 0 1.06 0Z"/>';
+
+  if (githubUrl) {
+    label = 'GitHub 仓库';
+    kind = 'repository';
+    path = '<path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/>';
+  } else if (['vibecafe', 'producthunt', 'chinese-indie-dev'].includes(sourceId)) {
+    label = '产品发布';
+    kind = 'product';
+    path = '<path d="M8 1 14 4.25v7.5L8 15l-6-3.25v-7.5L8 1Zm0 1.7L4.15 4.78 8 6.86l3.85-2.08L8 2.7ZM3.5 6.04v4.82l3.75 2.03V8.07L3.5 6.04Zm9 0L8.75 8.07v4.82l3.75-2.03V6.04Z"/>';
+  } else if (['weekly-issues', 'hellogithub-issues'].includes(sourceId)) {
+    label = '社区投稿';
+    kind = 'community';
+    path = '<path d="M1.75 2A1.75 1.75 0 0 0 0 3.75v7.5C0 12.216.784 13 1.75 13H4v2.25a.75.75 0 0 0 1.28.53L8.06 13h6.19A1.75 1.75 0 0 0 16 11.25v-7.5A1.75 1.75 0 0 0 14.25 2H1.75ZM1.5 3.75a.25.25 0 0 1 .25-.25h12.5a.25.25 0 0 1 .25.25v7.5a.25.25 0 0 1-.25.25H7.75a.75.75 0 0 0-.53.22L5.5 13.44V12.25a.75.75 0 0 0-.75-.75h-3a.25.25 0 0 1-.25-.25v-7.5Z"/>';
+  } else if (['weekly-issue', 'hellogithub-issue'].includes(sourceId)) {
+    label = '编辑推荐';
+    kind = 'editorial';
+    path = '<path d="M3.75 1A1.75 1.75 0 0 0 2 2.75v11.5a.75.75 0 0 0 1.14.64L8 12.03l4.86 2.86a.75.75 0 0 0 1.14-.64V2.75A1.75 1.75 0 0 0 12.25 1h-8.5Zm-.25 1.75a.25.25 0 0 1 .25-.25h8.5a.25.25 0 0 1 .25.25v10.19l-4.12-2.42a.75.75 0 0 0-.76 0L3.5 12.94V2.75Z"/>';
+  }
+
+  return '<span class="item-type-icon item-type-' + kind + '" role="img" aria-label="' + label + '" title="' + label + '"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">' + path + '</svg></span>';
+}
+
 function allItems() {
   return (state.report?.results || []).flatMap((source) =>
     (source.items || []).map((item) => ({ ...item, sourceName: source.sourceName })),
@@ -102,6 +143,7 @@ function renderItem(item, index) {
   const language = item.github?.language || readMetric(item, ['language', 'lang']);
   const links = itemLinks(item);
   const primary = links[0]?.[1] || item.url || '#';
+  const repositoryUrl = githubRepositoryUrl(item);
   const summary = item.summary || item.tagline || item.content || '暂无简介';
   const tags = (item.tags || []).filter((tag) => !['product', 'vibecafe'].includes(tag)).slice(0, 3);
   const visual = item.image
@@ -121,12 +163,12 @@ function renderItem(item, index) {
   const tagHtml = tags.map((tag) => '<span class="tag">' + escapeHtml(tag) + '</span>').join('');
   const todayHtml = today !== null ? '<b>☆ ' + compact(today) + ' stars today</b>' : '';
   return '<article class="feed-item">' + visual +
-    '<div class="item-content"><div class="item-source">' + source + '</div><h2><span class="repo-icon">▣</span>' +
+    '<div class="item-content"><div class="item-source">' + source + '</div><h2>' + itemTypeIcon(item) +
     '<a href="' + escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) +
     '</a></h2><p class="summary">' + escapeHtml(summary) + '</p><div class="item-meta"><div class="metrics">' +
     metrics + tagHtml + '</div><div class="links">' + linkHtml + '</div></div></div>' +
-    '<div class="github-item-actions"><a href="' + escapeHtml(primary) +
-    '" target="_blank" rel="noopener noreferrer">☆&nbsp; Star</a>' + todayHtml + '</div>' +
+    '<div class="github-item-actions"><a href="' + escapeHtml(repositoryUrl || primary) +
+    '" target="_blank" rel="noopener noreferrer">' + (repositoryUrl ? '☆&nbsp; Star' : '查看&nbsp; ↗') + '</a>' + (repositoryUrl ? todayHtml : '') + '</div>' +
     '<div class="ph-item-actions"><span>◌<b>' + (compact(comments) || '—') + '</b></span><a href="' +
     escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">△<b>' + (compact(votes) || '—') +
     '</b></a></div><span class="item-number">' + String(index + 1).padStart(2, '0') + '</span></article>';
