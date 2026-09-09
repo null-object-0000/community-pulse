@@ -9,6 +9,16 @@ const reportsDir = path.join(outputDir, 'data', 'reports');
 const markdownDir = path.join(outputDir, 'data', 'markdown');
 const finalDir = path.join(root, '知识', '大家都在做什么', 'final');
 const siteOrigin = 'https://devtrends.site';
+const outboundUtm = {
+  source: 'devtrends',
+  medium: 'referral',
+  campaign: 'daily_report',
+};
+const sourceMarks = {
+  vibecafe: 'V', 'chinese-indie-dev': '中', 'weekly-issues': '阮',
+  'weekly-issue': '周', 'hellogithub-issues': 'H', 'hellogithub-issue': '月',
+  'github-trending': 'GH', 'github-trending-cn': 'CN', producthunt: 'P',
+};
 
 const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (character) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -87,6 +97,65 @@ function itemUrl(item) {
   return item.websiteUrl || item.githubUrl || item.github?.url || item.url || siteOrigin;
 }
 
+function outboundContent(item, date) {
+  const identity = item?.externalId || item?.vibecafeId || item?.title || 'item';
+  return `${date || 'latest'}_${item?.sourceId || 'unknown'}_${identity}`.slice(0, 160);
+}
+
+function trackedOutboundUrl(value, item, date) {
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase();
+    if (!['http:', 'https:'].includes(url.protocol)) return value;
+    if (hostname === 'devtrends.site' || hostname.endsWith('.devtrends.site')) return value;
+    if (hostname === 'github.com' || hostname.endsWith('.github.com')) return value;
+
+    const keys = [...url.searchParams.keys()];
+    if (keys.some((key) => key.toLowerCase().startsWith('utm_'))) return value;
+    if (keys.some((key) => /(^|[-_])(signature|sig|token|expires?)($|[-_])/i.test(key))) return value;
+
+    url.searchParams.set('utm_source', outboundUtm.source);
+    url.searchParams.set('utm_medium', outboundUtm.medium);
+    url.searchParams.set('utm_campaign', outboundUtm.campaign);
+    url.searchParams.set('utm_content', outboundContent(item, date));
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
+
+function displayTitle(item) {
+  const title = String(item.title || '未命名项目');
+  if (item.sourceId !== 'weekly-issues') return title;
+  return title
+    .replace(/^\s*(?:(?:【[^】]*(?:自荐|推荐|投稿)[^】]*】|〖[^〗]*(?:自荐|推荐|投稿)[^〗]*〗|\[[^\]]*(?:自荐|推荐|投稿)[^\]]*\]|［[^］]*(?:自荐|推荐|投稿)[^］]*］)\s*[:：—-]?\s*)+/u, '')
+    .replace(/^\s*(?:项目|网站|开源|工具|软件)?\s*(?:自荐|推荐|投稿)\s*[:：—-]\s*/u, '')
+    .trim() || title;
+}
+
+function submissionUrl(item) {
+  if (item.issueUrl) return item.issueUrl;
+  if (item.relatedIssue) return item.relatedIssue;
+  if (item.vibecafeUrl) return item.vibecafeUrl;
+  if (item.productHuntUrl) return item.productHuntUrl;
+  if (item.sourceId === 'producthunt') return item.url || '';
+  if (item.sourceId === 'hellogithub-issue' && item.issue) return `https://hellogithub.com/periodical/volume/${encodeURIComponent(item.issue)}`;
+  if (item.sourceId === 'weekly-issue' && item.issue) return `https://github.com/ruanyf/weekly/blob/master/docs/issue-${encodeURIComponent(item.issue)}.md`;
+  if (item.authorUrl) return item.authorUrl;
+  if (item.sourceId === 'chinese-indie-dev') return 'https://github.com/1c7/chinese-independent-developer';
+  return item.url || '';
+}
+
+function submissionEntry(item) {
+  const originUrl = submissionUrl(item);
+  if (!originUrl) return '';
+  const githubAuthor = /^https:\/\/github\.com\/[^/]+\/?$/i.test(item.authorUrl || '');
+  const avatar = githubAuthor
+    ? `<img src="${escapeHtml((item.authorUrl || '').replace(/\/$/, ''))}.png?size=40" width="20" height="20" alt="" loading="lazy" referrerpolicy="no-referrer" />`
+    : `<span aria-hidden="true">${escapeHtml(sourceMarks[item.sourceId] || '•')}</span>`;
+  return `<span class="submission-entry">投稿页 <a href="${escapeHtml(originUrl)}" target="_blank" rel="noopener noreferrer" title="查看来源页面" aria-label="查看来源页面：${escapeHtml(displayTitle(item))}">${avatar}</a></span>`;
+}
+
 function githubRepositoryUrl(item) {
   const direct = item.githubUrl || item.github?.url;
   if (direct) return direct;
@@ -134,11 +203,12 @@ function itemTypeIcon(item) {
   return `<span class="item-type-icon item-type-${kind}" role="img" aria-label="${label}" title="${label}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">${pathData}</svg></span>`;
 }
 
-function renderSeoItem(item) {
-  const url = escapeHtml(itemUrl(item));
+function renderSeoItem(item, date) {
+  const primaryUrl = itemUrl(item);
+  const url = escapeHtml(trackedOutboundUrl(primaryUrl, item, date));
   const repositoryUrl = githubRepositoryUrl(item);
-  const titleUrl = escapeHtml(repositoryUrl || itemUrl(item));
-  const title = escapeHtml(item.title || '未命名项目');
+  const titleUrl = escapeHtml(trackedOutboundUrl(repositoryUrl || primaryUrl, item, date));
+  const title = escapeHtml(displayTitle(item));
   const summary = escapeHtml(item.summary || item.tagline || item.content || '暂无简介');
   const source = escapeHtml(item.sourceName || item.sourceId || '社区动态');
   const author = item.author ? `<span>by ${escapeHtml(item.author)}</span>` : '';
@@ -154,7 +224,7 @@ function renderSeoItem(item) {
     forks !== undefined ? `<span>${forkIcon}${escapeHtml(forks)}</span>` : '',
     votes !== undefined ? `<span>▲ ${escapeHtml(votes)}</span>` : '',
     comments !== undefined ? `<span>◌ ${escapeHtml(comments)}</span>` : '',
-  ].filter(Boolean).join('');
+  ].filter(Boolean).join('') + submissionEntry(item);
   const visual = item.image
     ? `<img class="item-visual" src="${escapeHtml(item.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" />`
     : `<div class="item-visual item-fallback" aria-hidden="true">${escapeHtml((item.sourceId || '•').slice(0, 2))}</div>`;
@@ -206,7 +276,7 @@ function renderPage(template, report, date, canonicalUrl) {
       '@type': 'ItemList',
       numberOfItems: items.length,
       itemListElement: items.slice(0, 100).map((item, index) => ({
-        '@type': 'ListItem', position: index + 1, name: item.title, url: itemUrl(item),
+        '@type': 'ListItem', position: index + 1, name: displayTitle(item), url: itemUrl(item),
       })),
     },
   };
@@ -221,7 +291,7 @@ function renderPage(template, report, date, canonicalUrl) {
     .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${escapeHtml(title)}" />`)
     .replace(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${escapeHtml(description)}" />`)
     .replace('</head>', `    <script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>\n  </head>`)
-    .replace('<div id="feed" class="feed" aria-live="polite"></div>', `<div id="feed" class="feed" aria-live="polite">${items.map(renderSeoItem).join('')}</div>`)
+    .replace('<div id="feed" class="feed" aria-live="polite"></div>', `<div id="feed" class="feed" aria-live="polite">${items.map((item) => renderSeoItem(item, date)).join('')}</div>`)
     .replace('<b id="section-date"></b>', `<b id="section-date">${date}</b>`)
     .replace('<span id="report-stat" aria-live="polite"></span>', `<span id="report-stat" aria-live="polite">${items.length} 条</span>`);
 }

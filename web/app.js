@@ -5,7 +5,7 @@ const state = {
 };
 
 const ids = [
-  'date-select', 'source-select', 'style-select', 'search', 'section-date',
+  'date-select', 'source-select', 'github-source-select', 'style-select', 'search', 'section-date',
   'report-stat', 'source-chips', 'feed', 'markdown-view', 'empty', 'page-title',
   'empty-title', 'empty-hint',
 ];
@@ -17,6 +17,11 @@ const sourceMarks = {
 };
 const siteOrigin = 'https://devtrends.site';
 const favoritesKey = 'devtrends-favorites-v1';
+const outboundUtm = {
+  source: 'devtrends',
+  medium: 'referral',
+  campaign: 'daily_report',
+};
 
 const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
@@ -51,6 +56,72 @@ function itemLinks(item) {
   ];
   const seen = new Set();
   return candidates.filter(([, url]) => url && !seen.has(url) && seen.add(url));
+}
+
+function outboundContent(item, date) {
+  const identity = item?.externalId || item?.vibecafeId || item?.title || 'item';
+  return `${date || 'favorites'}_${item?.sourceId || 'unknown'}_${identity}`.slice(0, 160);
+}
+
+function trackedOutboundUrl(value, item, date) {
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase();
+    if (!['http:', 'https:'].includes(url.protocol)) return value;
+    if (hostname === 'devtrends.site' || hostname.endsWith('.devtrends.site')) return value;
+    if (hostname === 'github.com' || hostname.endsWith('.github.com')) return value;
+
+    const keys = [...url.searchParams.keys()];
+    if (keys.some((key) => key.toLowerCase().startsWith('utm_'))) return value;
+    if (keys.some((key) => /(^|[-_])(signature|sig|token|expires?)($|[-_])/i.test(key))) return value;
+
+    url.searchParams.set('utm_source', outboundUtm.source);
+    url.searchParams.set('utm_medium', outboundUtm.medium);
+    url.searchParams.set('utm_campaign', outboundUtm.campaign);
+    url.searchParams.set('utm_content', outboundContent(item, date));
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
+
+function internalViewUrl(pathname) {
+  const url = new URL(pathname, location.origin);
+  const style = new URL(location.href).searchParams.get('style');
+  if (style) url.searchParams.set('style', style);
+  return url.pathname + url.search;
+}
+
+function displayTitle(item) {
+  const title = String(item.title || '未命名项目');
+  if (item.sourceId !== 'weekly-issues') return title;
+  return title
+    .replace(/^\s*(?:(?:【[^】]*(?:自荐|推荐|投稿)[^】]*】|〖[^〗]*(?:自荐|推荐|投稿)[^〗]*〗|\[[^\]]*(?:自荐|推荐|投稿)[^\]]*\]|［[^］]*(?:自荐|推荐|投稿)[^］]*］)\s*[:：—-]?\s*)+/u, '')
+    .replace(/^\s*(?:项目|网站|开源|工具|软件)?\s*(?:自荐|推荐|投稿)\s*[:：—-]\s*/u, '')
+    .trim() || title;
+}
+
+function submissionUrl(item) {
+  if (item.issueUrl) return item.issueUrl;
+  if (item.relatedIssue) return item.relatedIssue;
+  if (item.vibecafeUrl) return item.vibecafeUrl;
+  if (item.productHuntUrl) return item.productHuntUrl;
+  if (item.sourceId === 'producthunt') return item.url || '';
+  if (item.sourceId === 'hellogithub-issue' && item.issue) return 'https://hellogithub.com/periodical/volume/' + encodeURIComponent(item.issue);
+  if (item.sourceId === 'weekly-issue' && item.issue) return 'https://github.com/ruanyf/weekly/blob/master/docs/issue-' + encodeURIComponent(item.issue) + '.md';
+  if (item.authorUrl) return item.authorUrl;
+  if (item.sourceId === 'chinese-indie-dev') return 'https://github.com/1c7/chinese-independent-developer';
+  return item.url || '';
+}
+
+function submissionEntry(item) {
+  const url = submissionUrl(item);
+  if (!url) return '';
+  const githubAuthor = /^https:\/\/github\.com\/[^/]+\/?$/i.test(item.authorUrl || '');
+  const avatar = githubAuthor
+    ? '<img src="' + escapeHtml((item.authorUrl || '').replace(/\/$/, '') + '.png?size=40') + '" width="20" height="20" alt="" loading="lazy" referrerpolicy="no-referrer" />'
+    : '<span aria-hidden="true">' + escapeHtml(sourceMarks[item.sourceId] || '•') + '</span>';
+  return '<span class="submission-entry">投稿页 <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" title="查看来源页面" aria-label="查看来源页面：' + escapeHtml(displayTitle(item)) + '">' + avatar + '</a></span>';
 }
 
 function githubRepositoryUrl(item) {
@@ -174,7 +245,9 @@ function renderSourceControls() {
   const options = [{ id: 'all', name: '全部', count: total, mark: '◎' }, ...list];
   const selectOptions = options.map((source) => '<option value="' + escapeHtml(source.id) + '">' + escapeHtml(source.name) + ' (' + source.count + ')</option>').join('');
   els['source-select'].innerHTML = selectOptions;
+  els['github-source-select'].innerHTML = selectOptions;
   els['source-select'].value = state.source;
+  els['github-source-select'].value = state.source;
   els['source-chips'].innerHTML = options.map((source) =>
     '<button data-source="' + escapeHtml(source.id) + '" class="' + (state.source === source.id ? 'active' : '') +
     '" aria-pressed="' + (state.source === source.id) + '"><span>' + escapeHtml(source.name) +
@@ -200,8 +273,12 @@ function renderItem(item, index, favoriteIds) {
   const language = item.github?.language || readMetric(item, ['language', 'lang']);
   const links = itemLinks(item);
   const primary = links[0]?.[1] || item.url || '#';
+  const trackedPrimary = trackedOutboundUrl(primary, item, state.date);
   const repositoryUrl = githubRepositoryUrl(item);
   const githubTitleUrl = repositoryUrl || primary;
+  const trackedGithubTitleUrl = trackedOutboundUrl(githubTitleUrl, item, state.date);
+  const originUrl = submissionUrl(item);
+  const githubTitle = displayTitle(item);
   const saved = favoriteIds.has(favoriteId(item));
   const summary = item.summary || item.tagline || item.content || '暂无简介';
   const tags = (item.tags || []).filter((tag) => !['product', 'vibecafe'].includes(tag)).slice(0, 3);
@@ -217,19 +294,19 @@ function renderItem(item, index, favoriteIds) {
   ].filter(Boolean).join('');
   const source = escapeHtml(item.sourceName) + (item.author ? '<span>by ' + escapeHtml(item.author) + '</span>' : '');
   const linkHtml = links.map(([label, url]) =>
-    '<a class="item-link' + (label === 'GitHub' ? ' item-link-github' : '') + (url === githubTitleUrl ? ' item-link-title-target' : '') + '" href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label) + ' ↗</a>',
+    '<a class="item-link' + (label === 'GitHub' ? ' item-link-github' : '') + (url === githubTitleUrl ? ' item-link-title-target' : '') + (url === originUrl ? ' item-link-origin' : '') + '" href="' + escapeHtml(trackedOutboundUrl(url, item, state.date)) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label) + ' ↗</a>',
   ).join('');
   const tagHtml = tags.map((tag) => '<span class="tag">' + escapeHtml(tag) + '</span>').join('');
   const todayHtml = today !== null ? '<b>' + starIcon(true) + compact(today) + ' stars today</b>' : '';
-  const titleDefault = '<a class="title-link-default" href="' + escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
-  const titleGithub = '<a class="title-link-github" href="' + escapeHtml(githubTitleUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
+  const titleDefault = '<a class="title-link-default" href="' + escapeHtml(trackedPrimary) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(item.title) + '</a>';
+  const titleGithub = '<a class="title-link-github" href="' + escapeHtml(trackedGithubTitleUrl) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(githubTitle) + '</a>';
   return '<article class="feed-item">' + visual +
     '<div class="item-content"><div class="item-source">' + source + '</div><h2>' + itemTypeIcon(item) +
     titleDefault + titleGithub + '</h2><p class="summary">' + escapeHtml(summary) + '</p><div class="item-meta"><div class="metrics">' +
-    metrics + tagHtml + '</div><div class="links">' + linkHtml + '</div></div></div>' +
-    '<div class="github-item-actions"><button type="button" class="favorite-button' + (saved ? ' active' : '') + '" data-favorite-id="' + escapeHtml(favoriteId(item)) + '" aria-pressed="' + saved + '" aria-label="' + (saved ? '取消收藏' : '收藏') + ' ' + escapeHtml(item.title) + '">' + starIcon(true) + (saved ? '已收藏' : '收藏') + '</button>' + (repositoryUrl ? todayHtml : '') + '</div>' +
+    metrics + tagHtml + submissionEntry(item) + '</div><div class="links">' + linkHtml + '</div></div></div>' +
+    '<div class="github-item-actions"><button type="button" class="favorite-button' + (saved ? ' active' : '') + '" data-favorite-id="' + escapeHtml(favoriteId(item)) + '" aria-pressed="' + saved + '" aria-label="' + (saved ? '取消收藏' : '收藏') + ' ' + escapeHtml(githubTitle) + '">' + starIcon(true) + (saved ? '已收藏' : '收藏') + '</button>' + (repositoryUrl ? todayHtml : '') + '</div>' +
     '<div class="ph-item-actions"><span>◌<b>' + (compact(comments) || '—') + '</b></span><a href="' +
-    escapeHtml(primary) + '" target="_blank" rel="noopener noreferrer">△<b>' + (compact(votes) || '—') +
+    escapeHtml(trackedPrimary) + '" target="_blank" rel="noopener noreferrer">△<b>' + (compact(votes) || '—') +
     '</b></a></div><span class="item-number">' + String(index + 1).padStart(2, '0') + '</span></article>';
 }
 
@@ -360,10 +437,7 @@ function loadFavorites(updateUrl = true) {
   els['page-title'].textContent = '我的收藏';
   els['section-date'].textContent = '我的收藏';
   if (updateUrl) {
-    const url = new URL(location.href);
-    url.pathname = '/favorites/';
-    url.searchParams.delete('date');
-    history.replaceState({}, '', url);
+    history.replaceState({}, '', internalViewUrl('/favorites/'));
   }
   renderSourceControls();
   renderFeed();
@@ -398,8 +472,7 @@ async function loadReport(date, updateUrl = true) {
   els['page-title'].textContent = '大家都在做什么';
   els['section-date'].textContent = date;
   if (updateUrl) {
-    const url = new URL(location.href);
-    history.replaceState({}, '', '/reports/' + date + '/' + url.search);
+    history.replaceState({}, '', internalViewUrl('/reports/' + date + '/'));
   }
   renderSourceControls();
   renderFeed();
@@ -412,6 +485,7 @@ function bindInputs() {
     else loadReport(els['date-select'].value);
   });
   els['source-select'].addEventListener('change', () => selectSource(els['source-select'].value));
+  els['github-source-select'].addEventListener('change', () => selectSource(els['github-source-select'].value));
   els['style-select'].addEventListener('change', () => applyStyle(els['style-select'].value));
   els.search.addEventListener('input', () => {
     state.query = els.search.value;
