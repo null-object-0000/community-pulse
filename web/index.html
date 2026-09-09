@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN" data-style="github">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f8fa" />
+    <meta name="description" content="聚合独立开发者、开源社区与新产品的每日动态。" />
+    <title>大家都在做什么 · Community Pulse</title>
+    <script>
+      document.documentElement.dataset.style = localStorage.getItem('pulse-style') || 'github';
+    </script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Community Pulse 首页">
+        <span class="brand-mark" aria-hidden="true">◉</span>
+        <span>Community Pulse</span>
+        <span class="brand-cn">大家都在做什么</span>
+      </a>
+      <div class="top-actions">
+        <label class="search-wrap">
+          <span aria-hidden="true">⌕</span>
+          <input id="search" type="search" placeholder="搜索项目、作者或标签" autocomplete="off" />
+        </label>
+        <label class="select-wrap">
+          <span class="sr-only">选择日期</span>
+          <select id="date-select" aria-label="选择日期"></select>
+        </label>
+        <label class="select-wrap style-select">
+          <span class="sr-only">切换展示风格</span>
+          <select id="style-select" aria-label="切换展示风格">
+            <option value="github">GitHub Trending</option>
+            <option value="vibecafe">VibeCafé</option>
+            <option value="producthunt">Product Hunt</option>
+            <option value="markdown">Markdown</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <aside class="source-panel" aria-label="数据来源">
+        <div class="panel-label">来源</div>
+        <nav id="source-nav"></nav>
+        <div class="source-note">每日 00:07 更新来源数据</div>
+      </aside>
+
+      <section class="content">
+        <div class="report-head">
+          <div>
+            <p class="eyebrow">DAILY SIGNALS</p>
+            <h1 id="report-title">大家都在做什么</h1>
+          </div>
+          <div class="report-stat" id="report-stat" aria-live="polite"></div>
+        </div>
+        <div class="mobile-sources" id="mobile-sources" aria-label="筛选数据来源"></div>
+        <div id="feed" class="feed" aria-live="polite"></div>
+        <div id="empty" class="empty" hidden>
+          <div class="empty-mark">⌕</div>
+          <h2>没有找到相关项目</h2>
+          <p>换一个关键词或来源试试。</p>
+        </div>
+      </section>
+    </main>
+
+    <template id="loading-template">
+      <div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div>
+    </template>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

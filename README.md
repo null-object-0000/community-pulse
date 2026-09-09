@@ -18,3 +18,20 @@
 ## 迁移自
 
 2026-09-09 从 MyVault 独立出来（原 `知识/大家都在做什么/` + `.agents/skills/community-pulse/`），原因：日报数据量大（source-raw 28M + raw 22M）且需独立 profile 隔离，myvault 不再维护日报。
+
+## 网站
+
+网站直接读取 `raw/*.json`，提供 GitHub Trending、VibeCafé、Product Hunt 和 Markdown 四种展示风格，并适配手机与电脑。
+
+```bash
+npm run build
+npm run preview
+```
+
+构建产物在 `dist/`。`wrangler.toml` 已配置为 Cloudflare Workers 静态资源站点。Cloudflare Workers Builds 连接本仓库的 `main` 分支后，每次推送（包括每日数据任务的提交）都会自动构建并发布。
+
+绑定域名时在 `wrangler.toml` 增加 Custom Domain 配置，例如：
+
+    [[routes]]
+    pattern = "pulse.example.com"
+    custom_domain = true
