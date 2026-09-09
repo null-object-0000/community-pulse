@@ -1,6 +1,6 @@
-# community-pulse（大家都在做什么）
+# DevTrends 开发者趋势
 
-「大家都在做什么」社区日报的独立工作区与独立 Hermes agent（profile: `communitypulse`）。
+「大家都在做什么」开发者趋势日报的独立工作区与独立 Hermes agent（profile: `communitypulse`）。对外网站：<https://devtrends.site>。
 
 ## 职责边界
 

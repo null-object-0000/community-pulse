@@ -233,8 +233,11 @@ async function loadReport(date, updateUrl = true) {
   const itemCount = allItems().length;
   const canonicalPath = location.pathname.match(/^\/reports\/\d{4}-\d{2}-\d{2}\/$/) ? location.pathname : '/';
   const canonicalUrl = siteOrigin + canonicalPath;
-  const title = '大家都在做什么 · ' + date + ' 开发者趋势 | DevTrends';
-  const description = date + ' 开发者趋势日报，共收录 ' + itemCount + ' 条来自 GitHub Trending、VibeCafé、Product Hunt 和中文开发者社区的动态。';
+  const isHomepage = canonicalPath === '/';
+  const title = isHomepage ? 'DevTrends 开发者趋势｜大家都在做什么' : date + ' 开发者趋势日报｜DevTrends';
+  const description = isHomepage
+    ? '每日聚合 GitHub Trending、VibeCafé、Product Hunt 与中文独立开发者社区的新项目、新产品和开源趋势。'
+    : date + ' 开发者趋势日报，共收录 ' + itemCount + ' 条来自 GitHub Trending、VibeCafé、Product Hunt 和中文开发者社区的动态。';
   document.title = title;
   document.querySelector('link[rel="canonical"]').href = canonicalUrl;
   document.querySelector('meta[name="description"]').content = description;

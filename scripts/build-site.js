@@ -55,8 +55,11 @@ function renderSeoItem(item) {
 function renderPage(template, report, date, canonicalUrl) {
   const items = reportItems(report);
   const sourceNames = (report.results || []).filter((source) => source.items?.length).map((source) => source.sourceName);
-  const title = `大家都在做什么 · ${date} 开发者趋势 | DevTrends`;
-  const description = `${date} 开发者趋势日报，共收录 ${items.length} 条动态，来自 ${sourceNames.slice(0, 4).join('、')}等社区。`;
+  const isHomepage = canonicalUrl === `${siteOrigin}/`;
+  const title = isHomepage ? 'DevTrends 开发者趋势｜大家都在做什么' : `${date} 开发者趋势日报｜DevTrends`;
+  const description = isHomepage
+    ? '每日聚合 GitHub Trending、VibeCafé、Product Hunt 与中文独立开发者社区的新项目、新产品和开源趋势。'
+    : `${date} 开发者趋势日报，共收录 ${items.length} 条动态，来自 ${sourceNames.slice(0, 4).join('、')}等社区。`;
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',

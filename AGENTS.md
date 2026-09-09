@@ -1,8 +1,11 @@
-# CommunityPulse agent notes
+# DevTrends agent notes
 
 ## 网站与部署
 
 - 对外唯一主域名：<https://devtrends.site>
+- 英文品牌：`DevTrends`
+- 中文品牌：`开发者趋势`
+- 主栏目 / Slogan：`大家都在做什么`
 - Cloudflare Workers 生产地址：<https://community-pulse.nichangen.workers.dev>
 - Cloudflare 预览地址规则：`*-community-pulse.nichangen.workers.dev`
 - Cloudflare Worker / 项目名称：`community-pulse`
