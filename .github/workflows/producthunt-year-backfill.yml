@@ -1,0 +1,132 @@
+name: Product Hunt 2026 年全量回溯
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: producthunt-backfill
+  cancel-in-progress: false
+
+env:
+  COMMUNITY_PULSE_PROXY: ''
+  PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
+  PRODUCT_HUNT_TOKEN_2: ${{ secrets.PRODUCT_HUNT_TOKEN_2 }}
+  PRODUCT_HUNT_TOKEN_3: ${{ secrets.PRODUCT_HUNT_TOKEN_3 }}
+  PRODUCT_HUNT_TOKEN_4: ${{ secrets.PRODUCT_HUNT_TOKEN_4 }}
+  PRODUCT_HUNT_TOKEN_5: ${{ secrets.PRODUCT_HUNT_TOKEN_5 }}
+
+jobs:
+  backfill-month:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - month: '2026-07'
+            start: '2026-07-01'
+            end: '2026-07-31'
+          - month: '2026-06'
+            start: '2026-06-01'
+            end: '2026-06-30'
+          - month: '2026-05'
+            start: '2026-05-01'
+            end: '2026-05-31'
+          - month: '2026-04'
+            start: '2026-04-01'
+            end: '2026-04-30'
+          - month: '2026-03'
+            start: '2026-03-01'
+            end: '2026-03-31'
+          - month: '2026-02'
+            start: '2026-02-01'
+            end: '2026-02-28'
+          - month: '2026-01'
+            start: '2026-01-01'
+            end: '2026-01-31'
+
+    steps:
+      - name: 检出最新主分支
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 配置 Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: 回溯 ${{ matrix.month }}
+        env:
+          START_DATE: ${{ matrix.start }}
+          END_DATE: ${{ matrix.end }}
+          MONTH_LABEL: ${{ matrix.month }}
+        run: |
+          set -euo pipefail
+          SKILL_DIR="$GITHUB_WORKSPACE/.agents/skills/community-pulse"
+          SOURCE_DIR="$GITHUB_WORKSPACE/知识/大家都在做什么/source-raw/producthunt"
+
+          commit_and_push() {
+            git add "$SOURCE_DIR"
+            if git diff --cached --quiet; then
+              return
+            fi
+            git commit -m "data: 回溯 Product Hunt ${MONTH_LABEL}"
+            for attempt in 1 2 3; do
+              if git push origin HEAD:main; then
+                return
+              fi
+              echo "push 冲突，第 ${attempt} 次 rebase 后重试"
+              git pull --rebase origin main
+            done
+            echo "三次 push 均失败" >&2
+            return 1
+          }
+
+          validate_existing_days() {
+            local day="$START_DATE"
+            while [[ "$day" < "$END_DATE" || "$day" == "$END_DATE" ]]; do
+              if [[ -f "$SOURCE_DIR/$day.json" ]]; then
+                node "$SKILL_DIR/scripts/validate_producthunt_raw.js" --start "$day" --end "$day"
+              fi
+              day="$(date -u -d "$day + 1 day" +%F)"
+            done
+          }
+
+          while true; do
+            result_file="$(mktemp)"
+            node "$SKILL_DIR/scripts/capture_producthunt_raw.js" \
+              --start "$START_DATE" \
+              --end "$END_DATE" \
+              --reverse \
+              --resume \
+              --stop-on-rate-limit | tee "$result_file"
+
+            validate_existing_days
+            commit_and_push
+
+            finished="$(node -e '
+              const fs = require("fs");
+              const result = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+              process.stdout.write(result.noOp || result.stoppedAt === null ? "yes" : "no");
+            ' "$result_file")"
+            if [[ "$finished" == "yes" ]]; then
+              break
+            fi
+
+            echo "五个应用均已触发限流；完整日期已提交，等待 15 分 20 秒后续跑"
+            sleep 920
+          done
+
+          node "$SKILL_DIR/scripts/validate_producthunt_raw.js" \
+            --start "$START_DATE" --end "$END_DATE"
+          commit_and_push
