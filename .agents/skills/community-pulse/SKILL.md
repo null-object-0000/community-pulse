@@ -129,6 +129,8 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 
 `collect.js` 可从同一批本地输入一次生成 JSON 和 Markdown。后续如需 HTML 报纸/LLM 分组，只读取这些已生成产物，不动抓取层。
 
+`enhance.js` 为每条内容生成中文摘要与英文摘要，并为含中文的标题生成英文标题。中文 final Markdown 保持可直接发送，同时用隐藏的 `devtrends-i18n` 元数据保存 `titleEn`、`summaryZh`、`summaryEn`，供网站构建中英文页面；构建阶段不得再调用 LLM。
+
 Markdown 条目的三级标题统一使用纯文字，不在产品名称上包超链接。主链接和补充链接统一放在描述/指标下方的 `🔗` 行，按目标标注为“官网 / GitHub / VibeCafé / Product Hunt / 原文 / 投稿页”。
 
 ## 回溯 / 存量同步（2026-09 建成）
@@ -219,7 +221,7 @@ node scripts/capture_producthunt_raw.js --start 2013-11-22 --end 2026-09-07 --re
 
 GraphQL 没有“自动返回完整对象”的语义；`records` 保存同日全部 Post，`officialFeatured.records` 保存 `featured: true` 官方精选子集，两者都保留独立的分页与 `totalCount` 证明。日报只消费官方精选，全量仅作为底账。时间窗口稍微覆盖北京日边界，再按 `createdAt` 二次归日；遇限流后可从最早缺失日恢复。
 
-新采集的 Product Hunt Post 还必须保留官方 `website` 与 `productLinks { type url }`。日报中文摘要基于完整 `description` 归纳，不再只翻译 `tagline`；`productLinks` 或官网指向 GitHub 时进入统一仓库快照链路。
+新采集的 Product Hunt Post 还必须保留官方 `website` 与 `productLinks { type url }`。GraphQL 的 Post 字段描述的是当次 launch；采集阶段还要为官方精选抓取 `/products/<slug>` 产品页的完整 HTML 压缩快照。日报摘要优先基于产品页的产品简介，缺失时才回退到 launch `description` / `tagline`；当次发布信息保留在 item 的 `launch` 字段。`productLinks` 或官网指向 GitHub 时进入统一仓库快照链路。
 
 同一 Product Hunt 发布批次的 Post 可能共享完全相同的 `createdAt`，API cursor 又是偏移量；`NEWEST`/`RANKING` 都可能在翻页间漂移并造成跨页重叠。实测 `RANKING` 会随投票变化产生大量重叠，来源层使用相对稳定的 `order: NEWEST` 扫描，按 Post ID 合并多轮完整 sweep；只有唯一 ID 数等于 API `totalCount` 才写文件，否则整日拒绝落盘。
 

@@ -97,8 +97,9 @@
     const text = locale === 'zh-CN' ? available[0] : (available.find(matches) || available[0]);
     return { text: text || t(locale, 'noSummary'), original: Boolean(text && !matches(text)), lang: text && /[\u3400-\u9fff]/u.test(text) ? 'zh-CN' : 'en' };
   }
-  function displayTitle(item) {
-    return String(item.title || repository(item)?.fullName || 'Untitled')
+  function displayTitle(item, locale = 'zh-CN') {
+    const localized = locale === 'en' ? item.titleEn || item.title_en : item.titleZh || item.title_zh;
+    return String(localized || item.title || repository(item)?.fullName || 'Untitled')
       .replace(/^\s*[【\[][^】\]]*(?:自荐|推荐|投稿)[^】\]]*[】\]]\s*[:：—-]?\s*/u, '')
       .replace(/^\s*(?:项目|网站|开源|工具|软件)?\s*(?:自荐|推荐|投稿)\s*[:：—-]\s*/u, '').trim();
   }
@@ -137,7 +138,7 @@
     return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.box}</svg>`;
   };
   function favoriteButton(item, locale, saved = false) {
-    return `<button type="button" class="favorite-button${saved ? ' active' : ''}" data-favorite-id="${escapeHtml(favoriteId(item))}" aria-pressed="${saved}" aria-label="${escapeHtml(t(locale, saved ? 'remove' : 'save') + ' ' + displayTitle(item))}">${icon('bookmark')}<span>${t(locale, saved ? 'saved' : 'save')}</span></button>`;
+    return `<button type="button" class="favorite-button${saved ? ' active' : ''}" data-favorite-id="${escapeHtml(favoriteId(item))}" aria-pressed="${saved}" aria-label="${escapeHtml(t(locale, saved ? 'remove' : 'save') + ' ' + displayTitle(item, locale))}">${icon('bookmark')}<span>${t(locale, saved ? 'saved' : 'save')}</span></button>`;
   }
   function renderItem(item, locale, { date = '', saved = false, index = 0 } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
@@ -152,7 +153,7 @@
     return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || favoriteId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
       <div class="item-content"><div class="item-source">${escapeHtml(sourceName(item, locale))}${repo ? `<span class="repo-owner">${escapeHtml(repo.owner)}</span>` : ''}</div>
-      <h2>${icon(repo ? 'repo' : 'box')}${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(displayTitle(item))}</a>` : escapeHtml(displayTitle(item))}</h2>
+      <h2>${icon(repo ? 'repo' : 'box')}${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(displayTitle(item, locale))}</a>` : escapeHtml(displayTitle(item, locale))}</h2>
       <p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
       <div class="item-meta">${language ? `<span class="language"><i></i>${escapeHtml(language)}</span>` : ''}${stars !== null ? `<span>${icon('star')}${compact(stars, locale)}</span>` : ''}${votes !== null ? `<span>▲ ${compact(votes, locale)}</span>` : ''}${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
       <div class="item-links">${links.map(([label, url]) => `<a href="${escapeHtml(trackedUrl(url, item, date))}" target="_blank" rel="noopener noreferrer">${label === 'repository' ? 'GitHub' : t(locale, label)} ${icon('arrow')}</a>`).join('')}</div></div>

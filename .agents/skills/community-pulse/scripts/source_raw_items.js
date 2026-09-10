@@ -100,6 +100,22 @@ function cleanWebsiteUrl(value) {
   }
 }
 
+function decodeHtmlEntities(value) {
+  return String(value || '')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;|&apos;|&#x27;/gi, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+}
+
+function extractMetaContent(html, name) {
+  const tags = html.match(/<meta\b[^>]*>/gi) || [];
+  for (const tag of tags) {
+    const metaName = tag.match(/\b(?:name|property)\s*=\s*(["'])(.*?)\1/i)?.[2];
+    if (metaName?.toLowerCase() !== name.toLowerCase()) continue;
+    return decodeHtmlEntities(tag.match(/\bcontent\s*=\s*(["'])(.*?)\1/i)?.[2] || '');
+  }
+  return '';
+}
+
 function issueSummary(body) {
   const clean = (body || '')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
@@ -391,9 +407,40 @@ function productHuntItems(document, src) {
   if (!featured || featured.complete !== true || !Array.isArray(featured.records)) {
     throw new Error(`${src.id}: complete officialFeatured records are missing`);
   }
+  const productPages = new Map();
+  for (const page of document.productPages?.pages || []) {
+    try {
+      const html = zlib.gunzipSync(Buffer.from(page.response?.body || '', 'base64')).toString('utf8');
+      const metaDescription = extractMetaContent(html, 'description');
+      const productAnchor = '"product":{"__typename":"Product"';
+      const details = {
+        name: extractJsonStringField(html, productAnchor, 'name'),
+        tagline: extractJsonStringField(html, productAnchor, 'tagline'),
+        description: metaDescription,
+        websiteUrl: extractJsonStringField(html, productAnchor, 'websiteUrl'),
+        sourceUrl: page.url,
+      };
+      for (const id of page.postIds || []) productPages.set(String(id), details);
+    } catch (_) {
+      // Validation reports malformed captures; normalization remains compatible
+      // with historical files that predate product-page capture.
+    }
+  }
   return featured.records.map((product) => {
+    const productOverview = productPages.get(String(product.id));
     const productLinks = Array.isArray(product.productLinks) ? product.productLinks : [];
-    const websiteUrl = product.website || '';
+    const websiteUrl = productOverview?.websiteUrl || product.website || '';
+    const identityTokens = (value) => String(value || '').toLowerCase()
+      .match(/[a-z0-9][a-z0-9.-]{2,}|[\u4e00-\u9fff]{2,}/g) || [];
+    const launchTokens = new Set(identityTokens(product.name));
+    const sameProductIdentity = identityTokens(productOverview?.name)
+      .some((token) => launchTokens.has(token));
+    // A Product Hunt product page can be a broad parent brand (for example,
+    // OpenAI) whose launch is a distinct product. Only substitute the overview
+    // when the launch and product page clearly refer to the same identity.
+    const overview = sameProductIdentity
+      ? (productOverview?.description || productOverview?.tagline || '')
+      : '';
     const item = {
       sourceId: src.id,
       title: product.name || '',
@@ -401,14 +448,20 @@ function productHuntItems(document, src) {
       author: '',
       authorUrl: '',
       publishedAt: product.createdAt || null,
-      summary: product.description || product.tagline || '',
+      summary: overview || product.description || product.tagline || '',
       tagline: product.tagline || '',
-      content: product.description || product.tagline || '',
+      content: overview || product.description || product.tagline || '',
       metrics: { votes: product.votesCount || 0, comments: product.commentsCount || 0 },
       tags: ['producthunt', 'new', 'official-featured'],
       externalId: String(product.id),
       websiteUrl,
       productLinks,
+      productOverview: productOverview || null,
+      launch: {
+        name: product.name || '',
+        tagline: product.tagline || '',
+        description: product.description || '',
+      },
     };
     const githubUrl = discoverItemRepository(item);
     if (githubUrl) {
@@ -448,6 +501,7 @@ function loadItems(src, options = {}) {
       targetDate: loaded.targetDate,
       path: path.relative(VAULT, loaded.file),
       contentSha256: loaded.document.contentSha256,
+      productPagesContentSha256: loaded.document.productPages?.contentSha256 || null,
       capturedAt: loaded.document.fetchedAt,
       complete: loaded.document.complete,
       inputItemCount: loaded.document.itemCount,

@@ -29,7 +29,7 @@
       const saved = ids.has(button.dataset.favoriteId);
       button.classList.toggle('active', saved); button.setAttribute('aria-pressed', String(saved));
       const item = items.find(item => D.favoriteId(item) === button.dataset.favoriteId) || page.projectItem;
-      button.setAttribute('aria-label', `${t(saved ? 'remove' : 'save')} ${item ? D.displayTitle(item) : ''}`);
+      button.setAttribute('aria-label', `${t(saved ? 'remove' : 'save')} ${item ? D.displayTitle(item, locale) : ''}`);
       button.querySelector('span').textContent = t(saved ? 'saved' : 'save');
     });
   }
@@ -54,7 +54,7 @@
   function renderFeed() {
     if (!feed) return;
     const q = query.trim().toLocaleLowerCase(locale);
-    const filtered = items.filter(item => (source === 'all' || item.sourceId === source) && (!q || [item.title, item.author, item.summary, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
+    const filtered = items.filter(item => (source === 'all' || item.sourceId === source) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
     const ids = savedIds();
     feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index, saved: ids.has(D.favoriteId(item)) })).join('');
     feed.hidden = !filtered.length;

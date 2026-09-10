@@ -22,7 +22,7 @@ const reports = dates.map(date => {
   const markdownPath = finalExists ? finalPath : rawMarkdown;
   report.hasMarkdown = fs.existsSync(markdownPath);
   if (report.hasMarkdown) write(`data/markdown/${date}.md`, fs.readFileSync(markdownPath, 'utf8'));
-  const englishMarkdown = `# ${D.t('en', 'slogan')} · ${date}\n\n` + D.reportItems(report).map(item => `## ${D.displayTitle(item)}\n\n${D.summary(item, 'en').text}\n\n${D.safeUrl(item.githubUrl || item.websiteUrl || item.url)}\n`).join('\n');
+  const englishMarkdown = `# ${D.t('en', 'slogan')} · ${date}\n\n` + D.reportItems(report).map(item => `## ${D.displayTitle(item, 'en')}\n\n${D.summary(item, 'en').text}\n\n${D.safeUrl(item.githubUrl || item.websiteUrl || item.url)}\n`).join('\n');
   if (report.hasMarkdown) write(`data/markdown/${date}.en.md`, englishMarkdown);
   return report;
 });

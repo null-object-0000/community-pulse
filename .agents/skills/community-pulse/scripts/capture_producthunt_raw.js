@@ -17,11 +17,13 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 const { execFileSync } = require('child_process');
 
 const SOURCE_ID = 'producthunt';
 const SOURCE_NAME = 'Product Hunt 新品';
 const ENDPOINT = 'https://api.producthunt.com/v2/api/graphql';
+const PRODUCT_PAGE_ORIGIN = 'https://www.producthunt.com';
 const TIMEZONE = 'Asia/Shanghai';
 const DEFAULT_START = '2026-01-01';
 // Product Hunt currently returns at most 20 posts even when a larger `first`
@@ -236,6 +238,93 @@ function waitForRateLimit(error, targetDate) {
   }
 }
 
+function productPageUrl(post) {
+  try {
+    const url = new URL(post.url || '');
+    const match = url.pathname.match(/^\/products\/([^/]+)/);
+    return match ? `${PRODUCT_PAGE_ORIGIN}/products/${match[1]}` : '';
+  } catch (_) {
+    return '';
+  }
+}
+
+function requestProductPage(url) {
+  const marker = `__PRODUCT_HUNT_PAGE_META_${crypto.randomBytes(8).toString('hex')}__`;
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const args = [
+      '-sS', '-L', '--max-time', '45', url,
+      '-H', 'Accept: text/html',
+      '-H', 'User-Agent: community-pulse-source-capture/1',
+      '-w', `\n${marker}%{http_code}|%{content_type}|%{url_effective}`,
+    ];
+    if (PROXY) args.push('-x', PROXY);
+    else args.push('--noproxy', '*');
+    try {
+      const output = execFileSync('curl', args, {
+        encoding: 'utf8',
+        maxBuffer: 30 * 1024 * 1024,
+        timeout: 50000,
+      });
+      const markerIndex = output.lastIndexOf(`\n${marker}`);
+      if (markerIndex < 0) throw new Error('curl response is missing its HTTP status marker');
+      const body = output.slice(0, markerIndex);
+      const [statusText, contentType, effectiveUrl] = output
+        .slice(markerIndex + marker.length + 1).trim().split('|');
+      const status = Number(statusText);
+      if (status < 200 || status >= 300) throw new Error(`HTTP ${status}`);
+      if (!/text\/html/i.test(contentType || '') || !/<html\b/i.test(body)) {
+        throw new Error(`unexpected content type ${contentType || '(missing)'}`);
+      }
+      return { body, status, contentType, effectiveUrl };
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) execFileSync('sleep', [String(attempt)]);
+    }
+  }
+  throw new Error(`${url}: ${lastError?.message || 'product page request failed'}`);
+}
+
+function captureProductPages(records) {
+  const pages = [];
+  const seen = new Set();
+  const urls = [...new Set(records.map(productPageUrl).filter(Boolean))];
+  for (const url of urls) {
+    if (seen.has(url)) continue;
+    seen.add(url);
+    const response = requestProductPage(url);
+    const fetchedAt = new Date().toISOString();
+    pages.push({
+      url,
+      postIds: records.filter((item) => productPageUrl(item) === url).map((item) => String(item.id)),
+      fetchedAt,
+      request: { method: 'GET', accept: 'text/html' },
+      response: {
+        status: response.status,
+        contentType: response.contentType,
+        effectiveUrl: response.effectiveUrl,
+        byteLength: Buffer.byteLength(response.body),
+        contentSha256: digest(response.body),
+        bodyEncoding: 'gzip-base64',
+        body: zlib.gzipSync(response.body).toString('base64'),
+      },
+    });
+    console.error(`[producthunt] product page ${pages.length}/${urls.length}: ${url}`);
+  }
+  return pages;
+}
+
+function attachProductPages(document, records) {
+  const pages = captureProductPages(records);
+  document.productPages = {
+    complete: true,
+    itemCount: pages.length,
+    contentSha256: digest(pages),
+    fetchedAt: new Date().toISOString(),
+    pages,
+  };
+}
+
 function queryForDay(targetDate, after, pageSize, featuredOnly = false) {
   const dayStart = new Date(`${targetDate}T00:00:00+08:00`);
   const nextDayStart = new Date(dayStart.getTime() + 86400000);
@@ -423,6 +512,7 @@ function updateFeaturedSection(options, targetDate, featuredCapture) {
     if (!allIds.has(String(record.id))) throw new Error(`${targetDate}: featured post ${record.id} is absent from all posts`);
   }
   document.officialFeatured = buildFeaturedSection(options, targetDate, featuredCapture);
+  attachProductPages(document, featuredCapture.records);
   atomicWrite(file, `${JSON.stringify(document, null, 2)}\n`);
 }
 
@@ -469,6 +559,7 @@ function writeDay(options, targetDate, capture, featuredCapture) {
     officialFeatured: buildFeaturedSection(options, targetDate, featuredCapture),
     records: capture.records,
   };
+  attachProductPages(document, featuredCapture.records);
   atomicWrite(file, `${JSON.stringify(document, null, 2)}\n`);
   return 'written';
 }
@@ -509,6 +600,13 @@ function main() {
           console.error(`[producthunt] ${targetDate}: added ${featuredCapture.records.length} official featured records`);
           written += 1;
           pagesFetched += featuredCapture.pages.length;
+          continue;
+        }
+        if (!existing.productPages?.complete) {
+          attachProductPages(existing, existing.officialFeatured.records);
+          atomicWrite(file, `${JSON.stringify(existing, null, 2)}\n`);
+          console.error(`[producthunt] ${targetDate}: added ${existing.productPages.itemCount} product pages`);
+          written += 1;
           continue;
         }
         unchanged += 1;

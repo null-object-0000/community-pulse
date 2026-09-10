@@ -6,6 +6,7 @@ const vm = require('node:vm');
 const D = require('../web/shared.js');
 const { buildProjects, projectPage } = require('../scripts/projects.js');
 const { applyEnhancedMarkdown } = require('../scripts/enhanced-report.js');
+const { metadataComment, renderLocalizedMarkdown, extractItems } = require('../.agents/skills/community-pulse/scripts/enhance.js');
 const report = (date, sources) => ({ date, results: sources.map(([sourceId, items]) => ({ sourceId, sourceName: sourceId, items })) });
 
 test('repository identities normalize case, trailing slash, query, and .git without colliding owner/repo pairs', () => {
@@ -36,11 +37,27 @@ test('final summaries override raw and preserve metrics', () => {
   assert.equal(raw.results[0].items[0].summary, 'raw');
 });
 
+test('bilingual enhancement carries English titles and summaries through hidden final metadata', () => {
+  const rawMarkdown = '## Feed（1 条）\n\n### 中文工具\n> 一个帮助开发者整理数据的工具。\n';
+  const items = extractItems(rawMarkdown);
+  const localized = { schemaVersion: 1, titleEn: 'Developer Data Organizer', summaryZh: '一个帮助开发者整理数据的工具。', summaryEn: 'A tool that helps developers organize data.' };
+  const finalMarkdown = renderLocalizedMarkdown(rawMarkdown, items, new Map([[items[0].idx, localized]]));
+  assert.ok(finalMarkdown.includes(metadataComment(localized)));
+  const enhanced = applyEnhancedMarkdown(report('2026-09-09', [['Feed', [{ title: '中文工具', summary: 'raw' }]]]), finalMarkdown, '2026-09-09');
+  const item = enhanced.results[0].items[0];
+  assert.equal(item.summaryZh, localized.summaryZh);
+  assert.equal(item.summaryEn, localized.summaryEn);
+  assert.equal(D.displayTitle(item, 'en'), localized.titleEn);
+  assert.equal(D.displayTitle(item, 'zh-CN'), '中文工具');
+  assert.equal(D.summary(item, 'en').original, false);
+});
+
 test('language selection uses translated summaries and explicitly labels fallback originals', () => {
   assert.equal(D.summary({ summary: '中文介绍', summaryEn: 'English translation' }, 'en').text, 'English translation');
   assert.equal(D.summary({ summary: '中文介绍' }, 'en').original, true);
   assert.equal(D.summary({ summary: '中文介绍', github: { description: 'English description' } }, 'en').original, false);
   assert.equal(D.summary({ summary: 'English description' }, 'zh-CN').original, true);
+  assert.equal(D.displayTitle({ title: '中文名称', titleEn: 'English Name' }, 'en'), 'English Name');
   assert.deepEqual(Object.keys(D.messages.en).sort(), Object.keys(D.messages['zh-CN']).sort());
 });
 

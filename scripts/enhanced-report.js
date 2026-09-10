@@ -12,13 +12,22 @@ function parseEnhancedMarkdown(markdown) {
     }
     if (!currentSection) continue;
     if (line.startsWith('### ')) {
-      currentItem = { heading: line.slice(4).trim(), summary: null, used: false };
+      currentItem = { heading: line.slice(4).trim(), summary: null, localized: null, used: false };
       sections.get(currentSection).push(currentItem);
       continue;
     }
     if (currentItem && line.startsWith('> ')) {
       currentItem.summary = line.slice(2).trim();
-      currentItem = null;
+      continue;
+    }
+    if (currentItem && line.startsWith('<!-- devtrends-i18n:')) {
+      const encoded = line.match(/^<!-- devtrends-i18n:([A-Za-z0-9+/=]+) -->$/)?.[1];
+      if (!encoded) continue;
+      try {
+        currentItem.localized = JSON.parse(Buffer.from(encoded, 'base64').toString('utf8'));
+      } catch (_) {
+        currentItem.localized = null;
+      }
     }
   }
   return sections;
@@ -39,6 +48,9 @@ function applyEnhancedMarkdown(report, markdown, date) {
       const entry = entries.find((candidate) => candidate.heading === expectedHeading && !candidate.used);
       if (entry?.summary !== null && entry?.summary !== undefined) {
         item.summary = entry.summary;
+        item.summaryZh = entry.localized?.summaryZh || entry.summary;
+        if (entry.localized?.summaryEn) item.summaryEn = entry.localized.summaryEn;
+        if (entry.localized?.titleEn) item.titleEn = entry.localized.titleEn;
         item.summarySource = 'llm-final';
         entry.used = true;
         enhancedCount += 1;

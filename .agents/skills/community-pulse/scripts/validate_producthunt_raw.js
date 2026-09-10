@@ -3,6 +3,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 
 const SOURCE_ID = 'producthunt';
 const TIMEZONE = 'Asia/Shanghai';
@@ -171,6 +172,36 @@ function main() {
         const uniqueReturned = fc.uniqueReturnedCount ?? returned;
         if (returned !== fc.returnedEdgeCount || uniqueReturned !== fc.reportedTotalCount) {
           errors.push(`${targetDate}: officialFeatured totalCount mismatch`);
+        }
+      }
+    }
+
+    if (data.productPages !== undefined) {
+      const productPages = data.productPages;
+      if (productPages?.complete !== true || !Array.isArray(productPages?.pages)) {
+        errors.push(`${targetDate}: invalid productPages capture`);
+      } else {
+        if (productPages.itemCount !== productPages.pages.length) errors.push(`${targetDate}: productPages itemCount mismatch`);
+        if (productPages.contentSha256 !== digest(productPages.pages)) errors.push(`${targetDate}: productPages hash mismatch`);
+        const coveredPostIds = new Set();
+        for (const page of productPages.pages) {
+          if (!/^https:\/\/www\.producthunt\.com\/products\/[^/]+$/.test(page.url || '')) {
+            errors.push(`${targetDate}: invalid product page URL ${page.url || '(missing)'}`);
+          }
+          let body = '';
+          try {
+            body = zlib.gunzipSync(Buffer.from(page.response?.body || '', 'base64')).toString('utf8');
+          } catch (error) {
+            errors.push(`${targetDate}: ${page.url || '?'} invalid compressed body (${error.message})`);
+            continue;
+          }
+          if (page.response?.status !== 200 || !/<html\b/i.test(body)) errors.push(`${targetDate}: ${page.url} invalid HTML response`);
+          if (page.response?.byteLength !== Buffer.byteLength(body)) errors.push(`${targetDate}: ${page.url} byteLength mismatch`);
+          if (page.response?.contentSha256 !== digest(body)) errors.push(`${targetDate}: ${page.url} body hash mismatch`);
+          for (const id of page.postIds || []) coveredPostIds.add(String(id));
+        }
+        for (const record of featured?.records || []) {
+          if (!coveredPostIds.has(String(record.id))) errors.push(`${targetDate}: featured ${record.id} has no product page`);
         }
       }
     }

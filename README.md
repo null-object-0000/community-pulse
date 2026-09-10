@@ -41,7 +41,7 @@ npm run check
 
 详情页按规范化的 `owner/repo` 聚合跨来源和跨日期的条目，展示现有介绍、仓库信息、收录记录及按仓库 topics 匹配的相关项目。只识别仓库根地址，避免把 Issue、文件和用户主页当作项目。暂不为无仓库地址的产品生成详情页，也不会在构建时请求 GitHub 或编造额外项目介绍。指标显示采集快照日期。
 
-语言字典、内容选择和列表组件集中在 `web/shared.js`，供浏览器和构建阶段共用。优先使用 `summaryEn` / `summaryZh`（兼容 `summary_en` / `summary_zh`），缺少对应语言内容时标注原文。历史摘要不会在本次构建中批量翻译。中文 final 摘要保持优先。
+语言字典、内容选择和列表组件集中在 `web/shared.js`，供浏览器和构建阶段共用。每日 LLM 增强会在 final Markdown 中写入隐藏的双语元数据：中文页面使用 `summaryZh`，英文页面使用 `summaryEn`；中文产品名称同时生成 `titleEn`。兼容旧的 `summary_en` / `summary_zh` 字段，历史日报缺少译文时标注原文，不在构建阶段联网补译。
 
 收藏使用 `localStorage` 的 `devtrends-favorites-v1`，与旧版本兼容；主题使用 `devtrends-theme-v1`。收藏不上传服务器。语言切换保留当前页面和筛选参数。旧 `?date=` 链接仍能导航到日报，旧 `?style=` 参数不再改变界面。
 
