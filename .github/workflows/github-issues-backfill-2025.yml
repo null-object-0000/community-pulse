@@ -1,0 +1,60 @@
+name: GitHub Issues Backfill 2025 (one-shot)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # capture_github_issues_raw.js 内部用 gh api 拉 Issues
+
+jobs:
+  backfill-issues:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 配置 Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: 回溯用户投稿源 2025-01-01 起
+        env:
+          START_DATE: "2025-01-01"
+          END_DATE: "2026-09-10"
+        run: |
+          set -euo pipefail
+          SKILL_DIR="$GITHUB_WORKSPACE/.agents/skills/community-pulse"
+
+          node "$SKILL_DIR/scripts/capture_github_issues_raw.js" \
+            --start "$START_DATE" --end "$END_DATE"
+
+          node "$SKILL_DIR/scripts/validate_github_issues_raw.js" \
+            --start "$START_DATE" --end "$END_DATE"
+
+      - name: 提交并推送
+        run: |
+          git add "知识/大家都在做什么/source-raw/weekly-issues" "知识/大家都在做什么/source-raw/hellogithub-issues"
+          if git diff --cached --quiet; then
+            echo "无变更可提交"
+            exit 0
+          fi
+          git commit -m "data: 回溯用户投稿源(阮一峰周刊/HelloGitHub) 2025-01-01 起"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              break
+            fi
+            echo "push 冲突，第 ${attempt} 次 rebase 后重试"
+            git pull --rebase origin main
+          done
