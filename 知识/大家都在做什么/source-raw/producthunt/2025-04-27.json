@@ -1,0 +1,3225 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "producthunt",
+  "sourceName": "Product Hunt 新品",
+  "targetDate": "2025-04-27",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "itemCount": 145,
+  "contentSha256": "1b674ba629e5da6921f4ec96e2a504425d1ac4d4fe98fa60b2529c98f4cbe360",
+  "fetchedAt": "2026-09-10T05:08:37.463Z",
+  "capture": {
+    "id": "producthunt-2025-04-27-20260910T050837463Z",
+    "mode": "historical-reconstruction",
+    "endpoint": "https://api.producthunt.com/v2/api/graphql",
+    "apiVersion": "v2 GraphQL",
+    "sourceFields": [
+      "id",
+      "name",
+      "tagline",
+      "url",
+      "createdAt",
+      "description",
+      "featuredAt",
+      "votesCount",
+      "commentsCount",
+      "website",
+      "productLinks"
+    ],
+    "order": "NEWEST",
+    "pageSize": 20,
+    "pageCount": 8,
+    "returnedEdgeCount": 145,
+    "reportedTotalCount": 145,
+    "uniqueReturnedCount": 145,
+    "duplicateEdgeCount": 0,
+    "passCount": 1,
+    "excludedAdjacentDayCount": 0,
+    "stoppedBecause": "hasNextPage=false",
+    "pages": [
+      {
+        "number": 1,
+        "pass": 1,
+        "pageInPass": 1,
+        "returnedEdgeCount": 20,
+        "newUniqueReturnedCount": 20,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 20,
+        "hasNextPage": true,
+        "endCursor": "MjA",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3150,
+          "resetSeconds": 849,
+          "credentialIndex": 1
+        }
+      },
+      {
+        "number": 2,
+        "pass": 1,
+        "pageInPass": 2,
+        "returnedEdgeCount": 20,
+        "newUniqueReturnedCount": 20,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 20,
+        "hasNextPage": true,
+        "endCursor": "NDA",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3150,
+          "resetSeconds": 849,
+          "credentialIndex": 2
+        }
+      },
+      {
+        "number": 3,
+        "pass": 1,
+        "pageInPass": 3,
+        "returnedEdgeCount": 20,
+        "newUniqueReturnedCount": 20,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 20,
+        "hasNextPage": true,
+        "endCursor": "NjA",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3150,
+          "resetSeconds": 850,
+          "credentialIndex": 3
+        }
+      },
+      {
+        "number": 4,
+        "pass": 1,
+        "pageInPass": 4,
+        "returnedEdgeCount": 20,
+        "newUniqueReturnedCount": 20,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 20,
+        "hasNextPage": true,
+        "endCursor": "ODA",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3150,
+          "resetSeconds": 850,
+          "credentialIndex": 4
+        }
+      },
+      {
+        "number": 5,
+        "pass": 1,
+        "pageInPass": 5,
+        "returnedEdgeCount": 20,
+        "newUniqueReturnedCount": 20,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 20,
+        "hasNextPage": true,
+        "endCursor": "MTAw",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3150,
+          "resetSeconds": 850,
+          "credentialIndex": 5
+        }
+      },
+      {
+        "number": 6,
+        "pass": 1,
+        "pageInPass": 6,
+        "returnedEdgeCount": 20,
+        "newUniqueReturnedCount": 20,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 20,
+        "hasNextPage": true,
+        "endCursor": "MTIw",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3050,
+          "resetSeconds": 848,
+          "credentialIndex": 1
+        }
+      },
+      {
+        "number": 7,
+        "pass": 1,
+        "pageInPass": 7,
+        "returnedEdgeCount": 20,
+        "newUniqueReturnedCount": 20,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 20,
+        "hasNextPage": true,
+        "endCursor": "MTQw",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3050,
+          "resetSeconds": 847,
+          "credentialIndex": 2
+        }
+      },
+      {
+        "number": 8,
+        "pass": 1,
+        "pageInPass": 8,
+        "returnedEdgeCount": 5,
+        "newUniqueReturnedCount": 5,
+        "duplicateEdgeCount": 0,
+        "acceptedRecordCount": 5,
+        "hasNextPage": false,
+        "endCursor": "MTQ1",
+        "rateLimitAfter": {
+          "limit": 6250,
+          "remaining": 3050,
+          "resetSeconds": 848,
+          "credentialIndex": 3
+        }
+      }
+    ]
+  },
+  "officialFeatured": {
+    "filter": {
+      "featured": true
+    },
+    "complete": true,
+    "itemCount": 6,
+    "contentSha256": "b0149b263b255d5c11d96c95b53e35cf74f36d4edce05fd836726a3149588f79",
+    "fetchedAt": "2026-09-10T05:08:37.463Z",
+    "capture": {
+      "id": "producthunt-featured-2025-04-27-20260910T050837463Z",
+      "endpoint": "https://api.producthunt.com/v2/api/graphql",
+      "apiVersion": "v2 GraphQL",
+      "sourceFields": [
+        "id",
+        "name",
+        "tagline",
+        "url",
+        "createdAt",
+        "description",
+        "featuredAt",
+        "votesCount",
+        "commentsCount",
+        "website",
+        "productLinks"
+      ],
+      "order": "NEWEST",
+      "pageSize": 20,
+      "pageCount": 1,
+      "returnedEdgeCount": 6,
+      "reportedTotalCount": 6,
+      "uniqueReturnedCount": 6,
+      "duplicateEdgeCount": 0,
+      "passCount": 1,
+      "excludedAdjacentDayCount": 0,
+      "stoppedBecause": "hasNextPage=false",
+      "pages": [
+        {
+          "number": 1,
+          "pass": 1,
+          "pageInPass": 1,
+          "returnedEdgeCount": 6,
+          "newUniqueReturnedCount": 6,
+          "duplicateEdgeCount": 0,
+          "acceptedRecordCount": 6,
+          "hasNextPage": false,
+          "endCursor": "Ng",
+          "rateLimitAfter": {
+            "limit": 6250,
+            "remaining": 3050,
+            "resetSeconds": 849,
+            "credentialIndex": 4
+          }
+        }
+      ]
+    },
+    "records": [
+      {
+        "id": "956695",
+        "name": "Shelve",
+        "tagline": "Effortless & secure secrets management",
+        "url": "https://www.producthunt.com/products/shelve/launches/shelve-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "createdAt": "2025-04-27T07:01:00Z",
+        "description": "Effortless OSS secrets management. Run apps without ⁠.env (⁠shelve run), sync via CLI/GitHub, command via Cmd+K. Secure, collaborative, superior DX. Free & Self-hostable.",
+        "featuredAt": "2025-04-27T07:01:00Z",
+        "votesCount": 156,
+        "commentsCount": 7,
+        "website": "https://www.producthunt.com/r/BCYMU67YRMRMWT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "productLinks": [
+          {
+            "type": "Website",
+            "url": "https://www.producthunt.com/r/BCYMU67YRMRMWT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          },
+          {
+            "type": "Github",
+            "url": "https://www.producthunt.com/r/36FPG7XEGIHJXV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          }
+        ]
+      },
+      {
+        "id": "949328",
+        "name": "PageOn.AI 2.0",
+        "tagline": "Cursor for Visual Communication, beyond slides",
+        "url": "https://www.producthunt.com/products/pageon-ai/launches/pageon-ai-2-0?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "createdAt": "2025-04-27T07:01:00Z",
+        "description": "Tired of static slides? PageOn.AI revolutionizes visual communication with AI Agents that get you. Tell them your goal—they’ll plan, research, and design dynamic, stunning pages. It’s Visualized Notion for Storytellers. Build like Legos, visualize with AI.",
+        "featuredAt": "2025-04-27T07:01:00Z",
+        "votesCount": 754,
+        "commentsCount": 177,
+        "website": "https://www.producthunt.com/r/TVHKQEBB4YJ52P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "productLinks": [
+          {
+            "type": "Website",
+            "url": "https://www.producthunt.com/r/TVHKQEBB4YJ52P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          }
+        ]
+      },
+      {
+        "id": "956712",
+        "name": "AI Presentation Narrator",
+        "tagline": "Free AI voiceovers for presentations",
+        "url": "https://www.producthunt.com/products/ai-presentation-narrator/launches/ai-presentation-narrator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "createdAt": "2025-04-27T07:01:00Z",
+        "description": "Plus AI's presentation narrator can convert your slide decks into professionally-narrated videos in minutes.",
+        "featuredAt": "2025-04-27T07:01:00Z",
+        "votesCount": 161,
+        "commentsCount": 32,
+        "website": "https://www.producthunt.com/r/242ZUQG3ZACW2S?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "productLinks": [
+          {
+            "type": "Website",
+            "url": "https://www.producthunt.com/r/242ZUQG3ZACW2S?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          }
+        ]
+      },
+      {
+        "id": "958101",
+        "name": "Once Human",
+        "tagline": "Post-apocalyptic multiplayer open-world survival game",
+        "url": "https://www.producthunt.com/products/once-human/launches/once-human?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "createdAt": "2025-04-27T07:01:00Z",
+        "description": "Join forces with friends to fight for survival, construct your sanctuary, and conquer terrifying aberrations to unravel the truth behind the apocalypse. Do you still hold the answer to what it means to be human?",
+        "featuredAt": "2025-04-27T07:01:00Z",
+        "votesCount": 199,
+        "commentsCount": 18,
+        "website": "https://www.producthunt.com/r/CWUVNPSDI3IY7D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "productLinks": [
+          {
+            "type": "App Store",
+            "url": "https://www.producthunt.com/r/CWUVNPSDI3IY7D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          },
+          {
+            "type": "Website",
+            "url": "https://www.producthunt.com/r/KKDY257LESGEAM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          }
+        ]
+      },
+      {
+        "id": "957970",
+        "name": "RightNow AI 'V2.0'",
+        "tagline": "Vibe coding for CUDA engineers",
+        "url": "https://www.producthunt.com/products/rightnow-ai/launches/rightnow-ai-v2-0-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "createdAt": "2025-04-27T07:01:00Z",
+        "description": "Automatically profile, detect bottlenecks, and optimize your CUDA kernels for peak performance.",
+        "featuredAt": "2025-04-27T07:01:00Z",
+        "votesCount": 355,
+        "commentsCount": 58,
+        "website": "https://www.producthunt.com/r/UTZSQEMUV75OPY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "productLinks": [
+          {
+            "type": "Website",
+            "url": "https://www.producthunt.com/r/UTZSQEMUV75OPY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          }
+        ]
+      },
+      {
+        "id": "958078",
+        "name": "Paint",
+        "tagline": "A simple Microsoft Paint inspired web app",
+        "url": "https://www.producthunt.com/products/paint-4/launches/paint-4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "createdAt": "2025-04-27T07:01:00Z",
+        "description": "A Microsoft Pant and MacPaint inspired simple web app that lets you draw images, save images and also load images to paint on.",
+        "featuredAt": "2025-04-27T07:01:00Z",
+        "votesCount": 326,
+        "commentsCount": 36,
+        "website": "https://www.producthunt.com/r/YELGJIF5MPRFLB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+        "productLinks": [
+          {
+            "type": "Website",
+            "url": "https://www.producthunt.com/r/YELGJIF5MPRFLB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+          }
+        ]
+      }
+    ]
+  },
+  "records": [
+    {
+      "id": "956683",
+      "name": "RepoIQ",
+      "tagline": "Chat with your codebase like it’s a teammate",
+      "url": "https://www.producthunt.com/products/repoiq/launches/repoiq?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Scrolling folders and grepping for clues is old news. RepoIQ makes your repo a conversation partner: open the chat, ask plain-English questions, and get answers with file references, mini diagrams, and concise, human-sounding explanations.",
+      "featuredAt": null,
+      "votesCount": 15,
+      "commentsCount": 6,
+      "website": "https://www.producthunt.com/r/LOPSWTMK7NSK4X?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/LOPSWTMK7NSK4X?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958144",
+      "name": "PVACeator",
+      "tagline": "PVACreator lets you create unlimited accounts in minutes.",
+      "url": "https://www.producthunt.com/products/pvaceator/launches/pvaceator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "PVACreator is a leading solution for automated social media and email account creation. With a focus on efficiency and security, PVACreator helps you manage accounts effortlessly, enabling you to focus on what truly matters—growing your business.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/XZCHIBAD4G3D2J?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/XZCHIBAD4G3D2J?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957900",
+      "name": "Bug Bounty Hunt",
+      "tagline": "Discover,Secure,Earn – Explore the Best Bug Bounty Programs!",
+      "url": "https://www.producthunt.com/products/bug-bounty-hunt/launches/bug-bounty-hunt?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "BugBountyHunt.com — the #1 global directory of self-hosted bug bounty programs — also connects companies & security researchers for private contracts. A professional, engaging platform where ethical hackers meet businesses. Your next bounty awaits.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/3DN6AFFNP5VN4R?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/3DN6AFFNP5VN4R?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958098",
+      "name": "ComingUp",
+      "tagline": "Track, share, and celebrate life’s big events",
+      "url": "https://www.producthunt.com/products/comingup/launches/comingup?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Count down to your most important moments with ComingUp. Add events, attach memories, customize how you track your milestones, and share the excitement with friends — all in a beautifully simple app built for iPhone.",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/ICABPOCHLAOT73?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/ICABPOCHLAOT73?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "955708",
+      "name": "CineShuffle",
+      "tagline": "Fixing your ‘What to watch?’ dilemma",
+      "url": "https://www.producthunt.com/products/cineshuffle/launches/cineshuffle?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "CineShuffle is your one-click movie/series matchmaker. Get instant, mood-based recommendations powered by logic, vibes & AI. From trending shows to hidden gems — discover what to watch next, effortlessly.",
+      "featuredAt": null,
+      "votesCount": 21,
+      "commentsCount": 19,
+      "website": "https://www.producthunt.com/r/ZEL7LGZZDXFW4D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/ZEL7LGZZDXFW4D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957968",
+      "name": "Habit Lock",
+      "tagline": "The Strictest Timer for Building Unbreakable Habits",
+      "url": "https://www.producthunt.com/products/habit-lock/launches/habit-lock?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Habit Lock is the strictest habit timer. Block distracting apps and stay locked in fullscreen until you complete your daily goals. Build real discipline with enforced focus and no shortcuts.",
+      "featuredAt": null,
+      "votesCount": 8,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/YQAFTQMB5XIRSA?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/YQAFTQMB5XIRSA?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/NB2VLDLB3M3G4A?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "956717",
+      "name": "ChatSkills",
+      "tagline": "Aprenda ia de forma prática e rápida",
+      "url": "https://www.producthunt.com/products/chatskills-2/launches/chatskills-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Aprenda a usar IA na sua rotina com microaulas interativas e práticas. Escolha entre áudio, texto ou vídeo e desenvolva habilidades de forma eficiente. Ganhe recompensas, pontos e certificados enquanto aprimora seu conhecimento. 🚀",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/7EJNKFNPTOQUSB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/7EJNKFNPTOQUSB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/WOAGXMLRRM6WHG?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/G5MXNWTJEJGEOK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958123",
+      "name": "DeepWiki Badge Generator",
+      "tagline": "deepwiki",
+      "url": "https://www.producthunt.com/products/deepwiki-badge-generator/launches/deepwiki-badge-generator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "A simple tool to generate DeepWiki badges for your GitHub README",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/CBIBJCTSPZM5G4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/CBIBJCTSPZM5G4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957956",
+      "name": "PadelTournament Pro",
+      "tagline": "Padel",
+      "url": "https://www.producthunt.com/products/padeltournament-pro/launches/padeltournament-pro?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Create and manage professional padel tournaments with our advanced tournament generator. Support for Americano, Mexicano, and Mixicano formats. Track scores, analyze stats, and crown champions with ease.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/VOQPF2SKXCOW7Y?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/VOQPF2SKXCOW7Y?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957966",
+      "name": "Youtube Video Transcripts",
+      "tagline": "Get full transcript of a youtube video while watching",
+      "url": "https://www.producthunt.com/products/youtube-video-transcripts/launches/youtube-video-transcripts?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "YoutubeVideoTranscripts.com lets you watch a youtube video along with a full-featured transcript sidebar that you can search text within, and download. There is also AI-powered chapter summaries & chat with video content in our separate chrome extension",
+      "featuredAt": null,
+      "votesCount": 3,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/KFODDJQMGQM52I?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/KFODDJQMGQM52I?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957999",
+      "name": "Chrome Web Store",
+      "tagline": "HydroHugg",
+      "url": "https://www.producthunt.com/products/chrome-web-store-21/launches/chrome-web-store-4887cd76-9d2e-42d4-97de-1dba5ed990aa?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Add new features to your browser and get reminded when it's time to drink water, so you stay hydrated throughout the day.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/IARXK32WSUJXNZ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Chrome",
+          "url": "https://www.producthunt.com/r/IARXK32WSUJXNZ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958089",
+      "name": "BoostMatches.ai",
+      "tagline": "Use AI to get an ATS friendly resume in minutes",
+      "url": "https://www.producthunt.com/products/resume-builder-12/launches/boostmatches-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Create professional resumes with AI-powered feedback and analysis. Get personalized suggestions to improve your resume and stand out to employers.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/D6MXKCHYS72OWE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/D6MXKCHYS72OWE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957954",
+      "name": "AI DreamReal",
+      "tagline": "One click free access to Studio Ghibli images",
+      "url": "https://www.producthunt.com/products/ai-dreamreal/launches/ai-dreamreal?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Upload your photo and instantly get a Ghibli-style anime portrait. AI transforms your image with a unique, dreamy touch. Download and share your magical cartoon look with ease!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/NKS5KEBBKSN6LM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/NKS5KEBBKSN6LM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958014",
+      "name": "I Am Music Font",
+      "tagline": "Your Ultimate Music Font PNG",
+      "url": "https://www.producthunt.com/products/i-am-music-font/launches/i-am-music-font?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Discover and download high-quality music font PNGs for your projects. Free and premium fonts for musicians, composers, and music enthusiasts.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/2XR765T7TYWVQJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/2XR765T7TYWVQJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957993",
+      "name": "ReplyFast.us AI",
+      "tagline": "Increase social media engagement. Save hours every week.",
+      "url": "https://www.producthunt.com/products/replyfast-us-ai/launches/replyfast-us-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Increase social media engagement, continue to create effective product marketing. Save time and engage more effectively with AI-powered responses on Twitter, LinkedIn, and Reddit.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/ARDZ4OT7FLHZAU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/ARDZ4OT7FLHZAU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958147",
+      "name": "Fynd",
+      "tagline": "Free Nonprofit Dating App",
+      "url": "https://www.producthunt.com/products/fynd-3/launches/fynd-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Fynd is a 100% free, nonprofit dating platform designed to help you find exactly who you're looking for with advanced search tools and a smart matching algorithm.",
+      "featuredAt": null,
+      "votesCount": 2,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/LZ4U5Q3A6AL24A?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/LZ4U5Q3A6AL24A?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/LIEWYNQXLHMKRC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958033",
+      "name": "Crypto Telegram Bot",
+      "tagline": "Algorithmic Trading Powered by Secure APIs.",
+      "url": "https://www.producthunt.com/products/crypto-telegram-bot/launches/crypto-telegram-bot?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "What is Crypto Telegram Bot? A Crypto Telegram Bot automates crypto trading on Telegram, executing trades, sending alerts, and analyzing markets. It connects to exchanges via APIs, providing real-time data and potentially double your profit margin.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/GZLYZ4V3MHBOZD?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/GZLYZ4V3MHBOZD?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957941",
+      "name": "Capypasta",
+      "tagline": "Internet copy pasta library",
+      "url": "https://www.producthunt.com/products/capypasta/launches/capypasta?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Find and copy popular internet copy pastas with one click",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/2PZD7B7QEJJRJV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/2PZD7B7QEJJRJV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958075",
+      "name": "Centra IP Networks",
+      "tagline": "IP Communications simplified",
+      "url": "https://www.producthunt.com/products/centra-ip-networks/launches/centra-ip-networks?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Connect teams and manage calls through Centra IP Networks' business communications solutions. We support businesses with business phone services, high-speed internet as a business internet provider, and assistance as a managed IT services provider.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/6NILMWWW4LZBT5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/6NILMWWW4LZBT5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/4DXXD6NAWRXZSA?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/AKHHSHRJUYGQMC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/RAM6ITL6GWZSBC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/74SH7XTMLH6ZN7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "LinkedIn",
+          "url": "https://www.producthunt.com/r/XHA7VR6L6MGSAM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/44XXICCV6JIR7O?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Twitter",
+          "url": "https://www.producthunt.com/r/YMWZD33TSEZ2YF?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958051",
+      "name": "Hacker Typer Simulator",
+      "tagline": "Hacker Typer Simulator Prank",
+      "url": "https://www.producthunt.com/products/hacker-typer-simulator-2/launches/hacker-typer-simulator-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Hacker Typer is an entertaining fake coding simulator designed for pranks, tech games, and coding enthusiasts. Create a realistic full-screen hacking experience with every keystroke.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/HXBYZDKCF27KM7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/HXBYZDKCF27KM7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957989",
+      "name": "Grocery Delivery App Development Cost",
+      "tagline": "Grocery Delivery App Development",
+      "url": "https://www.producthunt.com/products/grocery-delivery-app-development-cost/launches/grocery-delivery-app-development-cost?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "The cost of developing a grocery delivery app depends on various factors such as features, platform (iOS, Android, or both), design complexity, and the development team's location.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/KEZBXJVIFOLZNN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/KEZBXJVIFOLZNN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/GMLOGPOUPPWGQ4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957955",
+      "name": "Quantum Music",
+      "tagline": "A beautifully minimalist offline music player for Android",
+      "url": "https://www.producthunt.com/products/quantum-music/launches/quantum-music?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Designed with simplicity and elegance in mind, this app combines a stunning minimalist user interface with powerful features. Whether you're a casual listener or a music enthusiast, this app is tailored to meet all your needs.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/GHNIE27L2KXEWC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/GHNIE27L2KXEWC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958146",
+      "name": "NetTrack",
+      "tagline": "Track Your Net Worth Effortlessly",
+      "url": "https://www.producthunt.com/products/nettrack/launches/nettrack?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "NetTrack is designed to help you effortlessly monitor your financial health by consolidating all your accounts into one convenient dashboard. With our secure and user-friendly platform, managing your net worth has never been easier.",
+      "featuredAt": null,
+      "votesCount": 2,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/RLG4MYVMRRQ7P5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/RLG4MYVMRRQ7P5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/RYCVO2ZWMWLQHU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958091",
+      "name": "Expense Tracking Software",
+      "tagline": "Track, Analyze, and Grow — Smarter Money Management.",
+      "url": "https://www.producthunt.com/products/expense-tracking-software/launches/expense-tracking-software?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Track income & expenses, view monthly/yearly analytics, generate PDF reports, manage categories, and stay on top of your finances with ease. Fast, simple, and insightful — perfect for individuals and businesses! 🚀 expense-tracking-software.web.app",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/FFDO4MKEHPSHHB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Firebase",
+          "url": "https://www.producthunt.com/r/FFDO4MKEHPSHHB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "941723",
+      "name": "LAILA",
+      "tagline": "Build Business not apps.  From Idea to Product in Minutes.",
+      "url": "https://www.producthunt.com/products/laila-2/launches/laila-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Validate ideas with Laila AI. Get market research, consumer insights and build interactive prototypes — all without a tech cofounder. Test your concept with real customers before full development.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/JZ65UNDY2DUKHL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/JZ65UNDY2DUKHL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958041",
+      "name": "Firebase Rooms SDK",
+      "tagline": "Firebase",
+      "url": "https://www.producthunt.com/products/firebase-rooms-sdk/launches/firebase-rooms-sdk?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "A TypeScript SDK for creating and managing real-time rooms using Firebase. This SDK provides simple methods for authentication, room creation/joining, state management, and real-time data sharing between room members.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/3OJFWPEA2XMBFX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Npm",
+          "url": "https://www.producthunt.com/r/3OJFWPEA2XMBFX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/LRYDU5JMI6CAI5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958025",
+      "name": "Clever Coloring Book",
+      "tagline": "A personalized coloring book - using the very latest tech",
+      "url": "https://www.producthunt.com/products/clever-coloring-book/launches/clever-coloring-book?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Upload a bunch of your favorite photos and we make you a beautiful, high-quality coloring book and send it to your door. We also offer a digital download, so you can print the pages at home yourself!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/UIFSJ7U3GJVUUR?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/UIFSJ7U3GJVUUR?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "956375",
+      "name": " Restaurant Management Software.",
+      "tagline": "Simple and Fast Restaurant Management Software.",
+      "url": "https://www.producthunt.com/products/restaurant-management-software/launches/restaurant-management-software-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Recaho offers Simple and Fast Restaurant Billing Software. Streamline your Billing in Restaurant and manage Inventory, CRM, Purchase, and Accounts seamlessly.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/MK6EZTXODBBYVY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/MK6EZTXODBBYVY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958044",
+      "name": "YouTube video download 4k",
+      "tagline": "Just paste the video link to download instantly.",
+      "url": "https://www.producthunt.com/products/youtube-video-download-4k/launches/youtube-video-download-4k?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Free online tool to download YouTube videos in high quality without watermark. Fast, easy to use, no registration required. Just paste the video link to download instantly.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/QOLKBFUCYKT7D3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/QOLKBFUCYKT7D3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958097",
+      "name": "Lyrical IDE",
+      "tagline": "Revolutionizing the Way You Songwrite!",
+      "url": "https://www.producthunt.com/products/lyrical-ide/launches/lyrical-ide?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Lyrical IDE is a minimalist, distraction-free writing tool for songwriters. Write, format, and preview lyrics with markdown simplicity. Auto-save, AI rhyme suggestions, and multiple export options — all in your browser, no signup needed.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/VYCTYAJMNBBTBU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/VYCTYAJMNBBTBU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "952102",
+      "name": "Kafka online training",
+      "tagline": "Kafka training online | kafka course online",
+      "url": "https://www.producthunt.com/products/kafka-online-training/launches/kafka-online-training?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "AccentFuture's online Kafka training and course, designed for learning and real-world application anywhere gain expert insights and master Kafka at your pace!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/HA7VMHN6I3H73S?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/HA7VMHN6I3H73S?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/6RROWXOI6TGFWU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958058",
+      "name": "Wanderly",
+      "tagline": "Plan Your Journey, Wanderly Simple!",
+      "url": "https://www.producthunt.com/products/wanderly-2/launches/wanderly-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Ditch holiday planning stress with Wanderly! AI-powered travel planner crafts custom itineraries in seconds, tailored to your vibe, downloadable as a PDF. Explore effortlessly! ✈️🌴",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/I65OVTNJ7E3WGH?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Streamlit",
+          "url": "https://www.producthunt.com/r/I65OVTNJ7E3WGH?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958035",
+      "name": "TRON Blockchain Development Solutions",
+      "tagline": "Fuel Your Blockchain Dreams with TRON Technology",
+      "url": "https://www.producthunt.com/products/tron-blockchain-development-solutions/launches/tron-blockchain-development-solutions?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "TRON Blockchain Development Solutions enable businesses to build decentralized apps, smart contracts, and tokens with high scalability, fast transactions, and low fees. It’s an ideal platform for industries like gaming, finance, and entertainment.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/XBU6ZREAQKUCRS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/XBU6ZREAQKUCRS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958038",
+      "name": "Balloon Shooter Bow and Arrow",
+      "tagline": "Play Balloon Shooter Bow and Arrow with fun ",
+      "url": "https://www.producthunt.com/products/balloon-shooter-bow-and-arrow-2/launches/balloon-shooter-bow-and-arrow-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "🎯 Balloon Shooter: Bow and Arrow is a fun and addictive arcade game where you shoot arrows to pop colorful balloons. With smooth controls, vibrant visuals, and increasing difficulty, it's perfect for testing your aim and enjoying quick, casual gameplay! 🎈🏹",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/3YC2HDOOZN2CJ6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/3YC2HDOOZN2CJ6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958094",
+      "name": "Physicsim",
+      "tagline": "Physics Simulations Of A-Level Physics Concepts",
+      "url": "https://www.producthunt.com/products/physicsim/launches/physicsim?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Physics Simulations Of A-Level Physics Concepts. Simulate collisions, Snell's Law, projectile motion, alpha particle scattering, cyclotrons and more.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/6IJ3HMWSWV343Q?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/6IJ3HMWSWV343Q?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/PRFGVQ2AYMGZRQ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958102",
+      "name": "QR Code Creator - QRmaker",
+      "tagline": "Create stylish QR codes in seconds – fully customizable.",
+      "url": "https://www.producthunt.com/products/qr-code-creator-qrmaker/launches/qr-code-creator-qrmaker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "QRMaker lets you create beautiful, fully customizable QR codes in seconds. Choose from templates, tweak colors, add logos, and export instantly. Perfect for events, business, or content creators. No design skills needed! Say goodbye to boring QR codes.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/ZUBBTPZQZYHPIK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/ZUBBTPZQZYHPIK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958190",
+      "name": "pika labs",
+      "tagline": "Now pika 2.2 is available",
+      "url": "https://www.producthunt.com/products/pika-labs/launches/pika-labs?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "As a passionate web developer, I’m always excited about how technology continues to push boundaries. You can explore my work and innovations at pikalabsai.io and lumadreammachine.org.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/BLYMAJNLMLKDNM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/BLYMAJNLMLKDNM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958088",
+      "name": "Fundex",
+      "tagline": "The intelligent CRM for raising capital",
+      "url": "https://www.producthunt.com/products/fundex/launches/fundex-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Fundex is a smart fundraising CRM platform built for founders and fund managers. It provides guided tools, investor outreach templates, and a high-quality investor database to help you target, track, and manage your fundraising efforts with precision.",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/MDTOYLJ5BRC6MZ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/MDTOYLJ5BRC6MZ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958103",
+      "name": "Pokemon VS Dog",
+      "tagline": "Which Pokémon would fight your dog?",
+      "url": "https://www.producthunt.com/products/pokemon-vs-dog/launches/pokemon-vs-dog?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Upload a photo of your dog and find its perfect Pokémon battle rival! 🐕⚡ Get a custom poster featuring your dog and its Pokémon opponent, ready to share. Built with Streamlit and the PokéAPI. Would love to hear your feedback and ideas for new features!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/LFKO35K27VAC2F?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Streamlit",
+          "url": "https://www.producthunt.com/r/LFKO35K27VAC2F?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958012",
+      "name": "TechCognita Suite",
+      "tagline": "All-in-One AI, Content & Productivity Toolkit for Creators",
+      "url": "https://www.producthunt.com/products/techcognita-suite/launches/techcognita-suite?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "TechCognita Suite empowers creators, educators, and businesses with a powerful AI-based toolkit for content generation, document automation, smart diagrams, and more — all in one place. Boost your productivity and creativity effortlessly!",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 4,
+      "website": "https://www.producthunt.com/r/4VEVIV3WMUML4P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Vercel",
+          "url": "https://www.producthunt.com/r/4VEVIV3WMUML4P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958187",
+      "name": "Grow, Invest, Own",
+      "tagline": "Stock, Crypto, ETF, Game, Investment",
+      "url": "https://www.producthunt.com/products/grow-invest-own/launches/grow-invest-own?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Grow your investments into a thriving forest. Verda is an early-stage project that turns smart investing into a visual, living experience. You plant a seed by making virtual investments in stocks, ETFs, gold, and crypto.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/MMELK42QILWRON?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Framer",
+          "url": "https://www.producthunt.com/r/MMELK42QILWRON?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958064",
+      "name": "Luminode Me",
+      "tagline": "Everything You Need in One Place.",
+      "url": "https://www.producthunt.com/products/luminode-me/launches/luminode-me-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Luminode Me is an all-in-one platform that integrates notes, calendar, photo gallery, email, cloud storage, and NodeAI to simplify your daily management and organization.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 4,
+      "website": "https://www.producthunt.com/r/BU4MFYSDNLFP4L?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/BU4MFYSDNLFP4L?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "939909",
+      "name": "Genesoft",
+      "tagline": "Software Development team of AI Agents for your next project",
+      "url": "https://www.producthunt.com/products/genesoft/launches/genesoft?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Genesoft is AI Agents workspace to build web integrated with backend service by manage AI Agent instead of write all code by yourself. - Project Manager - Frontend Developer - UX/UI Designer - Technical Project Manager - Software Architect - Backend Developer",
+      "featuredAt": null,
+      "votesCount": 13,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/QGTNBUCJGEJ2MT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/QGTNBUCJGEJ2MT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "956695",
+      "name": "Shelve",
+      "tagline": "Effortless & secure secrets management",
+      "url": "https://www.producthunt.com/products/shelve/launches/shelve-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Effortless OSS secrets management. Run apps without ⁠.env (⁠shelve run), sync via CLI/GitHub, command via Cmd+K. Secure, collaborative, superior DX. Free & Self-hostable.",
+      "featuredAt": "2025-04-27T07:01:00Z",
+      "votesCount": 156,
+      "commentsCount": 7,
+      "website": "https://www.producthunt.com/r/BCYMU67YRMRMWT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/BCYMU67YRMRMWT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        },
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/36FPG7XEGIHJXV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958083",
+      "name": "InstaCaption",
+      "tagline": "free caption generator",
+      "url": "https://www.producthunt.com/products/instacaption/launches/instacaption?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "90% people agonize over captions, hashtags, or fresh meme ideas. So we built something different: an AI-driven caption instantly at your fingertips, no sign-up required, and compatible with every platform you love. Because creativity shouldn’t wait.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/CRJ2WKS3XLBJJQ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Render",
+          "url": "https://www.producthunt.com/r/CRJ2WKS3XLBJJQ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958163",
+      "name": "dumpcam",
+      "tagline": "Capture ideas or practice sessions without wasting storage.",
+      "url": "https://www.producthunt.com/products/dumpcam/launches/dumpcam?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Capture an idea, A talking note, A practice session - anything that doesn't need super powerful quality to fill up your entire phone storage.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/DL2RQEVEV7NK5P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/DL2RQEVEV7NK5P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "943399",
+      "name": "CandiScreen",
+      "tagline": "Hire smarter, faster, and with confidence using AI.",
+      "url": "https://www.producthunt.com/products/candiscreen/launches/candiscreen?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "CandiScreen is an AI-powered candidate pre-screening tool helping recruiters quickly identify top talent. Save hours with automated, data-driven assessments and deliver an engaging, candidate-friendly experience, so you hire smarter, faster, and confidently.",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/CUSS5MALWTN2LT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/CUSS5MALWTN2LT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958192",
+      "name": "SmollBites",
+      "tagline": "Straight forward microservices for your MVPs",
+      "url": "https://www.producthunt.com/products/smollbites/launches/smollbites?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Giving superpowers to your MVPs, Prototypes or Proof of concept with micro-services with a few lines of codes and without complex dependencies.",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/D56VPAI4ONLHVT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/D56VPAI4ONLHVT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958141",
+      "name": "Audience Exchange",
+      "tagline": "Connects audience owners and builders.",
+      "url": "https://www.producthunt.com/products/audience-exchange/launches/audience-exchange?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Audience Exchange connects audience owners with builders to co-create tools, share revenue, and launch products faster — turning existing trust into collaborative ownership.",
+      "featuredAt": null,
+      "votesCount": 14,
+      "commentsCount": 5,
+      "website": "https://www.producthunt.com/r/MAGQJLKM33ODRL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Netlify",
+          "url": "https://www.producthunt.com/r/MAGQJLKM33ODRL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958145",
+      "name": "YourPDF",
+      "tagline": "Pdf manipulation tools",
+      "url": "https://www.producthunt.com/products/yourpdf/launches/yourpdf?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "YourPDF is a free, privacy-focused PDF manipulation tool that runs entirely in your browser. No data ever leaves your device, ensuring complete security for your documents.",
+      "featuredAt": null,
+      "votesCount": 7,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/ZCMI25GHWL2ZGQ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/ZCMI25GHWL2ZGQ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958112",
+      "name": "StockPredictAI",
+      "tagline": "Leveraging AI to provide investors with real-time stock data",
+      "url": "https://www.producthunt.com/products/stockpredictai/launches/stockpredictai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Discover investment opportunities with AI-driven stock predictions and in-depth market analysis.AI Predict Stock provides real-time data, interactive charts, and personalized insights to help you make smarter investment decisions. Multi-language support.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/N2DTA7SMCFIEHF?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/N2DTA7SMCFIEHF?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "957980",
+      "name": "PerfectPrompt",
+      "tagline": "Your personal prompt engineer",
+      "url": "https://www.producthunt.com/products/perfectprompt/launches/perfectprompt?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Enhance your AI prompts in a single click.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/EDKRUOYWUKB3X5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Chrome",
+          "url": "https://www.producthunt.com/r/EDKRUOYWUKB3X5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "957951",
+      "name": "The Coder's Sage",
+      "tagline": "AI Led Learning Platform for Developers",
+      "url": "https://www.producthunt.com/products/the-coder-s-sage/launches/the-coder-s-sage?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "AI Led Learning Platform for developers that enables users to create custom tailored lessons from prompts. Lessons include dev typing simulation, narration and theoretical concepts, all synchronized for a natural learning experience.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/E5GVVDY6CVKTUC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/E5GVVDY6CVKTUC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958108",
+      "name": "Fakelymail - Instant Temporary Emails",
+      "tagline": "Get a disposable email address instantly without signup ",
+      "url": "https://www.producthunt.com/products/fakelymail-instant-temporary-emails/launches/fakelymail-instant-temporary-emails?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "I built Fakelymail to help people who need a quick disposable email address without the hassle of signup. It’s simple, fast, and free. I’d love to hear your feedback and ideas to make it even better. Thanks for checking it out!",
+      "featuredAt": null,
+      "votesCount": 1,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/G54GBN32YGSCPN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/G54GBN32YGSCPN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "956915",
+      "name": "Studio Monk",
+      "tagline": "Unlock your highest potential & Build your Best Self",
+      "url": "https://www.producthunt.com/products/instagram-5/launches/studio-monk?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Engage with a community of like-minded individuals, embrace the peace, and sharpen your focus on becoming the best version of yourself.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/OQATAQFIUJ6CMB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/OQATAQFIUJ6CMB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "957996",
+      "name": "sentiment_analyzer",
+      "tagline": "Analyseur de sentiment d'un texte.",
+      "url": "https://www.producthunt.com/products/sentiment_analyzer/launches/sentiment_analyzer?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Fonctionnement de l'analyse de sentiments Cette application utilise la bibliothèque VADER (Valence Aware Dictionary and sEntiment Reasoner) pour analyser le sentiment d'un texte.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/6Q5ZNSOJKDN7L4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Streamlit",
+          "url": "https://www.producthunt.com/r/6Q5ZNSOJKDN7L4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        },
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/N4VHNX4ARG6DOM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "957933",
+      "name": "MentorAura",
+      "tagline": "Level Your Career With Structured Learning and Mentorship",
+      "url": "https://www.producthunt.com/products/mentoraura/launches/mentoraura?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Cultivating Talent, Inspiring Growth, Shaping the Future of Tech. MentorAura makes tech careers easier. Get a clear plan, 1-on-1 help, and a supportive community. No confusion-just progress. Start growing today! https://mentoraura.com/auth/sign-in",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/E4562FJ5OX3CXP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/E4562FJ5OX3CXP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958062",
+      "name": "WebNovelFinder.com",
+      "tagline": "The cross-platform companion for web novel enthusiasts",
+      "url": "https://www.producthunt.com/products/webnovelfinder-com/launches/webnovelfinder-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "WebNovelFinder is the ultimate cross-platform companion for web novel enthusiasts. With over 115,000 novels and 9.5 million chapters indexed from multiple platforms, we're enhancing how readers discover, track, and enjoy web fiction.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/NACY663H2UMKU3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/NACY663H2UMKU3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/V2OK67TBVHQSGY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "957935",
+      "name": "cKALARMe FIT",
+      "tagline": "Shop with confidence, discover what items are best for you!",
+      "url": "https://www.producthunt.com/products/ckalarme-fit/launches/ckalarme-fit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "cKALARMe FIT helps you make smarter fashion choices by analysing clothing product images and providing personalised style recommendations tailored to your unique body features. Shop confidently and reduce returns and lets help the environment whilst doing so!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/MMJ7NPNC7UQN4M?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/5UATN25JQHGPZF?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        },
+        {
+          "type": "Chrome",
+          "url": "https://www.producthunt.com/r/MMJ7NPNC7UQN4M?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/G7WMLQ7R6YIU24?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "956584",
+      "name": "Near Me Liquor Store",
+      "tagline": "Your Guide to the Best Booze Nearby in a Snap!",
+      "url": "https://www.producthunt.com/products/near-me-liquor-shop/launches/near-me-liquor-store?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Hey Party people! nearmeliquorstore.net is your go-to guide to find the best bars near you. Quality vibes, top drinks, no compromises. Booze smarter, not harder!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/FQSZ3P3BK7XNIX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/FQSZ3P3BK7XNIX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "956840",
+      "name": "Dubai Property Calculator",
+      "tagline": "Compare off-plan Dubai projects forecast ROI in any currency",
+      "url": "https://www.producthunt.com/products/dubai-property-calculator/launches/dubai-property-calculator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Compare Dubai’s top off-plan projects with ease. Our smart tools calculate ROI in AED and your home currency—even with depreciation—so you can invest wisely, forecast returns, and align with your budget confidently.",
+      "featuredAt": null,
+      "votesCount": 1,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/HQDOWB2BJJHLRT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/HQDOWB2BJJHLRT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/7Z3WSRSIXVA3ZY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/7SMVJ7QWIMYC3X?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/GYLT6AXQD2WLLL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958085",
+      "name": "Smart Scroll",
+      "tagline": "Transform your volume knob into a scroll wheel",
+      "url": "https://www.producthunt.com/products/smart-scroll/launches/smart-scroll?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Smart Scroll is a Windows utility that transforms your volume knob into a smooth scroll wheel with intelligent mode switching.",
+      "featuredAt": null,
+      "votesCount": 3,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/HJUGFPZOO3EKYG?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/EIDRBF6FZYT54P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/HJUGFPZOO3EKYG?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958046",
+      "name": "Think trace",
+      "tagline": "Think Trace – Psychology Test App 🧠✨",
+      "url": "https://www.producthunt.com/products/think-trace/launches/think-trace?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Unlock the secrets of your mind with Think Trace, the ultimate psychology test app! Discover your personality, strengths, hidden talents, and mental patterns through 20+ fun and insightful psychological tests.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/SIATASOYZMKTKX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/SIATASOYZMKTKX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958001",
+      "name": "Free Tools website ",
+      "tagline": "Free seo, writing,and productivity tools",
+      "url": "https://www.producthunt.com/products/free-tools-website/launches/free-tools-website?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "BestOnlineTools.in offers a wide range of free, easy-to-use online tools for, writing, editing, calculations, image conversion, and more. Boost your productivity",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/Q6YRKUR2FO2TQP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/Q6YRKUR2FO2TQP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/JZPVENVYGF5INP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "957990",
+      "name": "QRCode IA",
+      "tagline": "Smart QR codes that adapt by time, track scans & convert",
+      "url": "https://www.producthunt.com/products/qrcode-ia/launches/qrcode-ia?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "QRCode IA lets you create dynamic QR codes with time-based redirection and real-time analytics, all from a user-friendly dashboard. You can redirect to different links based on the hour of the day—without ever needing to reprint a code.",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 8,
+      "website": "https://www.producthunt.com/r/F2JDSU4R2E4KVI?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/F2JDSU4R2E4KVI?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "957930",
+      "name": "TalkToGitHub",
+      "tagline": "Turn GitHub repositories into conversations",
+      "url": "https://www.producthunt.com/products/talktogithub/launches/talktogithub?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Start chatting with GitHub repositories within seconds. No more countless hours of sifting through endless, obscure docs. Why read when you can just ask and get answers instantly 🚀",
+      "featuredAt": null,
+      "votesCount": 58,
+      "commentsCount": 11,
+      "website": "https://www.producthunt.com/r/S5RRZAE7B4DJ5E?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/S5RRZAE7B4DJ5E?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "616328",
+      "name": "OnRanko",
+      "tagline": "Data-Driven AI SEO Agents: Work Less, Rank Higher",
+      "url": "https://www.producthunt.com/products/onranko/launches/onranko?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Just enter your URL — our smart, data-driven AI SEO agents handle everything from personalized SEO Strategy, keyword analysis to audits and backlink ideas. No more guesswork, no more busywork. Save time, cut costs, and focus on growing your business.",
+      "featuredAt": null,
+      "votesCount": 42,
+      "commentsCount": 18,
+      "website": "https://www.producthunt.com/r/6GQW7JY4XEX45H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Twitter",
+          "url": "https://www.producthunt.com/r/WV24WZYD534AZT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/6GQW7JY4XEX45H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "LinkedIn",
+          "url": "https://www.producthunt.com/r/SKUYKUQFLA2XBV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958028",
+      "name": "style2image",
+      "tagline": "Create Image Prompts, Art Prompts & Drawing Prompts for AI",
+      "url": "https://www.producthunt.com/products/style2image/launches/style2image?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "your new AI-powered prompt gallery for artists, designers & AI enthusiasts! 🖌️ Instantly generate & customize art prompts 🌸 Ghibli-style backgrounds & pastel UI 🔗 Topic-specific generators & community showcase 🚀 Remix, explore, get inspired!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/QEIMED6YDCQNXX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/QEIMED6YDCQNXX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "957744",
+      "name": "Copilot Audit",
+      "tagline": "Excel add-in for auditors (DataSnipper alternative)",
+      "url": "https://www.producthunt.com/products/copilot-audit/launches/copilot-audit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Excel add-in for auditors that automates document processing, data extraction and validation. Save up to 80% time on audit tests of details and controls. Try it free.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/OK6OHYJ45UDNAX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/OK6OHYJ45UDNAX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Microsoft",
+          "url": "https://www.producthunt.com/r/W7IDMSNTOWHNRF?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "955257",
+      "name": "HabitTracker",
+      "tagline": "Codepog/wander",
+      "url": "https://www.producthunt.com/products/metaverse-mask/launches/habittracker-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Instead of just showing screen time, we help you understand it — and do something about it.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/AXUXER3EEVXGD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/AXUXER3EEVXGD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "957972",
+      "name": "PitchMeBaby",
+      "tagline": "Sell weird stuff in 60 seconds. Get paid.",
+      "url": "https://www.producthunt.com/products/pitchmebaby/launches/pitchmebaby?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Got 60 seconds? Pitch a random product to an AI Voice Agent. Score 8 or higher and get paid instantly in USDC. No signup needed — just pitch, score, and get paid! Payments powered by PaymanAI",
+      "featuredAt": null,
+      "votesCount": 10,
+      "commentsCount": 4,
+      "website": "https://www.producthunt.com/r/Z4UIHHZS7GYGOE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/Z4UIHHZS7GYGOE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958056",
+      "name": "Viral Video Booster",
+      "tagline": "Viral Video Booster is a free, open-source web tool.",
+      "url": "https://www.producthunt.com/products/viral-video-booster/launches/viral-video-booster?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Viral Video Booster is a free, open-source web tool that instantly generates video titles, hashtags, SEO descriptions, and meta tags without requiring any backend or installation. With AI-inspired title templates.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/MVN6MGFAHFQWP4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/MVN6MGFAHFQWP4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958048",
+      "name": "File Renamer",
+      "tagline": "(FREE) A simple tool to batch rename your files.",
+      "url": "https://www.producthunt.com/products/file-renamer/launches/file-renamer?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Renaming multiple files manually can be tedious and time-consuming. File Renamer helps you batch rename dozens or hundreds of files in seconds with simple, intuitive controls. Save time, stay organized, and make file management effortless.(FREE)",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/K572VF2J52FJU6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Gumroad",
+          "url": "https://www.producthunt.com/r/K572VF2J52FJU6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958092",
+      "name": "Pomo Focus",
+      "tagline": "Pomodoro Timer. Stays on, even if you close the tab.",
+      "url": "https://www.producthunt.com/products/pomo-focus/launches/pomo-focus?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Focus without interruptions. This Pomodoro timer keeps going even if you close the tab. No accounts, no tracking, light/dark mode, and built with Elixir.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/UOBGA6AAMA7BS4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/CT2FOAR4SC3AG6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/UJTUVFIFFO77HI?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/UOBGA6AAMA7BS4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958129",
+      "name": "Ryvlar",
+      "tagline": "Ryvlar: Privacy-First Discussions, No Signups, No Tracking.",
+      "url": "https://www.producthunt.com/products/ryvlar/launches/ryvlar?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Ryvlar is a privacy-first discussion platform with no signups, no tracking. Engage in meaningful conversations with ephemeral usernames and custom trained AI moderation. Your Platform, your privacy.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/HJ77QGMHL6VE6K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/HJ77QGMHL6VE6K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/DBY2NXW4OFDSL4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958054",
+      "name": "ThorBlock",
+      "tagline": "Smash annoying ads and UI elements",
+      "url": "https://www.producthunt.com/products/thorblock/launches/thorblock?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Thor's Hammer - Wield Mjolnir in your browser to smash away pesky popups and UI elements with thunderous satisfaction! ⚡ Wave goodbye to annoying cookie banners and notifications with a mighty swing of your divine hammer.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/A4D34OK5FNTEGS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Gumroad",
+          "url": "https://www.producthunt.com/r/A4D34OK5FNTEGS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958128",
+      "name": "Debly",
+      "tagline": "Track your shifts. Know your pay. Stay in control.",
+      "url": "https://www.producthunt.com/products/debly/launches/debly?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Debly is a simple and smart shift tracker, that helps you log your hours, calculate your estimated monthly pay, and understand your take-home earnings, including deductions like tax, national insurance, and pension.",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/4XFNLT4ERWFZJ7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/4XFNLT4ERWFZJ7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958115",
+      "name": "No As A Service",
+      "tagline": "Creative AI-Powered Refusals",
+      "url": "https://www.producthunt.com/products/no-as-a-service/launches/no-as-a-service?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Get creative, witty ways to say No with AI-generated refusals and memes. The polite, fun way to decline requests and ask ')",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/BCUL4RJC3DED2B?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/BCUL4RJC3DED2B?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "957513",
+      "name": "Maine Mortgage Calculator",
+      "tagline": "Free monthly payment estimator",
+      "url": "https://www.producthunt.com/products/maine-mortgage-calculator/launches/maine-mortgage-calculator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Calculate your Maine mortgage payments with our free calculator. Get accurate monthly payment estimates, amortization schedules, and loan breakdowns for Maine homes.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/DNY4VSEH4FWKA5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/DNY4VSEH4FWKA5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "958027",
+      "name": "VidLinker",
+      "tagline": "Upload video directly to YouTube without sharing credentials",
+      "url": "https://www.producthunt.com/products/vidlinker/launches/vidlinker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "VidLinker is a smart platform that allows freelancers and video editors to upload final videos directly to a client’s YouTube account—without ever needing their login credentials. Clients can securely review, approve, or reject videos before they go live.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/YUIL7XEXBDKL52?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29",
+      "productLinks": [
+        {
+          "type": "Render",
+          "url": "https://www.producthunt.com/r/YUIL7XEXBDKL52?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298616%29"
+        }
+      ]
+    },
+    {
+      "id": "957943",
+      "name": "PlantID",
+      "tagline": "Identify plants and get care guide in seconds ",
+      "url": "https://www.producthunt.com/products/plantid/launches/plantid?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Instantly identify any plant and get detailed care instructions with PlantID's AI-powered plant recognition technology. Free plant identification app.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 5,
+      "website": "https://www.producthunt.com/r/CTCNXGUAPOEHVJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/CTCNXGUAPOEHVJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/LS3OCKGERGLQPR?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "949328",
+      "name": "PageOn.AI 2.0",
+      "tagline": "Cursor for Visual Communication, beyond slides",
+      "url": "https://www.producthunt.com/products/pageon-ai/launches/pageon-ai-2-0?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Tired of static slides? PageOn.AI revolutionizes visual communication with AI Agents that get you. Tell them your goal—they’ll plan, research, and design dynamic, stunning pages. It’s Visualized Notion for Storytellers. Build like Legos, visualize with AI.",
+      "featuredAt": "2025-04-27T07:01:00Z",
+      "votesCount": 754,
+      "commentsCount": 177,
+      "website": "https://www.producthunt.com/r/TVHKQEBB4YJ52P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/TVHKQEBB4YJ52P?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957981",
+      "name": "Kinsta Coupon Code 2025",
+      "tagline": "Kinsta coupon code & discounts offers",
+      "url": "https://www.producthunt.com/products/kinsta-coupon-code-2025/launches/kinsta-coupon-code-2025?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Looking for Kinsta coupon codes? Kinsta doesn’t offer traditional coupons, but you can get 2 months free on annual plans or 1 month free on select plans.",
+      "featuredAt": null,
+      "votesCount": 1,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/WMTLA7D46ZASZ5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/WMTLA7D46ZASZ5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/2LMKB5P56IF4EX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/VMYBVD7GLQMNKQ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958052",
+      "name": "MVerse",
+      "tagline": "Your Verse, Your Rules: Infinite Possibilities!",
+      "url": "https://www.producthunt.com/products/mverse/launches/mverse?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Introducing MVerse — a platform that combines the best elements of social networking, media sharing, real-time communication, and community building. Create your own customisable 'verse' and connect, create, and grow on your own terms. Launching in June 2025.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/U36S67DGXQC5OD?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/U36S67DGXQC5OD?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957944",
+      "name": "Pet to Human",
+      "tagline": "Transform your pet into realistic human with AI",
+      "url": "https://www.producthunt.com/products/pet-to-human-2/launches/pet-to-human-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Pet-to-human AI is an advanced transformation platform that turns your pet photos into realistic human versions. Simply upload any clear photo of your pet, select your preferred gender for the transformation, and watch result.",
+      "featuredAt": null,
+      "votesCount": 1,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/TIUZKB4VNBFU7Q?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/TIUZKB4VNBFU7Q?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957991",
+      "name": "SEO Engineer",
+      "tagline": "Turn Your Website Into an SEO Powerhouse.",
+      "url": "https://www.producthunt.com/products/seo-engineer/launches/seo-engineer?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "SEOEngineer is your AI-powered SEO specialist. Analyze, optimize, and grow your online presence with smarter strategies, tailored insights, and lightning-fast execution — all without the complexity.",
+      "featuredAt": null,
+      "votesCount": 22,
+      "commentsCount": 14,
+      "website": "https://www.producthunt.com/r/OE26BV5TMINE5T?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/OE26BV5TMINE5T?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958159",
+      "name": "Buho",
+      "tagline": "Financial clarity for builders without finance experience",
+      "url": "https://www.producthunt.com/products/buho/launches/buho?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Skip spreadsheets. With Buho, startups can create full financial models, build dynamic scenarios, track runway, monitor cash through Brex, and share insights effortlessly giving founders' real-time clarity and control without ever needing complex spreadsheets.",
+      "featuredAt": null,
+      "votesCount": 9,
+      "commentsCount": 9,
+      "website": "https://www.producthunt.com/r/AAKAN2GZIYQC6M?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/AAKAN2GZIYQC6M?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957964",
+      "name": "WhatsApp Automation Studio",
+      "tagline": "Automate WhatsApp messaging with a fun, open-source GUI.",
+      "url": "https://www.producthunt.com/products/whatsapp-automation-studio/launches/whatsapp-automation-studio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "WhatsApp Automation Studio is an open-source desktop app that simplifies bulk messaging on WhatsApp Web. Queue up messages, love notes, and automate pranks or reminders through an intuitive GUI. Built with Python, Selenium & PyQt5 for cross-platform ease.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/DICPJ32VJRIGXC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/DICPJ32VJRIGXC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/EJCKFJZ3X6E6J4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958013",
+      "name": "Online english speaking course in India",
+      "tagline": "personal trainer for Online english speaking course in India",
+      "url": "https://www.producthunt.com/products/online-english-speaking-course-in-india/launches/online-english-speaking-course-in-india?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Enroll with the best personal trainer for Online English Speaking Course in India in nominal fees and get spoken English teacher for one to one coaching.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/TFOCCIZNHBTUSW?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/TFOCCIZNHBTUSW?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/ZXS6ZBOWCW773X?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/ETXIRLCXSDU3BP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958005",
+      "name": "Solo Quests",
+      "tagline": "Go Solo. Level up with Quests.",
+      "url": "https://www.producthunt.com/products/solo-quests/launches/solo-quests?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Solo Quests: Gamified Growth Turn your goals into “Quests,” earn XP, rise through ranks, and unlock new titles as you build lasting routines.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/GFBCV7T4VHVI5D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/GFBCV7T4VHVI5D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958049",
+      "name": "Character Headcanon Generator",
+      "tagline": "Create unique character stories",
+      "url": "https://www.producthunt.com/products/character-headcanon-generator-6/launches/character-headcanon-generator-6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Use our AI-powered Character Headcanon Generator to create unique and engaging character headcanons. Perfect for fanfiction writers, roleplayers, and character enthusiasts.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/UBEVGDV7WMCWMM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/UBEVGDV7WMCWMM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957441",
+      "name": "Rplyr",
+      "tagline": "Send Emails to AI (email@rplyr.com)",
+      "url": "https://www.producthunt.com/products/rplyr/launches/rplyr?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Send emails to AI — no setup required. Forward threads, share attachments, or ask anything to email@rplyr.com (try it!). Tired of repetitive email tasks? Create personal agents with dedicated addresses to automate them. Get instant replies, all in your inbox.",
+      "featuredAt": null,
+      "votesCount": 29,
+      "commentsCount": 73,
+      "website": "https://www.producthunt.com/r/D3BEXME5OP36ID?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/D3BEXME5OP36ID?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958055",
+      "name": "Play Flappy Bird Online",
+      "tagline": "Flappy bird game unblocked",
+      "url": "https://www.producthunt.com/products/play-flappy-bird-online-2/launches/play-flappy-bird-online-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Play Flappy Bird online for free! Enjoy the Flappy Bird game, including Flappy Bird 2 and unblocked versions.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/YIUOCQTKO6JRHY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/YIUOCQTKO6JRHY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958164",
+      "name": "Planlord",
+      "tagline": "Simplify Your Travel Itinerary with Planlord",
+      "url": "https://www.producthunt.com/products/planlord/launches/planlord?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Planlord is the simplest way to manage your trips. Quickly organize your itinerary, stay on top of your plans, and keep everything in one clean, easy-to-use place. Focus on enjoying your travels — we'll handle the details.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/VB3NXUUGX5TU5D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/VB3NXUUGX5TU5D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958019",
+      "name": "Gemini Document Processor",
+      "tagline": "Open-source tool for processing documents with Gemini AI",
+      "url": "https://www.producthunt.com/products/gemini-document-processor/launches/gemini-document-processor?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "A powerful document processing tool that uses Google's Gemini AI to generate high-quality Thai language summaries from PDF and EPUB files, with image extraction and Obsidian integration. - kidpeterpan/gemini-document-processor",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/HWDICJKZTXKXVG?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/HWDICJKZTXKXVG?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957939",
+      "name": "Connections-hint ",
+      "tagline": "Connections Hint Today ",
+      "url": "https://www.producthunt.com/products/connections-hint/launches/connections-hint?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Connections is one of the most popular word games from The New York Times—and it’s easy to see why. Just like Wordle, it resets every day at midnight with a brand-new challenge.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/ILR3WIGNWQ6HJM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/ILR3WIGNWQ6HJM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/AY6YUBSG57A3TP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957779",
+      "name": "work-on.club",
+      "tagline": "share what you're working on",
+      "url": "https://www.producthunt.com/products/work-on-club/launches/work-on-club?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "it's like /now pages but like StumbleUpon - curate a doc of things you're actively working on to share with others, then discover random or top docs from others",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/ISNNXY2LARUTK5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/ISNNXY2LARUTK5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958127",
+      "name": "Automation bots in python for youtube",
+      "tagline": "Explore my collection of digital bots",
+      "url": "https://www.producthunt.com/products/automation-bots-in-python-for-youtube/launches/automation-bots-in-python-for-youtube?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Whether you're a content creator, social media manager, or business owner, these bots are perfect for saving time, automating repetitive tasks, and optimizing your workflow. Jumpstart your productivity with the help of cutting-edge automation.",
+      "featuredAt": null,
+      "votesCount": 7,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/R2KEOFQIT3AA55?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/R2KEOFQIT3AA55?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/U2MQJZAVBNK2S3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958050",
+      "name": "Gity",
+      "tagline": "The Next Generation Git Assistant",
+      "url": "https://www.producthunt.com/products/gity/launches/gity?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Gity is an AI-driven tool that helps developers quickly analyze, understand, and query GitHub repositories. Gity transforms raw code into structured, searchable insights. It allows you to interact with repositories in a way that's intuitive and efficient.",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/NCF7KPQGUIVIBW?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/NCF7KPQGUIVIBW?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "957960",
+      "name": "Track thread: Silence the Is it ready?",
+      "tagline": "End 'Is my dress ready?' calls. Free. No sign-in. Ever",
+      "url": "https://www.producthunt.com/products/track-thread-silence-the-is-it-ready/launches/track-thread-silence-the-is-it-ready?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Track thread helps tailors and boutiques automate order updates. Share real-time status with customers via simple links - no sign-ins needed. Free forever, saves hours of calls, and works on any device. Finally, focus on sewing instead of answering phones!\"",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/RTNXQOGOXCDQ7F?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29",
+      "productLinks": [
+        {
+          "type": "Render",
+          "url": "https://www.producthunt.com/r/RTNXQOGOXCDQ7F?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        },
+        {
+          "type": "Render",
+          "url": "https://www.producthunt.com/r/YOMATCPSZBGGJU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298617%29"
+        }
+      ]
+    },
+    {
+      "id": "958090",
+      "name": "Comic Store List Directory",
+      "tagline": "Discover the best comic stores, and back issues near you.",
+      "url": "https://www.producthunt.com/products/comic-store-list-directory/launches/comic-store-list-directory?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Discover top comic shops, trusted dealers, and the best comic books near you. Our directory makes it easy to explore local favorites and rare finds nationwide. Search by store name, address, or phone number — and add new shops to keep the community growing!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/B42X3BQGQOGEBT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/B42X3BQGQOGEBT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957771",
+      "name": "not-an-asshole.com",
+      "tagline": "public rating",
+      "url": "https://www.producthunt.com/products/not-an-asshole-com/launches/not-an-asshole-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "it's simple - rate people as an asshole or not i don't believe this technology has existed before and i am excited to see what you can do with it",
+      "featuredAt": null,
+      "votesCount": 7,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/NJ3I5JCQIZLHY4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/NJ3I5JCQIZLHY4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958178",
+      "name": "The Bill",
+      "tagline": "AI-powered expense-splitting app",
+      "url": "https://www.producthunt.com/products/the-bill/launches/the-bill?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Stop calculating, start scanning. The Bill transforms how you manage group expenses, handling everything from receipt capture to fair settlement in just seconds.",
+      "featuredAt": null,
+      "votesCount": 14,
+      "commentsCount": 5,
+      "website": "https://www.producthunt.com/r/JFKIT7BXZO7H3K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/JFKIT7BXZO7H3K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/DYGQGLQDMJVHK3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "956712",
+      "name": "AI Presentation Narrator",
+      "tagline": "Free AI voiceovers for presentations",
+      "url": "https://www.producthunt.com/products/ai-presentation-narrator/launches/ai-presentation-narrator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Plus AI's presentation narrator can convert your slide decks into professionally-narrated videos in minutes.",
+      "featuredAt": "2025-04-27T07:01:00Z",
+      "votesCount": 161,
+      "commentsCount": 32,
+      "website": "https://www.producthunt.com/r/242ZUQG3ZACW2S?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/242ZUQG3ZACW2S?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958101",
+      "name": "Once Human",
+      "tagline": "Post-apocalyptic multiplayer open-world survival game",
+      "url": "https://www.producthunt.com/products/once-human/launches/once-human?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Join forces with friends to fight for survival, construct your sanctuary, and conquer terrifying aberrations to unravel the truth behind the apocalypse. Do you still hold the answer to what it means to be human?",
+      "featuredAt": "2025-04-27T07:01:00Z",
+      "votesCount": 199,
+      "commentsCount": 18,
+      "website": "https://www.producthunt.com/r/CWUVNPSDI3IY7D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/CWUVNPSDI3IY7D?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/KKDY257LESGEAM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957994",
+      "name": "TheIdeas",
+      "tagline": "Directory for everything you need in startup ",
+      "url": "https://www.producthunt.com/products/theideas/launches/theideas?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Startup ecosystem directory.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/NJS4IXQ5AINUAJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/NJS4IXQ5AINUAJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957970",
+      "name": "RightNow AI 'V2.0'",
+      "tagline": "Vibe coding for CUDA engineers",
+      "url": "https://www.producthunt.com/products/rightnow-ai/launches/rightnow-ai-v2-0-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Automatically profile, detect bottlenecks, and optimize your CUDA kernels for peak performance.",
+      "featuredAt": "2025-04-27T07:01:00Z",
+      "votesCount": 355,
+      "commentsCount": 58,
+      "website": "https://www.producthunt.com/r/UTZSQEMUV75OPY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/UTZSQEMUV75OPY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957836",
+      "name": "Formgen AI",
+      "tagline": "Create Google Forms from text. Instantly with AI",
+      "url": "https://www.producthunt.com/products/formgen-ai/launches/formgen-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Formgen AI lets you create Google Forms just by describing what you want in plain English. It uses AI to turn your text into a fully structured Google Form in your own Google account. No manual editing, no copying templates. Just type, generate, and share.",
+      "featuredAt": null,
+      "votesCount": 15,
+      "commentsCount": 5,
+      "website": "https://www.producthunt.com/r/BZGGOLUE5C4AEE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/BZGGOLUE5C4AEE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958140",
+      "name": "Cold Shower",
+      "tagline": "Start Every Day Like A Warrior",
+      "url": "https://www.producthunt.com/products/cold-shower/launches/cold-shower-5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "A simple app to track cold showers, ice baths, and natural dips. No accounts, no ads, no pressure. Just a clean way to track your progress.",
+      "featuredAt": null,
+      "votesCount": 14,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/F6PJ7KFCC6K2N4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Firebase",
+          "url": "https://www.producthunt.com/r/F6PJ7KFCC6K2N4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/3YRPEWRH3MIDAX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957977",
+      "name": "NutriTrek",
+      "tagline": "AI powered meal analysis",
+      "url": "https://www.producthunt.com/products/nutritrek/launches/nutritrek?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Log your meals with photos, track nutrition, and gain insights into your eating habits with NutriTrek.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/7ED7ZSDYFL4FOP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/7ED7ZSDYFL4FOP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/3NQ5L3BLCHPKLX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957932",
+      "name": "Recipe Lens AI",
+      "tagline": "AI-Powered Recipe Generator & Meal Tracker",
+      "url": "https://www.producthunt.com/products/recipe-lens-ai/launches/recipe-lens-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Turn food photos into recipes with Recipe Lens! Snap a dish or your ingredients and get instant recipes, nutrition info, and a calorie tracker. Build your own cookbook. Smart cooking made easy. Try it free today!",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/FX2R45C23XFBVN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/FX2R45C23XFBVN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/RUSWKTYLI4MFV5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "944351",
+      "name": "Arcella",
+      "tagline": "AI-driven healthcare sales intelligence—100% HIPAA compliant",
+      "url": "https://www.producthunt.com/products/arcella/launches/arcella?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Arcella is an AI-powered sales intelligence platform built for healthcare and medical device teams. We automate compliance checks, enrich leads with real-time data, and streamline outreach, so reps can focus on genuine relationships.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/CVCYZNXBOB3Q5M?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/CVCYZNXBOB3Q5M?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957942",
+      "name": "UDF to PDF Converter",
+      "tagline": "Convert udf files online free",
+      "url": "https://www.producthunt.com/products/free-tool-now/launches/udf-to-pdf-converter?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Convert Universal Disk Format (UDF) files to PDF documents instantly with our free online tool. No software installation required, secure browser-based conversion for optical media and more.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/UTG67W724G7URB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/UTG67W724G7URB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957936",
+      "name": "Lure AI - Dating Coach App",
+      "tagline": "Your AI Dating Expert and Wingman.",
+      "url": "https://www.producthunt.com/products/lure-ai-dating-coach-app/launches/lure-ai-dating-coach-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Lure AI is your personal AI dating expert and assistant. Get smart replies, optimized profiles, and perfect pickup lines. Analyze chats, boost confidence, and stand out—everything you need to succeed in modern dating, all in one app.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/D55KR3WKXG2K4O?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/D55KR3WKXG2K4O?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958126",
+      "name": "Freshcado",
+      "tagline": "AI Food Saver: Expiration Tracker",
+      "url": "https://www.producthunt.com/products/freshcado/launches/freshcado?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Easily track food expiration dates and reduce waste using AI voice recognition. Add items by voice, get reminders, and keep your pantry organized. Perfect for both personal use and businesses like cafes or bars.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/CRKVO6KNDZCTKM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/CRKVO6KNDZCTKM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957193",
+      "name": "DiliDaly",
+      "tagline": "Practice Trading. Trade Risk-Free. Win Real Money",
+      "url": "https://www.producthunt.com/products/dilidaly/launches/dilidaly?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "A stock market simulation to practice trading and compete with others. Every player is given 1 million cash and 5 random stocks when you sign up and the leaderboards are reset every Sunday.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/VBKWCAFXPQHHWA?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/VBKWCAFXPQHHWA?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/TJ5SWSOM6Z2AIL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/K6SSSCQQUUDWWB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Reddit",
+          "url": "https://www.producthunt.com/r/54PLYFVJZACWSU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/JS5OZKT2MCUQLK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/AJCWQJDZ66VKZI?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/ZAPT7ZVEVYEYRM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958043",
+      "name": "AffirmAura",
+      "tagline": "Personalised AI affirmations app for your emotions & mindset",
+      "url": "https://www.producthunt.com/products/affirmaura/launches/affirmaura?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Speak or type how you feel — AffirmAura’s AI listens, understands, and creates personalised affirmations based on your emotions and mindset, delivered with soothing voice and calming music to uplift and empower you daily.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/J2JOJLJP5RBF2K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/J2JOJLJP5RBF2K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957995",
+      "name": "JSON Formatter Viewer &&Free Online Tool",
+      "tagline": "Instantly format, beautify, and view your JSON data online.",
+      "url": "https://www.producthunt.com/products/json-formatter-viewer-free-online-tool/launches/json-formatter-viewer-free-online-tool?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Format & Beautify JSON Minify JSON Tree View for easy navigation Copy & Download JSON Free & No Sign-Up Required Built for developers, by a developer",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/TGT64P4LGH47VE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Vercel",
+          "url": "https://www.producthunt.com/r/TGT64P4LGH47VE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "949429",
+      "name": "Features to Add in Grocery Delivery App",
+      "tagline": "Features of grocery delivery app",
+      "url": "https://www.producthunt.com/products/features-to-add-in-grocery-delivery-app/launches/features-to-add-in-grocery-delivery-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Discover the top Features to Add in Grocery Delivery App to boost sales and enhance customer experience. Explore key functionalities that drive efficiency and customer satisfaction. Learn more at Xperge.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/J6VUO62GILAIXS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/J6VUO62GILAIXS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/WQP2L4KOMBEEQ5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        },
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/3R2MR2AICX6BUM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "957846",
+      "name": "AquaFlower",
+      "tagline": "Self Install Smart Drip Irrigation System",
+      "url": "https://www.producthunt.com/products/home-18/launches/aquaflower?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Aqua Flower: Smart drip irrigation solutions for efficient and eco-friendly gardening. Discover the best irrigation system for your home or garden. 30 minute self install.",
+      "featuredAt": null,
+      "votesCount": 1,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/L4FTHVKDMOM2XE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/L4FTHVKDMOM2XE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+        }
+      ]
+    },
+    {
+      "id": "958040",
+      "name": "The $10,000 Development Competition",
+      "tagline": "website development, no coding, website design, ai-code, ai",
+      "url": "https://www.producthunt.com/products/the-10-000-development-competition/launches/the-10-000-development-competition?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "An AI-powered web development platform that transforms natural language descriptions into functional websites. It allows users with no coding experience to create professional websites.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/RVGHSW5GUS6HN7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/RVGHSW5GUS6HN7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/IME2SNQC7FIBGX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/H6EYX57YQGYM2L?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958082",
+      "name": "GoMars",
+      "tagline": "Automate your content creation with Canva Templates",
+      "url": "https://www.producthunt.com/products/gomars/launches/gomars?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Tired of manually creating canva templates? Well now you're able to automate the creation process by easy uploading CSV data and letting GoMars do the rest 🚀",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/UDQV732TGRVSKD?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/UDQV732TGRVSKD?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957495",
+      "name": "Moodia App",
+      "tagline": "One app. All the support.",
+      "url": "https://www.producthunt.com/products/moodia/launches/moodia-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Moodia is your mental wellness HQ. start with Moodia Mind’s self-help tools like meditation, sleep, and journaling. Our smart AI handover connects you to Moodia Helper & Doctor when you need real people, not just pixels.",
+      "featuredAt": null,
+      "votesCount": 17,
+      "commentsCount": 4,
+      "website": "https://www.producthunt.com/r/SJMSSCXTNN6R3U?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/CR4DBX47G6QXF2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Play Store",
+          "url": "https://www.producthunt.com/r/74EJQJRQDZDUML?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/SJMSSCXTNN6R3U?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/WIJNZLNE3C5OBM?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "955464",
+      "name": "Modpackker",
+      "tagline": "Easily craft your Minecraft modpacks!",
+      "url": "https://www.producthunt.com/products/modpackker/launches/modpackker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Easily create Minecraft modpacks without any code knowledge. View detailed information about projects and more",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 4,
+      "website": "https://www.producthunt.com/r/7XFA7HY3U3UWQR?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Vercel",
+          "url": "https://www.producthunt.com/r/7XFA7HY3U3UWQR?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958061",
+      "name": "Positron AI",
+      "tagline": "Powering positive intelligence",
+      "url": "https://www.producthunt.com/products/positron-ai/launches/positron-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Positron AI - a high-performance, energy-efficient AI inference server for large language models. Atlas delivers 3-4x better performance per dollar than GPUs, supports standard APIs, and is fully built in the USA. Investor contact: thomassohmers@gmail.com",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/GWWVLK7NRBTF76?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/GWWVLK7NRBTF76?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958162",
+      "name": "FateSpin",
+      "tagline": "The yes or no wheel turns indecision into action",
+      "url": "https://www.producthunt.com/products/fatespin/launches/fatespin?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "FateSpin's yes or no wheel helps you make quick decisions when you're stuck between choices. Spin our random decision wheel and let fate guide your next move.",
+      "featuredAt": null,
+      "votesCount": 13,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/2RTKRL5DNURBLP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/2RTKRL5DNURBLP?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957979",
+      "name": "LoveableApps.ai",
+      "tagline": "The community directory for apps built with Lovable.dev",
+      "url": "https://www.producthunt.com/products/loveableapps-ai/launches/loveableapps-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Discover and explore applications, creators, learning resources, and more built with Lovable.dev",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/RUXCLJYWBXOLGE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/RUXCLJYWBXOLGE?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/GKOLRXKCAGGDA3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958079",
+      "name": "QuitIt: Quit Smoking Tracker",
+      "tagline": "Quit smoking for good with QuitIt",
+      "url": "https://www.producthunt.com/products/quitit-quit-smoking-tracker/launches/quitit-quit-smoking-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Bye-Bye Cigarettes. Hello Freedom! Ready to kick the habit and breathe easy again? QuitIt: Stop Smoking Tracker isn’t just another quit-smoking app—it’s your pocket-sized quit coach, cheerleader, and distraction buddy all rolled into one.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/BCMHZ4F62LZRUC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/BCMHZ4F62LZRUC?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958053",
+      "name": "Portfolio",
+      "tagline": "Personal website",
+      "url": "https://www.producthunt.com/products/portfolio-7/launches/portfolio-b6c05ed2-b56d-463a-9865-3bb1b2daa165?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "My name is Ansif, I’m web dev and full stack software engineer. I have a passion for all things technology and design, from software engineering & machine learning to UI/UX & 3D graphics.",
+      "featuredAt": null,
+      "votesCount": 6,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/5FTM2MQXIFU5YV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Netlify",
+          "url": "https://www.producthunt.com/r/5FTM2MQXIFU5YV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "943960",
+      "name": "Clarior Mind",
+      "tagline": "Structured AI for Mental Clarity & Relentless Momentum",
+      "url": "https://www.producthunt.com/products/clarior-mind/launches/clarior-mind?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "A structured AI agents system that breaks overthinking, decision fatigue, and mental fog. No therapy. No surface-level chat. Just clarity, structure, and momentum. Built from real burnout. Designed to move you forward - starting now.",
+      "featuredAt": null,
+      "votesCount": 10,
+      "commentsCount": 7,
+      "website": "https://www.producthunt.com/r/IMK2IU4RE5X45B?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/IMK2IU4RE5X45B?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958188",
+      "name": "Novi AI",
+      "tagline": "Create Stunning AI Videos from Text with NoviAI in 1 Click",
+      "url": "https://www.producthunt.com/products/novi-ai/launches/novi-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Novi AI is a free AI video generator that instantly transforms text to video with custom styles, 50+ AI voiceovers, sound effects, and 60+ languages. Create stunning videos easily for marketing, social media, and more on PC, Android, and iOS.",
+      "featuredAt": null,
+      "votesCount": 1,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/2PKZUZVBUDN25V?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/2PKZUZVBUDN25V?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Facebook",
+          "url": "https://www.producthunt.com/r/XQ4NLM52R244Z6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Instagram",
+          "url": "https://www.producthunt.com/r/TR43274JEVX4PI?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/LWKLSMGMPUBNK5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958016",
+      "name": "Shrtnr",
+      "tagline": "Shorten smarter. track better.",
+      "url": "https://www.producthunt.com/products/shrtnr/launches/shrtnr?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Shorten, share, and track in seconds. No more long, messy URLs—just clear, measurable, intelligent results.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/WBHSWRHOUA6CRJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/WBHSWRHOUA6CRJ?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957949",
+      "name": "SparkLab",
+      "tagline": "SparkLab is a weekly community hackathon platform",
+      "url": "https://www.producthunt.com/products/sparklab/launches/sparklab?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "SparkLab is a weekly community hackathon platform to join challenges and submit projects made with Databutton. Win credits and prices for best submissions.",
+      "featuredAt": null,
+      "votesCount": 1,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/CNAD3VT5GJI6LS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/CNAD3VT5GJI6LS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957923",
+      "name": "JOOJ.us NexWrite – Medium Clone",
+      "tagline": "Modern clone scripts for saas & startups Medium Clone",
+      "url": "https://www.producthunt.com/products/jooj-us-nexwrite-medium-clone/launches/jooj-us-nexwrite-medium-clone?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "We’re excited to announce the launch of our brand new script: ✨ **NexWrite – Medium Clone** NexWrite is a modern, full-featured publishing platform built with React and Node.js — designed to help you launch your own Medium-style content site in minutes.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/HKQAOXECLDJWPN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/HKQAOXECLDJWPN?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        },
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/QQ62HEUTOLSDX3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957927",
+      "name": "HabitDot",
+      "tagline": "Grow Daily, Dot by Dot",
+      "url": "https://www.producthunt.com/products/habitdot/launches/habitdot?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "HabitDot is a habit tracker that turns your daily routines into simple “dots,” helping you see your growth and stay motivated. With its clean design and intuitive features, HabitDot makes building better habits easy—one small step at a time.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/RNMR4QJPFCVZBX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/RNMR4QJPFCVZBX?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "956086",
+      "name": "WhereDidIPutThat",
+      "tagline": "Track your belongings",
+      "url": "https://www.producthunt.com/products/wheredidiputthat/launches/wheredidiputthat?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Never lose track of your belongings again! WhereDidIPutThat helps you remember where you stored important items. Features: photo tracking, smart search, custom categories, and dark mode. Privacy-focused, works offline. Your personal item memory assistant! 🔍",
+      "featuredAt": null,
+      "votesCount": 14,
+      "commentsCount": 5,
+      "website": "https://www.producthunt.com/r/AM4HG4NRF4BE7K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Netlify",
+          "url": "https://www.producthunt.com/r/AM4HG4NRF4BE7K?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958150",
+      "name": "Mini Translator",
+      "tagline": "Transform any text into your preferred language",
+      "url": "https://www.producthunt.com/products/mini-translator/launches/mini-translator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Transform any text on your screen into your preferred language with just a tap. This powerful app uses advanced OCR to recognize text from photos, camera, or manual input, and delivers accurate translations instantly.",
+      "featuredAt": null,
+      "votesCount": 7,
+      "commentsCount": 0,
+      "website": "https://www.producthunt.com/r/EU4EED4QYABYLU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/EU4EED4QYABYLU?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958078",
+      "name": "Paint",
+      "tagline": "A simple Microsoft Paint inspired web app",
+      "url": "https://www.producthunt.com/products/paint-4/launches/paint-4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "A Microsoft Pant and MacPaint inspired simple web app that lets you draw images, save images and also load images to paint on.",
+      "featuredAt": "2025-04-27T07:01:00Z",
+      "votesCount": 326,
+      "commentsCount": 36,
+      "website": "https://www.producthunt.com/r/YELGJIF5MPRFLB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/YELGJIF5MPRFLB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957901",
+      "name": "SnipCode",
+      "tagline": "Equipping programers with the best tools ",
+      "url": "https://www.producthunt.com/products/snipcode-2/launches/snipcode-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "SnipCode.online offers high-quality, reusable code snippets for web, mobile, and software developers. Get your code faster and easier!",
+      "featuredAt": null,
+      "votesCount": 12,
+      "commentsCount": 2,
+      "website": "https://www.producthunt.com/r/KI76ISYC6UFX7H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/KI76ISYC6UFX7H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "957879",
+      "name": "LifeSnap",
+      "tagline": "Capture, organize, and visualize thoughts in seconds.",
+      "url": "https://www.producthunt.com/products/lifesnap/launches/lifesnap?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "LifeSnap lets you jot messy ideas, then AI instantly crafts a clean title, description, tags, and a smart visual. Quick capture, fast search, no clutter—turn fleeting thoughts into organized, share-ready notes in a snap.",
+      "featuredAt": null,
+      "votesCount": 13,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/JRSOAIDG2J63YL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/JRSOAIDG2J63YL?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298614%29"
+        }
+      ]
+    },
+    {
+      "id": "958174",
+      "name": "EarPort",
+      "tagline": "Discover the world through sound, one podcast at a time",
+      "url": "https://www.producthunt.com/products/earport/launches/earport?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Connect with someone halfway across the globe and tune into exactly what they’re listening to—no passport required.",
+      "featuredAt": null,
+      "votesCount": 13,
+      "commentsCount": 6,
+      "website": "https://www.producthunt.com/r/VZ2H5XXL7TLLDY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Vercel",
+          "url": "https://www.producthunt.com/r/VZ2H5XXL7TLLDY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958142",
+      "name": "CloneGen",
+      "tagline": "Use Celeb voices or Clone any voice",
+      "url": "https://www.producthunt.com/products/clonegen/launches/clonegen?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "CloneGen creates lifelike AI voice clones in seconds—just speak, type, and listen. Craft content using your own voice or iconic celebrity characters. Perfect for creators, podcasters, and storytellers.",
+      "featuredAt": null,
+      "votesCount": 20,
+      "commentsCount": 5,
+      "website": "https://www.producthunt.com/r/RKK7ETZL5KK3PY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "App Store",
+          "url": "https://www.producthunt.com/r/RKK7ETZL5KK3PY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958116",
+      "name": "Paletto",
+      "tagline": "A modern color palette gen for designers and developers",
+      "url": "https://www.producthunt.com/products/paletto-2/launches/paletto-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Paletto is a modern color palette generator and management tool that helps designers and developers find, create, and organize beautiful color schemes for their projects.",
+      "featuredAt": null,
+      "votesCount": 14,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/YU765I5ZDREEAW?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Vercel",
+          "url": "https://www.producthunt.com/r/YU765I5ZDREEAW?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        },
+        {
+          "type": "Github",
+          "url": "https://www.producthunt.com/r/YF5ZEC3C3JTB3A?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "957958",
+      "name": "PageFusion",
+      "tagline": "Transform your data into interactive web experiences.",
+      "url": "https://www.producthunt.com/products/pagefusion/launches/pagefusion?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "PageFusion empowers you to easily create dynamic, data-driven pages without coding. Collect, connect, and visualize your information in beautiful, interactive formats — perfect for dashboards, forms, reports, and live data views.",
+      "featuredAt": null,
+      "votesCount": 5,
+      "commentsCount": 1,
+      "website": "https://www.producthunt.com/r/ATJRKRZUGK4Y6E?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Website",
+          "url": "https://www.producthunt.com/r/ATJRKRZUGK4Y6E?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    },
+    {
+      "id": "958175",
+      "name": "Duplicate File Remover",
+      "tagline": "[FREE] Easily find and delete duplicate files in seconds.",
+      "url": "https://www.producthunt.com/products/duplicate-file-remover/launches/duplicate-file-remover?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "createdAt": "2025-04-27T07:01:00Z",
+      "description": "Finding duplicate files manually can waste a lot of time and storage space. Duplicate File Remover helps you scan, detect, and delete duplicate files in just a few clicks. Keep your folders clean and your device running smoothly.",
+      "featuredAt": null,
+      "votesCount": 11,
+      "commentsCount": 3,
+      "website": "https://www.producthunt.com/r/W5PD2HSFVJU6QB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+      "productLinks": [
+        {
+          "type": "Gumroad",
+          "url": "https://www.producthunt.com/r/W5PD2HSFVJU6QB?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+        }
+      ]
+    }
+  ]
+}
