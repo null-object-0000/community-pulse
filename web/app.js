@@ -68,7 +68,8 @@
     document.getElementById('empty-title').textContent = t(favoritesEmpty ? 'emptyFavorites' : 'empty');
     document.getElementById('empty-hint').textContent = t(favoritesEmpty ? 'favoritesHint' : 'emptyHint');
     document.getElementById('clear-filters').hidden = !query && source === 'all' && category === 'all';
-    document.getElementById('report-stat').textContent = t('count', { n: filtered.length }) + (page.date ? ` · ${D.dateLabel(page.date, locale)}` : '');
+    const reportStat = document.getElementById('report-stat');
+    if (reportStat) reportStat.textContent = t('count', { n: filtered.length }) + (page.date ? ` · ${D.dateLabel(page.date, locale)}` : '');
   }
   function loadFavorites() {
     items = readFavorites().map(entry => {
