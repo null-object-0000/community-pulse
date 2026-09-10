@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "weekly-issues",
+  "sourceName": "阮一峰周刊·用户投稿",
+  "repository": "ruanyf/weekly",
+  "targetDate": "2025-09-20",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "itemCount": 1,
+  "contentSha256": "b32727e584ece6cc60751d0c958e996ea934c36104d6f4d5edfffcb40b50ff0b",
+  "fetchedAt": "2026-09-10T09:37:22.470Z",
+  "capture": {
+    "mode": "historical-reconstruction",
+    "endpoint": "https://api.github.com/repos/ruanyf/weekly/issues",
+    "querySince": "2024-12-31T16:00:00.000Z",
+    "pageCount": 55,
+    "scannedItemCount": 5458,
+    "excludedPullRequestCount": 0,
+    "supplementedFromPriorCaptureCount": 0,
+    "priorCapturePath": ".agents/skills/community-pulse/data/issues/ruanyf.json",
+    "stoppedBecause": "short-page"
+  },
+  "records": [
+    {
+      "url": "https://api.github.com/repos/ruanyf/weekly/issues/7790",
+      "repository_url": "https://api.github.com/repos/ruanyf/weekly",
+      "labels_url": "https://api.github.com/repos/ruanyf/weekly/issues/7790/labels{/name}",
+      "comments_url": "https://api.github.com/repos/ruanyf/weekly/issues/7790/comments",
+      "events_url": "https://api.github.com/repos/ruanyf/weekly/issues/7790/events",
+      "html_url": "https://github.com/ruanyf/weekly/issues/7790",
+      "id": 3436589467,
+      "node_id": "I_kwDOCRyd5M7M1jGb",
+      "number": 7790,
+      "title": "【开源自荐】mcpstore：轻松管理使用mcp服务，不绑定agent和llm框架，优雅调用mcp服务。",
+      "user": {
+        "login": "ip2a",
+        "id": 212002203,
+        "node_id": "U_kgDODKLlmw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/212002203?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/ip2a",
+        "html_url": "https://github.com/ip2a",
+        "followers_url": "https://api.github.com/users/ip2a/followers",
+        "following_url": "https://api.github.com/users/ip2a/following{/other_user}",
+        "gists_url": "https://api.github.com/users/ip2a/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/ip2a/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/ip2a/subscriptions",
+        "organizations_url": "https://api.github.com/users/ip2a/orgs",
+        "repos_url": "https://api.github.com/users/ip2a/repos",
+        "events_url": "https://api.github.com/users/ip2a/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/ip2a/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 5437943607,
+          "node_id": "LA_kwDOCRyd5M8AAAABRCBvNw",
+          "url": "https://api.github.com/repos/ruanyf/weekly/labels/weekly",
+          "name": "weekly",
+          "color": "F1ECA5",
+          "default": false,
+          "description": ""
+        }
+      ],
+      "state": "open",
+      "locked": false,
+      "assignees": [],
+      "milestone": null,
+      "comments": 0,
+      "created_at": "2025-09-20T04:31:00Z",
+      "updated_at": "2025-09-20T13:10:19Z",
+      "closed_at": null,
+      "assignee": null,
+      "author_association": "NONE",
+      "active_lock_reason": null,
+      "sub_issues_summary": {
+        "total": 0,
+        "completed": 0,
+        "percent_completed": 0
+      },
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "total_blocked_by": 0,
+        "blocking": 0,
+        "total_blocking": 0
+      },
+      "body": "**项目地址**\n\nhttps://github.com/whillhill/mcpstore\n\n \n\n> 使用`pip install mcpstore`\n\n\n```python\nstore = MCPStore.setup_store()\n\nstore.for_store().add_service({\"name\": \"mcpstore-wiki\", \"url\": \"https://mcpstore.wiki/mcp\"})\n\ntools = store.for_store().for_langchain().list_tools()\n# 或者\ntools = store.for_store().for_langgraph().list_tools()\n# 或者\ntools = store.for_store().for_openai().list_tools()\n#.....\n```\n\n几行代码就可以直接使用注册的mcp服务 这个产出的tool的列表完全和llm或者agent框架兼容使用\n以下是一个可以直接运行的示例\n\n```python\nfrom langchain.agents import create_tool_calling_agent, AgentExecutor\nfrom langchain_core.prompts import ChatPromptTemplate\nfrom langchain_openai import ChatOpenAI\nfrom mcpstore import MCPStore\nstore = MCPStore.setup_store()\nstore.for_store().add_service({\"name\":\"mcpstore-wiki\",\"url\":\"https://mcpstore.wiki/mcp\"})\ntools = store.for_store().for_langchain().list_tools()\n\nllm = ChatOpenAI(\n    temperature=0, model=\"deepseek-chat\",\n    openai_api_key=\"sk-****\",\n    openai_api_base=\"httpss://api.deepseek.com\"\n)\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"你是一个助手，回答的时候带上表情\"),\n    (\"human\", \"{input}\"),\n    (\"placeholder\", \"{agent_scratchpad}\"),\n])\nagent = create_tool_calling_agent(llm, tools, prompt)\nagent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)\nquery = \"北京的天气怎么样？\"\nprint(f\"\\n   🤔: {query}\")\nresponse = agent_executor.invoke({\"input\": query})\nprint(f\"   🤖 : {response['output']}\")\n```\n不会绑定任何的模型和框架 旨在为每一家agent框架都做好mcp的中间层\n\n求推荐 还有agent模式 api模式 webdemo\n",
+      "closed_by": null,
+      "reactions": {
+        "url": "https://api.github.com/repos/ruanyf/weekly/issues/7790/reactions",
+        "total_count": 2,
+        "+1": 2,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "timeline_url": "https://api.github.com/repos/ruanyf/weekly/issues/7790/timeline",
+      "performed_via_github_app": null,
+      "state_reason": null,
+      "pinned_comment": null
+    }
+  ]
+}

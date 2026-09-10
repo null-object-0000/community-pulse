@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "weekly-issues",
+  "sourceName": "阮一峰周刊·用户投稿",
+  "repository": "ruanyf/weekly",
+  "targetDate": "2025-05-24",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "itemCount": 1,
+  "contentSha256": "500c4d77af6ee2cb8cb157d0ff105fefe762354cdc434885d66b343a52a0099a",
+  "fetchedAt": "2026-09-10T09:37:22.470Z",
+  "capture": {
+    "mode": "historical-reconstruction",
+    "endpoint": "https://api.github.com/repos/ruanyf/weekly/issues",
+    "querySince": "2024-12-31T16:00:00.000Z",
+    "pageCount": 55,
+    "scannedItemCount": 5458,
+    "excludedPullRequestCount": 0,
+    "supplementedFromPriorCaptureCount": 0,
+    "priorCapturePath": ".agents/skills/community-pulse/data/issues/ruanyf.json",
+    "stoppedBecause": "short-page"
+  },
+  "records": [
+    {
+      "url": "https://api.github.com/repos/ruanyf/weekly/issues/6929",
+      "repository_url": "https://api.github.com/repos/ruanyf/weekly",
+      "labels_url": "https://api.github.com/repos/ruanyf/weekly/issues/6929/labels{/name}",
+      "comments_url": "https://api.github.com/repos/ruanyf/weekly/issues/6929/comments",
+      "events_url": "https://api.github.com/repos/ruanyf/weekly/issues/6929/events",
+      "html_url": "https://github.com/ruanyf/weekly/issues/6929",
+      "id": 3088482477,
+      "node_id": "I_kwDOCRyd5M64FoCt",
+      "number": 6929,
+      "title": "【開源自薦】FoldaScan 智能代碼庫問答 代碼智能體，向量化生成上下文和需求 prompt 最大化節省 tokens",
+      "user": {
+        "login": "oldjs",
+        "id": 183616870,
+        "node_id": "U_kgDOCvHFZg",
+        "avatar_url": "https://avatars.githubusercontent.com/u/183616870?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/oldjs",
+        "html_url": "https://github.com/oldjs",
+        "followers_url": "https://api.github.com/users/oldjs/followers",
+        "following_url": "https://api.github.com/users/oldjs/following{/other_user}",
+        "gists_url": "https://api.github.com/users/oldjs/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/oldjs/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/oldjs/subscriptions",
+        "organizations_url": "https://api.github.com/users/oldjs/orgs",
+        "repos_url": "https://api.github.com/users/oldjs/repos",
+        "events_url": "https://api.github.com/users/oldjs/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/oldjs/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 5437943607,
+          "node_id": "LA_kwDOCRyd5M8AAAABRCBvNw",
+          "url": "https://api.github.com/repos/ruanyf/weekly/labels/weekly",
+          "name": "weekly",
+          "color": "F1ECA5",
+          "default": false,
+          "description": ""
+        }
+      ],
+      "state": "open",
+      "locked": false,
+      "assignees": [],
+      "milestone": null,
+      "comments": 0,
+      "created_at": "2025-05-24T13:55:27Z",
+      "updated_at": "2025-05-25T18:44:01Z",
+      "closed_at": null,
+      "assignee": null,
+      "author_association": "NONE",
+      "active_lock_reason": null,
+      "sub_issues_summary": {
+        "total": 0,
+        "completed": 0,
+        "percent_completed": 0
+      },
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "total_blocked_by": 0,
+        "blocking": 0,
+        "total_blocking": 0
+      },
+      "body": "主要吧，就是平時看一些大項目或者維護別人代碼的時候，想找個東西、理解個邏輯。這個工具就是能用自然語言跟代碼庫“聊天”，快速定位到需要的信息，提高點效率。\n\n裏面還藏了個（目前還不太聰明）的智能體，能幫你寫寫代碼、改改代碼啥的，類似 Cursor Agent 那種感覺，直接在瀏覽器裏跑。不過得提前打開持續索引，這就需要你的瀏覽器支持增量索引和系統文件 API 這個智能體呢 能力上確實比較弱，不能運行系統命令（瀏覽器環境限制嘛），模型也暫時沒辦法自定義，但好在它有個優點!!響應速度飛快，對於一些日常輔助修改還是挺方便的。\n\n所以 Folda-Scan 能幹啥呢？\n基本上，你可以直接用大白話問你的代碼庫，就像跟同事溝通一樣，它能幫你找到相關的代碼片段和文件。它用了些語義向量化的技術，試着去理解代碼背後的真實含義，而不只是簡單的關鍵詞匹配。\n\n我個人覺得比較實用的一個點是，它可以一鍵幫你把高度相關的代碼片段和注釋整理成上下文 prompt 和需求 prompt。這樣你再拿去喂給 AI 助手（像是 Cursor, roocode, augment, 或者 chatgpt AIstudio 這些），能省下一大筆 tokens 費用！無論是想讓 AI 自動幫你幹活，還是自己手動擋精細操作，用起來應該都會覺得挺香的。\n\n除此以外，它還能輔助生成個 Dockerfile、環境變量配置之類的項目文件，幫你省點配置時間。本地掃描和監控功能也還算全面，能掃整個項目目錄，也會智能過濾掉 .gitignore 規則裏的文件，還能實時監控代碼有哪些改動。如果你有 Markdown 寫的文檔筆記，也能導進去建個知識庫索引，方便做項目知識沉澱和搜索。\n\n用起來的話，也挺簡單：\n你選好本地代碼所在的文件夾，Folda-Scan 就會快速給代碼和知識庫建索引。\n然後直接打字問問題就行，結果基本秒出。\n也能看到整個代碼的結構，了解方法定義和調用關系。所有注釋也能查看和搜索。\n它還支持差異化查看和版本管理的本機備份恢復，代碼一有變動就能知道。如果項目特別大，它還有多線程掃描和增量掃描。\n\n開源地址在這兒：\nGitHub 倉庫：https://github.com/oldjs/web-code-agent\n想直接試試的話：https://fs.wen.bar",
+      "closed_by": null,
+      "reactions": {
+        "url": "https://api.github.com/repos/ruanyf/weekly/issues/6929/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "timeline_url": "https://api.github.com/repos/ruanyf/weekly/issues/6929/timeline",
+      "performed_via_github_app": null,
+      "state_reason": null,
+      "pinned_comment": null
+    }
+  ]
+}

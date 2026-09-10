@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "weekly-issues",
+  "sourceName": "阮一峰周刊·用户投稿",
+  "repository": "ruanyf/weekly",
+  "targetDate": "2025-04-20",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "itemCount": 1,
+  "contentSha256": "f5a7443039e3aa21559f06c7765ecf03b09c580f28ee443fa689de138ad80f3d",
+  "fetchedAt": "2026-09-10T09:37:22.470Z",
+  "capture": {
+    "mode": "historical-reconstruction",
+    "endpoint": "https://api.github.com/repos/ruanyf/weekly/issues",
+    "querySince": "2024-12-31T16:00:00.000Z",
+    "pageCount": 55,
+    "scannedItemCount": 5458,
+    "excludedPullRequestCount": 0,
+    "supplementedFromPriorCaptureCount": 0,
+    "priorCapturePath": ".agents/skills/community-pulse/data/issues/ruanyf.json",
+    "stoppedBecause": "short-page"
+  },
+  "records": [
+    {
+      "url": "https://api.github.com/repos/ruanyf/weekly/issues/6704",
+      "repository_url": "https://api.github.com/repos/ruanyf/weekly",
+      "labels_url": "https://api.github.com/repos/ruanyf/weekly/issues/6704/labels{/name}",
+      "comments_url": "https://api.github.com/repos/ruanyf/weekly/issues/6704/comments",
+      "events_url": "https://api.github.com/repos/ruanyf/weekly/issues/6704/events",
+      "html_url": "https://github.com/ruanyf/weekly/issues/6704",
+      "id": 3007078291,
+      "node_id": "I_kwDOCRyd5M6zPF-T",
+      "number": 6704,
+      "title": "【开源自荐】Shui：一个专注喝水提醒的桌面端 App，关注打工人健康💪 ，改善你的喝水习惯。",
+      "user": {
+        "login": "rock-zhang",
+        "id": 3454198,
+        "node_id": "MDQ6VXNlcjM0NTQxOTg=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/3454198?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/rock-zhang",
+        "html_url": "https://github.com/rock-zhang",
+        "followers_url": "https://api.github.com/users/rock-zhang/followers",
+        "following_url": "https://api.github.com/users/rock-zhang/following{/other_user}",
+        "gists_url": "https://api.github.com/users/rock-zhang/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/rock-zhang/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/rock-zhang/subscriptions",
+        "organizations_url": "https://api.github.com/users/rock-zhang/orgs",
+        "repos_url": "https://api.github.com/users/rock-zhang/repos",
+        "events_url": "https://api.github.com/users/rock-zhang/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/rock-zhang/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 5437943607,
+          "node_id": "LA_kwDOCRyd5M8AAAABRCBvNw",
+          "url": "https://api.github.com/repos/ruanyf/weekly/labels/weekly",
+          "name": "weekly",
+          "color": "F1ECA5",
+          "default": false,
+          "description": ""
+        }
+      ],
+      "state": "open",
+      "locked": false,
+      "assignees": [],
+      "milestone": null,
+      "comments": 0,
+      "created_at": "2025-04-20T15:24:44Z",
+      "updated_at": "2025-04-23T12:20:13Z",
+      "closed_at": null,
+      "assignee": null,
+      "author_association": "NONE",
+      "active_lock_reason": null,
+      "sub_issues_summary": {
+        "total": 0,
+        "completed": 0,
+        "percent_completed": 0
+      },
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "total_blocked_by": 0,
+        "blocking": 0,
+        "total_blocking": 0
+      },
+      "body": "# Shui - 让工作与喝水休息更有节奏\n在这个高强度的工作环境中，我们经常会忘记喝水休息，导致健康问题（尿酸偏高、肾结石前期、尿路结晶）。而「Shui」这款应用就是为了尝试解决这个问题而生的。它是一个简单但强大的休息提醒工具，帮助你在工作中保持良好的节奏。\n\n## 主要特性\n### 1. 智能提醒\n- 设定每日喝水目标\n- 自定义工作时间范围、提醒间隔\n- 定时自动全屏提醒\n- 支持多显示器，确保提醒不会被遗漏\n### 2. 灵活配置\n- 工作时间段设置，下班后自动停止打扰\n- 白名单应用支持，看视频、玩游戏、开视频会议时自动暂停计时，避免打扰\n- 可选的菜单栏倒计时显示\n### 3. 人性化设计\n- 系统锁屏自动暂停计时\n- 菜单栏显示当前状态\n- 轻量级运行，不影响系统性能\n\n## 为什么选择「水」？\n相比市面上其他的提醒软件，「Shui」的特点在于：\n\n1. 专注喝水提醒，记录每日喝水量\n2. 界面简洁、功能完整\n3. 根据个人工作场景，不会在不恰当的时候打扰你\n4. 全屏提醒够醒目，但也提供了合理的暂停机制\n## 使用场景\n- 程序员长期对着电脑编码\n- 设计师专注创作时容易忘记休息\n- 办公室工作者需要定时起身活动\n- 任何需要定时休息的场景\n## 技术特点\n- 使用 Tauri 开发，性能优异\n- 原生系统集成，资源占用少\n- 开源透明，代码完全开放\n## 未来规划\n- 更多的提醒方式选择\n- 数据统计和分析功能\n- 自定义提醒界面\n- 更多平台支持\n\n\n「Shui」不仅仅是一个提醒工具，更是一个帮助你建立健康工作习惯的好帮手。它提醒你按时喝水、适时休息，让你的工作更有规律，生活更有质量。\n\n## 项目地址\n[https://github.com/rock-zhang/Shui](https://github.com/rock-zhang/Shui)\n\n## 🖥 应用界面\n<p align=\"center\">\n  <img src=\"https://github.com/rock-zhang/Shui/blob/main/public/screenshot-2.png?raw=true\" alt=\"Settings\"/>\n  <br/>\n  <img src=\"https://github.com/rock-zhang/Shui/blob/main/public/screenshot-3.png?raw=true\" alt=\"Notification\"/>\n  <br/>\n  <img src=\"https://github.com/rock-zhang/Shui/blob/main/public/screenshot-0.png?raw=true\" alt=\"Notification\"/>\n</p>\n\n欢迎下载使用，也欢迎提供宝贵的建议！",
+      "closed_by": null,
+      "reactions": {
+        "url": "https://api.github.com/repos/ruanyf/weekly/issues/6704/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "timeline_url": "https://api.github.com/repos/ruanyf/weekly/issues/6704/timeline",
+      "performed_via_github_app": null,
+      "state_reason": null,
+      "pinned_comment": null
+    }
+  ]
+}

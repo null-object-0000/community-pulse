@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "weekly-issues",
+  "sourceName": "阮一峰周刊·用户投稿",
+  "repository": "ruanyf/weekly",
+  "targetDate": "2025-07-04",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "itemCount": 1,
+  "contentSha256": "400b0ac9c1413e08deef2daf9891c5a1f038882977bbf8f3b9eac8875aee944c",
+  "fetchedAt": "2026-09-10T09:37:22.470Z",
+  "capture": {
+    "mode": "historical-reconstruction",
+    "endpoint": "https://api.github.com/repos/ruanyf/weekly/issues",
+    "querySince": "2024-12-31T16:00:00.000Z",
+    "pageCount": 55,
+    "scannedItemCount": 5458,
+    "excludedPullRequestCount": 0,
+    "supplementedFromPriorCaptureCount": 0,
+    "priorCapturePath": ".agents/skills/community-pulse/data/issues/ruanyf.json",
+    "stoppedBecause": "short-page"
+  },
+  "records": [
+    {
+      "url": "https://api.github.com/repos/ruanyf/weekly/issues/7203",
+      "repository_url": "https://api.github.com/repos/ruanyf/weekly",
+      "labels_url": "https://api.github.com/repos/ruanyf/weekly/issues/7203/labels{/name}",
+      "comments_url": "https://api.github.com/repos/ruanyf/weekly/issues/7203/comments",
+      "events_url": "https://api.github.com/repos/ruanyf/weekly/issues/7203/events",
+      "html_url": "https://github.com/ruanyf/weekly/issues/7203",
+      "id": 3201570912,
+      "node_id": "I_kwDOCRyd5M6-1Bhg",
+      "number": 7203,
+      "title": "【开源自荐】LiteOps - 轻量级DevOps平台",
+      "user": {
+        "login": "hukdoesn",
+        "id": 124749533,
+        "node_id": "U_kgDOB2-G3Q",
+        "avatar_url": "https://avatars.githubusercontent.com/u/124749533?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/hukdoesn",
+        "html_url": "https://github.com/hukdoesn",
+        "followers_url": "https://api.github.com/users/hukdoesn/followers",
+        "following_url": "https://api.github.com/users/hukdoesn/following{/other_user}",
+        "gists_url": "https://api.github.com/users/hukdoesn/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/hukdoesn/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/hukdoesn/subscriptions",
+        "organizations_url": "https://api.github.com/users/hukdoesn/orgs",
+        "repos_url": "https://api.github.com/users/hukdoesn/repos",
+        "events_url": "https://api.github.com/users/hukdoesn/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/hukdoesn/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 5437943607,
+          "node_id": "LA_kwDOCRyd5M8AAAABRCBvNw",
+          "url": "https://api.github.com/repos/ruanyf/weekly/labels/weekly",
+          "name": "weekly",
+          "color": "F1ECA5",
+          "default": false,
+          "description": ""
+        }
+      ],
+      "state": "open",
+      "locked": false,
+      "assignees": [],
+      "milestone": null,
+      "comments": 0,
+      "created_at": "2025-07-04T06:55:43Z",
+      "updated_at": "2025-07-04T13:27:23Z",
+      "closed_at": null,
+      "assignee": null,
+      "author_association": "NONE",
+      "active_lock_reason": null,
+      "sub_issues_summary": {
+        "total": 0,
+        "completed": 0,
+        "percent_completed": 0
+      },
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "total_blocked_by": 0,
+        "blocking": 0,
+        "total_blocking": 0
+      },
+      "body": "# 项目介绍\n\n## LiteOps CICD 平台概述\n\nLiteOps 是一个实用型的 CI/CD 平台。它并非追求大而全的 DevOps 解决方案，而是聚焦于团队日常工作中真正需要的自动化构建、和部署功能，帮助开发团队提高效率，减少重复性工作。\n\n## 项目特点\n\nLiteOps的核心特点是\"实用、贴合需求、易于使用\"：\n\n- **实用为先**：基于公司现有流程开发，解决实际问题，没有多余花里胡哨功能\n- **贴合需求**：针对团队缺少的功能进行定制开发，填补工作流程中的空白\n- **易于使用**：简洁直观的界面设计，降低使用门槛，减少学习成本，倾向于Jenkins 自由风格Job\n\n## 功能预览\n\n<table align=\"center\" width=\"100%\">\n  <tr>\n    <td align=\"center\" width=\"50%\">\n      <img src=\"https://github.com/opsre/LiteOps/blob/main/image/dashboard.png?raw=true\" alt=\"仪表板\" width=\"90%\"/>\n    </td>\n    <td align=\"center\" width=\"50%\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/projects_list.png?raw=true\" alt=\"项目列表\" width=\"90%\"/>\n    </td>\n  </tr>\n  <tr>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/build_tasks.png?raw=true\" alt=\"构建任务\" width=\"90%\"/>\n    </td>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/build_execution.png?raw=true\" alt=\"构建需求\" width=\"90%\"/>\n    </td>\n  </tr>\n  <tr>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/build_tasks_log.png?raw=true\" alt=\"构建日志\" width=\"90%\"/>\n    </td>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/build_history1.png?raw=true\" alt=\"构建历史1\" width=\"90%\"/>\n    </td>\n  </tr>\n  <tr>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/build_history2.png?raw=true\" alt=\"构建历史2\" width=\"90%\"/>\n    </td>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/build_history3.png?raw=true\" alt=\"构建历史3\" width=\"90%\"/>\n    </td>\n  </tr>\n  <tr>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/system_basic.png?raw=true\" alt=\"系统设置\" width=\"90%\"/>\n    </td>\n    <td align=\"center\">\n      <img src=\"https://github.com/opsre/LiteOps/raw/main/image/cerdentials_kubeconfig.png?raw=true\" alt=\"凭据配置\" width=\"90%\"/>\n    </td>\n  </tr>\n</table>\n\n**部署特点**：\n- **Docker**：容器化部署，环境一致性\n- **Docker in Docker**：支持CI/CD构建环境，完全隔离\n- **一键部署**：自动化脚本部署，简化操作流程\n- **多阶段构建**：优化镜像大小，提高构建效率\n\n## 📞 联系我\n\n如果你对LiteOps有任何建议、问题或需求，欢迎通过以下方式联系我：\n- **邮箱**：hukdoesn@163.com\n- **GitHub Issues**：[提交问题或建议](https://github.com/hukdoesn/liteops/issues)\n- **GitHub**：https://github.com/opsre/LiteOps\n<img src=\"https://github.com/opsre/LiteOps/raw/main/image/wechat.png?raw=true\" alt=\"Magic Gardens\" width=\"300\">\n\n---",
+      "closed_by": null,
+      "reactions": {
+        "url": "https://api.github.com/repos/ruanyf/weekly/issues/7203/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "timeline_url": "https://api.github.com/repos/ruanyf/weekly/issues/7203/timeline",
+      "performed_via_github_app": null,
+      "state_reason": null,
+      "pinned_comment": null
+    }
+  ]
+}

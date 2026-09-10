@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "weekly-issues",
+  "sourceName": "阮一峰周刊·用户投稿",
+  "repository": "ruanyf/weekly",
+  "targetDate": "2025-02-01",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "itemCount": 1,
+  "contentSha256": "c6a7093079d4c5c0bd3d8887b108f7e121675f2278eb91c80aa50f2695eaf5c2",
+  "fetchedAt": "2026-09-10T09:37:22.470Z",
+  "capture": {
+    "mode": "historical-reconstruction",
+    "endpoint": "https://api.github.com/repos/ruanyf/weekly/issues",
+    "querySince": "2024-12-31T16:00:00.000Z",
+    "pageCount": 55,
+    "scannedItemCount": 5458,
+    "excludedPullRequestCount": 0,
+    "supplementedFromPriorCaptureCount": 0,
+    "priorCapturePath": ".agents/skills/community-pulse/data/issues/ruanyf.json",
+    "stoppedBecause": "short-page"
+  },
+  "records": [
+    {
+      "url": "https://api.github.com/repos/ruanyf/weekly/issues/6011",
+      "repository_url": "https://api.github.com/repos/ruanyf/weekly",
+      "labels_url": "https://api.github.com/repos/ruanyf/weekly/issues/6011/labels{/name}",
+      "comments_url": "https://api.github.com/repos/ruanyf/weekly/issues/6011/comments",
+      "events_url": "https://api.github.com/repos/ruanyf/weekly/issues/6011/events",
+      "html_url": "https://github.com/ruanyf/weekly/issues/6011",
+      "id": 2824818015,
+      "node_id": "I_kwDOCRyd5M6oX01f",
+      "number": 6011,
+      "title": "【开源自荐】 AI as Workspace - 全功能、轻量级的 AI (LLM) 客户端",
+      "user": {
+        "login": "NitroRCr",
+        "id": 60081994,
+        "node_id": "MDQ6VXNlcjYwMDgxOTk0",
+        "avatar_url": "https://avatars.githubusercontent.com/u/60081994?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/NitroRCr",
+        "html_url": "https://github.com/NitroRCr",
+        "followers_url": "https://api.github.com/users/NitroRCr/followers",
+        "following_url": "https://api.github.com/users/NitroRCr/following{/other_user}",
+        "gists_url": "https://api.github.com/users/NitroRCr/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/NitroRCr/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/NitroRCr/subscriptions",
+        "organizations_url": "https://api.github.com/users/NitroRCr/orgs",
+        "repos_url": "https://api.github.com/users/NitroRCr/repos",
+        "events_url": "https://api.github.com/users/NitroRCr/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/NitroRCr/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "labels": [
+        {
+          "id": 5437943607,
+          "node_id": "LA_kwDOCRyd5M8AAAABRCBvNw",
+          "url": "https://api.github.com/repos/ruanyf/weekly/labels/weekly",
+          "name": "weekly",
+          "color": "F1ECA5",
+          "default": false,
+          "description": ""
+        }
+      ],
+      "state": "open",
+      "locked": false,
+      "assignees": [],
+      "milestone": null,
+      "comments": 0,
+      "created_at": "2025-02-01T03:34:12Z",
+      "updated_at": "2025-02-01T15:24:11Z",
+      "closed_at": null,
+      "assignee": null,
+      "author_association": "NONE",
+      "active_lock_reason": null,
+      "sub_issues_summary": {
+        "total": 0,
+        "completed": 0,
+        "percent_completed": 0
+      },
+      "issue_dependencies_summary": {
+        "blocked_by": 0,
+        "total_blocked_by": 0,
+        "blocking": 0,
+        "total_blocking": 0
+      },
+      "body": "全功能、轻量级、可拓展的 AI 对话客户端（PWA）。支持多工作区、插件系统、跨平台、本地优先+实时云同步。相较于现有的 AI Chat 客户端，提供更丰富的功能和更优秀的使用体验。\n\n[项目链接](https://github.com/NitroRCr/AIaW) - [网站链接](https://aiaw.app)\n\n## 功能概览\n\n### 对话页面\n\n- 用户输入预览\n- 修改提问、重新生成 以分叉的形式呈现\n- 自定义键盘快捷键\n- 对齐到消息开头/结尾的快速滚动\n\n<img src=\"https://fs.krytro.com/aiaw/dialog.webp\" width=\"600\">\n\n### 细节设计\n\n- 支持将文本类型文件（代码、csv等）作为附件，AI 能看到文件内容和文件名；避免文件内容占据显示空间\n- 对于大段的文本，可在**输入框外**使用 Ctrl + V 粘贴，也将作为附件；避免大段内容占据显示空间\n\n<img src=\"https://fs.krytro.com/aiaw/text-item.webp\" width=\"600\">\n\n- 可在用户输入中引用先前消息中的内容，方便对助手回答的部分内容针对性地追问\n- 选中多行消息文本后，可直接复制 Markdown 原文\n\n<img src=\"https://fs.krytro.com/aiaw/text-selection.webp\" width=\"600\">\n\n- 粘贴从 VSCode 复制的代码时，自动用代码块包裹，并标明语言\n\n<img src=\"https://fs.krytro.com/aiaw/paste-code.webp\" width=\"600\">\n\n### 多工作区\n\n- 创建多个工作区，将不同主题的对话分隔开\n- 可将多个工作区放入一个文件夹中；支持嵌套\n- 一个工作区中可创建多个助手，也可以创建全局助手\n\n<img src=\"https://raw.githubusercontent.com/NitroRCr/AIaW/refs/heads/master/docs/usage/res/workspace-list.png\" width=\"378\">\n\n### 数据储存\n\n- 数据首先储存在本地，无需加载且离线可浏览\n- 登录后可使用云同步，跨设备实时同步\n- 多窗口协同支持：同一浏览器打开多个标签，数据响应式同步\n\n### [Artifacts](https://docs.aiaw.app/usage/artifacts.html)\n\n- 可将助手回答的任意部分转为 Artifacts\n- 用户可编辑，带版本控制，代码高亮\n- 可控制助手对 Artifacts 的读写权限\n- 可同时打开多个 Artifacts\n\n<img src=\"https://fs.krytro.com/aiaw/convert-artifact.webp\" width=\"600\">\n\n### [插件系统](https://docs.aiaw.app/usage/plugins.html)\n\n- 内置计算器、[文档解析、视频解析](https://docs.aiaw.app/usage/file-parse.html)、图像生成等插件\n- 可在插件市场安装更多插件\n- 可将 Gradio 应用配置为插件；兼容部分 LobeChat 插件；\n- 插件不只是工具调用\n\n![](https://raw.githubusercontent.com/NitroRCr/AIaW/refs/heads/master/docs/public/plugin-market.png)\n\n### 轻量，高性能\n\n- 启动迅速，无需等待\n- 切换对话丝滑流畅\n\n<img src=\"https://fs.krytro.com/aiaw/switch-dialog.webp\" width=\"600\">\n\n### [动态提示词](https://docs.aiaw.app/usage/prompt-vars.html)\n\n- 通过创建提示词变量，使用模板语法，构建动态可复用的提示词\n- 抽离提示词中的重复部分，放入工作区变量，实现提示词的复用\n\n<img src=\"https://raw.githubusercontent.com/NitroRCr/AIaW/refs/heads/master/docs/usage/res/assistant-prompt-vars.png\" width=\"378\">\n\n### 其他功能\n\n多服务商支持、助手市场、深色模式、自定义主题色、[跨平台](https://docs.aiaw.app/usage/cross-platform.html)\n",
+      "closed_by": null,
+      "reactions": {
+        "url": "https://api.github.com/repos/ruanyf/weekly/issues/6011/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "timeline_url": "https://api.github.com/repos/ruanyf/weekly/issues/6011/timeline",
+      "performed_via_github_app": null,
+      "state_reason": null,
+      "pinned_comment": null
+    }
+  ]
+}
