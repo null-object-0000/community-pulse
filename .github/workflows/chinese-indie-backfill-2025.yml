@@ -1,0 +1,60 @@
+name: Chinese Indie Dev Backfill 2025 (one-shot)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # capture_chinese_indie_raw.js 内部用 gh api 拉 README
+
+jobs:
+  backfill-chinese-indie:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 配置 Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: 回溯中国独立开发者 2025-01-01 起
+        env:
+          START_DATE: "2025-01-01"
+          END_DATE: "2026-09-10"
+        run: |
+          set -euo pipefail
+          SKILL_DIR="$GITHUB_WORKSPACE/.agents/skills/community-pulse"
+
+          node "$SKILL_DIR/scripts/capture_chinese_indie_raw.js" \
+            --start "$START_DATE" --end "$END_DATE"
+
+          node "$SKILL_DIR/scripts/validate_chinese_indie_raw.js" \
+            --start "$START_DATE" --end "$END_DATE"
+
+      - name: 提交并推送
+        run: |
+          git add "知识/大家都在做什么/source-raw/chinese-indie-dev"
+          if git diff --cached --quiet; then
+            echo "无变更可提交"
+            exit 0
+          fi
+          git commit -m "data: 回溯中国独立开发者 2025-01-01 起"
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              break
+            fi
+            echo "push 冲突，第 ${attempt} 次 rebase 后重试"
+            git pull --rebase origin main
+          done
