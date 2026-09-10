@@ -34,11 +34,25 @@
     <header class="topbar"><div class="topbar-inner">
       <a class="brand" href="{{homePath}}" aria-label="DevTrends"><img src="/logo.svg" alt="" width="34" height="34" /><span>DevTrends<small>{{brandLabel}}</small></span></a>
       <nav class="main-nav" aria-label="{{navLabel}}">{{navigation}}</nav>
-      <div class="preferences"><label><span class="sr-only">{{languageLabel}}</span><select id="language-select" aria-label="{{languageLabel}}"><option value="zh-CN" {{zhSelected}}>中文</option><option value="en" {{enSelected}}>English</option></select></label><label><span class="sr-only">{{themeLabel}}</span><select id="theme-select" aria-label="{{themeLabel}}"><option value="system">{{system}}</option><option value="light">{{light}}</option><option value="dark">{{dark}}</option></select></label></div>
+      {{headerSearch}}
+      <div class="preferences">
+        <details class="theme-picker" id="theme-picker">
+          <summary aria-label="{{themeLabel}}" title="{{themeLabel}}">
+            <svg class="theme-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+            <svg class="theme-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20.5 14a9 9 0 0 1-10.5-10.5A9 9 0 1 0 20.5 14Z"/></svg>
+          </summary>
+          <div class="theme-options" role="group" aria-label="{{themeLabel}}">
+            <button type="button" data-theme-choice="light" aria-pressed="false"><span aria-hidden="true">☀</span>{{light}}<span class="theme-check" aria-hidden="true">✓</span></button>
+            <button type="button" data-theme-choice="dark" aria-pressed="false"><span aria-hidden="true">☾</span>{{dark}}<span class="theme-check" aria-hidden="true">✓</span></button>
+            <button type="button" data-theme-choice="system" aria-pressed="true"><span aria-hidden="true">▣</span>{{system}}<span class="theme-check" aria-hidden="true">✓</span></button>
+          </div>
+        </details>
+        <label class="language-picker"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5h14M5 17.5h14"/></svg><span class="sr-only">{{languageLabel}}</span><select id="language-select" aria-label="{{languageLabel}}"><option value="zh-CN" {{zhSelected}}>简体中文</option><option value="en" {{enSelected}}>English</option></select><svg class="select-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></label>
+      </div>
     </div></header>
     <main id="main" class="workspace">{{content}}</main>
     <p id="status" class="status" role="status" aria-live="polite"></p>
-    <footer class="footer"><a class="footer-brand" href="{{homePath}}">DevTrends <span>↗</span></a><p>{{footer}}</p><a href="https://github.com/null-object-0000/community-pulse" target="_blank" rel="noopener noreferrer">GitHub ↗</a></footer>
+    <footer class="footer"><a class="footer-brand" href="{{homePath}}">DevTrends <span>↗</span></a><p>{{footer}}</p></footer>
     <script id="page-data" type="application/json">{{pageData}}</script>
     <script src="/shared.js" defer></script>
     <script src="/app.js" defer></script>

@@ -109,6 +109,18 @@
     return null;
   }
   const compact = (value, locale) => Number.isFinite(Number(value)) ? new Intl.NumberFormat(locale, { notation: Number(value) >= 1000 ? 'compact' : 'standard', maximumFractionDigits: 1 }).format(Number(value)) : '';
+  function itemCategories(item) {
+    const repo = repository(item);
+    const text = [item.title, item.titleEn, item.summary, item.summaryZh, item.summaryEn, item.github?.description, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLowerCase();
+    const categories = [];
+    if (repo) categories.push('opensource');
+    if (/\b(ai|llm|gpt|agent|model|machine-learning)\b|人工智能|大模型/i.test(text)) categories.push('ai');
+    if (/\b(design|image|video|ui|ux|creative|canvas)\b|设计|图像|视频|画布/i.test(text)) categories.push('design');
+    if (/\b(framework|sdk|library|runtime|react|vue|next\.?js|node\.?js)\b|框架|组件库/i.test(text)) categories.push('framework');
+    if (/\b(cli|editor|tool|ide|browser|desktop|developer)\b|工具|编辑器|开发/i.test(text)) categories.push('tools');
+    if (/indie|vibecafe|producthunt/.test(String(item.sourceId || '').toLowerCase())) categories.push('indie');
+    return [...new Set(categories)];
+  }
   const dateLabel = (date, locale) => /^\d{4}-\d{2}-\d{2}$/.test(date || '') ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`)) : '';
   function trackedUrl(value, item, date) {
     const safe = safeUrl(value);
@@ -132,6 +144,7 @@
       bookmark: '<path d="M6 3h12v18l-6-4-6 4z"/>', arrow: '<path d="M7 17 17 7M7 7h10v10"/>',
       search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>',
       repo: '<path d="M5 4h14v16H7a2 2 0 0 1-2-2V4Zm0 12h14M9 7h6"/>',
+      github: '<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7.4A5.8 5.8 0 0 0 19.3 3 5.4 5.4 0 0 0 19.1 0S17.9-.4 15 1.5a14 14 0 0 0-6 0C6.1-.4 4.9 0 4.9 0a5.4 5.4 0 0 0-.2 3A5.8 5.8 0 0 0 3.2 7c0 5.8 3.5 7 6.8 7.4A4.8 4.8 0 0 0 9 18v4M9 19c-3 .9-3-1.5-4.2-2"/>',
       box: '<path d="m12 3 9 5-9 5-9-5 9-5Zm-9 5v9l9 5 9-5V8M12 13v9"/>',
       star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/>',
     };
@@ -139,6 +152,17 @@
   };
   function favoriteButton(item, locale, saved = false) {
     return `<button type="button" class="favorite-button${saved ? ' active' : ''}" data-favorite-id="${escapeHtml(favoriteId(item))}" aria-pressed="${saved}" aria-label="${escapeHtml(t(locale, saved ? 'remove' : 'save') + ' ' + displayTitle(item, locale))}">${icon('bookmark')}<span>${t(locale, saved ? 'saved' : 'save')}</span></button>`;
+  }
+  function shortDate(value, locale) {
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? new Date(`${value}T00:00:00Z`) : new Date(value || '');
+    if (Number.isNaN(date.getTime())) return '';
+    return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(date);
+  }
+  function sourceMark(item) {
+    const name = sourceName(item, 'en');
+    if (/github/i.test(name)) return icon('github');
+    const known = { producthunt: 'P', vibecafe: 'V', hackernews: 'Y', reddit: 'R', devto: 'D', indiehackers: 'IH' };
+    return escapeHtml(known[String(item.sourceId || '').toLowerCase()] || name.replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase() || 'D');
   }
   function renderItem(item, locale, { date = '', saved = false, index = 0 } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
@@ -148,16 +172,22 @@
     const language = metric(item, ['language', 'lang']);
     const stars = metric(item, ['stars', 'stargazers_count', 'totalStars']);
     const votes = metric(item, ['votes', 'votesCount']);
-    const today = item.metrics?.today ?? item.metrics?.starsToday;
     const tags = [...new Set([...(item.github?.topics || []), ...(item.tags || [])])].filter(tag => !['product', 'vibecafe', 'daily', 'new', 'official-featured', 'submission', 'github-trending'].includes(tag)).slice(0, 3);
+    const imageUrl = safeUrl(item.image || item.logo || item.icon);
+    const title = displayTitle(item, locale);
+    const score = stars !== null ? stars : votes;
+    const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
+    const published = shortDate(item.publishedAt || item.reportDate || date, locale);
+    const sourceUrl = itemLinks(item).find(([label]) => label === 'source')?.[1];
     return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || favoriteId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
-      <div class="item-content"><div class="item-source">${escapeHtml(sourceName(item, locale))}${repo ? `<span class="repo-owner">${escapeHtml(repo.owner)}</span>` : ''}</div>
-      <h2>${icon(repo ? 'repo' : 'box')}${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(displayTitle(item, locale))}</a>` : escapeHtml(displayTitle(item, locale))}</h2>
-      <p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
-      <div class="item-meta">${language ? `<span class="language"><i></i>${escapeHtml(language)}</span>` : ''}${stars !== null ? `<span>${icon('star')}${compact(stars, locale)}</span>` : ''}${votes !== null ? `<span>▲ ${compact(votes, locale)}</span>` : ''}${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-      <div class="item-links">${links.map(([label, url]) => `<a href="${escapeHtml(trackedUrl(url, item, date))}" target="_blank" rel="noopener noreferrer">${label === 'repository' ? 'GitHub' : t(locale, label)} ${icon('arrow')}</a>`).join('')}</div></div>
-      <div class="item-actions">${favoriteButton(item, locale, saved)}${repo && today != null ? `<span class="today-stars">${escapeHtml(t(locale, 'todayStars', { n: compact(today, locale) }))}</span>` : ''}</div></article>`;
+      <span class="item-avatar avatar-${index % 5}" aria-hidden="true">${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
+      <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}</div>
+      <div class="item-tags">${language ? `<span class="tag">${escapeHtml(language)}</span>` : ''}${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceName(item, locale))}</a>` : `<span>${escapeHtml(sourceName(item, locale))}</span>`}</div>
+      <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div>
+      <time class="item-date" datetime="${escapeHtml((item.publishedAt || date || '').slice(0, 10))}">${escapeHtml(published)}</time>
+      <div class="item-actions">${favoriteButton(item, locale, saved)}</div></article>`;
   }
-  return { origin, favoritesKey, messages, t, escapeHtml, json, localPath, sourceName, safeUrl, repository, favoriteId, summary, displayTitle, reportItems, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
+  return { origin, favoritesKey, messages, t, escapeHtml, json, localPath, sourceName, safeUrl, repository, favoriteId, summary, displayTitle, reportItems, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
 });

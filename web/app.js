@@ -5,8 +5,11 @@
   const locale = page.locale;
   const t = (key, args) => D.t(locale, key, args);
   const params = new URLSearchParams(location.search);
-  let source = params.get('source') || 'all';
+  const sourceFiltering = page.route !== '/';
+  let source = sourceFiltering ? params.get('source') || 'all' : 'all';
+  let category = page.route === '/' ? params.get('category') || 'all' : 'all';
   let query = params.get('q') || '';
+  let sort = 'default';
   let projectPaths = null;
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
@@ -36,7 +39,8 @@
   function updateFilterUrl() {
     const url = new URL(location.href);
     query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
-    source !== 'all' ? url.searchParams.set('source', source) : url.searchParams.delete('source');
+    sourceFiltering && source !== 'all' ? url.searchParams.set('source', source) : url.searchParams.delete('source');
+    category !== 'all' ? url.searchParams.set('category', category) : url.searchParams.delete('category');
     url.searchParams.delete('style');
     history.replaceState(null, '', url);
   }
@@ -54,15 +58,16 @@
   function renderFeed() {
     if (!feed) return;
     const q = query.trim().toLocaleLowerCase(locale);
-    const filtered = items.filter(item => (source === 'all' || item.sourceId === source) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
+    const filtered = items.filter(item => (source === 'all' || item.sourceId === source) && (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
     const ids = savedIds();
+    if (sort === 'popular') filtered.sort((a, b) => Number(D.metric(b, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0) - Number(D.metric(a, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0));
     feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index, saved: ids.has(D.favoriteId(item)) })).join('');
     feed.hidden = !filtered.length;
     document.getElementById('empty').hidden = Boolean(filtered.length);
     const favoritesEmpty = page.view === 'favorites' && !items.length;
     document.getElementById('empty-title').textContent = t(favoritesEmpty ? 'emptyFavorites' : 'empty');
     document.getElementById('empty-hint').textContent = t(favoritesEmpty ? 'favoritesHint' : 'emptyHint');
-    document.getElementById('clear-filters').hidden = !query && source === 'all';
+    document.getElementById('clear-filters').hidden = !query && source === 'all' && category === 'all';
     document.getElementById('report-stat').textContent = t('count', { n: filtered.length }) + (page.date ? ` · ${D.dateLabel(page.date, locale)}` : '');
   }
   function loadFavorites() {
@@ -76,8 +81,34 @@
     });
     sourceControls(); renderFeed();
   }
-  document.getElementById('theme-select').value = window.DevTrendsTheme.get();
-  document.getElementById('theme-select').addEventListener('change', event => window.DevTrendsTheme.set(event.target.value));
+  const themePicker = document.getElementById('theme-picker');
+  function syncThemePicker() {
+    const preference = window.DevTrendsTheme.get();
+    themePicker.querySelectorAll('[data-theme-choice]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.themeChoice === preference));
+    });
+    const label = `${t('theme')}: ${t(preference)}`;
+    themePicker.querySelector('summary').setAttribute('aria-label', label);
+    themePicker.querySelector('summary').title = label;
+  }
+  syncThemePicker();
+  themePicker.addEventListener('click', event => {
+    const button = event.target.closest('[data-theme-choice]');
+    if (!button) return;
+    window.DevTrendsTheme.set(button.dataset.themeChoice);
+    syncThemePicker();
+    themePicker.open = false;
+    themePicker.querySelector('summary').focus();
+  });
+  document.addEventListener('click', event => {
+    if (!themePicker.contains(event.target)) themePicker.open = false;
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && themePicker.open) {
+      themePicker.open = false;
+      themePicker.querySelector('summary').focus();
+    }
+  });
   document.getElementById('language-select').addEventListener('change', event => {
     const url = new URL(location.href);
     const route = location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
@@ -93,13 +124,27 @@
     location.assign(url.pathname + url.search);
   });
   search?.addEventListener('input', () => { query = search.value; updateFilterUrl(); renderFeed(); });
+  document.getElementById('sort-select')?.addEventListener('change', event => { sort = event.target.value; renderFeed(); });
+  document.getElementById('view-toggle')?.addEventListener('click', event => {
+    const cards = feed.classList.toggle('card-view');
+    event.currentTarget.setAttribute('aria-pressed', String(cards));
+  });
+  document.addEventListener('keydown', event => {
+    if (search && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); search.focus(); }
+  });
   document.getElementById('source-chips')?.addEventListener('click', event => {
     const button = event.target.closest('button[data-source]'); if (!button) return;
     source = button.dataset.source; sourceControls(); updateFilterUrl(); renderFeed();
     document.querySelector('#source-chips button.active')?.focus();
   });
+  document.getElementById('category-chips')?.addEventListener('click', event => {
+    const button = event.target.closest('button[data-category]'); if (!button) return;
+    category = button.dataset.category;
+    document.querySelectorAll('[data-category]').forEach(node => { const active = node.dataset.category === category; node.classList.toggle('active', active); node.setAttribute('aria-pressed', String(active)); });
+    updateFilterUrl(); renderFeed(); button.focus();
+  });
   document.getElementById('clear-filters')?.addEventListener('click', () => {
-    source = 'all'; query = ''; search.value = ''; sourceControls(); updateFilterUrl(); renderFeed(); search.focus();
+    source = 'all'; category = 'all'; query = ''; search.value = ''; sourceControls(); document.querySelectorAll('[data-category]').forEach(node => { const active = node.dataset.category === 'all'; node.classList.toggle('active', active); node.setAttribute('aria-pressed', String(active)); }); updateFilterUrl(); renderFeed(); search.focus();
   });
   document.addEventListener('click', event => {
     const button = event.target.closest('button[data-favorite-id]');
@@ -128,7 +173,7 @@
   });
   window.addEventListener('storage', event => {
     if (event.key === D.favoritesKey || event.key === null) { if (page.view === 'favorites') loadFavorites(); else synchronizeButtons(); }
-    if (event.key === 'devtrends-theme-v1') { window.DevTrendsTheme.set(event.newValue); document.getElementById('theme-select').value = window.DevTrendsTheme.get(); }
+    if (event.key === 'devtrends-theme-v1' || event.key === null) { window.DevTrendsTheme.set(event.newValue); syncThemePicker(); }
   });
   if (search) search.value = query;
   if (page.view === 'favorites') {
