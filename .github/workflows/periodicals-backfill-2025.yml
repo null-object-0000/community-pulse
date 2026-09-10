@@ -6,6 +6,9 @@ on:
 permissions:
   contents: write
 
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # capture_periodicals_raw.js 内部用 gh api 调 GitHub API
+
 jobs:
   backfill-periodicals:
     runs-on: ubuntu-latest
