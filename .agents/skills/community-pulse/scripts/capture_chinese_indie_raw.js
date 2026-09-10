@@ -23,7 +23,7 @@ const DEFAULT_START = '2026-01-01';
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const DEFAULT_OUT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw', SOURCE_ID);
 const DATE_HEADING = /^###\s+(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*号添加\s*$/;
-const PROJECT_LINE = /^\*\s*:(white_check_mark|clock8|x):\s*\[[^\]]+\]\([^)]+\)\s*[：:]/;
+const PROJECT_LINE = /^[-*]\s*:(white_check_mark|clock8|x):\s*\[[^\]]+\]\([^)]+\)/;
 
 function beijingDateStr(date) {
   const parts = new Intl.DateTimeFormat('en-US', {
@@ -133,7 +133,7 @@ function parseSections(markdown, requestedStart, requestedEnd) {
     const sectionMarkdown = markdown.slice(heading.start, end);
     const sectionLines = sectionMarkdown.split(/\r?\n/);
     const itemCount = sectionLines.filter((line) => PROJECT_LINE.test(line)).length;
-    const statusLikeCount = sectionLines.filter((line) => /^\*\s*:/.test(line)).length;
+    const statusLikeCount = sectionLines.filter((line) => /^[-*]\s*:/.test(line)).length;
     if (requested && itemCount !== statusLikeCount) {
       throw new Error(`${heading.date} contains ${statusLikeCount - itemCount} unrecognized project lines`);
     }

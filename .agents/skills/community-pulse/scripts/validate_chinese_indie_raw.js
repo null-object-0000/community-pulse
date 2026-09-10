@@ -10,7 +10,7 @@ const TIMEZONE = 'Asia/Shanghai';
 const DEFAULT_START = '2026-01-01';
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const DEFAULT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw', SOURCE_ID);
-const PROJECT_LINE = /^\*\s*:(white_check_mark|clock8|x):\s*\[[^\]]+\]\([^)]+\)\s*[：:]/;
+const PROJECT_LINE = /^[-*]\s*:(white_check_mark|clock8|x):\s*\[[^\]]+\]\([^)]+\)/;
 
 function value(argv, name) {
   const index = argv.indexOf(name);
@@ -79,7 +79,7 @@ function main() {
     if (document.contentSha256 !== digest(document.sectionMarkdown)) errors.push(`${targetDate}: digest mismatch`);
     const lines = document.sectionMarkdown.split(/\r?\n/);
     const itemCount = lines.filter((line) => PROJECT_LINE.test(line)).length;
-    const statusLikeCount = lines.filter((line) => /^\*\s*:/.test(line)).length;
+    const statusLikeCount = lines.filter((line) => /^[-*]\s*:/.test(line)).length;
     if (itemCount !== statusLikeCount) errors.push(`${targetDate}: unrecognized project line`);
     if (document.itemCount !== itemCount) errors.push(`${targetDate}: itemCount mismatch`);
     if (document.status === 'ok') {

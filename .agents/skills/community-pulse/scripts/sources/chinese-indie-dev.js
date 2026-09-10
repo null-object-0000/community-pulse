@@ -30,7 +30,7 @@ function parseSectionDate(line) {
 
 // 解析一条项目行: * :white_check_mark: [名称](url)：介绍
 function parseItemLine(line, sourceId, author, dateStr) {
-  const m = line.match(/^\*\s*:(white_check_mark|clock8|x):\s*\[([^\]]+)\]\(([^)]+)\)\s*[：:]\s*(.*)$/);
+  const m = line.match(/^[-*]\s*:(white_check_mark|clock8|x):\s*\[([^\]]+)\]\(([^)]+)\)\s*[：:，,]?\s*(.*)$/);
   if (!m) return null;
   const [, status, name, url, intro] = m;
   const statusMap = { white_check_mark: '已上线', clock8: '开发中', x: '已关闭' };
@@ -71,7 +71,7 @@ async function fetchItems(src, opts = {}) {
     if (authorMatch) { currentAuthor = authorMatch[1].trim(); continue; }
 
     // 项目行
-    if (/^\*\s*:/.test(t)) {
+    if (/^[-*]\s*:/.test(t)) {
       const it = parseItemLine(t, sourceId, currentAuthor, currentDate);
       if (it) items.push(it);
     }

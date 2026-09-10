@@ -174,7 +174,7 @@ function chineseIndieItems(document, src) {
       author = authorMatch[1].trim();
       continue;
     }
-    const match = text.match(/^\*\s*:(white_check_mark|clock8|x):\s*\[([^\]]+)\]\(([^)]+)\)\s*[：:]\s*(.*)$/);
+    const match = text.match(/^[-*]\s*:(white_check_mark|clock8|x):\s*\[([^\]]+)\]\(([^)]+)\)\s*[：:，,]?\s*(.*)$/);
     if (!match) continue;
     const [, status, name, url, intro] = match;
     const statusName = { white_check_mark: '已上线', clock8: '开发中', x: '已关闭' }[status] || status;
