@@ -56,9 +56,51 @@ button, select { cursor: pointer; }
 
 /* GitHub Trending list */
 html[data-style="github"] .source-chips, html[data-style="github"] .source-control { display: none; }
-html[data-style="github"] .github-filterbar { min-height: 78px; padding: 16px; display: flex; align-items: center; justify-content: flex-end; color: #57606a; border: 1px solid var(--line); border-radius: 6px 6px 0 0; background: #f6f8fa; font-size: 14px; }
-html[data-style="github"] .github-filterbar label { display: flex; align-items: center; }
-html[data-style="github"] .github-filterbar select { padding: 4px 26px 4px 4px; color: #24292f; border: 0; outline-offset: 3px; background: transparent; font-weight: 600; }
+html[data-style="github"] .github-filterbar { padding: 16px; display: flex; align-items: center; justify-content: flex-end; color: #57606a; border: 1px solid var(--line); border-radius: 6px 6px 0 0; background: #f6f8fa; font-size: 14px; }
+html[data-style="github"] .select-menu.select-menu-modal-right { position: relative; }
+html[data-style="github"] .select-menu-button {
+  display: inline-flex; align-items: center; gap: 5px; padding: 0; color: #57606a;
+  background: none; border: 0; font-size: 14px; line-height: 20px; cursor: pointer; list-style: none;
+}
+html[data-style="github"] .select-menu-button::-webkit-details-marker { display: none; }
+html[data-style="github"] .select-menu-button:hover { color: #1f2328; }
+html[data-style="github"] .select-menu-button .text-bold { color: inherit; font-weight: 600; }
+html[data-style="github"] .select-menu-button:after {
+  content: ""; border: 4px solid; border-bottom-color: transparent; border-left-color: transparent; border-right-color: transparent;
+  width: 0; height: 0; display: inline-block; vertical-align: -2px;
+}
+html[data-style="github"] #github-source-menu:not([open]) .select-menu-modal-holder { display: none; }
+html[data-style="github"] .select-menu-modal-holder { position: absolute; right: 0; top: 100%; z-index: 99; }
+html[data-style="github"] .select-menu-modal {
+  width: 300px; margin-top: 4px; font-size: 12px; color: #1f2328;
+  background: #fff; border: 1px solid #d0d7de; border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(31, 35, 40, .05), 0 8px 24px rgba(66, 74, 83, .12);
+}
+html[data-style="github"] .select-menu-header { padding: 8px 10px; background: #f6f8fa; border-bottom: 1px solid #d8dee4; line-height: 16px; border-radius: 6px 6px 0 0; }
+html[data-style="github"] .select-menu-header .select-menu-title { font-weight: 600; color: #1f2328; }
+html[data-style="github"] .select-menu-header .close-button { float: right; padding: 0; color: #656d76; background: none; border: 0; cursor: pointer; line-height: 0; }
+html[data-style="github"] .select-menu-header .close-button:hover { color: #1f2328; }
+html[data-style="github"] .select-menu-filters { background: #fff; }
+html[data-style="github"] .select-menu-text-filter { padding: 10px 10px 0; }
+html[data-style="github"] .select-menu-text-filter:first-child:last-child { border-bottom: 1px solid #d8dee4; padding-bottom: 10px; }
+html[data-style="github"] .select-menu-text-filter input {
+  width: 100%; max-width: 100%; padding: 5px 12px; display: block;
+  color: #1f2328; border: 1px solid #d0d7de; border-radius: 6px; background: #fff; font: inherit;
+}
+html[data-style="github"] .select-menu-text-filter input:focus { outline: none; border-color: #0969da; box-shadow: 0 0 0 3px rgba(9, 105, 218, .3); }
+html[data-style="github"] .select-menu-list { max-height: 400px; position: relative; overflow: auto; }
+html[data-style="github"] .select-menu-item {
+  position: relative; width: 100%; padding: 8px 8px 8px 30px; display: block;
+  color: inherit; text-align: left; cursor: pointer; background: #fff;
+  border: 0; border-bottom: 1px solid #d8dee4; font: inherit; line-height: 1.5;
+}
+html[data-style="github"] .select-menu-item:hover, html[data-style="github"] .select-menu-item:focus-visible, html[data-style="github"] .select-menu-item.navigation-focus { color: #fff; background: #0969da; outline: none; }
+html[data-style="github"] .select-menu-item.selected { color: #1f2328; }
+html[data-style="github"] .select-menu-item.selected:hover, html[data-style="github"] .select-menu-item.selected:focus-visible { color: #fff; background: #0969da; }
+html[data-style="github"] .select-menu-item-icon { float: left; margin-left: -20px; visibility: hidden; }
+html[data-style="github"] .select-menu-item.selected .select-menu-item-icon { visibility: visible; color: inherit; }
+html[data-style="github"] .select-menu-item:hover .select-menu-item-icon, html[data-style="github"] .select-menu-item:focus-visible .select-menu-item-icon { color: #fff; }
+html[data-style="github"] .select-menu-list .select-menu-item:last-child { border-bottom: 0; border-radius: 0 0 6px 6px; }
 html[data-style="github"] .feed { color: #1f2328; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 6px 6px; overflow: hidden; font-size: 14px; }
 html[data-style="github"] .feed-item { padding: 16px 176px 16px 16px; border-bottom: 1px solid #d8dee4; }
 html[data-style="github"] .feed-item:last-child { border-bottom: 0; }
@@ -141,7 +183,10 @@ html[data-style="markdown"] .source-chips, html[data-style="markdown"] .source-c
   .workspace { margin-top: 20px; }
   .page-heading h1 { font-size: 25px; }
   .report-meta { flex-direction: column; gap: 2px; text-align: right; }
-  html[data-style="github"] .github-filterbar { min-height: 58px; padding: 12px; }
+  html[data-style="github"] .github-filterbar { padding: 12px; }
+  html[data-style="github"] .select-menu-modal { position: fixed; top: 76px; left: 16px; right: 16px; width: auto; max-height: calc(100vh - 100px); display: flex; flex-direction: column; }
+  html[data-style="github"] .select-menu-list { flex: auto; }
+  html[data-style="github"] .select-menu-item { padding-top: 12px; padding-bottom: 12px; padding-left: 36px; }
   html[data-style="github"] .feed-item { padding: 16px 14px; }
   html[data-style="github"] .github-item-actions { position: static; margin-top: 12px; align-items: flex-start; gap: 8px; }
   html[data-style="github"] .github-item-actions b { display: none; }

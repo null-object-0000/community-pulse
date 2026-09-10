@@ -19,6 +19,17 @@ const sourceMarks = {
   'weekly-issue': '周', 'hellogithub-issues': 'H', 'hellogithub-issue': '月',
   'github-trending': 'GH', 'github-trending-cn': 'CN', producthunt: 'P',
 };
+const sourceFavicons = {
+  vibecafe: 'https://vibecafe.ai/favicon.svg',
+  producthunt: 'https://ph-static.imgix.net/ph-favicon-brand-500.svg',
+  'weekly-issues': 'https://github.com/favicon.ico',
+  'weekly-issue': 'https://github.com/favicon.ico',
+  'hellogithub-issues': 'https://github.com/favicon.ico',
+  'hellogithub-issue': 'https://hellogithub.com/favicon.ico',
+  'chinese-indie-dev': 'https://github.com/favicon.ico',
+  'github-trending': 'https://github.com/favicon.ico',
+  'github-trending-cn': 'https://github.com/favicon.ico',
+};
 
 const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (character) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -149,9 +160,9 @@ function submissionUrl(item) {
 function submissionEntry(item) {
   const originUrl = submissionUrl(item);
   if (!originUrl) return '';
-  const githubAuthor = /^https:\/\/github\.com\/[^/]+\/?$/i.test(item.authorUrl || '');
-  const avatar = githubAuthor
-    ? `<img src="${escapeHtml((item.authorUrl || '').replace(/\/$/, ''))}.png?size=40" width="20" height="20" alt="" loading="lazy" referrerpolicy="no-referrer" />`
+  const favicon = sourceFavicons[item.sourceId];
+  const avatar = favicon
+    ? `<img src="${escapeHtml(favicon)}" width="20" height="20" alt="" loading="lazy" referrerpolicy="no-referrer" />`
     : `<span aria-hidden="true">${escapeHtml(sourceMarks[item.sourceId] || '•')}</span>`;
   return `<span class="submission-entry">投稿页 <a href="${escapeHtml(originUrl)}" target="_blank" rel="noopener noreferrer" title="查看来源页面" aria-label="查看来源页面：${escapeHtml(displayTitle(item))}">${avatar}</a></span>`;
 }

@@ -5,15 +5,26 @@ const state = {
 };
 
 const ids = [
-  'date-select', 'source-select', 'github-source-select', 'style-select', 'search', 'section-date',
+  'date-select', 'source-select', 'style-select', 'search', 'section-date',
   'report-stat', 'source-chips', 'feed', 'markdown-view', 'empty', 'page-title',
-  'empty-title', 'empty-hint',
+  'empty-title', 'empty-hint', 'github-source-menu', 'github-source-value', 'github-source-filter', 'github-source-list',
 ];
 const els = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
 const sourceMarks = {
   vibecafe: 'V', 'chinese-indie-dev': '中', 'weekly-issues': '阮',
   'weekly-issue': '周', 'hellogithub-issues': 'H', 'hellogithub-issue': '月',
   'github-trending': 'GH', 'github-trending-cn': 'CN', producthunt: 'P',
+};
+const sourceFavicons = {
+  vibecafe: 'https://vibecafe.ai/favicon.svg',
+  producthunt: 'https://ph-static.imgix.net/ph-favicon-brand-500.svg',
+  'weekly-issues': 'https://github.com/favicon.ico',
+  'weekly-issue': 'https://github.com/favicon.ico',
+  'hellogithub-issues': 'https://github.com/favicon.ico',
+  'hellogithub-issue': 'https://hellogithub.com/favicon.ico',
+  'chinese-indie-dev': 'https://github.com/favicon.ico',
+  'github-trending': 'https://github.com/favicon.ico',
+  'github-trending-cn': 'https://github.com/favicon.ico',
 };
 const siteOrigin = 'https://devtrends.site';
 const favoritesKey = 'devtrends-favorites-v1';
@@ -117,9 +128,9 @@ function submissionUrl(item) {
 function submissionEntry(item) {
   const url = submissionUrl(item);
   if (!url) return '';
-  const githubAuthor = /^https:\/\/github\.com\/[^/]+\/?$/i.test(item.authorUrl || '');
-  const avatar = githubAuthor
-    ? '<img src="' + escapeHtml((item.authorUrl || '').replace(/\/$/, '') + '.png?size=40') + '" width="20" height="20" alt="" loading="lazy" referrerpolicy="no-referrer" />'
+  const favicon = sourceFavicons[item.sourceId];
+  const avatar = favicon
+    ? '<img src="' + escapeHtml(favicon) + '" width="20" height="20" alt="" loading="lazy" referrerpolicy="no-referrer" />'
     : '<span aria-hidden="true">' + escapeHtml(sourceMarks[item.sourceId] || '•') + '</span>';
   return '<span class="submission-entry">投稿页 <a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" title="查看来源页面" aria-label="查看来源页面：' + escapeHtml(displayTitle(item)) + '">' + avatar + '</a></span>';
 }
@@ -262,15 +273,28 @@ function filteredItems() {
   });
 }
 
+const checkIcon = '<svg aria-hidden="true" class="octicon octicon-check select-menu-item-icon" width="16" height="16" viewBox="0 0 16 16"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/></svg>';
+
+function renderSourceMenuItem(source) {
+  const selected = state.source === source.id;
+  return '<button type="button" class="select-menu-item' + (selected ? ' selected' : '') + '" role="menuitemradio" data-source="' + escapeHtml(source.id) + '" aria-checked="' + selected + '">' + checkIcon +
+    '<span class="select-menu-item-text">' + escapeHtml(source.name) + '</span></button>';
+}
+
 function renderSourceControls() {
   const list = sources();
   const total = list.reduce((sum, source) => sum + source.count, 0);
   const options = [{ id: 'all', name: '全部', count: total, mark: '◎' }, ...list];
   const selectOptions = options.map((source) => '<option value="' + escapeHtml(source.id) + '">' + escapeHtml(source.name) + ' (' + source.count + ')</option>').join('');
   els['source-select'].innerHTML = selectOptions;
-  els['github-source-select'].innerHTML = selectOptions;
   els['source-select'].value = state.source;
-  els['github-source-select'].value = state.source;
+  const menuList = els['github-source-list'];
+  if (menuList) {
+    const current = options.find((source) => source.id === state.source) || options[0];
+    els['github-source-value'].textContent = current.name;
+    menuList.innerHTML = options.map(renderSourceMenuItem).join('');
+    if (els['github-source-filter']) els['github-source-filter'].value = '';
+  }
   els['source-chips'].innerHTML = options.map((source) =>
     '<button data-source="' + escapeHtml(source.id) + '" class="' + (state.source === source.id ? 'active' : '') +
     '" aria-pressed="' + (state.source === source.id) + '"><span>' + escapeHtml(source.name) +
@@ -508,12 +532,50 @@ function bindInputs() {
     else loadReport(els['date-select'].value);
   });
   els['source-select'].addEventListener('change', () => selectSource(els['source-select'].value));
-  els['github-source-select'].addEventListener('change', () => selectSource(els['github-source-select'].value));
   els['style-select'].addEventListener('change', () => applyStyle(els['style-select'].value));
   els.search.addEventListener('input', () => {
     state.query = els.search.value;
     renderFeed();
   });
+
+  // GitHub-style source select-menu (details/summary)
+  const menu = els['github-source-menu'];
+  const menuList = els['github-source-list'];
+  if (menu && menuList) {
+    menuList.addEventListener('click', (event) => {
+      const button = event.target.closest?.('[data-source]');
+      if (!button) return;
+      selectSource(button.dataset.source);
+      menu.removeAttribute('open');
+    });
+    const filter = els['github-source-filter'];
+    if (filter) {
+      filter.addEventListener('input', () => {
+        const query = filter.value.trim().toLocaleLowerCase('zh-CN');
+        menuList.querySelectorAll('.select-menu-item').forEach((item) => {
+          const match = !query || (item.querySelector('.select-menu-item-text')?.textContent || '').toLocaleLowerCase('zh-CN').includes(query);
+          item.hidden = !match;
+        });
+      });
+      filter.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const visible = menuList.querySelector('.select-menu-item:not([hidden])');
+          if (visible) selectSource(visible.dataset.source);
+          menu.removeAttribute('open');
+        }
+      });
+    }
+    menu.querySelectorAll('.close-button').forEach((button) => {
+      button.addEventListener('click', () => menu.removeAttribute('open'));
+    });
+    document.addEventListener('click', (event) => {
+      if (menu.open && !menu.contains(event.target)) menu.removeAttribute('open');
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) menu.removeAttribute('open');
+    });
+  }
+
   document.addEventListener('click', (event) => {
     const link = event.target.closest?.('a[href]');
     if (link) trackOutboundClick(link);
