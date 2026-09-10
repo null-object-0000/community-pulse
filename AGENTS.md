@@ -23,9 +23,20 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 - 静态资源输出目录：`dist/`（构建产物，不提交 Git）
 - Workers 静态资源配置：`wrangler.toml`
 
-网站源码在 `web/`，`scripts/build-site.js` 会读取 `知识/大家都在做什么/raw/*.json`的结构化数据，并在同日 `final/*.md` 存在时将 LLM 增强摘要合并进列表 JSON；只有没有 final 的日期才回退到 raw 摘要。网站支持 GitHub Trending、VibeCafé、Product Hunt 和 Markdown 四种展示风格。
+网站源码在 `web/`，`scripts/build-site.js` 会读取 `知识/大家都在做什么/raw/*.json`的结构化数据，并在同日 `final/*.md` 存在时将 LLM 增强摘要合并进列表 JSON；只有没有 final 的日期才回退到 raw 摘要。网站采用统一 DevTrends 主题，支持简体中文 / 英文与浅色 / 深色 / 跟随系统模式。Markdown 保留为日报下载入口。
 
-GitHub Trending 风格的收藏使用浏览器本地 `localStorage`（键名 `devtrends-favorites-v1`），不上传服务端；日期选择器可切换到“我的收藏”，对应路径为 `/favorites/`。GitHub 仓库项目在此风格下由标题直接链接仓库，并隐藏重复的 GitHub 链接。
+收藏使用浏览器本地 `localStorage`（键名 `devtrends-favorites-v1`），不上传服务端；顶部“我的收藏”入口对应 `/favorites/`。旧收藏按规范化仓库 URL 去重，保留快照并连接已生成的详情页。
+
+仅有有效 GitHub 仓库根地址的项目生成详情页：`/projects/<owner>/<repo>/`，英文路径加 `/en` 前缀。所有者和仓库名统一小写，同仓库跨来源、跨日报合并，Issue / Blob / 用户主页不当作仓库。列表标题进入详情页，GitHub 和官网保留外链；其他产品仍直接访问外部地址。
+
+- `web/shared.js`：构建与浏览器共用的语言字典、仓库识别、摘要、列表渲染。
+- `web/theme.js`：首屏前应用主题，存储键 `devtrends-theme-v1`。
+- `scripts/render-site.js`：通用 HTML、日报、历史归档和收藏模板。
+- `scripts/projects.js`：项目聚合、仓库快照、收录历史、相关项目及详情 SEO。
+- `scripts/enhanced-report.js`：沿用原 final 摘要匹配策略，未匹配项仍为 raw，部分匹配标记 mixed。
+- 中英文内容优先使用 `summaryZh` / `summaryEn`（兼容下划线字段）；英文缺译文时优先使用英文仓库介绍，否则显示原文并标注。中文 final 摘要仍优先于 raw。
+- 语言由 URL 确定；切换语言保留路由、搜索和来源筛选。
+- 完整验证：`npm run check`（构建 + 模型 / 主题 / SEO 路由测试）。
 
 部署后至少检查：
 
@@ -40,6 +51,11 @@ SEO 产物由 `scripts/build-site.js` 随日报一起生成：
 
 - `/robots.txt`
 - `/sitemap.xml`
+- `/reports/` 历史归档
 - `/reports/<YYYY-MM-DD>/` 独立静态报告页
+- `/projects/<owner>/<repo>/` GitHub 项目详情页及 `/en/` 对应页，包含 canonical、hreflang 与 SoftwareSourceCode / BreadcrumbList 结构化数据
+- `404.html` / `en/404.html`；Cloudflare 使用 `404-page` 返回真实 404，避免无效项目地址返回首页 200
 
 部署后还需检查 `/robots.txt`、`/sitemap.xml` 与最新一期 `/reports/<latest>/` 均返回 200，页面 canonical 必须指向 `devtrends.site`。
+
+新版部署后还需检查一个中英文项目详情页均返回 200、sitemap 包含详情页、不存在的项目地址返回 404。收藏页应为 noindex。

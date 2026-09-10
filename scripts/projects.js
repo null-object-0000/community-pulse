@@ -1,0 +1,102 @@
+const D = require('../web/shared.js');
+const R = require('./render-site.js');
+const { t, escapeHtml: e, localPath: lp } = D;
+function buildProjects(reports) {
+  const catalog = new Map();
+  // Newest report first; merge only older missing metadata, never overwrite recent observations.
+  for (const report of [...reports].sort((a, b) => b.date.localeCompare(a.date))) {
+    for (const source of report.results || []) {
+      for (const item of source.items || []) {
+        delete item.projectPath;
+        const repo = D.repository(item);
+        if (!repo) continue;
+        item.projectPath = repo.path;
+        const snapshot = { ...item, sourceId: item.sourceId || source.sourceId, sourceName: source.sourceName, reportDate: report.date };
+        if (!catalog.has(repo.key)) catalog.set(repo.key, {
+          ...repo, firstSeen: report.date, lastSeen: report.date, item: snapshot,
+          observations: new Map(), topics: new Set(), related: [], snapshotDate: snapshot.github?.snapshotDate || report.date,
+        });
+        const project = catalog.get(repo.key);
+        project.firstSeen = report.date < project.firstSeen ? report.date : project.firstSeen;
+        // Pick one coherent GitHub metadata snapshot instead of mixing fields across dates.
+        if (!project.item.github && snapshot.github) {
+          project.item.github = snapshot.github;
+          project.snapshotDate = snapshot.github.snapshotDate || report.date;
+        }
+        if (!project.item.summaryEn && (snapshot.summaryEn || snapshot.summary_en)) project.item.summaryEn = snapshot.summaryEn || snapshot.summary_en;
+        if (!project.item.summaryZh && (snapshot.summaryZh || snapshot.summary_zh)) project.item.summaryZh = snapshot.summaryZh || snapshot.summary_zh;
+        if (report.date === project.lastSeen && snapshot.summarySource === 'llm-final' && project.item.summarySource !== 'llm-final') {
+          project.item.summary = snapshot.summary; project.item.summarySource = snapshot.summarySource;
+        }
+        for (const topic of item.github?.topics || []) project.topics.add(topic);
+        if (!project.observations.has(report.date)) project.observations.set(report.date, { date: report.date, sources: [], item: snapshot });
+        const observation = project.observations.get(report.date);
+        const sourceUrl = D.safeUrl(item.issueUrl || item.relatedIssue || item.vibecafeUrl || item.productHuntUrl || item.url) || repo.url;
+        if (!observation.sources.some(entry => entry.sourceId === source.sourceId && entry.url === sourceUrl)) observation.sources.push({ sourceId: source.sourceId, sourceName: source.sourceName, url: sourceUrl });
+      }
+    }
+  }
+  const projects = [...catalog.values()].map(project => ({ ...project, topics: [...project.topics], observations: [...project.observations.values()] })).sort((a, b) => a.key.localeCompare(b.key));
+  // Inverted topic index keeps related-project matching bounded by actual shared topics.
+  const topics = new Map();
+  for (const project of projects) for (const topic of project.topics) {
+    if (!topics.has(topic)) topics.set(topic, []);
+    topics.get(topic).push(project);
+  }
+  for (const project of projects) {
+    const scores = new Map();
+    for (const topic of project.topics) for (const other of topics.get(topic)) {
+      if (other.key !== project.key) scores.set(other, (scores.get(other) || 0) + 1);
+    }
+    project.related = [...scores].sort((a, b) => b[1] - a[1] || b[0].lastSeen.localeCompare(a[0].lastSeen) || a[0].key.localeCompare(b[0].key))
+      .slice(0, 3).map(([other]) => ({ key: other.key, path: other.path, name: other.fullName, language: D.metric(other.item, ['language', 'lang']) }));
+    // Use a stable, concise repository name on detail pages and when saving from them.
+    project.item = { ...project.item, title: project.fullName, githubUrl: project.url, projectPath: project.path };
+  }
+  return projects;
+}
+function projectPage(project, locale) {
+  const item = project.item, s = D.summary(item, locale);
+  const title = `${project.fullName} | DevTrends`;
+  const intro = t(locale, 'projectIntro', { name: project.fullName });
+  const description = s.original ? intro : `${project.fullName} — ${s.text}`.slice(0, 165);
+  const canonical = D.origin + lp(project.path, locale);
+  const stars = D.metric(item, ['stars', 'stargazers_count', 'totalStars']);
+  const forks = D.metric(item, ['forks', 'forks_count']);
+  const language = D.metric(item, ['language', 'lang']);
+  const license = typeof item.github?.license === 'string' ? item.github.license : item.github?.license?.spdx_id;
+  const snapshotDate = project.snapshotDate;
+  const shortSummary = s.text.length > 220 ? s.text.slice(0, 220) + '…' : s.text;
+  const links = D.itemLinks(item).filter(([label]) => label !== 'source');
+  const facts = [['owner', project.owner], ['programmingLanguage', language], ['license', license && license !== 'NOASSERTION' ? license : null], ['stars', stars !== null ? new Intl.NumberFormat(locale).format(Number(stars)) : null], ['forks', forks !== null ? new Intl.NumberFormat(locale).format(Number(forks)) : null]].filter(([, value]) => value !== null && value !== undefined && value !== '');
+  const factsHtml = list => `<dl class="facts">${list.map(([key, value]) => `<div><dt>${t(locale, key)}</dt><dd>${e(value)}</dd></div>`).join('')}</dl>`;
+  const related = project.related.length ? `<section class="panel"><h2>${t(locale, 'related')}</h2><div class="related-list">${project.related.map(other => `<a href="${lp(other.path, locale)}"><b>${e(other.name)}</b>${other.language ? `<span>${e(other.language)}</span>` : ''}</a>`).join('')}</div></section>` : '';
+  const content = `<nav class="breadcrumb" aria-label="${locale === 'en' ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/', locale)}">${t(locale, 'discover')}</a><span>/</span><span>${t(locale, 'details')}</span></nav>
+    <article class="project-hero"><p class="eyebrow">DEV TRENDS / GITHUB PROJECT</p><div class="project-heading"><div><p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div>${D.favoriteButton(item, locale)}</div>
+    <p class="project-summary" lang="${s.lang}">${e(shortSummary)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
+    <div class="project-links">${links.map(([label, url], i) => `<a class="button${i === 0 ? ' primary' : ''}" href="${e(D.trackedUrl(url, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${t(locale, label)} ${D.icon('arrow')}</a>`).join('')}</div>
+    ${project.topics.length ? `<div class="project-tags">${project.topics.slice(0, 12).map(topic => `<span class="tag">${e(topic)}</span>`).join('')}</div>` : ''}</article>
+    <div class="project-layout"><div>
+      <section class="panel" id="about"><h2>${t(locale, 'about')}</h2>${s.original ? `<p class="caption">${t(locale, 'translationNote')}</p>` : ''}<p lang="${s.lang}">${e(s.text)}</p><p class="caption">${t(locale, 'summaryNote')}</p></section>
+      <section class="panel" id="history"><h2>${t(locale, 'timeline')}</h2><p class="caption">${t(locale, 'timelineHint')}</p><ol class="timeline">${project.observations.map(observation => {
+        const text = D.summary(observation.item, locale);
+        return `<li><a href="${lp(`/reports/${observation.date}/`, locale)}"><time datetime="${observation.date}">${e(D.dateLabel(observation.date, locale))}</time> ↗</a><p lang="${text.lang}">${e(text.text)}</p>${text.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="source-links">${observation.sources.map(source => `<a href="${e(D.trackedUrl(source.url, observation.item, observation.date))}" target="_blank" rel="noopener noreferrer">${e(D.sourceName(source, locale))} ↗</a>`).join('')}</div></li>`;
+      }).join('')}</ol></section></div>
+      <aside class="project-sidebar"><section class="panel"><h2>${t(locale, 'facts')}</h2>${factsHtml(facts)}<p class="caption">${e(t(locale, 'snapshot', { date: D.dateLabel(snapshotDate, locale) }))}</p>${item.github?.archived ? `<span class="original-label">${t(locale, 'archived')}</span>` : ''}</section>
+      <section class="panel">${factsHtml([['firstSeen', D.dateLabel(project.firstSeen, locale)], ['lastSeen', D.dateLabel(project.lastSeen, locale)], ['appearances', t(locale, 'days', { n: project.observations.length })]])}</section>${related}</aside></div>`;
+  const structured = {
+    '@context': 'https://schema.org', '@graph': [
+      { '@type': 'WebPage', '@id': canonical, url: canonical, name: title, description, inLanguage: locale, dateModified: project.lastSeen, mainEntity: { '@id': canonical + '#repository' }, breadcrumb: { '@id': canonical + '#breadcrumb' } },
+      { '@type': 'SoftwareSourceCode', '@id': canonical + '#repository', name: project.fullName, description: s.text, codeRepository: project.url, url: canonical, ...(language ? { programmingLanguage: language } : {}) },
+      { '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: t(locale, 'discover'), item: D.origin + lp('/', locale) },
+        { '@type': 'ListItem', position: 2, name: project.fullName, item: canonical },
+      ] },
+    ],
+  };
+  return R.shell({ locale, view: 'project', route: project.path, title, description, content, data: { projectItem: item, date: project.lastSeen }, structured });
+}
+function writeProjects(projects, { writePage }) {
+  for (const project of projects) for (const locale of ['zh-CN', 'en']) writePage(lp(project.path, locale), projectPage(project, locale));
+}
+module.exports = { buildProjects, projectPage, writeProjects };

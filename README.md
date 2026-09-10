@@ -21,19 +21,34 @@
 
 ## 网站
 
-网站以 `raw/*.json` 保留指标、链接和图片等结构化数据；存在同日 `final/*.md` 时，构建阶段会将 LLM 翻译/归纳后的摘要回填到列表 JSON。因此 GitHub Trending、VibeCafé、Product Hunt 和 Markdown 四种展示风格使用同一份增强内容；没有 final 的历史日期才回退到 raw。网站适配手机与电脑。
+DevTrends 使用统一的品牌主题，支持简体中文 / 英文和浅色 / 深色 / 跟随系统。导航包含今日发现、历史日报和我的收藏，适配手机与电脑。
+
+网站以 `raw/*.json` 保留指标与链接；存在同日 `final/*.md` 时，将增强摘要匹配回填。历史 final 若只覆盖部分内容，则保留 `mixed` 状态，其他条目使用 raw。2026-09-06 的旧 final 为部分覆盖；构建不会伪造完整增强状态。
 
 ```bash
 npm run build
 npm run preview
+npm run check
 ```
 
-GitHub Trending 风格中的“收藏”只写入当前浏览器的 `localStorage`（键名 `devtrends-favorites-v1`），不会上传服务器；日期选择器中的“我的收藏”或 `/favorites/` 可查看收藏内容。GitHub 仓库项目的标题在该风格下直接链接仓库，不再重复展示 GitHub 入口。
+### 页面与内容
 
-构建产物在 `dist/`。`wrangler.toml` 已配置为 Cloudflare Workers 静态资源站点。Cloudflare Workers Builds 连接本仓库的 `main` 分支后，每次推送（包括每日数据任务的提交）都会自动构建并发布。
+- `/`、`/en/`：最新发现。
+- `/reports/`、`/en/reports/`：历史日报归档。
+- `/reports/YYYY-MM-DD/`：独立静态日报，支持对应英文页面。
+- `/projects/owner/repo/`：有 GitHub 仓库地址的项目详情，支持对应英文页面。
+- `/favorites/`、`/en/favorites/`：保存在本浏览器的收藏。
 
-绑定域名时在 `wrangler.toml` 增加 Custom Domain 配置，例如：
+详情页按规范化的 `owner/repo` 聚合跨来源和跨日期的条目，展示现有介绍、仓库信息、收录记录及按仓库 topics 匹配的相关项目。只识别仓库根地址，避免把 Issue、文件和用户主页当作项目。暂不为无仓库地址的产品生成详情页，也不会在构建时请求 GitHub 或编造额外项目介绍。指标显示采集快照日期。
 
-    [[routes]]
-    pattern = "pulse.example.com"
-    custom_domain = true
+语言字典、内容选择和列表组件集中在 `web/shared.js`，供浏览器和构建阶段共用。优先使用 `summaryEn` / `summaryZh`（兼容 `summary_en` / `summary_zh`），缺少对应语言内容时标注原文。历史摘要不会在本次构建中批量翻译。中文 final 摘要保持优先。
+
+收藏使用 `localStorage` 的 `devtrends-favorites-v1`，与旧版本兼容；主题使用 `devtrends-theme-v1`。收藏不上传服务器。语言切换保留当前页面和筛选参数。旧 `?date=` 链接仍能导航到日报，旧 `?style=` 参数不再改变界面。
+
+### 构建与部署
+
+构建产物位于 `dist/`，不提交 Git。静态 HTML 已包含正文和 SEO 元数据，不依赖浏览器请求完成后才能索引；详情页同时加入 sitemap。无效地址由 Cloudflare `404-page` 返回真实 404。
+
+Cloudflare Workers Builds 连接本仓库 `main` 分支，每次推送（包括每日数据任务）都会自动构建和发布。对外主域名统一使用 <https://devtrends.site>。
+
+发布前运行 `npm run check`。发布后检查首页、静态资源、最新日报 JSON、robots、sitemap、中英文日报及项目详情页，同时核对 canonical、最新日报 `llm-final` 状态和不存在页面的 404 状态。
