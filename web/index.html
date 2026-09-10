@@ -16,6 +16,9 @@
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="application-name" content="DevTrends" />
     <link rel="canonical" href="https://devtrends.site/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://devtrends.site/" />
+    <link rel="alternate" hreflang="en" href="https://devtrends.site/en/" />
+    <link rel="alternate" hreflang="x-default" href="https://devtrends.site/" />
     <link rel="icon" href="/logo.svg" type="image/svg+xml" />
     <meta property="og:locale" content="zh_CN" />
     <meta property="og:type" content="website" />
@@ -42,22 +45,23 @@
         <label><span class="sr-only">选择日报或收藏</span><select id="date-select" aria-label="选择日报或收藏"></select></label>
         <label class="source-control"><span class="sr-only">筛选来源</span><select id="source-select" aria-label="筛选来源"></select></label>
         <label><span class="sr-only">切换展示风格</span><select id="style-select" aria-label="切换展示风格"><option value="github">GitHub Trending</option><option value="vibecafe">VibeCafé</option><option value="producthunt">Product Hunt</option><option value="markdown">Markdown</option></select></label>
+        <label><span class="sr-only">切换语言</span><select id="language-select" aria-label="切换语言"><option value="zh-CN">中文</option><option value="en">English</option></select></label>
       </div>
     </header>
 
     <main class="workspace">
       <div class="page-heading">
-        <div><p>DEV TRENDS · 开发者趋势</p><h1 id="page-title">大家都在做什么</h1></div>
+        <div><p id="page-kicker">DEV TRENDS · 开发者趋势</p><h1 id="page-title">大家都在做什么</h1></div>
         <div class="report-meta"><b id="section-date"></b><span id="report-stat" aria-live="polite"></span></div>
       </div>
       <div id="source-chips" class="source-chips" aria-label="筛选数据来源"></div>
       <div class="github-filterbar">
         <details class="select-menu select-menu-modal-right" id="github-source-menu">
-          <summary class="select-menu-button" aria-haspopup="menu">数据源: <span class="text-bold" id="github-source-value">全部</span></summary>
+          <summary class="select-menu-button" aria-haspopup="menu"><span id="github-source-label">数据源:</span> <span class="text-bold" id="github-source-value">全部</span></summary>
           <div class="select-menu-modal-holder">
             <div class="select-menu-modal" role="menu">
               <div class="select-menu-header">
-                <span class="select-menu-title">选择数据来源</span>
+                <span class="select-menu-title" id="github-source-title">选择数据来源</span>
                 <button type="button" class="close-button" aria-label="关闭菜单"><svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16"><path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path></svg></button>
               </div>
               <div class="select-menu-filters">
