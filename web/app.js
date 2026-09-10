@@ -300,7 +300,7 @@ function renderSourceControls() {
     '" aria-pressed="' + (state.source === source.id) + '"><span>' + escapeHtml(source.name) +
     '</span><b>' + source.count + '</b></button>',
   ).join('');
-  document.querySelectorAll('[data-source]').forEach((button) => {
+  els['source-chips'].querySelectorAll('[data-source]').forEach((button) => {
     button.addEventListener('click', () => selectSource(button.dataset.source));
   });
 }
