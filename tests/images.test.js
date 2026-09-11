@@ -10,13 +10,33 @@ const remote = 'https://example.org/logo.png';
 const vibe = 'https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/x/y.png';
 const site = 'https://kiri.test/apple-touch-icon.png';
 
-// Most cases pin the default bundled mode. `IMAGE_BASE` is a build-time switch, so a suite that
-// happens to run inside a CDN build (IMAGE_BASE exported) must still exercise the bundled default.
+// Most cases pin the bundled mode. `IMAGE_BASE` wins over `site.config.json`, so an empty value
+// forces the bundled default even after the committed config switches production to the CDN.
 function bundledMode(body) {
   const saved = process.env.IMAGE_BASE;
-  delete process.env.IMAGE_BASE;
-  try { return body(); } finally { if (saved !== undefined) process.env.IMAGE_BASE = saved; }
+  process.env.IMAGE_BASE = '';
+  try { return body(); } finally { if (saved !== undefined) process.env.IMAGE_BASE = saved; else delete process.env.IMAGE_BASE; }
 }
+
+test('site.config.json supplies the mirror origin and IMAGE_BASE overrides it', () => {
+  const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'site.config.json'), 'utf8'));
+  const expected = String(config.imageBase || '').trim().replace(/\/+$/, '');
+  const saved = process.env.IMAGE_BASE;
+  delete process.env.IMAGE_BASE;
+  try {
+    const report = { results: [{ items: [{ logo: remote }] }] };
+    localizeReport(report, { [remote]: local });
+    assert.equal(report.results[0].items[0].logo, expected ? expected + local : local);
+  } finally {
+    if (saved !== undefined) process.env.IMAGE_BASE = saved;
+  }
+  // An explicit empty IMAGE_BASE always forces the bundled mode, whatever the config says.
+  bundledMode(() => {
+    const report = { results: [{ items: [{ logo: remote }] }] };
+    localizeReport(report, { [remote]: local });
+    assert.equal(report.results[0].items[0].logo, local);
+  });
+});
 
 test('managed image policy blocks external requests and unsafe paths', () => {
   assert.equal(D.localImage(remote, { [remote]: local }), local);

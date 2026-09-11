@@ -6,9 +6,9 @@
 //
 // This is the gate for dropping the mirrors from Git: only untrack `assets/images/*` once this
 // reports every file as reachable. It is also a cheap post-deploy smoke test for the daily upload.
-const { readManifest } = require('./image-store.js');
+const { readManifest, imageOrigin } = require('./image-store.js');
 
-const origin = (process.env.IMAGE_BASE || '').trim().replace(/\/+$/, '');
+const origin = imageOrigin();
 const concurrency = Math.max(1, Number(process.env.R2_CONCURRENCY) || 8);
 const sampleIndex = process.argv.indexOf('--sample');
 const sampleSize = sampleIndex === -1 ? 0 : Math.max(1, Number(process.argv[sampleIndex + 1]) || 0);

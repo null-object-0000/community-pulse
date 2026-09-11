@@ -25,12 +25,18 @@ const isMirroredMark = value => {
 const storeDir = path.resolve(__dirname, '../assets/images');
 const rawDir = path.resolve(__dirname, '../知识/大家都在做什么/raw');
 const manifestPath = path.join(storeDir, 'manifest.json');
+const configPath = path.resolve(__dirname, '../site.config.json');
 const readManifest = () => fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
+// `site.config.json` carries the committed mirror origin so the Workers Builds trigger needs no
+// extra configuration; `IMAGE_BASE` still overrides it (an empty `IMAGE_BASE=` forces the bundled
+// mode, which is what the tests and local preview use).
+const configImageBase = () => {
+  try { return String(JSON.parse(fs.readFileSync(configPath, 'utf8')).imageBase || ''); } catch { return ''; }
+};
 // Mirrors live either in this site's bundle (`/images/<sha256>.<ext>`, the default) or on an
-// external CDN origin selected with IMAGE_BASE=https://img.devtrends.site. The manifest stays
-// relative either way, so one checkout builds both modes and `npm run images:upload` can put the
-// same files on the origin without rewriting 900 mappings.
-const imageOrigin = () => (process.env.IMAGE_BASE || '').trim().replace(/\/+$/, '');
+// external CDN origin. The manifest stays relative either way, so one checkout builds both modes
+// and `npm run images:upload` can put the same files on the origin without rewriting the mappings.
+const imageOrigin = () => (process.env.IMAGE_BASE ?? configImageBase()).trim().replace(/\/+$/, '');
 const mirrorUrl = value => {
   const origin = imageOrigin();
   return origin && typeof value === 'string' && value.startsWith('/images/') ? origin + value : value;

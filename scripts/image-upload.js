@@ -11,7 +11,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawn } = require('node:child_process');
-const { readManifest } = require('./image-store.js');
+const { readManifest, imageOrigin } = require('./image-store.js');
 
 const storeDir = path.resolve(__dirname, '../assets/images');
 const contentType = {
@@ -26,7 +26,7 @@ const contentType = {
 const cacheControl = 'public, max-age=31536000, immutable';
 const bucket = process.env.R2_BUCKET || 'community-pulse-images';
 const prefix = (process.env.R2_PREFIX || 'images').replace(/^\/+|\/+$/g, '');
-const origin = (process.env.IMAGE_BASE || '').trim().replace(/\/+$/, '');
+const origin = imageOrigin();
 const concurrency = Math.max(1, Number(process.env.R2_CONCURRENCY) || 4);
 const force = process.argv.includes('--force');
 const dryRun = process.argv.includes('--dry-run');
