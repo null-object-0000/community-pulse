@@ -1,7 +1,8 @@
 :root {
   color-scheme: light;
   --bg: #f8fbff; --surface: #fff; --surface-hover: #f6f9ff; --subtle: #f0f5ff;
-  --text: #111827; --muted: #56657a; --faint: #778397; --line: #e5ebf3;
+  /* --faint 用在列表序号等次要文字上，需满足 WCAG AA 4.5:1（#778397 在白底只有 3.83:1） */
+  --text: #111827; --muted: #56657a; --faint: #64748b; --line: #e5ebf3;
   --accent: #1b57df; --accent-soft: #edf4ff; --accent-line: #d6e3ff; --shadow: 0 6px 24px #182b4b03;
 }
 :root[data-theme="dark"] {
@@ -247,10 +248,13 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .item-number { padding: 0; font-size: .8125rem; text-align: center; color: var(--faint); }
 .item-avatar { display: grid; place-items: center; width: 48px; height: 48px; overflow: hidden; border-radius: 10px; background: #101a30; color: white; font-size: 1rem; font-weight: 750; letter-spacing: -.05em; box-shadow: inset 0 0 0 1px #ffffff20; }
 .item-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.avatar-1 { background: linear-gradient(140deg, #913aff, #cd8bff); }
+/* 头像是装饰性回退（无配图时显示首字母，aria-hidden）。白色字母必须对渐变最亮一端
+   也达到 4.5:1，否则字母看不清：#cd8bff 只有 2.40、#4b92ff 3.06、#44c9b3 2.04。
+   下面把明度压到刚好达标，保留原有色相。 */
+.avatar-1 { background: linear-gradient(140deg, #5b21b6, #7c3aed); }
 .avatar-2 { background: linear-gradient(140deg, #e9eef7, #fff); color: #132445; }
-.avatar-3 { background: linear-gradient(140deg, #0054ed, #4b92ff); }
-.avatar-4 { background: linear-gradient(140deg, #008d91, #44c9b3); }
+.avatar-3 { background: linear-gradient(140deg, #1d4ed8, #2563eb); }
+.avatar-4 { background: linear-gradient(140deg, #0b5f5a, #0f766e); }
 .item-primary { min-width: 0; }
 .item-primary h2 { margin: 0; font-size: 1rem; line-height: 1.45; font-weight: 700; letter-spacing: -.008em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .item-primary .summary { margin: 4px 0 0; font-size: .8125rem; line-height: 1.55; white-space: nowrap; display: block; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
@@ -258,9 +262,9 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .item-tags .tag { padding: 3px 8px; border-radius: 5px; background: var(--accent-soft); color: var(--accent); font-size: .75rem; line-height: 1.35; white-space: nowrap; }
 .item-source { display: flex; align-items: center; min-width: 0; gap: 8px; font-size: .75rem; color: var(--muted); }
 .item-source a, .item-source > span:last-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.source-mini { display: grid; flex: 0 0 28px; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #111827; color: #fff; font-size: .6875rem; font-weight: 800; }
+.source-mini { display: grid; flex: 0 0 28px; place-items: center; width: 28px; height: 28px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #101a30; font-size: .625rem; font-weight: 800; overflow: hidden; }
 .source-mini svg { width: 15px; height: 15px; }
-.source-mini-producthunt { background: #f4502a; }.source-mini-vibecafe { background: #ff4338; }.source-mini-hackernews { background: #f97316; }.source-mini-reddit { background: #ff4500; }.source-mini-indiehackers { background: #2563eb; }
+.source-mini img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .item-score { display: flex; align-items: center; justify-content: flex-end; gap: 5px; color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
 .item-score svg { width: 15px; height: 15px; }
 .item-date { color: var(--muted); font-size: .75rem; text-align: right; white-space: nowrap; }
@@ -321,3 +325,27 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .select-chevron { position: absolute; right: 11px; pointer-events: none; }
 .language-picker:hover { border-color: var(--accent-line); }
 @media (max-width: 600px) { .preferences { gap: 7px; }.theme-picker summary { width: 36px; height: 38px; }.preferences .language-picker select { font-size: .8125rem; padding-left: 32px; padding-right: 23px; }.language-picker > svg:first-child { left: 8px; width: 17px; }.select-chevron { right: 7px; }.theme-options { right: -80px; } }
+
+/* Product screenshots: grid view only — the list stays one dense text row per item.
+   Project detail pages keep the strip, because there it is the page's own section. */
+.item-gallery { display: none; align-items: center; gap: 5px; margin-top: 8px; }
+.card-view .item-gallery, .panel .item-gallery { display: flex; }
+.gallery-thumb { flex: 0 0 auto; width: 54px; height: 34px; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--subtle); }
+.gallery-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gallery-thumb:hover { border-color: var(--accent-line); }
+.gallery-more { display: grid; place-items: center; color: var(--muted); font-size: .75rem; font-weight: 700; }
+.item-avatar img.is-logo { padding: 5px; background: #fff; object-fit: contain; }
+.panel .item-gallery { margin-top: 0; }
+.panel .gallery-thumb { width: 92px; height: 58px; }
+.lightbox { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 5vmin; background: #0b1220cc; }
+.lightbox-dialog { position: relative; display: grid; place-items: center; max-width: 100%; max-height: 100%; }
+.lightbox-image { display: block; max-width: 100%; max-height: 80vh; border-radius: 10px; background: var(--surface); box-shadow: 0 24px 60px #00000059; }
+.lightbox-close, .lightbox-step { display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border-color: #ffffff2e; background: #101a30e6; color: #fff; font-size: 1.25rem; line-height: 1; }
+.lightbox-close:hover, .lightbox-step:hover { border-color: #ffffff66; color: #fff; }
+.lightbox-close { position: absolute; top: -16px; right: -16px; }
+.lightbox-step { position: absolute; top: 50%; transform: translateY(-50%); }
+.lightbox-step.prev { left: -18px; }
+.lightbox-step.next { right: -18px; }
+.lightbox-counter { position: absolute; bottom: -36px; margin: 0; color: #fff; font-size: .8125rem; font-variant-numeric: tabular-nums; }
+html.lightbox-open { overflow: hidden; }
+@media (max-width: 600px) { .item-gallery { gap: 4px; }.gallery-thumb { width: 44px; height: 30px; }.panel .gallery-thumb { width: 74px; height: 48px; }.lightbox-close { top: 6px; right: 6px; }.lightbox-step.prev { left: 4px; }.lightbox-step.next { right: 4px; }.lightbox-step { width: 36px; height: 36px; } }

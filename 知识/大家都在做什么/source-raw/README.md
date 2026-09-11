@@ -22,7 +22,7 @@ node scripts/collect.js --strict --date 2026-09-07 --observed-date 2026-09-08 \
 
 当前来源：
 
-- `vibecafe/`：VibeCafé 作品，数据范围从平台上线日 `2026-06-02` 开始。
+- `vibecafe/`：VibeCafé 作品，数据范围从平台上线日 `2026-06-02` 开始。`records` 里每个产品同时带 `logoUrl`（产品标志）与 `imageUrls`（软件配图，1~9 张，有顺序），两者语义不同，下游标准化为 `logo` 与 `images`，不要互相替代。
 - `chinese-indie-dev/`：中国独立开发者 README 每日项目，年度数据从 `2026-01-01` 开始。
 - `weekly-issues/`：`ruanyf/weekly` 的投稿 Issue，年度数据从 `2026-01-01` 开始。
 - `hellogithub-issues/`：`521xueweihan/HelloGitHub` 的投稿 Issue，年度数据从 `2026-01-01` 开始。

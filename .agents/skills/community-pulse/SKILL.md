@@ -64,6 +64,9 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 **vibecafe 抓取要点**（`scripts/sources/vibecafe.js`）：
 - 用 `curl -x 代理 -H 'RSC: 1' https://vibecafe.ai/products`，响应是 Next.js RSC flight 流，产品数据在 `initialProducts` 数组里（**干净 JSON**，不是 HTML 转义，别去挖 `self.__next_f`——那个是多重转义很坑）。
 - 每个产品字段：`id, name, tagline, logoUrl, imageUrls, createdAt($D前缀ISO), owner{handle,name,labels}, websiteUrl`。
+- **图片分两类，不要混用**：`logoUrl` 是产品标志（列表 48px 头像用它，标准化为 `logo`）；`imageUrls` 是软件配图/截图，1~9 张且有顺序，标准化为 `images`（全部保留，不截断），`image` 仍等于首张配图。站点把配图渲染成缩略图条 + 灯箱查看器；只有 logo 会经 `npm run images:sync` 镜像落盘，配图不落盘、页面直接回源（域名白名单见站点侧 `hotlinkOrigins`）。
+- 老日报若缺少 `logo` / `images`，用离线脚本补齐（只改这两个字段，不重跑 collect，避免顺带改写其他来源）：
+  `node scripts/backfill_vibecafe_media.js [--start YYYY-MM-DD] [--end YYYY-MM-DD] [--dry-run]`
 - 分页：流末尾有 `initialNextCursor` 游标（当前只用首页，约30条覆盖昨日足够）。
 - 有 `createdAt` 所以能按昨日精确过滤——这是与 HN/V2EX 热榜源的本质区别。
 - 列表接口不包含完整的外链。来源采集阶段必须同时保存每个产品详情页的 RSC 原始响应；下游再离线提取 `websiteUrl` 和 GitHub 仓库地址。历史无详情响应的 schema v1 文件仍可读取。
@@ -220,6 +223,14 @@ node scripts/capture_producthunt_raw.js --start 2013-11-22 --end 2026-09-07 --re
 ```
 
 GraphQL 没有“自动返回完整对象”的语义；`records` 保存同日全部 Post，`officialFeatured.records` 保存 `featured: true` 官方精选子集，两者都保留独立的分页与 `totalCount` 证明。日报只消费官方精选，全量仅作为底账。时间窗口稍微覆盖北京日边界，再按 `createdAt` 二次归日；遇限流后可从最早缺失日恢复。
+
+**产品图**：官方精选子集多投影两个字段——`thumbnail { type url }`（产品标志，标准化为 `logo`）与 `media { type url videoUrl }`（发布会图集，标准化为 `images`；视频条目的 `url` 是自动生成的封面，所以图集始终只有图片）。全量 sweep 不投影这两个字段：它每天 800+ 条，投影后只会让日文件与复杂度无谓膨胀。旧日文件（`officialFeatured.capture.sourceFields` 里没有 `media`）在标准化时自然没有 logo/配图，用 `--refresh-featured` 按范围补回：
+
+```bash
+# 只重抓官方精选子集（每天约 1~2 个请求），不重抓全量
+node scripts/capture_producthunt_raw.js --refresh-featured --start 2026-08-01 --end 2026-09-10
+node scripts/validate_producthunt_raw.js --start 2026-08-01 --end 2026-09-10
+```
 
 新采集的 Product Hunt Post 保留官方 `website` 与 `productLinks { type url }`，并对官方精选的这些 URL 去重后执行链接解析，存入 `linkResolution.links`。最多 3 并发、每请求 12 秒、每次最多 5 跳、最多 2 次尝试（间隔 1 秒）；优先 HEAD，无法取得跳转时 GET，收到响应头立即终止正文传输。只请求 PH 域名，一旦 Location 指向外部即停止，因此 `ok` 表示解析成功，`verified: false` 表示未验证目标可访问性。失败也记录并缓存，`complete` 表示所有链接已尝试，不代表全部成功；已有结果仅 `--refresh-links` 显式刷新，日常 `--resume` 不重试历史失败。
 

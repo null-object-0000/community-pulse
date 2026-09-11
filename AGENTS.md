@@ -30,6 +30,8 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 仅有有效 GitHub 仓库根地址的项目生成详情页：`/projects/<owner>/<repo>/`，英文路径加 `/en` 前缀。所有者和仓库名统一小写，同仓库跨来源、跨日报合并，Issue / Blob / 用户主页不当作仓库。列表标题进入详情页，GitHub 和官网保留外链；其他产品仍直接访问外部地址。
 
 - `web/shared.js`：构建与浏览器共用的语言字典、仓库识别、摘要、列表渲染和筛选 chip 标记。
+- 产品图片分两类：`logo`（VibeCafé 的 `logoUrl`，列表 48px 头像，渲染为 `img.is-logo` 白底 contain）与 `images`（`imageUrls` 全部配图，1~9 张）。`image` 仍为首张配图，仅作回退。配图由 `D.galleryHtml` 渲染缩略图条，点击后 `web/app.js` 的灯箱查看器（Esc / ← / → 关闭与翻页）展示全部配图；缩略图条只在宫格视图显示（`.card-view .item-gallery`），列表视图保持一行密集排版，项目详情页的配图区也照常显示（`.panel .item-gallery`）。
+- 图片只镜像**产品标志**：`npm run images:sync` 下载全部日报里 item 的 `logo`/`icon`（很小，VibeCafé logo 平均 ~46KB、Product Hunt thumbnail ~13KB），并删除不再被引用的清单项与文件；`image` / `images`（配图与截图，几百 KB 一张）不落盘，页面直接回源。需要连配图也镜像时设 `IMAGES_RETENTION_DAYS=N`（只镜像最新 N 期，默认 0）。回源域名白名单在 `web/shared.js` 的 `hotlinkOrigins`（VibeCafé 的 vercel blob 与 `ph-files.imgix.net`），由 `D.hotlinkable` 校验；白名单以外的外链仍会被 `D.localImage` 拦掉，构建对「既未同步又不可回源」的图片直接报错。VibeCafé 抓取时全量保留 `imageUrls`，Product Hunt 精选子集保留 `thumbnail`/`media`（`--refresh-featured` 可补历史）。
 - 筛选栏（分类 / 来源）由 `D.chipFilterHtml` 在构建时渲染全部 chip；`web/app.js` 只把放不下的收进「更多分类」菜单，桌面端始终单行且没有横向滚动条，≤600px 换成原生下拉。加减分类不需要改这段逻辑，宽度自适应；被收纳的当前分类会显示在触发按钮上。
 - `web/theme.js`：首屏前应用主题，存储键 `devtrends-theme-v1`。
 - `scripts/render-site.js`：通用 HTML、日报、历史归档和收藏模板。

@@ -4,6 +4,7 @@
  * 标题带前缀标签 (【开源自荐】【工具自荐】〖独立工具推荐〗投稿: 等), 保留在 title 里
  */
 const { execFileSync } = require('child_process');
+const { descriptionFromIssue } = require('../issue-description');
 
 const REPO = 'ruanyf/weekly';
 
@@ -39,17 +40,8 @@ async function fetchItems(src, opts = {}) {
     // 提取正文里的第一个链接作为候选 url (自荐通常有官网/GitHub)
     const urlMatch = iss.body ? iss.body.match(/https?:\/\/[^\s)\]]+/g) : null;
     const url = urlMatch ? urlMatch[0] : `https://github.com/${REPO}/issues/${iss.number}`;
-    // 清洗 body → 纯文本简介: 去 markdown 语法/链接/标题符号, 取第一段完整文字 (不截断)
-    const clean = (iss.body || '')
-      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')     // [文本](链接) → 文本
-      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')        // 图片
-      .replace(/^#{1,6}\s+/gm, '')                 // 标题 #
-      .replace(/[*_`>#-]/g, '')                    // 强调/代码/引用/列表符
-      .replace(/https?:\/\/[^\s)\]]+/g, '')        // 裸链接
-      .replace(/\s+/g, ' ').trim();
-    // 找第一段有意义的文字 (长度>15), 不截断
-    const segs = clean.split(/\n+/).map(s => s.trim()).filter(s => s.length > 15);
-    const summary = segs.length ? segs[0] : clean;
+    // 清洗 body → 简介: 剥离投稿模板字段名（项目地址/项目描述…），取描述字段或第一段正文
+    const summary = descriptionFromIssue(iss.body);
     return {
       sourceId: src.id,
       title: iss.title || '',

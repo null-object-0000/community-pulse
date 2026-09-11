@@ -65,6 +65,8 @@ function main() {
       tags: ['vibecafe', 'product'],
       externalId: p.id,
       image: (p.imageUrls && p.imageUrls[0]) || p.logoUrl || '',
+      logo: p.logoUrl || '',
+      images: (p.imageUrls || []).filter(Boolean),
     });
   }
   console.error(`[分组] ${Object.keys(byDate).length} 天 (${Object.keys(byDate).sort()[0]} ~ ${Object.keys(byDate).sort().pop()})`);

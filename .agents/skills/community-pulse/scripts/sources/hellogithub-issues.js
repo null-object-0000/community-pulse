@@ -4,6 +4,7 @@
  * 标题带前缀标签 ([开源推荐] [开源自荐] [Open Source] 等), 保留在 title 里
  */
 const { execFileSync } = require('child_process');
+const { descriptionFromIssue } = require('../issue-description');
 
 const REPO = '521xueweihan/HelloGitHub';
 
@@ -39,16 +40,8 @@ async function fetchItems(src, opts = {}) {
   let items = issues.map(iss => {
     const urlMatch = iss.body ? iss.body.match(/https?:\/\/[^\s)\]]+/g) : null;
     const url = urlMatch ? urlMatch[0] : `https://github.com/${REPO}/issues/${iss.number}`;
-    // 清洗 body → 纯文本简介: 去 markdown 语法/链接/标题符号, 取第一段完整文字 (不截断)
-    const clean = (iss.body || '')
-      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-      .replace(/^#{1,6}\s+/gm, '')
-      .replace(/[*_`>#-]/g, '')
-      .replace(/https?:\/\/[^\s)\]]+/g, '')
-      .replace(/\s+/g, ' ').trim();
-    const segs = clean.split(/\n+/).map(s => s.trim()).filter(s => s.length > 15);
-    const summary = segs.length ? segs[0] : clean;
+    // 清洗 body → 简介: 剥离投稿模板字段名（项目地址/项目描述/必写…），取描述字段或第一段正文
+    const summary = descriptionFromIssue(iss.body);
     return {
       sourceId: src.id,
       title: iss.title || '',

@@ -85,6 +85,8 @@ async function main() {
       tags: ['vibecafe', 'product'],
       externalId: p.id,
       image: (p.imageUrls && p.imageUrls[0]) || p.logoUrl || '',
+      logo: p.logoUrl || '',
+      images: (p.imageUrls || []).filter(Boolean),
     }));
     let found = false;
     for (const r of data.results) {

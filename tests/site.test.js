@@ -1,5 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
@@ -64,13 +65,95 @@ test('preset categories provide one stable primary category and reject unknown L
 });
 
 test('known data sources expose safe destination links and real website logos', () => {
+  const dist = path.join(__dirname, '../dist');
   for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
     const source = D.sourceInfo({ sourceId });
     assert.ok(source, sourceId);
     assert.ok(D.safeUrl(source.url), `${sourceId} URL`);
-    assert.match(source.logo, /^\/source-[a-z]+\.svg$/, `${sourceId} logo`);
+    assert.match(source.logo, /^\/source-[a-z]+\.(svg|png)$/, `${sourceId} logo`);
+    // A logo missing from web/ or from the build output ships as a broken image.
+    for (const dir of [path.join(__dirname, '..', 'web'), dist]) assert.ok(fs.existsSync(path.join(dir, source.logo.slice(1))), `${sourceId} logo in ${path.basename(dir)}`);
   }
   assert.equal(D.sourceInfo({ sourceId: 'unknown-source' }), null);
+});
+
+test('official publications use their own name and website, while submission channels stay on GitHub Issues', () => {
+  const weekly = D.sourceInfo({ sourceId: 'weekly-issue' });
+  assert.equal(weekly.url, 'https://www.ruanyifeng.com/blog/index.html');
+  assert.equal(weekly.logo, '/source-ruanyifeng.png');
+  assert.equal(D.sourceName({ sourceId: 'weekly-issue' }, 'zh-CN'), '科技爱好者周刊');
+  assert.equal(D.sourceName({ sourceId: 'weekly-issue' }, 'en'), 'Tech Enthusiast Weekly');
+  const monthly = D.sourceInfo({ sourceId: 'hellogithub-issue' });
+  assert.equal(monthly.url, 'https://hellogithub.com/');
+  assert.equal(monthly.logo, '/source-hellogithub.svg');
+  assert.equal(D.sourceName({ sourceId: 'hellogithub-issue' }, 'zh-CN'), 'HelloGitHub 月刊');
+  // Submissions are collected from GitHub Issues, so renaming must not repoint them at the publication site.
+  assert.equal(D.sourceInfo({ sourceId: 'weekly-issues' }).url, 'https://github.com/ruanyf/weekly/issues');
+  assert.equal(D.sourceInfo({ sourceId: 'weekly-issues' }).logo, '/source-github.svg');
+  assert.equal(D.sourceName({ sourceId: 'weekly-issues' }, 'zh-CN'), '科技爱好者周刊投稿');
+  assert.equal(D.sourceInfo({ sourceId: 'hellogithub-issues' }).url, 'https://github.com/521xueweihan/HelloGitHub/issues');
+});
+
+test('the VibeCafé source logo is the official mark, pinned dark for the fixed light badge', () => {
+  const svg = fs.readFileSync(path.join(__dirname, '..', 'web', 'source-vibecafe.svg'), 'utf8');
+  // Exact geometry of https://vibecafe.ai/favicon.svg. Hashed so a hand-drawn stand-in cannot come back.
+  assert.equal(crypto.createHash('sha256').update(svg.match(/<path d="([^"]+)"\/>/)?.[1] || '').digest('hex'), '82f5972e8e35c154fbdec38c86efcc7cd2b55d59055a1fccac5c3f345234bf96');
+  assert.deepEqual([...svg.matchAll(/<rect\b[^>]*\/>/g)].map(match => match[0]), [
+    '<rect x="60" y="540" width="480" height="60"/>', '<rect x="60" width="420" height="60"/>', '<rect x="540" y="120" width="60" height="480"/>',
+    '<rect width="60" height="540"/>', '<rect x="480" y="60" width="60" height="60"/>',
+  ]);
+  // .source-badge is white in every theme, so the official dark-mode rule would render the mark invisible.
+  assert.ok(!svg.includes('prefers-color-scheme'));
+  assert.match(svg, /<g fill="#000">/);
+  assert.match(svg, /role="img" aria-label="VibeCafé"/);
+});
+
+test('the HelloGitHub source logo is the official mark, pinned dark for the fixed light badge', () => {
+  const svg = fs.readFileSync(path.join(__dirname, '..', 'web', 'source-hellogithub.svg'), 'utf8');
+  // Exact geometry of https://hellogithub.com/favicon/favicon.svg.
+  assert.equal(crypto.createHash('sha256').update(svg.match(/<path[^>]*d="([^"]+)"\/>/)?.[1] || '').digest('hex'), '2903455c15041beb3d82e78d579d74b0bd8ac4b6912eda6fe00f2fa9290d2df6');
+  assert.match(svg, /viewBox="0 0 1024 1024"/);
+  assert.match(svg, /<g fill="#24292f" stroke="#24292f" stroke-width="16">/);
+  assert.ok(!svg.includes('prefers-color-scheme'));
+});
+
+test('the Tech Enthusiast Weekly logo is the official favicon.ico frame, vendored as a 32px PNG', () => {
+  const png = fs.readFileSync(path.join(__dirname, '..', 'web', 'source-ruanyifeng.png'));
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a', 'PNG signature');
+  assert.equal(png.readUInt32BE(16), 32, 'IHDR width');
+  assert.equal(png.readUInt32BE(20), 32, 'IHDR height');
+  // Byte-for-byte the 32x32 frame of https://www.ruanyifeng.com/favicon.ico, so a redrawn mark is caught.
+  assert.equal(crypto.createHash('sha256').update(png).digest('hex'), '5f9ed89c4b6868a1da65263f874d3ead128a5d884359f99668df8aa625078859');
+});
+
+test('list source badges render the real source logo, never an invented letter or a borrowed mark', () => {
+  const badgeOf = item => D.renderItem({ title: 'x', ...item }, 'zh-CN').match(/<span class="source-mini[^"]*" aria-hidden="true">(.*?)<\/span>/)?.[1];
+  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
+    assert.equal(badgeOf({ sourceId }), `<img src="${D.sourceInfo({ sourceId }).logo}" alt="" loading="lazy" />`, sourceId);
+  }
+  // "HelloGitHub" contains "GitHub"; keying the fallback off the display name made it borrow GitHub's mark.
+  assert.match(badgeOf({ sourceId: 'hellogithub-issue' }), /source-hellogithub\.svg/);
+  // A source with no asset still gets a neutral initials badge rather than a hole.
+  assert.match(badgeOf({ sourceId: 'mystery-source', sourceName: 'Zed' }), /^[A-Z]{1,2}$/);
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  assert.ok(!/\.source-mini-(producthunt|vibecafe|hackernews|reddit|indiehackers)\b/.test(styles), 'invented per-source colours');
+  assert.match(styles, /\.source-mini img \{[^}]*object-fit: contain/);
+});
+
+test('every source that actually appears in the data has a logo, so no list row falls back to initials', () => {
+  const dir = path.join(__dirname, '..', '知识', '大家都在做什么', 'raw');
+  const seen = new Set();
+  for (const file of fs.readdirSync(dir).filter(name => /^\d{4}-\d{2}-\d{2}\.json$/.test(name))) {
+    for (const match of fs.readFileSync(path.join(dir, file), 'utf8').matchAll(/"sourceId"\s*:\s*"([a-z0-9-]+)"/gi)) seen.add(match[1].toLowerCase());
+  }
+  // Guard the scan itself: an empty or truncated read would make the loop below vacuously pass.
+  assert.ok(seen.size >= 9, `expected at least the nine known sources, found ${seen.size}`);
+  for (const sourceId of seen) {
+    const logo = D.sourceInfo({ sourceId })?.logo;
+    assert.ok(logo, `${sourceId} appears in the reports but has no logo asset`);
+    assert.ok(fs.existsSync(path.join(__dirname, '..', 'web', logo.slice(1))), `${sourceId} logo file is missing from web/`);
+    assert.match(D.renderItem({ sourceId, title: 'x' }, 'zh-CN'), new RegExp(`<img src="${logo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`), sourceId);
+  }
 });
 
 test('filter chips carry counts, disable empty filters, and always offer a mobile select', () => {
@@ -127,6 +210,46 @@ test('chip row keeps only the leading run that fits and never collapses entirely
   assert.equal(D.fitChipCount([500], 100, 0, 8), 1);
   assert.equal(D.fitChipCount([70], 20, 40, 8), 1);
   assert.equal(D.fitChipCount([], 400, 0, 8), 0);
+});
+
+test('submission issue bodies yield the description instead of the template scaffolding', () => {
+  const { descriptionFromIssue } = require('../.agents/skills/community-pulse/scripts/issue-description.js');
+  const body = '## 推荐项目\n\n- 项目地址：https://github.com/a/b\n- 类别：Rust\n- 项目标题：好工具\n- 项目描述：一个把命令行输出变好看的终端工具，支持主题。\n- 推荐理由：轻量\n';
+  assert.equal(descriptionFromIssue(body), '一个把命令行输出变好看的终端工具，支持主题。');
+  assert.equal(descriptionFromIssue('项目名称：langid\n\n项目描述：用于识别输入文本所属的语种。\n\n项目依赖：numpy\n'), '用于识别输入文本所属的语种。');
+  assert.equal(descriptionFromIssue('这是一段普通介绍，没有模板字段，应当原样保留。'), '这是一段普通介绍，没有模板字段，应当原样保留。');
+  // 正文只有字段名和链接时返回空，交给上层用占位文案，而不是把「项目地址：」当简介
+  assert.equal(descriptionFromIssue('项目地址：https://github.com/a/b'), '');
+  assert.equal(descriptionFromIssue(''), '');
+});
+
+test('summary cleanup removes source template leftovers without damaging normal text', () => {
+  assert.ok(!/项目地址|项目标题|项目描述|类别/.test(D.summary({ summary: '项目地址 类别 Rust 项目标题 好工具 项目描述 一个把命令行输出变好看的终端工具。' }, 'zh-CN').text));
+  // 正常词语不能被误伤：「语言」「地址」出现在词中时保留
+  assert.equal(D.summary({ summary: '一个支持多种语言的编辑器，附带在线地址解析能力。' }, 'zh-CN').text, '一个支持多种语言的编辑器，附带在线地址解析能力。');
+  assert.equal(D.summary({ summary: '很棒的翻译工具。 No response' }, 'zh-CN').text, '很棒的翻译工具。');
+  assert.equal(D.summary({ summary: '跨平台清理工具 - [项目与下载](https://github.com/a/b)' }, 'zh-CN').text, '跨平台清理工具 - 项目与下载');
+  // LLM 增强的摘要同样清理，历史 final 里的模板字段重建后不再重现
+  assert.equal(D.summary({ summaryZh: '项目名称：A11yKit 主要受众：出海 Web 开发者 项目描述：一套无障碍检测工具。' }, 'zh-CN').text, 'A11yKit 出海 Web 开发者 一套无障碍检测工具。');
+  assert.equal(D.summary({ summary: 'No response' }, 'zh-CN').text, D.t('zh-CN', 'noSummary'));
+});
+
+test('secondary text and avatar initials meet WCAG AA contrast in the light theme', () => {
+  const css = fs.readFileSync(path.join(__dirname, '../web/styles.css'), 'utf8');
+  const luminance = hex => {
+    const value = parseInt(hex.slice(1), 16), channel = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * channel((value >> 16) & 255) + 0.7152 * channel((value >> 8) & 255) + 0.0722 * channel(value & 255);
+  };
+  const ratio = (a, b) => { const [hi, lo] = [luminance(a), luminance(b)].sort((m, n) => n - m); return (hi + 0.05) / (lo + 0.05); };
+  const faint = css.match(/--faint:\s*(#[0-9a-f]{6})/i)[1];
+  assert.ok(ratio(faint, '#ffffff') >= 4.5, `--faint ${faint} on white is ${ratio(faint, '#ffffff').toFixed(2)}`);
+  // 无配图时显示白色首字母，必须对渐变最亮的一端也达标
+  for (const name of ['avatar-1', 'avatar-3', 'avatar-4']) {
+    const rule = css.match(new RegExp(`\\.${name}\\s*\\{[^}]*\\}`))[0];
+    for (const stop of rule.match(/#[0-9a-f]{6}/gi)) assert.ok(ratio('#ffffff', stop) >= 4.5, `${name} ${stop} is ${ratio('#ffffff', stop).toFixed(2)}`);
+  }
+  const avatar2 = css.match(/\.avatar-2\s*\{[^}]*\}/)[0];
+  assert.ok(ratio(avatar2.match(/color:\s*(#[0-9a-f]{6})/i)[1], '#e9eef7') >= 4.5);
 });
 
 test('language selection uses translated summaries and explicitly labels fallback originals', () => {

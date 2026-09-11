@@ -7,6 +7,7 @@
  * 状态: :white_check_mark:=已上线 :clock8:=开发中 :x:=已关闭
  */
 const { execFileSync } = require('child_process');
+const { stripInlineMarkup, stripTrailingLinkItems } = require('../issue-description');
 
 const REPO = '1c7/chinese-independent-developer';
 
@@ -34,6 +35,8 @@ function parseItemLine(line, sourceId, author, dateStr) {
   if (!m) return null;
   const [, status, name, url, intro] = m;
   const statusMap = { white_check_mark: '已上线', clock8: '开发中', x: '已关闭' };
+  // 介绍里常带 [项目与下载](url) 这类 markdown 链接，去掉语法只留文字，再去掉尾部的导航链接串。
+  const text = stripInlineMarkup(stripTrailingLinkItems(intro));
   return {
     sourceId,
     title: name,
@@ -41,8 +44,8 @@ function parseItemLine(line, sourceId, author, dateStr) {
     author,
     authorUrl: '',
     publishedAt: dateStr ? `${dateStr}T00:00:00+08:00` : null,
-    summary: intro,
-    content: intro,
+    summary: text,
+    content: text,
     metrics: {},
     tags: ['indie-dev', statusMap[status] || status],
     externalId: `${dateStr}-${name}-${url}`,

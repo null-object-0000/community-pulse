@@ -27,6 +27,64 @@
   }
   function savedIds() { return new Set(readFavorites().map(entry => entry.id)); }
   function announce(message) { status.textContent = message; }
+  // ---- screenshot viewer: every gallery thumbnail (feed rows and project pages) opens one dialog ----
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  lightbox.hidden = true;
+  lightbox.innerHTML = `<div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="${D.escapeHtml(t('gallery'))}"><button type="button" class="lightbox-close" aria-label="${D.escapeHtml(t('closeViewer'))}">✕</button><button type="button" class="lightbox-step prev" aria-label="${D.escapeHtml(t('previousImage'))}">‹</button><img class="lightbox-image" alt="" /><button type="button" class="lightbox-step next" aria-label="${D.escapeHtml(t('nextImage'))}">›</button><p class="lightbox-counter" aria-live="polite"></p></div>`;
+  document.body.appendChild(lightbox);
+  const lightboxImage = lightbox.querySelector('.lightbox-image');
+  const lightboxCounter = lightbox.querySelector('.lightbox-counter');
+  let galleryImages = [];
+  let galleryIndex = 0;
+  let galleryOpener = null;
+  function paintLightbox() {
+    lightboxImage.src = galleryImages[galleryIndex];
+    lightboxCounter.textContent = t('imageCounter', { n: galleryIndex + 1, total: galleryImages.length });
+    lightbox.querySelectorAll('.lightbox-step').forEach(button => { button.hidden = galleryImages.length < 2; });
+  }
+  function openLightbox(images, index, opener) {
+    galleryImages = images; galleryIndex = Math.min(Math.max(index, 0), images.length - 1); galleryOpener = opener || null;
+    paintLightbox();
+    lightbox.hidden = false;
+    document.documentElement.classList.add('lightbox-open');
+    lightbox.querySelector('.lightbox-close').focus();
+  }
+  function closeLightbox() {
+    if (lightbox.hidden) return;
+    lightbox.hidden = true;
+    galleryImages = [];
+    lightboxImage.removeAttribute('src');
+    document.documentElement.classList.remove('lightbox-open');
+    if (galleryOpener?.isConnected) galleryOpener.focus();
+    galleryOpener = null;
+  }
+  function stepLightbox(delta) {
+    if (lightbox.hidden || galleryImages.length < 2) return;
+    galleryIndex = (galleryIndex + delta + galleryImages.length) % galleryImages.length;
+    paintLightbox();
+  }
+  document.addEventListener('click', event => {
+    const thumb = event.target.closest?.('.item-gallery [data-index]');
+    if (thumb) {
+      let images = [];
+      try { images = JSON.parse(thumb.closest('.item-gallery').dataset.gallery || '[]'); } catch { images = []; }
+      if (!Array.isArray(images) || !images.length) return;
+      event.preventDefault();
+      openLightbox(images, Number(thumb.dataset.index) || 0, thumb);
+      return;
+    }
+    if (lightbox.hidden) return;
+    if (event.target.closest('.lightbox-close') || event.target === lightbox) closeLightbox();
+    else if (event.target.closest('.lightbox-step.prev')) stepLightbox(-1);
+    else if (event.target.closest('.lightbox-step.next')) stepLightbox(1);
+  });
+  document.addEventListener('keydown', event => {
+    if (lightbox.hidden) return;
+    if (event.key === 'Escape') { event.preventDefault(); closeLightbox(); }
+    else if (event.key === 'ArrowLeft') { event.preventDefault(); stepLightbox(-1); }
+    else if (event.key === 'ArrowRight') { event.preventDefault(); stepLightbox(1); }
+  });
   function synchronizeButtons() {
     const ids = savedIds();
     document.querySelectorAll('[data-favorite-id]').forEach(button => {
@@ -161,6 +219,8 @@
     items = readFavorites().map(entry => {
       const item = { ...entry.item };
       for (const field of ['image', 'logo', 'icon']) item[field] = D.localImage(item[field], imagePaths);
+      // Snapshots saved before `images` existed simply have no gallery.
+      if (Array.isArray(item.images)) item.images = D.localImages(item.images, imagePaths);
       const repo = D.repository(item);
       // Old snapshots remain readable; only catalog-confirmed paths become detail links.
       delete item.projectPath;

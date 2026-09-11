@@ -27,6 +27,7 @@
       summaryNote: '介绍整理自已收录的社区资料。', projectIntro: '{name} 的项目介绍、GitHub 仓库信息与社区收录记录。',
       unknownSource: '开发者社区', localOnly: '收藏仅保存在当前浏览器', reportTitle: '{date} 开发者趋势日报',
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
+      gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
     },
     en: {
       discover: 'Discover', archive: 'Archive', favorites: 'Favorites', slogan: 'What developers are building',
@@ -48,11 +49,12 @@
       summaryNote: 'Descriptions are drawn from collected community sources.', projectIntro: 'Explore {name}, its GitHub repository, and its discovery history across developer communities.',
       unknownSource: 'Developer community', localOnly: 'Favorites stay in this browser', reportTitle: '{date} Developer Trends Report',
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
+      gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
     },
   };
   const sourceLabels = {
     vibecafe: ['VibeCafé', 'VibeCafé'], 'chinese-indie-dev': ['中文独立开发者', 'Chinese Indie Developers'],
-    'weekly-issues': ['阮一峰周刊投稿', 'Ruan Yifeng Weekly Submissions'], 'weekly-issue': ['阮一峰周刊精选', 'Ruan Yifeng Weekly Picks'],
+    'weekly-issues': ['科技爱好者周刊投稿', 'Tech Enthusiast Weekly Submissions'], 'weekly-issue': ['科技爱好者周刊', 'Tech Enthusiast Weekly'],
     'hellogithub-issues': ['HelloGitHub 投稿', 'HelloGitHub Submissions'], 'hellogithub-issue': ['HelloGitHub 月刊', 'HelloGitHub Monthly Picks'],
     'github-trending': ['GitHub Trending', 'GitHub Trending'], 'github-trending-cn': ['GitHub 中文趋势', 'GitHub Trending China'],
     producthunt: ['Product Hunt', 'Product Hunt'],
@@ -61,7 +63,7 @@
     vibecafe: { url: 'https://vibecafe.ai/', logo: '/source-vibecafe.svg' },
     'chinese-indie-dev': { url: 'https://github.com/1c7/chinese-independent-developer', logo: '/source-github.svg' },
     'weekly-issues': { url: 'https://github.com/ruanyf/weekly/issues', logo: '/source-github.svg' },
-    'weekly-issue': { url: 'https://github.com/ruanyf/weekly', logo: '/source-github.svg' },
+    'weekly-issue': { url: 'https://www.ruanyifeng.com/blog/index.html', logo: '/source-ruanyifeng.png' },
     'hellogithub-issues': { url: 'https://github.com/521xueweihan/HelloGitHub/issues', logo: '/source-hellogithub.svg' },
     'hellogithub-issue': { url: 'https://hellogithub.com/', logo: '/source-hellogithub.svg' },
     'github-trending': { url: 'https://github.com/trending', logo: '/source-github.svg' },
@@ -127,10 +129,42 @@
   function safeUrl(value) {
     try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url.href : ''; } catch { return ''; }
   }
-  // Only managed, content-addressed images may reach the browser, including old favorites.
+  // Only the newest reports are mirrored into this site; the archive keeps referencing the
+  // source CDN. Un-mirrored images may render only from these hosts, so an unexpected or
+  // hostile URL still cannot reach the page.
+  const hotlinkOrigins = new Set([
+    'akxlagkpqhwjrwrq.public.blob.vercel-storage.com', // VibeCafé product media
+    'ph-files.imgix.net', // Product Hunt launch media
+  ]);
+  const localImagePath = /^\/images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/;
+  function hotlinkable(value) {
+    const url = safeUrl(value);
+    return url && hotlinkOrigins.has(new URL(url).hostname.toLowerCase()) ? url : '';
+  }
+  // Only managed, content-addressed images may reach the browser, including old favorites;
+  // a URL whose mirror was pruned falls back to its source CDN when that host is trusted.
   function localImage(value, manifest = {}) {
-    const candidate = manifest[value] || value;
-    return typeof candidate === 'string' && /^\/images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/.test(candidate) ? candidate : '';
+    const mapped = manifest[value];
+    const candidate = typeof mapped === 'string' && mapped ? mapped : value;
+    if (typeof candidate !== 'string') return '';
+    return localImagePath.test(candidate) ? candidate : hotlinkable(candidate);
+  }
+  // Screenshot lists (`images`) are managed exactly like single images; anything unsafe is dropped.
+  function localImages(value, manifest = {}) {
+    return (Array.isArray(value) ? value : []).map(entry => localImage(entry, manifest)).filter(Boolean);
+  }
+  // Thumbnail strip for a product's screenshots. Values must already be managed local paths;
+  // the full list travels in data-gallery so app.js can open the viewer without a second request.
+  function galleryHtml(value, locale) {
+    const images = localImages(value);
+    if (!images.length) return '';
+    const label = t(locale, 'galleryOpen');
+    const visible = images.slice(0, 3);
+    const hidden = images.length - visible.length;
+    const thumb = (src, index, extra = '') => `<button type="button" class="gallery-thumb${extra}" data-index="${index}" aria-label="${escapeHtml(`${label} · ${index + 1}/${images.length}`)}"><img src="${escapeHtml(src)}" alt="" loading="lazy" /></button>`;
+    const thumbs = visible.map((src, index) => thumb(src, index)).join('');
+    const more = hidden > 0 ? `<button type="button" class="gallery-thumb gallery-more" data-index="${visible.length}" aria-label="${escapeHtml(`${label} · +${hidden}`)}">+${hidden}</button>` : '';
+    return `<div class="item-gallery" data-gallery="${escapeHtml(JSON.stringify(images))}" role="group" aria-label="${escapeHtml(t(locale, 'gallery'))}">${thumbs}${more}</div>`;
   }
   // Accept repository roots only. Issue/blob/profile URLs must not create false projects.
   function repository(item) {
@@ -152,15 +186,33 @@
   function favoriteId(item) {
     return repository(item)?.url || String(item.websiteUrl || item.url || `${item.sourceId || 'item'}:${item.externalId || item.title || 'untitled'}`).replace(/#.*$/, '').replace(/\/$/, '');
   }
+  // 投稿模板字段名。采集层已按字段解析，这里兜底清理历史日报：老数据在采集时把换行压成了
+  // 空格，字段名会以「项目地址 类别 Rust 项目标题 …」的形式留在摘要里（2026-09 走查）。
+  // 只在字段名后紧跟分隔符或行尾时匹配，避免误伤「地址栏」这类正常词语。重建即生效，不改历史文件。
+  const SUMMARY_LABELS = '项目地址|项目URL|项目 Url|项目标题|项目名称|项目描述|项目简介|项目介绍|项目语言|项目类别|项目截图|项目依赖|项目文档|项目网址|项目链接|作品网址|作品地址|在线体验|在线地址|在线演示|推荐理由|示例代码|运行环境|使用方法|使用说明|后续更新计划|更新计划|推荐项目|开源地址|源码地址|仓库地址|开源协议|主要受众|产品名称|一句话介绍|详细介绍|产品介绍|官方网站|官网地址|必写|可选|类别|语言|描述|简介|介绍|地址|网址|链接|官网|仓库|源码|demo|description|screenshots|repo';
+  // 带冒号的字段名直接消费；不带冒号的必须后面跟分隔符或行尾，避免误伤「地址栏」这类正常词语。
+  const SUMMARY_LABEL_TOKEN = new RegExp(`(?:^|[\\s，。；、])(${SUMMARY_LABELS})\\s*(?:[（(][^）)]{0,12}[）)])?\\s*(?:[：:]\\s*|(?=[\\s，。；、]|$))`, 'gi');
+  function cleanSummaryText(value) {
+    let text = String(value ?? '');
+    text = text.replace(/!\[[^\]]*\]\([^)]*\)/g, ' ');          // 图片
+    text = text.replace(/\[([^\]]+)\]\([^)\s]*\)/g, '$1');      // [文字](链接) → 文字
+    text = text.replace(/<https?:\/\/[^>\s]+>/g, ' ');          // <https://...>
+    text = text.replace(/https?:\/\/[^\s)\]]+/g, ' ');          // 裸链接
+    text = text.replace(/\b_?no response_?\b/gi, ' ');          // 投稿模板里的空回答
+    text = text.replace(SUMMARY_LABEL_TOKEN, ' ');
+    text = text.replace(/\s+/g, ' ').trim();
+    return text.replace(/^[\s，。；、:：,;.\-–—]+/, '').trim();
+  }
   function summary(item, locale) {
     const explicit = locale === 'en' ? item.summaryEn || item.summary_en : item.summaryZh || item.summary_zh;
-    if (explicit) return { text: explicit, original: false, lang: locale };
+    if (explicit) { const cleaned = cleanSummaryText(explicit); if (cleaned) return { text: cleaned, original: false, lang: locale }; }
     const candidates = locale === 'en'
       ? [item.github?.description, item.tagline, item.description, item.summary, item.content]
       : [item.summary, item.tagline, item.github?.description, item.description, item.content];
     const available = candidates.filter(value => typeof value === 'string' && value.trim());
     const matches = value => locale === 'en' ? !/[\u3400-\u9fff]/u.test(value) : /[\u3400-\u9fff]/u.test(value);
-    const text = locale === 'zh-CN' ? available[0] : (available.find(matches) || available[0]);
+    const raw = locale === 'zh-CN' ? available[0] : (available.find(matches) || available[0]);
+    const text = cleanSummaryText(raw);
     return { text: text || t(locale, 'noSummary'), original: Boolean(text && !matches(text)), lang: text && /[\u3400-\u9fff]/u.test(text) ? 'zh-CN' : 'en' };
   }
   function displayTitle(item, locale = 'zh-CN') {
@@ -235,22 +287,28 @@
     if (Number.isNaN(date.getTime())) return '';
     return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(date);
   }
+  // Fallback only: a source with a logo asset renders that logo instead. Keyed off sourceId, never the
+  // display name, because "HelloGitHub" would otherwise match a /github/ test and borrow GitHub's mark.
   function sourceMark(item) {
-    const name = sourceName(item, 'en');
-    if (/github/i.test(name)) return icon('github');
+    const id = String(item?.sourceId || '').toLowerCase();
+    if (id === 'github-trending' || id === 'github-trending-cn') return icon('github');
     const known = { producthunt: 'P', vibecafe: 'V', hackernews: 'Y', reddit: 'R', devto: 'D', indiehackers: 'IH' };
-    return escapeHtml(known[String(item.sourceId || '').toLowerCase()] || name.replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase() || 'D');
+    return escapeHtml(known[id] || sourceName(item, 'en').replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase() || 'D');
   }
   function renderItem(item, locale, { date = '', saved = false, index = 0 } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
     const links = itemLinks(item), primary = safeUrl(item.websiteUrl || item.url) || repo?.url;
+    const source = sourceInfo(item);
     const titleUrl = projectPath ? localPath(projectPath, locale) : trackedUrl(repo?.url || primary, item, date);
     const s = summary(item, locale);
     const language = metric(item, ['language', 'lang']);
     const stars = metric(item, ['stars', 'stargazers_count', 'totalStars']);
     const votes = metric(item, ['votes', 'votesCount']);
     const tags = [...new Set([...(item.github?.topics || []), ...(item.tags || [])])].filter(tag => !['product', 'vibecafe', 'daily', 'new', 'official-featured', 'submission', 'github-trending'].includes(tag)).slice(0, 3);
-    const imageUrl = [item.image, item.logo, item.icon].map(value => localImage(value)).find(Boolean);
+    // The product mark identifies an item at 48px; software screenshots belong in the gallery.
+    const logoUrl = localImage(item.logo);
+    const imageUrl = logoUrl || [item.image, item.icon].map(value => localImage(value)).find(Boolean);
+    const gallery = galleryHtml(item.images, locale);
     const title = displayTitle(item, locale);
     const score = stars !== null ? stars : votes;
     const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
@@ -258,13 +316,13 @@
     const sourceUrl = itemLinks(item).find(([label]) => label === 'source')?.[1];
     return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || favoriteId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
-      <span class="item-avatar avatar-${index % 5}" aria-hidden="true">${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
-      <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}</div>
+      <span class="item-avatar avatar-${index % 5}" aria-hidden="true">${imageUrl ? `<img src="${escapeHtml(imageUrl)}"${logoUrl ? ' class="is-logo"' : ''} alt="" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
+      <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}${gallery}</div>
       <div class="item-tags">${language ? `<span class="tag">${escapeHtml(language)}</span>` : ''}${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceName(item, locale))}</a>` : `<span>${escapeHtml(sourceName(item, locale))}</span>`}</div>
+      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceName(item, locale))}</a>` : `<span>${escapeHtml(sourceName(item, locale))}</span>`}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div>
       <time class="item-date" datetime="${escapeHtml((item.publishedAt || date || '').slice(0, 10))}">${escapeHtml(published)}</time>
       <div class="item-actions">${favoriteButton(item, locale, saved)}</div></article>`;
   }
-  return { origin, favoritesKey, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, repository, favoriteId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
+  return { origin, favoritesKey, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, localImages, hotlinkable, galleryHtml, repository, favoriteId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
 });

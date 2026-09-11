@@ -1,0 +1,138 @@
+/**
+ * 投稿类 Issue 正文 → 简介。
+ *
+ * 用户在 ruanyf/weekly 和 HelloGitHub 里按模板投稿，正文常常是
+ * 「项目地址 / 项目标题 / 项目描述」这种字段名加值。原来直接取清洗后的整段正文，
+ * 字段名就被当成内容渲染到列表和项目详情页上（2026-09 走查：13.6% 的条目如此）。
+ *
+ * 这里按行剥离字段名与纯值行，再取描述字段或第一个有意义的段落。
+ * 纯函数、无依赖，便于单测；离线语料验证见 scripts/validate_issue_description.js。
+ */
+
+// 投稿模板里的字段名。长的必须排在前面，否则「项目地址」会被「地址」抢先匹配。
+const FIELD_LABELS = [
+  '项目描述', '项目简介', '项目介绍', '项目标题', '项目名称', '项目地址', '项目网址', '项目链接', '项目主页', '项目类别',
+  '作品网址', '作品地址', '作品名称', '在线体验', '在线地址', '在线演示', '在线预览',
+  '官网地址', '官方网站', '官方网址', '官网', '官方',
+  '推荐理由', '项目依赖', '示例代码', '运行环境', '使用方法', '使用说明', '项目文档', '项目语言', '主要语言', '项目截图',
+  '后续更新计划', '更新计划', '推荐项目', '开源地址', '产品名称', '网站', '一句话介绍', '详细介绍', '产品介绍',
+  'github地址', 'github', '源码地址', '源码', '仓库地址', '仓库',
+  '描述', '简介', '介绍', '地址', '网址', '链接', '类别', '语言', '演示',
+  // HelloGitHub 现行模板用「必写 / 可选」标注必填与选填
+  '必写', '可选',
+  'demo', 'website', 'description', 'screenshots', 'screenshot', 'repo', 'repository',
+];
+
+// 描述类字段：优先用它的值，而不是正文第一段。
+const DESCRIPTION_LABELS = new Set(['项目描述', '项目简介', '项目介绍', '描述', '简介', '介绍', '推荐理由', '一句话介绍', '详细介绍', '产品介绍', 'description']);
+
+// 字段名后面可能跟括号说明（项目简介 (100 字以内)）或并列名（项目描述 & 推荐理由）。
+const LABEL_SUFFIX = String.raw`(?:\s*[（(][^）)]*[）)]|\s*[/&+＋、]\s*[^：:\s]{0,12}|\s*与\s*[^：:\s]{0,12})?`;
+const LABEL_ANY = new RegExp(`^(?:${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[：:]?\\s*$`, 'i');
+// 捕获组 1 = 字段名，2 = 字段值。
+const LABEL_VALUE = new RegExp(`^(${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[：:]\\s*(.*)$`, 'i');
+// 值里残留的内联字段名（「可选：xxx」挤在同一段时用）。
+const LABEL_INLINE = new RegExp(`(?:^|[\\s，。；、])(${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[：:]\\s*`, 'gi');
+const LABEL_TRAILING = new RegExp(`\\s*(?:${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[：:]?\\s*$`, 'i');
+
+// 字段值里的噪声：空回答、占位符。
+const NOISE_VALUE = /^(?:no response|_?no response_?|none|null|n\/a|na|无|暂无|没有|待补充|todo|tbd|示例|example)$/i;
+// 纯值行：语言名、许可证之类的短标签，不是描述。
+const PLAIN_VALUE = /^(?:js|ts|javascript|typescript|python|rust|go|golang|java|kotlin|swift|c\+\+|c#|php|ruby|sql|html|css|shell|bash|vue|react|node(?:\.?js)?|macos|windows|linux|ios|android|web|cli|mit|apache-?2\.?0?|gpl-?3\.?0?|bsd)$/i;
+
+const MIN_DESCRIPTION_LENGTH = 15;
+
+/** 去掉 markdown 内联标记与链接，压平空白。单行语义。 */
+function stripInlineMarkup(value) {
+  return String(value ?? '')
+    .replace(/<!--[\s\S]*?-->/g, '')                 // 模板里的 HTML 注释
+    .replace(/<https?:\/\/[^>\s]+>/g, '')            // <https://...>
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')            // 图片
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')         // [文本](链接) → 文本
+    .replace(/https?:\/\/[^\s)\]]+/g, '')            // 裸链接
+    .replace(/^[\s>*_`#\-–—]+/, '')                  // 标题/引用/列表前缀
+    .replace(/[*_`]/g, '')                           // 强调与代码符号
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** 去掉结尾的「- [项目与下载](url) - [更多介绍](url)」这类导航链接列表。 */
+function stripTrailingLinkItems(value) {
+  let out = String(value ?? '').trim();
+  for (let prev; out !== prev;) {
+    prev = out;
+    out = out.replace(/\s*[-–—*•]?\s*\[[^\]]{1,16}\]\([^)]*\)\s*$/, '').trim();
+  }
+  return out.replace(/[\s\-–—*•]+$/, '').trim();
+}
+
+/** 去掉选中文本里残留的字段名（含句中被挤在同一段的「可选：xxx」）。 */
+function stripResidualLabels(text) {
+  return String(text ?? '')
+    .replace(LABEL_INLINE, ' ')
+    .replace(LABEL_TRAILING, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** 把正文按字段名切成块；没有字段名的行归入 label 为 null 的块。 */
+function splitBlocks(body) {
+  const blocks = [];
+  let current = { label: null, lines: [] };
+  for (const raw of String(body ?? '').replace(/\r\n?/g, '\n').split('\n')) {
+    const line = stripInlineMarkup(raw);
+    if (!line) { current.lines.push(''); continue; }
+    const pair = line.match(LABEL_VALUE);
+    if (pair) {
+      blocks.push(current);
+      current = { label: pair[1].toLowerCase(), lines: pair[2] ? [pair[2]] : [] };
+      continue;
+    }
+    if (LABEL_ANY.test(line)) {
+      blocks.push(current);
+      current = { label: line.replace(/[：:]\s*$/, '').toLowerCase(), lines: [] };
+      continue;
+    }
+    current.lines.push(line);
+  }
+  blocks.push(current);
+  return blocks
+    .map(block => ({ label: block.label, text: block.lines.join(' ').replace(/\s+/g, ' ').trim() }))
+    .filter(block => block.text);
+}
+
+/** 值是否值得作为简介：不是空回答、不是纯语言名、不太短。 */
+function usable(text, minLength) {
+  if (!text) return false;
+  if (NOISE_VALUE.test(text)) return false;
+  if (PLAIN_VALUE.test(text)) return false;
+  return text.length >= minLength;
+}
+
+/**
+ * Issue 正文 → 简介。
+ * 优先取描述类字段的值，其次取第一个有意义的段落，最后退到最长的一段；
+ * 都没有时返回空串，让上层按自己的规则回退。
+ */
+function descriptionFromIssue(body) {
+  const blocks = splitBlocks(String(body ?? '').replace(/<!--[\s\S]*?-->/g, ''));
+  if (!blocks.length) return '';
+  const pick = () => {
+    const described = blocks.filter(block => block.label && DESCRIPTION_LABELS.has(block.label));
+    for (const block of described) if (usable(block.text, MIN_DESCRIPTION_LENGTH)) return block.text;
+    // 描述字段很短时也比正文里的字段名强
+    for (const block of described) if (usable(block.text, 4)) return block.text;
+
+    const free = blocks.filter(block => !block.label);
+    for (const block of free) if (usable(block.text, MIN_DESCRIPTION_LENGTH)) return block.text;
+    for (const block of blocks) if (usable(block.text, MIN_DESCRIPTION_LENGTH)) return block.text;
+
+    // 兜底：取最长的一段，避免完全拿不到简介
+    const longest = blocks.map(block => block.text).sort((a, b) => b.length - a.length)[0] || '';
+    return NOISE_VALUE.test(longest) ? '' : longest;
+  };
+  const chosen = stripResidualLabels(pick());
+  return NOISE_VALUE.test(chosen) ? '' : chosen;
+}
+
+module.exports = { descriptionFromIssue, stripInlineMarkup, stripTrailingLinkItems, FIELD_LABELS };

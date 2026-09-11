@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { discoverItemRepository, normalizeGitHubRepoUrl } = require('./github_repo_utils');
+const { descriptionFromIssue } = require('./issue-description');
 
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const DEFAULT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw');
@@ -116,15 +117,9 @@ function extractMetaContent(html, name) {
   return '';
 }
 
+/** 投稿 Issue 正文常带「项目地址 / 项目描述」模板字段，交给 issue-description 剥离。 */
 function issueSummary(body) {
-  const clean = (body || '')
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-    .replace(/^#{1,6}\s+/gm, '')
-    .replace(/[*_`>#-]/g, '')
-    .replace(/https?:\/\/[^\s)\]]+/g, '')
-    .replace(/\s+/g, ' ').trim();
-  return clean;
+  return descriptionFromIssue(body);
 }
 
 function issueItems(document, src) {
@@ -218,6 +213,12 @@ function vibecafeItems(document, src) {
       : '';
     const websiteUrl = cleanWebsiteUrl(product.websiteUrl || detailWebsiteUrl || selectedProductWebsite || '');
     const vibecafeUrl = `https://vibecafe.ai/products/${product.id}`;
+    // VibeCafé stores two distinct media kinds: `logoUrl` is the product mark, while
+    // `imageUrls` are the software screenshots (1-9 of them, in display order).
+    const logo = typeof product.logoUrl === 'string' ? product.logoUrl.trim() : '';
+    const screenshots = [...new Set((Array.isArray(product.imageUrls) ? product.imageUrls : [])
+      .filter((url) => typeof url === 'string' && url.trim())
+      .map((url) => url.trim()))];
     return {
       sourceId: src.id,
       title: product.name || '',
@@ -230,7 +231,9 @@ function vibecafeItems(document, src) {
       metrics: {},
       tags: ['vibecafe', 'product'],
       externalId: product.id,
-      image: product.imageUrls?.[0] || product.logoUrl || '',
+      image: screenshots[0] || logo,
+      logo,
+      images: screenshots,
       vibecafeId: product.id,
       vibecafeUrl,
       websiteUrl,
@@ -445,6 +448,13 @@ function productHuntItems(document, src) {
     const overview = sameProductIdentity
       ? (productOverview?.description || productOverview?.tagline || '')
       : '';
+    // Launch media mirrors VibeCafé's split: `thumbnail` is the product mark, `media`
+    // is the gallery (Media.url is the image, or the video cover when videoUrl is set).
+    // Posts captured before the featured projection carried media simply have neither.
+    const logo = typeof product.thumbnail?.url === 'string' ? product.thumbnail.url.trim() : '';
+    const screenshots = [...new Set((Array.isArray(product.media) ? product.media : [])
+      .map((entry) => (entry && typeof entry.url === 'string' ? entry.url.trim() : ''))
+      .filter((url) => url && url !== logo))];
     const item = {
       sourceId: src.id,
       title: product.name || '',
@@ -458,6 +468,9 @@ function productHuntItems(document, src) {
       metrics: { votes: product.votesCount || 0, comments: product.commentsCount || 0 },
       tags: ['producthunt', 'new', 'official-featured'],
       externalId: String(product.id),
+      image: screenshots[0] || logo,
+      logo,
+      images: screenshots,
       websiteUrl,
       productLinks,
       productOverview: productOverview || null,

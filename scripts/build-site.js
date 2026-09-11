@@ -14,7 +14,7 @@ function write(file, content) { const target = path.join(outputDir, file); fs.mk
 function writePage(route, content) { write(path.join(route.replace(/^\//, ''), 'index.html'), content); }
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(outputDir, { recursive: true });
-for (const name of ['styles.css', 'app.js', 'shared.js', 'theme.js', 'logo.svg', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg']) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
+for (const name of ['styles.css', 'app.js', 'shared.js', 'theme.js', 'logo.svg', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg', 'source-ruanyifeng.png']) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
 const reports = dates.map(date => {
   const raw = JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8'));
   const finalPath = path.join(finalDir, `${date}.md`), rawMarkdown = path.join(sourceDir, `${date}.md`);

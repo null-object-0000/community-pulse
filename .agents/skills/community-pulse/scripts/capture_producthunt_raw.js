@@ -5,6 +5,9 @@
  * GraphQL has no implicit "whole object": `records` preserves each Post node
  * exactly as returned for the explicit SOURCE_FIELDS projection below. No
  * normalization, enrichment, deduplication, ranking, or truncation is applied.
+ * The featured subset is projected one step wider (FEATURED_FIELDS: + thumbnail,
+ * media) so product marks and launch galleries stay available offline; use
+ * `--refresh-featured` to add them to days captured before that projection.
  *
  * Usage:
  *   node scripts/capture_producthunt_raw.js --start 2026-01-01 --end 2026-09-07
@@ -56,6 +59,14 @@ const SOURCE_FIELDS = [
 const SOURCE_PROJECTION = SOURCE_FIELDS
   .map((field) => field === 'productLinks' ? 'productLinks { type url }' : field)
   .join(' ');
+// Product Hunt keeps two media kinds on Post: `thumbnail` is the product mark and
+// `media` is the launch gallery (Media.url is the image, or the generated video
+// cover when videoUrl is set). Only the featured subset is projected with them:
+// it is capped at ~20 posts/day, while the full-day sweep returns 800+ posts and
+// would grow the daily file for no downstream benefit.
+const MEDIA_FIELDS = ['thumbnail', 'media'];
+const FEATURED_FIELDS = [...SOURCE_FIELDS, ...MEDIA_FIELDS];
+const FEATURED_PROJECTION = `${SOURCE_PROJECTION} thumbnail { type url } media { type url videoUrl }`;
 
 function value(argv, name) {
   const index = argv.indexOf(name);
@@ -499,7 +510,7 @@ function queryForDay(targetDate, after, pageSize, featuredOnly = false) {
       postedBefore: ${escapeGraphQLString(postedBefore)}
     ) {
       edges {
-        node { ${SOURCE_PROJECTION} }
+        node { ${featuredOnly ? FEATURED_PROJECTION : SOURCE_PROJECTION} }
       }
       totalCount
       pageInfo { hasNextPage endCursor }
@@ -639,7 +650,7 @@ function buildFeaturedSection(options, targetDate, capture) {
       id: `producthunt-featured-${targetDate}-${fetchedAt.replace(/[-:.]/g, '')}`,
       endpoint: ENDPOINT,
       apiVersion: 'v2 GraphQL',
-      sourceFields: SOURCE_FIELDS,
+      sourceFields: FEATURED_FIELDS,
       order: 'NEWEST',
       pageSize: options.pageSize,
       pageCount: capture.pages.length,

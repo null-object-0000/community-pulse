@@ -25,6 +25,8 @@ function buildProjects(reports) {
         }
         if (!project.item.summaryEn && (snapshot.summaryEn || snapshot.summary_en)) project.item.summaryEn = snapshot.summaryEn || snapshot.summary_en;
         if (!project.item.summaryZh && (snapshot.summaryZh || snapshot.summary_zh)) project.item.summaryZh = snapshot.summaryZh || snapshot.summary_zh;
+        // Screenshots come from whichever observation published them (VibeCafé products carry 1-9).
+        if (!project.item.images?.length && snapshot.images?.length) project.item.images = snapshot.images;
         if (report.date === project.lastSeen && snapshot.summarySource === 'llm-final' && project.item.summarySource !== 'llm-final') {
           project.item.summary = snapshot.summary; project.item.summarySource = snapshot.summarySource;
         }
@@ -71,12 +73,15 @@ function projectPage(project, locale) {
   const facts = [['owner', project.owner], ['programmingLanguage', language], ['license', license && license !== 'NOASSERTION' ? license : null], ['stars', stars !== null ? new Intl.NumberFormat(locale).format(Number(stars)) : null], ['forks', forks !== null ? new Intl.NumberFormat(locale).format(Number(forks)) : null]].filter(([, value]) => value !== null && value !== undefined && value !== '');
   const factsHtml = list => `<dl class="facts">${list.map(([key, value]) => `<div><dt>${t(locale, key)}</dt><dd>${e(value)}</dd></div>`).join('')}</dl>`;
   const related = project.related.length ? `<section class="panel"><h2>${t(locale, 'related')}</h2><div class="related-list">${project.related.map(other => `<a href="${lp(other.path, locale)}"><b>${e(other.name)}</b>${other.language ? `<span>${e(other.language)}</span>` : ''}</a>`).join('')}</div></section>` : '';
+  const gallery = D.galleryHtml(item.images, locale);
+  const galleryPanel = gallery ? `<section class="panel" id="screenshots"><h2>${t(locale, 'gallery')}</h2>${gallery}</section>` : '';
   const content = `<nav class="breadcrumb" aria-label="${locale === 'en' ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/', locale)}">${t(locale, 'discover')}</a><span>/</span><span>${t(locale, 'details')}</span></nav>
     <article class="project-hero"><p class="eyebrow">DEV TRENDS / GITHUB PROJECT</p><div class="project-heading"><div><p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div>${D.favoriteButton(item, locale)}</div>
     <p class="project-summary" lang="${s.lang}">${e(shortSummary)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
     <div class="project-links">${links.map(([label, url], i) => `<a class="button${i === 0 ? ' primary' : ''}" href="${e(D.trackedUrl(url, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${t(locale, label)} ${D.icon('arrow')}</a>`).join('')}</div>
     ${project.topics.length ? `<div class="project-tags">${project.topics.slice(0, 12).map(topic => `<span class="tag">${e(topic)}</span>`).join('')}</div>` : ''}</article>
     <div class="project-layout"><div>
+      ${galleryPanel}
       <section class="panel" id="about"><h2>${t(locale, 'about')}</h2>${s.original ? `<p class="caption">${t(locale, 'translationNote')}</p>` : ''}<p lang="${s.lang}">${e(s.text)}</p><p class="caption">${t(locale, 'summaryNote')}</p></section>
       <section class="panel" id="history"><h2>${t(locale, 'timeline')}</h2><p class="caption">${t(locale, 'timelineHint')}</p><ol class="timeline">${project.observations.map(observation => {
         const text = D.summary(observation.item, locale);

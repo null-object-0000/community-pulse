@@ -136,6 +136,7 @@ async function localize(item) {
   const prompt = `为 DevTrends 翻译并归类一条内容。${sourceNote}${direction}${titleRule}
 从下面的固定分类中选择一个最能描述项目主要用途和目标用户的分类。必须只选一个。按产品解决的问题归类，不按来源、开源状态或作者身份归类；AI、React、自托管等只是实现或次要功能时，不要据此归类；确实无法判断才选 other。
 ${categoryRules}
+描述来自社区投稿，可能混着投稿模板的字段名（「项目地址」「项目标题」「项目描述」「必写」「类别」等）、空字段占位（「No response」「暂无」「待补充」）、残缺标签（「官网有演示：」）或 markdown 链接语法。摘要只写项目本身：不要出现这些字段名、占位符、模板残句和链接语法。
 不添加原文没有的信息，不输出宣传套话或解释。只输出严格 JSON：{${requested}}
 
 标题：${item.title}

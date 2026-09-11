@@ -4,9 +4,52 @@ const crypto = require('node:crypto');
 const D = require('../web/shared.js');
 
 const fields = ['image', 'logo', 'icon'];
+// Screenshot galleries: `images` holds every image a source published for a product.
+const listFields = ['images'];
+// A product mark identifies a row and stays small (VibeCafé logos average ~46 KB, Product
+// Hunt thumbnails ~13 KB), so every report's marks are mirrored. Screenshots are hundreds
+// of KB each: they are hotlinked from the source CDN (D.hotlinkable) unless
+// IMAGES_RETENTION_DAYS asks for the newest N reports to be mirrored end to end.
+const markFields = ['logo', 'icon'];
 const storeDir = path.resolve(__dirname, '../assets/images');
+const rawDir = path.resolve(__dirname, '../知识/大家都在做什么/raw');
 const manifestPath = path.join(storeDir, 'manifest.json');
 const readManifest = () => fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
+const isReportFile = name => /^\d{4}-\d{2}-\d{2}\.json$/.test(name);
+const retentionDays = () => {
+  const raw = process.env.IMAGES_RETENTION_DAYS;
+  if (raw === undefined || raw === '') return 0;
+  const value = Number(raw);
+  return Number.isInteger(value) && value >= 0 ? value : 0;
+};
+const reportDates = () => fs.readdirSync(rawDir).filter(isReportFile).map(name => name.slice(0, -5)).sort().reverse();
+// Marks always; screenshots only inside the retention window.
+function itemUrls(item, { screenshots = false } = {}) {
+  const urls = [];
+  for (const field of markFields) if (D.safeUrl(item[field])) urls.push(item[field]);
+  if (!screenshots) return urls;
+  for (const field of fields) if (D.safeUrl(item[field])) urls.push(item[field]);
+  for (const field of listFields) for (const url of Array.isArray(item[field]) ? item[field] : []) if (D.safeUrl(url)) urls.push(url);
+  return urls;
+}
+function reportUrls(dates, options) {
+  const urls = new Set();
+  for (const date of dates) {
+    const report = JSON.parse(fs.readFileSync(path.join(rawDir, `${date}.json`), 'utf8'));
+    for (const item of D.reportItems(report)) for (const url of itemUrls(item, options)) urls.add(url);
+  }
+  return urls;
+}
+// Rebuild the manifest around the retained URLs only, and report which files became orphaned.
+function pruneManifest(manifest, retained) {
+  const kept = {}, keptFiles = new Set(), removed = [];
+  for (const [url, local] of Object.entries(manifest)) {
+    if (!retained.has(url)) { removed.push(url); continue; }
+    kept[url] = local;
+    if (local) keptFiles.add(path.basename(local));
+  }
+  return { kept, keptFiles, removed };
+}
 
 // Detect formats from bytes, never trust an upstream filename or HTML response.
 function imageExtension(bytes) {
@@ -37,13 +80,23 @@ async function downloadImage(url, fetcher = fetch) {
   return { bytes, extension: imageExtension(bytes) };
 }
 
+function localizeUrl(value, manifest) {
+  // A URL is buildable when it is mapped to a managed file or when its source CDN is
+  // trusted for direct hotlinking (older reports). Anything else must be synced first.
+  if (D.safeUrl(value) && !Object.hasOwn(manifest, value) && !D.hotlinkable(value)) {
+    throw new Error('Image has not been synced; run npm run images:sync before building');
+  }
+  return D.localImage(value, manifest);
+}
+
 function localizeReport(report, manifest) {
   for (const source of report.results || []) for (const item of source.items || []) {
     for (const field of fields) if (item[field]) {
-      if (D.safeUrl(item[field]) && !Object.hasOwn(manifest, item[field])) {
-        throw new Error('Image has not been synced; run npm run images:sync before building');
-      }
-      item[field] = D.localImage(item[field], manifest);
+      item[field] = localizeUrl(item[field], manifest);
+    }
+    for (const field of listFields) if (Array.isArray(item[field])) {
+      // An unsynced URL throws before this point, so filtering only drops known-bad images.
+      item[field] = item[field].map(url => localizeUrl(url, manifest)).filter(Boolean);
     }
   }
   return report;
@@ -61,14 +114,13 @@ function copyImages(outputDir, manifest) {
 
 async function syncImages() {
   fs.mkdirSync(storeDir, { recursive: true });
-  const manifest = readManifest(), urls = new Set();
-  const rawDir = path.resolve(__dirname, '../知识/大家都在做什么/raw');
-  for (const file of fs.readdirSync(rawDir).filter(name => /^\d{4}-\d{2}-\d{2}\.json$/.test(name))) {
-    for (const item of D.reportItems(JSON.parse(fs.readFileSync(path.join(rawDir, file), 'utf8')))) {
-      for (const field of fields) if (D.safeUrl(item[field])) urls.add(item[field]);
-    }
-  }
-  const pending = [...urls].filter(url => !D.localImage(manifest[url]) || !fs.existsSync(path.join(storeDir, path.basename(manifest[url]))));
+  const dates = reportDates();
+  const days = retentionDays();
+  const retained = reportUrls(dates);
+  const window = dates.slice(0, days);
+  if (window.length) for (const url of reportUrls(window, { screenshots: true })) retained.add(url);
+  const { kept: manifest, removed } = pruneManifest(readManifest(), retained);
+  const pending = [...retained].filter(url => !D.localImage(manifest[url]) || !fs.existsSync(path.join(storeDir, path.basename(manifest[url]))));
   let done = 0, failed = 0;
   const save = () => {
     fs.writeFileSync(manifestPath + '.tmp', JSON.stringify(Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b))), null, 2) + '\n');
@@ -93,8 +145,17 @@ async function syncImages() {
     }
   }));
   save();
-  console.log(`Images: ${urls.size} URLs, ${done} downloaded, ${failed} unavailable (will retry next sync).`);
+  // Retention is enforced after a successful pass so a partial download never deletes a
+  // file the retained reports still need.
+  const { keptFiles } = pruneManifest(manifest, retained);
+  let pruned = 0;
+  for (const name of fs.readdirSync(storeDir)) {
+    if (name === 'manifest.json' || keptFiles.has(name)) continue;
+    fs.rmSync(path.join(storeDir, name));
+    pruned++;
+  }
+  console.log(`Images: ${retained.size} mirrored URLs (marks from ${dates.length} reports, screenshots from ${window.length}), ${done} downloaded, ${failed} unavailable, ${removed.length} manifest entries and ${pruned} files pruned.`);
 }
 
-module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension };
+module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays };
 if (require.main === module) syncImages().catch(error => { console.error(error); process.exitCode = 1; });
