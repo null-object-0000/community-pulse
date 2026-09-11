@@ -403,10 +403,10 @@
     },
     "complete": true,
     "itemCount": 5,
-    "contentSha256": "27f21629e6102931a1e650d4028bef79e0917ac4c8bd736019fbf11e8be13b40",
-    "fetchedAt": "2026-09-09T09:15:42.511Z",
+    "contentSha256": "177599db2dcd9f8fe090810c3864f6d5b184fde86b02757b97fc07e4fea96c48",
+    "fetchedAt": "2026-09-11T04:14:28.958Z",
     "capture": {
-      "id": "producthunt-featured-2026-06-28-20260909T091542511Z",
+      "id": "producthunt-featured-2026-06-28-20260911T041428958Z",
       "endpoint": "https://api.producthunt.com/v2/api/graphql",
       "apiVersion": "v2 GraphQL",
       "sourceFields": [
@@ -420,7 +420,9 @@
         "votesCount",
         "commentsCount",
         "website",
-        "productLinks"
+        "productLinks",
+        "thumbnail",
+        "media"
       ],
       "order": "NEWEST",
       "pageSize": 20,
@@ -445,9 +447,9 @@
           "endCursor": "NQ",
           "rateLimitAfter": {
             "limit": 6250,
-            "remaining": 3250,
-            "resetSeconds": 818,
-            "credentialIndex": 1
+            "remaining": 6250,
+            "resetSeconds": 900,
+            "credentialIndex": 3
           }
         }
       ]
@@ -457,25 +459,61 @@
         "id": "1182736",
         "name": "Dotient",
         "tagline": "Your local semantic search app",
-        "url": "https://www.producthunt.com/products/dotient/launches/dotient?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "url": "https://www.producthunt.com/products/dotient/launches/dotient?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "createdAt": "2026-06-28T07:01:00Z",
         "description": "Dotient is a local-first desktop application that helps you organize and search through your personal files using ML-powered visual search. Your files stay private, work offline.",
         "featuredAt": "2026-06-28T07:01:00Z",
         "votesCount": 269,
         "commentsCount": 49,
-        "website": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "website": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "productLinks": [
           {
             "type": "Website",
-            "url": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
           },
           {
             "type": "Twitter",
-            "url": "https://www.producthunt.com/r/HCQMY2J5KOOCD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/HCQMY2J5KOOCD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
           },
           {
             "type": "Twitter",
-            "url": "https://www.producthunt.com/r/BVETKKR5JWLXYY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/BVETKKR5JWLXYY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+          }
+        ],
+        "thumbnail": {
+          "type": "image",
+          "url": "https://ph-files.imgix.net/82b244b7-baed-481e-bb0f-5202eaf33d75.png?auto=format"
+        },
+        "media": [
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/e592297e-11b2-42e8-bf3e-d48e1083a02e.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/056d0bea-70f7-4193-be70-cf2b1ee85eb6.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/9f5c37b2-a27c-46d0-a854-d6f3bafd9637.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/078d2284-9a8c-4ceb-b1ca-ba133b1f4870.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/3cd02b03-f8f2-4490-af41-e2d943376dbe.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "video",
+            "url": "https://ph-files.imgix.net/7cea2223-5e07-453c-b4ea-96b88be1f47c.jpeg?auto=format",
+            "videoUrl": "https://youtu.be/tPa7R-mMzg8?si=Fp6LEeCdxzvhfVoW"
           }
         ]
       },
@@ -483,39 +521,57 @@
         "id": "1178202",
         "name": "Persona.js",
         "tagline": "Add WebMCP-native AI chat to any Frontend",
-        "url": "https://www.producthunt.com/products/persona-12/launches/persona-js?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "url": "https://www.producthunt.com/products/persona-12/launches/persona-js?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "createdAt": "2026-06-28T07:01:00Z",
         "description": "Persona is a lightweight, open-source AI chat UI library that embeds into any website, from modern apps to static HTML. Unlike React-based chat frameworks, Persona is framework-free, backend-agnostic, and WebMCP-native, so your assistant can discover and execute tools exposed by the parent page. Add streaming chat, voice, theming, and interactive copilot experiences without rebuilding your frontend or writing bespoke APIs.",
         "featuredAt": "2026-06-28T07:01:00Z",
-        "votesCount": 292,
+        "votesCount": 291,
         "commentsCount": 46,
-        "website": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "website": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "productLinks": [
           {
             "type": "Website",
-            "url": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
           },
           {
             "type": "Github",
-            "url": "https://www.producthunt.com/r/EDAI5PYSIGMOB4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/EDAI5PYSIGMOB4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
           }
-        ]
-      },
-      {
-        "id": "1182460",
-        "name": "Lyto",
-        "tagline": "\"One AI agent across your browser, tools, and messages \"",
-        "url": "https://www.producthunt.com/products/lyto/launches/lyto?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
-        "createdAt": "2026-06-28T07:01:00Z",
-        "description": "Lyto AI is a Chrome extension that gives you full control over your browser. Open and close tabs, scroll, click, fill forms, and interact with every DOM element. Integrates with Google Docs, Gmail, and Google Sheets. Research, automate tasks, and organize your workflow — all inside Chrome.",
-        "featuredAt": "2026-06-28T07:01:00Z",
-        "votesCount": 178,
-        "commentsCount": 39,
-        "website": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
-        "productLinks": [
+        ],
+        "thumbnail": {
+          "type": "image",
+          "url": "https://ph-files.imgix.net/b50e455a-c3ba-45a0-9589-ef6b386d0f7f.png?auto=format"
+        },
+        "media": [
           {
-            "type": "Website",
-            "url": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "type": "image",
+            "url": "https://ph-files.imgix.net/e5191e47-9168-45c4-b7ad-20dc6f9c865a.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/e605be7b-69d5-460c-9958-218f2bfce404.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/aeab0062-4e93-4a03-96f9-9f1b052103da.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/f3b633b9-c3a6-401d-b717-5a5b81bcd934.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/a4036384-3003-426b-b1fe-0f430f180b94.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "video",
+            "url": "https://ph-files.imgix.net/60ed88ff-df1c-4123-a3c2-60ee7bed3c50.jpeg?auto=format",
+            "videoUrl": "https://youtube.com/watch?v=JhcZSRC_wP8"
           }
         ]
       },
@@ -523,21 +579,67 @@
         "id": "1180034",
         "name": "GetCompress",
         "tagline": "Lossless media compression without context switching",
-        "url": "https://www.producthunt.com/products/getcompress/launches/getcompress-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "url": "https://www.producthunt.com/products/getcompress/launches/getcompress-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "createdAt": "2026-06-28T07:01:00Z",
         "description": "GetCompress is a lightweight desktop app that quickly compresses videos, images, GIFs, PDFs in batches: get up to 90% smaller files with minimal quality loss. Save your time & keep files safe with offline compression. Drag files in and out, no extra clicks. Available for Mac, Windows and Linux.",
         "featuredAt": "2026-06-28T07:01:00Z",
-        "votesCount": 327,
+        "votesCount": 326,
         "commentsCount": 77,
-        "website": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "website": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "productLinks": [
           {
             "type": "Website",
-            "url": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
           },
           {
             "type": "Twitter",
-            "url": "https://www.producthunt.com/r/TBQJHBFIZKDQO7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/TBQJHBFIZKDQO7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+          }
+        ],
+        "thumbnail": {
+          "type": "image",
+          "url": "https://ph-files.imgix.net/2ea77b6b-8653-4a11-bcc6-86ebc3b4cd1f.png?auto=format"
+        },
+        "media": [
+          {
+            "type": "video",
+            "url": "https://ph-files.imgix.net/c423180b-db31-4dc8-8a23-b02df95828f7.jpeg?auto=format",
+            "videoUrl": "https://youtu.be/kOhbOtJKqzI"
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/3d1219e8-da0b-40b3-9bb3-73d1cee9f5ad.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/7ca57369-1500-4015-b703-a4ae12883e54.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/acc7ffcd-b066-4f89-8802-b8adca3a6e29.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/868eeca7-5308-45a7-8af2-e3e293b87671.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/1bc44298-0db4-415d-a655-c080642c8610.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/bbd3c458-3ebf-4061-a186-f3646334de09.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/a41436a8-4670-4776-b4b2-6ea440fd1506.png?auto=format",
+            "videoUrl": null
           }
         ]
       },
@@ -545,17 +647,107 @@
         "id": "1103513",
         "name": "discode.ai",
         "tagline": "100+ AI models, one interface. ECO friendly.",
-        "url": "https://www.producthunt.com/products/discode-ai/launches/discode-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "url": "https://www.producthunt.com/products/discode-ai/launches/discode-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "createdAt": "2026-06-28T07:01:00Z",
         "description": "discode is your EU-friendly AI router: one interface for 100+ models, with every prompt auto-routed to the best one for the job. Or fine-tune it yourself along Smarter, Speed and Eco. It shows you which model answered and why, redacts your personal data on-device before anything leaves, checks the hard answers across multiple models, and estimates the CO₂, water and energy footprint of every request. Built in Vienna 🇦🇹. Your AI, your rhythm.",
         "featuredAt": "2026-06-28T07:01:00Z",
-        "votesCount": 377,
+        "votesCount": 375,
         "commentsCount": 99,
-        "website": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+        "website": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
         "productLinks": [
           {
             "type": "Website",
-            "url": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29"
+            "url": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+          }
+        ],
+        "thumbnail": {
+          "type": "image",
+          "url": "https://ph-files.imgix.net/6678da7c-f0b0-469a-aedc-67dabbd699cb.png?auto=format"
+        },
+        "media": [
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/106b9bca-50b4-4983-94c5-4f65119d2dac.jpeg?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/95aba8ce-aa19-4d28-8875-28d22daa5646.jpeg?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/96bf01bc-4cfe-45f9-b476-416dfb0f40a2.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/906699e0-dad7-4b4a-802d-c1017f4c9c01.jpeg?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/25044955-4cec-4639-845f-f44081ed701a.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/2a98cd7c-4f15-475f-aedd-48e603d111de.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "video",
+            "url": "https://ph-files.imgix.net/bcc78bb0-0eb8-49d3-bd47-c8760c2cb64a.jpeg?auto=format",
+            "videoUrl": "https://www.youtube.com/watch?v=MHGjefLrkv4"
+          }
+        ]
+      },
+      {
+        "id": "1182460",
+        "name": "Lyto",
+        "tagline": "\"One AI agent across your browser, tools, and messages \"",
+        "url": "https://www.producthunt.com/products/lyto/launches/lyto?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "createdAt": "2026-06-28T07:01:00Z",
+        "description": "Lyto AI is a Chrome extension that gives you full control over your browser. Open and close tabs, scroll, click, fill forms, and interact with every DOM element. Integrates with Google Docs, Gmail, and Google Sheets. Research, automate tasks, and organize your workflow — all inside Chrome.",
+        "featuredAt": "2026-06-28T07:01:00Z",
+        "votesCount": 177,
+        "commentsCount": 39,
+        "website": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "productLinks": [
+          {
+            "type": "Website",
+            "url": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29"
+          }
+        ],
+        "thumbnail": {
+          "type": "image",
+          "url": "https://ph-files.imgix.net/f1112048-e1d1-416c-bc05-66809f06dd89.jpeg?auto=format"
+        },
+        "media": [
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/34faa5eb-d362-4229-b8f9-cd6f2524675c.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/00b62ffe-0ae7-411c-bcc5-48bee60db17f.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/5e29aa8b-b2b1-48b8-96d6-cdb51fe96f9e.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "image",
+            "url": "https://ph-files.imgix.net/ed5b2962-1ce9-4038-a0da-408d04e598d9.png?auto=format",
+            "videoUrl": null
+          },
+          {
+            "type": "video",
+            "url": "https://ph-files.imgix.net/d8ffea2c-2963-4621-9cb4-47907c087846.jpeg?auto=format",
+            "videoUrl": "https://youtu.be/nciGjppyqTI"
           }
         ]
       }
@@ -9448,5 +9640,401 @@
         }
       ]
     }
-  ]
+  ],
+  "linkResolution": {
+    "complete": true,
+    "itemCount": 9,
+    "failureCount": 9,
+    "contentSha256": "9e2b8198911cd686e924e454a628798772337aa7fa7f8c375a80f046a05a3f1f",
+    "fetchedAt": "2026-09-11T04:14:32.872Z",
+    "links": [
+      {
+        "originalUrl": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:29 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-wzipyhA7d48bWnpoZiowcf' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d88758d982c8\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=cthuB_kZxXVIgn47_RdRG88LfQwfiIrCH6aBpDSeBkg-1789100069.01324-1.0.1.1-.YEtTBw4yk8vP4sZ98TztQjFPbcxSaJzlibU7N9ZM5YMybddUeW3efy8Oo5veGL0WMAgV9JsZlstPDhKsvn2xZV_SXnqx0onJCrCMZHVj73U.zAdwnaMmKjPG4Whf0Vs; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:29 GMT\r\ncf-ray: a393d88758d982c8-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:30 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-dAc62kY6NnLbMf4ABTNbB4' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d88e5a5a74d1\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=sD_FrVOIRjDBamRI_GHutugJRMjTEDyMl3qjb6imYrU-1789100070.1379733-1.0.1.1-R5ql0dJsehagEpovj.kCHtGDp5UD10s519QgRB5GXY3atB5hsNIqP82q2MiLUj7rQeX7_tRIXp1EXuz6OJaz.0o4GynszYxggaMLT8AsgRtNpi0ezEe.nd.bEd10MBqK; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:30 GMT\r\ncf-ray: a393d88e5a5a74d1-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/RWRX52GMAZRU3H?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1275,
+        "fetchedAt": "2026-09-11T04:14:28.958Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/HCQMY2J5KOOCD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/HCQMY2J5KOOCD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:29 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-7XG6k5C04H4ZoXV66VDgJG' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d887884ad64f\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=50phkub..9lorZEoZkP.PkMc7iImMD_dEeTDlVfsrYU-1789100069.0462346-1.0.1.1-PyT4dTel4NIsV5Wl8gldUzpdk0v8kQCKcPYLUSiLPXFMpMDh.rx7qHpFJt1fUDG81VFg2mxg.RmUc4W2TKl0wRqYgP9WscheRxs27c2tLv2A_j9oy9BlBBxPb4kRFDkb; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:29 GMT\r\ncf-ray: a393d887884ad64f-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/HCQMY2J5KOOCD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/HCQMY2J5KOOCD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:30 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-848C93nOaTgyXs6SQ6XZVv' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d88ecf773c85\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=YMH8b2qHltVXwGOUn4RqYtNGL4PeNbZqh2ILhTNwLow-1789100070.2097626-1.0.1.1-TeYlucmVmI2wJ_gVSN.vMYYgBjcR_TMPVpTEnIw7ZCrDQ.zCSZoxbbFNal_JBElxDmh_HpZbteZJWzm1WPlBPxD6AZsbsfuaRCB7KJna_mJTG5OoB.PN7rEbTobDFD6h; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:30 GMT\r\ncf-ray: a393d88ecf773c85-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/HCQMY2J5KOOCD6?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1346,
+        "fetchedAt": "2026-09-11T04:14:28.960Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/BVETKKR5JWLXYY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/BVETKKR5JWLXYY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:29 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-3X6mGJBoMFyRhmSIXnwIsb' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d8878edd8203\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=SuHHLc4R2VkhZMAaFq4bl7yX_yijlkg5uznDIhAOZy8-1789100069.0468812-1.0.1.1-AX.ML.O8yXLwxrtcNZxVjsOggsH7NPjlVNWMfGzrLzDikmKmJQtNm_mP7vAzR3ur76Ba_jIyiYBJ9FMCPwm3vA_uJPBYOwzKmMODGL1Xy63D95lpZXc2e6h2n8ILqwnM; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:29 GMT\r\ncf-ray: a393d8878edd8203-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/BVETKKR5JWLXYY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/BVETKKR5JWLXYY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:30 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-dboaN64oF4zE3KHsmLjfc9' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d88eafcfd6e0\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=W1JyUA0PIfptLZS62FhIqEtjt455mquUp5RoIHlWhUM-1789100070.1907115-1.0.1.1-386YcFdJZfClWDZ49FRDwNLrvPm49pw7NcytKZCKufGbNEQhJTgkWzlRuPykGq6bi_LN3gnjV9e0rJ.0eb_6IPgNa8MaNgjiQL5jvGWZ.90s0t1osFEx5afW7bBAE2kR; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:30 GMT\r\ncf-ray: a393d88eafcfd6e0-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/BVETKKR5JWLXYY?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1317,
+        "fetchedAt": "2026-09-11T04:14:28.963Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:30 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-RpGpn8udLMBXW9AAMzCnwQ' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d88f698fc655\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=bcKmkvn_mNLg7h77Pj607Jti6z2sVM9Pi0s.xNDamdk-1789100070.303603-1.0.1.1-Km5okDbTCL3Uu3rhkA0Qk5IA_fA2JEbjmi4mGzY9Mik5qc9jhSTtzuKQ_LAg8o0vtP9tFXq48we_XMD46.4p7J0I61qShtPGfCCcx6F8hDBTUwfVd_8x9k7q0xUipbGB; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:30 GMT\r\ncf-ray: a393d88f698fc655-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:31 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-VFdhxVc5PAWGTs4hcJbXGx' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d8967da7057e\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=9m7adMfQYVMoPkEjR3R76xVKKeZjal6Mt4a_PhkiZyQ-1789100071.4391572-1.0.1.1-b_MqA5unMt1C2xQ4DhL_pkCcW.pSzicuFye2v1i0OOOEcfgsHWB_QxbUFZxV5ol4lv.cEBVqJ3dKQ4Q9zbKwGuRDwfWMmz1Ef92YU5lK86VxmgHXhllzkxPMzPGDunGv; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:31 GMT\r\ncf-ray: a393d8967da7057e-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/4BWHM7CAXUKOUV?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1305,
+        "fetchedAt": "2026-09-11T04:14:30.233Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/EDAI5PYSIGMOB4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/EDAI5PYSIGMOB4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:30 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-3yDF6KN3LwKqxfda5agW2a' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d88fab4e3ad9\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=TE3DSVhSE245rrsHbOL8olmxpY1nW9YxMED1A3Ym5t4-1789100070.346633-1.0.1.1-th.n3Q4beWwNyEx4HqeOku05_p_DlReiDXqBrCk0o7sX5xIMUSs2pEyjXvIBUBqKPlLD.GEvoka_OP5sbRAsI.aW3OEqFRyMQD7yui_XbEaMq7FeLsaPNAhMGP16fNLq; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:30 GMT\r\ncf-ray: a393d88fab4e3ad9-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/EDAI5PYSIGMOB4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/EDAI5PYSIGMOB4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:31 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-n2pZa43vIdrxxYY5spWEMP' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d896dd0ef674\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=_yfW1L2IG6xTE5mEoJbnm1nlIpecM86XWQ0PqzSpMcM-1789100071.493249-1.0.1.1-a8vEX5hrz0knfLbRxiT_9R5lE5N5T6LpBpZr5QfWkB3_pS0JqtaLUd.XbB4w4Nu0uQ6uLhxZ1CqL8GvRISJgE0aDibUnfRTjFoDBb_RwfX_lE4sxwYeEqnZpK54L8cec; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:31 GMT\r\ncf-ray: a393d896dd0ef674-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/EDAI5PYSIGMOB4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1305,
+        "fetchedAt": "2026-09-11T04:14:30.280Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:30 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-zhmAQzPyApEDdelaeIH43S' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d88fea941a42\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=hcZ0kwcw_UNVidpbAsG4zCnsGsM..y5yh2nE7e4faT4-1789100070.3820348-1.0.1.1-ss9Obnwsf963_i.N0nWQuGdx3HdwyDe_ymS6D3AHXM3.Y.T2F9SL1a0BSLSsgnEnNG2CPVPc1l5uf.gmxIBRCDO79ljvBffLFnGJcL9slRq9rvYjTiYEIYMjWmkRlQdZ; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:30 GMT\r\ncf-ray: a393d88fea941a42-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:31 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-lyKcW3DlZdo3XSsFTwSYmx' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d8970960126a\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=J8PFdD2ikD1k7nBiMz1u1Y2h6lIp41nsugG9ISJB8nw-1789100071.528791-1.0.1.1-.3vJ7sz.KqiKGrivE0vNlbQFcnnuanDEXgw_MzSSSNZ9Aua0xzn0xRvkbJ332fb5fXR9kwpvlWfMI9vwvkYC5l0i2L854v89IMsAUf70KJQybChZLflL1snHC3zIFOt6; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:31 GMT\r\ncf-ray: a393d8970960126a-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/YBS7GXRQPIEDZS?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1314,
+        "fetchedAt": "2026-09-11T04:14:30.306Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/TBQJHBFIZKDQO7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/TBQJHBFIZKDQO7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:31 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-m6pSQsV6AIQFjeJqmsRmSQ' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d8978f953950\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=qmJzDkuf8X1HFjgY433i3edshlzTdtOYyuQMLOWl9lI-1789100071.6036577-1.0.1.1-7V1pd7fkiiHwDWDIx3Y2F6StUZx1AhzeOt5klEvLx7Af_xM30kBig1B_SIkM.dNV7mEgtzqXyEsPZpC_xhBjcwwjbLUY7LCvAQnqGWyyAVtQYotGaid5N7uTqJnkfI.F; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:31 GMT\r\ncf-ray: a393d8978f953950-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/TBQJHBFIZKDQO7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/TBQJHBFIZKDQO7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:32 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-HUhK74yY0zOf33esYLPzWE' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d89e7a7e5292\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=Nzmo6eUpmudMETwYpdLr1LJ7FeAhO5i4BNQQoU4msOQ-1789100072.717363-1.0.1.1-xCdrLJ7DSboJLWBeKM6u.or4wcCoKwchcb49u2jASE9_kIWcRLaVL1UZH7H.O.lssU1qCNXuQWO2swHtzN9Q00yQjbbrNTpHvUox5pgwgPWGVllPHdOEp.u_3Yjn.sW4; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:32 GMT\r\ncf-ray: a393d89e7a7e5292-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/TBQJHBFIZKDQO7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1242,
+        "fetchedAt": "2026-09-11T04:14:31.538Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:31 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-lnFxbmiaiO5z02wODGRklG' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d897ebeaabb9\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=_auqYjNc6fScpPCpVhDxy5lVRnGcPDZovCuirsWBPcs-1789100071.670747-1.0.1.1-8OwKRWi_.Li_FIePlpPzpy9oSPIt1_PMM_QVSI96bnJgqgVjsWbrAdwF9Cxo9H.puePZ1aMEJ84fzwOEc_NB2XIHYYn6feIwuBMYhpLX85hAG13F7POErs8NbWhIrcsd; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:31 GMT\r\ncf-ray: a393d897ebeaabb9-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:32 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-VBtifpXkRATVHru8It40Vi' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d89efc9316b7\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=fukwmVcIDevQwguEiT_oRvjKajPX6Xg8Ycm28zK7S5U-1789100072.8006263-1.0.1.1-Y4e1W84kwGueyeyvI8nFWabFjHQIHR_sMZpkzzPbaj64zbx6L7eFqjwjDuuUVgYZnr0JkglP5ZJTz6oYBDbUEvanRax6ZKYxqx.b87WKP.bJvPuDnmZ_d4oBa_gzMwzH; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:32 GMT\r\ncf-ray: a393d89efc9316b7-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/FBBEAOCYJDEVTT?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1281,
+        "fetchedAt": "2026-09-11T04:14:31.585Z",
+        "verified": false
+      },
+      {
+        "originalUrl": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+        "resolvedUrl": null,
+        "chain": [
+          {
+            "url": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 1,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:31 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-1zLK1CiItcEERj0xG4VovY' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d8980d87a568\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=xLkFMeCy2NbuD4hW_fBiIvMW5qeixPIBNuvdhzNicX0-1789100071.6883445-1.0.1.1-RW0B5OnU.5kKOgYvlIO6So4FjTNEqNy.qxEyH8CZZ5NVKBc1d_Y_YbKmYixPqES5BHeg3FiRaeMwPssWeDA4ZJpm94GGp2iTPjj8Hg5IYy.LAA65AQ5iOsnlhZEM5.LT; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:31 GMT\r\ncf-ray: a393d8980d87a568-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 1,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          },
+          {
+            "url": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "HEAD",
+            "attempt": 2,
+            "status": 403,
+            "location": null,
+            "rawHeaders": "HTTP/2 403 \r\ndate: Fri, 11 Sep 2026 04:14:32 GMT\r\ncontent-type: text/html; charset=UTF-8\r\ncontent-length: 5955\r\naccept-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncf-mitigated: challenge\r\ncontent-security-policy: default-src 'none'; script-src 'nonce-y9S622C0v6vF5hChNJi8fc' 'unsafe-eval' https://challenges.cloudflare.com; script-src-attr 'none'; style-src 'unsafe-inline'; img-src 'self' https://challenges.cloudflare.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://challenges.cloudflare.com blob:; child-src 'self' https://challenges.cloudflare.com blob:; worker-src blob:; form-action http: https:; base-uri 'self'\r\nserver: cloudflare\r\ncritical-ch: Sec-CH-UA-Bitness, Sec-CH-UA-Arch, Sec-CH-UA-Full-Version, Sec-CH-UA-Mobile, Sec-CH-UA-Model, Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Platform, Sec-CH-UA, UA-Bitness, UA-Arch, UA-Full-Version, UA-Mobile, UA-Model, UA-Platform-Version, UA-Platform, UA\r\ncross-origin-embedder-policy: require-corp\r\ncross-origin-opener-policy: same-origin\r\ncross-origin-resource-policy: same-origin\r\norigin-agent-cluster: ?1\r\npermissions-policy: accelerometer=(),camera=(),clipboard-read=(),clipboard-write=(),geolocation=(),gyroscope=(),hid=(),magnetometer=(),microphone=(),payment=(),publickey-credentials-get=(),screen-wake-lock=(),serial=(),sync-xhr=(),usb=(),xr-spatial-tracking=*\r\nreferrer-policy: same-origin\r\nserver-timing: chlray;desc=\"a393d89f0e00e93c\"\r\nx-content-type-options: nosniff\r\nx-frame-options: SAMEORIGIN\r\nstrict-transport-security: max-age=2592000; includeSubDomains; preload\r\nset-cookie: __cf_bm=08jd9eoOk1KZ2BYwsGxEFSMQUMOqUxYKz_w6ArtgP.s-1789100072.8106558-1.0.1.1-NID5u1CRAb8nis9vhDUhMCOXRTfjp_f7E8waAba5_XCakyAZnHmluScu0niMjr_DseDzmmVuLlMZehiDydHQnrC4AC14Y4O5drLC1bz7txJAcf0QPXYV_9dtT4fezSPR; HttpOnly; SameSite=None; Secure; Path=/; Domain=producthunt.com; Expires=Fri, 11 Sep 2026 04:44:32 GMT\r\ncf-ray: a393d89f0e00e93c-IAD\r\nalt-svc: h3=\":443\"; ma=86400\r\n\r\n"
+          },
+          {
+            "url": "https://www.producthunt.com/r/53QUDXZGRRT6SK?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298615%29",
+            "method": "GET",
+            "attempt": 2,
+            "status": null,
+            "location": null,
+            "error": "curl exited 63 before response headers"
+          }
+        ],
+        "ok": false,
+        "error": "curl exited 63 before response headers",
+        "elapsedMs": 1252,
+        "fetchedAt": "2026-09-11T04:14:31.620Z",
+        "verified": false
+      }
+    ]
+  }
 }
