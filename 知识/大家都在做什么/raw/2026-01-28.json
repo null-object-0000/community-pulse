@@ -1,1 +1,770 @@
-{"fetchedAt":"2026-09-07T09:39:25.256Z","date":"2026-01-28","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源自荐】PNANA - 现代化终端文本编辑器","url":"https://github.com/Cyxuan0311/PNANA","author":"Cyxuan0311","authorUrl":"https://github.com/Cyxuan0311","publishedAt":"2026-01-28T05:03:24Z","summary":"pnana 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。 项目地址： 核心优势 🎨 美观易用的界面设计 内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。 ⌨️ 低学习成本快捷键 摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率 📝 全场景编辑能力 支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。 🔧 灵活扩展与配置 通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求. 快速上手 bash git clone cd ./pnana chmod +x ./build.sh && ./build.sh ./build/pnana/pnana 启动空白编辑器 pnana file.txt 打开指定文件（安装后可用） 演示效果 <img width=\"2543\" height=\"1302\" alt=\"Image\" src=\" / <img width=\"2519\" height=\"1287\" alt=\"Image\" src=\" /","content":"**pnana** 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。\n\n项目地址：https://github.com/Cyxuan0311/PNANA\n\n核心优势\n\n**🎨 美观易用的界面设计**\n\n内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。\n\n**⌨️ 低学习成本快捷键**\n\n摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率\n\n**📝 全场景编辑能力**\n\n支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。\n\n**🔧 灵活扩展与配置**\n\n通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求.\n\n**快速上手**\n```bash\ngit clone https://github.com/Cyxuan0311/PNANA.git\ncd ./pnana\nchmod +x ./build.sh && ./build.sh\n\n./build/pnana/pnana  # 启动空白编辑器\npnana file.txt       # 打开指定文件（安装后可用）\n```\n\n**演示效果**\n\n<img width=\"2543\" height=\"1302\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5747d6c6-3e0a-4057-bb38-db6625531a19\" />\n\n<img width=\"2519\" height=\"1287\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c020886-6840-49c0-9d83-caed7e73574f\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8850","issueUrl":"https://github.com/ruanyf/weekly/issues/8850"},{"sourceId":"weekly-issues","title":"【开源自荐】Mail Studio - 开源可视化邮件编辑器","url":"https://mail-studio-black.vercel.app/","author":"wzc520pyfm","authorUrl":"https://github.com/wzc520pyfm","publishedAt":"2026-01-28T06:30:53Z","summary":"Mail Studio 是一款基于 MJML 和 Next.js 构建的现代化邮件编辑器，让创建响应式邮件模板变得简单高效。 核心特性 🎨 拖拽式可视化编辑 无需编码，像搭积木一样设计邮件 💻 Monaco 代码编辑器 为开发者提供专业的代码编辑体验 📱 完美响应式 基于 MJML，确保邮件在所有客户端正常显示 🚀 四种视图模式 Canvas、Edit、Code、Preview 自由切换 📦 丰富组件库 文本、图片、按钮、表格、手风琴、轮播等 15+ 组件 ✨ 内置模板 欢迎邮件、营销推广、通知等开箱即用模板 技术亮点 采用 Next.js 16 + React 19 + TypeScript 构建，使用 Zustand 状态管理，dndkit 实现拖拽交互，Tailwind CSS 4 构建现代化 UI。支持 Resend 和 Nodemailer 发送测试邮件。 链接 在线体验: GitHub: 开源协议: MIT 适合营销团队、产品经理、前端开发者和 UI 设计师使用。零配置启动，支持 Vercel 一键部署。 预览 <img width=\"1512\" height=\"824\" alt=\"Image\" src=\" / <img width=\"1512\" height=\"824\" alt=\"Image\" src=\" /","content":"**Mail Studio** 是一款基于 MJML 和 Next.js 构建的现代化邮件编辑器，让创建响应式邮件模板变得简单高效。\n\n## 核心特性\n\n- 🎨 **拖拽式可视化编辑** - 无需编码，像搭积木一样设计邮件\n- 💻 **Monaco 代码编辑器** - 为开发者提供专业的代码编辑体验\n- 📱 **完美响应式** - 基于 MJML，确保邮件在所有客户端正常显示\n- 🚀 **四种视图模式** - Canvas、Edit、Code、Preview 自由切换\n- 📦 **丰富组件库** - 文本、图片、按钮、表格、手风琴、轮播等 15+ 组件\n- ✨ **内置模板** - 欢迎邮件、营销推广、通知等开箱即用模板\n\n## 技术亮点\n\n采用 **Next.js 16 + React 19 + TypeScript** 构建，使用 **Zustand** 状态管理，**dnd-kit** 实现拖拽交互，**Tailwind CSS 4** 构建现代化 UI。支持 Resend 和 Nodemailer 发送测试邮件。\n\n## 链接\n\n- 在线体验: https://mail-studio-black.vercel.app/\n- GitHub: https://github.com/wzc520pyfm/mail-studio\n- 开源协议: MIT\n\n适合营销团队、产品经理、前端开发者和 UI 设计师使用。零配置启动，支持 Vercel 一键部署。\n\n## 预览\n\n<img width=\"1512\" height=\"824\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/87f798c4-a10a-4e4e-a287-ae430052cc15\" />\n\n<img width=\"1512\" height=\"824\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/69412c92-0238-414e-9d25-91319198d73e\" />\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8851","issueUrl":"https://github.com/ruanyf/weekly/issues/8851"},{"sourceId":"weekly-issues","title":"【开源自荐】TermClean 一个集中式mac版本的包清理工具（支持brew、npm、pnpm、pip）","url":"https://github.com/daijinhai/TermClean.git","author":"daijinhai","authorUrl":"https://github.com/daijinhai","publishedAt":"2026-01-28T07:53:55Z","summary":"开源地址： 最近折腾了太多AI工具，安装了大量的软件，转过头我可能就忘了。所以开发了这么一个清理工具。 !Main Interface 🎯 为什么需要 TermClean？ 如果您遇到以下场景，TermClean 将是您的得力助手： \"由于开发需求安装了大量工具，现在磁盘空间告急，想清理却不知从何下手...\" 📊 TermClean 提供直观的空间占用分析，让您一眼识别\"吃灰\"的大文件。 \"担心卸载 ffmpeg 会导致其他依赖它的工具无法运行...\" 🛡️ 独创的依赖树分析与卸载预览功能，确保您清楚每一次操作的影响范围。 \"按照教程装了一堆包，教程结束后却不敢删...\" 🔍 清晰展示每个包的来源与用途，告别\"盲装盲删\"的焦虑。 🌟 核心特性 📦 多管理器支持：一站式管理 Homebrew (Formulae & Casks), npm, pnpm, yarn 和 pip。 🔍 智能扫描与分析：自动检测所有已安装的包，并分析其占用的磁盘空间。 🌳 依赖追溯：内置递归依赖树构建算法，清晰展示包与包之间的引用关系。 ⚠️ 安全卸载预览：在执行卸载前，系统会进行二次确认并显示受影响的依赖项，防止误删系统关键组件。 ⌨️ 纯键盘交互：基于 Ink 和 React 构建，提供流畅的 TUI 操作体验。 📊 实时统计：实时计算选中包的总大小以及可释放的磁盘空间。","content":"开源地址：https://github.com/daijinhai/TermClean.git\n\n最近折腾了太多AI工具，安装了大量的软件，转过头我可能就忘了。所以开发了这么一个清理工具。\n![Main Interface](https://github.com/daijinhai/TermClean/blob/main/doc/main.png?raw=true)\n\n## 🎯 为什么需要 Term-Clean？\n\n如果您遇到以下场景，Term-Clean 将是您的得力助手：\n\n- **\"由于开发需求安装了大量工具，现在磁盘空间告急，想清理却不知从何下手...\"**\n  > 📊 Term-Clean 提供直观的空间占用分析，让您一眼识别\"吃灰\"的大文件。\n\n- **\"担心卸载 `ffmpeg` 会导致其他依赖它的工具无法运行...\"**\n  > 🛡️ 独创的依赖树分析与卸载预览功能，确保您清楚每一次操作的影响范围。\n\n- **\"按照教程装了一堆包，教程结束后却不敢删...\"**\n  > 🔍 清晰展示每个包的来源与用途，告别\"盲装盲删\"的焦虑。\n\n## 🌟 核心特性\n\n- 📦 **多管理器支持**：一站式管理 Homebrew (Formulae & Casks), npm, pnpm, yarn 和 pip。\n- 🔍 **智能扫描与分析**：自动检测所有已安装的包，并分析其占用的磁盘空间。\n- 🌳 **依赖追溯**：内置递归依赖树构建算法，清晰展示包与包之间的引用关系。\n- ⚠️ **安全卸载预览**：在执行卸载前，系统会进行二次确认并显示受影响的依赖项，防止误删系统关键组件。\n- ⌨️ **纯键盘交互**：基于 Ink 和 React 构建，提供流畅的 TUI 操作体验。\n- 📊 **实时统计**：实时计算选中包的总大小以及可释放的磁盘空间。\n\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8852","issueUrl":"https://github.com/ruanyf/weekly/issues/8852"},{"sourceId":"weekly-issues","title":"AI Image","url":"https://www.nano-image.io/","author":"olivetree1928","authorUrl":"https://github.com/olivetree1928","publishedAt":"2026-01-28T09:24:19Z","summary":"Create stunning AI images in seconds Nano Image is an online AI image generator. Powered by nanobanana, flux, seedream and zimage for wallpapers, products, posters and more.","content":"Create stunning AI images in seconds\nNano Image is an online AI image generator.\nPowered by nano-banana, flux, seedream and z-image for wallpapers, products, posters and more.\nhttps://www.nano-image.io/","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8853","issueUrl":"https://github.com/ruanyf/weekly/issues/8853"},{"sourceId":"weekly-issues","title":"【工具自荐】LifeCell - 人生小格","url":"https://github.com/user-attachments/assets/4ac5626b-748c-4a35-bb4b-5172662f067d","author":"RobotLuo2025","authorUrl":"https://github.com/RobotLuo2025","publishedAt":"2026-01-28T09:28:12Z","summary":"产品名称 人生小格 一句话介绍 如果一个人的一生压缩在900个格子里，你会记录些什么在格子上 灵感 最早就是在人生A4纸上得到的灵感，后来一直觉得可以基于此再增加上一些记录，于是就做了人生小格 主要功能 格子主体：可以自定义期望的寿命和出生年月，然后格子会跟随你的设定自动生成完整的格子 记录：简单的可以记录事件和图片，补充上标签，会对应在格子主体上对应显示格子的颜色 随机回忆：每天会随机出现13条回忆，显示你曾经记录下的内容 小组件：月度格子/年度格子，会显示对应的统计条数和字数 图片分享：根据卡片的文字和图片，智能提取颜色，自动根据设备的大小生成可作为壁纸的分享图 !Image !Image !Image !Image !Image !Image","content":"**产品名称**\n人生小格\n\n**一句话介绍**\n如果一个人的一生压缩在900个格子里，你会记录些什么在格子上\n\n**灵感**\n最早就是在人生A4纸上得到的灵感，后来一直觉得可以基于此再增加上一些记录，于是就做了人生小格\n\n**主要功能**\n\n- 格子主体：可以自定义期望的寿命和出生年月，然后格子会跟随你的设定自动生成完整的格子\n- 记录：简单的可以记录事件和图片，补充上标签，会对应在格子主体上对应显示格子的颜色\n- 随机回忆：每天会随机出现1-3条回忆，显示你曾经记录下的内容\n- 小组件：月度格子/年度格子，会显示对应的统计条数和字数\n- 图片分享：根据卡片的文字和图片，智能提取颜色，自动根据设备的大小生成可作为壁纸的分享图\n\n![Image](https://github.com/user-attachments/assets/4ac5626b-748c-4a35-bb4b-5172662f067d)\n\n![Image](https://github.com/user-attachments/assets/eb73c5bf-da3e-4b56-8d2a-90f5bfaaa4d0)\n\n![Image](https://github.com/user-attachments/assets/853e0e9a-4bf7-4766-930a-070737cb3be0)\n\n![Image](https://github.com/user-attachments/assets/606d12fc-89f3-4c82-8ea8-c1d7bd18ebc1)\n\n![Image](https://github.com/user-attachments/assets/4aedf9d7-750c-4358-8b59-f6067c5f530c)\n\n![Image](https://github.com/user-attachments/assets/8865e535-e2fa-48cb-90e1-43c222a465aa)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8854","issueUrl":"https://github.com/ruanyf/weekly/issues/8854"},{"sourceId":"weekly-issues","title":"【工具自荐】SupSub - 把注意力留给有价值的内容","url":"https://supsub.net","author":"hidumou","authorUrl":"https://github.com/hidumou","publishedAt":"2026-01-28T09:58:44Z","summary":"产品名称 SupSub 一句话介绍 把注意力留给有价值的内容 功能 👉 你只负责订阅，AI 负责帮你读完并提炼重点。 1. 订阅任意网站（网站存在审核机制,你懂的） 2. 订阅微信公众号 3. 多来源统一管理 4. 直接看“结论级信息”，大幅节省时间 5. 关注点筛选：基于你订阅的信源，只推你真正关心的话题 6. 支持多种 Feed 格式，RSS 、Atom 、JSONd, 可接入你喜欢的阅读器（ Folo 、Inoreader 等) <img width=\"2560\" height=\"1319\" alt=\"Image\" src=\" / <img width=\"2560\" height=\"1319\" alt=\"Image\" src=\" /","content":"##### 产品名称\n[SupSub](https://supsub.net)\n\n##### 一句话介绍\n把注意力留给有价值的内容 \n\n##### 功能\n👉 你只负责订阅，AI 负责帮你读完并提炼重点。\n1. 订阅任意网站（网站存在审核机制,你懂的）\n2. 订阅微信公众号\n3. 多来源统一管理\n4. 直接看“结论级信息”，大幅节省时间\n5. 关注点筛选：基于你订阅的信源，只推你真正关心的话题\n6. 支持多种 Feed 格式，RSS 、Atom 、JSONd, 可接入你喜欢的阅读器（ Folo 、Inoreader 等)\n\n<img width=\"2560\" height=\"1319\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e01e5e90-14eb-4ea4-9e3e-ecaf64183776\" />\n\n<img width=\"2560\" height=\"1319\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6c80a961-83b6-4430-9baa-52bb4381f77e\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8855","issueUrl":"https://github.com/ruanyf/weekly/issues/8855"},{"sourceId":"weekly-issues","title":"【文章自荐】如何上手 Emacs","url":"https://taxodium.ink/how-to-get-started-with-emacs.html","author":"Spike-Leung","authorUrl":"https://github.com/Spike-Leung","publishedAt":"2026-01-28T12:02:11Z","summary":"文章链接： 整理了一些自己上手 Emacs 的经验","content":"文章链接：https://taxodium.ink/how-to-get-started-with-emacs.html\n\n整理了一些自己上手 Emacs 的经验","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8856","issueUrl":"https://github.com/ruanyf/weekly/issues/8856"},{"sourceId":"weekly-issues","title":"【工具自荐】Trymusic AI - 一款在线生成音乐或歌曲的AI工具","url":"https://trymusic.ai","author":"crayon-nickee","authorUrl":"https://github.com/crayon-nickee","publishedAt":"2026-01-28T14:11:11Z","summary":"【工具简介】 这是我最近做的一个AI小项目，Trymusic AI，主要提供一些 实用型的在线音乐工具，不需要安装软件，打开浏览器就能用。 【目前包括】 1、AI Song Generator：AI歌曲生成器 2、AI Lyrics Generator：AI 歌词生成器 3、AI Phonk Maker：AI 重金属摇滚phonk风格音乐生成器 4、BPM Detector：自动检测歌曲 BPM 和调性 5、MP3 to MIDI：将音频快速转换为 MIDI 6、AI Jingle Maker / 8 Bit Music Generator：生成简单可用的广告、游戏音乐配乐 7、Slowed + Reverb Generator：一键制作 slowed & reverb 风格音频 适合音乐制作初学者、内容创作者，或只是想快速处理音频的人。大部分功能可以直接免费使用，无需注册。 【项目地址】 欢迎试用，也欢迎反馈建议。 【相关截图】 !trymusic AI !trymusic AI !trymusic AI","content":"**【工具简介】**\n这是我最近做的一个AI小项目，[Trymusic AI](https://trymusic.ai)，主要提供一些 实用型的在线音乐工具，不需要安装软件，打开浏览器就能用。\n\n**【目前包括】**\n1、AI Song Generator：AI歌曲生成器\n2、AI Lyrics Generator：AI 歌词生成器\n3、AI Phonk Maker：AI 重金属摇滚phonk风格音乐生成器\n4、BPM Detector：自动检测歌曲 BPM 和调性\n5、MP3 to MIDI：将音频快速转换为 MIDI\n6、AI Jingle Maker / 8 Bit Music Generator：生成简单可用的广告、游戏音乐配乐\n7、Slowed + Reverb Generator：一键制作 slowed & reverb 风格音频\n\n适合音乐制作初学者、内容创作者，或只是想快速处理音频的人。大部分功能可以直接免费使用，无需注册。\n\n**【项目地址】**\nhttps://trymusic.ai/ 欢迎试用，也欢迎反馈建议。\n\n**【相关截图】**\n![trymusic AI](https://cdn.trymusic.ai/images/og.png)\n![trymusic AI](https://cdn.trymusic.ai/images/screenshot.webp)\n![trymusic AI](https://cdn.trymusic.ai/images/ph.webp)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8857","issueUrl":"https://github.com/ruanyf/weekly/issues/8857"},{"sourceId":"weekly-issues","title":"【开源自荐】MateBot - 用手机 Telegram 远程控制 Claude Code","url":"https://github.com/aresbit/MateBot","author":"aresbit","authorUrl":"https://github.com/aresbit","publishedAt":"2026-01-28T15:42:37Z","summary":"开源地址： 项目简介： MateBot（又称 MateCode）是一个 Claude Code Telegram 桥接工具，对标 clawdbot，专为 Kimi Code 会员打造。让你通过手机 Telegram 随时随地远程控制 Claude Code，在通勤路上、咖啡厅里、甚至躺在沙发上都能高效编程。 !Demo 核心特性： 📱 手机 Telegram 与 Claude 自然对话 🔄 智能会话管理（/clear、/resume、/continue） 📝 代码高亮和格式化回复 🔒 纯 Polling 模式，无需公网 IP 或端口暴露 ⚡ 零依赖轻量架构，3步启动 技术亮点： 纯 Python 标准库，无外部依赖 30秒长轮询，低延迟实时响应 监控 Claude transcript 即时推送到手机 纯出站连接，安全无需公网 对标 clawdbot，但更安全、更轻量、更适合 Kimi Code 会员。","content":"开源地址：https://github.com/aresbit/MateBot\n\n项目简介：\nMateBot（又称 MateCode）是一个 Claude Code Telegram 桥接工具，对标 clawdbot，专为 Kimi Code 会员打造。让你通过手机 Telegram 随时随地远程控制 Claude Code，在通勤路上、咖啡厅里、甚至躺在沙发上都能高效编程。\n\n![Demo](https://github.com/aresbit/MateBot/raw/master/demo.gif)\n\n核心特性：\n📱 手机 Telegram 与 Claude 自然对话\n🔄 智能会话管理（/clear、/resume、/continue_）\n📝 代码高亮和格式化回复\n🔒 纯 Polling 模式，无需公网 IP 或端口暴露\n⚡ 零依赖轻量架构，3步启动\n\n技术亮点：\n- 纯 Python 标准库，无外部依赖\n- 30秒长轮询，低延迟实时响应\n- 监控 Claude transcript 即时推送到手机\n- 纯出站连接，安全无需公网\n\n对标 clawdbot，但更安全、更轻量、更适合 Kimi Code 会员。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8859","issueUrl":"https://github.com/ruanyf/weekly/issues/8859"},{"sourceId":"weekly-issues","title":"【文章推荐】SEO从0到100知识库","url":"https://lownrain.feishu.cn/wiki/AS5nwII3picsY1kijJicXWOUnSc","author":"ovelv","authorUrl":"https://github.com/ovelv","publishedAt":"2026-01-28T15:44:38Z","summary":"我是欧维Ove，一名独立开发者。 2026，我要送你一份礼物🎁 正式发布！！！ 不需要付费！ 不需要加入社群！ 不需要登录！ 免费中文SEO知识库已上线！ 全程干货，内容秒杀很多付费社群！ 【独立开发前线｜SEO从0到100】 我的目标是希望搭建一个最大的中文SEO免费知识库，帮助更多人免费学习SEO，通过SEO的方式，推广自己的产品，获取流量，打造被动收入。 我一直在运营独立开发前线这个社区，老实说，社区根本不赚钱，但我依然投入了大量的时间精力。 一方面是自己的热爱，我热爱创造，热爱产品，热爱探索新东西。另一方面是希望提升国内的独立开发氛围，帮助更多人一起成长，在这个环境下，找到属于自己的一条路。 过去我也写了很多文章，发表在了独立开发前线网站、公众号等地方，累计阅读量也有上千万了。 这个知识库是我第一次系统性的整理SEO的知识。我希望它是一个长期有价值的内容产品，不管你是小白，还是SEO高手，在这个知识库都能有所收获。当然，我也会持续更新，丰富知识库的内容。 目前知识库1.0已上线，欢迎收藏访问，也欢迎投稿共建！ 一起创造，让这个世界更加美好","content":"我是欧维Ove，一名独立开发者。\n2026，我要送你一份礼物🎁\n\n正式发布！！！\n不需要付费！\n不需要加入社群！\n不需要登录！\n免费中文SEO知识库已上线！\n全程干货，内容秒杀很多付费社群！\n\n【独立开发前线｜SEO从0到100】\nhttps://lownrain.feishu.cn/wiki/AS5nwII3picsY1kijJicXWOUnSc\n\n\n我的目标是希望搭建一个最大的中文SEO免费知识库，帮助更多人免费学习SEO，通过SEO的方式，推广自己的产品，获取流量，打造被动收入。\n我一直在运营独立开发前线这个社区，老实说，社区根本不赚钱，但我依然投入了大量的时间精力。\n\n一方面是自己的热爱，我热爱创造，热爱产品，热爱探索新东西。另一方面是希望提升国内的独立开发氛围，帮助更多人一起成长，在这个环境下，找到属于自己的一条路。\n\n过去我也写了很多文章，发表在了独立开发前线网站、公众号等地方，累计阅读量也有上千万了。\n这个知识库是我第一次系统性的整理SEO的知识。我希望它是一个长期有价值的内容产品，不管你是小白，还是SEO高手，在这个知识库都能有所收获。当然，我也会持续更新，丰富知识库的内容。\n\n目前知识库1.0已上线，欢迎收藏访问，也欢迎投稿共建！\n一起创造，让这个世界更加美好","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8860","issueUrl":"https://github.com/ruanyf/weekly/issues/8860"}],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 687C:2ED41A:24A465A:77F9D0B:6A9E864C and timestamp 2026-09-07 09:39:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[开源推荐]  go-wxpush：极简且免费的微信消息推送服务 (基于golang)","url":"https://github.com/hezhizheng/go-wxpush","author":"hezhizheng","authorUrl":"https://github.com/hezhizheng","publishedAt":"2026-01-28T01:41:51Z","summary":"项目地址 类别 Go 项目标题 极简且免费的微信消息推送服务 项目描述 这是一个基于 golang 开发的微信测试公众号模板消息推送服务。它提供了一个简单的 API 接口，让您可以轻松地通过 HTTP 请求将消息推送到指定的微信用户。 亮点 ✅ 完全免费，下载即使用 ✅ 支持 Docker 一键部署（镜像容器大小仅2MB） ✅ 每天 10 万次额度，个人用不完 ✅ 真正的微信原生弹窗 + 声音提醒 ✅ 支持多用户 ✅ 提供免费服务 ✅ 跳转稳定，自带消息详情页面 ✅ 可无限换皮肤 示例代码 markdown 截图或演示视频 🚀 部署指南 下载编译好的文件启动 启动参数 命令行启动参数(可不加，启动之后直接在url上拼接参数也可) ./gowxpushwindowsamd64.exe port \"5566\" title \"测试标题\" content \"测试内容\" appid \"xxx\" secret \"xxx\" userid \"xxxk08\" templateid \"xxxKsPwGmGSzllU\" baseurl \" url请求参数(get) 与命令行参数名称一致 /wxsend?appid=xxx&secret=xxx&userid=xxxk08&templateid=xxxKsPwGmGSzllU&baseurl= bug！ 🐳 Docker 一键部署 重新部署请先拉一遍最新的镜像 docker pull hezhizheng/gowxpush:v4 参数格式与终端启动保持一致, 替换成实际值即可 docker run it d p 5566:5566 init name gowxpush4 hezhizheng/gowxpush:v4 \\ port \"5566\" \\ title \"测试标题5566\" \\ content \"测试内容5566\" \\ appid \"xxx\" \\ secret \"xxx\" \\ userid \"xxxk08\" \\ templateid \"xxxKsPwGmGSzllU\" \\ tz \"Asia/Shanghai\" 🗭 默认消息详情页 服务启动成功后会自带消息详情页界面(即消息模板跳转的页面)，访问地址 ，如有公网地址，可设置baseurl参数为对应的host即可(无需加/detail)。 ⚙️ API 使用方法 服务部署成功后，您可以通过构造 URL 发起 GET 请求来推送消息。 请求地址 请求参数 | 参数名 | 类型 | 是否必填 | 描述 | ||||| | port | String | 否 | 指定启动端口(仅针对命令行) | | title | String | 是 | 消息的标题。 | | content | String | 是 | 消息的具体内容。 | | appid | String | 否 | 临时覆盖默认的微信 AppID。 | | secret | String | 否 | 临时覆盖默认的微信 AppSecret。 | | userid | String | 否 | 临时覆盖默认的接收用户 OpenID。 | | templateid | String | 否 | 临时覆盖默认的模板消息 ID。 | | baseurl | String | 否 | 临时覆盖默认的跳转 URL。 | 使用示例 基础推送 向默认配置的所有用户推送一条消息： 临时覆盖用户 向一个临时指定的用户推送消息： Webhook / POST 请求 除了 GET 请求，服务也支持 POST 方法，更适合用于自动化的 Webhook 集成。 请求地址 请求方法 POST 请求头 (Headers) json { \"ContentType\": \"application/json\" } 请求体 (Body) 请求体需要是一个 JSON 对象，包含与 GET 请求相同的参数。 json { \"title\": \"Webhook 通知\", \"content\": \"这是一个通过 POST 请求发送的 Webhook 消息。\" } 使用示例 (cURL) bash curl location request POST ' \\ dataraw '{ \"title\": \"来自 cURL 的消息\", \"content\": \"自动化任务已完成。\" }' 成功响应 如果消息成功发送给至少一个用户，服务会返回 \"errcode\": 0 状态码。 失败响应 如果发生错误（如 token 错误、缺少参数、微信接口调用失败等），服务会返回相应的状态码和错误信息。","content":"### 项目地址\n\nhttps://github.com/hezhizheng/go-wxpush\n\n### 类别\n\nGo\n\n### 项目标题\n\n极简且免费的微信消息推送服务\n\n### 项目描述\n\n这是一个基于 golang 开发的微信测试公众号模板消息推送服务。它提供了一个简单的 API 接口，让您可以轻松地通过 HTTP 请求将消息推送到指定的微信用户。\n\n### 亮点\n\n✅ 完全免费，下载即使用\n✅ 支持 Docker 一键部署（镜像容器大小仅2MB）\n✅ 每天 10 万次额度，个人用不完\n✅ 真正的微信原生弹窗 + 声音提醒\n✅ 支持多用户\n✅ 提供免费服务\n✅ 跳转稳定，自带消息详情页面\n✅ 可无限换皮肤 \n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n## 🚀 部署指南\n\n### [下载编译好的文件启动](https://github.com/hezhizheng/go-wxpush/releases/)\n\n- 启动参数\n    * 命令行启动参数(可不加，启动之后直接在url上拼接参数也可)  `./go-wxpush_windows_amd64.exe -port \"5566\" -title \"测试标题\" -content \"测试内容\" -appid \"xxx\" -secret \"xxx\" -userid \"xxx-k08\" -template_id \"xxx-Ks_PwGm--GSzllU\" -base_url \"https://push.hzz.cool\"`\n    *  url请求参数(get)  `与命令行参数名称一致` `/wxsend?appid=xxx&secret=xxx&userid=xxx-k08&template_id=xxx-Ks_PwGm--GSzllU&base_url=https://push.hzz.cool&content=保持微笑，代码无 bug！`\n\n### 🐳 Docker 一键部署\n```\n# 重新部署请先拉一遍最新的镜像\ndocker pull hezhizheng/go-wxpush:v4\n# 参数格式与终端启动保持一致, 替换成实际值即可\ndocker run -it -d -p 5566:5566 --init --name go-wxpush4 hezhizheng/go-wxpush:v4 \\\n-port \"5566\" \\\n-title \"测试标题5566\" \\\n-content \"测试内容5566\" \\\n-appid \"xxx\" \\\n-secret \"xxx\" \\\n-userid \"xxx-k08\" \\\n-template_id \"xxx-Ks_PwGm--GSzllU\" \\\n-tz \"Asia/Shanghai\"\n```\n\n## 🗭 默认消息详情页\n\n服务启动成功后会自带消息详情页界面(即消息模板跳转的页面)，访问地址 `http://127.0.0.1:5566/detail` ，如有公网地址，可设置base_url参数为对应的host即可(无需加/detail)。\n\n## ⚙️ API 使用方法\n\n服务部署成功后，您可以通过构造 URL 发起 `GET` 请求来推送消息。\n\n### 请求地址\n\n```\nhttp://127.0.0.1:5566/wxsend\n```\n\n### 请求参数\n\n| 参数名           | 类型   | 是否必填 | 描述                   |\n|---------------|--------|------|----------------------|\n| `port`        | String | 否    | 指定启动端口(仅针对命令行)       |\n| `title`       | String | 是    | 消息的标题。               |\n| `content`     | String | 是    | 消息的具体内容。             |\n| `appid`       | String | 否    | 临时覆盖默认的微信 AppID。     |\n| `secret`      | String | 否    | 临时覆盖默认的微信 AppSecret。 |\n| `userid`      | String | 否    | 临时覆盖默认的接收用户 OpenID。  |\n| `template_id` | String | 否    | 临时覆盖默认的模板消息 ID。      |\n| `base_url`    | String | 否    | 临时覆盖默认的跳转 URL。       |\n\n### 使用示例\n\n**基础推送**\n\n向默认配置的所有用户推送一条消息：\n\n```\nhttp://127.0.0.1:5566/wxsend?title=服务器通知&content=服务已于北京时间%2022:00%20重启\n```\n\n**临时覆盖用户**\n\n向一个临时指定的用户推送消息：\n\n```\nhttp://127.0.0.1:5566/wxsend?title=私人提醒&content=记得带钥匙&userid=temporary_openid_here\n```\n\n### Webhook / POST 请求\n\n除了 `GET` 请求，服务也支持 `POST` 方法，更适合用于自动化的 Webhook 集成。\n\n**请求地址**\n\n```\nhttp://127.0.0.1:5566/wxsend\n```\n\n**请求方法**\n\n```\nPOST\n```\n\n**请求头 (Headers)**\n\n```json\n{\n  \"Content-Type\": \"application/json\"\n}\n```\n\n**请求体 (Body)**\n\n请求体需要是一个 JSON 对象，包含与 `GET` 请求相同的参数。\n\n```json\n{\n  \"title\": \"Webhook 通知\",\n  \"content\": \"这是一个通过 POST 请求发送的 Webhook 消息。\"\n}\n```\n\n**使用示例 (cURL)**\n\n```bash\ncurl --location --request POST 'http://127.0.0.1:5566/wxsend' \\\n--data-raw '{\n    \"title\": \"来自 cURL 的消息\",\n    \"content\": \"自动化任务已完成。\"\n  }'\n```\n\n### 成功响应\n\n如果消息成功发送给至少一个用户，服务会返回 `\"errcode\": 0` 状态码。\n\n### 失败响应\n\n如果发生错误（如 token 错误、缺少参数、微信接口调用失败等），服务会返回相应的状态码和错误信息。","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3127","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3127"},{"sourceId":"hellogithub-issues","title":"[开源推荐] PNANA - 现代化终端文本编辑器","url":"https://github.com/Cyxuan0311/PNANA","author":"Cyxuan0311","authorUrl":"https://github.com/Cyxuan0311","publishedAt":"2026-01-28T05:10:25Z","summary":"项目地址 类别 C++ 项目标题 PNANA 现代化终端文本编辑器(TUI工具) 项目描述 pnana 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。 亮点 🎨 美观易用的界面设计 内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。 ⌨️ 低学习成本快捷键 摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率 📝 全场景编辑能力 支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。 🔧 灵活扩展与配置 通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求. 快速上手 bash git clone cd ./pnana chmod +x ./build.sh && ./build.sh ./build/pnana/pnana 启动空白编辑器 pnana file.txt 打开指定文件（安装后可用） 示例代码 markdown 截图或演示视频 <img width=\"2543\" height=\"1302\" alt=\"Image\" src=\" / <img width=\"2519\" height=\"1287\" alt=\"Image\" src=\" /","content":"### 项目地址\n\nhttps://github.com/Cyxuan0311/PNANA\n\n### 类别\n\nC++\n\n### 项目标题\n\nPNANA - 现代化终端文本编辑器(TUI工具)\n\n### 项目描述\n\n**pnana** 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。\n\n\n### 亮点\n\n**🎨 美观易用的界面设计**\n\n内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。\n\n**⌨️ 低学习成本快捷键**\n\n摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率\n\n**📝 全场景编辑能力**\n\n支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。\n\n**🔧 灵活扩展与配置**\n\n通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求.\n\n**快速上手**\n```bash\ngit clone https://github.com/Cyxuan0311/PNANA.git\ncd ./pnana\nchmod +x ./build.sh && ./build.sh\n\n./build/pnana/pnana  # 启动空白编辑器\npnana file.txt       # 打开指定文件（安装后可用）\n```\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"2543\" height=\"1302\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5747d6c6-3e0a-4057-bb38-db6625531a19\" />\n\n<img width=\"2519\" height=\"1287\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c020886-6840-49c0-9d83-caed7e73574f\" />\n","metrics":{"comments":1},"tags":["hellogithub","submission"],"externalId":"3128","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3128"}],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 6850:E888E:3697D77:B1C5D08:6A9E864D and timestamp 2026-09-07 09:39:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 6852:321296:355E8AB:AD62BE1:6A9E864D and timestamp 2026-09-07 09:39:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"GenFaceless AI","url":"https://www.producthunt.com/products/genfaceless-ai/launches/genfaceless-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Turn ideas into faceless TikTok & Reels, on autopilot","content":"GenFaceless AI is the ultimate faceless video generator. Create viral faceless videos, reels, and shorts automatically. No camera. No editing. No burnout. Perfect for TikTok, Instagram Reels, YouTube Shorts, and niche content pages. Built for people who want to grow consistently without being on camera.","metrics":{},"tags":["producthunt","new"],"externalId":"1068758","logo":"https://ph-files.imgix.net/f591a902-7906-4759-b400-4e8b0861c9a9.png?auto=format","images":["https://ph-files.imgix.net/64422121-7e3c-4a52-a402-4d60199243ef.png?auto=format","https://ph-files.imgix.net/3dbd6895-6d1f-4012-9036-e07e05e03a12.png?auto=format","https://ph-files.imgix.net/88c0602c-7bd6-45e6-8905-f076ff63e669.png?auto=format"],"image":"https://ph-files.imgix.net/64422121-7e3c-4a52-a402-4d60199243ef.png?auto=format"},{"sourceId":"producthunt","title":"Mendal","url":"https://www.producthunt.com/products/mendal/launches/mendal?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"AI Intent driven social media ","content":"AI-based social media feed filter. Focus on what matters.","metrics":{},"tags":["producthunt","new"],"externalId":"1069262","logo":"https://ph-files.imgix.net/853bbda1-68ff-4846-9b62-7174ea85c71d.png?auto=format","images":["https://ph-files.imgix.net/6c354f4f-e517-47cd-818a-3864ecd0757a.jpeg?auto=format","https://ph-files.imgix.net/2a0e5ae2-c52b-4af9-ac16-f07f8470fbcb.jpeg?auto=format","https://ph-files.imgix.net/a7a66923-d70a-4585-9486-2f9b6ce89f94.jpeg?auto=format","https://ph-files.imgix.net/2486f352-ebbf-4785-b0c3-0bff61cca9c1.jpeg?auto=format"],"image":"https://ph-files.imgix.net/6c354f4f-e517-47cd-818a-3864ecd0757a.jpeg?auto=format"},{"sourceId":"producthunt","title":"viral hits.","url":"https://www.producthunt.com/products/viral-hits/launches/viral-hits?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Copy what's already going viral.","content":"The most powerful tool to turn viral patterns into your content. Analyze competitors, generate scripts, and create with confidence. Run Deep Analysis on up to 10 inspirations, track your top 3 weekly for continuous learning, generate unlimited scripts in YOUR voice, and refine in an AI-powered workplace. Scripts get smarter over time with AI learning.","metrics":{},"tags":["producthunt","new"],"externalId":"1068747","logo":"https://ph-files.imgix.net/22e2fc6d-e077-4a01-bffd-d577a632de60.png?auto=format","images":["https://ph-files.imgix.net/1e5534f4-612e-4d41-9f77-5f179ef5fa92.png?auto=format","https://ph-files.imgix.net/19457770-9157-4fcf-ac51-f457218cbf55.png?auto=format","https://ph-files.imgix.net/c0351bb2-9ea2-47a3-bac3-662243c5e161.png?auto=format","https://ph-files.imgix.net/afdcde59-7873-44a8-931d-e00cdd7e0dfb.png?auto=format","https://ph-files.imgix.net/9cafd3a2-c065-41d7-8595-dec7147b358b.png?auto=format","https://ph-files.imgix.net/d1f243d8-a9f6-446b-b825-30d102d85509.png?auto=format","https://ph-files.imgix.net/47cab874-4df7-40d9-b471-bcbce8dd7d15.jpeg?auto=format"],"image":"https://ph-files.imgix.net/1e5534f4-612e-4d41-9f77-5f179ef5fa92.png?auto=format"},{"sourceId":"producthunt","title":"Echo","url":"https://www.producthunt.com/products/echo-36/launches/echo-258e8cd5-0244-4fac-9bee-a175a2af39ad?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Where you're heard | therapy for everyone","content":"Affordable therapy companion available 24/7. Discuss anything, customize your experience, and receive support when you need it for just $9.99/month, instead of $200/session.","metrics":{},"tags":["producthunt","new"],"externalId":"1065179","logo":"https://ph-files.imgix.net/7dabfb38-148c-4612-bf3d-1785d2e50d92.svg?auto=format","images":["https://ph-files.imgix.net/437f836b-65d6-46bd-b7d9-db501e4da3ab.gif?auto=format","https://ph-files.imgix.net/2185361b-b38c-4759-b0d5-d1e5f6bdd5c4.png?auto=format","https://ph-files.imgix.net/f8190fd2-3d3c-4e06-9d41-0c33df38d84b.jpeg?auto=format","https://ph-files.imgix.net/2529c5bf-1dff-4ec4-a618-204918e9655b.jpeg?auto=format","https://ph-files.imgix.net/b7f3138e-fe2c-4182-bfed-1792046bdc15.jpeg?auto=format","https://ph-files.imgix.net/91b299e0-6f9f-4bf4-8cef-4e469bd12042.jpeg?auto=format","https://ph-files.imgix.net/994beb18-467a-470c-830d-bbed18e5f7ff.jpeg?auto=format","https://ph-files.imgix.net/c71dcca7-cb84-48d4-83bb-a35c7b9fcff5.jpeg?auto=format","https://ph-files.imgix.net/4ef958e3-40b4-408e-9cbe-6f97683f3bbc.jpeg?auto=format","https://ph-files.imgix.net/7941e01b-180d-4e92-9c0a-d5544d4b6d85.jpeg?auto=format","https://ph-files.imgix.net/60e43740-6e0e-4669-b866-b3b530612d34.jpeg?auto=format","https://ph-files.imgix.net/2b0aa335-1357-4062-a1c0-885fb494d1db.jpeg?auto=format"],"image":"https://ph-files.imgix.net/437f836b-65d6-46bd-b7d9-db501e4da3ab.gif?auto=format"},{"sourceId":"producthunt","title":"Pointalize","url":"https://www.producthunt.com/products/pointalize/launches/pointalize?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Optimize Every Point. Maximize Every Dollar.","content":"Compare credit cards, unlock rewards, and explore travel hacks, stories, and lifestyle perks to make every dollar and mile go further.","metrics":{},"tags":["producthunt","new"],"externalId":"1069295","logo":"https://ph-files.imgix.net/2d9a879d-4912-4f61-9c57-c4b2c1ebb74f.png?auto=format","images":["https://ph-files.imgix.net/fce9bb2a-9265-4796-bb55-cf848d422247.webp?auto=format","https://ph-files.imgix.net/e6948ce9-3a89-4756-aeb3-a66f52e3ad9c.webp?auto=format","https://ph-files.imgix.net/9b03b9a0-ada8-4498-8e8a-7d631bf30483.webp?auto=format","https://ph-files.imgix.net/27a61a4a-9d60-4cc8-9623-b60e2a2c7d6e.webp?auto=format","https://ph-files.imgix.net/0ed1d74f-1bb7-4ba4-91da-6ed6e47a7afa.webp?auto=format","https://ph-files.imgix.net/930729ba-1753-475f-9f1e-62fd902cb593.webp?auto=format","https://ph-files.imgix.net/68be1efc-4613-43b8-a7e5-db1c7db5df91.png?auto=format"],"image":"https://ph-files.imgix.net/fce9bb2a-9265-4796-bb55-cf848d422247.webp?auto=format"},{"sourceId":"producthunt","title":"Privaro Peek","url":"https://www.producthunt.com/products/privaro-peek/launches/privaro-peek?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"See what actually fires before cookie consent","content":"Privaro Peek shows what actually fires on your website before cookie consent. Not configs. Not dashboards. Real browser behaviour. Find early-firing vendors, broken consent enforcement, and tracking leaks without DevTools. Built for agencies, marketers, developers, and privacy teams. Install. Scan. See the truth.","metrics":{},"tags":["producthunt","new"],"externalId":"1068936","logo":"https://ph-files.imgix.net/c44b3529-b79b-4520-98dc-b2339f3d953f.png?auto=format","images":["https://ph-files.imgix.net/c95c7021-eb73-4f5f-8a29-5f6ff9409083.png?auto=format","https://ph-files.imgix.net/d683d66d-fb34-4d1c-9cef-de7bb14eafd6.png?auto=format","https://ph-files.imgix.net/c9cfb231-8af2-4b91-b32d-15a9ad266c94.png?auto=format"],"image":"https://ph-files.imgix.net/c95c7021-eb73-4f5f-8a29-5f6ff9409083.png?auto=format"},{"sourceId":"producthunt","title":"roxy","url":"https://www.producthunt.com/products/roxy-2/launches/roxy-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Buy Verified Wise Accounts ","content":"Are you looking to simplify your international money transfers and manage your finances with ease? Buying a verified Wise account could be the game-changer you need. If you’re looking to send money internationally at low costs, consider opening a multi-currency account with Wise.","metrics":{},"tags":["producthunt","new"],"externalId":"1058756","logo":"https://ph-files.imgix.net/cdb8e5fb-db4d-4ea3-861a-9db600a04474.jpeg?auto=format","images":["https://ph-files.imgix.net/4f255f33-f5ff-4077-8d61-2f244f6975a9.jpeg?auto=format","https://ph-files.imgix.net/81bdf4b1-37b2-48ff-84e5-4a5cb11c79c5.jpeg?auto=format"],"image":"https://ph-files.imgix.net/4f255f33-f5ff-4077-8d61-2f244f6975a9.jpeg?auto=format"},{"sourceId":"producthunt","title":"NexPOS","url":"https://www.producthunt.com/products/nexpos/launches/nexpos?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Free cloud-based POS system for retail and restaurants","content":"NexPOS is a completely free, cloud-based point of sale system designed for retail stores and restaurants. Unlike other POS systems that charge monthly fees, NexPOS offers lifetime free access with comprehensive inventory management, sales tracking, and order management features. Perfect for small to medium businesses looking to streamline operations without breaking the bank.","metrics":{},"tags":["producthunt","new"],"externalId":"1068958","logo":"https://ph-files.imgix.net/2f0222bd-29dd-4876-8e08-3909e916d9b3.png?auto=format","images":["https://ph-files.imgix.net/b85be686-8bc4-4971-9532-e94c6c9f3ad6.png?auto=format","https://ph-files.imgix.net/f4dab132-16fd-4d99-9be3-1ac9f0707976.png?auto=format","https://ph-files.imgix.net/d96bf826-4c48-4f36-9547-3da2060d50da.png?auto=format","https://ph-files.imgix.net/cac50ae2-559d-4019-a2d8-59e39f15a008.png?auto=format","https://ph-files.imgix.net/779619f3-11eb-446c-a576-0cabc8dac29c.png?auto=format","https://ph-files.imgix.net/4755def2-a8d3-451c-9808-e69d3b88a031.png?auto=format","https://ph-files.imgix.net/7ab3213c-5f83-4880-9221-c8e3e9124f08.png?auto=format","https://ph-files.imgix.net/902839fc-0f7c-4d81-ba22-ffcce78ef747.png?auto=format","https://ph-files.imgix.net/d8c89ee9-c499-45b4-a6da-54a1a2414567.png?auto=format","https://ph-files.imgix.net/56248e12-b684-4df9-a051-84bcd992538c.png?auto=format","https://ph-files.imgix.net/6b250bf3-3722-40d8-9a4d-c10c80ac6a22.png?auto=format"],"image":"https://ph-files.imgix.net/b85be686-8bc4-4971-9532-e94c6c9f3ad6.png?auto=format"},{"sourceId":"producthunt","title":"AI-Native PM: Product Validation Toolkit","url":"https://www.producthunt.com/products/ai-native-pm-product-validation-toolkit/launches/ai-native-pm-product-validation-toolkit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Validate product idea before you write a single line of code","content":"Most founders don’t fail because they can’t build. They fail because they build the wrong thing. I created the AI-Native PM Product Validation Toolkit after working at fast-moving startups where speed mattered more than perfection. This toolkit helps you decide if an idea is worth building, validate demand early, ask the right questions across users, market, feasibility, and risk, and avoid wasting time on features nobody wants. Built for founders, PMs, and indie hackers.","metrics":{},"tags":["producthunt","new"],"externalId":"1066278","logo":"https://ph-files.imgix.net/f082406c-8efb-4f60-a3e9-c4a22981c71e.png?auto=format","images":["https://ph-files.imgix.net/e53211a7-e916-471c-ad76-dc27bd3bc906.png?auto=format","https://ph-files.imgix.net/c6074a3e-bfe5-48cf-97c0-daaa9ef0e5a6.png?auto=format","https://ph-files.imgix.net/dc14a097-e702-4cb8-b544-972f28fac606.png?auto=format"],"image":"https://ph-files.imgix.net/e53211a7-e916-471c-ad76-dc27bd3bc906.png?auto=format"},{"sourceId":"producthunt","title":"CommitFrame - Smart supplier decisions","url":"https://www.producthunt.com/products/commitframe-smart-supplier-decisions/launches/commitframe-smart-supplier-decisions?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Turn supplier quotes into confident decisions","content":"CommitFrame helps teams choose the right supplier with confidence. Create structured RFQs or upload existing quotes, then compare suppliers side-by-side to see price, lead time, and risk trade-offs. Lock a clear decision record you can reuse, share, and justify later. Generate a PO PDF from the locked decision, send a supplier confirmation link, and track status through Sent → Confirmed → Shipped → Received.","metrics":{},"tags":["producthunt","new"],"externalId":"1066324","logo":"https://ph-files.imgix.net/df608adc-e826-465e-ab5d-e1c3c20b06fe.jpeg?auto=format","images":["https://ph-files.imgix.net/266e3039-bf4c-4e2b-b261-7a32470b6d98.png?auto=format","https://ph-files.imgix.net/c31f1fa8-41f9-4ff5-acbc-035002ca33da.png?auto=format","https://ph-files.imgix.net/8ccbbd4f-163d-474c-abc6-71fe17c57fc9.png?auto=format","https://ph-files.imgix.net/7e7e06c2-844c-4347-a812-af5b5f263ccc.png?auto=format","https://ph-files.imgix.net/cdcdc620-f6df-4ca1-b638-2b0663e8a783.png?auto=format","https://ph-files.imgix.net/9b5a7cdd-0b7b-4b6c-8488-0cdce83e6a22.gif?auto=format"],"image":"https://ph-files.imgix.net/266e3039-bf4c-4e2b-b261-7a32470b6d98.png?auto=format"},{"sourceId":"producthunt","title":"FluentCap","url":"https://www.producthunt.com/products/fluentcap/launches/fluentcap?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Real-time captions for any audio on your computer\t","content":"Live transcription and translation for any audio on your computer — movies, meetings, podcasts, anything. Most caption apps only work in browsers or specific apps. FluentCap works system-wide. BYOK model: Connect your own API key from Deepgram, Gladia, or AssemblyAI. Pay only for what you use (~$0.25/hour). Providers offer $50-200 in free credits. 100+ languages. Real-time translation. All transcripts stored locally. Free forever.","metrics":{},"tags":["producthunt","new"],"externalId":"1068242","logo":"https://ph-files.imgix.net/fc681d2d-6310-4fae-8361-bbbd98002465.png?auto=format","images":["https://ph-files.imgix.net/38cf5f4c-5c6e-47d3-b726-04b785886a46.jpeg?auto=format","https://ph-files.imgix.net/01d4b369-48d1-4cef-b934-f7a88bb6542d.jpeg?auto=format","https://ph-files.imgix.net/22bc2d99-77c9-4dec-9d79-3b31054bf59a.jpeg?auto=format"],"image":"https://ph-files.imgix.net/38cf5f4c-5c6e-47d3-b726-04b785886a46.jpeg?auto=format"},{"sourceId":"producthunt","title":"Mrrp","url":"https://www.producthunt.com/products/mrrp/launches/mrrp?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Know exactly what your pet needs.","content":"Mrrp is the #1 AI-powered pet care app. Track your pet's health, get personalized diet recommendations, capture precious memories, and keep vet records organized. Mrrp works for dogs, cats, birds, and more. Get Mrrp today!","metrics":{},"tags":["producthunt","new"],"externalId":"1068787","logo":"https://ph-files.imgix.net/f95a071d-7dc4-4044-8259-865c21461a76.png?auto=format","images":["https://ph-files.imgix.net/8ea42d20-bfe7-4459-9d0a-613303c27c2f.png?auto=format"],"image":"https://ph-files.imgix.net/8ea42d20-bfe7-4459-9d0a-613303c27c2f.png?auto=format"},{"sourceId":"producthunt","title":"BotMarketingPro","url":"https://www.producthunt.com/products/botmarketingpro-telegram-bot-with-crm/launches/botmarketingpro?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"BotMarketingPro keeps your customers coming back","content":"A service for small businesses that turns one-time inquiries into repeat customers. BotMarketing.pro gives you your own Telegram bot and mini-site where you can accept orders, manage your customer database, and send automated messages and offers. A loyalty program with cashback for purchases and referrals helps gently increase your average order value and repeat visits.","metrics":{},"tags":["producthunt","new"],"externalId":"1068795","logo":"https://ph-files.imgix.net/4b3b24f7-f06b-446e-8f1e-88090985dc75.png?auto=format","images":["https://ph-files.imgix.net/8713c5d0-d614-424d-9e9c-5bbe3c33123e.jpeg?auto=format","https://ph-files.imgix.net/305946cd-ecfc-4bab-88c9-90ad302a2272.jpeg?auto=format","https://ph-files.imgix.net/6956b71b-a6ad-4d3f-b8ab-2509b9d95882.png?auto=format","https://ph-files.imgix.net/6f299c0e-a92e-4e8b-ba4b-c2b1ee0d5582.png?auto=format","https://ph-files.imgix.net/b338f633-7997-49cd-9e74-3dc9c79e2960.png?auto=format","https://ph-files.imgix.net/e3b5c256-63c3-4219-9c0c-1aef58491f53.png?auto=format","https://ph-files.imgix.net/dae43daa-ecef-47d8-a387-bb8ec35da126.png?auto=format"],"image":"https://ph-files.imgix.net/8713c5d0-d614-424d-9e9c-5bbe3c33123e.jpeg?auto=format"},{"sourceId":"producthunt","title":"On-Demand Snow Removal App Development ","url":"https://www.producthunt.com/products/on-demand-snow-removal-app-development/launches/on-demand-snow-removal-app-development?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"On-Demand Snow Removal App Development for  Winter Services","content":"Elevate your winter services with our on-demand snow removal app development. Streamline operations and enhance customer satisfaction effortlessly.#business #computer #technology #snowremovalapp #ondemandsnowremovalapp #snowremovalappdevelopment #snowremovalapplikegojek #gojekclonesnowremovalapp #multiserviceapplikegojek #winterserviceapp #snowplowingapp #ondemandserviceappdevelopment","metrics":{},"tags":["producthunt","new"],"externalId":"1068837","logo":"https://ph-files.imgix.net/8e50c5b4-17ab-44a6-877f-4be381e4a058.jpeg?auto=format","images":["https://ph-files.imgix.net/05909ed0-d80d-45e6-a354-f20a429100ff.jpeg?auto=format"],"image":"https://ph-files.imgix.net/05909ed0-d80d-45e6-a354-f20a429100ff.jpeg?auto=format"},{"sourceId":"producthunt","title":"Google Photos to Video Slideshow","url":"https://www.producthunt.com/products/google-photos-to-video-slideshow/launches/google-photos-to-video-slideshow?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Transform your Google Photos albums into stunning video","content":"With Google Photos Album to Video Slideshow, you can create professional-looking videos from your photo memories in just a few clicks. This powerful Chrome/Edge extension extracts photos from any Google Photos album and transforms them into dynamic videos with cinematic Ken Burns effects, smooth transitions, and background music.","metrics":{},"tags":["producthunt","new"],"externalId":"1068849","logo":"https://ph-files.imgix.net/7e1aefe5-0b8c-4573-ac87-c3d43ca6527b.png?auto=format","images":["https://ph-files.imgix.net/fd7a3625-5d1f-4560-9601-27b1851c2964.jpeg?auto=format","https://ph-files.imgix.net/43604719-2f38-4ff7-b8c1-a9bc234c66b5.png?auto=format","https://ph-files.imgix.net/e47b4cc1-8fd4-480a-9bce-6c3ae89ec809.png?auto=format","https://ph-files.imgix.net/47d76c9a-b5ec-4dca-99c2-179359339f29.png?auto=format"],"image":"https://ph-files.imgix.net/fd7a3625-5d1f-4560-9601-27b1851c2964.jpeg?auto=format"},{"sourceId":"producthunt","title":"ArcaText","url":"https://www.producthunt.com/products/arcatext/launches/arcatext?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Professional AI Voice Notes: Transcribe, Analyze & Chat","content":"ArcaText turns voice notes into structured data with AI. It features transcription with Speaker Diarization, AI summaries, action items, and sentiment analysis. Chat with your notes via GPT-4o-mini to find info instantly. Native iOS integration includes Dynamic Island and Live Activities for seamless recording. Supports 21 languages and PDF/TXT exports. Perfect for meetings and lectures.","metrics":{},"tags":["producthunt","new"],"externalId":"1068855","logo":"https://ph-files.imgix.net/0cd731bd-1235-4cf1-a8f9-aae8ee2f0e49.png?auto=format","images":["https://ph-files.imgix.net/e260ab5c-d6b5-4eeb-8899-e411852483a3.png?auto=format","https://ph-files.imgix.net/994b36b6-5cda-46e9-b624-164974385c96.png?auto=format","https://ph-files.imgix.net/a7f156a7-8926-4bc9-9537-1d97b51c0a8e.png?auto=format","https://ph-files.imgix.net/8e5e426a-edc6-4191-b3ee-38411a75c01f.png?auto=format","https://ph-files.imgix.net/9c7ddbb5-0680-4607-a215-3ff54ae030b9.png?auto=format","https://ph-files.imgix.net/a4008266-42ef-4626-898a-18b378465101.png?auto=format","https://ph-files.imgix.net/f0a40be6-fb4b-4109-98ab-1ca16db47819.png?auto=format"],"image":"https://ph-files.imgix.net/e260ab5c-d6b5-4eeb-8899-e411852483a3.png?auto=format"},{"sourceId":"producthunt","title":"SIMULATE IT NOW","url":"https://www.producthunt.com/products/simulate-it-now/launches/simulate-it-now?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"The Universe, simulated","content":"Interactive simulation laboratory for exploring complex systems, scientific models, and behavioral dynamics through visualization.","metrics":{},"tags":["producthunt","new"],"externalId":"1068873","logo":"https://ph-files.imgix.net/4fd5be8f-8ec2-4cc4-8f1c-c4a0655560cb.png?auto=format","images":["https://ph-files.imgix.net/208ffb0d-58c0-4296-b349-5a36aefa2220.png?auto=format"],"image":"https://ph-files.imgix.net/208ffb0d-58c0-4296-b349-5a36aefa2220.png?auto=format"},{"sourceId":"producthunt","title":"viral.expert","url":"https://www.producthunt.com/products/viral-expert/launches/viral-expert?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"A/B test your ideas before you hit publish","content":"AI-powered content made content easy to create — but harder to choose. viral.expert helps creators and teams decide what’s worth publishing before it reaches their audience. Instead of generating posts, we compare drafts, analyze platform signals, and highlight which idea has the stronger chance to land — and when it’s better not to post at all. Think A/B testing for content decisions, paid per experiment. No subscriptions analysis that tells you exactly whether to post—and why.","metrics":{},"tags":["producthunt","new"],"externalId":"1068901","logo":"https://ph-files.imgix.net/e88e1e10-4307-47e8-963f-22afa3774352.png?auto=format","images":["https://ph-files.imgix.net/8ba25ac7-e133-4275-abcf-ceb7b8c7fc69.png?auto=format","https://ph-files.imgix.net/2504f908-c6b7-41c4-aa25-58e8aa32532a.png?auto=format","https://ph-files.imgix.net/0675748b-1860-4a3b-8c88-bad464cc551a.png?auto=format","https://ph-files.imgix.net/d61473d1-4cfa-4b41-8510-f0440135737d.png?auto=format","https://ph-files.imgix.net/2fac6a88-5dfb-43b9-9cc1-176ec40c347d.gif?auto=format"],"image":"https://ph-files.imgix.net/8ba25ac7-e133-4275-abcf-ceb7b8c7fc69.png?auto=format"},{"sourceId":"producthunt","title":"Quizbuild","url":"https://www.producthunt.com/products/quizbuild/launches/quizbuild?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Online question bank & exam management platform","content":"Quizbuild.com is a streamlined platform for digitizing question banks and creating online exams. Key Features: Smart Question Bank: Easily store and categorize questions by topic or difficulty. Fast Exam Builder: Transform raw questions into professional quizzes in minutes. Minimalist UI: Focus on content with a clean, distraction-free interface. Cloud Access: Manage your data anywhere, on any device. Perfect for educators and learners to organize knowledge scientifically.","metrics":{},"tags":["producthunt","new"],"externalId":"1068933","logo":"https://ph-files.imgix.net/c743c251-97f3-4836-8e30-07d09f9cbae7.png?auto=format","images":["https://ph-files.imgix.net/568780d2-dc96-4cee-a6ee-0f3c5e2f0f08.png?auto=format","https://ph-files.imgix.net/e0bd624d-ce0f-4beb-be37-7f943912251c.png?auto=format","https://ph-files.imgix.net/6098f5bf-b27a-48da-ae92-c10338454d65.png?auto=format","https://ph-files.imgix.net/2216d5d7-3384-46e6-a379-967ade37df56.png?auto=format","https://ph-files.imgix.net/07ab3e0c-eccf-4db9-820e-47b3a236fd10.png?auto=format"],"image":"https://ph-files.imgix.net/568780d2-dc96-4cee-a6ee-0f3c5e2f0f08.png?auto=format"},{"sourceId":"producthunt","title":"Foodix - Easy Recipes","url":"https://www.producthunt.com/products/foodix-easy-recipes/launches/foodix-easy-recipes?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-28T08:01:00Z","summary":"Save recipes from TikTok, Instagram & the web","content":"Automatic detection: Share a link, and Foodix extracts the recipe for you. Editable ingredients & steps: Adjust quantities, swap items, or fix instructions before cooking. Video & article support: Whether it’s a YouTube tutorial or a blog post, Foodix knows how to handle it. Smart organization: Categorize by type, cooking time, difficulty, or your own tags.","metrics":{},"tags":["producthunt","new"],"externalId":"1068978","logo":"https://ph-files.imgix.net/d3443876-a152-445d-9c6e-72729f2bac3e.png?auto=format","images":["https://ph-files.imgix.net/569d80b1-557a-4da6-9ffd-08fa8f7bb1a2.webp?auto=format","https://ph-files.imgix.net/04c86823-cfc9-4eab-b941-1269dd86e52b.webp?auto=format","https://ph-files.imgix.net/4fafe71b-dad5-4e06-83a6-6f08b3f22b74.webp?auto=format","https://ph-files.imgix.net/f0824473-9e92-4ad5-9ff4-d5386ca53596.webp?auto=format","https://ph-files.imgix.net/371d40c3-a599-4b36-9d4e-883ff3027116.webp?auto=format","https://ph-files.imgix.net/cfebc6dc-a0f7-4f7a-86f1-c6dc084efae1.webp?auto=format"],"image":"https://ph-files.imgix.net/569d80b1-557a-4da6-9ffd-08fa8f7bb1a2.webp?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T09:39:25.256Z",
+  "date": "2026-01-28",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": []
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】PNANA - 现代化终端文本编辑器",
+          "url": "https://github.com/Cyxuan0311/PNANA",
+          "author": "Cyxuan0311",
+          "authorUrl": "https://github.com/Cyxuan0311",
+          "publishedAt": "2026-01-28T05:03:24Z",
+          "summary": "pnana 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。 项目地址： 核心优势 🎨 美观易用的界面设计 内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。 ⌨️ 低学习成本快捷键 摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率 📝 全场景编辑能力 支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。 🔧 灵活扩展与配置 通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求. 快速上手 bash git clone cd ./pnana chmod +x ./build.sh && ./build.sh ./build/pnana/pnana 启动空白编辑器 pnana file.txt 打开指定文件（安装后可用） 演示效果 <img width=\"2543\" height=\"1302\" alt=\"Image\" src=\" / <img width=\"2519\" height=\"1287\" alt=\"Image\" src=\" /",
+          "content": "**pnana** 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。\n\n项目地址：https://github.com/Cyxuan0311/PNANA\n\n核心优势\n\n**🎨 美观易用的界面设计**\n\n内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。\n\n**⌨️ 低学习成本快捷键**\n\n摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率\n\n**📝 全场景编辑能力**\n\n支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。\n\n**🔧 灵活扩展与配置**\n\n通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求.\n\n**快速上手**\n```bash\ngit clone https://github.com/Cyxuan0311/PNANA.git\ncd ./pnana\nchmod +x ./build.sh && ./build.sh\n\n./build/pnana/pnana  # 启动空白编辑器\npnana file.txt       # 打开指定文件（安装后可用）\n```\n\n**演示效果**\n\n<img width=\"2543\" height=\"1302\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5747d6c6-3e0a-4057-bb38-db6625531a19\" />\n\n<img width=\"2519\" height=\"1287\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c020886-6840-49c0-9d83-caed7e73574f\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8850",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8850"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Mail Studio - 开源可视化邮件编辑器",
+          "url": "https://mail-studio-black.vercel.app/",
+          "author": "wzc520pyfm",
+          "authorUrl": "https://github.com/wzc520pyfm",
+          "publishedAt": "2026-01-28T06:30:53Z",
+          "summary": "Mail Studio 是一款基于 MJML 和 Next.js 构建的现代化邮件编辑器，让创建响应式邮件模板变得简单高效。 核心特性 🎨 拖拽式可视化编辑 无需编码，像搭积木一样设计邮件 💻 Monaco 代码编辑器 为开发者提供专业的代码编辑体验 📱 完美响应式 基于 MJML，确保邮件在所有客户端正常显示 🚀 四种视图模式 Canvas、Edit、Code、Preview 自由切换 📦 丰富组件库 文本、图片、按钮、表格、手风琴、轮播等 15+ 组件 ✨ 内置模板 欢迎邮件、营销推广、通知等开箱即用模板 技术亮点 采用 Next.js 16 + React 19 + TypeScript 构建，使用 Zustand 状态管理，dndkit 实现拖拽交互，Tailwind CSS 4 构建现代化 UI。支持 Resend 和 Nodemailer 发送测试邮件。 链接 在线体验: GitHub: 开源协议: MIT 适合营销团队、产品经理、前端开发者和 UI 设计师使用。零配置启动，支持 Vercel 一键部署。 预览 <img width=\"1512\" height=\"824\" alt=\"Image\" src=\" / <img width=\"1512\" height=\"824\" alt=\"Image\" src=\" /",
+          "content": "**Mail Studio** 是一款基于 MJML 和 Next.js 构建的现代化邮件编辑器，让创建响应式邮件模板变得简单高效。\n\n## 核心特性\n\n- 🎨 **拖拽式可视化编辑** - 无需编码，像搭积木一样设计邮件\n- 💻 **Monaco 代码编辑器** - 为开发者提供专业的代码编辑体验\n- 📱 **完美响应式** - 基于 MJML，确保邮件在所有客户端正常显示\n- 🚀 **四种视图模式** - Canvas、Edit、Code、Preview 自由切换\n- 📦 **丰富组件库** - 文本、图片、按钮、表格、手风琴、轮播等 15+ 组件\n- ✨ **内置模板** - 欢迎邮件、营销推广、通知等开箱即用模板\n\n## 技术亮点\n\n采用 **Next.js 16 + React 19 + TypeScript** 构建，使用 **Zustand** 状态管理，**dnd-kit** 实现拖拽交互，**Tailwind CSS 4** 构建现代化 UI。支持 Resend 和 Nodemailer 发送测试邮件。\n\n## 链接\n\n- 在线体验: https://mail-studio-black.vercel.app/\n- GitHub: https://github.com/wzc520pyfm/mail-studio\n- 开源协议: MIT\n\n适合营销团队、产品经理、前端开发者和 UI 设计师使用。零配置启动，支持 Vercel 一键部署。\n\n## 预览\n\n<img width=\"1512\" height=\"824\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/87f798c4-a10a-4e4e-a287-ae430052cc15\" />\n\n<img width=\"1512\" height=\"824\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/69412c92-0238-414e-9d25-91319198d73e\" />\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8851",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8851"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】TermClean 一个集中式mac版本的包清理工具（支持brew、npm、pnpm、pip）",
+          "url": "https://github.com/daijinhai/TermClean.git",
+          "author": "daijinhai",
+          "authorUrl": "https://github.com/daijinhai",
+          "publishedAt": "2026-01-28T07:53:55Z",
+          "summary": "开源地址： 最近折腾了太多AI工具，安装了大量的软件，转过头我可能就忘了。所以开发了这么一个清理工具。 !Main Interface 🎯 为什么需要 TermClean？ 如果您遇到以下场景，TermClean 将是您的得力助手： \"由于开发需求安装了大量工具，现在磁盘空间告急，想清理却不知从何下手...\" 📊 TermClean 提供直观的空间占用分析，让您一眼识别\"吃灰\"的大文件。 \"担心卸载 ffmpeg 会导致其他依赖它的工具无法运行...\" 🛡️ 独创的依赖树分析与卸载预览功能，确保您清楚每一次操作的影响范围。 \"按照教程装了一堆包，教程结束后却不敢删...\" 🔍 清晰展示每个包的来源与用途，告别\"盲装盲删\"的焦虑。 🌟 核心特性 📦 多管理器支持：一站式管理 Homebrew (Formulae & Casks), npm, pnpm, yarn 和 pip。 🔍 智能扫描与分析：自动检测所有已安装的包，并分析其占用的磁盘空间。 🌳 依赖追溯：内置递归依赖树构建算法，清晰展示包与包之间的引用关系。 ⚠️ 安全卸载预览：在执行卸载前，系统会进行二次确认并显示受影响的依赖项，防止误删系统关键组件。 ⌨️ 纯键盘交互：基于 Ink 和 React 构建，提供流畅的 TUI 操作体验。 📊 实时统计：实时计算选中包的总大小以及可释放的磁盘空间。",
+          "content": "开源地址：https://github.com/daijinhai/TermClean.git\n\n最近折腾了太多AI工具，安装了大量的软件，转过头我可能就忘了。所以开发了这么一个清理工具。\n![Main Interface](https://github.com/daijinhai/TermClean/blob/main/doc/main.png?raw=true)\n\n## 🎯 为什么需要 Term-Clean？\n\n如果您遇到以下场景，Term-Clean 将是您的得力助手：\n\n- **\"由于开发需求安装了大量工具，现在磁盘空间告急，想清理却不知从何下手...\"**\n  > 📊 Term-Clean 提供直观的空间占用分析，让您一眼识别\"吃灰\"的大文件。\n\n- **\"担心卸载 `ffmpeg` 会导致其他依赖它的工具无法运行...\"**\n  > 🛡️ 独创的依赖树分析与卸载预览功能，确保您清楚每一次操作的影响范围。\n\n- **\"按照教程装了一堆包，教程结束后却不敢删...\"**\n  > 🔍 清晰展示每个包的来源与用途，告别\"盲装盲删\"的焦虑。\n\n## 🌟 核心特性\n\n- 📦 **多管理器支持**：一站式管理 Homebrew (Formulae & Casks), npm, pnpm, yarn 和 pip。\n- 🔍 **智能扫描与分析**：自动检测所有已安装的包，并分析其占用的磁盘空间。\n- 🌳 **依赖追溯**：内置递归依赖树构建算法，清晰展示包与包之间的引用关系。\n- ⚠️ **安全卸载预览**：在执行卸载前，系统会进行二次确认并显示受影响的依赖项，防止误删系统关键组件。\n- ⌨️ **纯键盘交互**：基于 Ink 和 React 构建，提供流畅的 TUI 操作体验。\n- 📊 **实时统计**：实时计算选中包的总大小以及可释放的磁盘空间。\n\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8852",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8852"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "AI Image",
+          "url": "https://www.nano-image.io/",
+          "author": "olivetree1928",
+          "authorUrl": "https://github.com/olivetree1928",
+          "publishedAt": "2026-01-28T09:24:19Z",
+          "summary": "Create stunning AI images in seconds Nano Image is an online AI image generator. Powered by nanobanana, flux, seedream and zimage for wallpapers, products, posters and more.",
+          "content": "Create stunning AI images in seconds\nNano Image is an online AI image generator.\nPowered by nano-banana, flux, seedream and z-image for wallpapers, products, posters and more.\nhttps://www.nano-image.io/",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8853",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8853"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】LifeCell - 人生小格",
+          "url": "https://github.com/user-attachments/assets/4ac5626b-748c-4a35-bb4b-5172662f067d",
+          "author": "RobotLuo2025",
+          "authorUrl": "https://github.com/RobotLuo2025",
+          "publishedAt": "2026-01-28T09:28:12Z",
+          "summary": "产品名称 人生小格 一句话介绍 如果一个人的一生压缩在900个格子里，你会记录些什么在格子上 灵感 最早就是在人生A4纸上得到的灵感，后来一直觉得可以基于此再增加上一些记录，于是就做了人生小格 主要功能 格子主体：可以自定义期望的寿命和出生年月，然后格子会跟随你的设定自动生成完整的格子 记录：简单的可以记录事件和图片，补充上标签，会对应在格子主体上对应显示格子的颜色 随机回忆：每天会随机出现13条回忆，显示你曾经记录下的内容 小组件：月度格子/年度格子，会显示对应的统计条数和字数 图片分享：根据卡片的文字和图片，智能提取颜色，自动根据设备的大小生成可作为壁纸的分享图 !Image !Image !Image !Image !Image !Image",
+          "content": "**产品名称**\n人生小格\n\n**一句话介绍**\n如果一个人的一生压缩在900个格子里，你会记录些什么在格子上\n\n**灵感**\n最早就是在人生A4纸上得到的灵感，后来一直觉得可以基于此再增加上一些记录，于是就做了人生小格\n\n**主要功能**\n\n- 格子主体：可以自定义期望的寿命和出生年月，然后格子会跟随你的设定自动生成完整的格子\n- 记录：简单的可以记录事件和图片，补充上标签，会对应在格子主体上对应显示格子的颜色\n- 随机回忆：每天会随机出现1-3条回忆，显示你曾经记录下的内容\n- 小组件：月度格子/年度格子，会显示对应的统计条数和字数\n- 图片分享：根据卡片的文字和图片，智能提取颜色，自动根据设备的大小生成可作为壁纸的分享图\n\n![Image](https://github.com/user-attachments/assets/4ac5626b-748c-4a35-bb4b-5172662f067d)\n\n![Image](https://github.com/user-attachments/assets/eb73c5bf-da3e-4b56-8d2a-90f5bfaaa4d0)\n\n![Image](https://github.com/user-attachments/assets/853e0e9a-4bf7-4766-930a-070737cb3be0)\n\n![Image](https://github.com/user-attachments/assets/606d12fc-89f3-4c82-8ea8-c1d7bd18ebc1)\n\n![Image](https://github.com/user-attachments/assets/4aedf9d7-750c-4358-8b59-f6067c5f530c)\n\n![Image](https://github.com/user-attachments/assets/8865e535-e2fa-48cb-90e1-43c222a465aa)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8854",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8854"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】SupSub - 把注意力留给有价值的内容",
+          "url": "https://supsub.net",
+          "author": "hidumou",
+          "authorUrl": "https://github.com/hidumou",
+          "publishedAt": "2026-01-28T09:58:44Z",
+          "summary": "产品名称 SupSub 一句话介绍 把注意力留给有价值的内容 功能 👉 你只负责订阅，AI 负责帮你读完并提炼重点。 1. 订阅任意网站（网站存在审核机制,你懂的） 2. 订阅微信公众号 3. 多来源统一管理 4. 直接看“结论级信息”，大幅节省时间 5. 关注点筛选：基于你订阅的信源，只推你真正关心的话题 6. 支持多种 Feed 格式，RSS 、Atom 、JSONd, 可接入你喜欢的阅读器（ Folo 、Inoreader 等) <img width=\"2560\" height=\"1319\" alt=\"Image\" src=\" / <img width=\"2560\" height=\"1319\" alt=\"Image\" src=\" /",
+          "content": "##### 产品名称\n[SupSub](https://supsub.net)\n\n##### 一句话介绍\n把注意力留给有价值的内容 \n\n##### 功能\n👉 你只负责订阅，AI 负责帮你读完并提炼重点。\n1. 订阅任意网站（网站存在审核机制,你懂的）\n2. 订阅微信公众号\n3. 多来源统一管理\n4. 直接看“结论级信息”，大幅节省时间\n5. 关注点筛选：基于你订阅的信源，只推你真正关心的话题\n6. 支持多种 Feed 格式，RSS 、Atom 、JSONd, 可接入你喜欢的阅读器（ Folo 、Inoreader 等)\n\n<img width=\"2560\" height=\"1319\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e01e5e90-14eb-4ea4-9e3e-ecaf64183776\" />\n\n<img width=\"2560\" height=\"1319\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6c80a961-83b6-4430-9baa-52bb4381f77e\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8855",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8855",
+          "siteLogo": "https://supsub.net/icon.svg?b031ae5f6092de2f"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【文章自荐】如何上手 Emacs",
+          "url": "https://taxodium.ink/how-to-get-started-with-emacs.html",
+          "author": "Spike-Leung",
+          "authorUrl": "https://github.com/Spike-Leung",
+          "publishedAt": "2026-01-28T12:02:11Z",
+          "summary": "文章链接： 整理了一些自己上手 Emacs 的经验",
+          "content": "文章链接：https://taxodium.ink/how-to-get-started-with-emacs.html\n\n整理了一些自己上手 Emacs 的经验",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8856",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8856"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】Trymusic AI - 一款在线生成音乐或歌曲的AI工具",
+          "url": "https://trymusic.ai",
+          "author": "crayon-nickee",
+          "authorUrl": "https://github.com/crayon-nickee",
+          "publishedAt": "2026-01-28T14:11:11Z",
+          "summary": "【工具简介】 这是我最近做的一个AI小项目，Trymusic AI，主要提供一些 实用型的在线音乐工具，不需要安装软件，打开浏览器就能用。 【目前包括】 1、AI Song Generator：AI歌曲生成器 2、AI Lyrics Generator：AI 歌词生成器 3、AI Phonk Maker：AI 重金属摇滚phonk风格音乐生成器 4、BPM Detector：自动检测歌曲 BPM 和调性 5、MP3 to MIDI：将音频快速转换为 MIDI 6、AI Jingle Maker / 8 Bit Music Generator：生成简单可用的广告、游戏音乐配乐 7、Slowed + Reverb Generator：一键制作 slowed & reverb 风格音频 适合音乐制作初学者、内容创作者，或只是想快速处理音频的人。大部分功能可以直接免费使用，无需注册。 【项目地址】 欢迎试用，也欢迎反馈建议。 【相关截图】 !trymusic AI !trymusic AI !trymusic AI",
+          "content": "**【工具简介】**\n这是我最近做的一个AI小项目，[Trymusic AI](https://trymusic.ai)，主要提供一些 实用型的在线音乐工具，不需要安装软件，打开浏览器就能用。\n\n**【目前包括】**\n1、AI Song Generator：AI歌曲生成器\n2、AI Lyrics Generator：AI 歌词生成器\n3、AI Phonk Maker：AI 重金属摇滚phonk风格音乐生成器\n4、BPM Detector：自动检测歌曲 BPM 和调性\n5、MP3 to MIDI：将音频快速转换为 MIDI\n6、AI Jingle Maker / 8 Bit Music Generator：生成简单可用的广告、游戏音乐配乐\n7、Slowed + Reverb Generator：一键制作 slowed & reverb 风格音频\n\n适合音乐制作初学者、内容创作者，或只是想快速处理音频的人。大部分功能可以直接免费使用，无需注册。\n\n**【项目地址】**\nhttps://trymusic.ai/ 欢迎试用，也欢迎反馈建议。\n\n**【相关截图】**\n![trymusic AI](https://cdn.trymusic.ai/images/og.png)\n![trymusic AI](https://cdn.trymusic.ai/images/screenshot.webp)\n![trymusic AI](https://cdn.trymusic.ai/images/ph.webp)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8857",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8857",
+          "siteLogo": "https://trymusic.ai/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】MateBot - 用手机 Telegram 远程控制 Claude Code",
+          "url": "https://github.com/aresbit/MateBot",
+          "author": "aresbit",
+          "authorUrl": "https://github.com/aresbit",
+          "publishedAt": "2026-01-28T15:42:37Z",
+          "summary": "开源地址： 项目简介： MateBot（又称 MateCode）是一个 Claude Code Telegram 桥接工具，对标 clawdbot，专为 Kimi Code 会员打造。让你通过手机 Telegram 随时随地远程控制 Claude Code，在通勤路上、咖啡厅里、甚至躺在沙发上都能高效编程。 !Demo 核心特性： 📱 手机 Telegram 与 Claude 自然对话 🔄 智能会话管理（/clear、/resume、/continue） 📝 代码高亮和格式化回复 🔒 纯 Polling 模式，无需公网 IP 或端口暴露 ⚡ 零依赖轻量架构，3步启动 技术亮点： 纯 Python 标准库，无外部依赖 30秒长轮询，低延迟实时响应 监控 Claude transcript 即时推送到手机 纯出站连接，安全无需公网 对标 clawdbot，但更安全、更轻量、更适合 Kimi Code 会员。",
+          "content": "开源地址：https://github.com/aresbit/MateBot\n\n项目简介：\nMateBot（又称 MateCode）是一个 Claude Code Telegram 桥接工具，对标 clawdbot，专为 Kimi Code 会员打造。让你通过手机 Telegram 随时随地远程控制 Claude Code，在通勤路上、咖啡厅里、甚至躺在沙发上都能高效编程。\n\n![Demo](https://github.com/aresbit/MateBot/raw/master/demo.gif)\n\n核心特性：\n📱 手机 Telegram 与 Claude 自然对话\n🔄 智能会话管理（/clear、/resume、/continue_）\n📝 代码高亮和格式化回复\n🔒 纯 Polling 模式，无需公网 IP 或端口暴露\n⚡ 零依赖轻量架构，3步启动\n\n技术亮点：\n- 纯 Python 标准库，无外部依赖\n- 30秒长轮询，低延迟实时响应\n- 监控 Claude transcript 即时推送到手机\n- 纯出站连接，安全无需公网\n\n对标 clawdbot，但更安全、更轻量、更适合 Kimi Code 会员。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8859",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8859"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【文章推荐】SEO从0到100知识库",
+          "url": "https://lownrain.feishu.cn/wiki/AS5nwII3picsY1kijJicXWOUnSc",
+          "author": "ovelv",
+          "authorUrl": "https://github.com/ovelv",
+          "publishedAt": "2026-01-28T15:44:38Z",
+          "summary": "我是欧维Ove，一名独立开发者。 2026，我要送你一份礼物🎁 正式发布！！！ 不需要付费！ 不需要加入社群！ 不需要登录！ 免费中文SEO知识库已上线！ 全程干货，内容秒杀很多付费社群！ 【独立开发前线｜SEO从0到100】 我的目标是希望搭建一个最大的中文SEO免费知识库，帮助更多人免费学习SEO，通过SEO的方式，推广自己的产品，获取流量，打造被动收入。 我一直在运营独立开发前线这个社区，老实说，社区根本不赚钱，但我依然投入了大量的时间精力。 一方面是自己的热爱，我热爱创造，热爱产品，热爱探索新东西。另一方面是希望提升国内的独立开发氛围，帮助更多人一起成长，在这个环境下，找到属于自己的一条路。 过去我也写了很多文章，发表在了独立开发前线网站、公众号等地方，累计阅读量也有上千万了。 这个知识库是我第一次系统性的整理SEO的知识。我希望它是一个长期有价值的内容产品，不管你是小白，还是SEO高手，在这个知识库都能有所收获。当然，我也会持续更新，丰富知识库的内容。 目前知识库1.0已上线，欢迎收藏访问，也欢迎投稿共建！ 一起创造，让这个世界更加美好",
+          "content": "我是欧维Ove，一名独立开发者。\n2026，我要送你一份礼物🎁\n\n正式发布！！！\n不需要付费！\n不需要加入社群！\n不需要登录！\n免费中文SEO知识库已上线！\n全程干货，内容秒杀很多付费社群！\n\n【独立开发前线｜SEO从0到100】\nhttps://lownrain.feishu.cn/wiki/AS5nwII3picsY1kijJicXWOUnSc\n\n\n我的目标是希望搭建一个最大的中文SEO免费知识库，帮助更多人免费学习SEO，通过SEO的方式，推广自己的产品，获取流量，打造被动收入。\n我一直在运营独立开发前线这个社区，老实说，社区根本不赚钱，但我依然投入了大量的时间精力。\n\n一方面是自己的热爱，我热爱创造，热爱产品，热爱探索新东西。另一方面是希望提升国内的独立开发氛围，帮助更多人一起成长，在这个环境下，找到属于自己的一条路。\n\n过去我也写了很多文章，发表在了独立开发前线网站、公众号等地方，累计阅读量也有上千万了。\n这个知识库是我第一次系统性的整理SEO的知识。我希望它是一个长期有价值的内容产品，不管你是小白，还是SEO高手，在这个知识库都能有所收获。当然，我也会持续更新，丰富知识库的内容。\n\n目前知识库1.0已上线，欢迎收藏访问，也欢迎投稿共建！\n一起创造，让这个世界更加美好",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8860",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8860"
+        }
+      ],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 687C:2ED41A:24A465A:77F9D0B:6A9E864C and timestamp 2026-09-07 09:39:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐]  go-wxpush：极简且免费的微信消息推送服务 (基于golang)",
+          "url": "https://github.com/hezhizheng/go-wxpush",
+          "author": "hezhizheng",
+          "authorUrl": "https://github.com/hezhizheng",
+          "publishedAt": "2026-01-28T01:41:51Z",
+          "summary": "项目地址 类别 Go 项目标题 极简且免费的微信消息推送服务 项目描述 这是一个基于 golang 开发的微信测试公众号模板消息推送服务。它提供了一个简单的 API 接口，让您可以轻松地通过 HTTP 请求将消息推送到指定的微信用户。 亮点 ✅ 完全免费，下载即使用 ✅ 支持 Docker 一键部署（镜像容器大小仅2MB） ✅ 每天 10 万次额度，个人用不完 ✅ 真正的微信原生弹窗 + 声音提醒 ✅ 支持多用户 ✅ 提供免费服务 ✅ 跳转稳定，自带消息详情页面 ✅ 可无限换皮肤 示例代码 markdown 截图或演示视频 🚀 部署指南 下载编译好的文件启动 启动参数 命令行启动参数(可不加，启动之后直接在url上拼接参数也可) ./gowxpushwindowsamd64.exe port \"5566\" title \"测试标题\" content \"测试内容\" appid \"xxx\" secret \"xxx\" userid \"xxxk08\" templateid \"xxxKsPwGmGSzllU\" baseurl \" url请求参数(get) 与命令行参数名称一致 /wxsend?appid=xxx&secret=xxx&userid=xxxk08&templateid=xxxKsPwGmGSzllU&baseurl= bug！ 🐳 Docker 一键部署 重新部署请先拉一遍最新的镜像 docker pull hezhizheng/gowxpush:v4 参数格式与终端启动保持一致, 替换成实际值即可 docker run it d p 5566:5566 init name gowxpush4 hezhizheng/gowxpush:v4 \\ port \"5566\" \\ title \"测试标题5566\" \\ content \"测试内容5566\" \\ appid \"xxx\" \\ secret \"xxx\" \\ userid \"xxxk08\" \\ templateid \"xxxKsPwGmGSzllU\" \\ tz \"Asia/Shanghai\" 🗭 默认消息详情页 服务启动成功后会自带消息详情页界面(即消息模板跳转的页面)，访问地址 ，如有公网地址，可设置baseurl参数为对应的host即可(无需加/detail)。 ⚙️ API 使用方法 服务部署成功后，您可以通过构造 URL 发起 GET 请求来推送消息。 请求地址 请求参数 | 参数名 | 类型 | 是否必填 | 描述 | ||||| | port | String | 否 | 指定启动端口(仅针对命令行) | | title | String | 是 | 消息的标题。 | | content | String | 是 | 消息的具体内容。 | | appid | String | 否 | 临时覆盖默认的微信 AppID。 | | secret | String | 否 | 临时覆盖默认的微信 AppSecret。 | | userid | String | 否 | 临时覆盖默认的接收用户 OpenID。 | | templateid | String | 否 | 临时覆盖默认的模板消息 ID。 | | baseurl | String | 否 | 临时覆盖默认的跳转 URL。 | 使用示例 基础推送 向默认配置的所有用户推送一条消息： 临时覆盖用户 向一个临时指定的用户推送消息： Webhook / POST 请求 除了 GET 请求，服务也支持 POST 方法，更适合用于自动化的 Webhook 集成。 请求地址 请求方法 POST 请求头 (Headers) json { \"ContentType\": \"application/json\" } 请求体 (Body) 请求体需要是一个 JSON 对象，包含与 GET 请求相同的参数。 json { \"title\": \"Webhook 通知\", \"content\": \"这是一个通过 POST 请求发送的 Webhook 消息。\" } 使用示例 (cURL) bash curl location request POST ' \\ dataraw '{ \"title\": \"来自 cURL 的消息\", \"content\": \"自动化任务已完成。\" }' 成功响应 如果消息成功发送给至少一个用户，服务会返回 \"errcode\": 0 状态码。 失败响应 如果发生错误（如 token 错误、缺少参数、微信接口调用失败等），服务会返回相应的状态码和错误信息。",
+          "content": "### 项目地址\n\nhttps://github.com/hezhizheng/go-wxpush\n\n### 类别\n\nGo\n\n### 项目标题\n\n极简且免费的微信消息推送服务\n\n### 项目描述\n\n这是一个基于 golang 开发的微信测试公众号模板消息推送服务。它提供了一个简单的 API 接口，让您可以轻松地通过 HTTP 请求将消息推送到指定的微信用户。\n\n### 亮点\n\n✅ 完全免费，下载即使用\n✅ 支持 Docker 一键部署（镜像容器大小仅2MB）\n✅ 每天 10 万次额度，个人用不完\n✅ 真正的微信原生弹窗 + 声音提醒\n✅ 支持多用户\n✅ 提供免费服务\n✅ 跳转稳定，自带消息详情页面\n✅ 可无限换皮肤 \n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n## 🚀 部署指南\n\n### [下载编译好的文件启动](https://github.com/hezhizheng/go-wxpush/releases/)\n\n- 启动参数\n    * 命令行启动参数(可不加，启动之后直接在url上拼接参数也可)  `./go-wxpush_windows_amd64.exe -port \"5566\" -title \"测试标题\" -content \"测试内容\" -appid \"xxx\" -secret \"xxx\" -userid \"xxx-k08\" -template_id \"xxx-Ks_PwGm--GSzllU\" -base_url \"https://push.hzz.cool\"`\n    *  url请求参数(get)  `与命令行参数名称一致` `/wxsend?appid=xxx&secret=xxx&userid=xxx-k08&template_id=xxx-Ks_PwGm--GSzllU&base_url=https://push.hzz.cool&content=保持微笑，代码无 bug！`\n\n### 🐳 Docker 一键部署\n```\n# 重新部署请先拉一遍最新的镜像\ndocker pull hezhizheng/go-wxpush:v4\n# 参数格式与终端启动保持一致, 替换成实际值即可\ndocker run -it -d -p 5566:5566 --init --name go-wxpush4 hezhizheng/go-wxpush:v4 \\\n-port \"5566\" \\\n-title \"测试标题5566\" \\\n-content \"测试内容5566\" \\\n-appid \"xxx\" \\\n-secret \"xxx\" \\\n-userid \"xxx-k08\" \\\n-template_id \"xxx-Ks_PwGm--GSzllU\" \\\n-tz \"Asia/Shanghai\"\n```\n\n## 🗭 默认消息详情页\n\n服务启动成功后会自带消息详情页界面(即消息模板跳转的页面)，访问地址 `http://127.0.0.1:5566/detail` ，如有公网地址，可设置base_url参数为对应的host即可(无需加/detail)。\n\n## ⚙️ API 使用方法\n\n服务部署成功后，您可以通过构造 URL 发起 `GET` 请求来推送消息。\n\n### 请求地址\n\n```\nhttp://127.0.0.1:5566/wxsend\n```\n\n### 请求参数\n\n| 参数名           | 类型   | 是否必填 | 描述                   |\n|---------------|--------|------|----------------------|\n| `port`        | String | 否    | 指定启动端口(仅针对命令行)       |\n| `title`       | String | 是    | 消息的标题。               |\n| `content`     | String | 是    | 消息的具体内容。             |\n| `appid`       | String | 否    | 临时覆盖默认的微信 AppID。     |\n| `secret`      | String | 否    | 临时覆盖默认的微信 AppSecret。 |\n| `userid`      | String | 否    | 临时覆盖默认的接收用户 OpenID。  |\n| `template_id` | String | 否    | 临时覆盖默认的模板消息 ID。      |\n| `base_url`    | String | 否    | 临时覆盖默认的跳转 URL。       |\n\n### 使用示例\n\n**基础推送**\n\n向默认配置的所有用户推送一条消息：\n\n```\nhttp://127.0.0.1:5566/wxsend?title=服务器通知&content=服务已于北京时间%2022:00%20重启\n```\n\n**临时覆盖用户**\n\n向一个临时指定的用户推送消息：\n\n```\nhttp://127.0.0.1:5566/wxsend?title=私人提醒&content=记得带钥匙&userid=temporary_openid_here\n```\n\n### Webhook / POST 请求\n\n除了 `GET` 请求，服务也支持 `POST` 方法，更适合用于自动化的 Webhook 集成。\n\n**请求地址**\n\n```\nhttp://127.0.0.1:5566/wxsend\n```\n\n**请求方法**\n\n```\nPOST\n```\n\n**请求头 (Headers)**\n\n```json\n{\n  \"Content-Type\": \"application/json\"\n}\n```\n\n**请求体 (Body)**\n\n请求体需要是一个 JSON 对象，包含与 `GET` 请求相同的参数。\n\n```json\n{\n  \"title\": \"Webhook 通知\",\n  \"content\": \"这是一个通过 POST 请求发送的 Webhook 消息。\"\n}\n```\n\n**使用示例 (cURL)**\n\n```bash\ncurl --location --request POST 'http://127.0.0.1:5566/wxsend' \\\n--data-raw '{\n    \"title\": \"来自 cURL 的消息\",\n    \"content\": \"自动化任务已完成。\"\n  }'\n```\n\n### 成功响应\n\n如果消息成功发送给至少一个用户，服务会返回 `\"errcode\": 0` 状态码。\n\n### 失败响应\n\n如果发生错误（如 token 错误、缺少参数、微信接口调用失败等），服务会返回相应的状态码和错误信息。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3127",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3127"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] PNANA - 现代化终端文本编辑器",
+          "url": "https://github.com/Cyxuan0311/PNANA",
+          "author": "Cyxuan0311",
+          "authorUrl": "https://github.com/Cyxuan0311",
+          "publishedAt": "2026-01-28T05:10:25Z",
+          "summary": "项目地址 类别 C++ 项目标题 PNANA 现代化终端文本编辑器(TUI工具) 项目描述 pnana 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。 亮点 🎨 美观易用的界面设计 内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。 ⌨️ 低学习成本快捷键 摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率 📝 全场景编辑能力 支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。 🔧 灵活扩展与配置 通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求. 快速上手 bash git clone cd ./pnana chmod +x ./build.sh && ./build.sh ./build/pnana/pnana 启动空白编辑器 pnana file.txt 打开指定文件（安装后可用） 示例代码 markdown 截图或演示视频 <img width=\"2543\" height=\"1302\" alt=\"Image\" src=\" / <img width=\"2519\" height=\"1287\" alt=\"Image\" src=\" /",
+          "content": "### 项目地址\n\nhttps://github.com/Cyxuan0311/PNANA\n\n### 类别\n\nC++\n\n### 项目标题\n\nPNANA - 现代化终端文本编辑器(TUI工具)\n\n### 项目描述\n\n**pnana** 是一款基于 FTXUI 构建的现代化终端文本编辑器，融合 Nano、Micro 的轻量特性与 Sublime Text 的易用设计，以直观操作和全功能体验为核心，兼顾美观性与实用性，零学习成本即可上手。\n\n\n### 亮点\n\n**🎨 美观易用的界面设计**\n\n内置 28 种精美主题（默认 Monokai），采用三栏布局（菜单栏+编辑区+帮助栏），搭配智能状态栏、行号显示与当前行高亮，终端环境下也能获得出色视觉体验。\n\n**⌨️ 低学习成本快捷键**\n\n摒弃 Vim 复杂操作逻辑，采用 Ctrl+S 保存、Ctrl+Z 撤销等通用快捷键，兼顾新手友好性与操作效率\n\n**📝 全场景编辑能力**\n\n支持多文件标签页管理、自动缩进、括号匹配、正则搜索替换、语法高亮（覆盖 C/C++、Python、Markdown 等主流语言），同时提供 LSP 智能补全、实时诊断等进阶功能。\n\n**🔧 灵活扩展与配置**\n\n通过 Lua 插件系统可自定义扩展功能，支持 JSON 配置文件调整主题、缩进等参数，满足个性化需求.\n\n**快速上手**\n```bash\ngit clone https://github.com/Cyxuan0311/PNANA.git\ncd ./pnana\nchmod +x ./build.sh && ./build.sh\n\n./build/pnana/pnana  # 启动空白编辑器\npnana file.txt       # 打开指定文件（安装后可用）\n```\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"2543\" height=\"1302\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5747d6c6-3e0a-4057-bb38-db6625531a19\" />\n\n<img width=\"2519\" height=\"1287\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c020886-6840-49c0-9d83-caed7e73574f\" />\n",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3128",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3128"
+        }
+      ],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 6850:E888E:3697D77:B1C5D08:6A9E864D and timestamp 2026-09-07 09:39:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": [],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 6852:321296:355E8AB:AD62BE1:6A9E864D and timestamp 2026-09-07 09:39:25 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "GenFaceless AI",
+          "url": "https://www.producthunt.com/products/genfaceless-ai/launches/genfaceless-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Turn ideas into faceless TikTok & Reels, on autopilot",
+          "content": "GenFaceless AI is the ultimate faceless video generator. Create viral faceless videos, reels, and shorts automatically. No camera. No editing. No burnout. Perfect for TikTok, Instagram Reels, YouTube Shorts, and niche content pages. Built for people who want to grow consistently without being on camera.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068758",
+          "logo": "https://ph-files.imgix.net/f591a902-7906-4759-b400-4e8b0861c9a9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/64422121-7e3c-4a52-a402-4d60199243ef.png?auto=format",
+            "https://ph-files.imgix.net/3dbd6895-6d1f-4012-9036-e07e05e03a12.png?auto=format",
+            "https://ph-files.imgix.net/88c0602c-7bd6-45e6-8905-f076ff63e669.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/64422121-7e3c-4a52-a402-4d60199243ef.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Mendal",
+          "url": "https://www.producthunt.com/products/mendal/launches/mendal?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "AI Intent driven social media ",
+          "content": "AI-based social media feed filter. Focus on what matters.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1069262",
+          "logo": "https://ph-files.imgix.net/853bbda1-68ff-4846-9b62-7174ea85c71d.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/6c354f4f-e517-47cd-818a-3864ecd0757a.jpeg?auto=format",
+            "https://ph-files.imgix.net/2a0e5ae2-c52b-4af9-ac16-f07f8470fbcb.jpeg?auto=format",
+            "https://ph-files.imgix.net/a7a66923-d70a-4585-9486-2f9b6ce89f94.jpeg?auto=format",
+            "https://ph-files.imgix.net/2486f352-ebbf-4785-b0c3-0bff61cca9c1.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/6c354f4f-e517-47cd-818a-3864ecd0757a.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "viral hits.",
+          "url": "https://www.producthunt.com/products/viral-hits/launches/viral-hits?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Copy what's already going viral.",
+          "content": "The most powerful tool to turn viral patterns into your content. Analyze competitors, generate scripts, and create with confidence. Run Deep Analysis on up to 10 inspirations, track your top 3 weekly for continuous learning, generate unlimited scripts in YOUR voice, and refine in an AI-powered workplace. Scripts get smarter over time with AI learning.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068747",
+          "logo": "https://ph-files.imgix.net/22e2fc6d-e077-4a01-bffd-d577a632de60.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1e5534f4-612e-4d41-9f77-5f179ef5fa92.png?auto=format",
+            "https://ph-files.imgix.net/19457770-9157-4fcf-ac51-f457218cbf55.png?auto=format",
+            "https://ph-files.imgix.net/c0351bb2-9ea2-47a3-bac3-662243c5e161.png?auto=format",
+            "https://ph-files.imgix.net/afdcde59-7873-44a8-931d-e00cdd7e0dfb.png?auto=format",
+            "https://ph-files.imgix.net/9cafd3a2-c065-41d7-8595-dec7147b358b.png?auto=format",
+            "https://ph-files.imgix.net/d1f243d8-a9f6-446b-b825-30d102d85509.png?auto=format",
+            "https://ph-files.imgix.net/47cab874-4df7-40d9-b471-bcbce8dd7d15.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1e5534f4-612e-4d41-9f77-5f179ef5fa92.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Echo",
+          "url": "https://www.producthunt.com/products/echo-36/launches/echo-258e8cd5-0244-4fac-9bee-a175a2af39ad?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Where you're heard | therapy for everyone",
+          "content": "Affordable therapy companion available 24/7. Discuss anything, customize your experience, and receive support when you need it for just $9.99/month, instead of $200/session.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1065179",
+          "logo": "https://ph-files.imgix.net/7dabfb38-148c-4612-bf3d-1785d2e50d92.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/437f836b-65d6-46bd-b7d9-db501e4da3ab.gif?auto=format",
+            "https://ph-files.imgix.net/2185361b-b38c-4759-b0d5-d1e5f6bdd5c4.png?auto=format",
+            "https://ph-files.imgix.net/f8190fd2-3d3c-4e06-9d41-0c33df38d84b.jpeg?auto=format",
+            "https://ph-files.imgix.net/2529c5bf-1dff-4ec4-a618-204918e9655b.jpeg?auto=format",
+            "https://ph-files.imgix.net/b7f3138e-fe2c-4182-bfed-1792046bdc15.jpeg?auto=format",
+            "https://ph-files.imgix.net/91b299e0-6f9f-4bf4-8cef-4e469bd12042.jpeg?auto=format",
+            "https://ph-files.imgix.net/994beb18-467a-470c-830d-bbed18e5f7ff.jpeg?auto=format",
+            "https://ph-files.imgix.net/c71dcca7-cb84-48d4-83bb-a35c7b9fcff5.jpeg?auto=format",
+            "https://ph-files.imgix.net/4ef958e3-40b4-408e-9cbe-6f97683f3bbc.jpeg?auto=format",
+            "https://ph-files.imgix.net/7941e01b-180d-4e92-9c0a-d5544d4b6d85.jpeg?auto=format",
+            "https://ph-files.imgix.net/60e43740-6e0e-4669-b866-b3b530612d34.jpeg?auto=format",
+            "https://ph-files.imgix.net/2b0aa335-1357-4062-a1c0-885fb494d1db.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/437f836b-65d6-46bd-b7d9-db501e4da3ab.gif?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Pointalize",
+          "url": "https://www.producthunt.com/products/pointalize/launches/pointalize?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Optimize Every Point. Maximize Every Dollar.",
+          "content": "Compare credit cards, unlock rewards, and explore travel hacks, stories, and lifestyle perks to make every dollar and mile go further.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1069295",
+          "logo": "https://ph-files.imgix.net/2d9a879d-4912-4f61-9c57-c4b2c1ebb74f.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/fce9bb2a-9265-4796-bb55-cf848d422247.webp?auto=format",
+            "https://ph-files.imgix.net/e6948ce9-3a89-4756-aeb3-a66f52e3ad9c.webp?auto=format",
+            "https://ph-files.imgix.net/9b03b9a0-ada8-4498-8e8a-7d631bf30483.webp?auto=format",
+            "https://ph-files.imgix.net/27a61a4a-9d60-4cc8-9623-b60e2a2c7d6e.webp?auto=format",
+            "https://ph-files.imgix.net/0ed1d74f-1bb7-4ba4-91da-6ed6e47a7afa.webp?auto=format",
+            "https://ph-files.imgix.net/930729ba-1753-475f-9f1e-62fd902cb593.webp?auto=format",
+            "https://ph-files.imgix.net/68be1efc-4613-43b8-a7e5-db1c7db5df91.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/fce9bb2a-9265-4796-bb55-cf848d422247.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Privaro Peek",
+          "url": "https://www.producthunt.com/products/privaro-peek/launches/privaro-peek?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "See what actually fires before cookie consent",
+          "content": "Privaro Peek shows what actually fires on your website before cookie consent. Not configs. Not dashboards. Real browser behaviour. Find early-firing vendors, broken consent enforcement, and tracking leaks without DevTools. Built for agencies, marketers, developers, and privacy teams. Install. Scan. See the truth.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068936",
+          "logo": "https://ph-files.imgix.net/c44b3529-b79b-4520-98dc-b2339f3d953f.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c95c7021-eb73-4f5f-8a29-5f6ff9409083.png?auto=format",
+            "https://ph-files.imgix.net/d683d66d-fb34-4d1c-9cef-de7bb14eafd6.png?auto=format",
+            "https://ph-files.imgix.net/c9cfb231-8af2-4b91-b32d-15a9ad266c94.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c95c7021-eb73-4f5f-8a29-5f6ff9409083.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "roxy",
+          "url": "https://www.producthunt.com/products/roxy-2/launches/roxy-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Buy Verified Wise Accounts ",
+          "content": "Are you looking to simplify your international money transfers and manage your finances with ease? Buying a verified Wise account could be the game-changer you need. If you’re looking to send money internationally at low costs, consider opening a multi-currency account with Wise.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1058756",
+          "logo": "https://ph-files.imgix.net/cdb8e5fb-db4d-4ea3-861a-9db600a04474.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4f255f33-f5ff-4077-8d61-2f244f6975a9.jpeg?auto=format",
+            "https://ph-files.imgix.net/81bdf4b1-37b2-48ff-84e5-4a5cb11c79c5.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4f255f33-f5ff-4077-8d61-2f244f6975a9.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "NexPOS",
+          "url": "https://www.producthunt.com/products/nexpos/launches/nexpos?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Free cloud-based POS system for retail and restaurants",
+          "content": "NexPOS is a completely free, cloud-based point of sale system designed for retail stores and restaurants. Unlike other POS systems that charge monthly fees, NexPOS offers lifetime free access with comprehensive inventory management, sales tracking, and order management features. Perfect for small to medium businesses looking to streamline operations without breaking the bank.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068958",
+          "logo": "https://ph-files.imgix.net/2f0222bd-29dd-4876-8e08-3909e916d9b3.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b85be686-8bc4-4971-9532-e94c6c9f3ad6.png?auto=format",
+            "https://ph-files.imgix.net/f4dab132-16fd-4d99-9be3-1ac9f0707976.png?auto=format",
+            "https://ph-files.imgix.net/d96bf826-4c48-4f36-9547-3da2060d50da.png?auto=format",
+            "https://ph-files.imgix.net/cac50ae2-559d-4019-a2d8-59e39f15a008.png?auto=format",
+            "https://ph-files.imgix.net/779619f3-11eb-446c-a576-0cabc8dac29c.png?auto=format",
+            "https://ph-files.imgix.net/4755def2-a8d3-451c-9808-e69d3b88a031.png?auto=format",
+            "https://ph-files.imgix.net/7ab3213c-5f83-4880-9221-c8e3e9124f08.png?auto=format",
+            "https://ph-files.imgix.net/902839fc-0f7c-4d81-ba22-ffcce78ef747.png?auto=format",
+            "https://ph-files.imgix.net/d8c89ee9-c499-45b4-a6da-54a1a2414567.png?auto=format",
+            "https://ph-files.imgix.net/56248e12-b684-4df9-a051-84bcd992538c.png?auto=format",
+            "https://ph-files.imgix.net/6b250bf3-3722-40d8-9a4d-c10c80ac6a22.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b85be686-8bc4-4971-9532-e94c6c9f3ad6.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "AI-Native PM: Product Validation Toolkit",
+          "url": "https://www.producthunt.com/products/ai-native-pm-product-validation-toolkit/launches/ai-native-pm-product-validation-toolkit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Validate product idea before you write a single line of code",
+          "content": "Most founders don’t fail because they can’t build. They fail because they build the wrong thing. I created the AI-Native PM Product Validation Toolkit after working at fast-moving startups where speed mattered more than perfection. This toolkit helps you decide if an idea is worth building, validate demand early, ask the right questions across users, market, feasibility, and risk, and avoid wasting time on features nobody wants. Built for founders, PMs, and indie hackers.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1066278",
+          "logo": "https://ph-files.imgix.net/f082406c-8efb-4f60-a3e9-c4a22981c71e.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e53211a7-e916-471c-ad76-dc27bd3bc906.png?auto=format",
+            "https://ph-files.imgix.net/c6074a3e-bfe5-48cf-97c0-daaa9ef0e5a6.png?auto=format",
+            "https://ph-files.imgix.net/dc14a097-e702-4cb8-b544-972f28fac606.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e53211a7-e916-471c-ad76-dc27bd3bc906.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "CommitFrame - Smart supplier decisions",
+          "url": "https://www.producthunt.com/products/commitframe-smart-supplier-decisions/launches/commitframe-smart-supplier-decisions?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Turn supplier quotes into confident decisions",
+          "content": "CommitFrame helps teams choose the right supplier with confidence. Create structured RFQs or upload existing quotes, then compare suppliers side-by-side to see price, lead time, and risk trade-offs. Lock a clear decision record you can reuse, share, and justify later. Generate a PO PDF from the locked decision, send a supplier confirmation link, and track status through Sent → Confirmed → Shipped → Received.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1066324",
+          "logo": "https://ph-files.imgix.net/df608adc-e826-465e-ab5d-e1c3c20b06fe.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/266e3039-bf4c-4e2b-b261-7a32470b6d98.png?auto=format",
+            "https://ph-files.imgix.net/c31f1fa8-41f9-4ff5-acbc-035002ca33da.png?auto=format",
+            "https://ph-files.imgix.net/8ccbbd4f-163d-474c-abc6-71fe17c57fc9.png?auto=format",
+            "https://ph-files.imgix.net/7e7e06c2-844c-4347-a812-af5b5f263ccc.png?auto=format",
+            "https://ph-files.imgix.net/cdcdc620-f6df-4ca1-b638-2b0663e8a783.png?auto=format",
+            "https://ph-files.imgix.net/9b5a7cdd-0b7b-4b6c-8488-0cdce83e6a22.gif?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/266e3039-bf4c-4e2b-b261-7a32470b6d98.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "FluentCap",
+          "url": "https://www.producthunt.com/products/fluentcap/launches/fluentcap?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Real-time captions for any audio on your computer\t",
+          "content": "Live transcription and translation for any audio on your computer — movies, meetings, podcasts, anything. Most caption apps only work in browsers or specific apps. FluentCap works system-wide. BYOK model: Connect your own API key from Deepgram, Gladia, or AssemblyAI. Pay only for what you use (~$0.25/hour). Providers offer $50-200 in free credits. 100+ languages. Real-time translation. All transcripts stored locally. Free forever.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068242",
+          "logo": "https://ph-files.imgix.net/fc681d2d-6310-4fae-8361-bbbd98002465.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/38cf5f4c-5c6e-47d3-b726-04b785886a46.jpeg?auto=format",
+            "https://ph-files.imgix.net/01d4b369-48d1-4cef-b934-f7a88bb6542d.jpeg?auto=format",
+            "https://ph-files.imgix.net/22bc2d99-77c9-4dec-9d79-3b31054bf59a.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/38cf5f4c-5c6e-47d3-b726-04b785886a46.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Mrrp",
+          "url": "https://www.producthunt.com/products/mrrp/launches/mrrp?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Know exactly what your pet needs.",
+          "content": "Mrrp is the #1 AI-powered pet care app. Track your pet's health, get personalized diet recommendations, capture precious memories, and keep vet records organized. Mrrp works for dogs, cats, birds, and more. Get Mrrp today!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068787",
+          "logo": "https://ph-files.imgix.net/f95a071d-7dc4-4044-8259-865c21461a76.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8ea42d20-bfe7-4459-9d0a-613303c27c2f.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8ea42d20-bfe7-4459-9d0a-613303c27c2f.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "BotMarketingPro",
+          "url": "https://www.producthunt.com/products/botmarketingpro-telegram-bot-with-crm/launches/botmarketingpro?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "BotMarketingPro keeps your customers coming back",
+          "content": "A service for small businesses that turns one-time inquiries into repeat customers. BotMarketing.pro gives you your own Telegram bot and mini-site where you can accept orders, manage your customer database, and send automated messages and offers. A loyalty program with cashback for purchases and referrals helps gently increase your average order value and repeat visits.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068795",
+          "logo": "https://ph-files.imgix.net/4b3b24f7-f06b-446e-8f1e-88090985dc75.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8713c5d0-d614-424d-9e9c-5bbe3c33123e.jpeg?auto=format",
+            "https://ph-files.imgix.net/305946cd-ecfc-4bab-88c9-90ad302a2272.jpeg?auto=format",
+            "https://ph-files.imgix.net/6956b71b-a6ad-4d3f-b8ab-2509b9d95882.png?auto=format",
+            "https://ph-files.imgix.net/6f299c0e-a92e-4e8b-ba4b-c2b1ee0d5582.png?auto=format",
+            "https://ph-files.imgix.net/b338f633-7997-49cd-9e74-3dc9c79e2960.png?auto=format",
+            "https://ph-files.imgix.net/e3b5c256-63c3-4219-9c0c-1aef58491f53.png?auto=format",
+            "https://ph-files.imgix.net/dae43daa-ecef-47d8-a387-bb8ec35da126.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8713c5d0-d614-424d-9e9c-5bbe3c33123e.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "On-Demand Snow Removal App Development ",
+          "url": "https://www.producthunt.com/products/on-demand-snow-removal-app-development/launches/on-demand-snow-removal-app-development?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "On-Demand Snow Removal App Development for  Winter Services",
+          "content": "Elevate your winter services with our on-demand snow removal app development. Streamline operations and enhance customer satisfaction effortlessly.#business #computer #technology #snowremovalapp #ondemandsnowremovalapp #snowremovalappdevelopment #snowremovalapplikegojek #gojekclonesnowremovalapp #multiserviceapplikegojek #winterserviceapp #snowplowingapp #ondemandserviceappdevelopment",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068837",
+          "logo": "https://ph-files.imgix.net/8e50c5b4-17ab-44a6-877f-4be381e4a058.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/05909ed0-d80d-45e6-a354-f20a429100ff.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/05909ed0-d80d-45e6-a354-f20a429100ff.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Google Photos to Video Slideshow",
+          "url": "https://www.producthunt.com/products/google-photos-to-video-slideshow/launches/google-photos-to-video-slideshow?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Transform your Google Photos albums into stunning video",
+          "content": "With Google Photos Album to Video Slideshow, you can create professional-looking videos from your photo memories in just a few clicks. This powerful Chrome/Edge extension extracts photos from any Google Photos album and transforms them into dynamic videos with cinematic Ken Burns effects, smooth transitions, and background music.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068849",
+          "logo": "https://ph-files.imgix.net/7e1aefe5-0b8c-4573-ac87-c3d43ca6527b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/fd7a3625-5d1f-4560-9601-27b1851c2964.jpeg?auto=format",
+            "https://ph-files.imgix.net/43604719-2f38-4ff7-b8c1-a9bc234c66b5.png?auto=format",
+            "https://ph-files.imgix.net/e47b4cc1-8fd4-480a-9bce-6c3ae89ec809.png?auto=format",
+            "https://ph-files.imgix.net/47d76c9a-b5ec-4dca-99c2-179359339f29.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/fd7a3625-5d1f-4560-9601-27b1851c2964.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ArcaText",
+          "url": "https://www.producthunt.com/products/arcatext/launches/arcatext?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Professional AI Voice Notes: Transcribe, Analyze & Chat",
+          "content": "ArcaText turns voice notes into structured data with AI. It features transcription with Speaker Diarization, AI summaries, action items, and sentiment analysis. Chat with your notes via GPT-4o-mini to find info instantly. Native iOS integration includes Dynamic Island and Live Activities for seamless recording. Supports 21 languages and PDF/TXT exports. Perfect for meetings and lectures.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068855",
+          "logo": "https://ph-files.imgix.net/0cd731bd-1235-4cf1-a8f9-aae8ee2f0e49.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e260ab5c-d6b5-4eeb-8899-e411852483a3.png?auto=format",
+            "https://ph-files.imgix.net/994b36b6-5cda-46e9-b624-164974385c96.png?auto=format",
+            "https://ph-files.imgix.net/a7f156a7-8926-4bc9-9537-1d97b51c0a8e.png?auto=format",
+            "https://ph-files.imgix.net/8e5e426a-edc6-4191-b3ee-38411a75c01f.png?auto=format",
+            "https://ph-files.imgix.net/9c7ddbb5-0680-4607-a215-3ff54ae030b9.png?auto=format",
+            "https://ph-files.imgix.net/a4008266-42ef-4626-898a-18b378465101.png?auto=format",
+            "https://ph-files.imgix.net/f0a40be6-fb4b-4109-98ab-1ca16db47819.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e260ab5c-d6b5-4eeb-8899-e411852483a3.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "SIMULATE IT NOW",
+          "url": "https://www.producthunt.com/products/simulate-it-now/launches/simulate-it-now?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "The Universe, simulated",
+          "content": "Interactive simulation laboratory for exploring complex systems, scientific models, and behavioral dynamics through visualization.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068873",
+          "logo": "https://ph-files.imgix.net/4fd5be8f-8ec2-4cc4-8f1c-c4a0655560cb.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/208ffb0d-58c0-4296-b349-5a36aefa2220.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/208ffb0d-58c0-4296-b349-5a36aefa2220.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "viral.expert",
+          "url": "https://www.producthunt.com/products/viral-expert/launches/viral-expert?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "A/B test your ideas before you hit publish",
+          "content": "AI-powered content made content easy to create — but harder to choose. viral.expert helps creators and teams decide what’s worth publishing before it reaches their audience. Instead of generating posts, we compare drafts, analyze platform signals, and highlight which idea has the stronger chance to land — and when it’s better not to post at all. Think A/B testing for content decisions, paid per experiment. No subscriptions analysis that tells you exactly whether to post—and why.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068901",
+          "logo": "https://ph-files.imgix.net/e88e1e10-4307-47e8-963f-22afa3774352.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8ba25ac7-e133-4275-abcf-ceb7b8c7fc69.png?auto=format",
+            "https://ph-files.imgix.net/2504f908-c6b7-41c4-aa25-58e8aa32532a.png?auto=format",
+            "https://ph-files.imgix.net/0675748b-1860-4a3b-8c88-bad464cc551a.png?auto=format",
+            "https://ph-files.imgix.net/d61473d1-4cfa-4b41-8510-f0440135737d.png?auto=format",
+            "https://ph-files.imgix.net/2fac6a88-5dfb-43b9-9cc1-176ec40c347d.gif?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8ba25ac7-e133-4275-abcf-ceb7b8c7fc69.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Quizbuild",
+          "url": "https://www.producthunt.com/products/quizbuild/launches/quizbuild?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Online question bank & exam management platform",
+          "content": "Quizbuild.com is a streamlined platform for digitizing question banks and creating online exams. Key Features: Smart Question Bank: Easily store and categorize questions by topic or difficulty. Fast Exam Builder: Transform raw questions into professional quizzes in minutes. Minimalist UI: Focus on content with a clean, distraction-free interface. Cloud Access: Manage your data anywhere, on any device. Perfect for educators and learners to organize knowledge scientifically.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068933",
+          "logo": "https://ph-files.imgix.net/c743c251-97f3-4836-8e30-07d09f9cbae7.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/568780d2-dc96-4cee-a6ee-0f3c5e2f0f08.png?auto=format",
+            "https://ph-files.imgix.net/e0bd624d-ce0f-4beb-be37-7f943912251c.png?auto=format",
+            "https://ph-files.imgix.net/6098f5bf-b27a-48da-ae92-c10338454d65.png?auto=format",
+            "https://ph-files.imgix.net/2216d5d7-3384-46e6-a379-967ade37df56.png?auto=format",
+            "https://ph-files.imgix.net/07ab3e0c-eccf-4db9-820e-47b3a236fd10.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/568780d2-dc96-4cee-a6ee-0f3c5e2f0f08.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Foodix - Easy Recipes",
+          "url": "https://www.producthunt.com/products/foodix-easy-recipes/launches/foodix-easy-recipes?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-28T08:01:00Z",
+          "summary": "Save recipes from TikTok, Instagram & the web",
+          "content": "Automatic detection: Share a link, and Foodix extracts the recipe for you. Editable ingredients & steps: Adjust quantities, swap items, or fix instructions before cooking. Video & article support: Whether it’s a YouTube tutorial or a blog post, Foodix knows how to handle it. Smart organization: Categorize by type, cooking time, difficulty, or your own tags.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1068978",
+          "logo": "https://ph-files.imgix.net/d3443876-a152-445d-9c6e-72729f2bac3e.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/569d80b1-557a-4da6-9ffd-08fa8f7bb1a2.webp?auto=format",
+            "https://ph-files.imgix.net/04c86823-cfc9-4eab-b941-1269dd86e52b.webp?auto=format",
+            "https://ph-files.imgix.net/4fafe71b-dad5-4e06-83a6-6f08b3f22b74.webp?auto=format",
+            "https://ph-files.imgix.net/f0824473-9e92-4ad5-9ff4-d5386ca53596.webp?auto=format",
+            "https://ph-files.imgix.net/371d40c3-a599-4b36-9d4e-883ff3027116.webp?auto=format",
+            "https://ph-files.imgix.net/cfebc6dc-a0f7-4f7a-86f1-c6dc084efae1.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/569d80b1-557a-4da6-9ffd-08fa8f7bb1a2.webp?auto=format"
+        }
+      ]
+    }
+  ]
+}

@@ -1,1 +1,901 @@
-{"fetchedAt":"2026-09-07T09:19:50.686Z","date":"2026-05-01","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源自荐】LynxDB - 单二进制日志分析引擎，读时模式，兼容 Splunk SPL","url":"https://github.com/lynxbase/lynxdb","author":"OrlovEvgeny","authorUrl":"https://github.com/OrlovEvgeny","publishedAt":"2026-04-30T23:25:56Z","summary":"开源地址： LynxDB 是用 Go 写的日志分析引擎，整个项目编译为一个二进制文件，无外部依赖，curl 一行安装。 为什么再造一个？ ELK / Splunk 类方案部署复杂、资源开销大（Elasticsearch 空闲约 1 GB+，Splunk 约 12 GB），自建小规模可观测性栈时往往显得过重。LynxDB 空闲内存约 50 MB，没有 JVM、没有外部存储、没有 sidecar。 核心是读时模式（schemaonread）：日志原样写入，结构在查询时通过 parse json、parse combined 等命令按需提取。日志格式变化时不需要重建索引或迁移历史数据。 查询语言 Lynx Flow 是 SPL 风格的管道式语法，命令之间用 | 串联： ​ from nginx | parse combined(raw) | status = 500 | group by uri compute count() as hits | order by hits desc | take 10 ​ 同时兼容 Splunk SPL2，已有的 SPL 查询可直接迁移。 也支持纯管道模式，不启动服务直接当 grep / awk 用： ​ kubectl logs deploy/api | lynxdb query ' | parse json(raw) | group by status compute count()' ​ 其他特性： 列式存储（FST 倒排索引 + 布隆过滤器 + LZ4 压缩） 物化视图（自动查询改写，热点查询提速可达 400x） 兼容 Elasticsearch bulk、OpenTelemetry OTLP、Splunk HEC 协议接入 可选集群模式 + S3 共享存储 项目目前还在早期阶段（v0.0.3），暂不建议在生产环境使用。适合想要轻量可观测性方案、不希望引入企业级系统运维负担的场景。欢迎反馈和 issue。 开源协议：Apache 2.0","content":"开源地址：https://github.com/lynxbase/lynxdb\n\nLynxDB 是用 Go 写的日志分析引擎，整个项目编译为一个二进制文件，无外部依赖，`curl` 一行安装。\n\n**为什么再造一个？** ELK / Splunk 类方案部署复杂、资源开销大（Elasticsearch 空闲约 1 GB+，Splunk 约 12 GB），自建小规模可观测性栈时往往显得过重。LynxDB 空闲内存约 50 MB，没有 JVM、没有外部存储、没有 sidecar。\n\n**核心是读时模式（schema-on-read）**：日志原样写入，结构在查询时通过 `parse json`、`parse combined` 等命令按需提取。日志格式变化时不需要重建索引或迁移历史数据。\n\n查询语言 Lynx Flow 是 SPL 风格的管道式语法，命令之间用 `|` 串联：\n\n​```\nfrom nginx\n| parse combined(_raw)\n| status >= 500\n| group by uri compute count() as hits\n| order by hits desc\n| take 10\n​```\n\n同时兼容 Splunk SPL2，已有的 SPL 查询可直接迁移。\n\n**也支持纯管道模式**，不启动服务直接当 grep / awk 用：\n\n​```\nkubectl logs deploy/api | lynxdb query '\n  | parse json(_raw)\n  | group by status compute count()'\n​```\n\n其他特性：\n- 列式存储（FST 倒排索引 + 布隆过滤器 + LZ4 压缩）\n- 物化视图（自动查询改写，热点查询提速可达 400x）\n- 兼容 Elasticsearch `_bulk`、OpenTelemetry OTLP、Splunk HEC 协议接入\n- 可选集群模式 + S3 共享存储\n\n项目目前还在早期阶段（v0.0.3），暂不建议在生产环境使用。适合想要轻量可观测性方案、不希望引入企业级系统运维负担的场景。欢迎反馈和 issue。\n\n开源协议：Apache 2.0","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9821","issueUrl":"https://github.com/ruanyf/weekly/issues/9821"},{"sourceId":"weekly-issues","title":"[工具自荐] RunAppHot - - AppScreenshot生成和 App 图标裁剪工具","url":"https://app.runapphot.com/","author":"tqrj","authorUrl":"https://github.com/tqrj","publishedAt":"2026-05-01T04:54:24Z","summary":"RunAppHot 是一款面向 App 开发者的应用商店素材生成工具，帮助开发者快速制作 iOS App Store 和 Google Play 所需的应用截图、宣传图和 App 图标资源。 很多独立开发者在上架应用时，主要精力都花在产品开发上，但最后提交商店时，还要处理不同平台的截图尺寸、多语言版本、设备框展示、宣传文案排版，以及一堆 App Icon 尺寸。RunAppHot 希望把这些重复工作集中到一个在线工具里完成。 网站 主要功能 应用商店截图编辑：支持在线创建截图项目，上传应用截图后进行排版和编辑 多平台支持：支持 iOS / App Store、Android / Google Play，也可以创建同时覆盖两个平台的项目 多语言截图：同一个项目内可以添加不同语言版本，方便准备海外应用商店素材 设备框与画布编辑：支持设备框、背景、文字、位置、颜色、字号、行高、字距等细节调整 项目化管理：可以保存和管理多个截图项目，后续继续修改和导出 App Icon Generator：上传 1024×1024 图标后，批量生成 iPhone、iPad、watchOS、macOS、Android 所需尺寸 使用场景 独立开发者提交 App Store / Google Play 审核素材 出海应用准备多语言商店截图 产品发布前快速制作宣传截图 小团队没有专职设计师时，快速生成规范的应用商店素材 一次性生成多平台 App Icon 尺寸，减少手工裁剪和命名 产品特色 浏览器直接使用，不需要安装设计软件 面向应用上架流程设计，重点解决截图和图标这类“提交前最后一公里”的问题 同时覆盖截图设计和图标尺寸生成，减少在多个工具之间切换 支持细粒度排版调整，适合既想快速生成、又希望保持一定设计质量的开发者","content":"RunAppHot 是一款面向 App 开发者的应用商店素材生成工具，帮助开发者快速制作 iOS App Store 和 Google Play 所需的应用截图、宣传图和 App 图标资源。\n\n很多独立开发者在上架应用时，主要精力都花在产品开发上，但最后提交商店时，还要处理不同平台的截图尺寸、多语言版本、设备框展示、宣传文案排版，以及一堆 App Icon 尺寸。RunAppHot 希望把这些重复工作集中到一个在线工具里完成。\n\n网站\nhttps://app.runapphot.com/\n\n主要功能\n应用商店截图编辑：支持在线创建截图项目，上传应用截图后进行排版和编辑\n多平台支持：支持 iOS / App Store、Android / Google Play，也可以创建同时覆盖两个平台的项目\n多语言截图：同一个项目内可以添加不同语言版本，方便准备海外应用商店素材\n设备框与画布编辑：支持设备框、背景、文字、位置、颜色、字号、行高、字距等细节调整\n项目化管理：可以保存和管理多个截图项目，后续继续修改和导出\nApp Icon Generator：上传 1024×1024 图标后，批量生成 iPhone、iPad、watchOS、macOS、Android 所需尺寸\n\n使用场景\n独立开发者提交 App Store / Google Play 审核素材\n出海应用准备多语言商店截图\n产品发布前快速制作宣传截图\n小团队没有专职设计师时，快速生成规范的应用商店素材\n一次性生成多平台 App Icon 尺寸，减少手工裁剪和命名\n\n产品特色\n浏览器直接使用，不需要安装设计软件\n面向应用上架流程设计，重点解决截图和图标这类“提交前最后一公里”的问题\n同时覆盖截图设计和图标尺寸生成，减少在多个工具之间切换\n支持细粒度排版调整，适合既想快速生成、又希望保持一定设计质量的开发者","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9822","issueUrl":"https://github.com/ruanyf/weekly/issues/9822"},{"sourceId":"weekly-issues","title":"AnySave：网页端视频下载工具，支持 200+ 平台","url":"https://any-save.com","author":"qinjxhub","authorUrl":"https://github.com/qinjxhub","publishedAt":"2026-05-01T08:36:14Z","summary":"官网： 简介： AnySave 是一个网页端视频下载工具，粘贴公开视频链接即可开始保存，支持 TikTok、抖音、YouTube、Instagram、Facebook、X、B站、小红书等 200+ 平台。 特点： 网页端直接使用，无需安装 支持 200+ 平台 支持主流平台公开视频链接解析与保存 如果合适，欢迎收录。","content":"官网：https://any-save.com\n\n简介：\nAnySave 是一个网页端视频下载工具，粘贴公开视频链接即可开始保存，支持 TikTok、抖音、YouTube、Instagram、Facebook、X、B站、小红书等 200+ 平台。\n\n特点：\n- 网页端直接使用，无需安装\n- 支持 200+ 平台\n- 支持主流平台公开视频链接解析与保存\n\n如果合适，欢迎收录。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9823","issueUrl":"https://github.com/ruanyf/weekly/issues/9823"},{"sourceId":"weekly-issues","title":"【网站自荐】Poster.sh - AI 生成可编辑海报 + 二维码，做线下扫码推广更顺手","url":"https://poster.sh/zh","author":"aistudy11","authorUrl":"https://github.com/aistudy11","publishedAt":"2026-05-01T13:57:41Z","summary":"一个 AI 海报生成 + 编辑工具，主打\"从文字到可推广物料\"的完整工作流。 Live: 和其他 AI 生图站点的核心区别： 内置可视化编辑器：每张生成的海报都能在浏览器里继续编辑——改文字、换图、调布局，再导出 PNG。不用切到 Figma / Canva 二次加工。 海报上能直接生成二维码：编辑器自带二维码工具，支持自定义颜色、6 种点样式（rounded / dots / classy 等），扫码跳转到任意 URL。做活动海报、店铺宣传、公众号引流时省一步。（仅桌面端） 128 种视觉风格：从液态金属、暗色主题、构成主义、孟菲斯，到双重曝光、电影感、雕刻版画……每种都有真实样图可预览，按\"商业营销 / 活动庆典 / 社交媒体 / 创意艺术 / 娱乐文化 / 教育信息\"六大场景分类。 底层模型用 Nano Banana 2（Gemini 3.1 Flash Image Preview），支持 14 种比例：1:1 / 2:3 / 9:16 / 16:9 / 4:5 等社媒尺寸，以及 21:9 / 1:8 / 8:1 等长图比例。 智能提示词优化器：随手写的中文一句话会被改写成模型友好的英文长prompt，新手也能出效果。 注册送 5 积分（够生成 2–3 张试一下），无需信用卡。生成的海报享有商业使用权。 界面支持中 / 英 / 日 / 西四种语言。 <img width=\"2880\" height=\"1800\" alt=\"Image\" src=\" / <img width=\"2880\" height=\"1800\" alt=\"Image\" src=\" / <img width=\"2880\" height=\"1800\" alt=\"Image\" src=\" /","content":"一个 AI 海报生成 + 编辑工具，主打\"从文字到可推广物料\"的完整工作流。\n                                                                                        \n  Live: https://poster.sh/zh\n                                                                                        \n  和其他 AI 生图站点的核心区别：                                                        \n   \n  - **内置可视化编辑器**：每张生成的海报都能在浏览器里继续编辑——改文字、换图、调布局，再导出 PNG。不用切到 Figma / Canva 二次加工。                     \n  - **海报上能直接生成二维码**：编辑器自带二维码工具，支持自定义颜色、6 种点样式（rounded / dots / classy 等），扫码跳转到任意                             URL。做活动海报、店铺宣传、公众号引流时省一步。（仅桌面端）\n  - **128 种视觉风格**：从液态金属、暗色主题、构成主义、孟菲斯，到双重曝光、电影感、雕刻版画……每种都有真实样图可预览，按\"商业营销 / 活动庆典 / 社交媒体 / 创意艺术 / 娱乐文化 / 教育信息\"六大场景分类。\n  - **底层模型用 Nano Banana 2（Gemini 3.1 Flash Image Preview）**，支持 14 种比例：1:1 / 2:3 / 9:16 / 16:9 / 4:5 等社媒尺寸，以及 21:9 / 1:8 / 8:1 等长图比例。              \n  - **智能提示词优化器**：随手写的中文一句话会被改写成模型友好的英文长prompt，新手也能出效果。                                                              \n                                                                  \n  注册送 5 积分（够生成 2–3 张试一下），无需信用卡。生成的海报享有商业使用权。          \n                                                                  \n  界面支持中 / 英 / 日 / 西四种语言。\n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bd8c30a7-b9b2-4900-a2ce-2f20d94bac40\" />\n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b35e0608-821f-44db-993b-03bc32385bb6\" />\n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b886a120-977c-49b0-a3b1-a9e8d8fe1009\" />","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"9824","issueUrl":"https://github.com/ruanyf/weekly/issues/9824"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[{"sourceId":"weekly-issue","title":"OpenCode Mobile","url":"https://github.com/learning233/opencode_mobile","author":"learning233","authorUrl":"https://github.com/learning233","publishedAt":"2026-05-01T00:00:00+08:00","summary":"OpenCode 的非官方安卓客户端。","content":"OpenCode 的非官方安卓客户端。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-OpenCode Mobile-https://github.com/learning233/opencode_mobile","relatedIssue":"https://github.com/ruanyf/weekly/issues/11381","issue":"411"},{"sourceId":"weekly-issue","title":"Blob Downloader","url":"https://github.com/aeroxy/blob-downloader","author":"aeroxy","authorUrl":"https://github.com/aeroxy","publishedAt":"2026-05-01T00:00:00+08:00","summary":"Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。","content":"Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Blob Downloader-https://github.com/aeroxy/blob-downloader","relatedIssue":"https://github.com/ruanyf/weekly/issues/11392","issue":"411"},{"sourceId":"weekly-issue","title":"zlib","url":"https://github.com/heartleo/zlib","author":"heartleo","authorUrl":"https://github.com/heartleo","publishedAt":"2026-05-01T00:00:00+08:00","summary":"Go 语言编写的 Z-Library 图书馆命令行工具。","content":"Go 语言编写的 Z-Library 图书馆命令行工具。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-zlib-https://github.com/heartleo/zlib","relatedIssue":"https://github.com/ruanyf/weekly/issues/11405","issue":"411"},{"sourceId":"weekly-issue","title":"ATBClone","url":"https://github.com/aitobox/ATBClone","author":"aitoboxinc","authorUrl":"https://github.com/aitoboxinc","publishedAt":"2026-05-01T00:00:00+08:00","summary":"开源的 macOS 应用，允许应用程序多开，并进行分身管理。","content":"开源的 macOS 应用，允许应用程序多开，并进行分身管理。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-ATBClone-https://github.com/aitobox/ATBClone","relatedIssue":"https://github.com/ruanyf/weekly/issues/11432","issue":"411"},{"sourceId":"weekly-issue","title":"Orange Cloud","url":"https://github.com/chen2he/orange-cloud","author":"chen2he","authorUrl":"https://github.com/chen2he","publishedAt":"2026-05-01T00:00:00+08:00","summary":"开源的 Cloudflare 的 iOS 客户端。","content":"开源的 Cloudflare 的 iOS 客户端。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Orange Cloud-https://github.com/chen2he/orange-cloud","relatedIssue":"https://github.com/ruanyf/weekly/issues/11428","issue":"411"},{"sourceId":"weekly-issue","title":"Apolu","url":"https://apolu.app/zh-Hans","author":"chen2he","authorUrl":"https://github.com/chen2he","publishedAt":"2026-05-01T00:00:00+08:00","summary":"一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。","content":"一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Apolu-https://apolu.app/zh-Hans","relatedIssue":"https://github.com/ruanyf/weekly/issues/11429","issue":"411"},{"sourceId":"weekly-issue","title":"DanKS","url":"https://github.com/Calix-L/DanKS","author":"Calix-L","authorUrl":"https://github.com/Calix-L","publishedAt":"2026-05-01T00:00:00+08:00","summary":"金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。","content":"金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-DanKS-https://github.com/Calix-L/DanKS","relatedIssue":"https://github.com/ruanyf/weekly/issues/11422","issue":"411"},{"sourceId":"weekly-issue","title":"video-ai-talking","url":"https://github.com/yizhi-chengzi/video-ai-talking","author":"yizhi-chengzi","authorUrl":"https://github.com/yizhi-chengzi","publishedAt":"2026-05-01T00:00:00+08:00","summary":"一个开源 Web 应用，输入文案，生成真人口播视频。","content":"一个开源 Web 应用，输入文案，生成真人口播视频。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-video-ai-talking-https://github.com/yizhi-chengzi/video-ai-talking","relatedIssue":"https://github.com/ruanyf/weekly/issues/11449","issue":"411"},{"sourceId":"weekly-issue","title":"Git Agent","url":"https://github.com/adoin/git-Agent","author":"adoin","authorUrl":"https://github.com/adoin","publishedAt":"2026-05-01T00:00:00+08:00","summary":"开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。","content":"开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Git Agent-https://github.com/adoin/git-Agent","relatedIssue":"https://github.com/ruanyf/weekly/issues/11464","issue":"411"},{"sourceId":"weekly-issue","title":"Subtitle Scout","url":"https://github.com/fancydirty/subtitle-scout","author":"fancydirty","authorUrl":"https://github.com/fancydirty","publishedAt":"2026-05-01T00:00:00+08:00","summary":"一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。","content":"一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Subtitle Scout-https://github.com/fancydirty/subtitle-scout","relatedIssue":"https://github.com/ruanyf/weekly/issues/11468","issue":"411"},{"sourceId":"weekly-issue","title":"Ad Astra","url":"https://github.com/gunerguner/AdAstra","author":"gunerguner","authorUrl":"https://github.com/gunerguner","publishedAt":"2026-05-01T00:00:00+08:00","summary":"可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。","content":"可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-Ad Astra-https://github.com/gunerguner/AdAstra","relatedIssue":"https://github.com/ruanyf/weekly/issues/11360","issue":"411"},{"sourceId":"weekly-issue","title":"3D 钢琴","url":"https://autopiano.cn/3d","author":"WarpPrism","authorUrl":"https://github.com/WarpPrism","publishedAt":"2026-05-01T00:00:00+08:00","summary":"在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。","content":"在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-3D 钢琴-https://autopiano.cn/3d","relatedIssue":"https://github.com/ruanyf/weekly/issues/11431","issue":"411"},{"sourceId":"weekly-issue","title":"ScriptSpool","url":"https://scriptspool.pixzens.com/zh/editor","author":"liyuouyu","authorUrl":"https://github.com/liyuouyu","publishedAt":"2026-05-01T00:00:00+08:00","summary":"这个网站将一段代码的输入变成逐键输入的动画。","content":"这个网站将一段代码的输入变成逐键输入的动画。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-ScriptSpool-https://scriptspool.pixzens.com/zh/editor","relatedIssue":"https://github.com/ruanyf/weekly/issues/11433","issue":"411"},{"sourceId":"weekly-issue","title":"卫生间建模","url":"https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom","author":"","authorUrl":"","publishedAt":"2026-05-01T00:00:00+08:00","summary":"这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。","content":"这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-卫生间建模-https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom","relatedIssue":null,"issue":"411"}]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Royal Card Blast!","url":"https://www.producthunt.com/products/royal-card-blast/launches/royal-card-blast?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"I’ve been working on a puzzle game called Royal Card Blast","content":"Hi everyone! I’ve been working on a puzzle game called Royal Card Blast that aims to be the perfect \"brain-training\" companion. I noticed most card games feel too slow, while blast games can be too chaotic, so I merged them. The Twist: It uses unique card mechanics (think Solitaire meets modern blast puzzles).","metrics":{},"tags":["producthunt","new"],"externalId":"1136193","logo":"https://ph-files.imgix.net/279dc01a-af91-42ec-8d65-17614feb4890.png?auto=format","images":["https://ph-files.imgix.net/1486161f-ffdc-4d3e-9681-d70798adf143.png?auto=format","https://ph-files.imgix.net/216bf6be-7168-4882-8013-30cbc4118d54.png?auto=format","https://ph-files.imgix.net/8a10d2dc-02ae-4e1b-a07a-cd326a4590e3.png?auto=format"],"image":"https://ph-files.imgix.net/1486161f-ffdc-4d3e-9681-d70798adf143.png?auto=format"},{"sourceId":"producthunt","title":"Formfuel | Contact Form AI","url":"https://www.producthunt.com/products/formfuel-ai-power-your-contact-forms/launches/formfuel-contact-form-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Improve Customer Leads Before They Hit Send","content":"AI-Power Your Contact Forms | Formfuel transforms your existing contact forms into intelligent experiences that help customers articulate what they need. You get richer, clearer enquiries leading to faster responses, better qualification, and lower costs.","metrics":{},"tags":["producthunt","new"],"externalId":"1136083","logo":"https://ph-files.imgix.net/50d5e5bf-27a9-4d8f-91ad-700898c4da49.png?auto=format","images":["https://ph-files.imgix.net/4c19ed53-7212-4d0a-9d6a-de00b2270b3e.png?auto=format","https://ph-files.imgix.net/c943aa36-9cca-4d91-9301-53ff2905fc7d.gif?auto=format"],"image":"https://ph-files.imgix.net/4c19ed53-7212-4d0a-9d6a-de00b2270b3e.png?auto=format"},{"sourceId":"producthunt","title":"Clawke","url":"https://www.producthunt.com/products/clawke/launches/clawke?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Native AI agent workspace across mobile and desktop","content":"Clawke is an open-source AI agent workspace with native support for OpenClaw, Hermes, and Nanobot. Because agents are supported natively, Clawke is more specialized for managing AI agents than a regular chat or IM app. It supports iOS, Android, macOS, Windows, and Linux.","metrics":{},"tags":["producthunt","new"],"externalId":"1135608","logo":"https://ph-files.imgix.net/85e91c2e-3cae-4c0a-a518-866867994726.png?auto=format","images":["https://ph-files.imgix.net/830a0537-7ebe-4ec5-9710-70e5b954bb72.png?auto=format"],"image":"https://ph-files.imgix.net/830a0537-7ebe-4ec5-9710-70e5b954bb72.png?auto=format"},{"sourceId":"producthunt","title":"Scam Number Checker","url":"https://www.producthunt.com/products/scam-number-checker/launches/scam-number-checker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Free phone scam database — verify any number in seconds","content":"Scam Number Checker is a free lookup tool to instantly verify if a phone number has been reported as a scam. Our database combines 74,000+ complaints from the FTC's Do Not Call Registry with real-time community submissions across 63,000+ unique numbers. Search any number → see verdict, scam type, report count, and area code patterns. No signup. No paywall. Just answers. Built to protect families — especially seniors — from the $40B/year phone scam epidemic.","metrics":{},"tags":["producthunt","new"],"externalId":"1136108","logo":"https://ph-files.imgix.net/345235c8-3234-4e8c-a26e-21f22862f721.png?auto=format","images":["https://ph-files.imgix.net/6247ee86-7093-491d-b921-e0209faae766.png?auto=format","https://ph-files.imgix.net/f415666d-7c3e-4d2f-ba75-afcd365a2028.png?auto=format","https://ph-files.imgix.net/d3595036-67e7-4c8b-a318-59522ecea8dd.png?auto=format"],"image":"https://ph-files.imgix.net/6247ee86-7093-491d-b921-e0209faae766.png?auto=format"},{"sourceId":"producthunt","title":"Imaradesk Ticketing System","url":"https://www.producthunt.com/products/imaradesk/launches/imaradesk-ticketing-system?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"All-in-one helpdesk for modern teams.","content":"ImaraDesk - Modern help desk and customer support platform. Streamline ticket management, automate workflows, and deliver exceptional customer service with our powerful, easy-to-use support software.","metrics":{},"tags":["producthunt","new"],"externalId":"1135981","logo":"https://ph-files.imgix.net/cac34703-3b8a-40a2-ac60-9ba1d5def47b.png?auto=format","images":["https://ph-files.imgix.net/245899fd-4a19-4536-9a0b-02788b11f774.png?auto=format","https://ph-files.imgix.net/3413460b-be9a-4edc-af4d-5d906830fb25.png?auto=format","https://ph-files.imgix.net/f62fd2e3-563b-47ad-b594-0a9c9a5eac10.png?auto=format","https://ph-files.imgix.net/4ca9f6e3-22b1-4d68-8fa7-3faf6d3e8b70.png?auto=format","https://ph-files.imgix.net/70e82b91-2541-4769-8500-cbe451157ae4.png?auto=format"],"image":"https://ph-files.imgix.net/245899fd-4a19-4536-9a0b-02788b11f774.png?auto=format"},{"sourceId":"producthunt","title":"Money Hive — Personal Finance Tracker","url":"https://www.producthunt.com/products/money-hive-personal-finance-tracker/launches/money-hive-personal-finance-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Private finance tracker with on-device AI","content":"Money Hive keeps your financial data on your device — no cloud servers, no selling your data. On-device AI categorizes transactions automatically, even offline. Encrypted backup to your own iCloud or Google Drive. Biometric lock, home screen widgets, budgets, recurring expenses, and savings goals. Your money, your phone, nobody else.","metrics":{},"tags":["producthunt","new"],"externalId":"1135670","logo":"https://ph-files.imgix.net/df3f690b-f8f7-4463-bdce-0a2ef24aa032.png?auto=format","images":["https://ph-files.imgix.net/6bf91ec0-310a-46ca-9bf4-8363876c2212.png?auto=format"],"image":"https://ph-files.imgix.net/6bf91ec0-310a-46ca-9bf4-8363876c2212.png?auto=format"},{"sourceId":"producthunt","title":"AnyDrop","url":"https://www.producthunt.com/products/anydrop-3/launches/anydrop-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"AirDrop for the browser: share files, chat and sync notes","content":"AnyDrop is a free, purely browser-based web app that connects your devices directly. Drop files of any size, chat, and sync a live notepad across Mac, PC, iOS, and Android without any downloads or sign-ups. True P2P with zero cloud storage.","metrics":{},"tags":["producthunt","new"],"externalId":"1135006","logo":"https://ph-files.imgix.net/4833a0cd-2276-4347-9897-acf2e92b3ebd.png?auto=format","images":["https://ph-files.imgix.net/1c20c8cf-4a18-4026-92bf-176647197dbb.webp?auto=format","https://ph-files.imgix.net/34aa0d11-eab9-468a-807a-e7561db42c23.webp?auto=format","https://ph-files.imgix.net/27a8474a-d2f4-4875-89b9-ecccb44b13e6.webp?auto=format","https://ph-files.imgix.net/170134b0-d44c-4852-a6c3-ebdd69331ccd.webp?auto=format","https://ph-files.imgix.net/1bf2c758-f2d4-4e60-b825-f72e85f4f6f0.webp?auto=format","https://ph-files.imgix.net/ec927928-586e-46f9-8a01-158065b4a76f.jpeg?auto=format"],"image":"https://ph-files.imgix.net/1c20c8cf-4a18-4026-92bf-176647197dbb.webp?auto=format"},{"sourceId":"producthunt","title":"TrainZilla","url":"https://www.producthunt.com/products/trainzilla/launches/trainzilla-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Stop Juggling Apps. Start Coaching.","content":"Leading personal trainer software and gym management platform. Automate your fitness business with AI-powered workout plans, client management, nutrition tracking, and business analytics. Trusted by 5,000+ trainers globally. Start free trial today!","metrics":{},"tags":["producthunt","new"],"externalId":"1133563","logo":"https://ph-files.imgix.net/ccc4a3bc-5c29-4a5c-b632-52b37025d5d3.png?auto=format","images":["https://ph-files.imgix.net/70fba44f-63b2-4cee-9dc5-af76a8de4d35.jpeg?auto=format","https://ph-files.imgix.net/ccea9888-f2aa-4ec9-bd2c-0768fe6bf918.jpeg?auto=format","https://ph-files.imgix.net/5ba397aa-629a-4b93-aa81-45f2951c7813.jpeg?auto=format"],"image":"https://ph-files.imgix.net/70fba44f-63b2-4cee-9dc5-af76a8de4d35.jpeg?auto=format"},{"sourceId":"producthunt","title":"Genspark for Word","url":"https://www.producthunt.com/products/genspark/launches/genspark-for-word?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Draft, edit, and research inside Microsoft Word with AI","content":"Switching between AI tools and Word kills momentum. Genspark embeds drafting, editing, research, and formatting directly inside Word for writers, analysts, and office workers.","metrics":{},"tags":["producthunt","new"],"externalId":"1118981","logo":"https://ph-files.imgix.net/b36028d9-b82b-469d-b036-cf0acf890ced.jpeg?auto=format","images":["https://ph-files.imgix.net/11b4bc6a-0c99-4ca0-9548-b0af90b08437.webp?auto=format","https://ph-files.imgix.net/e901b7b3-5fe4-4765-a26b-6b894dba2255.webp?auto=format","https://ph-files.imgix.net/52704aac-8ea5-47a8-9abd-6d29d0abd347.jpeg?auto=format"],"image":"https://ph-files.imgix.net/11b4bc6a-0c99-4ca0-9548-b0af90b08437.webp?auto=format"},{"sourceId":"producthunt","title":"Marx Finance","url":"https://www.producthunt.com/products/marx-finance/launches/marx-finance?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"AI agents debate the markets","content":"Agent first platform where autonomous AI agents discuss news, share market signals, and debate positions. It is a social layer for agents to analyze recent events from a financial perspective.","metrics":{},"tags":["producthunt","new"],"externalId":"1135821","logo":"https://ph-files.imgix.net/884ce363-e1db-46a6-a0e8-129b7071904e.png?auto=format","images":["https://ph-files.imgix.net/0d271066-ea16-4249-813b-cb46a1379dd3.png?auto=format","https://ph-files.imgix.net/0f2c319a-e824-4025-8163-3beb98bd4b5c.png?auto=format","https://ph-files.imgix.net/98198c54-2a76-46c9-8490-217caedb8883.png?auto=format","https://ph-files.imgix.net/b10305a2-48e7-4889-a6fd-8ec4f9e3583b.png?auto=format","https://ph-files.imgix.net/301c7a65-02ad-458f-9571-f2b5c3db0ea7.png?auto=format"],"image":"https://ph-files.imgix.net/0d271066-ea16-4249-813b-cb46a1379dd3.png?auto=format"},{"sourceId":"producthunt","title":"GoodActs App","url":"https://www.producthunt.com/products/goodacts-app/launches/goodacts-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Where community meets impact.","content":"GoodActs is an app that aims to connect the community by making community service opportunities accessible, trackable, and social. With the objective of making the world a better place one service opportunity at a time! `","metrics":{},"tags":["producthunt","new"],"externalId":"1135551","logo":"https://ph-files.imgix.net/6edecabe-4e61-4f99-b4c4-c469f1ab45da.jpeg?auto=format","images":["https://ph-files.imgix.net/23d311d3-9a5d-4e2f-8cd2-dacf1e5b347a.jpeg?auto=format","https://ph-files.imgix.net/f5eb1c69-7c32-49f6-b2de-5b015b7d9ef9.png?auto=format","https://ph-files.imgix.net/32b0226f-021c-4f7e-8408-f8371a0b36c8.png?auto=format","https://ph-files.imgix.net/7528d551-d598-4114-a319-69c01d799e79.png?auto=format","https://ph-files.imgix.net/1e98a724-a0ad-4c11-babf-71dfddf44d03.png?auto=format","https://ph-files.imgix.net/cf6198f2-2c20-4e6c-9b12-08ebcf045a57.png?auto=format"],"image":"https://ph-files.imgix.net/23d311d3-9a5d-4e2f-8cd2-dacf1e5b347a.jpeg?auto=format"},{"sourceId":"producthunt","title":"KingQueen: party night game","url":"https://www.producthunt.com/products/kingqueen-party-night-game/launches/kingqueen-party-night-game?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Flip a coin. Decide the moment. Play together.","content":"KingQueen is a privacy-first social game where one coin toss decides everything. Add two players, flip the coin, and the winner gives a challenge. Simple, fast, and surprisingly fun. It’s designed for couples, friends, and game nights - no login, no accounts, no friction. Everything runs on-device, including your photos. Play it anywhere, anytime and let the coin decide.","metrics":{},"tags":["producthunt","new"],"externalId":"1136524","logo":"https://ph-files.imgix.net/21105d0f-ea75-4bbb-b6c0-2ad3e27e04d4.png?auto=format","images":["https://ph-files.imgix.net/b8faca0f-2dc7-40b8-aed1-576842d52f1f.jpeg?auto=format","https://ph-files.imgix.net/40f7e575-0861-4fd2-980b-6da31c70cd9a.png?auto=format","https://ph-files.imgix.net/a7dfa55a-1749-421a-b24a-2be3a4501486.png?auto=format","https://ph-files.imgix.net/82367742-bcb7-483a-a840-f2b00b80e75e.png?auto=format","https://ph-files.imgix.net/a3aa65b3-55fa-48a1-a09a-47566a469087.png?auto=format","https://ph-files.imgix.net/f9b5e30a-a9cf-4f5b-be5d-caeb05007f4e.png?auto=format"],"image":"https://ph-files.imgix.net/b8faca0f-2dc7-40b8-aed1-576842d52f1f.jpeg?auto=format"},{"sourceId":"producthunt","title":"Trove - Download videos from 1000+ sites","url":"https://www.producthunt.com/products/trove-download-videos-from-1000-sites/launches/trove-download-videos-from-1000-sites?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Paste a link. Save media locally. No ads, logins or limits","content":"Trove is the clean, self-hosted alternative to sketchy online video downloader sites. It runs on your machine, wraps yt-dlp, saves files locally, and has no ads, accounts, download limits, or telemetry.","metrics":{},"tags":["producthunt","new"],"externalId":"1136190","logo":"https://ph-files.imgix.net/37e32a61-0996-4943-8ea8-498fae0ce2cf.png?auto=format","images":["https://ph-files.imgix.net/3461dff2-682b-479e-b2c3-9fbcc7a9f564.jpeg?auto=format","https://ph-files.imgix.net/62500017-1be8-445a-99d9-ef05fd2a27e4.gif?auto=format","https://ph-files.imgix.net/fbc8d09f-6a1a-42dc-afcb-f814a4010564.png?auto=format","https://ph-files.imgix.net/da3d5b42-d1b9-47f4-b7d7-b24175556bb1.png?auto=format"],"image":"https://ph-files.imgix.net/3461dff2-682b-479e-b2c3-9fbcc7a9f564.jpeg?auto=format"},{"sourceId":"producthunt","title":"monolog","url":"https://www.producthunt.com/products/monolog-2/launches/monolog-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Chat to yourself. AI remembers everything","content":"Chat to yourself. monolog takes care of the rest. No titles, folders, or tags to manage. AI quietly understands what you write, recognizes schedules and tasks, and reminds you when it matters. Semantic search finds records by what they were about—even if you forgot the exact words you used. Everything stays synced across iOS, Android, Web, Desktop, and Chrome. Just write naturally. monolog handles the organizing, remembering, and finding later.","metrics":{},"tags":["producthunt","new"],"externalId":"1091737","logo":"https://ph-files.imgix.net/c377f025-342d-4ee7-b5af-85a9353b1007.png?auto=format","images":["https://ph-files.imgix.net/46e6d2cb-9486-4570-b451-3e4def637867.png?auto=format","https://ph-files.imgix.net/9d9ef998-f76c-4313-b3fd-7d2c542a8b90.png?auto=format","https://ph-files.imgix.net/785e1683-5d57-40c0-8c56-556a4e01b6a9.png?auto=format","https://ph-files.imgix.net/c3f68762-046f-438c-bf36-0cdb7d0d54a0.png?auto=format","https://ph-files.imgix.net/43ab7e02-ab61-4b47-be0a-334da9857027.png?auto=format","https://ph-files.imgix.net/1c394970-6d1a-4064-826d-f3bb76ba7d59.png?auto=format","https://ph-files.imgix.net/0443b7d1-b736-483c-bc16-a62ab981005a.png?auto=format","https://ph-files.imgix.net/1be8935f-7cdd-4483-b1c4-be5b2a8a992b.png?auto=format","https://ph-files.imgix.net/30c29ed4-a0b2-40dd-a316-5f054ca28215.png?auto=format","https://ph-files.imgix.net/91c096c1-4164-41e0-8ab9-edebb0a2a2a7.jpeg?auto=format"],"image":"https://ph-files.imgix.net/46e6d2cb-9486-4570-b451-3e4def637867.png?auto=format"},{"sourceId":"producthunt","title":"Avvio","url":"https://www.producthunt.com/products/avvio-global-account/launches/avvio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Your money should move as freely as you do","content":"Avvio gives you real USD and EUR global accounts, local payouts in 120 countries, savings goals with yield, and the ability to hold BTC, gold, and stocks all from one self-custodial app. No middlemen. No separate wallets. Just one account built for how you actually live.","metrics":{},"tags":["producthunt","new"],"externalId":"1129115","logo":"https://ph-files.imgix.net/13ef71c6-ab2c-4bf3-b7eb-55477a7ef28a.png?auto=format","images":["https://ph-files.imgix.net/27a2342e-cf1a-4d66-9f04-4af54ba9949c.png?auto=format","https://ph-files.imgix.net/bd7807c9-3e3f-45d8-94b5-321bd7730f8e.png?auto=format","https://ph-files.imgix.net/ee8dea28-67fc-4a1d-a7d2-e8a1e6a3733b.png?auto=format","https://ph-files.imgix.net/f4db7bf1-89f0-4310-8f80-23ec60bfd1dc.png?auto=format","https://ph-files.imgix.net/468a5068-f55f-479f-ba09-eb711c788c4f.png?auto=format","https://ph-files.imgix.net/ecd744d7-bc83-4fa5-8d66-6d40ac7dbdad.png?auto=format","https://ph-files.imgix.net/38588217-e599-4743-aaaa-bb1925e7220d.png?auto=format","https://ph-files.imgix.net/733c2b2a-fa6a-44ef-8013-ac6d7d3603f9.png?auto=format","https://ph-files.imgix.net/dc678062-3564-4341-8246-f43ed918ca4d.png?auto=format","https://ph-files.imgix.net/1dfa6810-5553-4a9c-b3e0-3f59861b98d6.png?auto=format"],"image":"https://ph-files.imgix.net/27a2342e-cf1a-4d66-9f04-4af54ba9949c.png?auto=format"},{"sourceId":"producthunt","title":"Notie: Thinking out loud","url":"https://www.producthunt.com/products/notie-thinking-out-loud/launches/notie-thinking-out-loud?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Voice to text, journal & notes","content":"Notie is a 100% offline, privacy-first voice note app for iOS. Just speak — Notie turns your voice into readable text. When your thoughts feel messy or typing feels hard, just talk. Notie captures your voice and converts it into clean, readable notes so you can see what you're actually thinking. Record directly in the app or upload an audio file. Your speech becomes text instantly. Built for thinking out loud — capture ideas, journal, vent, or plan without pressure.","metrics":{},"tags":["producthunt","new"],"externalId":"1136179","logo":"https://ph-files.imgix.net/751079c8-2388-447e-ad76-5488fee06fe2.png?auto=format","images":["https://ph-files.imgix.net/c51968ae-7d3a-4666-b2aa-939370832add.png?auto=format","https://ph-files.imgix.net/13428a68-324b-433f-ad09-2559e77473f7.png?auto=format","https://ph-files.imgix.net/df2e0c39-d253-44f1-8e1f-4a910bff4945.png?auto=format","https://ph-files.imgix.net/4294d064-efdf-4f87-859b-9012c16f81d4.png?auto=format","https://ph-files.imgix.net/9842c87b-f2f2-4884-b68a-fc44c6c39fc8.png?auto=format"],"image":"https://ph-files.imgix.net/c51968ae-7d3a-4666-b2aa-939370832add.png?auto=format"},{"sourceId":"producthunt","title":"Stelais","url":"https://www.producthunt.com/products/stelais/launches/stelais?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"The recognition layer for creators in a digital AI world","content":"Stelais is recognition infrastructure for any creative work. The internet gave creators unprecedented reach, but broke the link between a work and its maker. Stelais restores the connection through proof of Origin on Arweave, public verification pages, Residue Watermarking embedded in the pixels, reverse-image scanning, and DMCA evidence bundles. All combined into a single system. Named after the oldest form of recorded provenance. Stelais is the infrastructure the modern internet is missing.","metrics":{},"tags":["producthunt","new"],"externalId":"1135431","logo":"https://ph-files.imgix.net/78d4a971-0262-4965-96aa-e251079a1045.png?auto=format","images":["https://ph-files.imgix.net/6f79cac4-80aa-47dc-ae15-53d9ea0dacc4.png?auto=format","https://ph-files.imgix.net/91e299e4-e235-4004-96ca-34d45a9ee75b.png?auto=format","https://ph-files.imgix.net/f28b4db8-e0ca-468f-abd6-75946d63d1a6.png?auto=format","https://ph-files.imgix.net/6c3df63b-73f0-4cd7-adee-2531836d9b95.png?auto=format","https://ph-files.imgix.net/b3adc6af-b721-4654-b5d4-b1f9111f9df8.png?auto=format"],"image":"https://ph-files.imgix.net/6f79cac4-80aa-47dc-ae15-53d9ea0dacc4.png?auto=format"},{"sourceId":"producthunt","title":"Formdiy","url":"https://www.producthunt.com/products/formdiy/launches/formdiy?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Build different and beautiful forms","content":"Most form builders are either ugly or rigid. Formdiy blends modern design with powerful, no-code logic. Why Formdiy stands out: 1. Brand-First: Stunning, modern themes that look professional out of the box. 2. Logic-Driven: Drag-and-drop workflows for complex quizzes and conditional surveys. 3. Team-Ready: Unique built-in version control and real-time collaboration. 4. Pro-Grade: Custom domains and deep analytics included. Build beautiful, smart forms effortlessly.","metrics":{},"tags":["producthunt","new"],"externalId":"1136103","logo":"https://ph-files.imgix.net/f9bf32c4-8cc9-422e-b29b-4e861232afc6.png?auto=format","images":["https://ph-files.imgix.net/ed740662-1a51-41f3-8085-7ecde736cdaa.jpeg?auto=format","https://ph-files.imgix.net/c382f32b-4f1d-49f9-9aed-90ec0afbe4b6.png?auto=format","https://ph-files.imgix.net/f7dc3e73-6100-42c1-a65a-c257dc56e478.jpeg?auto=format","https://ph-files.imgix.net/c312d1ff-5903-49f5-932c-ec2ea17a6b4d.png?auto=format","https://ph-files.imgix.net/f71135f3-0571-44c2-886a-f47fff71d7ee.jpeg?auto=format","https://ph-files.imgix.net/a9199e1a-282b-4145-8c1b-4c39a05ba3f6.png?auto=format","https://ph-files.imgix.net/67ce76d0-a3cd-4058-bc0f-231798c869b7.jpeg?auto=format","https://ph-files.imgix.net/b63ce477-7e5d-493d-acd9-12293201b303.png?auto=format","https://ph-files.imgix.net/7c882aee-7861-47f9-a9cc-8a0c84ecc868.jpeg?auto=format","https://ph-files.imgix.net/07e36698-496a-4b71-b3cb-dea4ef72bd26.png?auto=format","https://ph-files.imgix.net/a49587a8-26c4-41db-adc5-d1913f03bb30.jpeg?auto=format","https://ph-files.imgix.net/6af7d614-a644-415e-b29c-fabdc4fb7956.png?auto=format","https://ph-files.imgix.net/158162f7-9f11-4a61-a520-15961d834863.jpeg?auto=format","https://ph-files.imgix.net/9037f5f4-8c7e-431e-8f0c-97d97b7a72d8.png?auto=format","https://ph-files.imgix.net/78df1c9a-a428-4941-a40a-01d4d2703994.jpeg?auto=format","https://ph-files.imgix.net/9f41b3e4-96da-46e9-a768-9a8ce2582e1a.png?auto=format","https://ph-files.imgix.net/f69f1c08-8476-4814-a6dc-64e2a2d31bc3.jpeg?auto=format","https://ph-files.imgix.net/4c8ac98f-9cc9-4fd9-8dd2-85c446e3f665.png?auto=format","https://ph-files.imgix.net/0f27090c-2898-4937-b9a9-e5c7df480ac6.jpeg?auto=format"],"image":"https://ph-files.imgix.net/ed740662-1a51-41f3-8085-7ecde736cdaa.jpeg?auto=format"},{"sourceId":"producthunt","title":"SmartDart","url":"https://www.producthunt.com/products/smartdart/launches/smartdart?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Dart tournaments in 30 sec — live scoring & beamer mode","content":"SmartDart lets you run a complete dart tournament in 30 seconds — 7 bracket formats, live scoring on multiple boards, real-time sync on every player's phone, and PDC-style beamer projection. Free tier, no download, GDPR-compliant EU hosting.","metrics":{},"tags":["producthunt","new"],"externalId":"1136038","logo":"https://ph-files.imgix.net/d4a679a2-6068-4b5b-8944-bd0b8b462553.png?auto=format","images":["https://ph-files.imgix.net/0c74906f-09b8-40d4-8349-b43f71a7fe20.jpeg?auto=format","https://ph-files.imgix.net/f9eaf475-25d9-4928-8aac-b412d9828f7e.png?auto=format","https://ph-files.imgix.net/46fc8f92-3edc-4668-bcbb-2d425ae567ac.png?auto=format","https://ph-files.imgix.net/662f60bc-64b5-41dc-b0ec-6cbf9f5656f6.png?auto=format","https://ph-files.imgix.net/570c0ec6-11e0-4780-afdd-5faf548d96a5.png?auto=format"],"image":"https://ph-files.imgix.net/0c74906f-09b8-40d4-8349-b43f71a7fe20.jpeg?auto=format"},{"sourceId":"producthunt","title":"Kickstart Remote","url":"https://www.producthunt.com/products/kickstart-remote/launches/kickstart-remote?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-01T07:01:00Z","summary":"Skip the spam and paywalls, just real remote jobs.","content":"Kickstart Remote helps job seekers find legitimate remote jobs with transparent salary insights. Most job boards hide pay, recycle old listings, or push low-quality roles. Kickstart Remote focuses on curated remote-first roles, real salary data, and a clean, spam-free experience. Built to respect candidates’ time and help them make better career decisions.","metrics":{},"tags":["producthunt","new"],"externalId":"1070230","logo":"https://ph-files.imgix.net/ed341cec-5500-4327-8757-d718d3033f21.png?auto=format","images":["https://ph-files.imgix.net/e4f2fa65-f5bd-4e63-ada5-4c9df21c50e4.png?auto=format"],"image":"https://ph-files.imgix.net/e4f2fa65-f5bd-4e63-ada5-4c9df21c50e4.png?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T09:19:50.686Z",
+  "date": "2026-05-01",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": []
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】LynxDB - 单二进制日志分析引擎，读时模式，兼容 Splunk SPL",
+          "url": "https://github.com/lynxbase/lynxdb",
+          "author": "OrlovEvgeny",
+          "authorUrl": "https://github.com/OrlovEvgeny",
+          "publishedAt": "2026-04-30T23:25:56Z",
+          "summary": "开源地址： LynxDB 是用 Go 写的日志分析引擎，整个项目编译为一个二进制文件，无外部依赖，curl 一行安装。 为什么再造一个？ ELK / Splunk 类方案部署复杂、资源开销大（Elasticsearch 空闲约 1 GB+，Splunk 约 12 GB），自建小规模可观测性栈时往往显得过重。LynxDB 空闲内存约 50 MB，没有 JVM、没有外部存储、没有 sidecar。 核心是读时模式（schemaonread）：日志原样写入，结构在查询时通过 parse json、parse combined 等命令按需提取。日志格式变化时不需要重建索引或迁移历史数据。 查询语言 Lynx Flow 是 SPL 风格的管道式语法，命令之间用 | 串联： ​ from nginx | parse combined(raw) | status = 500 | group by uri compute count() as hits | order by hits desc | take 10 ​ 同时兼容 Splunk SPL2，已有的 SPL 查询可直接迁移。 也支持纯管道模式，不启动服务直接当 grep / awk 用： ​ kubectl logs deploy/api | lynxdb query ' | parse json(raw) | group by status compute count()' ​ 其他特性： 列式存储（FST 倒排索引 + 布隆过滤器 + LZ4 压缩） 物化视图（自动查询改写，热点查询提速可达 400x） 兼容 Elasticsearch bulk、OpenTelemetry OTLP、Splunk HEC 协议接入 可选集群模式 + S3 共享存储 项目目前还在早期阶段（v0.0.3），暂不建议在生产环境使用。适合想要轻量可观测性方案、不希望引入企业级系统运维负担的场景。欢迎反馈和 issue。 开源协议：Apache 2.0",
+          "content": "开源地址：https://github.com/lynxbase/lynxdb\n\nLynxDB 是用 Go 写的日志分析引擎，整个项目编译为一个二进制文件，无外部依赖，`curl` 一行安装。\n\n**为什么再造一个？** ELK / Splunk 类方案部署复杂、资源开销大（Elasticsearch 空闲约 1 GB+，Splunk 约 12 GB），自建小规模可观测性栈时往往显得过重。LynxDB 空闲内存约 50 MB，没有 JVM、没有外部存储、没有 sidecar。\n\n**核心是读时模式（schema-on-read）**：日志原样写入，结构在查询时通过 `parse json`、`parse combined` 等命令按需提取。日志格式变化时不需要重建索引或迁移历史数据。\n\n查询语言 Lynx Flow 是 SPL 风格的管道式语法，命令之间用 `|` 串联：\n\n​```\nfrom nginx\n| parse combined(_raw)\n| status >= 500\n| group by uri compute count() as hits\n| order by hits desc\n| take 10\n​```\n\n同时兼容 Splunk SPL2，已有的 SPL 查询可直接迁移。\n\n**也支持纯管道模式**，不启动服务直接当 grep / awk 用：\n\n​```\nkubectl logs deploy/api | lynxdb query '\n  | parse json(_raw)\n  | group by status compute count()'\n​```\n\n其他特性：\n- 列式存储（FST 倒排索引 + 布隆过滤器 + LZ4 压缩）\n- 物化视图（自动查询改写，热点查询提速可达 400x）\n- 兼容 Elasticsearch `_bulk`、OpenTelemetry OTLP、Splunk HEC 协议接入\n- 可选集群模式 + S3 共享存储\n\n项目目前还在早期阶段（v0.0.3），暂不建议在生产环境使用。适合想要轻量可观测性方案、不希望引入企业级系统运维负担的场景。欢迎反馈和 issue。\n\n开源协议：Apache 2.0",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9821",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9821"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "[工具自荐] RunAppHot - - AppScreenshot生成和 App 图标裁剪工具",
+          "url": "https://app.runapphot.com/",
+          "author": "tqrj",
+          "authorUrl": "https://github.com/tqrj",
+          "publishedAt": "2026-05-01T04:54:24Z",
+          "summary": "RunAppHot 是一款面向 App 开发者的应用商店素材生成工具，帮助开发者快速制作 iOS App Store 和 Google Play 所需的应用截图、宣传图和 App 图标资源。 很多独立开发者在上架应用时，主要精力都花在产品开发上，但最后提交商店时，还要处理不同平台的截图尺寸、多语言版本、设备框展示、宣传文案排版，以及一堆 App Icon 尺寸。RunAppHot 希望把这些重复工作集中到一个在线工具里完成。 网站 主要功能 应用商店截图编辑：支持在线创建截图项目，上传应用截图后进行排版和编辑 多平台支持：支持 iOS / App Store、Android / Google Play，也可以创建同时覆盖两个平台的项目 多语言截图：同一个项目内可以添加不同语言版本，方便准备海外应用商店素材 设备框与画布编辑：支持设备框、背景、文字、位置、颜色、字号、行高、字距等细节调整 项目化管理：可以保存和管理多个截图项目，后续继续修改和导出 App Icon Generator：上传 1024×1024 图标后，批量生成 iPhone、iPad、watchOS、macOS、Android 所需尺寸 使用场景 独立开发者提交 App Store / Google Play 审核素材 出海应用准备多语言商店截图 产品发布前快速制作宣传截图 小团队没有专职设计师时，快速生成规范的应用商店素材 一次性生成多平台 App Icon 尺寸，减少手工裁剪和命名 产品特色 浏览器直接使用，不需要安装设计软件 面向应用上架流程设计，重点解决截图和图标这类“提交前最后一公里”的问题 同时覆盖截图设计和图标尺寸生成，减少在多个工具之间切换 支持细粒度排版调整，适合既想快速生成、又希望保持一定设计质量的开发者",
+          "content": "RunAppHot 是一款面向 App 开发者的应用商店素材生成工具，帮助开发者快速制作 iOS App Store 和 Google Play 所需的应用截图、宣传图和 App 图标资源。\n\n很多独立开发者在上架应用时，主要精力都花在产品开发上，但最后提交商店时，还要处理不同平台的截图尺寸、多语言版本、设备框展示、宣传文案排版，以及一堆 App Icon 尺寸。RunAppHot 希望把这些重复工作集中到一个在线工具里完成。\n\n网站\nhttps://app.runapphot.com/\n\n主要功能\n应用商店截图编辑：支持在线创建截图项目，上传应用截图后进行排版和编辑\n多平台支持：支持 iOS / App Store、Android / Google Play，也可以创建同时覆盖两个平台的项目\n多语言截图：同一个项目内可以添加不同语言版本，方便准备海外应用商店素材\n设备框与画布编辑：支持设备框、背景、文字、位置、颜色、字号、行高、字距等细节调整\n项目化管理：可以保存和管理多个截图项目，后续继续修改和导出\nApp Icon Generator：上传 1024×1024 图标后，批量生成 iPhone、iPad、watchOS、macOS、Android 所需尺寸\n\n使用场景\n独立开发者提交 App Store / Google Play 审核素材\n出海应用准备多语言商店截图\n产品发布前快速制作宣传截图\n小团队没有专职设计师时，快速生成规范的应用商店素材\n一次性生成多平台 App Icon 尺寸，减少手工裁剪和命名\n\n产品特色\n浏览器直接使用，不需要安装设计软件\n面向应用上架流程设计，重点解决截图和图标这类“提交前最后一公里”的问题\n同时覆盖截图设计和图标尺寸生成，减少在多个工具之间切换\n支持细粒度排版调整，适合既想快速生成、又希望保持一定设计质量的开发者",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9822",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9822",
+          "siteLogo": "https://app.runapphot.com/favicon.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "AnySave：网页端视频下载工具，支持 200+ 平台",
+          "url": "https://any-save.com",
+          "author": "qinjxhub",
+          "authorUrl": "https://github.com/qinjxhub",
+          "publishedAt": "2026-05-01T08:36:14Z",
+          "summary": "官网： 简介： AnySave 是一个网页端视频下载工具，粘贴公开视频链接即可开始保存，支持 TikTok、抖音、YouTube、Instagram、Facebook、X、B站、小红书等 200+ 平台。 特点： 网页端直接使用，无需安装 支持 200+ 平台 支持主流平台公开视频链接解析与保存 如果合适，欢迎收录。",
+          "content": "官网：https://any-save.com\n\n简介：\nAnySave 是一个网页端视频下载工具，粘贴公开视频链接即可开始保存，支持 TikTok、抖音、YouTube、Instagram、Facebook、X、B站、小红书等 200+ 平台。\n\n特点：\n- 网页端直接使用，无需安装\n- 支持 200+ 平台\n- 支持主流平台公开视频链接解析与保存\n\n如果合适，欢迎收录。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9823",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9823",
+          "siteLogo": "https://any-save.com/icon.png?icon.15tnkx8wo3.kq.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】Poster.sh - AI 生成可编辑海报 + 二维码，做线下扫码推广更顺手",
+          "url": "https://poster.sh/zh",
+          "author": "aistudy11",
+          "authorUrl": "https://github.com/aistudy11",
+          "publishedAt": "2026-05-01T13:57:41Z",
+          "summary": "一个 AI 海报生成 + 编辑工具，主打\"从文字到可推广物料\"的完整工作流。 Live: 和其他 AI 生图站点的核心区别： 内置可视化编辑器：每张生成的海报都能在浏览器里继续编辑——改文字、换图、调布局，再导出 PNG。不用切到 Figma / Canva 二次加工。 海报上能直接生成二维码：编辑器自带二维码工具，支持自定义颜色、6 种点样式（rounded / dots / classy 等），扫码跳转到任意 URL。做活动海报、店铺宣传、公众号引流时省一步。（仅桌面端） 128 种视觉风格：从液态金属、暗色主题、构成主义、孟菲斯，到双重曝光、电影感、雕刻版画……每种都有真实样图可预览，按\"商业营销 / 活动庆典 / 社交媒体 / 创意艺术 / 娱乐文化 / 教育信息\"六大场景分类。 底层模型用 Nano Banana 2（Gemini 3.1 Flash Image Preview），支持 14 种比例：1:1 / 2:3 / 9:16 / 16:9 / 4:5 等社媒尺寸，以及 21:9 / 1:8 / 8:1 等长图比例。 智能提示词优化器：随手写的中文一句话会被改写成模型友好的英文长prompt，新手也能出效果。 注册送 5 积分（够生成 2–3 张试一下），无需信用卡。生成的海报享有商业使用权。 界面支持中 / 英 / 日 / 西四种语言。 <img width=\"2880\" height=\"1800\" alt=\"Image\" src=\" / <img width=\"2880\" height=\"1800\" alt=\"Image\" src=\" / <img width=\"2880\" height=\"1800\" alt=\"Image\" src=\" /",
+          "content": "一个 AI 海报生成 + 编辑工具，主打\"从文字到可推广物料\"的完整工作流。\n                                                                                        \n  Live: https://poster.sh/zh\n                                                                                        \n  和其他 AI 生图站点的核心区别：                                                        \n   \n  - **内置可视化编辑器**：每张生成的海报都能在浏览器里继续编辑——改文字、换图、调布局，再导出 PNG。不用切到 Figma / Canva 二次加工。                     \n  - **海报上能直接生成二维码**：编辑器自带二维码工具，支持自定义颜色、6 种点样式（rounded / dots / classy 等），扫码跳转到任意                             URL。做活动海报、店铺宣传、公众号引流时省一步。（仅桌面端）\n  - **128 种视觉风格**：从液态金属、暗色主题、构成主义、孟菲斯，到双重曝光、电影感、雕刻版画……每种都有真实样图可预览，按\"商业营销 / 活动庆典 / 社交媒体 / 创意艺术 / 娱乐文化 / 教育信息\"六大场景分类。\n  - **底层模型用 Nano Banana 2（Gemini 3.1 Flash Image Preview）**，支持 14 种比例：1:1 / 2:3 / 9:16 / 16:9 / 4:5 等社媒尺寸，以及 21:9 / 1:8 / 8:1 等长图比例。              \n  - **智能提示词优化器**：随手写的中文一句话会被改写成模型友好的英文长prompt，新手也能出效果。                                                              \n                                                                  \n  注册送 5 积分（够生成 2–3 张试一下），无需信用卡。生成的海报享有商业使用权。          \n                                                                  \n  界面支持中 / 英 / 日 / 西四种语言。\n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bd8c30a7-b9b2-4900-a2ce-2f20d94bac40\" />\n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b35e0608-821f-44db-993b-03bc32385bb6\" />\n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b886a120-977c-49b0-a3b1-a9e8d8fe1009\" />",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9824",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9824",
+          "siteLogo": "https://poster.sh/favicon.ico"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": [
+        {
+          "sourceId": "weekly-issue",
+          "title": "OpenCode Mobile",
+          "url": "https://github.com/learning233/opencode_mobile",
+          "author": "learning233",
+          "authorUrl": "https://github.com/learning233",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "OpenCode 的非官方安卓客户端。",
+          "content": "OpenCode 的非官方安卓客户端。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-OpenCode Mobile-https://github.com/learning233/opencode_mobile",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11381",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Blob Downloader",
+          "url": "https://github.com/aeroxy/blob-downloader",
+          "author": "aeroxy",
+          "authorUrl": "https://github.com/aeroxy",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。",
+          "content": "Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Blob Downloader-https://github.com/aeroxy/blob-downloader",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11392",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "zlib",
+          "url": "https://github.com/heartleo/zlib",
+          "author": "heartleo",
+          "authorUrl": "https://github.com/heartleo",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "Go 语言编写的 Z-Library 图书馆命令行工具。",
+          "content": "Go 语言编写的 Z-Library 图书馆命令行工具。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-zlib-https://github.com/heartleo/zlib",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11405",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "ATBClone",
+          "url": "https://github.com/aitobox/ATBClone",
+          "author": "aitoboxinc",
+          "authorUrl": "https://github.com/aitoboxinc",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "开源的 macOS 应用，允许应用程序多开，并进行分身管理。",
+          "content": "开源的 macOS 应用，允许应用程序多开，并进行分身管理。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-ATBClone-https://github.com/aitobox/ATBClone",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11432",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Orange Cloud",
+          "url": "https://github.com/chen2he/orange-cloud",
+          "author": "chen2he",
+          "authorUrl": "https://github.com/chen2he",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "开源的 Cloudflare 的 iOS 客户端。",
+          "content": "开源的 Cloudflare 的 iOS 客户端。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Orange Cloud-https://github.com/chen2he/orange-cloud",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11428",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Apolu",
+          "url": "https://apolu.app/zh-Hans",
+          "author": "chen2he",
+          "authorUrl": "https://github.com/chen2he",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。",
+          "content": "一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Apolu-https://apolu.app/zh-Hans",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11429",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "DanKS",
+          "url": "https://github.com/Calix-L/DanKS",
+          "author": "Calix-L",
+          "authorUrl": "https://github.com/Calix-L",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。",
+          "content": "金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-DanKS-https://github.com/Calix-L/DanKS",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11422",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "video-ai-talking",
+          "url": "https://github.com/yizhi-chengzi/video-ai-talking",
+          "author": "yizhi-chengzi",
+          "authorUrl": "https://github.com/yizhi-chengzi",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "一个开源 Web 应用，输入文案，生成真人口播视频。",
+          "content": "一个开源 Web 应用，输入文案，生成真人口播视频。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-video-ai-talking-https://github.com/yizhi-chengzi/video-ai-talking",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11449",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Git Agent",
+          "url": "https://github.com/adoin/git-Agent",
+          "author": "adoin",
+          "authorUrl": "https://github.com/adoin",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。",
+          "content": "开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Git Agent-https://github.com/adoin/git-Agent",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11464",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Subtitle Scout",
+          "url": "https://github.com/fancydirty/subtitle-scout",
+          "author": "fancydirty",
+          "authorUrl": "https://github.com/fancydirty",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。",
+          "content": "一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Subtitle Scout-https://github.com/fancydirty/subtitle-scout",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11468",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Ad Astra",
+          "url": "https://github.com/gunerguner/AdAstra",
+          "author": "gunerguner",
+          "authorUrl": "https://github.com/gunerguner",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。",
+          "content": "可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-Ad Astra-https://github.com/gunerguner/AdAstra",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11360",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "3D 钢琴",
+          "url": "https://autopiano.cn/3d",
+          "author": "WarpPrism",
+          "authorUrl": "https://github.com/WarpPrism",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。",
+          "content": "在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-3D 钢琴-https://autopiano.cn/3d",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11431",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "ScriptSpool",
+          "url": "https://scriptspool.pixzens.com/zh/editor",
+          "author": "liyuouyu",
+          "authorUrl": "https://github.com/liyuouyu",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "这个网站将一段代码的输入变成逐键输入的动画。",
+          "content": "这个网站将一段代码的输入变成逐键输入的动画。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-ScriptSpool-https://scriptspool.pixzens.com/zh/editor",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11433",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "卫生间建模",
+          "url": "https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T00:00:00+08:00",
+          "summary": "这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。",
+          "content": "这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-卫生间建模-https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom",
+          "relatedIssue": null,
+          "issue": "411"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Royal Card Blast!",
+          "url": "https://www.producthunt.com/products/royal-card-blast/launches/royal-card-blast?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "I’ve been working on a puzzle game called Royal Card Blast",
+          "content": "Hi everyone! I’ve been working on a puzzle game called Royal Card Blast that aims to be the perfect \"brain-training\" companion. I noticed most card games feel too slow, while blast games can be too chaotic, so I merged them. The Twist: It uses unique card mechanics (think Solitaire meets modern blast puzzles).",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136193",
+          "logo": "https://ph-files.imgix.net/279dc01a-af91-42ec-8d65-17614feb4890.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1486161f-ffdc-4d3e-9681-d70798adf143.png?auto=format",
+            "https://ph-files.imgix.net/216bf6be-7168-4882-8013-30cbc4118d54.png?auto=format",
+            "https://ph-files.imgix.net/8a10d2dc-02ae-4e1b-a07a-cd326a4590e3.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1486161f-ffdc-4d3e-9681-d70798adf143.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Formfuel | Contact Form AI",
+          "url": "https://www.producthunt.com/products/formfuel-ai-power-your-contact-forms/launches/formfuel-contact-form-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Improve Customer Leads Before They Hit Send",
+          "content": "AI-Power Your Contact Forms | Formfuel transforms your existing contact forms into intelligent experiences that help customers articulate what they need. You get richer, clearer enquiries leading to faster responses, better qualification, and lower costs.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136083",
+          "logo": "https://ph-files.imgix.net/50d5e5bf-27a9-4d8f-91ad-700898c4da49.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4c19ed53-7212-4d0a-9d6a-de00b2270b3e.png?auto=format",
+            "https://ph-files.imgix.net/c943aa36-9cca-4d91-9301-53ff2905fc7d.gif?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4c19ed53-7212-4d0a-9d6a-de00b2270b3e.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Clawke",
+          "url": "https://www.producthunt.com/products/clawke/launches/clawke?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Native AI agent workspace across mobile and desktop",
+          "content": "Clawke is an open-source AI agent workspace with native support for OpenClaw, Hermes, and Nanobot. Because agents are supported natively, Clawke is more specialized for managing AI agents than a regular chat or IM app. It supports iOS, Android, macOS, Windows, and Linux.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135608",
+          "logo": "https://ph-files.imgix.net/85e91c2e-3cae-4c0a-a518-866867994726.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/830a0537-7ebe-4ec5-9710-70e5b954bb72.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/830a0537-7ebe-4ec5-9710-70e5b954bb72.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Scam Number Checker",
+          "url": "https://www.producthunt.com/products/scam-number-checker/launches/scam-number-checker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Free phone scam database — verify any number in seconds",
+          "content": "Scam Number Checker is a free lookup tool to instantly verify if a phone number has been reported as a scam. Our database combines 74,000+ complaints from the FTC's Do Not Call Registry with real-time community submissions across 63,000+ unique numbers. Search any number → see verdict, scam type, report count, and area code patterns. No signup. No paywall. Just answers. Built to protect families — especially seniors — from the $40B/year phone scam epidemic.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136108",
+          "logo": "https://ph-files.imgix.net/345235c8-3234-4e8c-a26e-21f22862f721.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/6247ee86-7093-491d-b921-e0209faae766.png?auto=format",
+            "https://ph-files.imgix.net/f415666d-7c3e-4d2f-ba75-afcd365a2028.png?auto=format",
+            "https://ph-files.imgix.net/d3595036-67e7-4c8b-a318-59522ecea8dd.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/6247ee86-7093-491d-b921-e0209faae766.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Imaradesk Ticketing System",
+          "url": "https://www.producthunt.com/products/imaradesk/launches/imaradesk-ticketing-system?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "All-in-one helpdesk for modern teams.",
+          "content": "ImaraDesk - Modern help desk and customer support platform. Streamline ticket management, automate workflows, and deliver exceptional customer service with our powerful, easy-to-use support software.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135981",
+          "logo": "https://ph-files.imgix.net/cac34703-3b8a-40a2-ac60-9ba1d5def47b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/245899fd-4a19-4536-9a0b-02788b11f774.png?auto=format",
+            "https://ph-files.imgix.net/3413460b-be9a-4edc-af4d-5d906830fb25.png?auto=format",
+            "https://ph-files.imgix.net/f62fd2e3-563b-47ad-b594-0a9c9a5eac10.png?auto=format",
+            "https://ph-files.imgix.net/4ca9f6e3-22b1-4d68-8fa7-3faf6d3e8b70.png?auto=format",
+            "https://ph-files.imgix.net/70e82b91-2541-4769-8500-cbe451157ae4.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/245899fd-4a19-4536-9a0b-02788b11f774.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Money Hive — Personal Finance Tracker",
+          "url": "https://www.producthunt.com/products/money-hive-personal-finance-tracker/launches/money-hive-personal-finance-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Private finance tracker with on-device AI",
+          "content": "Money Hive keeps your financial data on your device — no cloud servers, no selling your data. On-device AI categorizes transactions automatically, even offline. Encrypted backup to your own iCloud or Google Drive. Biometric lock, home screen widgets, budgets, recurring expenses, and savings goals. Your money, your phone, nobody else.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135670",
+          "logo": "https://ph-files.imgix.net/df3f690b-f8f7-4463-bdce-0a2ef24aa032.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/6bf91ec0-310a-46ca-9bf4-8363876c2212.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/6bf91ec0-310a-46ca-9bf4-8363876c2212.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "AnyDrop",
+          "url": "https://www.producthunt.com/products/anydrop-3/launches/anydrop-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "AirDrop for the browser: share files, chat and sync notes",
+          "content": "AnyDrop is a free, purely browser-based web app that connects your devices directly. Drop files of any size, chat, and sync a live notepad across Mac, PC, iOS, and Android without any downloads or sign-ups. True P2P with zero cloud storage.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135006",
+          "logo": "https://ph-files.imgix.net/4833a0cd-2276-4347-9897-acf2e92b3ebd.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1c20c8cf-4a18-4026-92bf-176647197dbb.webp?auto=format",
+            "https://ph-files.imgix.net/34aa0d11-eab9-468a-807a-e7561db42c23.webp?auto=format",
+            "https://ph-files.imgix.net/27a8474a-d2f4-4875-89b9-ecccb44b13e6.webp?auto=format",
+            "https://ph-files.imgix.net/170134b0-d44c-4852-a6c3-ebdd69331ccd.webp?auto=format",
+            "https://ph-files.imgix.net/1bf2c758-f2d4-4e60-b825-f72e85f4f6f0.webp?auto=format",
+            "https://ph-files.imgix.net/ec927928-586e-46f9-8a01-158065b4a76f.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1c20c8cf-4a18-4026-92bf-176647197dbb.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "TrainZilla",
+          "url": "https://www.producthunt.com/products/trainzilla/launches/trainzilla-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Stop Juggling Apps. Start Coaching.",
+          "content": "Leading personal trainer software and gym management platform. Automate your fitness business with AI-powered workout plans, client management, nutrition tracking, and business analytics. Trusted by 5,000+ trainers globally. Start free trial today!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1133563",
+          "logo": "https://ph-files.imgix.net/ccc4a3bc-5c29-4a5c-b632-52b37025d5d3.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/70fba44f-63b2-4cee-9dc5-af76a8de4d35.jpeg?auto=format",
+            "https://ph-files.imgix.net/ccea9888-f2aa-4ec9-bd2c-0768fe6bf918.jpeg?auto=format",
+            "https://ph-files.imgix.net/5ba397aa-629a-4b93-aa81-45f2951c7813.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/70fba44f-63b2-4cee-9dc5-af76a8de4d35.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Genspark for Word",
+          "url": "https://www.producthunt.com/products/genspark/launches/genspark-for-word?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Draft, edit, and research inside Microsoft Word with AI",
+          "content": "Switching between AI tools and Word kills momentum. Genspark embeds drafting, editing, research, and formatting directly inside Word for writers, analysts, and office workers.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1118981",
+          "logo": "https://ph-files.imgix.net/b36028d9-b82b-469d-b036-cf0acf890ced.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/11b4bc6a-0c99-4ca0-9548-b0af90b08437.webp?auto=format",
+            "https://ph-files.imgix.net/e901b7b3-5fe4-4765-a26b-6b894dba2255.webp?auto=format",
+            "https://ph-files.imgix.net/52704aac-8ea5-47a8-9abd-6d29d0abd347.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/11b4bc6a-0c99-4ca0-9548-b0af90b08437.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Marx Finance",
+          "url": "https://www.producthunt.com/products/marx-finance/launches/marx-finance?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "AI agents debate the markets",
+          "content": "Agent first platform where autonomous AI agents discuss news, share market signals, and debate positions. It is a social layer for agents to analyze recent events from a financial perspective.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135821",
+          "logo": "https://ph-files.imgix.net/884ce363-e1db-46a6-a0e8-129b7071904e.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0d271066-ea16-4249-813b-cb46a1379dd3.png?auto=format",
+            "https://ph-files.imgix.net/0f2c319a-e824-4025-8163-3beb98bd4b5c.png?auto=format",
+            "https://ph-files.imgix.net/98198c54-2a76-46c9-8490-217caedb8883.png?auto=format",
+            "https://ph-files.imgix.net/b10305a2-48e7-4889-a6fd-8ec4f9e3583b.png?auto=format",
+            "https://ph-files.imgix.net/301c7a65-02ad-458f-9571-f2b5c3db0ea7.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0d271066-ea16-4249-813b-cb46a1379dd3.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "GoodActs App",
+          "url": "https://www.producthunt.com/products/goodacts-app/launches/goodacts-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Where community meets impact.",
+          "content": "GoodActs is an app that aims to connect the community by making community service opportunities accessible, trackable, and social. With the objective of making the world a better place one service opportunity at a time! `",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135551",
+          "logo": "https://ph-files.imgix.net/6edecabe-4e61-4f99-b4c4-c469f1ab45da.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/23d311d3-9a5d-4e2f-8cd2-dacf1e5b347a.jpeg?auto=format",
+            "https://ph-files.imgix.net/f5eb1c69-7c32-49f6-b2de-5b015b7d9ef9.png?auto=format",
+            "https://ph-files.imgix.net/32b0226f-021c-4f7e-8408-f8371a0b36c8.png?auto=format",
+            "https://ph-files.imgix.net/7528d551-d598-4114-a319-69c01d799e79.png?auto=format",
+            "https://ph-files.imgix.net/1e98a724-a0ad-4c11-babf-71dfddf44d03.png?auto=format",
+            "https://ph-files.imgix.net/cf6198f2-2c20-4e6c-9b12-08ebcf045a57.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/23d311d3-9a5d-4e2f-8cd2-dacf1e5b347a.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "KingQueen: party night game",
+          "url": "https://www.producthunt.com/products/kingqueen-party-night-game/launches/kingqueen-party-night-game?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Flip a coin. Decide the moment. Play together.",
+          "content": "KingQueen is a privacy-first social game where one coin toss decides everything. Add two players, flip the coin, and the winner gives a challenge. Simple, fast, and surprisingly fun. It’s designed for couples, friends, and game nights - no login, no accounts, no friction. Everything runs on-device, including your photos. Play it anywhere, anytime and let the coin decide.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136524",
+          "logo": "https://ph-files.imgix.net/21105d0f-ea75-4bbb-b6c0-2ad3e27e04d4.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b8faca0f-2dc7-40b8-aed1-576842d52f1f.jpeg?auto=format",
+            "https://ph-files.imgix.net/40f7e575-0861-4fd2-980b-6da31c70cd9a.png?auto=format",
+            "https://ph-files.imgix.net/a7dfa55a-1749-421a-b24a-2be3a4501486.png?auto=format",
+            "https://ph-files.imgix.net/82367742-bcb7-483a-a840-f2b00b80e75e.png?auto=format",
+            "https://ph-files.imgix.net/a3aa65b3-55fa-48a1-a09a-47566a469087.png?auto=format",
+            "https://ph-files.imgix.net/f9b5e30a-a9cf-4f5b-be5d-caeb05007f4e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b8faca0f-2dc7-40b8-aed1-576842d52f1f.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Trove - Download videos from 1000+ sites",
+          "url": "https://www.producthunt.com/products/trove-download-videos-from-1000-sites/launches/trove-download-videos-from-1000-sites?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Paste a link. Save media locally. No ads, logins or limits",
+          "content": "Trove is the clean, self-hosted alternative to sketchy online video downloader sites. It runs on your machine, wraps yt-dlp, saves files locally, and has no ads, accounts, download limits, or telemetry.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136190",
+          "logo": "https://ph-files.imgix.net/37e32a61-0996-4943-8ea8-498fae0ce2cf.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/3461dff2-682b-479e-b2c3-9fbcc7a9f564.jpeg?auto=format",
+            "https://ph-files.imgix.net/62500017-1be8-445a-99d9-ef05fd2a27e4.gif?auto=format",
+            "https://ph-files.imgix.net/fbc8d09f-6a1a-42dc-afcb-f814a4010564.png?auto=format",
+            "https://ph-files.imgix.net/da3d5b42-d1b9-47f4-b7d7-b24175556bb1.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/3461dff2-682b-479e-b2c3-9fbcc7a9f564.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "monolog",
+          "url": "https://www.producthunt.com/products/monolog-2/launches/monolog-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Chat to yourself. AI remembers everything",
+          "content": "Chat to yourself. monolog takes care of the rest. No titles, folders, or tags to manage. AI quietly understands what you write, recognizes schedules and tasks, and reminds you when it matters. Semantic search finds records by what they were about—even if you forgot the exact words you used. Everything stays synced across iOS, Android, Web, Desktop, and Chrome. Just write naturally. monolog handles the organizing, remembering, and finding later.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1091737",
+          "logo": "https://ph-files.imgix.net/c377f025-342d-4ee7-b5af-85a9353b1007.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/46e6d2cb-9486-4570-b451-3e4def637867.png?auto=format",
+            "https://ph-files.imgix.net/9d9ef998-f76c-4313-b3fd-7d2c542a8b90.png?auto=format",
+            "https://ph-files.imgix.net/785e1683-5d57-40c0-8c56-556a4e01b6a9.png?auto=format",
+            "https://ph-files.imgix.net/c3f68762-046f-438c-bf36-0cdb7d0d54a0.png?auto=format",
+            "https://ph-files.imgix.net/43ab7e02-ab61-4b47-be0a-334da9857027.png?auto=format",
+            "https://ph-files.imgix.net/1c394970-6d1a-4064-826d-f3bb76ba7d59.png?auto=format",
+            "https://ph-files.imgix.net/0443b7d1-b736-483c-bc16-a62ab981005a.png?auto=format",
+            "https://ph-files.imgix.net/1be8935f-7cdd-4483-b1c4-be5b2a8a992b.png?auto=format",
+            "https://ph-files.imgix.net/30c29ed4-a0b2-40dd-a316-5f054ca28215.png?auto=format",
+            "https://ph-files.imgix.net/91c096c1-4164-41e0-8ab9-edebb0a2a2a7.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/46e6d2cb-9486-4570-b451-3e4def637867.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Avvio",
+          "url": "https://www.producthunt.com/products/avvio-global-account/launches/avvio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Your money should move as freely as you do",
+          "content": "Avvio gives you real USD and EUR global accounts, local payouts in 120 countries, savings goals with yield, and the ability to hold BTC, gold, and stocks all from one self-custodial app. No middlemen. No separate wallets. Just one account built for how you actually live.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1129115",
+          "logo": "https://ph-files.imgix.net/13ef71c6-ab2c-4bf3-b7eb-55477a7ef28a.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/27a2342e-cf1a-4d66-9f04-4af54ba9949c.png?auto=format",
+            "https://ph-files.imgix.net/bd7807c9-3e3f-45d8-94b5-321bd7730f8e.png?auto=format",
+            "https://ph-files.imgix.net/ee8dea28-67fc-4a1d-a7d2-e8a1e6a3733b.png?auto=format",
+            "https://ph-files.imgix.net/f4db7bf1-89f0-4310-8f80-23ec60bfd1dc.png?auto=format",
+            "https://ph-files.imgix.net/468a5068-f55f-479f-ba09-eb711c788c4f.png?auto=format",
+            "https://ph-files.imgix.net/ecd744d7-bc83-4fa5-8d66-6d40ac7dbdad.png?auto=format",
+            "https://ph-files.imgix.net/38588217-e599-4743-aaaa-bb1925e7220d.png?auto=format",
+            "https://ph-files.imgix.net/733c2b2a-fa6a-44ef-8013-ac6d7d3603f9.png?auto=format",
+            "https://ph-files.imgix.net/dc678062-3564-4341-8246-f43ed918ca4d.png?auto=format",
+            "https://ph-files.imgix.net/1dfa6810-5553-4a9c-b3e0-3f59861b98d6.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/27a2342e-cf1a-4d66-9f04-4af54ba9949c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Notie: Thinking out loud",
+          "url": "https://www.producthunt.com/products/notie-thinking-out-loud/launches/notie-thinking-out-loud?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Voice to text, journal & notes",
+          "content": "Notie is a 100% offline, privacy-first voice note app for iOS. Just speak — Notie turns your voice into readable text. When your thoughts feel messy or typing feels hard, just talk. Notie captures your voice and converts it into clean, readable notes so you can see what you're actually thinking. Record directly in the app or upload an audio file. Your speech becomes text instantly. Built for thinking out loud — capture ideas, journal, vent, or plan without pressure.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136179",
+          "logo": "https://ph-files.imgix.net/751079c8-2388-447e-ad76-5488fee06fe2.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c51968ae-7d3a-4666-b2aa-939370832add.png?auto=format",
+            "https://ph-files.imgix.net/13428a68-324b-433f-ad09-2559e77473f7.png?auto=format",
+            "https://ph-files.imgix.net/df2e0c39-d253-44f1-8e1f-4a910bff4945.png?auto=format",
+            "https://ph-files.imgix.net/4294d064-efdf-4f87-859b-9012c16f81d4.png?auto=format",
+            "https://ph-files.imgix.net/9842c87b-f2f2-4884-b68a-fc44c6c39fc8.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c51968ae-7d3a-4666-b2aa-939370832add.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Stelais",
+          "url": "https://www.producthunt.com/products/stelais/launches/stelais?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "The recognition layer for creators in a digital AI world",
+          "content": "Stelais is recognition infrastructure for any creative work. The internet gave creators unprecedented reach, but broke the link between a work and its maker. Stelais restores the connection through proof of Origin on Arweave, public verification pages, Residue Watermarking embedded in the pixels, reverse-image scanning, and DMCA evidence bundles. All combined into a single system. Named after the oldest form of recorded provenance. Stelais is the infrastructure the modern internet is missing.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135431",
+          "logo": "https://ph-files.imgix.net/78d4a971-0262-4965-96aa-e251079a1045.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/6f79cac4-80aa-47dc-ae15-53d9ea0dacc4.png?auto=format",
+            "https://ph-files.imgix.net/91e299e4-e235-4004-96ca-34d45a9ee75b.png?auto=format",
+            "https://ph-files.imgix.net/f28b4db8-e0ca-468f-abd6-75946d63d1a6.png?auto=format",
+            "https://ph-files.imgix.net/6c3df63b-73f0-4cd7-adee-2531836d9b95.png?auto=format",
+            "https://ph-files.imgix.net/b3adc6af-b721-4654-b5d4-b1f9111f9df8.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/6f79cac4-80aa-47dc-ae15-53d9ea0dacc4.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Formdiy",
+          "url": "https://www.producthunt.com/products/formdiy/launches/formdiy?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Build different and beautiful forms",
+          "content": "Most form builders are either ugly or rigid. Formdiy blends modern design with powerful, no-code logic. Why Formdiy stands out: 1. Brand-First: Stunning, modern themes that look professional out of the box. 2. Logic-Driven: Drag-and-drop workflows for complex quizzes and conditional surveys. 3. Team-Ready: Unique built-in version control and real-time collaboration. 4. Pro-Grade: Custom domains and deep analytics included. Build beautiful, smart forms effortlessly.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136103",
+          "logo": "https://ph-files.imgix.net/f9bf32c4-8cc9-422e-b29b-4e861232afc6.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/ed740662-1a51-41f3-8085-7ecde736cdaa.jpeg?auto=format",
+            "https://ph-files.imgix.net/c382f32b-4f1d-49f9-9aed-90ec0afbe4b6.png?auto=format",
+            "https://ph-files.imgix.net/f7dc3e73-6100-42c1-a65a-c257dc56e478.jpeg?auto=format",
+            "https://ph-files.imgix.net/c312d1ff-5903-49f5-932c-ec2ea17a6b4d.png?auto=format",
+            "https://ph-files.imgix.net/f71135f3-0571-44c2-886a-f47fff71d7ee.jpeg?auto=format",
+            "https://ph-files.imgix.net/a9199e1a-282b-4145-8c1b-4c39a05ba3f6.png?auto=format",
+            "https://ph-files.imgix.net/67ce76d0-a3cd-4058-bc0f-231798c869b7.jpeg?auto=format",
+            "https://ph-files.imgix.net/b63ce477-7e5d-493d-acd9-12293201b303.png?auto=format",
+            "https://ph-files.imgix.net/7c882aee-7861-47f9-a9cc-8a0c84ecc868.jpeg?auto=format",
+            "https://ph-files.imgix.net/07e36698-496a-4b71-b3cb-dea4ef72bd26.png?auto=format",
+            "https://ph-files.imgix.net/a49587a8-26c4-41db-adc5-d1913f03bb30.jpeg?auto=format",
+            "https://ph-files.imgix.net/6af7d614-a644-415e-b29c-fabdc4fb7956.png?auto=format",
+            "https://ph-files.imgix.net/158162f7-9f11-4a61-a520-15961d834863.jpeg?auto=format",
+            "https://ph-files.imgix.net/9037f5f4-8c7e-431e-8f0c-97d97b7a72d8.png?auto=format",
+            "https://ph-files.imgix.net/78df1c9a-a428-4941-a40a-01d4d2703994.jpeg?auto=format",
+            "https://ph-files.imgix.net/9f41b3e4-96da-46e9-a768-9a8ce2582e1a.png?auto=format",
+            "https://ph-files.imgix.net/f69f1c08-8476-4814-a6dc-64e2a2d31bc3.jpeg?auto=format",
+            "https://ph-files.imgix.net/4c8ac98f-9cc9-4fd9-8dd2-85c446e3f665.png?auto=format",
+            "https://ph-files.imgix.net/0f27090c-2898-4937-b9a9-e5c7df480ac6.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/ed740662-1a51-41f3-8085-7ecde736cdaa.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "SmartDart",
+          "url": "https://www.producthunt.com/products/smartdart/launches/smartdart?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Dart tournaments in 30 sec — live scoring & beamer mode",
+          "content": "SmartDart lets you run a complete dart tournament in 30 seconds — 7 bracket formats, live scoring on multiple boards, real-time sync on every player's phone, and PDC-style beamer projection. Free tier, no download, GDPR-compliant EU hosting.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136038",
+          "logo": "https://ph-files.imgix.net/d4a679a2-6068-4b5b-8944-bd0b8b462553.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0c74906f-09b8-40d4-8349-b43f71a7fe20.jpeg?auto=format",
+            "https://ph-files.imgix.net/f9eaf475-25d9-4928-8aac-b412d9828f7e.png?auto=format",
+            "https://ph-files.imgix.net/46fc8f92-3edc-4668-bcbb-2d425ae567ac.png?auto=format",
+            "https://ph-files.imgix.net/662f60bc-64b5-41dc-b0ec-6cbf9f5656f6.png?auto=format",
+            "https://ph-files.imgix.net/570c0ec6-11e0-4780-afdd-5faf548d96a5.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0c74906f-09b8-40d4-8349-b43f71a7fe20.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Kickstart Remote",
+          "url": "https://www.producthunt.com/products/kickstart-remote/launches/kickstart-remote?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-01T07:01:00Z",
+          "summary": "Skip the spam and paywalls, just real remote jobs.",
+          "content": "Kickstart Remote helps job seekers find legitimate remote jobs with transparent salary insights. Most job boards hide pay, recycle old listings, or push low-quality roles. Kickstart Remote focuses on curated remote-first roles, real salary data, and a clean, spam-free experience. Built to respect candidates’ time and help them make better career decisions.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1070230",
+          "logo": "https://ph-files.imgix.net/ed341cec-5500-4327-8757-d718d3033f21.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e4f2fa65-f5bd-4e63-ada5-4c9df21c50e4.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e4f2fa65-f5bd-4e63-ada5-4c9df21c50e4.png?auto=format"
+        }
+      ]
+    }
+  ]
+}

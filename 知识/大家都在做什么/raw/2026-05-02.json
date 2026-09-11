@@ -1,1 +1,623 @@
-{"fetchedAt":"2026-09-07T09:20:42.513Z","date":"2026-05-02","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"〖开源自荐〗Mira：让 AI 直接进入 Android/iOS 真实运行时环境做防护分析","url":"https://github.com/vwww-droid/Mira/blob/main/docs/android-remote-frida.png?raw=1\"","author":"vwww-droid","authorUrl":"https://github.com/vwww-droid","publishedAt":"2026-05-01T18:17:48Z","summary":"Mira 是一个面向移动应用防护端的 Android/iOS 运行时防护分析工具，可集成到第三方待测 App 中分析业务中风险环境特征，进入第三方 App 权限范围内的真实运行时沙箱环境，检测环境风险并验证防护策略。 支持 AI 直接在运行时动态调用宿主 App 侧任意代码 (调用 shell、Java、Native 和 Frida 能力)，直接完成防护验证、环境风险检测和证据收集。 目前已经验证过一些典型场景，包括 Magisk 痕迹识别、Cydia 残留检测、LSPosed 注入特征定位等。 <table <tr <th align=\"center\"Android 远程 Frida</th <th align=\"center\"iOS 远程 Frida</th </tr <tr <td <img src=\" alt=\"Android Remote Frida\" / <div align=\"center\"<sub在第三方待测 App 权限范围内的 Android 真机上完成远程 shell、运行时检查与实时 Frida 执行。</sub</div </td <td <img src=\" alt=\"iOS Remote Frida\" / <div align=\"center\"<sub在第三方待测 App 权限范围内，通过 iOS 侧 iSH 兼容层复用等价的 PTY 与 Frida 分析链路。</sub</div </td </tr <tr <th align=\"center\"Android LSPosed 痕迹定位</th <th align=\"center\"iOS 越狱痕迹定位</th </tr <tr <td <img src=\" alt=\"Android LSPosed Trace\" / <div align=\"center\"<sub围绕应用 classloader 构造 Frida 路径，并从第三方 App 运行时状态中定位 LSPosed 注入痕迹。</sub</div </td <td <img src=\" alt=\"iOS Jailbreak Trace\" / <div align=\"center\"<sub让 AI 在第三方 App 权限侧的真实终端环境中游走，并自动收集越狱相关痕迹。</sub</div </td </tr </table 项目地址：","content":"Mira 是一个面向移动应用防护端的 Android/iOS 运行时防护分析工具，可集成到第三方待测 App 中分析业务中风险环境特征，进入第三方 App 权限范围内的真实运行时沙箱环境，检测环境风险并验证防护策略。\n\n支持 AI 直接在运行时动态调用宿主 App 侧任意代码 (调用 shell、Java、Native 和 Frida 能力)，直接完成防护验证、环境风险检测和证据收集。\n\n目前已经验证过一些典型场景，包括 Magisk 痕迹识别、Cydia 残留检测、LSPosed 注入特征定位等。\n\n<table>\n  <tr>\n    <th align=\"center\">Android 远程 Frida</th>\n    <th align=\"center\">iOS 远程 Frida</th>\n  </tr>\n  <tr>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/android-remote-frida.png?raw=1\" alt=\"Android Remote Frida\" />\n      <div align=\"center\"><sub>在第三方待测 App 权限范围内的 Android 真机上完成远程 shell、运行时检查与实时 Frida 执行。</sub></div>\n    </td>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/ios-remote-frida.png?raw=1\" alt=\"iOS Remote Frida\" />\n      <div align=\"center\"><sub>在第三方待测 App 权限范围内，通过 iOS 侧 iSH 兼容层复用等价的 PTY 与 Frida 分析链路。</sub></div>\n    </td>\n  </tr>\n  <tr>\n    <th align=\"center\">Android LSPosed 痕迹定位</th>\n    <th align=\"center\">iOS 越狱痕迹定位</th>\n  </tr>\n  <tr>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/Area.gif?raw=1\" alt=\"Android LSPosed Trace\" />\n      <div align=\"center\"><sub>围绕应用 classloader 构造 Frida 路径，并从第三方 App 运行时状态中定位 LSPosed 注入痕迹。</sub></div>\n    </td>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/cydia-ios.gif?raw=1\" alt=\"iOS Jailbreak Trace\" />\n      <div align=\"center\"><sub>让 AI 在第三方 App 权限侧的真实终端环境中游走，并自动收集越狱相关痕迹。</sub></div>\n    </td>\n  </tr>\n</table>\n\n项目地址：\nhttps://github.com/vwww-droid/Mira\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9825","issueUrl":"https://github.com/ruanyf/weekly/issues/9825"},{"sourceId":"weekly-issues","title":"【开源自荐】Windows 后台服务管理工具，将任意程序以后台服务的形式运行。可视化操作","url":"https://github.com/sky22333/services","author":"sky22333","authorUrl":"https://github.com/sky22333","publishedAt":"2026-05-02T05:35:41Z","summary":"C + WinUI 3 实现的 Windows 后台服务管理工具 项目地址： 主要功能 1. 服务管理： 列出由该工具创建的服务。 创建新服务（通过包装器模式运行任意可执行文件）。 启动、停止、删除服务。 查看服务日志。 2. 环境变量管理： 添加路径到系统 PATH 环境变量。 打开系统环境变量设置界面。 3. UI 交互： 现代化 Windows 11 风格界面。 托盘图标支持。 管理员权限检测与提权。 预览 !主界面 !主界面 !主界面","content":"### `C# + WinUI 3` 实现的 Windows 后台服务管理工具\n\n项目地址：https://github.com/sky22333/services\n\n### 主要功能\n1. **服务管理**：\n   - 列出由该工具创建的服务。\n   - 创建新服务（通过包装器模式运行任意可执行文件）。\n   - 启动、停止、删除服务。\n   - 查看服务日志。\n2. **环境变量管理**：\n   - 添加路径到系统 PATH 环境变量。\n   - 打开系统环境变量设置界面。\n3. **UI 交互**：\n   - 现代化 Windows 11 风格界面。\n   - 托盘图标支持。\n   - 管理员权限检测与提权。\n\n### 预览\n\n![主界面](https://cdn.jsdelivr.net/gh/sky22333/services@main/.github/demo/demo111.png)\n![主界面](https://cdn.jsdelivr.net/gh/sky22333/services@main/.github/demo/demo2.png)\n![主界面](https://cdn.jsdelivr.net/gh/sky22333/services@main/.github/demo/demo3.png)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9826","issueUrl":"https://github.com/ruanyf/weekly/issues/9826"},{"sourceId":"weekly-issues","title":"【网站自荐】ClipTrend.ai - 一键复刻爆款 AI 视频，TikTok / YouTube 趋势模板化","url":"https://cliptrend.ai/","author":"seantins9","authorUrl":"https://github.com/seantins9","publishedAt":"2026-05-02T10:40:54Z","summary":"每周追踪 TikTok / YouTube 上正在爆的 AI 视频效果，把每一个爆款做成一键可用的模板。用户选模板 → 上传一张自拍（或粘贴一条 TikTok 链接）→ 3060 秒出片。不用写 prompt、不用选模型。 网站： 和其他 AI 视频生成工具的核心区别： 每张模板卡都带 35 个真实爆款源视频：点开任一卡片能看到 TikTok / YouTube 上同款效果的真实视频，每条附实时播放量。在花积分前可以验证这个 trend 是真的火。例：末日战士 280 万播放、怪物猎人 1100 万、毛绒动物跳舞 8180 万。 而且复刻视频可以有各式各样的变体，可以通过选择不同预设或是输入文字 prompt来生成类似但不完全相同的模板效果 10+ 顶级 AI 模型自动路由：底层接了 Seedance 2 / Kling 3 / Veo 3.1 / Wan 2.7 / Nano Banana Pro / GPT Image 2 等。用户不用选模型，系统按效果类型自动路由——舞蹈给 Veo，变身给 Seedance，角色给 Nano Banana。背后的工作流全都配好并且通过大量测试确保效果稳定。 粘贴 TikTok URL 直接复刻动作：把任意 TikTok 视频链接粘进来，系统会从那条视频里提取动作（舞蹈、武打、运镜），套到你的角色上。链接进，动作出，不用描述、不用重新上传。 Seedance 2 真人脸 reference 全 plan 解锁：Seedance 2 是目前真人脸变换最强的模型，大多数消费级 AI 视频工具会屏蔽真人脸或悄悄换成 AI 生成的脸。ClipTrend 默认开放，包括 $14 入门档。 生成前可控：花积分前先看一张静态图（模型即将生成的画面），不满意可以现场改 variant 描述（\"更黑暗一点\"、\"把舞蹈换成慢慢走过来\"），预览满意再 generate。无水印，商业授权。 50+ 模板上线，累计追踪 trend 播放 1.2 亿+，每周更新新 trending。免费试用，无需信用卡。月付首月 $14（1400 积分约 60 个视频，正常 $27.99/月），年付 $13.99/月（16,800 积分一次发放），相同积分量下比同类竞品便宜 20% 以上。 也包含多种最新模型例如 gpt2, nanobanana2, seedance2, kling 3.0等，也包括各类常用能力包括角色替换、换脸、动作控制等 youtube介绍视频 <img width=\"3022\" height=\"1508\" alt=\"Image\" src=\" / /n <img width=\"3436\" height=\"1281\" alt=\"Image\" src=\" / /n <img width=\"3018\" height=\"1508\" alt=\"Image\" src=\" /","content":"每周追踪 TikTok / YouTube 上正在爆的 AI 视频效果，把每一个爆款做成一键可用的模板。用户选模板 → 上传一张自拍（或粘贴一条 TikTok 链接）→ 30-60 秒出片。不用写 prompt、不用选模型。\n\n网站：https://cliptrend.ai/\n\n和其他 AI 视频生成工具的核心区别：\n\n-每张模板卡都带 3-5 个真实爆款源视频：点开任一卡片能看到 TikTok / YouTube 上同款效果的真实视频，每条附实时播放量。在花积分前可以验证这个 trend 是真的火。例：末日战士 280 万播放、怪物猎人 1100 万、毛绒动物跳舞 8180 万。 而且复刻视频可以有各式各样的变体，可以通过选择不同预设或是输入文字 prompt来生成类似但不完全相同的模板效果\n\n-10+ 顶级 AI 模型自动路由：底层接了 Seedance 2 / Kling 3 / Veo 3.1 / Wan 2.7 / Nano Banana Pro / GPT Image 2 等。用户不用选模型，系统按效果类型自动路由——舞蹈给 Veo，变身给 Seedance，角色给 Nano Banana。背后的工作流全都配好并且通过大量测试确保效果稳定。\n\n-粘贴 TikTok URL 直接复刻动作**：把任意 TikTok 视频链接粘进来，系统会从那条视频里提取动作（舞蹈、武打、运镜），套到你的角色上。链接进，动作出，不用描述、不用重新上传。\n\n-Seedance 2 真人脸 reference 全 plan 解锁：Seedance 2 是目前真人脸变换最强的模型，大多数消费级 AI 视频工具会屏蔽真人脸或悄悄换成 AI 生成的脸。ClipTrend 默认开放，包括 $14 入门档。\n\n-生成前可控：花积分前先看一张静态图（模型即将生成的画面），不满意可以现场改 variant 描述（\"更黑暗一点\"、\"把舞蹈换成慢慢走过来\"），预览满意再 generate。无水印，商业授权。\n\n-50+ 模板上线，累计追踪 trend 播放 1.2 亿+，每周更新新 trending。免费试用，无需信用卡。月付首月 $14（1400 积分约 60 个视频，正常 $27.99/月），年付 $13.99/月（16,800 积分一次发放），相同积分量下比同类竞品便宜 20% 以上。\n\n-也包含多种最新模型例如 gpt2, nanobanana2, seedance2, kling 3.0等，也包括各类常用能力包括角色替换、换脸、动作控制等\n\n\nyoutube介绍视频 https://www.youtube.com/watch?v=4S-S5WFW4sg\n\n<img width=\"3022\" height=\"1508\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/013807a4-0bbb-41cf-9efe-e228717cc609\" />\n\n/n\n\n<img width=\"3436\" height=\"1281\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ead99ff0-a1d4-446e-94c4-6856f4e5c392\" />\n\n/n\n\n<img width=\"3018\" height=\"1508\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/690e3e8f-a62e-4728-888e-5ec0d69b5ba9\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9827","issueUrl":"https://github.com/ruanyf/weekly/issues/9827"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"推荐项目：HMNextAuto - 鸿蒙 NEXT UI 自动化测试框架","url":"https://github.com/ziguiway/hmnextauto","author":"ziguiway","authorUrl":"https://github.com/ziguiway","publishedAt":"2026-05-02T06:43:24Z","summary":"项目信息 项目名称: HMNextAuto GitHub 地址: PyPI: pip install hmnextauto Stars: !GitHub stars 项目简介 HMNextAuto 是一个基于 Python 的鸿蒙 NEXT UI 自动化测试框架，API 风格兼容 uiautomator2，降低了从 Android 自动化迁移的学习成本。 主要特性 uiautomator2 兼容 API 熟悉的接口设计，无缝迁移 XPath 支持 灵活的元素定位方式 图像识别 基于模板匹配的视觉定位 性能监控 CPU/内存/FPS 实时采集与分析 通知管理 鸿蒙系统通知的监听与操作 Shell 命令执行 支持 hdc shell 命令 屏幕录制 支持 MP4 格式录制 多设备管理 支持 WiFi 和 USB 连接 适用场景 鸿蒙 NEXT 应用的 UI 自动化测试，特别适合从 Android uiautomator2 迁移过来的测试团队。 Python 版本支持 Python 3.8 3.14 推荐理由 这是目前为数不多的鸿蒙 NEXT 自动化测试开源框架，填补了鸿蒙生态在 UI 自动化测试领域的空白。对于鸿蒙应用开发者和测试工程师来说非常实用。","content":"## 项目信息\n\n- **项目名称**: HMNextAuto\n- **GitHub 地址**: https://github.com/ziguiway/hmnextauto\n- **PyPI**: `pip install hmnextauto`\n- **Stars**: ![GitHub stars](https://img.shields.io/github/stars/ziguiway/hmnextauto.svg)\n\n## 项目简介\n\nHMNextAuto 是一个基于 Python 的鸿蒙 NEXT UI 自动化测试框架，API 风格兼容 uiautomator2，降低了从 Android 自动化迁移的学习成本。\n\n## 主要特性\n\n- **uiautomator2 兼容 API** - 熟悉的接口设计，无缝迁移\n- **XPath 支持** - 灵活的元素定位方式\n- **图像识别** - 基于模板匹配的视觉定位\n- **性能监控** - CPU/内存/FPS 实时采集与分析\n- **通知管理** - 鸿蒙系统通知的监听与操作\n- **Shell 命令执行** - 支持 hdc shell 命令\n- **屏幕录制** - 支持 MP4 格式录制\n- **多设备管理** - 支持 Wi-Fi 和 USB 连接\n\n## 适用场景\n\n鸿蒙 NEXT 应用的 UI 自动化测试，特别适合从 Android uiautomator2 迁移过来的测试团队。\n\n## Python 版本支持\n\nPython 3.8 - 3.14\n\n## 推荐理由\n\n这是目前为数不多的鸿蒙 NEXT 自动化测试开源框架，填补了鸿蒙生态在 UI 自动化测试领域的空白。对于鸿蒙应用开发者和测试工程师来说非常实用。","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3250","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3250"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Il Frullatore Carlà (Buffett-style App)","url":"https://www.producthunt.com/products/reciptify-ai/launches/il-frullatore-carla-buffett-style-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"A revolutionary app: a Buffett-style analysis in two minutes","content":"My app is built on a proprietary system that incorporates over 35 years of analytical methodology. The quality of the output depends by skills that require decades of practical experience to develop. “Anyone can ask a general-purpose AI to analyze a company,” says Carlà. “What they get is a superficial analysis. What makes the difference is what’s inside the system—and that’s the result of thirty-five years of work.”","metrics":{},"tags":["producthunt","new"],"externalId":"1136230","logo":"https://ph-files.imgix.net/af81717a-bfe5-4851-9c60-ea238097bef6.avif?auto=format","images":["https://ph-files.imgix.net/f58c745d-c3cd-461a-b2b5-2630845c4ccd.png?auto=format","https://ph-files.imgix.net/59c7a10f-60a6-4035-bbd8-e369adccfb7f.png?auto=format","https://ph-files.imgix.net/dfc214a1-09bb-4eb5-b9b1-388a50303fba.png?auto=format"],"image":"https://ph-files.imgix.net/f58c745d-c3cd-461a-b2b5-2630845c4ccd.png?auto=format"},{"sourceId":"producthunt","title":"Drone Tactics","url":"https://www.producthunt.com/products/drone-tactics/launches/drone-tactics?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Fast-paced drone warfare where tactics decide everything","content":"A tactical drone combat game where strategy, timing, and positioning decide who wins.","metrics":{},"tags":["producthunt","new"],"externalId":"1136909","logo":"https://ph-files.imgix.net/159bd689-fd7c-47f0-a769-0bec2bcd3ba1.png?auto=format","images":["https://ph-files.imgix.net/d53f2883-0685-430f-8dee-b1aa4a8a04a4.jpeg?auto=format","https://ph-files.imgix.net/72ff2b4a-8cef-43c8-ba4f-5d0dc4729a5a.jpeg?auto=format","https://ph-files.imgix.net/c69f3487-0dc0-41ef-93fe-a96c90227945.jpeg?auto=format","https://ph-files.imgix.net/a5d16cff-c1fb-4b38-a7e8-650dc9f55ead.jpeg?auto=format","https://ph-files.imgix.net/fa2473e0-3a65-4db9-a4e0-d518b25b7305.jpeg?auto=format","https://ph-files.imgix.net/ec13779a-8a63-4718-a13d-6c06bb89106c.jpeg?auto=format","https://ph-files.imgix.net/2ee7a4c7-8f66-4343-a2e2-29dccf84ab58.jpeg?auto=format"],"image":"https://ph-files.imgix.net/d53f2883-0685-430f-8dee-b1aa4a8a04a4.jpeg?auto=format"},{"sourceId":"producthunt","title":"Catalingo","url":"https://www.producthunt.com/products/catalingo/launches/catalingo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Read real-world news at your exact language level.","content":"Catalingo helps you bridge the gap between language apps and real-world fluency. We pull live news daily and automatically rewrite articles into multiple difficulty levels, so you can read today's headlines regardless of your level. Features: Instant tap-to-translate, AI-generated quizzes based on your reading, and a community writing platform. Stop memorizing random words and start reading the world. Support for multiple languages. Try 5 articles a day for free!","metrics":{},"tags":["producthunt","new"],"externalId":"1136822","logo":"https://ph-files.imgix.net/1da9f815-2454-4540-8d05-00152018d511.png?auto=format","images":["https://ph-files.imgix.net/42d67473-5035-465e-8646-ae612ec1b53b.png?auto=format","https://ph-files.imgix.net/05555d0f-4cf1-44d1-ab06-943dac77ec00.jpeg?auto=format","https://ph-files.imgix.net/9fdcb7ef-f83d-4975-acc2-0826a0abba74.jpeg?auto=format","https://ph-files.imgix.net/f3e63543-0598-4681-8198-20a63a5d7b11.jpeg?auto=format"],"image":"https://ph-files.imgix.net/42d67473-5035-465e-8646-ae612ec1b53b.png?auto=format"},{"sourceId":"producthunt","title":"Hairdo: Hair Filters & Color","url":"https://www.producthunt.com/products/hairdo-hair-filters-color/launches/hairdo-hair-filters-color?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Try Hairstyles & Hair Colors Instantly with AI","content":"Upload a photo and instantly try on realistic hairstyles and hair colors with AI. Experiment with bangs, curls, fades, or bold colors in seconds, no salon risk. Discover your perfect look, compare styles, and share results. Whether you’re planning a makeover or just exploring, HairDo helps you visualize before you commit. Simple, fast, and surprisingly realistic.","metrics":{},"tags":["producthunt","new"],"externalId":"1136613","logo":"https://ph-files.imgix.net/2e739428-ab56-4a07-a3de-9c774e68912b.webp?auto=format","images":["https://ph-files.imgix.net/da21a27b-a022-4d75-8773-ba6509dd857e.jpeg?auto=format","https://ph-files.imgix.net/5bd40231-2837-49c0-99e8-41f5ec249431.jpeg?auto=format","https://ph-files.imgix.net/0753703e-3d66-46da-a84e-ed322392ab48.jpeg?auto=format","https://ph-files.imgix.net/a98b9d1f-5223-49a4-a9dd-12ed37c20bde.jpeg?auto=format","https://ph-files.imgix.net/1368b0e0-9bb0-42d3-adc4-81d27a320eb9.jpeg?auto=format"],"image":"https://ph-files.imgix.net/da21a27b-a022-4d75-8773-ba6509dd857e.jpeg?auto=format"},{"sourceId":"producthunt","title":"FakeTools","url":"https://www.producthunt.com/products/faketools/launches/faketools?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Developer tools for test data  - Disposable Email & More","content":"FakeTools is a free collection of developer utilities for generating realistic test data instantly. 🔹 Temp Email — real disposable inbox with live delivery 🔹 Fake Identity Generator — name, address, phone, DOB 🔹 Password Generator — secure 🔹 UUID Generator — instant v4 UUIDs No signup. No account. No credit card. Just tools that work. Perfect for developers testing signup flows, QA engineers seeding databases, and anyone who wants to protect their real email. 👉 https://www.faketools.in","metrics":{},"tags":["producthunt","new"],"externalId":"1136942","logo":"https://ph-files.imgix.net/8cd06676-e853-4ee7-9120-32e93667c643.x-icon?auto=format","images":["https://ph-files.imgix.net/047bf33b-7fac-481c-9753-57c7d4812512.jpeg?auto=format","https://ph-files.imgix.net/99acdddd-4919-44a2-9b35-b8fa40c17b7e.jpeg?auto=format","https://ph-files.imgix.net/22e28395-997d-4042-a1e5-f074e55935bd.jpeg?auto=format","https://ph-files.imgix.net/0b16cf33-1f26-47d8-8a3f-2b7a8e6ac177.jpeg?auto=format","https://ph-files.imgix.net/ca8d44df-b31e-47aa-8080-e8a2a5c56dbd.jpeg?auto=format"],"image":"https://ph-files.imgix.net/047bf33b-7fac-481c-9753-57c7d4812512.jpeg?auto=format"},{"sourceId":"producthunt","title":"EncurtaTurbo","url":"https://www.producthunt.com/products/encurtaturbo/launches/encurtaturbo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Shortener URL","content":"EncurtaTurbo: encurte links em segundos, gere QR Codes personalizados e acompanhe analytics em tempo real. Proteção com senha, expiração automática e mais de 128 mil links encurtados.","metrics":{},"tags":["producthunt","new"],"externalId":"1137121","logo":"https://ph-files.imgix.net/3d6cbbc9-faa8-4d15-b97c-65b9b55bdd1b.png?auto=format","images":["https://ph-files.imgix.net/5b3846b7-63e4-41b8-97e6-cdeff908a85e.png?auto=format","https://ph-files.imgix.net/667a015d-bf8b-43a2-9a58-61567034fb42.png?auto=format","https://ph-files.imgix.net/c350477f-bd6c-4bd5-9fbd-42d1c1e6decd.jpeg?auto=format"],"image":"https://ph-files.imgix.net/5b3846b7-63e4-41b8-97e6-cdeff908a85e.png?auto=format"},{"sourceId":"producthunt","title":"Free Time Finder-Calendar Gaps","url":"https://www.producthunt.com/products/free-time-finder-calendar-gaps/launches/free-time-finder-calendar-gaps?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"See free time in calendar","content":"App Store Açıklaması (Optimize Edilmiş) Find Hidden Free Time in Your Calendar Your calendar looks full — but is it really? Free Time Finder automatically analyzes your calendar and shows you real, usable free time you didn’t even know you had. No manual planning. No guesswork. Just clear, actionable time blocks.","metrics":{},"tags":["producthunt","new"],"externalId":"1136545","logo":"https://ph-files.imgix.net/5586cc6a-9a1a-4620-a4c2-035e66ffd5f0.png?auto=format","images":["https://ph-files.imgix.net/2df49728-9f49-4ccb-857c-fc04d8f3215a.png?auto=format"],"image":"https://ph-files.imgix.net/2df49728-9f49-4ccb-857c-fc04d8f3215a.png?auto=format"},{"sourceId":"producthunt","title":"Audora","url":"https://www.producthunt.com/products/audora/launches/audora?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Premium 3D Isometric Icons & Character Generator for UI/UX","content":"Audora turns any text or photo into perfectly proportioned 3D isometric icons, UI props, and premium 3D characters using AI. Ready-to-use assets, multiple materials (glass, clay, plastic, and more), and pay-as-you-go pricing. Best AI-powered 3D isometric icon generator for designers and developers.","metrics":{},"tags":["producthunt","new"],"externalId":"1136642","logo":"https://ph-files.imgix.net/720bbfb0-047a-4435-b3d2-3dff0c3d0d85.png?auto=format","images":["https://ph-files.imgix.net/b430c403-e1d3-4b0e-a578-960c22f682cd.jpeg?auto=format","https://ph-files.imgix.net/9fe3b310-06cd-48f5-948f-3d8ece92e3be.png?auto=format","https://ph-files.imgix.net/7aacdf8e-697f-4992-91f9-811676c98c53.png?auto=format","https://ph-files.imgix.net/1939d02d-1dca-43ee-97cd-99cd7921e0e0.gif?auto=format"],"image":"https://ph-files.imgix.net/b430c403-e1d3-4b0e-a578-960c22f682cd.jpeg?auto=format"},{"sourceId":"producthunt","title":"NEURAL — AI UI Kit","url":"https://www.producthunt.com/products/neural-ai-ui-kit/launches/neural-ai-ui-kit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"An AI UI Kit with 472 screens for Figma","content":"NEURAL is a comprehensive AI product UI kit built for designers and developers shipping real products. 472 screens across four complete modes designed with Figma Variables. What's included Desktop Dark 118 screens, 1440×900 Desktop Light 118 screens, 1440×900 Mobile Dark 118 screens, 390×844 Mobile Light 118 screens, 390×844 UX Flow 8 section journey map covering every user path, customization guide Design System. Figma Variables with Dark and Light modes","metrics":{},"tags":["producthunt","new"],"externalId":"1136656","logo":"https://ph-files.imgix.net/c4a71b0d-5d79-4298-85cc-228931518675.png?auto=format","images":["https://ph-files.imgix.net/341d1141-9d9b-4ed9-a3c6-cf64ca5e683b.jpeg?auto=format","https://ph-files.imgix.net/10d0d572-e3c5-4219-9319-87cd4e1edc3a.png?auto=format","https://ph-files.imgix.net/3deb36b9-6c02-4fc5-aab1-d9233f860dc3.jpeg?auto=format","https://ph-files.imgix.net/43d785b2-a28a-4733-8b6f-e45571772c6a.jpeg?auto=format","https://ph-files.imgix.net/d9931f92-cbad-4121-ba94-2e8fd6dbc1db.png?auto=format","https://ph-files.imgix.net/1de5c321-dbef-4b32-b603-9463b897828a.png?auto=format"],"image":"https://ph-files.imgix.net/341d1141-9d9b-4ed9-a3c6-cf64ca5e683b.jpeg?auto=format"},{"sourceId":"producthunt","title":"Swiss Quiz 2","url":"https://www.producthunt.com/products/swiss-quiz-2/launches/swiss-quiz-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Swiss trivia quiz with multiple modes and map play","content":"Swiss Quiz 2 is a mobile quiz app that helps you learn about Switzerland through short, interactive rounds. It covers topics like geography, history, culture, and politics, with modes such as classic play, timed rounds, survival, and map-based questions. You can focus on specific topics, categories, or cantons, track your progress with detailed statistics, and compete with others in multiplayer. Designed for quick sessions and steady learning.","metrics":{},"tags":["producthunt","new"],"externalId":"1136858","logo":"https://ph-files.imgix.net/5c098d11-7e70-4db1-8fd6-949e29864ede.png?auto=format","images":["https://ph-files.imgix.net/2f03df47-7b24-4c7b-ac2b-ff7d1cfb11f4.png?auto=format","https://ph-files.imgix.net/db2d41d9-9b0b-4bf9-84ac-f196fbb288d4.png?auto=format","https://ph-files.imgix.net/928d3b19-0244-4e57-abff-53756915dfcc.png?auto=format","https://ph-files.imgix.net/7740446a-d7d6-41d6-8614-f80c3698de3b.png?auto=format","https://ph-files.imgix.net/53f2688d-a0cb-45d3-819e-d1915f64fa13.png?auto=format","https://ph-files.imgix.net/41701af9-480e-4d8a-a349-76102a9874f6.png?auto=format","https://ph-files.imgix.net/cf584f84-41c3-43b3-822d-8b267281afa1.png?auto=format","https://ph-files.imgix.net/292e5068-704c-4c75-9b03-c19f45fb8d5d.png?auto=format","https://ph-files.imgix.net/32716a29-7f20-4008-81b0-caa5379cf61d.png?auto=format","https://ph-files.imgix.net/052bff00-93ee-46be-b281-de1c17f71351.png?auto=format"],"image":"https://ph-files.imgix.net/2f03df47-7b24-4c7b-ac2b-ff7d1cfb11f4.png?auto=format"},{"sourceId":"producthunt","title":"Feather","url":"https://www.producthunt.com/products/feather-18/launches/feather-14?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Photo editor with local AI","content":"Your photos stay on your machine, AI generative infill, AI magic selection and smart stacking are all processed offline on your Apple Silicon Mac. The UI is modern and designed to be intuitive. It's pay once to use forever","metrics":{},"tags":["producthunt","new"],"externalId":"1135553","logo":"https://ph-files.imgix.net/a71f793f-18e7-4332-a16b-009aeb0fe9e9.png?auto=format","images":["https://ph-files.imgix.net/8660e2b0-0c99-49d1-a191-37d6c25c866c.png?auto=format","https://ph-files.imgix.net/cdc27e6b-d24f-4fb9-b7ed-86a5938049c7.png?auto=format","https://ph-files.imgix.net/77510618-3834-43de-99cc-cb9800747104.png?auto=format","https://ph-files.imgix.net/890c0579-f039-4f4d-881d-5221c08ac672.jpeg?auto=format","https://ph-files.imgix.net/a3d01158-12cf-44f6-b522-7fa23c5ba40f.png?auto=format","https://ph-files.imgix.net/91d6726c-04d7-4628-9a36-7b67b9d97767.jpeg?auto=format"],"image":"https://ph-files.imgix.net/8660e2b0-0c99-49d1-a191-37d6c25c866c.png?auto=format"},{"sourceId":"producthunt","title":"Filect ","url":"https://www.producthunt.com/products/filect/launches/filect?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Organize Your Files With AI","content":"Filect automatically organizes your files into clean folder structures using AI. You can run it on autopilot or set custom rules, either way, your Desktop, Downloads, and Documents stay clean without lifting a finger. It can also find any specific file instantly. Just describe it in plain English \"that invoice I made for client X last Tuesday\" and Filect finds it in seconds. Built for creators, coders, designers, video editors, drowning in files. Mac and Windows. Free 10-day trial.","metrics":{},"tags":["producthunt","new"],"externalId":"1133001","logo":"https://ph-files.imgix.net/82f0a392-0d0b-469b-a02e-5744d0fcceba.png?auto=format","images":["https://ph-files.imgix.net/1a4bef4b-6d65-4787-9c6c-86e1db7e736d.jpeg?auto=format","https://ph-files.imgix.net/02eb463f-7969-4ee3-b9ef-90d2880fe62f.jpeg?auto=format","https://ph-files.imgix.net/be2ede0f-81fc-4af3-9885-0b47b97e9e47.jpeg?auto=format","https://ph-files.imgix.net/131b3949-665e-473d-bbae-a6056ec438e5.jpeg?auto=format","https://ph-files.imgix.net/ee72d9ee-4ef7-45a8-9d51-55070fddc6cc.jpeg?auto=format"],"image":"https://ph-files.imgix.net/1a4bef4b-6d65-4787-9c6c-86e1db7e736d.jpeg?auto=format"},{"sourceId":"producthunt","title":"Sleepy Motion","url":"https://www.producthunt.com/products/sleepy-motion/launches/sleepy-motion?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Real motion graphics from a prompt. No diffusion.","content":"Broadcast-quality motion graphics from text prompts in 2 minutes. Replace $50K production budgets with AI automation. Real fonts, professional music, human-quality TTS. No AI slop, just intentional design.","metrics":{},"tags":["producthunt","new"],"externalId":"1137113","logo":"https://ph-files.imgix.net/8fc7e93d-5b30-4fa0-8dc7-cc1e8ea0bdb6.vnd.microsoft.icon?auto=format","images":["https://ph-files.imgix.net/12804cf4-fb2a-47f1-bcc3-6af89651b1e3.png?auto=format"],"image":"https://ph-files.imgix.net/12804cf4-fb2a-47f1-bcc3-6af89651b1e3.png?auto=format"},{"sourceId":"producthunt","title":"Intelligent Calculator","url":"https://www.producthunt.com/products/intelligent-calculator/launches/intelligent-calculator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Smart Online Calculators for Everyday Use","content":"Solve math, finance, date, and unit conversions instantly with Intelligent Calculator reliable, user-friendly calculators designed for accuracy and speed.","metrics":{},"tags":["producthunt","new"],"externalId":"1136849","logo":"https://ph-files.imgix.net/bec047c2-3eab-42ea-9b8e-8fc27f67e799.png?auto=format","images":["https://ph-files.imgix.net/968b2c38-a3d9-47db-aaaf-b4c18ffb8fdb.png?auto=format"],"image":"https://ph-files.imgix.net/968b2c38-a3d9-47db-aaaf-b4c18ffb8fdb.png?auto=format"},{"sourceId":"producthunt","title":"WowCoupons ","url":"https://www.producthunt.com/products/wowcoupons-aliexpress-israel/launches/wowcoupons?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Verified AliExpress coupons for Israeli shoppers, every 3h","content":"WowCoupons is Israel's AliExpress coupon hub — in Hebrew, built for Israeli shoppers. Verified promo codes updated every 3 hours, each with a tested success rate. Covers platform and seller codes with stacking guides, Israeli customs tips ($130 threshold), and real shipping times (DHL 3–10 days, Standard 12–30 days). Seasonal pages for 11.11, Hanukkah, Pesach, and more.","metrics":{},"tags":["producthunt","new"],"externalId":"1134381","logo":"https://ph-files.imgix.net/e224d9cf-8373-4284-9c87-bb47235c2815.png?auto=format","images":["https://ph-files.imgix.net/1011d498-a063-4bd5-b0fd-d61dc057a4fe.png?auto=format","https://ph-files.imgix.net/d5d30ba8-276c-4707-be59-a0cff12ac53f.webp?auto=format","https://ph-files.imgix.net/5ac75d32-31b7-4e75-9648-9976a3865c96.webp?auto=format","https://ph-files.imgix.net/6c28c83e-feb6-4def-81bf-0043419f1c20.webp?auto=format"],"image":"https://ph-files.imgix.net/1011d498-a063-4bd5-b0fd-d61dc057a4fe.png?auto=format"},{"sourceId":"producthunt","title":"RabbitHole.CAM","url":"https://www.producthunt.com/products/rabbithole-cam-video-voice-chat-app/launches/rabbithole-cam?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Hop Into the Unexpected, Meet new Friends in a webcam chat","content":"A modern approach to classic webcam chat apps. Improving the usual experience with privacy, quality of life, and customization features for an overall better alternative. Active development that's open to community feedback with a focus on designing the app for our users.","metrics":{},"tags":["producthunt","new"],"externalId":"1133065","logo":"https://ph-files.imgix.net/7c9a78ea-35f7-4554-919a-92465f71bd1c.png?auto=format","images":["https://ph-files.imgix.net/f06ad791-cd6b-4cd8-9580-9c4fe97d712a.png?auto=format","https://ph-files.imgix.net/55655f16-d63d-4a23-a661-3f843e1345ea.png?auto=format","https://ph-files.imgix.net/b6e274e5-d549-4458-a14c-bd7d0da9ad8c.png?auto=format","https://ph-files.imgix.net/39dac27b-cc15-456a-abee-0cd1aeb9f06b.png?auto=format","https://ph-files.imgix.net/b8fd2443-a454-4458-ac15-248a349d9b22.png?auto=format","https://ph-files.imgix.net/994eab86-5ef1-4a4d-8944-a4d4c2a80307.png?auto=format"],"image":"https://ph-files.imgix.net/f06ad791-cd6b-4cd8-9580-9c4fe97d712a.png?auto=format"},{"sourceId":"producthunt","title":"LengoBrick","url":"https://www.producthunt.com/products/lengobrick/launches/lengobrick?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"The unified language ecosystem: From drills to open-world.","content":"Stop juggling Anki, Duolingo, and YouTube. Lengobrick stitches vocab drills, N+1 immersion, and AI roleplay into one seamless flow. Featuring LingoWorld—a 2D open-world simulation to practice real-life missions without the anxiety. Master recall, not just recognition.","metrics":{},"tags":["producthunt","new"],"externalId":"1136097","logo":"https://ph-files.imgix.net/93440ed2-45b2-485b-a53d-c0a0c8648cb3.png?auto=format","images":["https://ph-files.imgix.net/aff8557f-f8e9-437a-b4a7-952e618a9e40.jpeg?auto=format","https://ph-files.imgix.net/a9db8ebf-a33b-4212-963a-df1d0c740556.png?auto=format","https://ph-files.imgix.net/339ca913-3920-44d9-8112-4f9c457d6f01.png?auto=format","https://ph-files.imgix.net/d6e6719b-e7e2-461f-bef7-3c87554d7be1.png?auto=format","https://ph-files.imgix.net/f1a57b88-ca03-45e2-b727-10cf63dc9377.png?auto=format","https://ph-files.imgix.net/6ed94d4c-8ca9-44ab-8ade-77dc829f2b99.png?auto=format","https://ph-files.imgix.net/c8f18508-bb7e-42e8-8893-ddef88267548.png?auto=format","https://ph-files.imgix.net/89cf7a3a-cb93-415b-a420-87246d820529.png?auto=format","https://ph-files.imgix.net/236de18d-7107-4d72-af44-de57c2d6356e.png?auto=format","https://ph-files.imgix.net/c210c01f-a7ef-40fe-ae65-1295f7fa6727.png?auto=format","https://ph-files.imgix.net/f6feb77a-b248-4502-86f2-bdbbe0474b18.png?auto=format","https://ph-files.imgix.net/02ca68fe-fee5-4eb9-a82e-5ca679c7c70b.png?auto=format","https://ph-files.imgix.net/4e5748fa-e223-47a4-8bae-4513dff32606.png?auto=format","https://ph-files.imgix.net/0b0cf7e5-360c-4353-94d2-925a806504c3.png?auto=format","https://ph-files.imgix.net/475471e9-b12e-4af5-80d5-a75190237ecd.png?auto=format","https://ph-files.imgix.net/e640f5fd-fbe2-4d66-89a9-748ac55f9d24.png?auto=format","https://ph-files.imgix.net/838847a5-4f63-4063-a98a-c142673525da.png?auto=format","https://ph-files.imgix.net/2c4b3622-a535-4b2a-ab37-438b1ca18c35.png?auto=format","https://ph-files.imgix.net/3c2b66b6-4654-464c-8d4a-58d111cbbc12.png?auto=format","https://ph-files.imgix.net/38c5f60f-e237-4c0a-b620-0a4e94990581.png?auto=format","https://ph-files.imgix.net/dc09554c-a2f8-42a8-8ceb-cdb9172ab599.png?auto=format","https://ph-files.imgix.net/5b4a9afd-3c54-4e32-82a9-9d99cae61f21.png?auto=format","https://ph-files.imgix.net/f01dae4a-9b1a-418b-9732-8185d476cda1.png?auto=format","https://ph-files.imgix.net/efc6f163-3653-474c-bf4a-28e6837ca692.png?auto=format","https://ph-files.imgix.net/e7fbfffb-d650-4a7f-ba41-7af2668b5a53.png?auto=format"],"image":"https://ph-files.imgix.net/aff8557f-f8e9-437a-b4a7-952e618a9e40.jpeg?auto=format"},{"sourceId":"producthunt","title":"Espaço Invisível","url":"https://www.producthunt.com/products/espaco-invisivel-3/launches/espaco-invisivel-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Generate Invisible Spaces Instantly","content":"A simple Invisible Space Generator tool that lets you create and copy hidden Unicode characters instantly. Perfect for usernames, social media formatting, forms, and design use cases where blank or invisible text is needed. Just click once and copy invisible spaces without hassle. Works across all platforms and is fast, lightweight, and easy to use. Supports quick copy-paste for seamless workflow.","metrics":{},"tags":["producthunt","new"],"externalId":"1136780","logo":"https://ph-files.imgix.net/d4c4aecf-97bf-4072-80dd-a477ba2441b2.png?auto=format","images":["https://ph-files.imgix.net/c4e7345e-21f0-445a-826a-7d401986a14a.jpeg?auto=format","https://ph-files.imgix.net/5709980e-a7f3-47cb-b154-156e169b510b.webp?auto=format"],"image":"https://ph-files.imgix.net/c4e7345e-21f0-445a-826a-7d401986a14a.jpeg?auto=format"},{"sourceId":"producthunt","title":"iTechTrove","url":"https://www.producthunt.com/products/itechtrove/launches/itechtrove?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"iTechTrove is a Technology Focused Digital Publicationltw1.","content":"iTechTrove is a technology-focused digital publication that provides information and educational content on emerging tech trends, software developments, and enterprise systems.","metrics":{},"tags":["producthunt","new"],"externalId":"1137246","logo":"https://ph-files.imgix.net/cb02a1f3-e2c4-4c95-a4e2-eea81af25021.jpeg?auto=format","images":["https://ph-files.imgix.net/86775f34-38c3-4eb3-9932-8aeaae13903d.jpeg?auto=format"],"image":"https://ph-files.imgix.net/86775f34-38c3-4eb3-9932-8aeaae13903d.jpeg?auto=format"},{"sourceId":"producthunt","title":"Football Pad","url":"https://www.producthunt.com/products/football-pad/launches/football-pad?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-05-02T07:01:00Z","summary":"Simulate football matches with your own tactics","content":"Simulate football matches using real teams, leagues, and player data. Football Pad uses real lineups, tactical attributes, and AI-driven analysis to model match outcomes. Test strategies, compare teams, and explore data-driven predictions before games happen. Built for fans, analysts, and those who want deeper insight into match results.","metrics":{},"tags":["producthunt","new"],"externalId":"1136955","logo":"https://ph-files.imgix.net/51f1dce1-90ef-4d3f-81ee-da58dbaa33d8.png?auto=format","images":["https://ph-files.imgix.net/69e7969e-6529-4f5e-b032-276e2fe92f91.jpeg?auto=format","https://ph-files.imgix.net/d0bd565a-ff01-4dba-b177-f5bb04e5b8ce.png?auto=format","https://ph-files.imgix.net/09eb983c-edec-4562-9525-e701d3e04baa.png?auto=format","https://ph-files.imgix.net/1d969016-1b93-4e78-a459-a06dc1df9457.png?auto=format","https://ph-files.imgix.net/fa64b2e3-9c66-4d03-9696-e2dc5fde8579.png?auto=format","https://ph-files.imgix.net/10e92720-a166-4682-ac95-f7cce7a1fb2f.png?auto=format","https://ph-files.imgix.net/ff9b1a59-8e7a-4b8f-b361-c23cd7043040.png?auto=format","https://ph-files.imgix.net/8b7870de-2c78-408e-bf11-87dd9f58c7e8.png?auto=format"],"image":"https://ph-files.imgix.net/69e7969e-6529-4f5e-b032-276e2fe92f91.jpeg?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T09:20:42.513Z",
+  "date": "2026-05-02",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": []
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "〖开源自荐〗Mira：让 AI 直接进入 Android/iOS 真实运行时环境做防护分析",
+          "url": "https://github.com/vwww-droid/Mira/blob/main/docs/android-remote-frida.png?raw=1\"",
+          "author": "vwww-droid",
+          "authorUrl": "https://github.com/vwww-droid",
+          "publishedAt": "2026-05-01T18:17:48Z",
+          "summary": "Mira 是一个面向移动应用防护端的 Android/iOS 运行时防护分析工具，可集成到第三方待测 App 中分析业务中风险环境特征，进入第三方 App 权限范围内的真实运行时沙箱环境，检测环境风险并验证防护策略。 支持 AI 直接在运行时动态调用宿主 App 侧任意代码 (调用 shell、Java、Native 和 Frida 能力)，直接完成防护验证、环境风险检测和证据收集。 目前已经验证过一些典型场景，包括 Magisk 痕迹识别、Cydia 残留检测、LSPosed 注入特征定位等。 <table <tr <th align=\"center\"Android 远程 Frida</th <th align=\"center\"iOS 远程 Frida</th </tr <tr <td <img src=\" alt=\"Android Remote Frida\" / <div align=\"center\"<sub在第三方待测 App 权限范围内的 Android 真机上完成远程 shell、运行时检查与实时 Frida 执行。</sub</div </td <td <img src=\" alt=\"iOS Remote Frida\" / <div align=\"center\"<sub在第三方待测 App 权限范围内，通过 iOS 侧 iSH 兼容层复用等价的 PTY 与 Frida 分析链路。</sub</div </td </tr <tr <th align=\"center\"Android LSPosed 痕迹定位</th <th align=\"center\"iOS 越狱痕迹定位</th </tr <tr <td <img src=\" alt=\"Android LSPosed Trace\" / <div align=\"center\"<sub围绕应用 classloader 构造 Frida 路径，并从第三方 App 运行时状态中定位 LSPosed 注入痕迹。</sub</div </td <td <img src=\" alt=\"iOS Jailbreak Trace\" / <div align=\"center\"<sub让 AI 在第三方 App 权限侧的真实终端环境中游走，并自动收集越狱相关痕迹。</sub</div </td </tr </table 项目地址：",
+          "content": "Mira 是一个面向移动应用防护端的 Android/iOS 运行时防护分析工具，可集成到第三方待测 App 中分析业务中风险环境特征，进入第三方 App 权限范围内的真实运行时沙箱环境，检测环境风险并验证防护策略。\n\n支持 AI 直接在运行时动态调用宿主 App 侧任意代码 (调用 shell、Java、Native 和 Frida 能力)，直接完成防护验证、环境风险检测和证据收集。\n\n目前已经验证过一些典型场景，包括 Magisk 痕迹识别、Cydia 残留检测、LSPosed 注入特征定位等。\n\n<table>\n  <tr>\n    <th align=\"center\">Android 远程 Frida</th>\n    <th align=\"center\">iOS 远程 Frida</th>\n  </tr>\n  <tr>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/android-remote-frida.png?raw=1\" alt=\"Android Remote Frida\" />\n      <div align=\"center\"><sub>在第三方待测 App 权限范围内的 Android 真机上完成远程 shell、运行时检查与实时 Frida 执行。</sub></div>\n    </td>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/ios-remote-frida.png?raw=1\" alt=\"iOS Remote Frida\" />\n      <div align=\"center\"><sub>在第三方待测 App 权限范围内，通过 iOS 侧 iSH 兼容层复用等价的 PTY 与 Frida 分析链路。</sub></div>\n    </td>\n  </tr>\n  <tr>\n    <th align=\"center\">Android LSPosed 痕迹定位</th>\n    <th align=\"center\">iOS 越狱痕迹定位</th>\n  </tr>\n  <tr>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/Area.gif?raw=1\" alt=\"Android LSPosed Trace\" />\n      <div align=\"center\"><sub>围绕应用 classloader 构造 Frida 路径，并从第三方 App 运行时状态中定位 LSPosed 注入痕迹。</sub></div>\n    </td>\n    <td>\n      <img src=\"https://github.com/vwww-droid/Mira/blob/main/docs/cydia-ios.gif?raw=1\" alt=\"iOS Jailbreak Trace\" />\n      <div align=\"center\"><sub>让 AI 在第三方 App 权限侧的真实终端环境中游走，并自动收集越狱相关痕迹。</sub></div>\n    </td>\n  </tr>\n</table>\n\n项目地址：\nhttps://github.com/vwww-droid/Mira\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9825",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9825"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Windows 后台服务管理工具，将任意程序以后台服务的形式运行。可视化操作",
+          "url": "https://github.com/sky22333/services",
+          "author": "sky22333",
+          "authorUrl": "https://github.com/sky22333",
+          "publishedAt": "2026-05-02T05:35:41Z",
+          "summary": "C + WinUI 3 实现的 Windows 后台服务管理工具 项目地址： 主要功能 1. 服务管理： 列出由该工具创建的服务。 创建新服务（通过包装器模式运行任意可执行文件）。 启动、停止、删除服务。 查看服务日志。 2. 环境变量管理： 添加路径到系统 PATH 环境变量。 打开系统环境变量设置界面。 3. UI 交互： 现代化 Windows 11 风格界面。 托盘图标支持。 管理员权限检测与提权。 预览 !主界面 !主界面 !主界面",
+          "content": "### `C# + WinUI 3` 实现的 Windows 后台服务管理工具\n\n项目地址：https://github.com/sky22333/services\n\n### 主要功能\n1. **服务管理**：\n   - 列出由该工具创建的服务。\n   - 创建新服务（通过包装器模式运行任意可执行文件）。\n   - 启动、停止、删除服务。\n   - 查看服务日志。\n2. **环境变量管理**：\n   - 添加路径到系统 PATH 环境变量。\n   - 打开系统环境变量设置界面。\n3. **UI 交互**：\n   - 现代化 Windows 11 风格界面。\n   - 托盘图标支持。\n   - 管理员权限检测与提权。\n\n### 预览\n\n![主界面](https://cdn.jsdelivr.net/gh/sky22333/services@main/.github/demo/demo111.png)\n![主界面](https://cdn.jsdelivr.net/gh/sky22333/services@main/.github/demo/demo2.png)\n![主界面](https://cdn.jsdelivr.net/gh/sky22333/services@main/.github/demo/demo3.png)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9826",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9826"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】ClipTrend.ai - 一键复刻爆款 AI 视频，TikTok / YouTube 趋势模板化",
+          "url": "https://cliptrend.ai/",
+          "author": "seantins9",
+          "authorUrl": "https://github.com/seantins9",
+          "publishedAt": "2026-05-02T10:40:54Z",
+          "summary": "每周追踪 TikTok / YouTube 上正在爆的 AI 视频效果，把每一个爆款做成一键可用的模板。用户选模板 → 上传一张自拍（或粘贴一条 TikTok 链接）→ 3060 秒出片。不用写 prompt、不用选模型。 网站： 和其他 AI 视频生成工具的核心区别： 每张模板卡都带 35 个真实爆款源视频：点开任一卡片能看到 TikTok / YouTube 上同款效果的真实视频，每条附实时播放量。在花积分前可以验证这个 trend 是真的火。例：末日战士 280 万播放、怪物猎人 1100 万、毛绒动物跳舞 8180 万。 而且复刻视频可以有各式各样的变体，可以通过选择不同预设或是输入文字 prompt来生成类似但不完全相同的模板效果 10+ 顶级 AI 模型自动路由：底层接了 Seedance 2 / Kling 3 / Veo 3.1 / Wan 2.7 / Nano Banana Pro / GPT Image 2 等。用户不用选模型，系统按效果类型自动路由——舞蹈给 Veo，变身给 Seedance，角色给 Nano Banana。背后的工作流全都配好并且通过大量测试确保效果稳定。 粘贴 TikTok URL 直接复刻动作：把任意 TikTok 视频链接粘进来，系统会从那条视频里提取动作（舞蹈、武打、运镜），套到你的角色上。链接进，动作出，不用描述、不用重新上传。 Seedance 2 真人脸 reference 全 plan 解锁：Seedance 2 是目前真人脸变换最强的模型，大多数消费级 AI 视频工具会屏蔽真人脸或悄悄换成 AI 生成的脸。ClipTrend 默认开放，包括 $14 入门档。 生成前可控：花积分前先看一张静态图（模型即将生成的画面），不满意可以现场改 variant 描述（\"更黑暗一点\"、\"把舞蹈换成慢慢走过来\"），预览满意再 generate。无水印，商业授权。 50+ 模板上线，累计追踪 trend 播放 1.2 亿+，每周更新新 trending。免费试用，无需信用卡。月付首月 $14（1400 积分约 60 个视频，正常 $27.99/月），年付 $13.99/月（16,800 积分一次发放），相同积分量下比同类竞品便宜 20% 以上。 也包含多种最新模型例如 gpt2, nanobanana2, seedance2, kling 3.0等，也包括各类常用能力包括角色替换、换脸、动作控制等 youtube介绍视频 <img width=\"3022\" height=\"1508\" alt=\"Image\" src=\" / /n <img width=\"3436\" height=\"1281\" alt=\"Image\" src=\" / /n <img width=\"3018\" height=\"1508\" alt=\"Image\" src=\" /",
+          "content": "每周追踪 TikTok / YouTube 上正在爆的 AI 视频效果，把每一个爆款做成一键可用的模板。用户选模板 → 上传一张自拍（或粘贴一条 TikTok 链接）→ 30-60 秒出片。不用写 prompt、不用选模型。\n\n网站：https://cliptrend.ai/\n\n和其他 AI 视频生成工具的核心区别：\n\n-每张模板卡都带 3-5 个真实爆款源视频：点开任一卡片能看到 TikTok / YouTube 上同款效果的真实视频，每条附实时播放量。在花积分前可以验证这个 trend 是真的火。例：末日战士 280 万播放、怪物猎人 1100 万、毛绒动物跳舞 8180 万。 而且复刻视频可以有各式各样的变体，可以通过选择不同预设或是输入文字 prompt来生成类似但不完全相同的模板效果\n\n-10+ 顶级 AI 模型自动路由：底层接了 Seedance 2 / Kling 3 / Veo 3.1 / Wan 2.7 / Nano Banana Pro / GPT Image 2 等。用户不用选模型，系统按效果类型自动路由——舞蹈给 Veo，变身给 Seedance，角色给 Nano Banana。背后的工作流全都配好并且通过大量测试确保效果稳定。\n\n-粘贴 TikTok URL 直接复刻动作**：把任意 TikTok 视频链接粘进来，系统会从那条视频里提取动作（舞蹈、武打、运镜），套到你的角色上。链接进，动作出，不用描述、不用重新上传。\n\n-Seedance 2 真人脸 reference 全 plan 解锁：Seedance 2 是目前真人脸变换最强的模型，大多数消费级 AI 视频工具会屏蔽真人脸或悄悄换成 AI 生成的脸。ClipTrend 默认开放，包括 $14 入门档。\n\n-生成前可控：花积分前先看一张静态图（模型即将生成的画面），不满意可以现场改 variant 描述（\"更黑暗一点\"、\"把舞蹈换成慢慢走过来\"），预览满意再 generate。无水印，商业授权。\n\n-50+ 模板上线，累计追踪 trend 播放 1.2 亿+，每周更新新 trending。免费试用，无需信用卡。月付首月 $14（1400 积分约 60 个视频，正常 $27.99/月），年付 $13.99/月（16,800 积分一次发放），相同积分量下比同类竞品便宜 20% 以上。\n\n-也包含多种最新模型例如 gpt2, nanobanana2, seedance2, kling 3.0等，也包括各类常用能力包括角色替换、换脸、动作控制等\n\n\nyoutube介绍视频 https://www.youtube.com/watch?v=4S-S5WFW4sg\n\n<img width=\"3022\" height=\"1508\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/013807a4-0bbb-41cf-9efe-e228717cc609\" />\n\n/n\n\n<img width=\"3436\" height=\"1281\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ead99ff0-a1d4-446e-94c4-6856f4e5c392\" />\n\n/n\n\n<img width=\"3018\" height=\"1508\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/690e3e8f-a62e-4728-888e-5ec0d69b5ba9\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9827",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9827",
+          "siteLogo": "https://cliptrend.ai/apple-touch-icon.png"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "推荐项目：HMNextAuto - 鸿蒙 NEXT UI 自动化测试框架",
+          "url": "https://github.com/ziguiway/hmnextauto",
+          "author": "ziguiway",
+          "authorUrl": "https://github.com/ziguiway",
+          "publishedAt": "2026-05-02T06:43:24Z",
+          "summary": "项目信息 项目名称: HMNextAuto GitHub 地址: PyPI: pip install hmnextauto Stars: !GitHub stars 项目简介 HMNextAuto 是一个基于 Python 的鸿蒙 NEXT UI 自动化测试框架，API 风格兼容 uiautomator2，降低了从 Android 自动化迁移的学习成本。 主要特性 uiautomator2 兼容 API 熟悉的接口设计，无缝迁移 XPath 支持 灵活的元素定位方式 图像识别 基于模板匹配的视觉定位 性能监控 CPU/内存/FPS 实时采集与分析 通知管理 鸿蒙系统通知的监听与操作 Shell 命令执行 支持 hdc shell 命令 屏幕录制 支持 MP4 格式录制 多设备管理 支持 WiFi 和 USB 连接 适用场景 鸿蒙 NEXT 应用的 UI 自动化测试，特别适合从 Android uiautomator2 迁移过来的测试团队。 Python 版本支持 Python 3.8 3.14 推荐理由 这是目前为数不多的鸿蒙 NEXT 自动化测试开源框架，填补了鸿蒙生态在 UI 自动化测试领域的空白。对于鸿蒙应用开发者和测试工程师来说非常实用。",
+          "content": "## 项目信息\n\n- **项目名称**: HMNextAuto\n- **GitHub 地址**: https://github.com/ziguiway/hmnextauto\n- **PyPI**: `pip install hmnextauto`\n- **Stars**: ![GitHub stars](https://img.shields.io/github/stars/ziguiway/hmnextauto.svg)\n\n## 项目简介\n\nHMNextAuto 是一个基于 Python 的鸿蒙 NEXT UI 自动化测试框架，API 风格兼容 uiautomator2，降低了从 Android 自动化迁移的学习成本。\n\n## 主要特性\n\n- **uiautomator2 兼容 API** - 熟悉的接口设计，无缝迁移\n- **XPath 支持** - 灵活的元素定位方式\n- **图像识别** - 基于模板匹配的视觉定位\n- **性能监控** - CPU/内存/FPS 实时采集与分析\n- **通知管理** - 鸿蒙系统通知的监听与操作\n- **Shell 命令执行** - 支持 hdc shell 命令\n- **屏幕录制** - 支持 MP4 格式录制\n- **多设备管理** - 支持 Wi-Fi 和 USB 连接\n\n## 适用场景\n\n鸿蒙 NEXT 应用的 UI 自动化测试，特别适合从 Android uiautomator2 迁移过来的测试团队。\n\n## Python 版本支持\n\nPython 3.8 - 3.14\n\n## 推荐理由\n\n这是目前为数不多的鸿蒙 NEXT 自动化测试开源框架，填补了鸿蒙生态在 UI 自动化测试领域的空白。对于鸿蒙应用开发者和测试工程师来说非常实用。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3250",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3250"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Il Frullatore Carlà (Buffett-style App)",
+          "url": "https://www.producthunt.com/products/reciptify-ai/launches/il-frullatore-carla-buffett-style-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "A revolutionary app: a Buffett-style analysis in two minutes",
+          "content": "My app is built on a proprietary system that incorporates over 35 years of analytical methodology. The quality of the output depends by skills that require decades of practical experience to develop. “Anyone can ask a general-purpose AI to analyze a company,” says Carlà. “What they get is a superficial analysis. What makes the difference is what’s inside the system—and that’s the result of thirty-five years of work.”",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136230",
+          "logo": "https://ph-files.imgix.net/af81717a-bfe5-4851-9c60-ea238097bef6.avif?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/f58c745d-c3cd-461a-b2b5-2630845c4ccd.png?auto=format",
+            "https://ph-files.imgix.net/59c7a10f-60a6-4035-bbd8-e369adccfb7f.png?auto=format",
+            "https://ph-files.imgix.net/dfc214a1-09bb-4eb5-b9b1-388a50303fba.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/f58c745d-c3cd-461a-b2b5-2630845c4ccd.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Drone Tactics",
+          "url": "https://www.producthunt.com/products/drone-tactics/launches/drone-tactics?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Fast-paced drone warfare where tactics decide everything",
+          "content": "A tactical drone combat game where strategy, timing, and positioning decide who wins.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136909",
+          "logo": "https://ph-files.imgix.net/159bd689-fd7c-47f0-a769-0bec2bcd3ba1.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/d53f2883-0685-430f-8dee-b1aa4a8a04a4.jpeg?auto=format",
+            "https://ph-files.imgix.net/72ff2b4a-8cef-43c8-ba4f-5d0dc4729a5a.jpeg?auto=format",
+            "https://ph-files.imgix.net/c69f3487-0dc0-41ef-93fe-a96c90227945.jpeg?auto=format",
+            "https://ph-files.imgix.net/a5d16cff-c1fb-4b38-a7e8-650dc9f55ead.jpeg?auto=format",
+            "https://ph-files.imgix.net/fa2473e0-3a65-4db9-a4e0-d518b25b7305.jpeg?auto=format",
+            "https://ph-files.imgix.net/ec13779a-8a63-4718-a13d-6c06bb89106c.jpeg?auto=format",
+            "https://ph-files.imgix.net/2ee7a4c7-8f66-4343-a2e2-29dccf84ab58.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/d53f2883-0685-430f-8dee-b1aa4a8a04a4.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Catalingo",
+          "url": "https://www.producthunt.com/products/catalingo/launches/catalingo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Read real-world news at your exact language level.",
+          "content": "Catalingo helps you bridge the gap between language apps and real-world fluency. We pull live news daily and automatically rewrite articles into multiple difficulty levels, so you can read today's headlines regardless of your level. Features: Instant tap-to-translate, AI-generated quizzes based on your reading, and a community writing platform. Stop memorizing random words and start reading the world. Support for multiple languages. Try 5 articles a day for free!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136822",
+          "logo": "https://ph-files.imgix.net/1da9f815-2454-4540-8d05-00152018d511.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/42d67473-5035-465e-8646-ae612ec1b53b.png?auto=format",
+            "https://ph-files.imgix.net/05555d0f-4cf1-44d1-ab06-943dac77ec00.jpeg?auto=format",
+            "https://ph-files.imgix.net/9fdcb7ef-f83d-4975-acc2-0826a0abba74.jpeg?auto=format",
+            "https://ph-files.imgix.net/f3e63543-0598-4681-8198-20a63a5d7b11.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/42d67473-5035-465e-8646-ae612ec1b53b.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Hairdo: Hair Filters & Color",
+          "url": "https://www.producthunt.com/products/hairdo-hair-filters-color/launches/hairdo-hair-filters-color?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Try Hairstyles & Hair Colors Instantly with AI",
+          "content": "Upload a photo and instantly try on realistic hairstyles and hair colors with AI. Experiment with bangs, curls, fades, or bold colors in seconds, no salon risk. Discover your perfect look, compare styles, and share results. Whether you’re planning a makeover or just exploring, HairDo helps you visualize before you commit. Simple, fast, and surprisingly realistic.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136613",
+          "logo": "https://ph-files.imgix.net/2e739428-ab56-4a07-a3de-9c774e68912b.webp?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/da21a27b-a022-4d75-8773-ba6509dd857e.jpeg?auto=format",
+            "https://ph-files.imgix.net/5bd40231-2837-49c0-99e8-41f5ec249431.jpeg?auto=format",
+            "https://ph-files.imgix.net/0753703e-3d66-46da-a84e-ed322392ab48.jpeg?auto=format",
+            "https://ph-files.imgix.net/a98b9d1f-5223-49a4-a9dd-12ed37c20bde.jpeg?auto=format",
+            "https://ph-files.imgix.net/1368b0e0-9bb0-42d3-adc4-81d27a320eb9.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/da21a27b-a022-4d75-8773-ba6509dd857e.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "FakeTools",
+          "url": "https://www.producthunt.com/products/faketools/launches/faketools?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Developer tools for test data  - Disposable Email & More",
+          "content": "FakeTools is a free collection of developer utilities for generating realistic test data instantly. 🔹 Temp Email — real disposable inbox with live delivery 🔹 Fake Identity Generator — name, address, phone, DOB 🔹 Password Generator — secure 🔹 UUID Generator — instant v4 UUIDs No signup. No account. No credit card. Just tools that work. Perfect for developers testing signup flows, QA engineers seeding databases, and anyone who wants to protect their real email. 👉 https://www.faketools.in",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136942",
+          "logo": "https://ph-files.imgix.net/8cd06676-e853-4ee7-9120-32e93667c643.x-icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/047bf33b-7fac-481c-9753-57c7d4812512.jpeg?auto=format",
+            "https://ph-files.imgix.net/99acdddd-4919-44a2-9b35-b8fa40c17b7e.jpeg?auto=format",
+            "https://ph-files.imgix.net/22e28395-997d-4042-a1e5-f074e55935bd.jpeg?auto=format",
+            "https://ph-files.imgix.net/0b16cf33-1f26-47d8-8a3f-2b7a8e6ac177.jpeg?auto=format",
+            "https://ph-files.imgix.net/ca8d44df-b31e-47aa-8080-e8a2a5c56dbd.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/047bf33b-7fac-481c-9753-57c7d4812512.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "EncurtaTurbo",
+          "url": "https://www.producthunt.com/products/encurtaturbo/launches/encurtaturbo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Shortener URL",
+          "content": "EncurtaTurbo: encurte links em segundos, gere QR Codes personalizados e acompanhe analytics em tempo real. Proteção com senha, expiração automática e mais de 128 mil links encurtados.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1137121",
+          "logo": "https://ph-files.imgix.net/3d6cbbc9-faa8-4d15-b97c-65b9b55bdd1b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/5b3846b7-63e4-41b8-97e6-cdeff908a85e.png?auto=format",
+            "https://ph-files.imgix.net/667a015d-bf8b-43a2-9a58-61567034fb42.png?auto=format",
+            "https://ph-files.imgix.net/c350477f-bd6c-4bd5-9fbd-42d1c1e6decd.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/5b3846b7-63e4-41b8-97e6-cdeff908a85e.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Free Time Finder-Calendar Gaps",
+          "url": "https://www.producthunt.com/products/free-time-finder-calendar-gaps/launches/free-time-finder-calendar-gaps?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "See free time in calendar",
+          "content": "App Store Açıklaması (Optimize Edilmiş) Find Hidden Free Time in Your Calendar Your calendar looks full — but is it really? Free Time Finder automatically analyzes your calendar and shows you real, usable free time you didn’t even know you had. No manual planning. No guesswork. Just clear, actionable time blocks.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136545",
+          "logo": "https://ph-files.imgix.net/5586cc6a-9a1a-4620-a4c2-035e66ffd5f0.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2df49728-9f49-4ccb-857c-fc04d8f3215a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2df49728-9f49-4ccb-857c-fc04d8f3215a.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Audora",
+          "url": "https://www.producthunt.com/products/audora/launches/audora?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Premium 3D Isometric Icons & Character Generator for UI/UX",
+          "content": "Audora turns any text or photo into perfectly proportioned 3D isometric icons, UI props, and premium 3D characters using AI. Ready-to-use assets, multiple materials (glass, clay, plastic, and more), and pay-as-you-go pricing. Best AI-powered 3D isometric icon generator for designers and developers.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136642",
+          "logo": "https://ph-files.imgix.net/720bbfb0-047a-4435-b3d2-3dff0c3d0d85.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b430c403-e1d3-4b0e-a578-960c22f682cd.jpeg?auto=format",
+            "https://ph-files.imgix.net/9fe3b310-06cd-48f5-948f-3d8ece92e3be.png?auto=format",
+            "https://ph-files.imgix.net/7aacdf8e-697f-4992-91f9-811676c98c53.png?auto=format",
+            "https://ph-files.imgix.net/1939d02d-1dca-43ee-97cd-99cd7921e0e0.gif?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b430c403-e1d3-4b0e-a578-960c22f682cd.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "NEURAL — AI UI Kit",
+          "url": "https://www.producthunt.com/products/neural-ai-ui-kit/launches/neural-ai-ui-kit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "An AI UI Kit with 472 screens for Figma",
+          "content": "NEURAL is a comprehensive AI product UI kit built for designers and developers shipping real products. 472 screens across four complete modes designed with Figma Variables. What's included Desktop Dark 118 screens, 1440×900 Desktop Light 118 screens, 1440×900 Mobile Dark 118 screens, 390×844 Mobile Light 118 screens, 390×844 UX Flow 8 section journey map covering every user path, customization guide Design System. Figma Variables with Dark and Light modes",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136656",
+          "logo": "https://ph-files.imgix.net/c4a71b0d-5d79-4298-85cc-228931518675.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/341d1141-9d9b-4ed9-a3c6-cf64ca5e683b.jpeg?auto=format",
+            "https://ph-files.imgix.net/10d0d572-e3c5-4219-9319-87cd4e1edc3a.png?auto=format",
+            "https://ph-files.imgix.net/3deb36b9-6c02-4fc5-aab1-d9233f860dc3.jpeg?auto=format",
+            "https://ph-files.imgix.net/43d785b2-a28a-4733-8b6f-e45571772c6a.jpeg?auto=format",
+            "https://ph-files.imgix.net/d9931f92-cbad-4121-ba94-2e8fd6dbc1db.png?auto=format",
+            "https://ph-files.imgix.net/1de5c321-dbef-4b32-b603-9463b897828a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/341d1141-9d9b-4ed9-a3c6-cf64ca5e683b.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Swiss Quiz 2",
+          "url": "https://www.producthunt.com/products/swiss-quiz-2/launches/swiss-quiz-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Swiss trivia quiz with multiple modes and map play",
+          "content": "Swiss Quiz 2 is a mobile quiz app that helps you learn about Switzerland through short, interactive rounds. It covers topics like geography, history, culture, and politics, with modes such as classic play, timed rounds, survival, and map-based questions. You can focus on specific topics, categories, or cantons, track your progress with detailed statistics, and compete with others in multiplayer. Designed for quick sessions and steady learning.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136858",
+          "logo": "https://ph-files.imgix.net/5c098d11-7e70-4db1-8fd6-949e29864ede.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2f03df47-7b24-4c7b-ac2b-ff7d1cfb11f4.png?auto=format",
+            "https://ph-files.imgix.net/db2d41d9-9b0b-4bf9-84ac-f196fbb288d4.png?auto=format",
+            "https://ph-files.imgix.net/928d3b19-0244-4e57-abff-53756915dfcc.png?auto=format",
+            "https://ph-files.imgix.net/7740446a-d7d6-41d6-8614-f80c3698de3b.png?auto=format",
+            "https://ph-files.imgix.net/53f2688d-a0cb-45d3-819e-d1915f64fa13.png?auto=format",
+            "https://ph-files.imgix.net/41701af9-480e-4d8a-a349-76102a9874f6.png?auto=format",
+            "https://ph-files.imgix.net/cf584f84-41c3-43b3-822d-8b267281afa1.png?auto=format",
+            "https://ph-files.imgix.net/292e5068-704c-4c75-9b03-c19f45fb8d5d.png?auto=format",
+            "https://ph-files.imgix.net/32716a29-7f20-4008-81b0-caa5379cf61d.png?auto=format",
+            "https://ph-files.imgix.net/052bff00-93ee-46be-b281-de1c17f71351.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2f03df47-7b24-4c7b-ac2b-ff7d1cfb11f4.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Feather",
+          "url": "https://www.producthunt.com/products/feather-18/launches/feather-14?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Photo editor with local AI",
+          "content": "Your photos stay on your machine, AI generative infill, AI magic selection and smart stacking are all processed offline on your Apple Silicon Mac. The UI is modern and designed to be intuitive. It's pay once to use forever",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1135553",
+          "logo": "https://ph-files.imgix.net/a71f793f-18e7-4332-a16b-009aeb0fe9e9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8660e2b0-0c99-49d1-a191-37d6c25c866c.png?auto=format",
+            "https://ph-files.imgix.net/cdc27e6b-d24f-4fb9-b7ed-86a5938049c7.png?auto=format",
+            "https://ph-files.imgix.net/77510618-3834-43de-99cc-cb9800747104.png?auto=format",
+            "https://ph-files.imgix.net/890c0579-f039-4f4d-881d-5221c08ac672.jpeg?auto=format",
+            "https://ph-files.imgix.net/a3d01158-12cf-44f6-b522-7fa23c5ba40f.png?auto=format",
+            "https://ph-files.imgix.net/91d6726c-04d7-4628-9a36-7b67b9d97767.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8660e2b0-0c99-49d1-a191-37d6c25c866c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Filect ",
+          "url": "https://www.producthunt.com/products/filect/launches/filect?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Organize Your Files With AI",
+          "content": "Filect automatically organizes your files into clean folder structures using AI. You can run it on autopilot or set custom rules, either way, your Desktop, Downloads, and Documents stay clean without lifting a finger. It can also find any specific file instantly. Just describe it in plain English \"that invoice I made for client X last Tuesday\" and Filect finds it in seconds. Built for creators, coders, designers, video editors, drowning in files. Mac and Windows. Free 10-day trial.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1133001",
+          "logo": "https://ph-files.imgix.net/82f0a392-0d0b-469b-a02e-5744d0fcceba.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1a4bef4b-6d65-4787-9c6c-86e1db7e736d.jpeg?auto=format",
+            "https://ph-files.imgix.net/02eb463f-7969-4ee3-b9ef-90d2880fe62f.jpeg?auto=format",
+            "https://ph-files.imgix.net/be2ede0f-81fc-4af3-9885-0b47b97e9e47.jpeg?auto=format",
+            "https://ph-files.imgix.net/131b3949-665e-473d-bbae-a6056ec438e5.jpeg?auto=format",
+            "https://ph-files.imgix.net/ee72d9ee-4ef7-45a8-9d51-55070fddc6cc.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1a4bef4b-6d65-4787-9c6c-86e1db7e736d.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Sleepy Motion",
+          "url": "https://www.producthunt.com/products/sleepy-motion/launches/sleepy-motion?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Real motion graphics from a prompt. No diffusion.",
+          "content": "Broadcast-quality motion graphics from text prompts in 2 minutes. Replace $50K production budgets with AI automation. Real fonts, professional music, human-quality TTS. No AI slop, just intentional design.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1137113",
+          "logo": "https://ph-files.imgix.net/8fc7e93d-5b30-4fa0-8dc7-cc1e8ea0bdb6.vnd.microsoft.icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/12804cf4-fb2a-47f1-bcc3-6af89651b1e3.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/12804cf4-fb2a-47f1-bcc3-6af89651b1e3.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Intelligent Calculator",
+          "url": "https://www.producthunt.com/products/intelligent-calculator/launches/intelligent-calculator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Smart Online Calculators for Everyday Use",
+          "content": "Solve math, finance, date, and unit conversions instantly with Intelligent Calculator reliable, user-friendly calculators designed for accuracy and speed.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136849",
+          "logo": "https://ph-files.imgix.net/bec047c2-3eab-42ea-9b8e-8fc27f67e799.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/968b2c38-a3d9-47db-aaaf-b4c18ffb8fdb.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/968b2c38-a3d9-47db-aaaf-b4c18ffb8fdb.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "WowCoupons ",
+          "url": "https://www.producthunt.com/products/wowcoupons-aliexpress-israel/launches/wowcoupons?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Verified AliExpress coupons for Israeli shoppers, every 3h",
+          "content": "WowCoupons is Israel's AliExpress coupon hub — in Hebrew, built for Israeli shoppers. Verified promo codes updated every 3 hours, each with a tested success rate. Covers platform and seller codes with stacking guides, Israeli customs tips ($130 threshold), and real shipping times (DHL 3–10 days, Standard 12–30 days). Seasonal pages for 11.11, Hanukkah, Pesach, and more.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1134381",
+          "logo": "https://ph-files.imgix.net/e224d9cf-8373-4284-9c87-bb47235c2815.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1011d498-a063-4bd5-b0fd-d61dc057a4fe.png?auto=format",
+            "https://ph-files.imgix.net/d5d30ba8-276c-4707-be59-a0cff12ac53f.webp?auto=format",
+            "https://ph-files.imgix.net/5ac75d32-31b7-4e75-9648-9976a3865c96.webp?auto=format",
+            "https://ph-files.imgix.net/6c28c83e-feb6-4def-81bf-0043419f1c20.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1011d498-a063-4bd5-b0fd-d61dc057a4fe.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "RabbitHole.CAM",
+          "url": "https://www.producthunt.com/products/rabbithole-cam-video-voice-chat-app/launches/rabbithole-cam?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Hop Into the Unexpected, Meet new Friends in a webcam chat",
+          "content": "A modern approach to classic webcam chat apps. Improving the usual experience with privacy, quality of life, and customization features for an overall better alternative. Active development that's open to community feedback with a focus on designing the app for our users.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1133065",
+          "logo": "https://ph-files.imgix.net/7c9a78ea-35f7-4554-919a-92465f71bd1c.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/f06ad791-cd6b-4cd8-9580-9c4fe97d712a.png?auto=format",
+            "https://ph-files.imgix.net/55655f16-d63d-4a23-a661-3f843e1345ea.png?auto=format",
+            "https://ph-files.imgix.net/b6e274e5-d549-4458-a14c-bd7d0da9ad8c.png?auto=format",
+            "https://ph-files.imgix.net/39dac27b-cc15-456a-abee-0cd1aeb9f06b.png?auto=format",
+            "https://ph-files.imgix.net/b8fd2443-a454-4458-ac15-248a349d9b22.png?auto=format",
+            "https://ph-files.imgix.net/994eab86-5ef1-4a4d-8944-a4d4c2a80307.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/f06ad791-cd6b-4cd8-9580-9c4fe97d712a.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "LengoBrick",
+          "url": "https://www.producthunt.com/products/lengobrick/launches/lengobrick?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "The unified language ecosystem: From drills to open-world.",
+          "content": "Stop juggling Anki, Duolingo, and YouTube. Lengobrick stitches vocab drills, N+1 immersion, and AI roleplay into one seamless flow. Featuring LingoWorld—a 2D open-world simulation to practice real-life missions without the anxiety. Master recall, not just recognition.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136097",
+          "logo": "https://ph-files.imgix.net/93440ed2-45b2-485b-a53d-c0a0c8648cb3.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/aff8557f-f8e9-437a-b4a7-952e618a9e40.jpeg?auto=format",
+            "https://ph-files.imgix.net/a9db8ebf-a33b-4212-963a-df1d0c740556.png?auto=format",
+            "https://ph-files.imgix.net/339ca913-3920-44d9-8112-4f9c457d6f01.png?auto=format",
+            "https://ph-files.imgix.net/d6e6719b-e7e2-461f-bef7-3c87554d7be1.png?auto=format",
+            "https://ph-files.imgix.net/f1a57b88-ca03-45e2-b727-10cf63dc9377.png?auto=format",
+            "https://ph-files.imgix.net/6ed94d4c-8ca9-44ab-8ade-77dc829f2b99.png?auto=format",
+            "https://ph-files.imgix.net/c8f18508-bb7e-42e8-8893-ddef88267548.png?auto=format",
+            "https://ph-files.imgix.net/89cf7a3a-cb93-415b-a420-87246d820529.png?auto=format",
+            "https://ph-files.imgix.net/236de18d-7107-4d72-af44-de57c2d6356e.png?auto=format",
+            "https://ph-files.imgix.net/c210c01f-a7ef-40fe-ae65-1295f7fa6727.png?auto=format",
+            "https://ph-files.imgix.net/f6feb77a-b248-4502-86f2-bdbbe0474b18.png?auto=format",
+            "https://ph-files.imgix.net/02ca68fe-fee5-4eb9-a82e-5ca679c7c70b.png?auto=format",
+            "https://ph-files.imgix.net/4e5748fa-e223-47a4-8bae-4513dff32606.png?auto=format",
+            "https://ph-files.imgix.net/0b0cf7e5-360c-4353-94d2-925a806504c3.png?auto=format",
+            "https://ph-files.imgix.net/475471e9-b12e-4af5-80d5-a75190237ecd.png?auto=format",
+            "https://ph-files.imgix.net/e640f5fd-fbe2-4d66-89a9-748ac55f9d24.png?auto=format",
+            "https://ph-files.imgix.net/838847a5-4f63-4063-a98a-c142673525da.png?auto=format",
+            "https://ph-files.imgix.net/2c4b3622-a535-4b2a-ab37-438b1ca18c35.png?auto=format",
+            "https://ph-files.imgix.net/3c2b66b6-4654-464c-8d4a-58d111cbbc12.png?auto=format",
+            "https://ph-files.imgix.net/38c5f60f-e237-4c0a-b620-0a4e94990581.png?auto=format",
+            "https://ph-files.imgix.net/dc09554c-a2f8-42a8-8ceb-cdb9172ab599.png?auto=format",
+            "https://ph-files.imgix.net/5b4a9afd-3c54-4e32-82a9-9d99cae61f21.png?auto=format",
+            "https://ph-files.imgix.net/f01dae4a-9b1a-418b-9732-8185d476cda1.png?auto=format",
+            "https://ph-files.imgix.net/efc6f163-3653-474c-bf4a-28e6837ca692.png?auto=format",
+            "https://ph-files.imgix.net/e7fbfffb-d650-4a7f-ba41-7af2668b5a53.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/aff8557f-f8e9-437a-b4a7-952e618a9e40.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Espaço Invisível",
+          "url": "https://www.producthunt.com/products/espaco-invisivel-3/launches/espaco-invisivel-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Generate Invisible Spaces Instantly",
+          "content": "A simple Invisible Space Generator tool that lets you create and copy hidden Unicode characters instantly. Perfect for usernames, social media formatting, forms, and design use cases where blank or invisible text is needed. Just click once and copy invisible spaces without hassle. Works across all platforms and is fast, lightweight, and easy to use. Supports quick copy-paste for seamless workflow.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136780",
+          "logo": "https://ph-files.imgix.net/d4c4aecf-97bf-4072-80dd-a477ba2441b2.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c4e7345e-21f0-445a-826a-7d401986a14a.jpeg?auto=format",
+            "https://ph-files.imgix.net/5709980e-a7f3-47cb-b154-156e169b510b.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c4e7345e-21f0-445a-826a-7d401986a14a.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "iTechTrove",
+          "url": "https://www.producthunt.com/products/itechtrove/launches/itechtrove?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "iTechTrove is a Technology Focused Digital Publicationltw1.",
+          "content": "iTechTrove is a technology-focused digital publication that provides information and educational content on emerging tech trends, software developments, and enterprise systems.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1137246",
+          "logo": "https://ph-files.imgix.net/cb02a1f3-e2c4-4c95-a4e2-eea81af25021.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/86775f34-38c3-4eb3-9932-8aeaae13903d.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/86775f34-38c3-4eb3-9932-8aeaae13903d.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Football Pad",
+          "url": "https://www.producthunt.com/products/football-pad/launches/football-pad?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-02T07:01:00Z",
+          "summary": "Simulate football matches with your own tactics",
+          "content": "Simulate football matches using real teams, leagues, and player data. Football Pad uses real lineups, tactical attributes, and AI-driven analysis to model match outcomes. Test strategies, compare teams, and explore data-driven predictions before games happen. Built for fans, analysts, and those who want deeper insight into match results.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1136955",
+          "logo": "https://ph-files.imgix.net/51f1dce1-90ef-4d3f-81ee-da58dbaa33d8.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/69e7969e-6529-4f5e-b032-276e2fe92f91.jpeg?auto=format",
+            "https://ph-files.imgix.net/d0bd565a-ff01-4dba-b177-f5bb04e5b8ce.png?auto=format",
+            "https://ph-files.imgix.net/09eb983c-edec-4562-9525-e701d3e04baa.png?auto=format",
+            "https://ph-files.imgix.net/1d969016-1b93-4e78-a459-a06dc1df9457.png?auto=format",
+            "https://ph-files.imgix.net/fa64b2e3-9c66-4d03-9696-e2dc5fde8579.png?auto=format",
+            "https://ph-files.imgix.net/10e92720-a166-4682-ac95-f7cce7a1fb2f.png?auto=format",
+            "https://ph-files.imgix.net/ff9b1a59-8e7a-4b8f-b361-c23cd7043040.png?auto=format",
+            "https://ph-files.imgix.net/8b7870de-2c78-408e-bf11-87dd9f58c7e8.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/69e7969e-6529-4f5e-b032-276e2fe92f91.jpeg?auto=format"
+        }
+      ]
+    }
+  ]
+}

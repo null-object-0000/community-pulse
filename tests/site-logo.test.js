@@ -347,6 +347,16 @@ test('the validator rejects a layer whose evidence or coverage does not hold up'
   validateDocument(platform, 'file.json', '2026-09-10', expected, platformErrors, []);
   assert.ok(platformErrors.some((error) => /platform page/.test(error)), platformErrors.join('; '));
 
+  // A server header that is not image/* is only a warning: the bytes already sniffed as an image.
+  const oddHeader = document();
+  oddHeader.records = [{ ...record, contentType: 'application/octet-stream' }];
+  oddHeader.contentSha256 = crypto.createHash('sha256').update(JSON.stringify(oddHeader.records)).digest('hex');
+  const oddErrors = [];
+  const oddWarnings = [];
+  validateDocument(oddHeader, 'file.json', '2026-09-10', expected, oddErrors, oddWarnings);
+  assert.deepEqual(oddErrors, []);
+  assert.ok(oddWarnings.some((warning) => /contentType is not an image/.test(warning)), oddWarnings.join('; '));
+
   // A candidate with no record is a gap the build must not swallow; an explicitly partial file warns.
   const gapErrors = [];
   const gapWarnings = [];

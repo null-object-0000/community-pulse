@@ -1,1 +1,1103 @@
-{"fetchedAt":"2026-09-07T08:44:38.756Z","date":"2026-08-20","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"MailMergeOnline","url":"https://mailmergeonline.com/","author":"Linky-AIinlink","authorUrl":"","publishedAt":"2026-08-20T00:00:00+08:00","summary":"PDF 批量生成工具，内置证书、合同、工资单、发票等现成模板，导入 Excel/CSV 并映射字段即可批量生成个性化 PDF，数据不出浏览器 — 无需安装","content":"PDF 批量生成工具，内置证书、合同、工资单、发票等现成模板，导入 Excel/CSV 并映射字段即可批量生成个性化 PDF，数据不出浏览器 — 无需安装","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-20-MailMergeOnline-https://mailmergeonline.com/"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"自荐开源项目：wsl-command —— 专为 WSL2 打造的零依赖极简控制台与进程管理工具","url":"https://github.com/kongaiyi917-source/wsl-command","author":"kongaiyi917-source","authorUrl":"https://github.com/kongaiyi917-source","publishedAt":"2026-08-19T16:18:31Z","summary":"项目名称 WSL Command (WSL 指挥中心) 项目地址 项目简介 一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，零外部第三方依赖，常驻内存仅约 20MB。 解决的痛点 在 WSL2 下做开发时，经常遇到以下烦恼： 1. Docker Desktop 过于笨重：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。 2. 多项目进程难以直观管理：在终端里开多个 dev server，往往需要频繁 ps ef | grep 或 lsof i 查端口、杀僵尸进程。 3. WSL 与 Windows 切换繁琐：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。 核心亮点 ⚡ 极致轻量与零依赖：后端纯 Python 标准库，前端原生现代 JS，无需 pip install 或 npm install 任何依赖，拉下来就能跑。 📊 可视化仪表盘：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。 🚀 进程智能识别与一键启停：自动识别 npm / Python / Dockercompose 等服务，支持快捷卡片置顶与进程树级优雅管理。 🌐 原生双语支持：内置完善的中/英文动态切换。 欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐","content":"### 项目名称\n**WSL Command (WSL 指挥中心)**\n\n### 项目地址\nhttps://github.com/kongaiyi917-source/wsl-command\n\n### 项目简介\n一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，**零外部第三方依赖**，常驻内存仅约 20MB。\n\n### 解决的痛点\n在 WSL2 下做开发时，经常遇到以下烦恼：\n1. **Docker Desktop 过于笨重**：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。\n2. **多项目进程难以直观管理**：在终端里开多个 dev server，往往需要频繁 `ps -ef | grep` 或 `lsof -i` 查端口、杀僵尸进程。\n3. **WSL 与 Windows 切换繁琐**：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。\n\n### 核心亮点\n- **⚡ 极致轻量与零依赖**：后端纯 Python 标准库，前端原生现代 JS，无需 `pip install` 或 `npm install` 任何依赖，拉下来就能跑。\n- **📊 可视化仪表盘**：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。\n- **🚀 进程智能识别与一键启停**：自动识别 npm / Python / Docker-compose 等服务，支持快捷卡片置顶与进程树级优雅管理。\n- **🌐 原生双语支持**：内置完善的中/英文动态切换。\n\n欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11271","issueUrl":"https://github.com/ruanyf/weekly/issues/11271"},{"sourceId":"weekly-issues","title":"【开源自荐】SandBase CLI：一条命令连接 25 个 AI 客户端与 2,000+ 模型/API","url":"https://github.com/sandbaseai/cli","author":"denial123789","authorUrl":"https://github.com/denial123789","publishedAt":"2026-08-19T17:37:27Z","summary":"项目地址： 中文项目页： 项目介绍 SandBase CLI 是一个 Apache2.0 开源的命令行工具和本地 MCP 桥接器。它用一套命令自动检测并配置 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 25 个 AI 客户端目标，让这些客户端通过统一入口发现和调用 2,000+ AI 模型与 API。 !SandBase CLI 解决的问题 不同 AI 客户端使用不同的 MCP 配置目录、字段格式和启动命令，手工配置很容易覆盖原文件或留下失效条目。SandBase CLI 提供 OAuth 登录引导、安全配置更新、配置备份、doctor 诊断与回滚，把这部分重复操作收敛到一个 CLI 中。 macOS 和 Linux 可以通过已完成双平台 CI 的官方 Homebrew Formula 安装。先运行只读目录命令，无需登录，也不会修改任何客户端配置： bash brew install sandbaseai/tap/sandbaseaicli sandbase catalog json sandbase connect 不使用 Homebrew 时，可以直接运行固定到 v0.1.17 的 GitHub Release： bash npx y catalog json npx y connect 主要特点 支持 25 个 AI 客户端目标，目录由仓库中的 src/catalog.ts 统一维护。 本地 MCP Bridge 提供 sandbasediscover、sandbaseinspect、sandbaserun、sandbaserunget、sandbaseruns 和 sandbaseaccount 六个工具。 配置变更包含权限检查、备份和回滚，不需要常驻后台进程。 提供中、英、日、韩、西、法、德等多语言 README。 GitHub Release 提供不可变安装包和 SHA256 校验值。 已进入官方 MCP Registry：io.github.sandbaseai/cli@0.1.17。 官网： 中文 README： 说明：npm 的 latest 当前仍落后于 GitHub Release，因此 npm 用户暂时应使用上面的不可变 v0.1.17 Release 安装包。 披露：我是 SandBase 项目关联方；本提交使用了 AI 辅助撰写和事实校验。","content":"项目地址：https://github.com/sandbaseai/cli\n\n中文项目页：https://sandbaseai.github.io/cli/zh/\n\n## 项目介绍\n\nSandBase CLI 是一个 Apache-2.0 开源的命令行工具和本地 MCP 桥接器。它用一套命令自动检测并配置 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 25 个 AI 客户端目标，让这些客户端通过统一入口发现和调用 2,000+ AI 模型与 API。\n\n![SandBase CLI](https://raw.githubusercontent.com/sandbaseai/cli/main/.github/assets/sandbase-cli-hero.webp)\n\n## 解决的问题\n\n不同 AI 客户端使用不同的 MCP 配置目录、字段格式和启动命令，手工配置很容易覆盖原文件或留下失效条目。SandBase CLI 提供 OAuth 登录引导、安全配置更新、配置备份、`doctor` 诊断与回滚，把这部分重复操作收敛到一个 CLI 中。\n\nmacOS 和 Linux 可以通过已完成双平台 CI 的官方 Homebrew Formula 安装。先运行只读目录命令，无需登录，也不会修改任何客户端配置：\n\n```bash\nbrew install sandbaseai/tap/sandbaseai-cli\nsandbase catalog --json\nsandbase connect\n```\n\n不使用 Homebrew 时，可以直接运行固定到 v0.1.17 的 GitHub Release：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz catalog --json\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz connect\n```\n\n## 主要特点\n\n- 支持 25 个 AI 客户端目标，目录由仓库中的 `src/catalog.ts` 统一维护。\n- 本地 MCP Bridge 提供 `sandbase_discover`、`sandbase_inspect`、`sandbase_run`、`sandbase_run_get`、`sandbase_runs` 和 `sandbase_account` 六个工具。\n- 配置变更包含权限检查、备份和回滚，不需要常驻后台进程。\n- 提供中、英、日、韩、西、法、德等多语言 README。\n- GitHub Release 提供不可变安装包和 SHA-256 校验值。\n- 已进入官方 MCP Registry：`io.github.sandbaseai/cli@0.1.17`。\n\n官网：https://www.sandbase.ai\n\n中文 README：https://github.com/sandbaseai/cli/blob/main/README.zh-CN.md\n\n说明：npm 的 `latest` 当前仍落后于 GitHub Release，因此 npm 用户暂时应使用上面的不可变 v0.1.17 Release 安装包。\n\n披露：我是 SandBase 项目关联方；本提交使用了 AI 辅助撰写和事实校验。\n","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"11272","issueUrl":"https://github.com/ruanyf/weekly/issues/11272"},{"sourceId":"weekly-issues","title":"【开源自荐】Termio：原生 Mac 终端 ADE，为 AI 编程而造的开发环境","url":"https://github.com/termio-sh/termio","author":"jiweiyuan","authorUrl":"https://github.com/jiweiyuan","publishedAt":"2026-08-19T18:31:32Z","summary":"项目地址： 开源协议：MIT 2026 年，软件编程的范式已经彻底变化了。我们大部分时间已经不是敲键盘写代码，而是一个项目开着十几个 Agent 会话——Claude Code、Codex、OpenCode、Pi……给 Agent 描述编程意图，编排它们执行这些意图。传统为手写代码优化的 IDE，其布局和功能已经不再适合 AI 编程，这也是最近很多人在做 ADE（Agent Development Environment）的原因。 我最近也开发了一个 ADE，Termio，一个原生 Mac 终端 ADE。内核用 libghostty（和 Ghostty 同款），Agent 的 TUI 渲染性能很强，使用极为流畅。更重要的是，产品设计是围绕 AI 编程做的：项目管理和 Session 管理的状态一目了然，文件树和 diff 直接显示在终端旁边，给 Agent 提供 context 十分方便。 另外也开发了 iOS 端，随时随地通过手机进行 AI 编程。比如陪家人下楼散步时把想法告诉 Agent，让它立即开始执行；等散步回来，Agent 可能已经完成了任务，你再坐回电脑前检查和验收它的工作。 Termio 应该是目前市面上最漂亮的 ADE 终端了，无论 Mac 客户端还是 iOS，设计都极为漂亮。 <img src=\" width=\"100%\" alt=\"Termio：左侧项目与会话侧边栏，中间 Claude Code，右侧 Codex 分屏\" / <img src=\" width=\"100%\" alt=\"终端旁边的文件树与内置编辑器\" /","content":"项目地址：https://github.com/termio-sh/termio\n开源协议：MIT\n\n2026 年，软件编程的范式已经彻底变化了。我们大部分时间已经不是敲键盘写代码，而是一个项目开着十几个 Agent 会话——Claude Code、Codex、OpenCode、Pi……给 Agent 描述编程意图，编排它们执行这些意图。传统为手写代码优化的 IDE，其布局和功能已经不再适合 AI 编程，这也是最近很多人在做 ADE（Agent Development Environment）的原因。\n\n我最近也开发了一个 ADE，Termio，一个原生 Mac 终端 ADE。内核用 libghostty（和 Ghostty 同款），Agent 的 TUI 渲染性能很强，使用极为流畅。更重要的是，产品设计是围绕 AI 编程做的：项目管理和 Session 管理的状态一目了然，文件树和 diff 直接显示在终端旁边，给 Agent 提供 context 十分方便。\n\n\n另外也开发了 iOS 端，随时随地通过手机进行 AI 编程。比如陪家人下楼散步时把想法告诉 Agent，让它立即开始执行；等散步回来，Agent 可能已经完成了任务，你再坐回电脑前检查和验收它的工作。\n\nTermio 应该是目前市面上最漂亮的 ADE 终端了，无论 Mac 客户端还是 iOS，设计都极为漂亮。\n\n\n<img src=\"https://www.termio.sh/screenshots/hero1.png\" width=\"100%\" alt=\"Termio：左侧项目与会话侧边栏，中间 Claude Code，右侧 Codex 分屏\" />\n\n<img src=\"https://www.termio.sh/screenshots/hero7.png\" width=\"100%\" alt=\"终端旁边的文件树与内置编辑器\" />\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11273","issueUrl":"https://github.com/ruanyf/weekly/issues/11273"},{"sourceId":"weekly-issues","title":"【项目推荐】dsh-route-resilience 插件：DeepSeek Harness 多路由高可用与故障隔离","url":"https://github.com/lokic7123-star/dsh-route-resilience","author":"lokic7123-star","authorUrl":"https://github.com/lokic7123-star","publishedAt":"2026-08-19T18:59:50Z","summary":"项目名称：dshrouteresilience 项目地址： 类别：开源工具 / DeepSeek 开发者工具 / DSH 插件 项目简介 在大模型与 Agent 编排频繁使用的场景下，开发者经常面临 DeepSeek 等 API 的高频限流（HTTP 429）、服务器繁忙（HTTP 503）以及网络超时等问题，这往往会导致正在运行的 Agent 任务彻底中断。 dshrouteresilience 是专门为 DeepSeek Harness（DSH，DeepSeek 官方开源的 Agent 编排与评估工具）开发的高可用与故障隔离插件。它允许开发者将多个 API Key 或不同的提供商路由（如 DeepSeek 官方、硅基流动 SiliconFlow、火山引擎等）聚合成一个虚拟路由，并自动进行智能调度与无感容灾。 核心功能 1. 限流自动隔离（Quarantine）：遇到 HTTP 429 或限流响应时，自动将当前路由隔离，根据 RetryAfter 头或指数退避机制进行冷却，到期后自动恢复。 2. 鉴权/额度异常拉黑（Disable）：如果遇到欠费（402）或 Key 失效（401/403），插件会永久禁用该路由，防止失效密钥污染整个模型组。 3. 保底复活机制（Fallback）：在极端的全节点不可用状态下，自动强制复活最早冷却完毕的节点，避免任务发生无限等待或死锁。 4. 可视化状态面板：无需修改 DeepSeek Harness 核心源码，安装后直接在其 Models 设置页面底部注入直观的可视化 Web UI，用于实时监控路由健康状态（Active / Quarantined / Disabled）以及在线热更新 API 密钥。 对于正在基于 DeepSeek 跑 Agent 任务、经常被限流困扰的开发者而言，这是一个非常实用的稳定性补丁。","content":"### 项目名称：dsh-route-resilience\n\n- **项目地址**：https://github.com/lokic7123-star/dsh-route-resilience\n- **类别**：开源工具 / DeepSeek 开发者工具 / DSH 插件\n\n#### 项目简介\n\n在大模型与 Agent 编排频繁使用的场景下，开发者经常面临 DeepSeek 等 API 的高频限流（HTTP 429）、服务器繁忙（HTTP 503）以及网络超时等问题，这往往会导致正在运行的 Agent 任务彻底中断。\n\n`dsh-route-resilience` 是专门为 **DeepSeek Harness**（DSH，DeepSeek 官方开源的 Agent 编排与评估工具）开发的高可用与故障隔离插件。它允许开发者将多个 API Key 或不同的提供商路由（如 DeepSeek 官方、硅基流动 SiliconFlow、火山引擎等）聚合成一个虚拟路由，并自动进行智能调度与无感容灾。\n\n#### 核心功能\n\n1. **限流自动隔离（Quarantine）**：遇到 HTTP 429 或限流响应时，自动将当前路由隔离，根据 `Retry-After` 头或指数退避机制进行冷却，到期后自动恢复。\n2. **鉴权/额度异常拉黑（Disable）**：如果遇到欠费（402）或 Key 失效（401/403），插件会永久禁用该路由，防止失效密钥污染整个模型组。\n3. **保底复活机制（Fallback）**：在极端的全节点不可用状态下，自动强制复活最早冷却完毕的节点，避免任务发生无限等待或死锁。\n4. **可视化状态面板**：无需修改 DeepSeek Harness 核心源码，安装后直接在其 Models 设置页面底部注入直观的可视化 Web UI，用于实时监控路由健康状态（Active / Quarantined / Disabled）以及在线热更新 API 密钥。\n\n对于正在基于 DeepSeek 跑 Agent 任务、经常被限流困扰的开发者而言，这是一个非常实用的稳定性补丁。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11274","issueUrl":"https://github.com/ruanyf/weekly/issues/11274"},{"sourceId":"weekly-issues","title":"收集了2000+的dsh插件导航站，支持各种筛选，每日更新","url":"https://findharness.com/","author":"10xChengTu","authorUrl":"https://github.com/10xChengTu","publishedAt":"2026-08-20T01:26:48Z","summary":"<img width=\"3024\" height=\"1612\" alt=\"Image\" src=\" /","content":"https://findharness.com/\n\n<img width=\"3024\" height=\"1612\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/07c989d4-db57-4a53-9bc5-6191b364b249\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11275","issueUrl":"https://github.com/ruanyf/weekly/issues/11275"},{"sourceId":"weekly-issues","title":"【项目推荐】PDF to Markdown：在浏览器本地转换常见文档为 Markdown","url":"https://pdftomd.online","author":"mundane799699","authorUrl":"https://github.com/mundane799699","publishedAt":"2026-08-20T01:38:50Z","summary":"网站地址： 推荐一个在线文档转 Markdown 工具：PDF to Markdown。 它可以将 PDF、Word、PowerPoint、Excel 和 CSV 等常见文档转换为 Markdown，适合把已有文档整理到博客、知识库或 AI 工作流中继续使用。 主要特点： 完全免费 完全在浏览器本地处理：文件内容和转换结果不会上传到服务器，也不需要注册或登录。 支持 PDF、DOC/DOCX/DOCM、PPT/PPTX、XLS/XLSX/XLSM/XLSB，以及 CSV 等格式。 支持批量转换：PDF 最多可一次加入 100 个文件，每个文件最大 50 MB。 转换后可直接预览 Markdown、复制内容、下载单个 .md 文件，或将多个结果打包为 ZIP。 面向文本型 PDF；扫描件或纯图片 PDF 会提示需要 OCR，避免生成空白结果。 技术上，项目使用 TanStack Start 和 React 19 构建，部署在 Cloudflare Workers 上；前端采用 Tailwind CSS。文档解析与转换主要在 Web Worker 中运行，使用 Firecrawl 的 anydoc WASM 在浏览器侧转换，减少主线程阻塞并保护文件隐私。 这个工具希望把“从文档到可编辑、可复用的 Markdown”这一步做得尽量轻量：打开网页，选择文件，得到可检查和继续编辑的 Markdown。 <img width=\"2940\" height=\"1838\" alt=\"Image\" src=\" /","content":"网站地址：https://pdftomd.online\n\n推荐一个在线文档转 Markdown 工具：PDF to Markdown。\n\n它可以将 PDF、Word、PowerPoint、Excel 和 CSV 等常见文档转换为 Markdown，适合把已有文档整理到博客、知识库或 AI 工作流中继续使用。\n\n主要特点：\n\n- 完全免费\n- 完全在浏览器本地处理：文件内容和转换结果不会上传到服务器，也不需要注册或登录。\n- 支持 PDF、DOC/DOCX/DOCM、PPT/PPTX、XLS/XLSX/XLSM/XLSB，以及 CSV 等格式。\n- 支持批量转换：PDF 最多可一次加入 100 个文件，每个文件最大 50 MB。\n- 转换后可直接预览 Markdown、复制内容、下载单个 .md 文件，或将多个结果打包为 ZIP。\n- 面向文本型 PDF；扫描件或纯图片 PDF 会提示需要 OCR，避免生成空白结果。\n\n技术上，项目使用 TanStack Start 和 React 19 构建，部署在 Cloudflare Workers 上；前端采用 Tailwind CSS。文档解析与转换主要在 Web Worker 中运行，使用 Firecrawl 的 anydoc WASM 在浏览器侧转换，减少主线程阻塞并保护文件隐私。\n\n这个工具希望把“从文档到可编辑、可复用的 Markdown”这一步做得尽量轻量：打开网页，选择文件，得到可检查和继续编辑的 Markdown。\n\n<img width=\"2940\" height=\"1838\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f813f65d-99b0-4f1c-8cad-4ca3c24c0b89\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11276","issueUrl":"https://github.com/ruanyf/weekly/issues/11276"},{"sourceId":"weekly-issues","title":"【工具自荐】小分身：一个记住你写作风格的自进化 AI 应用","url":"https://xiaofenshen.com/?ref=F1496394","author":"SeasonXue","authorUrl":"https://github.com/SeasonXue","publishedAt":"2026-08-20T02:37:57Z","summary":"一款 AI 写作产品：小分身，它能胜任以下工作（已经完成了公众号大部分功能打通）： 1. 模仿写作风格：根据你不断提供的文本内容，以及每天的对话，公众号文章的数据表现等，形成独特的写作风格和专属记忆。 2. 追踪热点：自动定时抓取热点、挖掘选题灵感，并搜索真实资料来源，按照你的写作风格完成文章编写。 3. AI 写作编辑器：不仅支持 Agent 对话式生成文章内容，也支持精细化润色、搜图、插图等。 4. 资产复利：通过不断地使用这款产品，你会沉淀文章、图片、对话、阅读数据等各类资产，Agent 可以更准确地自进化，从而更加懂你。 欢迎通过我的分享链接使用，你将在免费的积分上额外获取 500 万积分。 👉 <img width=\"3000\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"2632\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"2632\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"3000\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"3000\" height=\"1790\" alt=\"Image\" src=\" /","content":"一款 AI 写作产品：小分身，它能胜任以下工作（已经完成了**公众号**大部分功能打通）：\n\n1. 模仿写作风格：根据你不断提供的文本内容，以及每天的对话，公众号文章的数据表现等，形成独特的写作风格和专属记忆。\n2. 追踪热点：自动定时抓取热点、挖掘选题灵感，并搜索真实资料来源，按照你的写作风格完成文章编写。\n3. AI 写作编辑器：不仅支持 Agent 对话式生成文章内容，也支持精细化润色、搜图、插图等。\n4. 资产复利：通过不断地使用这款产品，你会沉淀文章、图片、对话、阅读数据等各类资产，Agent 可以更准确地自进化，从而更加懂你。\n\n欢迎通过我的分享链接使用，你将在免费的积分上额外获取 500 万积分。\n👉 [https://xiaofenshen.com/?ref=F1496394](https://t.co/pXJQldWEbW)\n\n<img width=\"3000\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b26f3e6e-9b3e-4a57-adda-2e34a583f096\" />\n<img width=\"2632\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9d5e405d-6d05-4b23-aee8-1aa6133530eb\" />\n<img width=\"2632\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a7c6fa89-12b1-4253-a27d-3eecf606e07b\" />\n<img width=\"3000\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c88ca1da-7755-46e2-b863-2d5250d0c667\" />\n<img width=\"3000\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8c75ede2-8e82-43c8-ad52-7b833d087748\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11277","issueUrl":"https://github.com/ruanyf/weekly/issues/11277"},{"sourceId":"weekly-issues","title":"【开源自荐】EasyChat - 专为无障碍沟通打造的翻译软件","url":"https://github.com/SwaggyMacro/EasyChat","author":"SwaggyMacro","authorUrl":"https://github.com/SwaggyMacro","publishedAt":"2026-08-20T03:37:46Z","summary":"开源地址: 使用说明及文档: 项目简介 EasyChat 是一款开源翻译软件。它支持截图翻译、输入翻译、划词、图片 OCR、实时语音识别与同声传译，可接入 AI 大模型和主流机器翻译服务，帮助用户在聊天、办公、学习、浏览网页及观看视频时更高效地完成多语言理解与表达。 核心特性 截图翻译：框选网页、视频或图片中的文字，OCR 识别后即时翻译 输入翻译：通过快捷键输入母语，自动翻译并写入当前应用 划词工具栏：支持翻译、解释、总结、润色、纠错和词典详情 图片 OCR：提取图片文字，支持复制、局部处理和图片翻译 实时语音识别：识别系统播放的音频或视频，并以字幕形式显示翻译结果 同声传译：识别麦克风语音并翻译、TTS后输出至虚拟麦克风，适用于跨语言沟通 快捷翻译与纠错：快速获取翻译、语法修正和写作建议 全局快捷键：在聊天、办公、浏览和学习场景中快速调用 适用场景 浏览外文网站、视频和软件界面 与海外客户或团队进行聊天、邮件沟通 阅读外文图片、漫画或技术资料 观看课程、会议或视频时生成识别与翻译字幕 日常英语学习、写作润色和语法纠错 开源协议 MIT 相关演示 截图与输入翻译 !截图与输入翻译 划词工具栏 !划词工具栏 快捷翻译演示 !快捷翻译演示 实时语音识别 说明 软件采用跨平台框架 Avalonia 开发，但手里没有 macOS，所以目前仅支持 Windows，macOS 会在后续兼容。","content":"开源地址: https://github.com/SwaggyMacro/EasyChat\n使用说明及文档: https://easychat.ncii.cn/\n\n## 项目简介\nEasyChat 是一款开源翻译软件。它支持截图翻译、输入翻译、划词、图片 OCR、实时语音识别与同声传译，可接入 AI 大模型和主流机器翻译服务，帮助用户在聊天、办公、学习、浏览网页及观看视频时更高效地完成多语言理解与表达。\n\n## 核心特性\n- `截图翻译`：框选网页、视频或图片中的文字，OCR 识别后即时翻译\n- `输入翻译`：通过快捷键输入母语，自动翻译并写入当前应用\n- `划词工具栏`：支持翻译、解释、总结、润色、纠错和词典详情\n- `图片 OCR`：提取图片文字，支持复制、局部处理和图片翻译\n- `实时语音识别`：识别系统播放的音频或视频，并以字幕形式显示翻译结果\n- `同声传译`：识别麦克风语音并翻译、TTS后输出至虚拟麦克风，适用于跨语言沟通\n- `快捷翻译与纠错`：快速获取翻译、语法修正和写作建议\n- `全局快捷键`：在聊天、办公、浏览和学习场景中快速调用\n\n## 适用场景\n- 浏览外文网站、视频和软件界面\n- 与海外客户或团队进行聊天、邮件沟通\n- 阅读外文图片、漫画或技术资料\n- 观看课程、会议或视频时生成识别与翻译字幕\n- 日常英语学习、写作润色和语法纠错\n\n## 开源协议\nMIT\n\n## 相关演示\n### 截图与输入翻译\n![截图与输入翻译](https://raw.githubusercontent.com/SwaggyMacro/EasyChat/master/docs/screenshot/README/screenshot-translation.gif)\n\n### 划词工具栏\n![划词工具栏](https://raw.githubusercontent.com/SwaggyMacro/EasyChat/master/docs/screenshot/README/selection-toolbar.webp)\n\n### 快捷翻译演示\n![快捷翻译演示](https://raw.githubusercontent.com/SwaggyMacro/EasyChat/master/docs/screenshot/README/quick-translate.gif)\n\n### 实时语音识别\nhttps://github.com/user-attachments/assets/d17d6287-7cc4-40e4-a322-3c4fed615bda\n\n## 说明\n软件采用跨平台框架 `Avalonia` 开发，但手里没有 **macOS**，所以目前仅支持 **Windows**，**macOS** 会在后续兼容。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11278","issueUrl":"https://github.com/ruanyf/weekly/issues/11278"},{"sourceId":"weekly-issues","title":"【网站自荐】秒搜鸭 - 夸克网盘资源搜索平台附带其他网盘资源","url":"https://msouy.com","author":"miopasscode","authorUrl":"https://github.com/miopasscode","publishedAt":"2026-08-20T06:25:39Z","summary":"网站名称：秒搜鸭 网站地址： 不需要注册不需要关注公众号等，直接可搜 在播剧集持续更新，各种学习公考资源 特色防夸克和谐资源（列如：色戒，斯巴达克斯全集），如果是通过挂载网盘（alist等）工具可直接观看","content":"网站名称：秒搜鸭  \n网站地址：https://msouy.com\n- 不需要注册不需要关注公众号等，直接可搜\n- 在播剧集持续更新，各种学习公考资源\n- 特色防夸克和谐资源（列如：色戒，斯巴达克斯全集），如果是通过挂载网盘（alist等）工具可直接观看\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11279","issueUrl":"https://github.com/ruanyf/weekly/issues/11279"},{"sourceId":"weekly-issues","title":"【开源自荐】TabFlick——给 Google Chrome 加上按最近使用顺序切换标签的能力。（仿Arc浏览器）","url":"https://cdn.jsdelivr.net/gh/lifedever/images@master/uPic/2026/08/tabflick-demo-full.gif","author":"lifedever","authorUrl":"https://github.com/lifedever","publishedAt":"2026-08-20T07:03:57Z","summary":"介绍 Chrome 的 control + tab 是按标签栏顺序切换，不能按最近使用顺序进行切换，效率极低。TabFlick 把它改成按最近使用顺序切换，并在按住按键期间显示漂亮的切换器浮层，与 cmd+tab 切换应用的方式一致。 功能 ⌃⇥ 切换到上一个使用的标签 再点一次 ⌃⇥ 回到出发的标签，A↔B 来回切换保持稳定 列表中每个标签都带网页缩略图 键盘（⌃⇥、⌃⇧⇥）、方向键、鼠标点击都可以操作切换器 两种切换器布局：横向长条，或自适应宫格（尽量一屏放下全部标签） 浮层显示在正在使用的 Chrome 窗口正中，支持多显示器 深浅色外观跟随系统设置 应用内自动更新 —— 按设定频率检查 GitHub Releases，确认后一键原地安装 helper 或扩展不可用时，⌃⇥ 回落到 Chrome 自带的切换行为 工作原理 TabFlick 由两部分组成，通过本地回环 WebSocket 通信： ┌─────────────────────────┐ ┌──────────────────────────┐ │ Chrome 扩展 (MV3) │ ws:// │ Swift helper │ │ │◄───────►│ │ │ · tabs.onActivated │ :41573 │ · CGEventTap (拦 ⌃⇥) │ │ → 维护 MRU 顺序 │ │ · NSPanel (浮层) │ │ · captureVisibleTab │ │ · MRU 状态机 │ │ → 采集缩略图 │ │ │ │ · tabs.update │ │ │ │ → 执行切换 │ │ │ └─────────────────────────┘ └──────────────────────────┘ 项目地址 开源地址： 开源协议：MIT","content":"## 介绍\nChrome 的 control + tab 是按标签栏顺序切换，不能按最近使用顺序进行切换，效率极低。TabFlick 把它改成按最近使用顺序切换，并在按住按键期间显示漂亮的切换器浮层，与 cmd+tab 切换应用的方式一致。\n\n![](https://cdn.jsdelivr.net/gh/lifedever/images@master/uPic/2026/08/tabflick-demo-full.gif)\n\n## 功能\n\n- ⌃⇥ 切换到上一个使用的标签\n- 再点一次 ⌃⇥ 回到出发的标签，A↔B 来回切换保持稳定\n- 列表中每个标签都带网页缩略图\n- 键盘（⌃⇥、⌃⇧⇥）、方向键、鼠标点击都可以操作切换器\n- 两种切换器布局：横向长条，或自适应宫格（尽量一屏放下全部标签）\n- 浮层显示在正在使用的 Chrome 窗口正中，支持多显示器\n- 深浅色外观跟随系统设置\n- 应用内自动更新 —— 按设定频率检查 GitHub Releases，确认后一键原地安装\n- helper 或扩展不可用时，⌃⇥ 回落到 Chrome 自带的切换行为\n\n## 工作原理\n\nTabFlick 由两部分组成，通过本地回环 WebSocket 通信：\n\n```\n┌─────────────────────────┐         ┌──────────────────────────┐\n│  Chrome 扩展 (MV3)      │  ws://  │  Swift helper            │\n│                         │◄───────►│                          │\n│  · tabs.onActivated     │  :41573 │  · CGEventTap  (拦 ⌃⇥)   │\n│    → 维护 MRU 顺序      │         │  · NSPanel     (浮层)    │\n│  · captureVisibleTab    │         │  · MRU 状态机            │\n│    → 采集缩略图         │         │                          │\n│  · tabs.update          │         │                          │\n│    → 执行切换           │         │                          │\n└─────────────────────────┘         └──────────────────────────┘\n```\n\n## 项目地址\n\n开源地址： https://github.com/lifedever/TabFlick \n开源协议：MIT","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11280","issueUrl":"https://github.com/ruanyf/weekly/issues/11280"},{"sourceId":"weekly-issues","title":"【开源自荐】Stamp Maker — 复古邮票生成器","url":"https://github.com/extrastu/stamp-maker/raw/main/public/logo.png","author":"extrastu","authorUrl":"https://github.com/extrastu","publishedAt":"2026-08-20T07:10:05Z","summary":"💌 Stamp Maker — 复古邮票生成器 <div align=\"center\" !Stamp Maker Banner 把日常随手拍，一键变成专属复古齿孔小邮票 🌐 在线体验: 🐙 GitHub 仓库: extrastu/stampmaker 在线体验 • 功能特性 • 快速开始 • 关注作者 • 开源协议 </div 📖 项目简介 Stamp Maker 是一款轻量、优雅且功能强大的复古齿孔邮票图片制作工具。专为手账爱好者、摄影博主及小红书图文创作者打造。 支持一键将日常照片转换为具有真实物理镂空齿孔的复古邮票，提供满幅直接打孔、经典留白、多种齿孔密度调节与高清透明 PNG 导出。100% 浏览器纯本地 Canvas 离线渲染，无需上传任何服务器，极致保障用户照片隐私安全。 ✨ 功能特性 📑 批量选择多张照片制作：支持一次性选取多张照片连续裁切，支持一键批量保存全部邮票，或一键将全部邮票打包发布为小红书图文笔记（2~9 张九宫格）。 ✂️ 真实物理齿孔镂空算法：基于 HTML5 Canvas destinationout 复合图层运算，生成逼真的圆弧边缘镂空效果。 🖼️ 满幅切图与留白自由调节： 满幅打孔（0 留白）：齿孔直接咬合在照片边缘，画面满幅呈现。 经典留白（14px+）：模拟传统邮票与相框衬纸白边。 📐 多画幅智能裁剪：支持 1:1、3:4、4:3、2:3、9:16 常见比例构图，支持画面缩放、平移与一键旋转/回正（0° / 90° / 180° / 270°）。 🎨 多款经典齿孔预设： 标准齿：经典邮票齿孔比例，均衡耐看。 复古密齿：高密度细密齿孔，精致复古。 艺术大齿：现代几何大齿孔，张力十足。 🌈 个性化衬纸底色：提供纯白、复古浅黄、薄荷青绿、柔粉、淡蓝、曜黑等多款高级纸张底衬。 📕 小红书图文一键发布：原生集成小红书 JSBridge postNote 能力，一键将生成的邮票带入小红书发布器。 💾 高精度多格式导出：支持 1080p 社交快传、2160p 超清手账级与 3240p 极清印刷级分辨率，支持透明 PNG、JPEG、WEBP 格式。 🔒 100% 离线与隐私安全：纯客户端本地运行，无后端、无接口请求，零数据泄露风险。 📱 单屏零滚动自适应：深度针对移动端与小红书 App 视口设计，操作一屏搞定。 🎨 设计语言 本项目的 UI / UX 深度参考了 StickerSheet NeoBrutalism（贴纸风新野兽派） 现代设计语言： 暖奶油纸质底色 (FFF4DD)：还原复古纸张与手账本温润触感。 纯正墨黑粗边框 (2px solid 26201A) 与 实体下沉硬投影 (shadowneo)。 扎实的物理按压微交互：所有按钮点击时实体投影瞬间压平（.btnneo），提供极具质感的交互回弹反馈。 🛠️ 技术栈 Core: React 18 + TypeScript Build Tool: Vite 6 Styling: TailwindCSS 3 Image Cropper: reacteasycrop Icons: Lucide React Effects: canvasconfetti 🚀 快速开始 环境准备 Node.js = 18.0.0 pnpm = 8.0.0 (推荐) 或 npm / yarn 1. 克隆代码仓库 bash git clone cd stampmaker 2. 安装依赖 bash pnpm install 3. 本地启动开发服务器 bash pnpm run dev 打开浏览器访问 即可开始体验。 4. 生产环境构建 bash pnpm run build 📦 小红书离线小工具集成与打包 本项目原生适配 小红书离线小工具（XHS MiniTool） 容器规范： 内置经典脚本加载器格式转换（无外链跨域限制）。 离线静态资源全部内联/本地打包（体积仅 ~600KB，远低于 10MB 规范限制）。 原生支持 window.xhs.miniTool.saveImageToPhotosAlbum 与 window.xhs.miniTool.postNote。 一键构建离线 ZIP 安装包 bash pnpm run zip 构建完成后将在根目录生成 stampmaker1.0.3.zip，可直接上传至小红书小工具开放平台。 👤 关注作者 如果你喜欢这个小工具，欢迎关注作者的小红书账号，获取更多好玩实用的创意小工具、前端开源项目与设计分享： 📕 小红书主页：点击关注作者小红书 extrastu 💬 欢迎在小红书交流反馈、提出新功能需求，或带上 StampMaker 标签分享你制作的专属邮票手账作品！ 📄 开源协议 本项目基于 MIT License 开源协议分发与使用。 欢迎自由使用、修改、分发与商业化，请保留原作者版权声明。 Copyright (c) 2026 extrastu · 小红书","content":"# 💌 Stamp Maker — 复古邮票生成器\n\n<div align=\"center\">\n\n![Stamp Maker Banner](https://github.com/extrastu/stamp-maker/raw/main/public/logo.png)\n\n### 把日常随手拍，一键变成专属复古齿孔小邮票\n\n🌐 **在线体验**: [https://stampmakers.pages.dev/](https://stampmakers.pages.dev/)  \n🐙 **GitHub 仓库**: [extrastu/stamp-maker](https://github.com/extrastu/stamp-maker)\n\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)\n[![Website](https://img.shields.io/badge/Website-stampmakers.pages.dev-blue.svg)](https://stampmakers.pages.dev/)\n[![Xiaohongshu](https://img.shields.io/badge/Xiaohongshu-关注作者-FF2442.svg)](https://xhslink.cn/m/lTR6WMDnhB)\n[![React](https://img.shields.io/badge/React-18.3-blue.svg)](https://react.dev/)\n[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)\n[![Vite](https://img.shields.io/badge/Vite-6.0-646CFF.svg)](https://vitejs.dev/)\n\n[在线体验](https://stampmakers.pages.dev/) • [功能特性](#-功能特性) • [快速开始](#-快速开始) • [关注作者](#-关注作者) • [开源协议](#-开源协议)\n\n</div>\n\n---\n\n## 📖 项目简介\n\n**Stamp Maker** 是一款轻量、优雅且功能强大的复古齿孔邮票图片制作工具。专为手账爱好者、摄影博主及小红书图文创作者打造。\n\n支持一键将日常照片转换为具有真实物理镂空齿孔的复古邮票，提供满幅直接打孔、经典留白、多种齿孔密度调节与高清透明 PNG 导出。**100% 浏览器纯本地 Canvas 离线渲染，无需上传任何服务器，极致保障用户照片隐私安全。**\n\n---\n\n## ✨ 功能特性\n\n- 📑 **批量选择多张照片制作**：支持一次性选取多张照片连续裁切，支持一键批量保存全部邮票，或一键将全部邮票打包发布为小红书图文笔记（2~9 张九宫格）。\n- ✂️ **真实物理齿孔镂空算法**：基于 HTML5 Canvas `destination-out` 复合图层运算，生成逼真的圆弧边缘镂空效果。\n- 🖼️ **满幅切图与留白自由调节**：\n  - **满幅打孔（0 留白）**：齿孔直接咬合在照片边缘，画面满幅呈现。\n  - **经典留白（14px+）**：模拟传统邮票与相框衬纸白边。\n- 📐 **多画幅智能裁剪**：支持 `1:1`、`3:4`、`4:3`、`2:3`、`9:16` 常见比例构图，支持画面缩放、平移与一键旋转/回正（`0°` / `90°` / `180°` / `270°`）。\n- 🎨 **多款经典齿孔预设**：\n  - **标准齿**：经典邮票齿孔比例，均衡耐看。\n  - **复古密齿**：高密度细密齿孔，精致复古。\n  - **艺术大齿**：现代几何大齿孔，张力十足。\n- 🌈 **个性化衬纸底色**：提供纯白、复古浅黄、薄荷青绿、柔粉、淡蓝、曜黑等多款高级纸张底衬。\n- 📕 **小红书图文一键发布**：原生集成小红书 JSBridge `postNote` 能力，一键将生成的邮票带入小红书发布器。\n- 💾 **高精度多格式导出**：支持 `1080p` 社交快传、`2160p` 超清手账级与 `3240p` 极清印刷级分辨率，支持透明 PNG、JPEG、WEBP 格式。\n- 🔒 **100% 离线与隐私安全**：纯客户端本地运行，无后端、无接口请求，零数据泄露风险。\n- 📱 **单屏零滚动自适应**：深度针对移动端与小红书 App 视口设计，操作一屏搞定。\n\n---\n\n## 🎨 设计语言\n\n本项目的 UI / UX 深度参考了 **Sticker-Sheet Neo-Brutalism（贴纸风新野兽派）** 现代设计语言：\n\n- **暖奶油纸质底色** (`#FFF4DD`)：还原复古纸张与手账本温润触感。\n- **纯正墨黑粗边框** (`2px solid #26201A`) 与 **实体下沉硬投影** (`shadow-neo`)。\n- **扎实的物理按压微交互**：所有按钮点击时实体投影瞬间压平（`.btn-neo`），提供极具质感的交互回弹反馈。\n\n---\n\n## 🛠️ 技术栈\n\n- **Core**: [React 18](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)\n- **Build Tool**: [Vite 6](https://vitejs.dev/)\n- **Styling**: [TailwindCSS 3](https://tailwindcss.com/)\n- **Image Cropper**: [react-easy-crop](https://github.com/ValentinH/react-easy-crop)\n- **Icons**: [Lucide React](https://lucide.dev/)\n- **Effects**: [canvas-confetti](https://github.com/catdad/canvas-confetti)\n\n---\n\n## 🚀 快速开始\n\n### 环境准备\n\n- Node.js >= 18.0.0\n- pnpm >= 8.0.0 (推荐) 或 npm / yarn\n\n### 1. 克隆代码仓库\n\n```bash\ngit clone https://github.com/extrastu/stamp-maker.git\ncd stamp-maker\n```\n\n### 2. 安装依赖\n\n```bash\npnpm install\n```\n\n### 3. 本地启动开发服务器\n\n```bash\npnpm run dev\n```\n\n打开浏览器访问 `http://localhost:5173` 即可开始体验。\n\n### 4. 生产环境构建\n\n```bash\npnpm run build\n```\n\n---\n\n## 📦 小红书离线小工具集成与打包\n\n本项目原生适配 **小红书离线小工具（XHS Mini-Tool）** 容器规范：\n\n- 内置经典脚本加载器格式转换（无外链跨域限制）。\n- 离线静态资源全部内联/本地打包（体积仅 ~600KB，远低于 10MB 规范限制）。\n- 原生支持 `window.xhs.miniTool.saveImageToPhotosAlbum` 与 `window.xhs.miniTool.postNote`。\n\n### 一键构建离线 ZIP 安装包\n\n```bash\npnpm run zip\n```\n\n构建完成后将在根目录生成 `stamp-maker-1.0.3.zip`，可直接上传至小红书小工具开放平台。\n\n---\n\n## 👤 关注作者\n\n如果你喜欢这个小工具，欢迎关注作者的小红书账号，获取更多好玩实用的创意小工具、前端开源项目与设计分享：\n\n- 📕 **小红书主页**：[点击关注作者小红书 extrastu](https://xhslink.cn/m/lTR6WMDnhB)\n- 💬 欢迎在小红书交流反馈、提出新功能需求，或带上 `#StampMaker` 标签分享你制作的专属邮票手账作品！\n\n---\n\n## 📄 开源协议\n\n本项目基于 [MIT License](./LICENSE) 开源协议分发与使用。\n欢迎自由使用、修改、分发与商业化，请保留原作者版权声明。\n\nCopyright (c) 2026 [extrastu](https://github.com/extrastu) · [小红书](https://xhslink.cn/m/lTR6WMDnhB)\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11281","issueUrl":"https://github.com/ruanyf/weekly/issues/11281"},{"sourceId":"weekly-issues","title":"【开源自荐】一个基于高德地图api的多人聚餐餐厅推荐工具","url":"https://github.com/shaozhengmao/where-to-eat","author":"shaozhengmao","authorUrl":"https://github.com/shaozhengmao","publishedAt":"2026-08-20T07:49:40Z","summary":"Where to Eat 一个多人聚餐餐厅推荐工具。 用户输入每个人的出发地、口味和出行方式后，项目会调用高德地图计算所有人到候选餐厅的真实路线，并按照“最慢的人更快”“时间差最小”或“平均耗时最低”进行排序，给出一家推荐餐厅和备选方案。 它不会只找一个地理中心点，而是以真正能去吃饭的餐厅作为最终目标；还会展示地点识别结果、每个人的耗时，以及公共交通的上车、换乘和下车说明。 目前支持北京、上海、广州、深圳。Web 版部署在 Cloudflare Pages，使用者在页面填写自己的高德 Web 服务 Key，Key 仅用于当前请求，不保存。 项目地址： 在线体验： 效果图： <img width=\"929\" height=\"1002\" alt=\"Image\" src=\" /","content":"## [Where to Eat](https://github.com/shaozhengmao/where-to-eat)\n\n一个多人聚餐餐厅推荐工具。\n\n用户输入每个人的出发地、口味和出行方式后，项目会调用高德地图计算所有人到候选餐厅的真实路线，并按照“最慢的人更快”“时间差最小”或“平均耗时最低”进行排序，给出一家推荐餐厅和备选方案。\n\n它不会只找一个地理中心点，而是以真正能去吃饭的餐厅作为最终目标；还会展示地点识别结果、每个人的耗时，以及公共交通的上车、换乘和下车说明。\n\n目前支持北京、上海、广州、深圳。Web 版部署在 Cloudflare Pages，使用者在页面填写自己的高德 Web 服务 Key，Key 仅用于当前请求，不保存。\n\n- 项目地址：https://github.com/shaozhengmao/where-to-eat\n- 在线体验：https://where-to-eat-8wr.pages.dev/\n\n效果图：\n<img width=\"929\" height=\"1002\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/daad3db3-3279-4931-97cb-9a79cec130d1\" />","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"11282","issueUrl":"https://github.com/ruanyf/weekly/issues/11282"},{"sourceId":"weekly-issues","title":"【开源自荐】Gitmous：可用鼠标操作的终端 Git 客户端","url":"https://github.com/JackyWongX/gitmous","author":"JackyWongX","authorUrl":"https://github.com/JackyWongX","publishedAt":"2026-08-20T08:13:12Z","summary":"项目地址： Gitmous 是一个运行在终端里的 Git 客户端。它把图形化源码管理面板中常见的点击式工作流带进终端：不必记忆 Git 命令，通过鼠标、按钮、菜单和对话框就能完成日常版本管理。完全由鼠标操作按钮和菜单完成日常git操作。 它适合希望保留终端工作环境，但又想减少 Git 命令记忆和频繁切换工具的开发者。 能做什么 在当前目录下发现仓库，也可添加本地仓库、初始化仓库或从远程地址克隆 点击文件即可暂存、取消暂存和查看工作区差异，支持一键暂存或取消暂存全部更改 创建提交，查看提交详情及其中的文件，并可还原到指定提交 创建、切换、发布、合并和删除本地或远程分支 完成 fetch、pull、push、发布当前分支，以及管理远程仓库 创建、应用、弹出、查看或删除储藏；创建和删除标签 处理合并冲突：接受当前版本、接受传入版本、中止合并，或在手动编辑后标记为已解决 支持简体中文和英文界面，以及主题强调色设置 涉及丢弃本地更改或改写历史的操作都会先要求确认，再调用 Git。 界面预览 !Gitmous 终端界面 使用方式 项目基于 Node.js 和 Git，支持 Windows、macOS、Linux，需要使用支持鼠标报告的终端。可通过 npm 全局安装： bash npm install global gitmous gitmous 也可克隆源码后运行： ba git clone cd gitmous npm install npm start /path/to/yourrepository Windows PowerShell 示例： powershell npm start D:\\github\\yourrepository 欢迎试用并反馈问题或建议。","content":"\n项目地址：https://github.com/JackyWongX/gitmous\n\nGitmous 是一个运行在终端里的 Git 客户端。它把图形化源码管理面板中常见的点击式工作流带进终端：不必记忆 Git 命令，通过鼠标、按钮、菜单和对话框就能完成日常版本管理。完全由鼠标操作按钮和菜单完成日常git操作。\n\n它适合希望保留终端工作环境，但又想减少 Git 命令记忆和频繁切换工具的开发者。\n\n## 能做什么\n- 在当前目录下发现仓库，也可添加本地仓库、初始化仓库或从远程地址克隆\n- 点击文件即可暂存、取消暂存和查看工作区差异，支持一键暂存或取消暂存全部更改\n- 创建提交，查看提交详情及其中的文件，并可还原到指定提交\n- 创建、切换、发布、合并和删除本地或远程分支\n- 完成 `fetch`、`pull`、`push`、发布当前分支，以及管理远程仓库\n- 创建、应用、弹出、查看或删除储藏；创建和删除标签\n- 处理合并冲突：接受当前版本、接受传入版本、中止合并，或在手动编辑后标记为已解决\n- 支持简体中文和英文界面，以及主题强调色设置\n\n涉及丢弃本地更改或改写历史的操作都会先要求确认，再调用 Git。\n\n## 界面预览\n\n![Gitmous 终端界面](https://raw.githubusercontent.com/JackyWongX/gitmous/master/show.png)\n\n## 使用方式\n\n项目基于 Node.js 和 Git，支持 Windows、macOS、Linux，需要使用支持鼠标报告的终端。可通过 npm 全局安装：\n\n```bash\nnpm install --global gitmous\ngitmous\n```\n\n也可克隆源码后运行：\n\n```ba\ngit clone https://github.com/JackyWongX/gitmous.git\ncd gitmous\nnpm install\nnpm start -- /path/to/your-repository\n```\n\nWindows PowerShell 示例：\n\n```powershell\nnpm start -- D:\\github\\your-repository\n```\n\n欢迎试用并反馈问题或建议。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11283","issueUrl":"https://github.com/ruanyf/weekly/issues/11283"},{"sourceId":"weekly-issues","title":"【开源自荐】手机图案密码全库检索工具","url":"https://github.com/narrastory/graphic-cryptographic","author":"narrastory","authorUrl":"https://github.com/narrastory","publishedAt":"2026-08-20T08:16:15Z","summary":"你好，我想自荐一个我最近开发的开源项目：Graphic Cryptographic —— 一个手机图案密码的全库检索与筛选工具。 项目链接： 项目简介： 这是一个帮助用户设计更安全、更个性化手机图案密码的 Web 应用。它将 3×3 点阵上的图案密码转化为数字序列问题，通过算法遍历全部 985,824 种可能，并利用对称性去冗余，将有效图案缩减至约 12.3 万 个。用户可以按长度、对称类型、路径特征等条件筛选，找到既美观又不易被猜到的图案。 推荐理由： 1. 有趣且实用：图案密码是很多人每天都在用的东西，但很少有人系统地想过“一共有多少种”“什么样的图案更安全”。这个项目用数学和算法给出了一个直观的答案。 2. AI 辅助开发的实践案例：我在 README 中详细记录了如何借助 AI 在两天内完成从构思到开发的全过程——不依赖 AI 生成整块代码，而是将其作为“随时提问的助手”来加速学习 Vue3 和组件开发。这种“AI 辅助、人脑主导”的开发方式，对当下很多开发者都有参考价值。 3. 技术实现有亮点：项目涉及全排列生成、对称性去重、Canvas 图案绘制等，代码结构清晰，适合对算法或 Vue3 感兴趣的朋友学习。","content":"你好，我想自荐一个我最近开发的开源项目：**Graphic Cryptographic** —— 一个手机图案密码的全库检索与筛选工具。\n\n**项目链接**：https://github.com/narrastory/graphic-cryptographic\n\n**项目简介**：\n这是一个帮助用户设计更安全、更个性化手机图案密码的 Web 应用。它将 3×3 点阵上的图案密码转化为数字序列问题，通过算法遍历全部 **985,824** 种可能，并利用对称性去冗余，将有效图案缩减至约 **12.3 万** 个。用户可以按长度、对称类型、路径特征等条件筛选，找到既美观又不易被猜到的图案。\n\n**推荐理由**：\n1. **有趣且实用**：图案密码是很多人每天都在用的东西，但很少有人系统地想过“一共有多少种”“什么样的图案更安全”。这个项目用数学和算法给出了一个直观的答案。\n2. **AI 辅助开发的实践案例**：我在 README 中详细记录了如何借助 AI 在两天内完成从构思到开发的全过程——不依赖 AI 生成整块代码，而是将其作为“随时提问的助手”来加速学习 Vue3 和组件开发。这种“AI 辅助、人脑主导”的开发方式，对当下很多开发者都有参考价值。\n3. **技术实现有亮点**：项目涉及全排列生成、对称性去重、Canvas 图案绘制等，代码结构清晰，适合对算法或 Vue3 感兴趣的朋友学习。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11284","issueUrl":"https://github.com/ruanyf/weekly/issues/11284"},{"sourceId":"weekly-issues","title":"【开源自荐】可作为 Typeless 平替的语音输入法 - Tyvox","url":"https://github.com/luckrnx09/tyvox","author":"luckrnx09","authorUrl":"https://github.com/luckrnx09","publishedAt":"2026-08-20T09:08:19Z","summary":"项目名称： Tyvox 项目简介： 打字是思考中最慢的部分。Tyvox 消除了这一部分：在桌面上按下一个热键，自然说话，经过润色的文本就会准确地出现在你即将打字的地方。语音识别默认在您的机器上运行，可选的 LLM 处理将漫谈变成整洁的散文 —— 或另一种语言。 <img src=\"/luckrnx09/tyvox/raw/master/assets/demo/polishdemo.gif\" / 项目地址： 开源协议： MIT","content":"**项目名称：** Tyvox\n\n**项目简介：**\n打字是思考中最慢的部分。Tyvox 消除了这一部分：在桌面上按下一个热键，自然说话，经过润色的文本就会准确地出现在你即将打字的地方。语音识别默认在您的机器上运行，可选的 LLM 处理将漫谈变成整洁的散文 —— 或另一种语言。\n\n<img src=\"/luckrnx09/tyvox/raw/master/assets/demo/polish-demo.gif\" />\n\n**项目地址：** https://github.com/luckrnx09/tyvox\n\n**开源协议：** MIT\n\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11285","issueUrl":"https://github.com/ruanyf/weekly/issues/11285"},{"sourceId":"weekly-issues","title":"【工具自荐】Jarvix：让多个 AI Agent 共享同一份上下文","url":"https://jarvix.live/?ref=weekly","author":"callback-io","authorUrl":"https://github.com/callback-io","publishedAt":"2026-08-20T09:10:35Z","summary":"项目地址： Jarvix 是一款面向 macOS 的本地优先（localfirst）、支持语音交互的 Context OS。它解决的不是“再多一个聊天窗口”，而是同时使用多个 AI 工具时，上下文散落在不同会话里、同一背景需要反复解释的问题。 你可以把自己选择的 AI 对话和信息源交给 Jarvix。它会把这些内容组织成可持续的个人上下文，让不同 Agent 和新会话从已有背景继续工作，并从中发现关联、总结信号、建议下一步。涉及执行的动作仍然需要用户确认。 比较有意思的几个功能： 一份上下文，多 Agent 共用：不必在每个会话里重新复制背景；Jarvix 让不同 Agent 围绕同一目标和上下文继续协作，并显示进度。 Self Reflection 与 Next Move：不只保存历史，还会从你选择的内容里梳理关系和模式，给出“下一步可以做什么”的建议。 Jarvix Radio：根据个人上下文发现值得看的视频，把被动刷推荐变成围绕当前兴趣和目标的探索。 JCard：导入自己选择的 AI 对话，可以生成七种 JType 之一，并查看不同类型的协作匹配度。网页版支持免登录、一次性分析，适合先体验产品思路。 目前官网可以直接下载 macOS 客户端；Windows 版本可登记候补。 <img width=\"1810\" height=\"1112\" alt=\"Image\" src=\" / <img width=\"3840\" height=\"1982\" alt=\"Image\" src=\" / <img width=\"3840\" height=\"1982\" alt=\"Image\" src=\" / <img width=\"1920\" height=\"991\" alt=\"Image\" src=\" / <img width=\"3840\" height=\"1982\" alt=\"Image\" src=\" /","content":"项目地址：[https://jarvix.live/?ref=weekly](https://jarvix.live/?ref=weekly)\n\nJarvix 是一款面向 macOS 的本地优先（local-first）、支持语音交互的 Context OS。它解决的不是“再多一个聊天窗口”，而是同时使用多个 AI 工具时，上下文散落在不同会话里、同一背景需要反复解释的问题。\n\n你可以把自己选择的 AI 对话和信息源交给 Jarvix。它会把这些内容组织成可持续的个人上下文，让不同 Agent 和新会话从已有背景继续工作，并从中发现关联、总结信号、建议下一步。涉及执行的动作仍然需要用户确认。\n\n比较有意思的几个功能：\n\n- **一份上下文，多 Agent 共用**：不必在每个会话里重新复制背景；Jarvix 让不同 Agent 围绕同一目标和上下文继续协作，并显示进度。\n- **Self Reflection 与 Next Move**：不只保存历史，还会从你选择的内容里梳理关系和模式，给出“下一步可以做什么”的建议。\n- **Jarvix Radio**：根据个人上下文发现值得看的视频，把被动刷推荐变成围绕当前兴趣和目标的探索。\n- **J-Card**：导入自己选择的 AI 对话，可以生成七种 J-Type 之一，并查看不同类型的协作匹配度。网页版支持免登录、一次性分析，适合先体验产品思路。\n\n目前官网可以直接下载 macOS 客户端；Windows 版本可登记候补。\n<img width=\"1810\" height=\"1112\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/59e2b750-f0fb-4f7a-a0ea-1e86e5f8c191\" />\n<img width=\"3840\" height=\"1982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a9c5285a-05df-45f9-96d6-57aeed2a82db\" />\n<img width=\"3840\" height=\"1982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/56539453-53cd-4a34-ab6b-b2a81b1d4479\" />\n<img width=\"1920\" height=\"991\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4ca760b2-107a-4595-b3f7-13854ec29091\" />\n<img width=\"3840\" height=\"1982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4e566804-034a-40be-9d6f-9bd49efa2714\" />\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11286","issueUrl":"https://github.com/ruanyf/weekly/issues/11286"},{"sourceId":"weekly-issues","title":"【网站自荐】运营400多天的通辽宇宙知识库：小约翰可汗视频资料库","url":"https://www.tongliaouniverse.cn/","author":"Acorn2","authorUrl":"https://github.com/Acorn2","publishedAt":"2026-08-20T09:32:49Z","summary":"网站地址：通辽宇宙知识库 各位周刊读者好，先说一个很多看视频的人都会得的病：小约翰可汗的视频，看的时候是真上头。可过一阵子你想回看某一段，完了——人物记得，国家记得，故事记得，连那句\"秦始皇吃花椒——赢麻了\"都记得，就是死活想不起是哪一期。 这毛病吧，不痛不痒，就是磨人。翻收藏夹、划播放列表、对着进度条干瞪眼，最后只能自我安慰：算了，找不到就找不到吧。 这个网站就是治这个病的。 通辽宇宙知识库，运营到今天有 400多天，一个围着小约翰可汗公开视频做的民间资料索引。它不打算替代原视频，也不抢 B 站的播放量；它干的活就一件：把散在几十上百期视频里的人物、国家、组织、事件、配乐、经典语录重新串起来，你从哪头进去，都能顺着摸到出处，再顺着出处接着逛。 一年前，我在周刊投过一版。当时项目还主要是奇葩小国、人物档案、语录和视频列表。这一年间网站大改了好几轮，现在是 v2.0。所以这期不是报旧闻，是想跟新老读者说一声：现在它比一年前能打的多了。 现在可以怎么用 就五件事。 全站搜索与出处回查：按人物、国家、组织、事件、曲名或语录关键词搜，定位到资料和来源视频。不说是过目不忘吧，至少也是随叫随到了。 结构化资料库：奇葩小国、硬核狠人、神奇组织、历史事件、视频资料、经典配乐、通辽国粹，词条之间留着关联入口，从一个人能追到国家、事件、视频。 地图、图鉴与专题导读：没有明确目标的时候，顺着地图、图鉴或专题路线，顺藤摸瓜地逛。 视频档案补充：详情页除了基本信息，还整理了有代表性的 B 站热评；配乐和可汗玉音档案，按曲名、标题或 BV 号都能回查。 内容共建与反馈闭环：反馈进展页、资料补充入口都在。你发现哪条不对、缺了哪段，直接提交线索，附上视频标题、链接或时间点，方便核对补全。 !通辽宇宙知识库首页，视频资料库与全站搜索入口 !通辽宇宙知识库首页，视频资料库与全站搜索入口 这一年新增和重做了什么 这一年的更新，主要是在治资料站的老毛病：看一页就断。查完一个人名，手一松，不知道该往哪点了。 好，通辽档案局今日值班的仓鼠，给您汇报一下这一年干了啥： 重做了页面视觉、导航和响应式布局，统一了国家、人物、组织、历史等详情页的信息结构。 扩充了组织、历史、音乐、图鉴、专题、网络热评等内容维度，加强了资料之间的跳转关系。 补齐了站内反馈、共建、更新日志与内容审核等持续维护能力。 头像工坊：上传头像或选站内历史头像，浏览器本地就能生成 ASCII、像素风、掌机绿屏、VHS 效果，一键下载。 3D 仓鼠档案员、每日档案签和\"随便翻一卷\"，给没有明确关键词、想随机进一条线索的人用的。 新近还加了\"仓鼠快递站\"这个不影响资料检索的轻量小游戏，主打一个只进不出——进去的包裹，没几个能原样出来；旁边还配了台催更压力仪，专门用来展示更新空窗期。 !硬核狠人人物库，提供 409 条人物资料及标签筛选 !仓鼠快递站，通辽宇宙知识库的轻量互动入口 有人要说了，又是仓鼠又是快递站的，这网站是不是跑偏去搞娱乐了？行啊，可问题是——这些互动真不是主角。核心一直是那件事：保留原视频入口，把零散内容整理成可查、可连、可持续补充的资料网络。互动功能顶多是查完资料、还想再逛一会儿的时候，给你递一杯水。 项目说明 非官方个人项目，索引以小约翰可汗公开发布的视频为准，页面会保留或链接回原视频。整理过程中可能还有遗漏或错误，欢迎通过站内反馈提交可核对的补充与修正线索。 项目持续公开记录更新： 网站首页 更新日志 反馈进展 你要是也有过\"人物记得、国家记得、就是忘了哪期\"的瞬间，别对着进度条干瞪眼了，来搜一个名字试试，五分钟就走。不出意外的话，这一逛，今晚你就在通辽宇宙里过夜了。 搜到了，说明你没记错；搜不到，正好来提交线索，帮值班仓鼠补一档。你负责记得片段，我负责把出处翻出来。","content":"网站地址：[通辽宇宙知识库](https://www.tongliaouniverse.cn/)\n\n各位周刊读者好，先说一个很多看视频的人都会得的病：小约翰可汗的视频，看的时候是真上头。可过一阵子你想回看某一段，完了——人物记得，国家记得，故事记得，连那句\"秦始皇吃花椒——赢麻了\"都记得，就是死活想不起是哪一期。\n\n这毛病吧，不痛不痒，就是磨人。翻收藏夹、划播放列表、对着进度条干瞪眼，最后只能自我安慰：算了，找不到就找不到吧。\n\n这个网站就是治这个病的。\n\n通辽宇宙知识库，运营到今天有 400多天，一个围着小约翰可汗公开视频做的民间资料索引。它不打算替代原视频，也不抢 B 站的播放量；它干的活就一件：把散在几十上百期视频里的人物、国家、组织、事件、配乐、经典语录重新串起来，你从哪头进去，都能顺着摸到出处，再顺着出处接着逛。\n\n一年前，我在周刊投过一版。当时项目还主要是奇葩小国、人物档案、语录和视频列表。这一年间网站大改了好几轮，现在是 v2.0。所以这期不是报旧闻，是想跟新老读者说一声：现在它比一年前能打的多了。\n\n## 现在可以怎么用\n\n就五件事。\n\n- **全站搜索与出处回查**：按人物、国家、组织、事件、曲名或语录关键词搜，定位到资料和来源视频。不说是过目不忘吧，至少也是随叫随到了。\n- **结构化资料库**：奇葩小国、硬核狠人、神奇组织、历史事件、视频资料、经典配乐、通辽国粹，词条之间留着关联入口，从一个人能追到国家、事件、视频。\n- **地图、图鉴与专题导读**：没有明确目标的时候，顺着地图、图鉴或专题路线，顺藤摸瓜地逛。\n- **视频档案补充**：详情页除了基本信息，还整理了有代表性的 B 站热评；配乐和可汗玉音档案，按曲名、标题或 BV 号都能回查。\n- **内容共建与反馈闭环**：反馈进展页、资料补充入口都在。你发现哪条不对、缺了哪段，直接提交线索，附上视频标题、链接或时间点，方便核对补全。\n\n![通辽宇宙知识库首页，视频资料库与全站搜索入口](https://hreshhao.com/own/homepage1.png)\n\n![通辽宇宙知识库首页，视频资料库与全站搜索入口](https://hreshhao.com/own/homepage2.png)\n\n## 这一年新增和重做了什么\n\n这一年的更新，主要是在治资料站的老毛病：看一页就断。查完一个人名，手一松，不知道该往哪点了。\n\n好，通辽档案局今日值班的仓鼠，给您汇报一下这一年干了啥：\n\n- 重做了页面视觉、导航和响应式布局，统一了国家、人物、组织、历史等详情页的信息结构。\n- 扩充了组织、历史、音乐、图鉴、专题、网络热评等内容维度，加强了资料之间的跳转关系。\n- 补齐了站内反馈、共建、更新日志与内容审核等持续维护能力。\n- 头像工坊：上传头像或选站内历史头像，浏览器本地就能生成 ASCII、像素风、掌机绿屏、VHS 效果，一键下载。\n- 3D 仓鼠档案员、每日档案签和\"随便翻一卷\"，给没有明确关键词、想随机进一条线索的人用的。\n- 新近还加了\"仓鼠快递站\"这个不影响资料检索的轻量小游戏，主打一个只进不出——进去的包裹，没几个能原样出来；旁边还配了台催更压力仪，专门用来展示更新空窗期。\n\n![硬核狠人人物库，提供 409 条人物资料及标签筛选](https://hreshhao.com/own/music.png)\n\n![仓鼠快递站，通辽宇宙知识库的轻量互动入口](https://hreshhao.com/own/game.png)\n\n有人要说了，又是仓鼠又是快递站的，这网站是不是跑偏去搞娱乐了？行啊，可问题是——这些互动真不是主角。核心一直是那件事：保留原视频入口，把零散内容整理成可查、可连、可持续补充的资料网络。互动功能顶多是查完资料、还想再逛一会儿的时候，给你递一杯水。\n\n## 项目说明\n\n非官方个人项目，索引以小约翰可汗公开发布的视频为准，页面会保留或链接回原视频。整理过程中可能还有遗漏或错误，欢迎通过站内反馈提交可核对的补充与修正线索。\n\n项目持续公开记录更新：\n\n- [网站首页](https://www.tongliaouniverse.cn/)\n- [更新日志](https://www.tongliaouniverse.cn/changelog/)\n- [反馈进展](https://www.tongliaouniverse.cn/feedback/)\n\n你要是也有过\"人物记得、国家记得、就是忘了哪期\"的瞬间，别对着进度条干瞪眼了，来搜一个名字试试，五分钟就走。不出意外的话，这一逛，今晚你就在通辽宇宙里过夜了。\n\n搜到了，说明你没记错；搜不到，正好来提交线索，帮值班仓鼠补一档。你负责记得片段，我负责把出处翻出来。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11287","issueUrl":"https://github.com/ruanyf/weekly/issues/11287"},{"sourceId":"weekly-issues","title":"【工具自荐】万物皆可排！我做了一个自带“社区讨论”的 Tier List 排名工具","url":"https://tierlistmaker.pro/","author":"niki75029-dotcom","authorUrl":"https://github.com/niki75029-dotcom","publishedAt":"2026-08-20T09:48:31Z","summary":"大家好！今天想给大家推荐一款我最近开发/发现的实用且好玩的工具：Tier List Maker Pro。 🔗 传送门：[] 平时大家在各大论坛、贴吧或者社交媒体上，肯定没少见各种“节奏榜”、“天梯图”或者“梯度排行”（比如某款游戏的角色强度排行、动漫战力榜、甚至各品牌快餐的好吃程度等等）。 传统的 Tier List 工具大多是纯“单机版”的——你排好名、截个图、发到别的平台，工具的使命就结束了。但很多时候，排名的灵魂不仅在于展示，更在“讨论（或者说对线）”！ 为此，我们在把基础做图体验打磨好的同时，给 Rankly注入了灵魂功能——社区交流。 🌟 核心亮点：它不仅是个制图工具，更是一个讨论社区 💬 一键发布，激情讨论：你做好的排名图不再只是一张死板的图片。你可以直接将其发布到网站的公共社区。其他用户看到后，可以在下方直接留言讨论（比如：“凭什么 XXX 只能排 T2？”、“排在 T0 的这个我完全赞同！”）。 🔄 模板复用，一键 PK：看到别人发在社区的排名不服气？你可以直接一键复用他的素材库，拖拽出你心目中的完美榜单，用实力回应！ 🛠 当然，基础功能依然扎实好用： 丝滑的拖拽体验：支持电脑和手机端，图片拖拽丝滑顺畅，哪里不爽拖哪里。 高度自定义：随心所欲修改梯度等级的名称（如 T0, T1, T2 或者 神级, 优秀, 一般）、颜色以及行数。 高清图一键导出：如果你还是想把图片分享到微信群、微博或推特，我们也提供了一键生成高清长图下载的功能，没有任何水印烦恼。 💡 你可以用它来排什么？（万物皆可 Tier List） 🎮 游戏电竞：《黑神话》Boss难度榜、APEX武器强度榜、原神/星铁角色节奏榜。 🎬 影视动漫：漫威电影宇宙喜爱度排名、年度最佳新番大赏。 💻 科技数码：前端框架鄙视链、各大手机品牌系统好用度排行。 🍔 生活日常：各家奶茶品牌性价比排行、麦当劳单品红黑榜。 目前 Tier List Maker Pro 已经上线，完全免费！非常欢迎大家来体验。 大家可以直接去社区里发个榜单，或者找个感兴趣的榜单“锐评”一下。如果你对工具有任何建议或者吐槽，也随时在帖子里留言告诉我，我会认真看每一条反馈并持续迭代！ 欢迎来玩：👉 [Rankly] ()","content":"大家好！今天想给大家推荐一款我最近开发/发现的实用且好玩的工具：Tier List Maker Pro。\n🔗 传送门：[https://tierlistmaker.pro/]\n平时大家在各大论坛、贴吧或者社交媒体上，肯定没少见各种“节奏榜”、“天梯图”或者“梯度排行”（比如某款游戏的角色强度排行、动漫战力榜、甚至各品牌快餐的好吃程度等等）。\n传统的 Tier List 工具大多是纯“单机版”的——你排好名、截个图、发到别的平台，工具的使命就结束了。但很多时候，排名的灵魂不仅在于展示，更在“讨论（或者说对线）”！\n为此，我们在把基础做图体验打磨好的同时，给 Rankly注入了灵魂功能——社区交流。\n🌟 核心亮点：它不仅是个制图工具，更是一个讨论社区\n💬 一键发布，激情讨论：你做好的排名图不再只是一张死板的图片。你可以直接将其发布到网站的公共社区。其他用户看到后，可以在下方直接留言讨论（比如：“凭什么 XXX 只能排 T2？”、“排在 T0 的这个我完全赞同！”）。\n🔄 模板复用，一键 PK：看到别人发在社区的排名不服气？你可以直接一键复用他的素材库，拖拽出你心目中的完美榜单，用实力回应！\n🛠 当然，基础功能依然扎实好用：\n丝滑的拖拽体验：支持电脑和手机端，图片拖拽丝滑顺畅，哪里不爽拖哪里。\n高度自定义：随心所欲修改梯度等级的名称（如 T0, T1, T2 或者 神级, 优秀, 一般）、颜色以及行数。\n高清图一键导出：如果你还是想把图片分享到微信群、微博或推特，我们也提供了一键生成高清长图下载的功能，没有任何水印烦恼。\n💡 你可以用它来排什么？（万物皆可 Tier List）\n🎮 游戏电竞：《黑神话》Boss难度榜、APEX武器强度榜、原神/星铁角色节奏榜。\n🎬 影视动漫：漫威电影宇宙喜爱度排名、年度最佳新番大赏。\n💻 科技数码：前端框架鄙视链、各大手机品牌系统好用度排行。\n🍔 生活日常：各家奶茶品牌性价比排行、麦当劳单品红黑榜。\n目前 Tier List Maker Pro 已经上线，完全免费！非常欢迎大家来体验。\n大家可以直接去社区里发个榜单，或者找个感兴趣的榜单“锐评”一下。如果你对工具有任何建议或者吐槽，也随时在帖子里留言告诉我，我会认真看每一条反馈并持续迭代！\n欢迎来玩：👉 [Rankly] (https://tierlistmaker.pro/)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11288","issueUrl":"https://github.com/ruanyf/weekly/issues/11288"},{"sourceId":"weekly-issues","title":"【工具自荐】libcr 项目组发布免费的开发者工具箱 crRequest 1.9.3","url":"https://github.com/libcr/crRequest/releases","author":"wuruxu","authorUrl":"https://github.com/wuruxu","publishedAt":"2026-08-20T10:53:03Z","summary":"下载地址: 1.9.3 新增 blink 模块，支持 HTML Playground 和 增强的 SVG 渲染 crRequest 是一款 C++开发的跨平台工具客户端 基于源代码 chromium 150.0.7871.91 1. 使用 chromium UI 框架设计跨平台应用界面，实现多平台一致的性能表现 2. 基于 100% chromium 网络代码， 支持 QUIC, HTTP2 等浏览器网络协议 API 接口测试 3. 基于 libssh2 实现的 SSH 客户端 4. 支持 sqlite 和 pgSQL 的数据库操作 5. Chromium 原生能力工具箱 libcr 项目组也提供 AI 驱动的原生应用开发包，轻松兼顾多平台开发效率和性能 更多应用和信息访问 <img width=\"1920\" height=\"1080\" alt=\"Image\" src=\" / <img width=\"1920\" height=\"1080\" alt=\"Image\" src=\" /","content":"下载地址: https://github.com/libcr/crRequest/releases\n\n1.9.3 新增 blink 模块，支持 HTML Playground 和 增强的 SVG 渲染\ncrRequest 是一款 C++开发的跨平台工具客户端 基于源代码 chromium 150.0.7871.91\n1. 使用 chromium UI 框架设计跨平台应用界面，实现多平台一致的性能表现\n2. 基于 100% chromium 网络代码， 支持 QUIC, HTTP2 等浏览器网络协议 API 接口测试\n3. 基于 libssh2 实现的 SSH 客户端\n4. 支持 sqlite 和 pgSQL 的数据库操作\n5. Chromium 原生能力工具箱\n\nlibcr 项目组也提供 AI 驱动的原生应用开发包，轻松兼顾多平台开发效率和性能\n更多应用和信息访问 https://libcr.github.io/\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/939c4c22-28c7-4ff8-919c-0560959b9c82\" />\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c44c6406-5e34-465c-b831-4cf89dcb3b7e\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11289","issueUrl":"https://github.com/ruanyf/weekly/issues/11289"},{"sourceId":"weekly-issues","title":"【开源自荐】PicLite 图轻：开源跨平台本地图片动图压缩工具，智能择优压缩，本地文件夹监控，强大自定义悬浮窗","url":"https://github.com/amiaoapp/PicLite/releases","author":"amiaoapp","authorUrl":"https://github.com/amiaoapp","publishedAt":"2026-08-20T11:02:38Z","summary":"PicLite 图轻 PicLite 图轻：开源跨平台本地图片动图压缩工具，智能择优压缩，本地文件夹监控，强大自定义悬浮窗。自动图片格式转换，批量压缩，添加水印，上传图床。支持 Windows、macOS、Linux 与可自托管 Web 端。 帮助自媒体工作人员和开发人员提升工作效率 English · 下载桌面版 · Web 演示 · 插件开发 · 主要能力 JPEG、PNG、WebP、GIF 导入、转换、压缩与等比例缩放 默认自动比较候选格式，在尽量保持观感的前提下选择更小结果 原图/结果对比、实时体积、连续画质与尺寸控制、文字水印 剪贴板监听、全局快捷键、文件夹监测与本地图库 类 Clop 的桌面悬浮结果：复制、预览、撤销、继续缩小、切换格式 结果数量上限、堆叠/展开两种悬浮布局、自动隐藏 覆盖源文件、同目录重命名或固定目录输出，并支持定期清理 WebDAV、S3/R2、OSS、FTP、SFTP 图床上传 可加载本地 HTML/JavaScript 或 URL 工作台插件；图库与文件夹监测也可独立启停 Tauri 2 + Rust 桌面端；图片默认只在本机处理 截图 <img width=\"2924\" height=\"1602\" alt=\"image\" src=\" / 下载 在 Releases 下载： Windows x64 / ARM64：.exe 或 .msi macOS Apple Silicon / Intel：.dmg Linux x64 / ARM64：.AppImage 或 .deb macOS 构建目前为 adhoc 签名，首次运行可能需要在“系统设置 → 隐私与安全性”中允许打开。 Web 与 Docker bash docker run d \\ name piclite \\ p 3000:3000 \\ restart unlessstopped \\ ghcr.io/amiaoapp/piclite:latest 浏览器打开 端受浏览器权限限制，不提供系统托盘、全局快捷键和持续文件夹监测。 持续优化了一个月。现在功能完全可以胜任 ”最好用的图片压缩工具“ 之列。悬浮窗十分强大","content":"# PicLite 图轻\n\nPicLite 图轻：开源跨平台本地图片动图压缩工具，智能择优压缩，本地文件夹监控，强大自定义悬浮窗。自动图片格式转换，批量压缩，添加水印，上传图床。支持 Windows、macOS、Linux 与可自托管 Web 端。\n帮助自媒体工作人员和开发人员提升工作效率\n\n[English](README.en-US.md) · [下载桌面版](https://github.com/amiaoapp/PicLite/releases) · [Web 演示](https://piclite-image-optimiser.ritchiecessac4273.chatgpt.site) · [插件开发](docs/PLUGIN_DEVELOPMENT.md) · \n\n## 主要能力\n\n- JPEG、PNG、WebP、GIF 导入、转换、压缩与等比例缩放\n- 默认自动比较候选格式，在尽量保持观感的前提下选择更小结果\n- 原图/结果对比、实时体积、连续画质与尺寸控制、文字水印\n- 剪贴板监听、全局快捷键、文件夹监测与本地图库\n- 类 Clop 的桌面悬浮结果：复制、预览、撤销、继续缩小、切换格式\n- 结果数量上限、堆叠/展开两种悬浮布局、自动隐藏\n- 覆盖源文件、同目录重命名或固定目录输出，并支持定期清理\n- WebDAV、S3/R2、OSS、FTP、SFTP 图床上传\n- 可加载本地 HTML/JavaScript 或 URL 工作台插件；图库与文件夹监测也可独立启停\n- Tauri 2 + Rust 桌面端；图片默认只在本机处理\n\n## 截图\n\n<img width=\"2924\" height=\"1602\" alt=\"image\" src=\"https://github.com/user-attachments/assets/2379e6d7-e1ef-444d-890f-e2ea7942abe9\" />\n\n\n## 下载\n\n在 [Releases](https://github.com/amiaoapp/PicLite/releases) 下载：\n\n- Windows x64 / ARM64：`.exe` 或 `.msi`\n- macOS Apple Silicon / Intel：`.dmg`\n- Linux x64 / ARM64：`.AppImage` 或 `.deb`\n\nmacOS 构建目前为 ad-hoc 签名，首次运行可能需要在“系统设置 → 隐私与安全性”中允许打开。\n\n## Web 与 Docker\n\n```bash\ndocker run -d \\\n  --name piclite \\\n  -p 3000:3000 \\\n  --restart unless-stopped \\\n  ghcr.io/amiaoapp/piclite:latest\n```\n\n浏览器打开 `http://服务器IP:3000`。Web 端受浏览器权限限制，不提供系统托盘、全局快捷键和持续文件夹监测。\n\n\n持续优化了一个月。现在功能完全可以胜任 ”最好用的图片压缩工具“ 之列。悬浮窗十分强大","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11290","issueUrl":"https://github.com/ruanyf/weekly/issues/11290"},{"sourceId":"weekly-issues","title":"【工具自荐】OpenAI Codex VS Code 扩展的本地会话伴生管理器。它读取本机 .codex 数据目录，按会话中的 cwd 将历史会话归入项目文件夹。","url":"https://github.com/MathsionYang/CodexChat-/releases","author":"MathsionYang","authorUrl":"https://github.com/MathsionYang","publishedAt":"2026-08-20T11:54:07Z","summary":"CodexChat 是 OpenAI Codex VS Code 扩展的本地会话伴生管理器。它读取本机 .codex 数据目录，按会话中的 cwd 将历史会话归入项目文件夹。 项目地址： 功能 自动扫描 sessions 和 archivedsessions。 按项目文件夹浏览本地 Codex 会话。 查看用户消息、Codex 回复和工具调用摘要。 监听本地会话变化并刷新。 打开项目工作区并进入官方 Codex 扩展。 在经过验证的 Codex 版本中恢复指定本地会话。 Codex 原始会话文件全程只读。 界面预览 项目会话 !项目会话 会话详情 !会话详情 token统计 <img width=\"493\" height=\"655\" alt=\"Image\" src=\" /","content":"CodexChat 是 OpenAI Codex VS Code 扩展的本地会话伴生管理器。它读取本机 .codex 数据目录，按会话中的 cwd 将历史会话归入项目文件夹。\n\n项目地址：https://github.com/MathsionYang/CodexChat-/releases\n## 功能\n- 自动扫描 sessions 和 archived_sessions。\n- 按项目文件夹浏览本地 Codex 会话。\n- 查看用户消息、Codex 回复和工具调用摘要。\n- 监听本地会话变化并刷新。\n- 打开项目工作区并进入官方 Codex 扩展。\n- 在经过验证的 Codex 版本中恢复指定本地会话。\n- Codex 原始会话文件全程只读。\n\n## 界面预览\n\n### 项目会话\n![项目会话](https://raw.githubusercontent.com/MathsionYang/CodexChat-/main/img/Snipaste_2026-08-19_15-30-30.png)\n\n### 会话详情\n![会话详情](https://raw.githubusercontent.com/MathsionYang/CodexChat-/main/img/Snipaste_2026-08-19_15-31-07.png)\n\n### token统计\n\n<img width=\"493\" height=\"655\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/513c65a6-d89b-4540-afc7-0c06462a9c43\" />\n\n\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11291","issueUrl":"https://github.com/ruanyf/weekly/issues/11291"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"自荐开源项目：wsl-command —— 专为 WSL2 打造的零依赖极简控制台与进程管理工具","url":"https://github.com/kongaiyi917-source/wsl-command","author":"kongaiyi917-source","authorUrl":"https://github.com/kongaiyi917-source","publishedAt":"2026-08-19T16:20:51Z","summary":"项目名称 WSL Command (WSL 指挥中心) 项目地址 项目简介 一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，零外部第三方依赖，常驻内存仅约 20MB。 解决的痛点 在 WSL2 下做开发时，经常遇到以下烦恼： 1. Docker Desktop 过于笨重：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。 2. 多项目进程难以直观管理：在终端里开多个 dev server，往往需要频繁 ps ef | grep 或 lsof i 查端口、杀僵尸进程。 3. WSL 与 Windows 切换繁琐：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。 核心亮点 ⚡ 极致轻量与零依赖：后端纯 Python 标准库，前端原生现代 JS，无需 pip install 或 npm install 任何依赖，拉下来就能跑。 📊 可视化仪表盘：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。 🚀 进程智能识别与一键启停：自动识别 npm / Python / Dockercompose 等服务，支持快捷卡片置顶与进程树级优雅管理。 🌐 原生双语支持：内置完善的中/英文动态切换。 欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐","content":"### 项目名称\n**WSL Command (WSL 指挥中心)**\n\n### 项目地址\nhttps://github.com/kongaiyi917-source/wsl-command\n\n### 项目简介\n一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，**零外部第三方依赖**，常驻内存仅约 20MB。\n\n### 解决的痛点\n在 WSL2 下做开发时，经常遇到以下烦恼：\n1. **Docker Desktop 过于笨重**：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。\n2. **多项目进程难以直观管理**：在终端里开多个 dev server，往往需要频繁 `ps -ef | grep` 或 `lsof -i` 查端口、杀僵尸进程。\n3. **WSL 与 Windows 切换繁琐**：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。\n\n### 核心亮点\n- **⚡ 极致轻量与零依赖**：后端纯 Python 标准库，前端原生现代 JS，无需 `pip install` 或 `npm install` 任何依赖，拉下来就能跑。\n- **📊 可视化仪表盘**：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。\n- **🚀 进程智能识别与一键启停**：自动识别 npm / Python / Docker-compose 等服务，支持快捷卡片置顶与进程树级优雅管理。\n- **🌐 原生双语支持**：内置完善的中/英文动态切换。\n\n欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3563","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3563"},{"sourceId":"hellogithub-issues","title":"[开源推荐] SandBase CLI：一条命令连接 25 个 AI 客户端与 2,000+ 模型/API","url":"https://github.com/sandbaseai/cli","author":"denial123789","authorUrl":"https://github.com/denial123789","publishedAt":"2026-08-19T17:35:12Z","summary":"项目地址 类别 人工智能 项目标题 一条命令连接 25 个 AI 客户端与 2,000+ 模型/API 项目描述 SandBase CLI 是一个 Apache2.0 开源的命令行工具和本地 MCP 桥接器。它自动检测本机的 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 AI 客户端，通过统一流程完成 OAuth 授权和 MCP 配置，让这些客户端可以发现并调用 2,000+ AI 模型与 API。 项目重点处理手工配置最容易出错的部分：修改前验证目标客户端、保留原配置、限制敏感文件权限，出现问题时提供 doctor 诊断和回滚能力。用户也可以先运行只读的 catalog json 查看 25 个支持目标，不登录、不修改任何文件。 亮点 一套命令覆盖 25 个 AI 客户端目标，减少为每个工具分别查找配置路径和字段格式的重复工作。 本地 MCP Bridge 提供模型发现、能力检查、任务运行和运行记录查询等 6 个工具。 OAuth 引导代替手工复制多组 API Key；配置更新包含备份、校验和回滚。 提供中文、英文、日文、韩文、西班牙文等多语言 README。 发布页提供不可变安装包与 SHA256 校验值，客户端支持范围由可机器读取的 src/catalog.ts 维护。 示例代码 连接已检测到的客户端： bash npx y connect 只读查看支持的客户端： bash npx y catalog json 截图或演示视频 中文说明： 说明：npm 的 latest 当前仍落后于 GitHub Release，因此示例暂时使用不可变的 v0.1.17 Release 安装包。","content":"### 项目地址\n\nhttps://github.com/sandbaseai/cli\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n一条命令连接 25 个 AI 客户端与 2,000+ 模型/API\n\n### 项目描述\n\nSandBase CLI 是一个 Apache-2.0 开源的命令行工具和本地 MCP 桥接器。它自动检测本机的 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 AI 客户端，通过统一流程完成 OAuth 授权和 MCP 配置，让这些客户端可以发现并调用 2,000+ AI 模型与 API。\n\n项目重点处理手工配置最容易出错的部分：修改前验证目标客户端、保留原配置、限制敏感文件权限，出现问题时提供 `doctor` 诊断和回滚能力。用户也可以先运行只读的 `catalog --json` 查看 25 个支持目标，不登录、不修改任何文件。\n\n### 亮点\n\n- 一套命令覆盖 25 个 AI 客户端目标，减少为每个工具分别查找配置路径和字段格式的重复工作。\n- 本地 MCP Bridge 提供模型发现、能力检查、任务运行和运行记录查询等 6 个工具。\n- OAuth 引导代替手工复制多组 API Key；配置更新包含备份、校验和回滚。\n- 提供中文、英文、日文、韩文、西班牙文等多语言 README。\n- 发布页提供不可变安装包与 SHA-256 校验值，客户端支持范围由可机器读取的 `src/catalog.ts` 维护。\n\n### 示例代码\n\n连接已检测到的客户端：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz connect\n```\n\n只读查看支持的客户端：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz catalog --json\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/sandbaseai/cli/main/.github/assets/sandbase-cli-hero.webp\n\n中文说明：https://github.com/sandbaseai/cli/blob/main/README.zh-CN.md\n\n说明：npm 的 `latest` 当前仍落后于 GitHub Release，因此示例暂时使用不可变的 v0.1.17 Release 安装包。\n","metrics":{"comments":1},"tags":["hellogithub","submission"],"externalId":"3564","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3564"},{"sourceId":"hellogithub-issues","title":"[自荐开源] LAN Chat：轻量级局域网聊天室 + 私人网盘 + WebRTC P2P 大文件直传系统","url":"https://github.com/EI3247/lan-chat","author":"EI3247","authorUrl":"https://github.com/EI3247","publishedAt":"2026-08-20T04:37:23Z","summary":"项目名称 LAN Chat (局域网即时通讯与文件共享系统) 项目地址 项目类别 Python / Web / 实用工具 项目标题 轻量级、开箱即用的局域网聊天室 + 私人网盘 + WebRTC P2P 大文件直传系统 项目描述 一个专为家庭 NAS、实验室、小型团队及办公室打造的轻量级局域网协同工具。采用 FastAPI + SQLite + 原生 JavaScript 开发，单个 Docker 容器直接拉起（仅几十 MB 内存占用），开箱即用。 解决的痛点 局域网多设备（手机/电脑/平板）跨端传输和沟通时，传统方案痛点明显： 1. 商业 IM 过于庞大：Rocket.Chat、Mattermost 动辄占用几个 G 内存且需额外数据库。 2. 纯快传工具无法持久化：Snapdrop 等点对点工具网页一关文件即丢，无法存网盘。 3. 公网工具受限：微信/QQ 传文件走外网限速且压缩画质。 核心亮点 💬 即时群聊与暗号式后台：支持文本、音视频、文件消息；聊天框直接输入超级密码秒跳 /admin 管理后台。 ⚡ WebRTC P2P 极速直传：局域网点对点流式传输，不耗费服务器带宽与磁盘，支持多文件队列与最大 5GB 大文件。 📂 公私双模式网盘 + Quick Drop：支持公开/私人个人网盘；提供 Quick Drop 目录，直接往 NAS 文件夹扔文件前端即时扫描呈现（免写数据库）。 🔑 独创「身份码」多端同步：换设备或换浏览器无需繁琐密码，凭 6 位自定义身份码秒级恢复个人账号、头像与私人文件。 📱 极简与全兼容：纯原生 JS 前端（零 Node 构建链），内置对低版本轻量 WebView 及 <dialog 的深度兼容。 🚀 双部署模式：支持 Docker Compose 一键启动，亦支持原生 Python 脚本直接运行（透传真实局域网 IP）。","content":"### 项目名称\n**LAN Chat (局域网即时通讯与文件共享系统)**\n\n### 项目地址\nhttps://github.com/EI3247/lan-chat\n\n### 项目类别\nPython / Web / 实用工具\n\n### 项目标题\n轻量级、开箱即用的局域网聊天室 + 私人网盘 + WebRTC P2P 大文件直传系统\n\n### 项目描述\n一个专为家庭 NAS、实验室、小型团队及办公室打造的轻量级局域网协同工具。采用 **FastAPI + SQLite + 原生 JavaScript** 开发，单个 Docker 容器直接拉起（仅几十 MB 内存占用），开箱即用。\n\n### 解决的痛点\n局域网多设备（手机/电脑/平板）跨端传输和沟通时，传统方案痛点明显：\n1. **商业 IM 过于庞大**：Rocket.Chat、Mattermost 动辄占用几个 G 内存且需额外数据库。\n2. **纯快传工具无法持久化**：Snapdrop 等点对点工具网页一关文件即丢，无法存网盘。\n3. **公网工具受限**：微信/QQ 传文件走外网限速且压缩画质。\n\n### 核心亮点\n- 💬 **即时群聊与暗号式后台**：支持文本、音视频、文件消息；聊天框直接输入超级密码秒跳 `/admin` 管理后台。\n- ⚡ **WebRTC P2P 极速直传**：局域网点对点流式传输，不耗费服务器带宽与磁盘，支持多文件队列与最大 5GB 大文件。\n- 📂 **公私双模式网盘 + Quick Drop**：支持公开/私人个人网盘；提供 Quick Drop 目录，直接往 NAS 文件夹扔文件前端即时扫描呈现（免写数据库）。\n- 🔑 **独创「身份码」多端同步**：换设备或换浏览器无需繁琐密码，凭 6 位自定义身份码秒级恢复个人账号、头像与私人文件。\n- 📱 **极简与全兼容**：纯原生 JS 前端（零 Node 构建链），内置对低版本轻量 WebView 及 `<dialog>` 的深度兼容。\n- 🚀 **双部署模式**：支持 Docker Compose 一键启动，亦支持原生 Python 脚本直接运行（透传真实局域网 IP）。\n","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3565","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3565"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"vibecafe","sourceName":"VibeCafé 作品","items":[{"sourceId":"vibecafe","title":"黑神话系列游戏攻略 | Black Myth Guide","url":"https://vibecafe.ai/products/cmt1od5xk00010bj7bxkg7vw0","author":"arunfung","authorUrl":"https://vibecafe.ai/u/arunfung","publishedAt":"2026-08-20T15:28:09.032Z","summary":"黑神话系列独立攻略与官方信息，包括《黑神话：悟空》攻略和《黑神话：钟馗》动态。","content":"黑神话系列独立攻略与官方信息，包括《黑神话：悟空》攻略和《黑神话：钟馗》动态。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmt1od5xk00010bj7bxkg7vw0","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239604286-ewhnj5.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/mt1nubjk4w9r-YvLTCsYkBroO2trz9OX64mshOuOjsc.svg","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239604286-ewhnj5.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239603716-qqkx0h.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239604432-acanp8.png"]},{"sourceId":"vibecafe","title":"Icon Sizes: One PNG in. Every icon size out.","url":"https://vibecafe.ai/products/cmt1cxu9s00000ajgkqa98icu","author":"cain","authorUrl":"https://vibecafe.ai/u/cain","publishedAt":"2026-08-20T10:08:18.305Z","summary":"Need a full set of app icons? Drop in your image, pick platforms, export. Free desktop app.","content":"Need a full set of app icons? Drop in your image, pick platforms, export. Free desktop app.","metrics":{},"tags":["vibecafe","product"],"externalId":"cmt1cxu9s00000ajgkqa98icu","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq8e5ez200010bktkrlxa8ip/mt1btetclqsr-YaX4kp58agUrsLoQ57aEZbSU29XN9q.jpg","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq8e5ez200010bktkrlxa8ip/mt1btetd3oqf-QSx3P5MCkTHdil87B48FM4tm4ZGN4Y.svg","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq8e5ez200010bktkrlxa8ip/mt1btetclqsr-YaX4kp58agUrsLoQ57aEZbSU29XN9q.jpg"]},{"sourceId":"vibecafe","title":"Stamp Maker — 把每一张照片，变成你的专属复古邮票","url":"https://vibecafe.ai/products/cmt18jm8v00000akj2d3448ak","author":"extrastu","authorUrl":"https://vibecafe.ai/u/extrastu","publishedAt":"2026-08-20T08:05:16.255Z","summary":"一键生成真实物理齿孔邮票，支持满幅打孔、经典边框与透明 PNG 导出，手账与小红书图文必备神器。100% 纯本地离线处理。","content":"一键生成真实物理齿孔邮票，支持满幅打孔、经典边框与透明 PNG 导出，手账与小红书图文必备神器。100% 纯本地离线处理。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmt18jm8v00000akj2d3448ak","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/mt18h3j5f29j-G4ndGFAfmu9WME2p4erFxdkeHwuo7v.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/mt18h3j6pooz-6u7AefVhlEnvAosZYLK1NTzsuSkb0M.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/mt18h3j5f29j-G4ndGFAfmu9WME2p4erFxdkeHwuo7v.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1787213095803-rfimk5.png"]},{"sourceId":"vibecafe","title":"汲作","url":"https://vibecafe.ai/products/cmt0xp00u00000ajaixjh8nvf","author":"Syc","authorUrl":"https://vibecafe.ai/u/syc","publishedAt":"2026-08-20T03:01:31.614Z","summary":"把收藏夹里的链接抓成正文，用你自己的模型做总结、翻译和脑图。数据全部留在本机。","content":"把收藏夹里的链接抓成正文，用你自己的模型做总结、翻译和脑图。数据全部留在本机。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmt0xp00u00000ajaixjh8nvf","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194792912-z6m3y3.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/mt0xk2txgm0l-f5ZVJUbsPZD7fNPJveV4Zo2yZAB70r.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194792912-z6m3y3.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194795091-xsedzy.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194796354-7k6f56.png"]}]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Abstenence","url":"https://www.producthunt.com/products/abstenence/launches/abstenence?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Pay a commitment fee to abstain from something for 2-5 days","content":"Abstenence is a pay-to-commit habit tracker. Pick something to abstain from, stake $2–$100 on a short 2-5 day challenge, and pass or fail — no resets, no refunds. Real money makes discipline real.","metrics":{},"tags":["producthunt","new"],"externalId":"1189237","logo":"https://ph-files.imgix.net/5178f102-5599-4ab8-98e6-536beb973239.png?auto=format","images":["https://ph-files.imgix.net/ca5a798c-19f6-48ac-bd71-2a39efa2fded.png?auto=format","https://ph-files.imgix.net/ba397436-3861-4480-b66c-604f918db366.png?auto=format","https://ph-files.imgix.net/facf6a51-5ab4-4788-b86a-e22b995a5d9f.png?auto=format","https://ph-files.imgix.net/ef4739e0-33b0-4e31-a65c-125bcb0231ef.png?auto=format","https://ph-files.imgix.net/1998d8cc-ec37-4b30-816f-07f2f8ca0eaa.png?auto=format","https://ph-files.imgix.net/aa9e065b-842b-415b-ad8d-682e59b53d13.jpeg?auto=format"],"image":"https://ph-files.imgix.net/ca5a798c-19f6-48ac-bd71-2a39efa2fded.png?auto=format"},{"sourceId":"producthunt","title":"NobodyWho","url":"https://www.producthunt.com/products/nobodywho/launches/nobodywho?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Run AI models on any device","content":"NobodyWho is an inference engine for running LLMs fully on-device, built on llama.cpp. Open-source, free, no API keys, no cloud calls. We support Swift, Kotlin, Flutter, React Native, Python, and Godot. Includes type-safe tool calling with automatic grammar generation, multimodal input, Text-to-Speech & Speech-to-Text, GPU acceleration via Vulkan & Metal, and Hugging Face model downloads.","metrics":{},"tags":["producthunt","new"],"externalId":"1226610","logo":"https://ph-files.imgix.net/fce36bdf-7c3d-489e-ad9f-5c497c669730.jpeg?auto=format","images":["https://ph-files.imgix.net/bf4e7068-008a-41e4-990a-bccee5ffb372.png?auto=format","https://ph-files.imgix.net/2bb5ce14-0ce9-4399-b3b2-076a49a22d17.png?auto=format","https://ph-files.imgix.net/463780b2-0bc1-42fa-abce-f8ac7d1bf882.png?auto=format","https://ph-files.imgix.net/4f6b3f78-217d-44eb-8f7c-cdb505dba879.jpeg?auto=format"],"image":"https://ph-files.imgix.net/bf4e7068-008a-41e4-990a-bccee5ffb372.png?auto=format"},{"sourceId":"producthunt","title":"B2B Positioning Linter by aah, monster!","url":"https://www.producthunt.com/products/aah-monster/launches/b2b-positioning-linter-by-aah-monster?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Instant, cynical diagnostic for founder headlines & hooks","content":"Most B2B founders spend $50,000 on ads and agencies before admitting their positioning reads like an apologetic intern's resume. I built this deterministic linter to catch surface cowardice, buzzword slop, and title dumping in 5 seconds. Zero tracking. Zero email required. Everything runs in your browser. Paste your headline, get your score, and fix what is costing you pipeline: https://aah.monster/tools/positioning-linter/","metrics":{},"tags":["producthunt","new"],"externalId":"1226537","logo":"https://ph-files.imgix.net/9cdd066e-2ae5-49f4-a87f-c148409f5e9a.png?auto=format","images":["https://ph-files.imgix.net/700afc40-a20c-4eab-9d29-2136776e06b8.png?auto=format","https://ph-files.imgix.net/7800854b-b8fa-4bf6-8436-2a0b33ebf1a2.png?auto=format","https://ph-files.imgix.net/5a7085e6-24e2-4140-9a50-23f0ecbd7ed7.png?auto=format","https://ph-files.imgix.net/c66b136a-5bb9-4c79-aa55-885ee5b23797.png?auto=format","https://ph-files.imgix.net/e004a8cc-9b35-4ea8-bda3-4987b30fc8db.png?auto=format"],"image":"https://ph-files.imgix.net/700afc40-a20c-4eab-9d29-2136776e06b8.png?auto=format"},{"sourceId":"producthunt","title":"Table Edge","url":"https://www.producthunt.com/products/table-edge/launches/table-edge?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Play smarter. Lose less. Learn The Table Edge ","content":"Play Smarter, Lose Less, Learn the Table Edge. Learn the actual math behind blackjack, roulette, craps, and 12+ other casino games — not just play them. Walk a 2D casino floor, sit at any table, drill basic strategy until it sticks. Free chips only, never real money. New: a Wordle-style Daily Challenge (everyone gets the same shuffled shoe) with a live leaderboard and the whole site just got fully translated into Spanish, French, and Mandarin. With A lot more Updates to come","metrics":{},"tags":["producthunt","new"],"externalId":"1227298","logo":"https://ph-files.imgix.net/b6013cea-17bb-4dba-80ac-30d61d6dc2af.png?auto=format","images":["https://ph-files.imgix.net/4a63feda-0170-4ace-afad-6188c0320512.svg?auto=format"],"image":"https://ph-files.imgix.net/4a63feda-0170-4ace-afad-6188c0320512.svg?auto=format"},{"sourceId":"producthunt","title":"AstroShader","url":"https://www.producthunt.com/products/astroshader/launches/astroshader?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Astrophotography for iPhone","content":"Astrophotography for iPhone. The easy way to capture images of galaxies, nebulae, stars and the Milky Way. Capture controls, intervalometer, automatic alignment+stacking, stacking from your Photos library, editing tools, export format controls and more - all from your iPhone. AstroShader is $1.99 for lifetime access.","metrics":{},"tags":["producthunt","new"],"externalId":"1227175","logo":"https://ph-files.imgix.net/320a4452-e99d-480b-be08-883c2a111da9.png?auto=format","images":["https://ph-files.imgix.net/5e605695-81c6-403b-b628-668d3e1a4449.png?auto=format","https://ph-files.imgix.net/f3020e1a-822e-4d56-85bc-d0d0c428355d.png?auto=format","https://ph-files.imgix.net/c60f2326-1236-4911-b35a-e7a1768ded4e.png?auto=format","https://ph-files.imgix.net/f069caa4-aaed-45cf-a560-a1ff615e2ee9.png?auto=format","https://ph-files.imgix.net/7b79a697-6efc-49fe-b16f-a864a512bb5e.png?auto=format"],"image":"https://ph-files.imgix.net/5e605695-81c6-403b-b628-668d3e1a4449.png?auto=format"},{"sourceId":"producthunt","title":"OmegleLite","url":"https://www.producthunt.com/products/omeglelite/launches/omeglelite-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Free anonymous video, voice & text chat — no signup","content":"OmegleLite brings back what made random chat great, without the mess that shut Omegle down. No accounts, no data collection beyond what's needed to match you — instant 1-on-1 video, voice, or text with someone new. What's different: fast WebRTC connections with no lag-heavy matching, dedicated chat rooms for 195+ countries so you choose who you meet, and a privacy-first design built from scratch, not bolted on. Built solo by a developer who wants random chat to feel safe and modern again.","metrics":{},"tags":["producthunt","new"],"externalId":"1227111","logo":"https://ph-files.imgix.net/0d2279b7-4d61-43a3-86da-d2bbbde3a59c.png?auto=format","images":["https://ph-files.imgix.net/0954a7e9-489c-4de4-855c-d198d1cf7c53.png?auto=format","https://ph-files.imgix.net/3ccadea8-f3ac-4dcc-a56f-05b6f0d636de.png?auto=format","https://ph-files.imgix.net/3cd2377e-9740-42b4-8a61-97bee85e36a5.png?auto=format","https://ph-files.imgix.net/2ab2436c-6896-4f4c-b020-6b800796ec4a.png?auto=format"],"image":"https://ph-files.imgix.net/0954a7e9-489c-4de4-855c-d198d1cf7c53.png?auto=format"},{"sourceId":"producthunt","title":"Arcadely","url":"https://www.producthunt.com/products/arcadely/launches/arcadely?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Free browser games instantly, no download or signup needed","content":"Arcadely is free browser gaming with zero friction: no downloads, no accounts, no app store. Click a link and you're playing arcade, puzzle, word, and casual games, with leaderboards if you're competitive. Two things make it different: multiplayer works by sharing a link (challenge a friend to Word Tiles, our Scrabble-style game, in one click), and games keep working offline once loaded it's perfect for subway commutes and spotty wifi. New games ship regularly.","metrics":{},"tags":["producthunt","new"],"externalId":"1227297","logo":"https://ph-files.imgix.net/cdd2fd92-7fa5-47bc-a10b-20efe01cb238.png?auto=format","images":["https://ph-files.imgix.net/6b1b2f0e-4419-4f6d-91b1-b9fea4616b21.png?auto=format","https://ph-files.imgix.net/e98cc5b5-b11f-4c01-b5e2-d81e73466e37.png?auto=format","https://ph-files.imgix.net/07e1fdd6-9ec7-47c1-9312-3244676f809f.png?auto=format","https://ph-files.imgix.net/b3e8b380-2112-41c3-969d-22fb0ff50a5d.png?auto=format","https://ph-files.imgix.net/aa46b02c-7cc4-4bde-9667-098cb1d2b8be.png?auto=format"],"image":"https://ph-files.imgix.net/6b1b2f0e-4419-4f6d-91b1-b9fea4616b21.png?auto=format"},{"sourceId":"producthunt","title":"The Success Blueprint ","url":"https://www.producthunt.com/products/the-success-blueprint/launches/the-success-blueprint?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"The Success Blueprint | Complete Notion Life Planner","content":"WHAT'S INSIDE: • 🌟 Vision & Life Direction • 🎯 Goal Setting & Progress Tracking • 🚀 Project & Action Planning • 📅 Monthly Calendar • ✅ Weekly Habit Tracker • 💪 Health & Wellbeing Check-ins • 💰 Finance & Savings Tracking • ✍️ Gratitude & Journaling • 💡 Ideas & Notes • 🔄 Weekly & Monthly Reviews Instead of simply making plans, use this planner to connect your vision → goals → actions → habits → progress → success.","metrics":{},"tags":["producthunt","new"],"externalId":"1221061","logo":"https://ph-files.imgix.net/8292798c-7626-444a-a2fe-8ca9351898b9.png?auto=format","images":["https://ph-files.imgix.net/ea9384f9-96b7-4e79-b113-456f6b510286.png?auto=format","https://ph-files.imgix.net/b5667b2f-37e3-4b3c-92ba-5d308ce4ddba.png?auto=format","https://ph-files.imgix.net/2720a6e1-f7a0-469d-846b-c731578991c8.png?auto=format"],"image":"https://ph-files.imgix.net/ea9384f9-96b7-4e79-b113-456f6b510286.png?auto=format"},{"sourceId":"producthunt","title":"HireYard","url":"https://www.producthunt.com/products/hireyard/launches/hireyard?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Equipment rental software that runs the whole yard","content":"HireYard runs the whole rental operation on one screen: public booking widget with double-booking prevention, QR scan in/out on mobile, GPS asset tracking, pooled and quantity assets, maintenance scheduling by hours or service intervals, PDF hire agreements, quotes, invoices and Stripe payments, multi-location and multi-user access, revenue reporting with CSV and PDF export, and Zapier. Built for plant, tool and event & leisure rental operators. 21-day free trial, no card required.","metrics":{},"tags":["producthunt","new"],"externalId":"1227033","logo":"https://ph-files.imgix.net/1eeffc49-f752-4d5a-a739-bd0c2d95c899.png?auto=format","images":["https://ph-files.imgix.net/962c2aab-486c-49e2-af0e-4a6cdc6bb4be.webp?auto=format","https://ph-files.imgix.net/bfba4176-2b87-484f-845b-f98c8141da52.png?auto=format","https://ph-files.imgix.net/3933e290-515a-40bb-ae72-9c742caa1302.png?auto=format","https://ph-files.imgix.net/8c3319eb-7dcb-4d1c-80f8-397fd33075c9.png?auto=format","https://ph-files.imgix.net/276856b0-0a35-4def-8953-1fa73294cdce.png?auto=format"],"image":"https://ph-files.imgix.net/962c2aab-486c-49e2-af0e-4a6cdc6bb4be.webp?auto=format"},{"sourceId":"producthunt","title":"CalcioCalc","url":"https://www.producthunt.com/products/calciocalc/launches/calciocalc?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"60 free calculators for AI, startup, marketing & finance","content":"CalcioCalc is a free calculator hub covering AI cost estimation, startup metrics (CAC, LTV, MRR, burn rate), marketing (ROAS, CPC, CPA), and personal finance (EMI, SIP, compound interest). Every calculator includes a plain-English explanation of the formula, a worked example, and common mistakes to avoid — not just a bare input box. We also publish deeper guides behind the numbers. No signup, no paywall — just fast, clear answers for founders, marketers, and anyone doing quick math.","metrics":{},"tags":["producthunt","new"],"externalId":"1226700","logo":"https://ph-files.imgix.net/49ac65c3-4526-41d7-95a4-71e8968ec5ca.svg?auto=format","images":["https://ph-files.imgix.net/27494e84-c655-4cff-b7c5-ab081afa3936.png?auto=format","https://ph-files.imgix.net/11877ad9-4143-4a98-a982-d7ae10917634.png?auto=format","https://ph-files.imgix.net/c5c44fc5-2121-4864-a736-2caf7a0cd53a.png?auto=format","https://ph-files.imgix.net/beebcb3f-d9ba-42dd-b32c-66d9f45dd575.png?auto=format"],"image":"https://ph-files.imgix.net/27494e84-c655-4cff-b7c5-ab081afa3936.png?auto=format"},{"sourceId":"producthunt","title":"NayraTools","url":"https://www.producthunt.com/products/nayratools/launches/nayratools?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"AI Tools for Amazon, Flipkart & Meesho Sellers","content":"NayraTools is an all-in-one AI toolkit for e-commerce sellers on Amazon, Flipkart, Meesho & Shopify. It offers 25+ powerful AI tools to instantly generate high-volume SEO keywords, write high-converting product descriptions, analyze competitors, and score product listings. Supporting regional languages, NayraTools automates daily store operations and boosts marketplace sales effortlessly.","metrics":{},"tags":["producthunt","new"],"externalId":"1226983","logo":"https://ph-files.imgix.net/ee8e0a86-4c48-4b31-a1c5-d80212e73253.png?auto=format","images":["https://ph-files.imgix.net/63ef66d0-5072-474a-a444-db7dfad95998.png?auto=format","https://ph-files.imgix.net/562022dd-8991-4125-a384-f8f997ae9dd3.png?auto=format","https://ph-files.imgix.net/23573305-51d6-4428-958d-e5c784999424.png?auto=format","https://ph-files.imgix.net/c8717b29-ffe1-48a9-9353-0ba786b117eb.png?auto=format","https://ph-files.imgix.net/68c753fc-96ba-490a-bbc0-73b5f89a68e1.png?auto=format","https://ph-files.imgix.net/9438b5e1-0e52-4dc5-b1c2-3a68536e74f9.png?auto=format","https://ph-files.imgix.net/9957302b-9b54-49d4-a440-702bda95d71e.png?auto=format"],"image":"https://ph-files.imgix.net/63ef66d0-5072-474a-a444-db7dfad95998.png?auto=format"},{"sourceId":"producthunt","title":"Binadox","url":"https://www.producthunt.com/products/binadox/launches/binadox?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"One dashboard for cloud, SaaS and AI spend","content":"Most cost tools cover either cloud infrastructure or SaaS subscriptions. Binadox does both, plus AI spend, in one place. Connect AWS, Azure, GCP or DigitalOcean and see spend by account, service and tag, with anomaly alerts and rightsizing recommendations. Automatic discovery finds the SaaS your team actually uses, tracks seats against active users, and flags renewals before they hit. Includes a Terraform cost tracker and an LLM tracker for OpenAI, Vertex, Azure OpenAI and Bedrock.","metrics":{},"tags":["producthunt","new"],"externalId":"1226789","logo":"https://ph-files.imgix.net/8e51c41a-fc54-4c48-a099-c233f7b9ff50.png?auto=format","images":["https://ph-files.imgix.net/a57d7e27-4d4a-42c5-be76-c5d2f9703324.png?auto=format","https://ph-files.imgix.net/9fac27e4-9946-4817-a535-4537abe3b2cb.png?auto=format","https://ph-files.imgix.net/c284a18b-fa9b-4151-b190-ef38fab7c54d.png?auto=format","https://ph-files.imgix.net/df8b4951-781d-45bc-8bd6-a4e9cca1b4e1.png?auto=format"],"image":"https://ph-files.imgix.net/a57d7e27-4d4a-42c5-be76-c5d2f9703324.png?auto=format"},{"sourceId":"producthunt","title":"ShForm","url":"https://www.producthunt.com/products/shform-form-builder/launches/shform?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"AI-powered forms with logic, automation & security","content":"ShForm is a form builder that helps you create powerful forms in minutes — no design or coding skills needed. Build with AI by simply describing what you need, start from a professionally designed template, or create from scratch with full control. Add conditional logic so forms adapt to each respondent, automate emails and data sync on submission, and keep everything secure with enterprise-grade protection. Manage and publish forms from web, iOS, or Android — anytime, anywhere.","metrics":{},"tags":["producthunt","new"],"externalId":"1226542","logo":"https://ph-files.imgix.net/466a8a14-6a39-42d0-919a-f885a374524b.png?auto=format","images":["https://ph-files.imgix.net/25a13142-2591-4d49-a6d0-16f220d0210f.jpeg?auto=format","https://ph-files.imgix.net/30d08c82-770f-45e6-a33d-24c4cf4474cb.png?auto=format","https://ph-files.imgix.net/0aee40af-3680-4eaf-82fe-f2ccb6ca7dce.png?auto=format"],"image":"https://ph-files.imgix.net/25a13142-2591-4d49-a6d0-16f220d0210f.jpeg?auto=format"},{"sourceId":"producthunt","title":"PolyglotGym","url":"https://www.producthunt.com/products/polyglotgym/launches/polyglotgym?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"A free gym for 100+ languages with real CEFR courses","content":"PolyglotGym is a free language gym: structured CEFR courses (A1-C2) with interactive exercises, grammar guides, spaced-repetition vocabulary, dialect comparisons, and native-quality audio for 100+ languages - including ones no big app teaches: Icelandic, Georgian, Belarusian, Mongolian, Tagalog, Luxembourgish. Explanations adapt to your native language instead of being translated, and courses are free without signup. Web, iOS, and Android.","metrics":{},"tags":["producthunt","new"],"externalId":"1227053","logo":"https://ph-files.imgix.net/2075b477-9ad8-4c58-a2cb-d943ed80fc34.png?auto=format","images":["https://ph-files.imgix.net/2223b7af-cc71-42e1-a2b9-97ed2e4ddbb1.png?auto=format","https://ph-files.imgix.net/a8635479-3bfb-40a6-bf22-2d1c6919ccc6.jpeg?auto=format","https://ph-files.imgix.net/75301b80-d680-4340-baf1-466224a41aef.jpeg?auto=format","https://ph-files.imgix.net/3730f56f-e720-4818-a02f-232953cd59e7.jpeg?auto=format","https://ph-files.imgix.net/a9a256e0-7e0a-433c-8134-fea3a85bed8b.jpeg?auto=format"],"image":"https://ph-files.imgix.net/2223b7af-cc71-42e1-a2b9-97ed2e4ddbb1.png?auto=format"},{"sourceId":"producthunt","title":"Zelcast Eng Scorer","url":"https://www.producthunt.com/products/zelcast-eng-scorer/launches/zelcast-eng-scorer?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Your LinkedIn, scored the way startups actually hire","content":"Eng Scorer reads your LinkedIn the way a hungry, fast-growing startup actually would. You get a score out of 99, your engineer archetype, your rank against 24,000 real engineers, and your Zelcomp - the comp we think a profile like yours should be pulling in. Tap the seal. Watch the dollars fly. There’s a live leaderboard of the top 100 working engineers (upvotes break the ties). The alumni page shows exactly where the talent is flowing and which companies keep producing the good ones.","metrics":{},"tags":["producthunt","new"],"externalId":"1226812","logo":"https://ph-files.imgix.net/792f99b0-0405-4ce0-be73-a41c3f744cb3.png?auto=format","images":["https://ph-files.imgix.net/ebad3c00-d0d1-48c8-a107-c4bac30c92e6.png?auto=format","https://ph-files.imgix.net/71250894-7db9-4752-bb1a-853a35c8ccac.png?auto=format","https://ph-files.imgix.net/6c15d87e-bb29-4390-a2bb-998c1751618a.png?auto=format","https://ph-files.imgix.net/b9e55241-aca4-46e2-86ac-4059f2c85cf5.png?auto=format","https://ph-files.imgix.net/95707986-4a30-4991-8c47-2623ad23f620.png?auto=format","https://ph-files.imgix.net/e5c9c0f7-6d1b-4664-b469-da2a71d19c5a.png?auto=format"],"image":"https://ph-files.imgix.net/ebad3c00-d0d1-48c8-a107-c4bac30c92e6.png?auto=format"},{"sourceId":"producthunt","title":"Globerto","url":"https://www.producthunt.com/products/globerto/launches/globerto?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"AI travel concierge that matches hotels to how you travel","content":"Globerto is an AI-powered luxury hotel discovery and booking platform. Answer a few questions about your occasion, pace, and style. Instead of hundreds of undifferentiated listings, you get a shortlist matched to how you actually travel, with live rates and clear booking terms. Search by vibe (\"overwater villas,\" \"design hotels\"), compare, and book in one place.","metrics":{},"tags":["producthunt","new"],"externalId":"1222515","logo":"https://ph-files.imgix.net/b4c6daa6-e457-442d-9c72-beab0972d4d1.png?auto=format","images":["https://ph-files.imgix.net/0c1d49d1-d78e-421b-a425-aa903de62522.jpeg?auto=format","https://ph-files.imgix.net/3ec1a7b2-830c-456e-9584-ded75f1fe49d.jpeg?auto=format","https://ph-files.imgix.net/a100c021-c7c4-4a58-a25e-13ebdb18f2a5.jpeg?auto=format"],"image":"https://ph-files.imgix.net/0c1d49d1-d78e-421b-a425-aa903de62522.jpeg?auto=format"},{"sourceId":"producthunt","title":"SoundTool","url":"https://www.producthunt.com/products/soundtool/launches/soundtool?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"61 free audio tools & 12 virtual instruments in 14 languages","content":"SoundTool — free, browser-based audio toolkit with 61 tools and 12 playable virtual instruments. AI voice cloning, speech-to-text, text-to- speech, AI noise removal, hum-to-instrument, vocal tuner + trim, merge, convert, EQ, reverb, BPM and more. Every instrument records and exports WAV — no account, no upload, 100% client-side. 14 languages. Built by a solo developer on the Web Audio API. Zero data collection: your audio never leaves the browser.","metrics":{},"tags":["producthunt","new"],"externalId":"1226894","logo":"https://ph-files.imgix.net/c0cf167d-dbfa-45ee-b296-655c33f76d86.png?auto=format","images":["https://ph-files.imgix.net/362fb8d7-c1f1-430c-931f-f966aedf6962.png?auto=format","https://ph-files.imgix.net/c634e1fb-36f1-4a25-88a6-79fbff4b81ae.png?auto=format","https://ph-files.imgix.net/805cae44-23ba-4668-898c-c2618fb4ad8d.png?auto=format","https://ph-files.imgix.net/2faa738c-6d18-44ac-9bb1-102bcf4079e0.png?auto=format","https://ph-files.imgix.net/aa5c815b-cb01-4acc-81a8-68187c95e7ef.png?auto=format","https://ph-files.imgix.net/433ebeb1-0ff3-4c52-a26d-cbaba16fdd1b.png?auto=format","https://ph-files.imgix.net/ffe795c6-07fc-4721-b8b3-1af251ffa356.png?auto=format"],"image":"https://ph-files.imgix.net/362fb8d7-c1f1-430c-931f-f966aedf6962.png?auto=format"},{"sourceId":"producthunt","title":"Prune — Writing Clarity Editor","url":"https://www.producthunt.com/products/prune-writing-clarity-editor/launches/prune-writing-clarity-editor?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"Cut the clutter from your writing and make every sentence. ","content":"Prune is a writing clarity tool designed to help you turn complicated, wordy writing into clear, concise communication. Paste your writing, identify unnecessary words and phrases, simplify sentences, and improve readability while keeping your original meaning intact. Key features: ✂️ Remove unnecessary words ✍️ Improve sentence clarity 🔎 Identify wordy phrases 📖 Improve readability 🎯 Keep the original meaning ⚡ Make editing faster 📝 Create cleaner, more professional writing","metrics":{},"tags":["producthunt","new"],"externalId":"1223276","logo":"https://ph-files.imgix.net/aed79241-d04b-44f2-a10b-7bd52f9356d4.png?auto=format","images":["https://ph-files.imgix.net/02e2ab4c-4b04-4402-abde-c0dcbb540160.jpeg?auto=format","https://ph-files.imgix.net/276c59c8-294b-4dc1-9e95-311c9d340440.jpeg?auto=format","https://ph-files.imgix.net/8bcde2be-2613-4efd-8754-a01a424903b7.jpeg?auto=format","https://ph-files.imgix.net/1af87810-0b53-4039-ada9-1b59ba6f4459.jpeg?auto=format","https://ph-files.imgix.net/f8603632-2a91-4470-beb3-e11dbf982466.jpeg?auto=format","https://ph-files.imgix.net/8078aebc-303f-439c-bd7c-bb71fac93a33.jpeg?auto=format","https://ph-files.imgix.net/ba011e63-aa97-4047-b081-50dcbaa251c8.jpeg?auto=format"],"image":"https://ph-files.imgix.net/02e2ab4c-4b04-4402-abde-c0dcbb540160.jpeg?auto=format"},{"sourceId":"producthunt","title":"My Family Tree","url":"https://www.producthunt.com/products/my-family-tree-2/launches/my-family-tree-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"The family tree your whole family can actually edit","content":"Most family tree tools are built for genealogists digging through historical records. My Family Tree is built for the opposite problem: staying organized with the family you actually talk to. - Everyone can help build it - A real directory, not just names and dates - Time-boxed, view-only share links — send one branch to a cousin without giving them full access - Multi-script name support — type a name in English, see it rendered correctly in Gujarati/Hindi/etc.","metrics":{},"tags":["producthunt","new"],"externalId":"1226503","logo":"https://ph-files.imgix.net/f29c7424-35c9-4295-9be2-f369bc456b37.svg?auto=format","images":["https://ph-files.imgix.net/1f5710e6-1e02-4ada-a500-a0d88c0aad98.png?auto=format","https://ph-files.imgix.net/dc5733cd-b8a4-47b0-92b0-f57f0c2cfdfe.jpeg?auto=format","https://ph-files.imgix.net/a07045dd-3393-409c-9c22-10a76ae1126c.jpeg?auto=format"],"image":"https://ph-files.imgix.net/1f5710e6-1e02-4ada-a500-a0d88c0aad98.png?auto=format"},{"sourceId":"producthunt","title":"Reel saver video and photo download","url":"https://www.producthunt.com/products/reel-saver-video-and-photo-download/launches/reel-saver-video-and-photo-download?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-20T07:01:00Z","summary":"All-in-one video & photo saver, editor, and creator","content":"Meet Reel Saver – Video & Photo Saver 📲✨ Save, organize, play, and create your favorite content—all in one powerful app! 🔥 ✨ What You Can Do: 📥 Save Instagram Reels, Photos & Videos 💚 Save WhatsApp Statuses 👻 Save Snapchat Photos & Videos 🐦 Save Twitter (X) Photos & Videos 📌 Save Pinterest Photos & Videos ▶️ YouTube Video and mp3 Download* 🤖 AI Image Generator 🖼️ Photo Collage Maker 🎬 Reel & Video Editor 🎵 Video to MP3 Converter 🪄 AI Background Eraser 📅 Daily Poster Creator","metrics":{},"tags":["producthunt","new"],"externalId":"1226416","logo":"https://ph-files.imgix.net/4eafa778-089b-43f1-a100-fba98c4dc46f.jpeg?auto=format","images":["https://ph-files.imgix.net/2e54614a-3526-4c40-9615-6fa5b5d6c9d9.jpeg?auto=format"],"image":"https://ph-files.imgix.net/2e54614a-3526-4c40-9615-6fa5b5d6c9d9.jpeg?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T08:44:38.756Z",
+  "date": "2026-08-20",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "MailMergeOnline",
+          "url": "https://mailmergeonline.com/",
+          "author": "Linky-AIinlink",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T00:00:00+08:00",
+          "summary": "PDF 批量生成工具，内置证书、合同、工资单、发票等现成模板，导入 Excel/CSV 并映射字段即可批量生成个性化 PDF，数据不出浏览器 — 无需安装",
+          "content": "PDF 批量生成工具，内置证书、合同、工资单、发票等现成模板，导入 Excel/CSV 并映射字段即可批量生成个性化 PDF，数据不出浏览器 — 无需安装",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-20-MailMergeOnline-https://mailmergeonline.com/"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "自荐开源项目：wsl-command —— 专为 WSL2 打造的零依赖极简控制台与进程管理工具",
+          "url": "https://github.com/kongaiyi917-source/wsl-command",
+          "author": "kongaiyi917-source",
+          "authorUrl": "https://github.com/kongaiyi917-source",
+          "publishedAt": "2026-08-19T16:18:31Z",
+          "summary": "项目名称 WSL Command (WSL 指挥中心) 项目地址 项目简介 一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，零外部第三方依赖，常驻内存仅约 20MB。 解决的痛点 在 WSL2 下做开发时，经常遇到以下烦恼： 1. Docker Desktop 过于笨重：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。 2. 多项目进程难以直观管理：在终端里开多个 dev server，往往需要频繁 ps ef | grep 或 lsof i 查端口、杀僵尸进程。 3. WSL 与 Windows 切换繁琐：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。 核心亮点 ⚡ 极致轻量与零依赖：后端纯 Python 标准库，前端原生现代 JS，无需 pip install 或 npm install 任何依赖，拉下来就能跑。 📊 可视化仪表盘：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。 🚀 进程智能识别与一键启停：自动识别 npm / Python / Dockercompose 等服务，支持快捷卡片置顶与进程树级优雅管理。 🌐 原生双语支持：内置完善的中/英文动态切换。 欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐",
+          "content": "### 项目名称\n**WSL Command (WSL 指挥中心)**\n\n### 项目地址\nhttps://github.com/kongaiyi917-source/wsl-command\n\n### 项目简介\n一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，**零外部第三方依赖**，常驻内存仅约 20MB。\n\n### 解决的痛点\n在 WSL2 下做开发时，经常遇到以下烦恼：\n1. **Docker Desktop 过于笨重**：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。\n2. **多项目进程难以直观管理**：在终端里开多个 dev server，往往需要频繁 `ps -ef | grep` 或 `lsof -i` 查端口、杀僵尸进程。\n3. **WSL 与 Windows 切换繁琐**：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。\n\n### 核心亮点\n- **⚡ 极致轻量与零依赖**：后端纯 Python 标准库，前端原生现代 JS，无需 `pip install` 或 `npm install` 任何依赖，拉下来就能跑。\n- **📊 可视化仪表盘**：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。\n- **🚀 进程智能识别与一键启停**：自动识别 npm / Python / Docker-compose 等服务，支持快捷卡片置顶与进程树级优雅管理。\n- **🌐 原生双语支持**：内置完善的中/英文动态切换。\n\n欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11271",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11271"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】SandBase CLI：一条命令连接 25 个 AI 客户端与 2,000+ 模型/API",
+          "url": "https://github.com/sandbaseai/cli",
+          "author": "denial123789",
+          "authorUrl": "https://github.com/denial123789",
+          "publishedAt": "2026-08-19T17:37:27Z",
+          "summary": "项目地址： 中文项目页： 项目介绍 SandBase CLI 是一个 Apache2.0 开源的命令行工具和本地 MCP 桥接器。它用一套命令自动检测并配置 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 25 个 AI 客户端目标，让这些客户端通过统一入口发现和调用 2,000+ AI 模型与 API。 !SandBase CLI 解决的问题 不同 AI 客户端使用不同的 MCP 配置目录、字段格式和启动命令，手工配置很容易覆盖原文件或留下失效条目。SandBase CLI 提供 OAuth 登录引导、安全配置更新、配置备份、doctor 诊断与回滚，把这部分重复操作收敛到一个 CLI 中。 macOS 和 Linux 可以通过已完成双平台 CI 的官方 Homebrew Formula 安装。先运行只读目录命令，无需登录，也不会修改任何客户端配置： bash brew install sandbaseai/tap/sandbaseaicli sandbase catalog json sandbase connect 不使用 Homebrew 时，可以直接运行固定到 v0.1.17 的 GitHub Release： bash npx y catalog json npx y connect 主要特点 支持 25 个 AI 客户端目标，目录由仓库中的 src/catalog.ts 统一维护。 本地 MCP Bridge 提供 sandbasediscover、sandbaseinspect、sandbaserun、sandbaserunget、sandbaseruns 和 sandbaseaccount 六个工具。 配置变更包含权限检查、备份和回滚，不需要常驻后台进程。 提供中、英、日、韩、西、法、德等多语言 README。 GitHub Release 提供不可变安装包和 SHA256 校验值。 已进入官方 MCP Registry：io.github.sandbaseai/cli@0.1.17。 官网： 中文 README： 说明：npm 的 latest 当前仍落后于 GitHub Release，因此 npm 用户暂时应使用上面的不可变 v0.1.17 Release 安装包。 披露：我是 SandBase 项目关联方；本提交使用了 AI 辅助撰写和事实校验。",
+          "content": "项目地址：https://github.com/sandbaseai/cli\n\n中文项目页：https://sandbaseai.github.io/cli/zh/\n\n## 项目介绍\n\nSandBase CLI 是一个 Apache-2.0 开源的命令行工具和本地 MCP 桥接器。它用一套命令自动检测并配置 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 25 个 AI 客户端目标，让这些客户端通过统一入口发现和调用 2,000+ AI 模型与 API。\n\n![SandBase CLI](https://raw.githubusercontent.com/sandbaseai/cli/main/.github/assets/sandbase-cli-hero.webp)\n\n## 解决的问题\n\n不同 AI 客户端使用不同的 MCP 配置目录、字段格式和启动命令，手工配置很容易覆盖原文件或留下失效条目。SandBase CLI 提供 OAuth 登录引导、安全配置更新、配置备份、`doctor` 诊断与回滚，把这部分重复操作收敛到一个 CLI 中。\n\nmacOS 和 Linux 可以通过已完成双平台 CI 的官方 Homebrew Formula 安装。先运行只读目录命令，无需登录，也不会修改任何客户端配置：\n\n```bash\nbrew install sandbaseai/tap/sandbaseai-cli\nsandbase catalog --json\nsandbase connect\n```\n\n不使用 Homebrew 时，可以直接运行固定到 v0.1.17 的 GitHub Release：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz catalog --json\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz connect\n```\n\n## 主要特点\n\n- 支持 25 个 AI 客户端目标，目录由仓库中的 `src/catalog.ts` 统一维护。\n- 本地 MCP Bridge 提供 `sandbase_discover`、`sandbase_inspect`、`sandbase_run`、`sandbase_run_get`、`sandbase_runs` 和 `sandbase_account` 六个工具。\n- 配置变更包含权限检查、备份和回滚，不需要常驻后台进程。\n- 提供中、英、日、韩、西、法、德等多语言 README。\n- GitHub Release 提供不可变安装包和 SHA-256 校验值。\n- 已进入官方 MCP Registry：`io.github.sandbaseai/cli@0.1.17`。\n\n官网：https://www.sandbase.ai\n\n中文 README：https://github.com/sandbaseai/cli/blob/main/README.zh-CN.md\n\n说明：npm 的 `latest` 当前仍落后于 GitHub Release，因此 npm 用户暂时应使用上面的不可变 v0.1.17 Release 安装包。\n\n披露：我是 SandBase 项目关联方；本提交使用了 AI 辅助撰写和事实校验。\n",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11272",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11272"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Termio：原生 Mac 终端 ADE，为 AI 编程而造的开发环境",
+          "url": "https://github.com/termio-sh/termio",
+          "author": "jiweiyuan",
+          "authorUrl": "https://github.com/jiweiyuan",
+          "publishedAt": "2026-08-19T18:31:32Z",
+          "summary": "项目地址： 开源协议：MIT 2026 年，软件编程的范式已经彻底变化了。我们大部分时间已经不是敲键盘写代码，而是一个项目开着十几个 Agent 会话——Claude Code、Codex、OpenCode、Pi……给 Agent 描述编程意图，编排它们执行这些意图。传统为手写代码优化的 IDE，其布局和功能已经不再适合 AI 编程，这也是最近很多人在做 ADE（Agent Development Environment）的原因。 我最近也开发了一个 ADE，Termio，一个原生 Mac 终端 ADE。内核用 libghostty（和 Ghostty 同款），Agent 的 TUI 渲染性能很强，使用极为流畅。更重要的是，产品设计是围绕 AI 编程做的：项目管理和 Session 管理的状态一目了然，文件树和 diff 直接显示在终端旁边，给 Agent 提供 context 十分方便。 另外也开发了 iOS 端，随时随地通过手机进行 AI 编程。比如陪家人下楼散步时把想法告诉 Agent，让它立即开始执行；等散步回来，Agent 可能已经完成了任务，你再坐回电脑前检查和验收它的工作。 Termio 应该是目前市面上最漂亮的 ADE 终端了，无论 Mac 客户端还是 iOS，设计都极为漂亮。 <img src=\" width=\"100%\" alt=\"Termio：左侧项目与会话侧边栏，中间 Claude Code，右侧 Codex 分屏\" / <img src=\" width=\"100%\" alt=\"终端旁边的文件树与内置编辑器\" /",
+          "content": "项目地址：https://github.com/termio-sh/termio\n开源协议：MIT\n\n2026 年，软件编程的范式已经彻底变化了。我们大部分时间已经不是敲键盘写代码，而是一个项目开着十几个 Agent 会话——Claude Code、Codex、OpenCode、Pi……给 Agent 描述编程意图，编排它们执行这些意图。传统为手写代码优化的 IDE，其布局和功能已经不再适合 AI 编程，这也是最近很多人在做 ADE（Agent Development Environment）的原因。\n\n我最近也开发了一个 ADE，Termio，一个原生 Mac 终端 ADE。内核用 libghostty（和 Ghostty 同款），Agent 的 TUI 渲染性能很强，使用极为流畅。更重要的是，产品设计是围绕 AI 编程做的：项目管理和 Session 管理的状态一目了然，文件树和 diff 直接显示在终端旁边，给 Agent 提供 context 十分方便。\n\n\n另外也开发了 iOS 端，随时随地通过手机进行 AI 编程。比如陪家人下楼散步时把想法告诉 Agent，让它立即开始执行；等散步回来，Agent 可能已经完成了任务，你再坐回电脑前检查和验收它的工作。\n\nTermio 应该是目前市面上最漂亮的 ADE 终端了，无论 Mac 客户端还是 iOS，设计都极为漂亮。\n\n\n<img src=\"https://www.termio.sh/screenshots/hero1.png\" width=\"100%\" alt=\"Termio：左侧项目与会话侧边栏，中间 Claude Code，右侧 Codex 分屏\" />\n\n<img src=\"https://www.termio.sh/screenshots/hero7.png\" width=\"100%\" alt=\"终端旁边的文件树与内置编辑器\" />\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11273",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11273"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【项目推荐】dsh-route-resilience 插件：DeepSeek Harness 多路由高可用与故障隔离",
+          "url": "https://github.com/lokic7123-star/dsh-route-resilience",
+          "author": "lokic7123-star",
+          "authorUrl": "https://github.com/lokic7123-star",
+          "publishedAt": "2026-08-19T18:59:50Z",
+          "summary": "项目名称：dshrouteresilience 项目地址： 类别：开源工具 / DeepSeek 开发者工具 / DSH 插件 项目简介 在大模型与 Agent 编排频繁使用的场景下，开发者经常面临 DeepSeek 等 API 的高频限流（HTTP 429）、服务器繁忙（HTTP 503）以及网络超时等问题，这往往会导致正在运行的 Agent 任务彻底中断。 dshrouteresilience 是专门为 DeepSeek Harness（DSH，DeepSeek 官方开源的 Agent 编排与评估工具）开发的高可用与故障隔离插件。它允许开发者将多个 API Key 或不同的提供商路由（如 DeepSeek 官方、硅基流动 SiliconFlow、火山引擎等）聚合成一个虚拟路由，并自动进行智能调度与无感容灾。 核心功能 1. 限流自动隔离（Quarantine）：遇到 HTTP 429 或限流响应时，自动将当前路由隔离，根据 RetryAfter 头或指数退避机制进行冷却，到期后自动恢复。 2. 鉴权/额度异常拉黑（Disable）：如果遇到欠费（402）或 Key 失效（401/403），插件会永久禁用该路由，防止失效密钥污染整个模型组。 3. 保底复活机制（Fallback）：在极端的全节点不可用状态下，自动强制复活最早冷却完毕的节点，避免任务发生无限等待或死锁。 4. 可视化状态面板：无需修改 DeepSeek Harness 核心源码，安装后直接在其 Models 设置页面底部注入直观的可视化 Web UI，用于实时监控路由健康状态（Active / Quarantined / Disabled）以及在线热更新 API 密钥。 对于正在基于 DeepSeek 跑 Agent 任务、经常被限流困扰的开发者而言，这是一个非常实用的稳定性补丁。",
+          "content": "### 项目名称：dsh-route-resilience\n\n- **项目地址**：https://github.com/lokic7123-star/dsh-route-resilience\n- **类别**：开源工具 / DeepSeek 开发者工具 / DSH 插件\n\n#### 项目简介\n\n在大模型与 Agent 编排频繁使用的场景下，开发者经常面临 DeepSeek 等 API 的高频限流（HTTP 429）、服务器繁忙（HTTP 503）以及网络超时等问题，这往往会导致正在运行的 Agent 任务彻底中断。\n\n`dsh-route-resilience` 是专门为 **DeepSeek Harness**（DSH，DeepSeek 官方开源的 Agent 编排与评估工具）开发的高可用与故障隔离插件。它允许开发者将多个 API Key 或不同的提供商路由（如 DeepSeek 官方、硅基流动 SiliconFlow、火山引擎等）聚合成一个虚拟路由，并自动进行智能调度与无感容灾。\n\n#### 核心功能\n\n1. **限流自动隔离（Quarantine）**：遇到 HTTP 429 或限流响应时，自动将当前路由隔离，根据 `Retry-After` 头或指数退避机制进行冷却，到期后自动恢复。\n2. **鉴权/额度异常拉黑（Disable）**：如果遇到欠费（402）或 Key 失效（401/403），插件会永久禁用该路由，防止失效密钥污染整个模型组。\n3. **保底复活机制（Fallback）**：在极端的全节点不可用状态下，自动强制复活最早冷却完毕的节点，避免任务发生无限等待或死锁。\n4. **可视化状态面板**：无需修改 DeepSeek Harness 核心源码，安装后直接在其 Models 设置页面底部注入直观的可视化 Web UI，用于实时监控路由健康状态（Active / Quarantined / Disabled）以及在线热更新 API 密钥。\n\n对于正在基于 DeepSeek 跑 Agent 任务、经常被限流困扰的开发者而言，这是一个非常实用的稳定性补丁。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11274",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11274"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "收集了2000+的dsh插件导航站，支持各种筛选，每日更新",
+          "url": "https://findharness.com/",
+          "author": "10xChengTu",
+          "authorUrl": "https://github.com/10xChengTu",
+          "publishedAt": "2026-08-20T01:26:48Z",
+          "summary": "<img width=\"3024\" height=\"1612\" alt=\"Image\" src=\" /",
+          "content": "https://findharness.com/\n\n<img width=\"3024\" height=\"1612\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/07c989d4-db57-4a53-9bc5-6191b364b249\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11275",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11275",
+          "siteLogo": "https://findharness.com/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【项目推荐】PDF to Markdown：在浏览器本地转换常见文档为 Markdown",
+          "url": "https://pdftomd.online",
+          "author": "mundane799699",
+          "authorUrl": "https://github.com/mundane799699",
+          "publishedAt": "2026-08-20T01:38:50Z",
+          "summary": "网站地址： 推荐一个在线文档转 Markdown 工具：PDF to Markdown。 它可以将 PDF、Word、PowerPoint、Excel 和 CSV 等常见文档转换为 Markdown，适合把已有文档整理到博客、知识库或 AI 工作流中继续使用。 主要特点： 完全免费 完全在浏览器本地处理：文件内容和转换结果不会上传到服务器，也不需要注册或登录。 支持 PDF、DOC/DOCX/DOCM、PPT/PPTX、XLS/XLSX/XLSM/XLSB，以及 CSV 等格式。 支持批量转换：PDF 最多可一次加入 100 个文件，每个文件最大 50 MB。 转换后可直接预览 Markdown、复制内容、下载单个 .md 文件，或将多个结果打包为 ZIP。 面向文本型 PDF；扫描件或纯图片 PDF 会提示需要 OCR，避免生成空白结果。 技术上，项目使用 TanStack Start 和 React 19 构建，部署在 Cloudflare Workers 上；前端采用 Tailwind CSS。文档解析与转换主要在 Web Worker 中运行，使用 Firecrawl 的 anydoc WASM 在浏览器侧转换，减少主线程阻塞并保护文件隐私。 这个工具希望把“从文档到可编辑、可复用的 Markdown”这一步做得尽量轻量：打开网页，选择文件，得到可检查和继续编辑的 Markdown。 <img width=\"2940\" height=\"1838\" alt=\"Image\" src=\" /",
+          "content": "网站地址：https://pdftomd.online\n\n推荐一个在线文档转 Markdown 工具：PDF to Markdown。\n\n它可以将 PDF、Word、PowerPoint、Excel 和 CSV 等常见文档转换为 Markdown，适合把已有文档整理到博客、知识库或 AI 工作流中继续使用。\n\n主要特点：\n\n- 完全免费\n- 完全在浏览器本地处理：文件内容和转换结果不会上传到服务器，也不需要注册或登录。\n- 支持 PDF、DOC/DOCX/DOCM、PPT/PPTX、XLS/XLSX/XLSM/XLSB，以及 CSV 等格式。\n- 支持批量转换：PDF 最多可一次加入 100 个文件，每个文件最大 50 MB。\n- 转换后可直接预览 Markdown、复制内容、下载单个 .md 文件，或将多个结果打包为 ZIP。\n- 面向文本型 PDF；扫描件或纯图片 PDF 会提示需要 OCR，避免生成空白结果。\n\n技术上，项目使用 TanStack Start 和 React 19 构建，部署在 Cloudflare Workers 上；前端采用 Tailwind CSS。文档解析与转换主要在 Web Worker 中运行，使用 Firecrawl 的 anydoc WASM 在浏览器侧转换，减少主线程阻塞并保护文件隐私。\n\n这个工具希望把“从文档到可编辑、可复用的 Markdown”这一步做得尽量轻量：打开网页，选择文件，得到可检查和继续编辑的 Markdown。\n\n<img width=\"2940\" height=\"1838\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f813f65d-99b0-4f1c-8cad-4ca3c24c0b89\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11276",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11276",
+          "siteLogo": "https://pdftomd.online/favicon.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】小分身：一个记住你写作风格的自进化 AI 应用",
+          "url": "https://xiaofenshen.com/?ref=F1496394",
+          "author": "SeasonXue",
+          "authorUrl": "https://github.com/SeasonXue",
+          "publishedAt": "2026-08-20T02:37:57Z",
+          "summary": "一款 AI 写作产品：小分身，它能胜任以下工作（已经完成了公众号大部分功能打通）： 1. 模仿写作风格：根据你不断提供的文本内容，以及每天的对话，公众号文章的数据表现等，形成独特的写作风格和专属记忆。 2. 追踪热点：自动定时抓取热点、挖掘选题灵感，并搜索真实资料来源，按照你的写作风格完成文章编写。 3. AI 写作编辑器：不仅支持 Agent 对话式生成文章内容，也支持精细化润色、搜图、插图等。 4. 资产复利：通过不断地使用这款产品，你会沉淀文章、图片、对话、阅读数据等各类资产，Agent 可以更准确地自进化，从而更加懂你。 欢迎通过我的分享链接使用，你将在免费的积分上额外获取 500 万积分。 👉 <img width=\"3000\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"2632\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"2632\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"3000\" height=\"1790\" alt=\"Image\" src=\" / <img width=\"3000\" height=\"1790\" alt=\"Image\" src=\" /",
+          "content": "一款 AI 写作产品：小分身，它能胜任以下工作（已经完成了**公众号**大部分功能打通）：\n\n1. 模仿写作风格：根据你不断提供的文本内容，以及每天的对话，公众号文章的数据表现等，形成独特的写作风格和专属记忆。\n2. 追踪热点：自动定时抓取热点、挖掘选题灵感，并搜索真实资料来源，按照你的写作风格完成文章编写。\n3. AI 写作编辑器：不仅支持 Agent 对话式生成文章内容，也支持精细化润色、搜图、插图等。\n4. 资产复利：通过不断地使用这款产品，你会沉淀文章、图片、对话、阅读数据等各类资产，Agent 可以更准确地自进化，从而更加懂你。\n\n欢迎通过我的分享链接使用，你将在免费的积分上额外获取 500 万积分。\n👉 [https://xiaofenshen.com/?ref=F1496394](https://t.co/pXJQldWEbW)\n\n<img width=\"3000\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b26f3e6e-9b3e-4a57-adda-2e34a583f096\" />\n<img width=\"2632\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9d5e405d-6d05-4b23-aee8-1aa6133530eb\" />\n<img width=\"2632\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a7c6fa89-12b1-4253-a27d-3eecf606e07b\" />\n<img width=\"3000\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c88ca1da-7755-46e2-b863-2d5250d0c667\" />\n<img width=\"3000\" height=\"1790\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8c75ede2-8e82-43c8-ad52-7b833d087748\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11277",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11277",
+          "siteLogo": "https://xiaofenshen.com/apple-icon?63990b19014deb00"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】EasyChat - 专为无障碍沟通打造的翻译软件",
+          "url": "https://github.com/SwaggyMacro/EasyChat",
+          "author": "SwaggyMacro",
+          "authorUrl": "https://github.com/SwaggyMacro",
+          "publishedAt": "2026-08-20T03:37:46Z",
+          "summary": "开源地址: 使用说明及文档: 项目简介 EasyChat 是一款开源翻译软件。它支持截图翻译、输入翻译、划词、图片 OCR、实时语音识别与同声传译，可接入 AI 大模型和主流机器翻译服务，帮助用户在聊天、办公、学习、浏览网页及观看视频时更高效地完成多语言理解与表达。 核心特性 截图翻译：框选网页、视频或图片中的文字，OCR 识别后即时翻译 输入翻译：通过快捷键输入母语，自动翻译并写入当前应用 划词工具栏：支持翻译、解释、总结、润色、纠错和词典详情 图片 OCR：提取图片文字，支持复制、局部处理和图片翻译 实时语音识别：识别系统播放的音频或视频，并以字幕形式显示翻译结果 同声传译：识别麦克风语音并翻译、TTS后输出至虚拟麦克风，适用于跨语言沟通 快捷翻译与纠错：快速获取翻译、语法修正和写作建议 全局快捷键：在聊天、办公、浏览和学习场景中快速调用 适用场景 浏览外文网站、视频和软件界面 与海外客户或团队进行聊天、邮件沟通 阅读外文图片、漫画或技术资料 观看课程、会议或视频时生成识别与翻译字幕 日常英语学习、写作润色和语法纠错 开源协议 MIT 相关演示 截图与输入翻译 !截图与输入翻译 划词工具栏 !划词工具栏 快捷翻译演示 !快捷翻译演示 实时语音识别 说明 软件采用跨平台框架 Avalonia 开发，但手里没有 macOS，所以目前仅支持 Windows，macOS 会在后续兼容。",
+          "content": "开源地址: https://github.com/SwaggyMacro/EasyChat\n使用说明及文档: https://easychat.ncii.cn/\n\n## 项目简介\nEasyChat 是一款开源翻译软件。它支持截图翻译、输入翻译、划词、图片 OCR、实时语音识别与同声传译，可接入 AI 大模型和主流机器翻译服务，帮助用户在聊天、办公、学习、浏览网页及观看视频时更高效地完成多语言理解与表达。\n\n## 核心特性\n- `截图翻译`：框选网页、视频或图片中的文字，OCR 识别后即时翻译\n- `输入翻译`：通过快捷键输入母语，自动翻译并写入当前应用\n- `划词工具栏`：支持翻译、解释、总结、润色、纠错和词典详情\n- `图片 OCR`：提取图片文字，支持复制、局部处理和图片翻译\n- `实时语音识别`：识别系统播放的音频或视频，并以字幕形式显示翻译结果\n- `同声传译`：识别麦克风语音并翻译、TTS后输出至虚拟麦克风，适用于跨语言沟通\n- `快捷翻译与纠错`：快速获取翻译、语法修正和写作建议\n- `全局快捷键`：在聊天、办公、浏览和学习场景中快速调用\n\n## 适用场景\n- 浏览外文网站、视频和软件界面\n- 与海外客户或团队进行聊天、邮件沟通\n- 阅读外文图片、漫画或技术资料\n- 观看课程、会议或视频时生成识别与翻译字幕\n- 日常英语学习、写作润色和语法纠错\n\n## 开源协议\nMIT\n\n## 相关演示\n### 截图与输入翻译\n![截图与输入翻译](https://raw.githubusercontent.com/SwaggyMacro/EasyChat/master/docs/screenshot/README/screenshot-translation.gif)\n\n### 划词工具栏\n![划词工具栏](https://raw.githubusercontent.com/SwaggyMacro/EasyChat/master/docs/screenshot/README/selection-toolbar.webp)\n\n### 快捷翻译演示\n![快捷翻译演示](https://raw.githubusercontent.com/SwaggyMacro/EasyChat/master/docs/screenshot/README/quick-translate.gif)\n\n### 实时语音识别\nhttps://github.com/user-attachments/assets/d17d6287-7cc4-40e4-a322-3c4fed615bda\n\n## 说明\n软件采用跨平台框架 `Avalonia` 开发，但手里没有 **macOS**，所以目前仅支持 **Windows**，**macOS** 会在后续兼容。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11278",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11278"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】秒搜鸭 - 夸克网盘资源搜索平台附带其他网盘资源",
+          "url": "https://msouy.com",
+          "author": "miopasscode",
+          "authorUrl": "https://github.com/miopasscode",
+          "publishedAt": "2026-08-20T06:25:39Z",
+          "summary": "网站名称：秒搜鸭 网站地址： 不需要注册不需要关注公众号等，直接可搜 在播剧集持续更新，各种学习公考资源 特色防夸克和谐资源（列如：色戒，斯巴达克斯全集），如果是通过挂载网盘（alist等）工具可直接观看",
+          "content": "网站名称：秒搜鸭  \n网站地址：https://msouy.com\n- 不需要注册不需要关注公众号等，直接可搜\n- 在播剧集持续更新，各种学习公考资源\n- 特色防夸克和谐资源（列如：色戒，斯巴达克斯全集），如果是通过挂载网盘（alist等）工具可直接观看\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11279",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11279",
+          "siteLogo": "https://msouy.com/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】TabFlick——给 Google Chrome 加上按最近使用顺序切换标签的能力。（仿Arc浏览器）",
+          "url": "https://cdn.jsdelivr.net/gh/lifedever/images@master/uPic/2026/08/tabflick-demo-full.gif",
+          "author": "lifedever",
+          "authorUrl": "https://github.com/lifedever",
+          "publishedAt": "2026-08-20T07:03:57Z",
+          "summary": "介绍 Chrome 的 control + tab 是按标签栏顺序切换，不能按最近使用顺序进行切换，效率极低。TabFlick 把它改成按最近使用顺序切换，并在按住按键期间显示漂亮的切换器浮层，与 cmd+tab 切换应用的方式一致。 功能 ⌃⇥ 切换到上一个使用的标签 再点一次 ⌃⇥ 回到出发的标签，A↔B 来回切换保持稳定 列表中每个标签都带网页缩略图 键盘（⌃⇥、⌃⇧⇥）、方向键、鼠标点击都可以操作切换器 两种切换器布局：横向长条，或自适应宫格（尽量一屏放下全部标签） 浮层显示在正在使用的 Chrome 窗口正中，支持多显示器 深浅色外观跟随系统设置 应用内自动更新 —— 按设定频率检查 GitHub Releases，确认后一键原地安装 helper 或扩展不可用时，⌃⇥ 回落到 Chrome 自带的切换行为 工作原理 TabFlick 由两部分组成，通过本地回环 WebSocket 通信： ┌─────────────────────────┐ ┌──────────────────────────┐ │ Chrome 扩展 (MV3) │ ws:// │ Swift helper │ │ │◄───────►│ │ │ · tabs.onActivated │ :41573 │ · CGEventTap (拦 ⌃⇥) │ │ → 维护 MRU 顺序 │ │ · NSPanel (浮层) │ │ · captureVisibleTab │ │ · MRU 状态机 │ │ → 采集缩略图 │ │ │ │ · tabs.update │ │ │ │ → 执行切换 │ │ │ └─────────────────────────┘ └──────────────────────────┘ 项目地址 开源地址： 开源协议：MIT",
+          "content": "## 介绍\nChrome 的 control + tab 是按标签栏顺序切换，不能按最近使用顺序进行切换，效率极低。TabFlick 把它改成按最近使用顺序切换，并在按住按键期间显示漂亮的切换器浮层，与 cmd+tab 切换应用的方式一致。\n\n![](https://cdn.jsdelivr.net/gh/lifedever/images@master/uPic/2026/08/tabflick-demo-full.gif)\n\n## 功能\n\n- ⌃⇥ 切换到上一个使用的标签\n- 再点一次 ⌃⇥ 回到出发的标签，A↔B 来回切换保持稳定\n- 列表中每个标签都带网页缩略图\n- 键盘（⌃⇥、⌃⇧⇥）、方向键、鼠标点击都可以操作切换器\n- 两种切换器布局：横向长条，或自适应宫格（尽量一屏放下全部标签）\n- 浮层显示在正在使用的 Chrome 窗口正中，支持多显示器\n- 深浅色外观跟随系统设置\n- 应用内自动更新 —— 按设定频率检查 GitHub Releases，确认后一键原地安装\n- helper 或扩展不可用时，⌃⇥ 回落到 Chrome 自带的切换行为\n\n## 工作原理\n\nTabFlick 由两部分组成，通过本地回环 WebSocket 通信：\n\n```\n┌─────────────────────────┐         ┌──────────────────────────┐\n│  Chrome 扩展 (MV3)      │  ws://  │  Swift helper            │\n│                         │◄───────►│                          │\n│  · tabs.onActivated     │  :41573 │  · CGEventTap  (拦 ⌃⇥)   │\n│    → 维护 MRU 顺序      │         │  · NSPanel     (浮层)    │\n│  · captureVisibleTab    │         │  · MRU 状态机            │\n│    → 采集缩略图         │         │                          │\n│  · tabs.update          │         │                          │\n│    → 执行切换           │         │                          │\n└─────────────────────────┘         └──────────────────────────┘\n```\n\n## 项目地址\n\n开源地址： https://github.com/lifedever/TabFlick \n开源协议：MIT",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11280",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11280"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Stamp Maker — 复古邮票生成器",
+          "url": "https://github.com/extrastu/stamp-maker/raw/main/public/logo.png",
+          "author": "extrastu",
+          "authorUrl": "https://github.com/extrastu",
+          "publishedAt": "2026-08-20T07:10:05Z",
+          "summary": "💌 Stamp Maker — 复古邮票生成器 <div align=\"center\" !Stamp Maker Banner 把日常随手拍，一键变成专属复古齿孔小邮票 🌐 在线体验: 🐙 GitHub 仓库: extrastu/stampmaker 在线体验 • 功能特性 • 快速开始 • 关注作者 • 开源协议 </div 📖 项目简介 Stamp Maker 是一款轻量、优雅且功能强大的复古齿孔邮票图片制作工具。专为手账爱好者、摄影博主及小红书图文创作者打造。 支持一键将日常照片转换为具有真实物理镂空齿孔的复古邮票，提供满幅直接打孔、经典留白、多种齿孔密度调节与高清透明 PNG 导出。100% 浏览器纯本地 Canvas 离线渲染，无需上传任何服务器，极致保障用户照片隐私安全。 ✨ 功能特性 📑 批量选择多张照片制作：支持一次性选取多张照片连续裁切，支持一键批量保存全部邮票，或一键将全部邮票打包发布为小红书图文笔记（2~9 张九宫格）。 ✂️ 真实物理齿孔镂空算法：基于 HTML5 Canvas destinationout 复合图层运算，生成逼真的圆弧边缘镂空效果。 🖼️ 满幅切图与留白自由调节： 满幅打孔（0 留白）：齿孔直接咬合在照片边缘，画面满幅呈现。 经典留白（14px+）：模拟传统邮票与相框衬纸白边。 📐 多画幅智能裁剪：支持 1:1、3:4、4:3、2:3、9:16 常见比例构图，支持画面缩放、平移与一键旋转/回正（0° / 90° / 180° / 270°）。 🎨 多款经典齿孔预设： 标准齿：经典邮票齿孔比例，均衡耐看。 复古密齿：高密度细密齿孔，精致复古。 艺术大齿：现代几何大齿孔，张力十足。 🌈 个性化衬纸底色：提供纯白、复古浅黄、薄荷青绿、柔粉、淡蓝、曜黑等多款高级纸张底衬。 📕 小红书图文一键发布：原生集成小红书 JSBridge postNote 能力，一键将生成的邮票带入小红书发布器。 💾 高精度多格式导出：支持 1080p 社交快传、2160p 超清手账级与 3240p 极清印刷级分辨率，支持透明 PNG、JPEG、WEBP 格式。 🔒 100% 离线与隐私安全：纯客户端本地运行，无后端、无接口请求，零数据泄露风险。 📱 单屏零滚动自适应：深度针对移动端与小红书 App 视口设计，操作一屏搞定。 🎨 设计语言 本项目的 UI / UX 深度参考了 StickerSheet NeoBrutalism（贴纸风新野兽派） 现代设计语言： 暖奶油纸质底色 (FFF4DD)：还原复古纸张与手账本温润触感。 纯正墨黑粗边框 (2px solid 26201A) 与 实体下沉硬投影 (shadowneo)。 扎实的物理按压微交互：所有按钮点击时实体投影瞬间压平（.btnneo），提供极具质感的交互回弹反馈。 🛠️ 技术栈 Core: React 18 + TypeScript Build Tool: Vite 6 Styling: TailwindCSS 3 Image Cropper: reacteasycrop Icons: Lucide React Effects: canvasconfetti 🚀 快速开始 环境准备 Node.js = 18.0.0 pnpm = 8.0.0 (推荐) 或 npm / yarn 1. 克隆代码仓库 bash git clone cd stampmaker 2. 安装依赖 bash pnpm install 3. 本地启动开发服务器 bash pnpm run dev 打开浏览器访问 即可开始体验。 4. 生产环境构建 bash pnpm run build 📦 小红书离线小工具集成与打包 本项目原生适配 小红书离线小工具（XHS MiniTool） 容器规范： 内置经典脚本加载器格式转换（无外链跨域限制）。 离线静态资源全部内联/本地打包（体积仅 ~600KB，远低于 10MB 规范限制）。 原生支持 window.xhs.miniTool.saveImageToPhotosAlbum 与 window.xhs.miniTool.postNote。 一键构建离线 ZIP 安装包 bash pnpm run zip 构建完成后将在根目录生成 stampmaker1.0.3.zip，可直接上传至小红书小工具开放平台。 👤 关注作者 如果你喜欢这个小工具，欢迎关注作者的小红书账号，获取更多好玩实用的创意小工具、前端开源项目与设计分享： 📕 小红书主页：点击关注作者小红书 extrastu 💬 欢迎在小红书交流反馈、提出新功能需求，或带上 StampMaker 标签分享你制作的专属邮票手账作品！ 📄 开源协议 本项目基于 MIT License 开源协议分发与使用。 欢迎自由使用、修改、分发与商业化，请保留原作者版权声明。 Copyright (c) 2026 extrastu · 小红书",
+          "content": "# 💌 Stamp Maker — 复古邮票生成器\n\n<div align=\"center\">\n\n![Stamp Maker Banner](https://github.com/extrastu/stamp-maker/raw/main/public/logo.png)\n\n### 把日常随手拍，一键变成专属复古齿孔小邮票\n\n🌐 **在线体验**: [https://stampmakers.pages.dev/](https://stampmakers.pages.dev/)  \n🐙 **GitHub 仓库**: [extrastu/stamp-maker](https://github.com/extrastu/stamp-maker)\n\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)\n[![Website](https://img.shields.io/badge/Website-stampmakers.pages.dev-blue.svg)](https://stampmakers.pages.dev/)\n[![Xiaohongshu](https://img.shields.io/badge/Xiaohongshu-关注作者-FF2442.svg)](https://xhslink.cn/m/lTR6WMDnhB)\n[![React](https://img.shields.io/badge/React-18.3-blue.svg)](https://react.dev/)\n[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)\n[![Vite](https://img.shields.io/badge/Vite-6.0-646CFF.svg)](https://vitejs.dev/)\n\n[在线体验](https://stampmakers.pages.dev/) • [功能特性](#-功能特性) • [快速开始](#-快速开始) • [关注作者](#-关注作者) • [开源协议](#-开源协议)\n\n</div>\n\n---\n\n## 📖 项目简介\n\n**Stamp Maker** 是一款轻量、优雅且功能强大的复古齿孔邮票图片制作工具。专为手账爱好者、摄影博主及小红书图文创作者打造。\n\n支持一键将日常照片转换为具有真实物理镂空齿孔的复古邮票，提供满幅直接打孔、经典留白、多种齿孔密度调节与高清透明 PNG 导出。**100% 浏览器纯本地 Canvas 离线渲染，无需上传任何服务器，极致保障用户照片隐私安全。**\n\n---\n\n## ✨ 功能特性\n\n- 📑 **批量选择多张照片制作**：支持一次性选取多张照片连续裁切，支持一键批量保存全部邮票，或一键将全部邮票打包发布为小红书图文笔记（2~9 张九宫格）。\n- ✂️ **真实物理齿孔镂空算法**：基于 HTML5 Canvas `destination-out` 复合图层运算，生成逼真的圆弧边缘镂空效果。\n- 🖼️ **满幅切图与留白自由调节**：\n  - **满幅打孔（0 留白）**：齿孔直接咬合在照片边缘，画面满幅呈现。\n  - **经典留白（14px+）**：模拟传统邮票与相框衬纸白边。\n- 📐 **多画幅智能裁剪**：支持 `1:1`、`3:4`、`4:3`、`2:3`、`9:16` 常见比例构图，支持画面缩放、平移与一键旋转/回正（`0°` / `90°` / `180°` / `270°`）。\n- 🎨 **多款经典齿孔预设**：\n  - **标准齿**：经典邮票齿孔比例，均衡耐看。\n  - **复古密齿**：高密度细密齿孔，精致复古。\n  - **艺术大齿**：现代几何大齿孔，张力十足。\n- 🌈 **个性化衬纸底色**：提供纯白、复古浅黄、薄荷青绿、柔粉、淡蓝、曜黑等多款高级纸张底衬。\n- 📕 **小红书图文一键发布**：原生集成小红书 JSBridge `postNote` 能力，一键将生成的邮票带入小红书发布器。\n- 💾 **高精度多格式导出**：支持 `1080p` 社交快传、`2160p` 超清手账级与 `3240p` 极清印刷级分辨率，支持透明 PNG、JPEG、WEBP 格式。\n- 🔒 **100% 离线与隐私安全**：纯客户端本地运行，无后端、无接口请求，零数据泄露风险。\n- 📱 **单屏零滚动自适应**：深度针对移动端与小红书 App 视口设计，操作一屏搞定。\n\n---\n\n## 🎨 设计语言\n\n本项目的 UI / UX 深度参考了 **Sticker-Sheet Neo-Brutalism（贴纸风新野兽派）** 现代设计语言：\n\n- **暖奶油纸质底色** (`#FFF4DD`)：还原复古纸张与手账本温润触感。\n- **纯正墨黑粗边框** (`2px solid #26201A`) 与 **实体下沉硬投影** (`shadow-neo`)。\n- **扎实的物理按压微交互**：所有按钮点击时实体投影瞬间压平（`.btn-neo`），提供极具质感的交互回弹反馈。\n\n---\n\n## 🛠️ 技术栈\n\n- **Core**: [React 18](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)\n- **Build Tool**: [Vite 6](https://vitejs.dev/)\n- **Styling**: [TailwindCSS 3](https://tailwindcss.com/)\n- **Image Cropper**: [react-easy-crop](https://github.com/ValentinH/react-easy-crop)\n- **Icons**: [Lucide React](https://lucide.dev/)\n- **Effects**: [canvas-confetti](https://github.com/catdad/canvas-confetti)\n\n---\n\n## 🚀 快速开始\n\n### 环境准备\n\n- Node.js >= 18.0.0\n- pnpm >= 8.0.0 (推荐) 或 npm / yarn\n\n### 1. 克隆代码仓库\n\n```bash\ngit clone https://github.com/extrastu/stamp-maker.git\ncd stamp-maker\n```\n\n### 2. 安装依赖\n\n```bash\npnpm install\n```\n\n### 3. 本地启动开发服务器\n\n```bash\npnpm run dev\n```\n\n打开浏览器访问 `http://localhost:5173` 即可开始体验。\n\n### 4. 生产环境构建\n\n```bash\npnpm run build\n```\n\n---\n\n## 📦 小红书离线小工具集成与打包\n\n本项目原生适配 **小红书离线小工具（XHS Mini-Tool）** 容器规范：\n\n- 内置经典脚本加载器格式转换（无外链跨域限制）。\n- 离线静态资源全部内联/本地打包（体积仅 ~600KB，远低于 10MB 规范限制）。\n- 原生支持 `window.xhs.miniTool.saveImageToPhotosAlbum` 与 `window.xhs.miniTool.postNote`。\n\n### 一键构建离线 ZIP 安装包\n\n```bash\npnpm run zip\n```\n\n构建完成后将在根目录生成 `stamp-maker-1.0.3.zip`，可直接上传至小红书小工具开放平台。\n\n---\n\n## 👤 关注作者\n\n如果你喜欢这个小工具，欢迎关注作者的小红书账号，获取更多好玩实用的创意小工具、前端开源项目与设计分享：\n\n- 📕 **小红书主页**：[点击关注作者小红书 extrastu](https://xhslink.cn/m/lTR6WMDnhB)\n- 💬 欢迎在小红书交流反馈、提出新功能需求，或带上 `#StampMaker` 标签分享你制作的专属邮票手账作品！\n\n---\n\n## 📄 开源协议\n\n本项目基于 [MIT License](./LICENSE) 开源协议分发与使用。\n欢迎自由使用、修改、分发与商业化，请保留原作者版权声明。\n\nCopyright (c) 2026 [extrastu](https://github.com/extrastu) · [小红书](https://xhslink.cn/m/lTR6WMDnhB)\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11281",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11281"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】一个基于高德地图api的多人聚餐餐厅推荐工具",
+          "url": "https://github.com/shaozhengmao/where-to-eat",
+          "author": "shaozhengmao",
+          "authorUrl": "https://github.com/shaozhengmao",
+          "publishedAt": "2026-08-20T07:49:40Z",
+          "summary": "Where to Eat 一个多人聚餐餐厅推荐工具。 用户输入每个人的出发地、口味和出行方式后，项目会调用高德地图计算所有人到候选餐厅的真实路线，并按照“最慢的人更快”“时间差最小”或“平均耗时最低”进行排序，给出一家推荐餐厅和备选方案。 它不会只找一个地理中心点，而是以真正能去吃饭的餐厅作为最终目标；还会展示地点识别结果、每个人的耗时，以及公共交通的上车、换乘和下车说明。 目前支持北京、上海、广州、深圳。Web 版部署在 Cloudflare Pages，使用者在页面填写自己的高德 Web 服务 Key，Key 仅用于当前请求，不保存。 项目地址： 在线体验： 效果图： <img width=\"929\" height=\"1002\" alt=\"Image\" src=\" /",
+          "content": "## [Where to Eat](https://github.com/shaozhengmao/where-to-eat)\n\n一个多人聚餐餐厅推荐工具。\n\n用户输入每个人的出发地、口味和出行方式后，项目会调用高德地图计算所有人到候选餐厅的真实路线，并按照“最慢的人更快”“时间差最小”或“平均耗时最低”进行排序，给出一家推荐餐厅和备选方案。\n\n它不会只找一个地理中心点，而是以真正能去吃饭的餐厅作为最终目标；还会展示地点识别结果、每个人的耗时，以及公共交通的上车、换乘和下车说明。\n\n目前支持北京、上海、广州、深圳。Web 版部署在 Cloudflare Pages，使用者在页面填写自己的高德 Web 服务 Key，Key 仅用于当前请求，不保存。\n\n- 项目地址：https://github.com/shaozhengmao/where-to-eat\n- 在线体验：https://where-to-eat-8wr.pages.dev/\n\n效果图：\n<img width=\"929\" height=\"1002\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/daad3db3-3279-4931-97cb-9a79cec130d1\" />",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11282",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11282"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Gitmous：可用鼠标操作的终端 Git 客户端",
+          "url": "https://github.com/JackyWongX/gitmous",
+          "author": "JackyWongX",
+          "authorUrl": "https://github.com/JackyWongX",
+          "publishedAt": "2026-08-20T08:13:12Z",
+          "summary": "项目地址： Gitmous 是一个运行在终端里的 Git 客户端。它把图形化源码管理面板中常见的点击式工作流带进终端：不必记忆 Git 命令，通过鼠标、按钮、菜单和对话框就能完成日常版本管理。完全由鼠标操作按钮和菜单完成日常git操作。 它适合希望保留终端工作环境，但又想减少 Git 命令记忆和频繁切换工具的开发者。 能做什么 在当前目录下发现仓库，也可添加本地仓库、初始化仓库或从远程地址克隆 点击文件即可暂存、取消暂存和查看工作区差异，支持一键暂存或取消暂存全部更改 创建提交，查看提交详情及其中的文件，并可还原到指定提交 创建、切换、发布、合并和删除本地或远程分支 完成 fetch、pull、push、发布当前分支，以及管理远程仓库 创建、应用、弹出、查看或删除储藏；创建和删除标签 处理合并冲突：接受当前版本、接受传入版本、中止合并，或在手动编辑后标记为已解决 支持简体中文和英文界面，以及主题强调色设置 涉及丢弃本地更改或改写历史的操作都会先要求确认，再调用 Git。 界面预览 !Gitmous 终端界面 使用方式 项目基于 Node.js 和 Git，支持 Windows、macOS、Linux，需要使用支持鼠标报告的终端。可通过 npm 全局安装： bash npm install global gitmous gitmous 也可克隆源码后运行： ba git clone cd gitmous npm install npm start /path/to/yourrepository Windows PowerShell 示例： powershell npm start D:\\github\\yourrepository 欢迎试用并反馈问题或建议。",
+          "content": "\n项目地址：https://github.com/JackyWongX/gitmous\n\nGitmous 是一个运行在终端里的 Git 客户端。它把图形化源码管理面板中常见的点击式工作流带进终端：不必记忆 Git 命令，通过鼠标、按钮、菜单和对话框就能完成日常版本管理。完全由鼠标操作按钮和菜单完成日常git操作。\n\n它适合希望保留终端工作环境，但又想减少 Git 命令记忆和频繁切换工具的开发者。\n\n## 能做什么\n- 在当前目录下发现仓库，也可添加本地仓库、初始化仓库或从远程地址克隆\n- 点击文件即可暂存、取消暂存和查看工作区差异，支持一键暂存或取消暂存全部更改\n- 创建提交，查看提交详情及其中的文件，并可还原到指定提交\n- 创建、切换、发布、合并和删除本地或远程分支\n- 完成 `fetch`、`pull`、`push`、发布当前分支，以及管理远程仓库\n- 创建、应用、弹出、查看或删除储藏；创建和删除标签\n- 处理合并冲突：接受当前版本、接受传入版本、中止合并，或在手动编辑后标记为已解决\n- 支持简体中文和英文界面，以及主题强调色设置\n\n涉及丢弃本地更改或改写历史的操作都会先要求确认，再调用 Git。\n\n## 界面预览\n\n![Gitmous 终端界面](https://raw.githubusercontent.com/JackyWongX/gitmous/master/show.png)\n\n## 使用方式\n\n项目基于 Node.js 和 Git，支持 Windows、macOS、Linux，需要使用支持鼠标报告的终端。可通过 npm 全局安装：\n\n```bash\nnpm install --global gitmous\ngitmous\n```\n\n也可克隆源码后运行：\n\n```ba\ngit clone https://github.com/JackyWongX/gitmous.git\ncd gitmous\nnpm install\nnpm start -- /path/to/your-repository\n```\n\nWindows PowerShell 示例：\n\n```powershell\nnpm start -- D:\\github\\your-repository\n```\n\n欢迎试用并反馈问题或建议。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11283",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11283"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】手机图案密码全库检索工具",
+          "url": "https://github.com/narrastory/graphic-cryptographic",
+          "author": "narrastory",
+          "authorUrl": "https://github.com/narrastory",
+          "publishedAt": "2026-08-20T08:16:15Z",
+          "summary": "你好，我想自荐一个我最近开发的开源项目：Graphic Cryptographic —— 一个手机图案密码的全库检索与筛选工具。 项目链接： 项目简介： 这是一个帮助用户设计更安全、更个性化手机图案密码的 Web 应用。它将 3×3 点阵上的图案密码转化为数字序列问题，通过算法遍历全部 985,824 种可能，并利用对称性去冗余，将有效图案缩减至约 12.3 万 个。用户可以按长度、对称类型、路径特征等条件筛选，找到既美观又不易被猜到的图案。 推荐理由： 1. 有趣且实用：图案密码是很多人每天都在用的东西，但很少有人系统地想过“一共有多少种”“什么样的图案更安全”。这个项目用数学和算法给出了一个直观的答案。 2. AI 辅助开发的实践案例：我在 README 中详细记录了如何借助 AI 在两天内完成从构思到开发的全过程——不依赖 AI 生成整块代码，而是将其作为“随时提问的助手”来加速学习 Vue3 和组件开发。这种“AI 辅助、人脑主导”的开发方式，对当下很多开发者都有参考价值。 3. 技术实现有亮点：项目涉及全排列生成、对称性去重、Canvas 图案绘制等，代码结构清晰，适合对算法或 Vue3 感兴趣的朋友学习。",
+          "content": "你好，我想自荐一个我最近开发的开源项目：**Graphic Cryptographic** —— 一个手机图案密码的全库检索与筛选工具。\n\n**项目链接**：https://github.com/narrastory/graphic-cryptographic\n\n**项目简介**：\n这是一个帮助用户设计更安全、更个性化手机图案密码的 Web 应用。它将 3×3 点阵上的图案密码转化为数字序列问题，通过算法遍历全部 **985,824** 种可能，并利用对称性去冗余，将有效图案缩减至约 **12.3 万** 个。用户可以按长度、对称类型、路径特征等条件筛选，找到既美观又不易被猜到的图案。\n\n**推荐理由**：\n1. **有趣且实用**：图案密码是很多人每天都在用的东西，但很少有人系统地想过“一共有多少种”“什么样的图案更安全”。这个项目用数学和算法给出了一个直观的答案。\n2. **AI 辅助开发的实践案例**：我在 README 中详细记录了如何借助 AI 在两天内完成从构思到开发的全过程——不依赖 AI 生成整块代码，而是将其作为“随时提问的助手”来加速学习 Vue3 和组件开发。这种“AI 辅助、人脑主导”的开发方式，对当下很多开发者都有参考价值。\n3. **技术实现有亮点**：项目涉及全排列生成、对称性去重、Canvas 图案绘制等，代码结构清晰，适合对算法或 Vue3 感兴趣的朋友学习。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11284",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11284"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】可作为 Typeless 平替的语音输入法 - Tyvox",
+          "url": "https://github.com/luckrnx09/tyvox",
+          "author": "luckrnx09",
+          "authorUrl": "https://github.com/luckrnx09",
+          "publishedAt": "2026-08-20T09:08:19Z",
+          "summary": "项目名称： Tyvox 项目简介： 打字是思考中最慢的部分。Tyvox 消除了这一部分：在桌面上按下一个热键，自然说话，经过润色的文本就会准确地出现在你即将打字的地方。语音识别默认在您的机器上运行，可选的 LLM 处理将漫谈变成整洁的散文 —— 或另一种语言。 <img src=\"/luckrnx09/tyvox/raw/master/assets/demo/polishdemo.gif\" / 项目地址： 开源协议： MIT",
+          "content": "**项目名称：** Tyvox\n\n**项目简介：**\n打字是思考中最慢的部分。Tyvox 消除了这一部分：在桌面上按下一个热键，自然说话，经过润色的文本就会准确地出现在你即将打字的地方。语音识别默认在您的机器上运行，可选的 LLM 处理将漫谈变成整洁的散文 —— 或另一种语言。\n\n<img src=\"/luckrnx09/tyvox/raw/master/assets/demo/polish-demo.gif\" />\n\n**项目地址：** https://github.com/luckrnx09/tyvox\n\n**开源协议：** MIT\n\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11285",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11285"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】Jarvix：让多个 AI Agent 共享同一份上下文",
+          "url": "https://jarvix.live/?ref=weekly",
+          "author": "callback-io",
+          "authorUrl": "https://github.com/callback-io",
+          "publishedAt": "2026-08-20T09:10:35Z",
+          "summary": "项目地址： Jarvix 是一款面向 macOS 的本地优先（localfirst）、支持语音交互的 Context OS。它解决的不是“再多一个聊天窗口”，而是同时使用多个 AI 工具时，上下文散落在不同会话里、同一背景需要反复解释的问题。 你可以把自己选择的 AI 对话和信息源交给 Jarvix。它会把这些内容组织成可持续的个人上下文，让不同 Agent 和新会话从已有背景继续工作，并从中发现关联、总结信号、建议下一步。涉及执行的动作仍然需要用户确认。 比较有意思的几个功能： 一份上下文，多 Agent 共用：不必在每个会话里重新复制背景；Jarvix 让不同 Agent 围绕同一目标和上下文继续协作，并显示进度。 Self Reflection 与 Next Move：不只保存历史，还会从你选择的内容里梳理关系和模式，给出“下一步可以做什么”的建议。 Jarvix Radio：根据个人上下文发现值得看的视频，把被动刷推荐变成围绕当前兴趣和目标的探索。 JCard：导入自己选择的 AI 对话，可以生成七种 JType 之一，并查看不同类型的协作匹配度。网页版支持免登录、一次性分析，适合先体验产品思路。 目前官网可以直接下载 macOS 客户端；Windows 版本可登记候补。 <img width=\"1810\" height=\"1112\" alt=\"Image\" src=\" / <img width=\"3840\" height=\"1982\" alt=\"Image\" src=\" / <img width=\"3840\" height=\"1982\" alt=\"Image\" src=\" / <img width=\"1920\" height=\"991\" alt=\"Image\" src=\" / <img width=\"3840\" height=\"1982\" alt=\"Image\" src=\" /",
+          "content": "项目地址：[https://jarvix.live/?ref=weekly](https://jarvix.live/?ref=weekly)\n\nJarvix 是一款面向 macOS 的本地优先（local-first）、支持语音交互的 Context OS。它解决的不是“再多一个聊天窗口”，而是同时使用多个 AI 工具时，上下文散落在不同会话里、同一背景需要反复解释的问题。\n\n你可以把自己选择的 AI 对话和信息源交给 Jarvix。它会把这些内容组织成可持续的个人上下文，让不同 Agent 和新会话从已有背景继续工作，并从中发现关联、总结信号、建议下一步。涉及执行的动作仍然需要用户确认。\n\n比较有意思的几个功能：\n\n- **一份上下文，多 Agent 共用**：不必在每个会话里重新复制背景；Jarvix 让不同 Agent 围绕同一目标和上下文继续协作，并显示进度。\n- **Self Reflection 与 Next Move**：不只保存历史，还会从你选择的内容里梳理关系和模式，给出“下一步可以做什么”的建议。\n- **Jarvix Radio**：根据个人上下文发现值得看的视频，把被动刷推荐变成围绕当前兴趣和目标的探索。\n- **J-Card**：导入自己选择的 AI 对话，可以生成七种 J-Type 之一，并查看不同类型的协作匹配度。网页版支持免登录、一次性分析，适合先体验产品思路。\n\n目前官网可以直接下载 macOS 客户端；Windows 版本可登记候补。\n<img width=\"1810\" height=\"1112\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/59e2b750-f0fb-4f7a-a0ea-1e86e5f8c191\" />\n<img width=\"3840\" height=\"1982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a9c5285a-05df-45f9-96d6-57aeed2a82db\" />\n<img width=\"3840\" height=\"1982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/56539453-53cd-4a34-ab6b-b2a81b1d4479\" />\n<img width=\"1920\" height=\"991\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4ca760b2-107a-4595-b3f7-13854ec29091\" />\n<img width=\"3840\" height=\"1982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4e566804-034a-40be-9d6f-9bd49efa2714\" />\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11286",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11286",
+          "siteLogo": "https://jarvix.live/jcard/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】运营400多天的通辽宇宙知识库：小约翰可汗视频资料库",
+          "url": "https://www.tongliaouniverse.cn/",
+          "author": "Acorn2",
+          "authorUrl": "https://github.com/Acorn2",
+          "publishedAt": "2026-08-20T09:32:49Z",
+          "summary": "网站地址：通辽宇宙知识库 各位周刊读者好，先说一个很多看视频的人都会得的病：小约翰可汗的视频，看的时候是真上头。可过一阵子你想回看某一段，完了——人物记得，国家记得，故事记得，连那句\"秦始皇吃花椒——赢麻了\"都记得，就是死活想不起是哪一期。 这毛病吧，不痛不痒，就是磨人。翻收藏夹、划播放列表、对着进度条干瞪眼，最后只能自我安慰：算了，找不到就找不到吧。 这个网站就是治这个病的。 通辽宇宙知识库，运营到今天有 400多天，一个围着小约翰可汗公开视频做的民间资料索引。它不打算替代原视频，也不抢 B 站的播放量；它干的活就一件：把散在几十上百期视频里的人物、国家、组织、事件、配乐、经典语录重新串起来，你从哪头进去，都能顺着摸到出处，再顺着出处接着逛。 一年前，我在周刊投过一版。当时项目还主要是奇葩小国、人物档案、语录和视频列表。这一年间网站大改了好几轮，现在是 v2.0。所以这期不是报旧闻，是想跟新老读者说一声：现在它比一年前能打的多了。 现在可以怎么用 就五件事。 全站搜索与出处回查：按人物、国家、组织、事件、曲名或语录关键词搜，定位到资料和来源视频。不说是过目不忘吧，至少也是随叫随到了。 结构化资料库：奇葩小国、硬核狠人、神奇组织、历史事件、视频资料、经典配乐、通辽国粹，词条之间留着关联入口，从一个人能追到国家、事件、视频。 地图、图鉴与专题导读：没有明确目标的时候，顺着地图、图鉴或专题路线，顺藤摸瓜地逛。 视频档案补充：详情页除了基本信息，还整理了有代表性的 B 站热评；配乐和可汗玉音档案，按曲名、标题或 BV 号都能回查。 内容共建与反馈闭环：反馈进展页、资料补充入口都在。你发现哪条不对、缺了哪段，直接提交线索，附上视频标题、链接或时间点，方便核对补全。 !通辽宇宙知识库首页，视频资料库与全站搜索入口 !通辽宇宙知识库首页，视频资料库与全站搜索入口 这一年新增和重做了什么 这一年的更新，主要是在治资料站的老毛病：看一页就断。查完一个人名，手一松，不知道该往哪点了。 好，通辽档案局今日值班的仓鼠，给您汇报一下这一年干了啥： 重做了页面视觉、导航和响应式布局，统一了国家、人物、组织、历史等详情页的信息结构。 扩充了组织、历史、音乐、图鉴、专题、网络热评等内容维度，加强了资料之间的跳转关系。 补齐了站内反馈、共建、更新日志与内容审核等持续维护能力。 头像工坊：上传头像或选站内历史头像，浏览器本地就能生成 ASCII、像素风、掌机绿屏、VHS 效果，一键下载。 3D 仓鼠档案员、每日档案签和\"随便翻一卷\"，给没有明确关键词、想随机进一条线索的人用的。 新近还加了\"仓鼠快递站\"这个不影响资料检索的轻量小游戏，主打一个只进不出——进去的包裹，没几个能原样出来；旁边还配了台催更压力仪，专门用来展示更新空窗期。 !硬核狠人人物库，提供 409 条人物资料及标签筛选 !仓鼠快递站，通辽宇宙知识库的轻量互动入口 有人要说了，又是仓鼠又是快递站的，这网站是不是跑偏去搞娱乐了？行啊，可问题是——这些互动真不是主角。核心一直是那件事：保留原视频入口，把零散内容整理成可查、可连、可持续补充的资料网络。互动功能顶多是查完资料、还想再逛一会儿的时候，给你递一杯水。 项目说明 非官方个人项目，索引以小约翰可汗公开发布的视频为准，页面会保留或链接回原视频。整理过程中可能还有遗漏或错误，欢迎通过站内反馈提交可核对的补充与修正线索。 项目持续公开记录更新： 网站首页 更新日志 反馈进展 你要是也有过\"人物记得、国家记得、就是忘了哪期\"的瞬间，别对着进度条干瞪眼了，来搜一个名字试试，五分钟就走。不出意外的话，这一逛，今晚你就在通辽宇宙里过夜了。 搜到了，说明你没记错；搜不到，正好来提交线索，帮值班仓鼠补一档。你负责记得片段，我负责把出处翻出来。",
+          "content": "网站地址：[通辽宇宙知识库](https://www.tongliaouniverse.cn/)\n\n各位周刊读者好，先说一个很多看视频的人都会得的病：小约翰可汗的视频，看的时候是真上头。可过一阵子你想回看某一段，完了——人物记得，国家记得，故事记得，连那句\"秦始皇吃花椒——赢麻了\"都记得，就是死活想不起是哪一期。\n\n这毛病吧，不痛不痒，就是磨人。翻收藏夹、划播放列表、对着进度条干瞪眼，最后只能自我安慰：算了，找不到就找不到吧。\n\n这个网站就是治这个病的。\n\n通辽宇宙知识库，运营到今天有 400多天，一个围着小约翰可汗公开视频做的民间资料索引。它不打算替代原视频，也不抢 B 站的播放量；它干的活就一件：把散在几十上百期视频里的人物、国家、组织、事件、配乐、经典语录重新串起来，你从哪头进去，都能顺着摸到出处，再顺着出处接着逛。\n\n一年前，我在周刊投过一版。当时项目还主要是奇葩小国、人物档案、语录和视频列表。这一年间网站大改了好几轮，现在是 v2.0。所以这期不是报旧闻，是想跟新老读者说一声：现在它比一年前能打的多了。\n\n## 现在可以怎么用\n\n就五件事。\n\n- **全站搜索与出处回查**：按人物、国家、组织、事件、曲名或语录关键词搜，定位到资料和来源视频。不说是过目不忘吧，至少也是随叫随到了。\n- **结构化资料库**：奇葩小国、硬核狠人、神奇组织、历史事件、视频资料、经典配乐、通辽国粹，词条之间留着关联入口，从一个人能追到国家、事件、视频。\n- **地图、图鉴与专题导读**：没有明确目标的时候，顺着地图、图鉴或专题路线，顺藤摸瓜地逛。\n- **视频档案补充**：详情页除了基本信息，还整理了有代表性的 B 站热评；配乐和可汗玉音档案，按曲名、标题或 BV 号都能回查。\n- **内容共建与反馈闭环**：反馈进展页、资料补充入口都在。你发现哪条不对、缺了哪段，直接提交线索，附上视频标题、链接或时间点，方便核对补全。\n\n![通辽宇宙知识库首页，视频资料库与全站搜索入口](https://hreshhao.com/own/homepage1.png)\n\n![通辽宇宙知识库首页，视频资料库与全站搜索入口](https://hreshhao.com/own/homepage2.png)\n\n## 这一年新增和重做了什么\n\n这一年的更新，主要是在治资料站的老毛病：看一页就断。查完一个人名，手一松，不知道该往哪点了。\n\n好，通辽档案局今日值班的仓鼠，给您汇报一下这一年干了啥：\n\n- 重做了页面视觉、导航和响应式布局，统一了国家、人物、组织、历史等详情页的信息结构。\n- 扩充了组织、历史、音乐、图鉴、专题、网络热评等内容维度，加强了资料之间的跳转关系。\n- 补齐了站内反馈、共建、更新日志与内容审核等持续维护能力。\n- 头像工坊：上传头像或选站内历史头像，浏览器本地就能生成 ASCII、像素风、掌机绿屏、VHS 效果，一键下载。\n- 3D 仓鼠档案员、每日档案签和\"随便翻一卷\"，给没有明确关键词、想随机进一条线索的人用的。\n- 新近还加了\"仓鼠快递站\"这个不影响资料检索的轻量小游戏，主打一个只进不出——进去的包裹，没几个能原样出来；旁边还配了台催更压力仪，专门用来展示更新空窗期。\n\n![硬核狠人人物库，提供 409 条人物资料及标签筛选](https://hreshhao.com/own/music.png)\n\n![仓鼠快递站，通辽宇宙知识库的轻量互动入口](https://hreshhao.com/own/game.png)\n\n有人要说了，又是仓鼠又是快递站的，这网站是不是跑偏去搞娱乐了？行啊，可问题是——这些互动真不是主角。核心一直是那件事：保留原视频入口，把零散内容整理成可查、可连、可持续补充的资料网络。互动功能顶多是查完资料、还想再逛一会儿的时候，给你递一杯水。\n\n## 项目说明\n\n非官方个人项目，索引以小约翰可汗公开发布的视频为准，页面会保留或链接回原视频。整理过程中可能还有遗漏或错误，欢迎通过站内反馈提交可核对的补充与修正线索。\n\n项目持续公开记录更新：\n\n- [网站首页](https://www.tongliaouniverse.cn/)\n- [更新日志](https://www.tongliaouniverse.cn/changelog/)\n- [反馈进展](https://www.tongliaouniverse.cn/feedback/)\n\n你要是也有过\"人物记得、国家记得、就是忘了哪期\"的瞬间，别对着进度条干瞪眼了，来搜一个名字试试，五分钟就走。不出意外的话，这一逛，今晚你就在通辽宇宙里过夜了。\n\n搜到了，说明你没记错；搜不到，正好来提交线索，帮值班仓鼠补一档。你负责记得片段，我负责把出处翻出来。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11287",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11287",
+          "siteLogo": "https://www.tongliaouniverse.cn/images/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】万物皆可排！我做了一个自带“社区讨论”的 Tier List 排名工具",
+          "url": "https://tierlistmaker.pro/",
+          "author": "niki75029-dotcom",
+          "authorUrl": "https://github.com/niki75029-dotcom",
+          "publishedAt": "2026-08-20T09:48:31Z",
+          "summary": "大家好！今天想给大家推荐一款我最近开发/发现的实用且好玩的工具：Tier List Maker Pro。 🔗 传送门：[] 平时大家在各大论坛、贴吧或者社交媒体上，肯定没少见各种“节奏榜”、“天梯图”或者“梯度排行”（比如某款游戏的角色强度排行、动漫战力榜、甚至各品牌快餐的好吃程度等等）。 传统的 Tier List 工具大多是纯“单机版”的——你排好名、截个图、发到别的平台，工具的使命就结束了。但很多时候，排名的灵魂不仅在于展示，更在“讨论（或者说对线）”！ 为此，我们在把基础做图体验打磨好的同时，给 Rankly注入了灵魂功能——社区交流。 🌟 核心亮点：它不仅是个制图工具，更是一个讨论社区 💬 一键发布，激情讨论：你做好的排名图不再只是一张死板的图片。你可以直接将其发布到网站的公共社区。其他用户看到后，可以在下方直接留言讨论（比如：“凭什么 XXX 只能排 T2？”、“排在 T0 的这个我完全赞同！”）。 🔄 模板复用，一键 PK：看到别人发在社区的排名不服气？你可以直接一键复用他的素材库，拖拽出你心目中的完美榜单，用实力回应！ 🛠 当然，基础功能依然扎实好用： 丝滑的拖拽体验：支持电脑和手机端，图片拖拽丝滑顺畅，哪里不爽拖哪里。 高度自定义：随心所欲修改梯度等级的名称（如 T0, T1, T2 或者 神级, 优秀, 一般）、颜色以及行数。 高清图一键导出：如果你还是想把图片分享到微信群、微博或推特，我们也提供了一键生成高清长图下载的功能，没有任何水印烦恼。 💡 你可以用它来排什么？（万物皆可 Tier List） 🎮 游戏电竞：《黑神话》Boss难度榜、APEX武器强度榜、原神/星铁角色节奏榜。 🎬 影视动漫：漫威电影宇宙喜爱度排名、年度最佳新番大赏。 💻 科技数码：前端框架鄙视链、各大手机品牌系统好用度排行。 🍔 生活日常：各家奶茶品牌性价比排行、麦当劳单品红黑榜。 目前 Tier List Maker Pro 已经上线，完全免费！非常欢迎大家来体验。 大家可以直接去社区里发个榜单，或者找个感兴趣的榜单“锐评”一下。如果你对工具有任何建议或者吐槽，也随时在帖子里留言告诉我，我会认真看每一条反馈并持续迭代！ 欢迎来玩：👉 [Rankly] ()",
+          "content": "大家好！今天想给大家推荐一款我最近开发/发现的实用且好玩的工具：Tier List Maker Pro。\n🔗 传送门：[https://tierlistmaker.pro/]\n平时大家在各大论坛、贴吧或者社交媒体上，肯定没少见各种“节奏榜”、“天梯图”或者“梯度排行”（比如某款游戏的角色强度排行、动漫战力榜、甚至各品牌快餐的好吃程度等等）。\n传统的 Tier List 工具大多是纯“单机版”的——你排好名、截个图、发到别的平台，工具的使命就结束了。但很多时候，排名的灵魂不仅在于展示，更在“讨论（或者说对线）”！\n为此，我们在把基础做图体验打磨好的同时，给 Rankly注入了灵魂功能——社区交流。\n🌟 核心亮点：它不仅是个制图工具，更是一个讨论社区\n💬 一键发布，激情讨论：你做好的排名图不再只是一张死板的图片。你可以直接将其发布到网站的公共社区。其他用户看到后，可以在下方直接留言讨论（比如：“凭什么 XXX 只能排 T2？”、“排在 T0 的这个我完全赞同！”）。\n🔄 模板复用，一键 PK：看到别人发在社区的排名不服气？你可以直接一键复用他的素材库，拖拽出你心目中的完美榜单，用实力回应！\n🛠 当然，基础功能依然扎实好用：\n丝滑的拖拽体验：支持电脑和手机端，图片拖拽丝滑顺畅，哪里不爽拖哪里。\n高度自定义：随心所欲修改梯度等级的名称（如 T0, T1, T2 或者 神级, 优秀, 一般）、颜色以及行数。\n高清图一键导出：如果你还是想把图片分享到微信群、微博或推特，我们也提供了一键生成高清长图下载的功能，没有任何水印烦恼。\n💡 你可以用它来排什么？（万物皆可 Tier List）\n🎮 游戏电竞：《黑神话》Boss难度榜、APEX武器强度榜、原神/星铁角色节奏榜。\n🎬 影视动漫：漫威电影宇宙喜爱度排名、年度最佳新番大赏。\n💻 科技数码：前端框架鄙视链、各大手机品牌系统好用度排行。\n🍔 生活日常：各家奶茶品牌性价比排行、麦当劳单品红黑榜。\n目前 Tier List Maker Pro 已经上线，完全免费！非常欢迎大家来体验。\n大家可以直接去社区里发个榜单，或者找个感兴趣的榜单“锐评”一下。如果你对工具有任何建议或者吐槽，也随时在帖子里留言告诉我，我会认真看每一条反馈并持续迭代！\n欢迎来玩：👉 [Rankly] (https://tierlistmaker.pro/)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11288",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11288",
+          "siteLogo": "https://tierlistmaker.pro/assets/favicon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】libcr 项目组发布免费的开发者工具箱 crRequest 1.9.3",
+          "url": "https://github.com/libcr/crRequest/releases",
+          "author": "wuruxu",
+          "authorUrl": "https://github.com/wuruxu",
+          "publishedAt": "2026-08-20T10:53:03Z",
+          "summary": "下载地址: 1.9.3 新增 blink 模块，支持 HTML Playground 和 增强的 SVG 渲染 crRequest 是一款 C++开发的跨平台工具客户端 基于源代码 chromium 150.0.7871.91 1. 使用 chromium UI 框架设计跨平台应用界面，实现多平台一致的性能表现 2. 基于 100% chromium 网络代码， 支持 QUIC, HTTP2 等浏览器网络协议 API 接口测试 3. 基于 libssh2 实现的 SSH 客户端 4. 支持 sqlite 和 pgSQL 的数据库操作 5. Chromium 原生能力工具箱 libcr 项目组也提供 AI 驱动的原生应用开发包，轻松兼顾多平台开发效率和性能 更多应用和信息访问 <img width=\"1920\" height=\"1080\" alt=\"Image\" src=\" / <img width=\"1920\" height=\"1080\" alt=\"Image\" src=\" /",
+          "content": "下载地址: https://github.com/libcr/crRequest/releases\n\n1.9.3 新增 blink 模块，支持 HTML Playground 和 增强的 SVG 渲染\ncrRequest 是一款 C++开发的跨平台工具客户端 基于源代码 chromium 150.0.7871.91\n1. 使用 chromium UI 框架设计跨平台应用界面，实现多平台一致的性能表现\n2. 基于 100% chromium 网络代码， 支持 QUIC, HTTP2 等浏览器网络协议 API 接口测试\n3. 基于 libssh2 实现的 SSH 客户端\n4. 支持 sqlite 和 pgSQL 的数据库操作\n5. Chromium 原生能力工具箱\n\nlibcr 项目组也提供 AI 驱动的原生应用开发包，轻松兼顾多平台开发效率和性能\n更多应用和信息访问 https://libcr.github.io/\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/939c4c22-28c7-4ff8-919c-0560959b9c82\" />\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c44c6406-5e34-465c-b831-4cf89dcb3b7e\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11289",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11289",
+          "siteLogo": "https://libcr.github.io/assets/libcr-logo.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】PicLite 图轻：开源跨平台本地图片动图压缩工具，智能择优压缩，本地文件夹监控，强大自定义悬浮窗",
+          "url": "https://github.com/amiaoapp/PicLite/releases",
+          "author": "amiaoapp",
+          "authorUrl": "https://github.com/amiaoapp",
+          "publishedAt": "2026-08-20T11:02:38Z",
+          "summary": "PicLite 图轻 PicLite 图轻：开源跨平台本地图片动图压缩工具，智能择优压缩，本地文件夹监控，强大自定义悬浮窗。自动图片格式转换，批量压缩，添加水印，上传图床。支持 Windows、macOS、Linux 与可自托管 Web 端。 帮助自媒体工作人员和开发人员提升工作效率 English · 下载桌面版 · Web 演示 · 插件开发 · 主要能力 JPEG、PNG、WebP、GIF 导入、转换、压缩与等比例缩放 默认自动比较候选格式，在尽量保持观感的前提下选择更小结果 原图/结果对比、实时体积、连续画质与尺寸控制、文字水印 剪贴板监听、全局快捷键、文件夹监测与本地图库 类 Clop 的桌面悬浮结果：复制、预览、撤销、继续缩小、切换格式 结果数量上限、堆叠/展开两种悬浮布局、自动隐藏 覆盖源文件、同目录重命名或固定目录输出，并支持定期清理 WebDAV、S3/R2、OSS、FTP、SFTP 图床上传 可加载本地 HTML/JavaScript 或 URL 工作台插件；图库与文件夹监测也可独立启停 Tauri 2 + Rust 桌面端；图片默认只在本机处理 截图 <img width=\"2924\" height=\"1602\" alt=\"image\" src=\" / 下载 在 Releases 下载： Windows x64 / ARM64：.exe 或 .msi macOS Apple Silicon / Intel：.dmg Linux x64 / ARM64：.AppImage 或 .deb macOS 构建目前为 adhoc 签名，首次运行可能需要在“系统设置 → 隐私与安全性”中允许打开。 Web 与 Docker bash docker run d \\ name piclite \\ p 3000:3000 \\ restart unlessstopped \\ ghcr.io/amiaoapp/piclite:latest 浏览器打开 端受浏览器权限限制，不提供系统托盘、全局快捷键和持续文件夹监测。 持续优化了一个月。现在功能完全可以胜任 ”最好用的图片压缩工具“ 之列。悬浮窗十分强大",
+          "content": "# PicLite 图轻\n\nPicLite 图轻：开源跨平台本地图片动图压缩工具，智能择优压缩，本地文件夹监控，强大自定义悬浮窗。自动图片格式转换，批量压缩，添加水印，上传图床。支持 Windows、macOS、Linux 与可自托管 Web 端。\n帮助自媒体工作人员和开发人员提升工作效率\n\n[English](README.en-US.md) · [下载桌面版](https://github.com/amiaoapp/PicLite/releases) · [Web 演示](https://piclite-image-optimiser.ritchiecessac4273.chatgpt.site) · [插件开发](docs/PLUGIN_DEVELOPMENT.md) · \n\n## 主要能力\n\n- JPEG、PNG、WebP、GIF 导入、转换、压缩与等比例缩放\n- 默认自动比较候选格式，在尽量保持观感的前提下选择更小结果\n- 原图/结果对比、实时体积、连续画质与尺寸控制、文字水印\n- 剪贴板监听、全局快捷键、文件夹监测与本地图库\n- 类 Clop 的桌面悬浮结果：复制、预览、撤销、继续缩小、切换格式\n- 结果数量上限、堆叠/展开两种悬浮布局、自动隐藏\n- 覆盖源文件、同目录重命名或固定目录输出，并支持定期清理\n- WebDAV、S3/R2、OSS、FTP、SFTP 图床上传\n- 可加载本地 HTML/JavaScript 或 URL 工作台插件；图库与文件夹监测也可独立启停\n- Tauri 2 + Rust 桌面端；图片默认只在本机处理\n\n## 截图\n\n<img width=\"2924\" height=\"1602\" alt=\"image\" src=\"https://github.com/user-attachments/assets/2379e6d7-e1ef-444d-890f-e2ea7942abe9\" />\n\n\n## 下载\n\n在 [Releases](https://github.com/amiaoapp/PicLite/releases) 下载：\n\n- Windows x64 / ARM64：`.exe` 或 `.msi`\n- macOS Apple Silicon / Intel：`.dmg`\n- Linux x64 / ARM64：`.AppImage` 或 `.deb`\n\nmacOS 构建目前为 ad-hoc 签名，首次运行可能需要在“系统设置 → 隐私与安全性”中允许打开。\n\n## Web 与 Docker\n\n```bash\ndocker run -d \\\n  --name piclite \\\n  -p 3000:3000 \\\n  --restart unless-stopped \\\n  ghcr.io/amiaoapp/piclite:latest\n```\n\n浏览器打开 `http://服务器IP:3000`。Web 端受浏览器权限限制，不提供系统托盘、全局快捷键和持续文件夹监测。\n\n\n持续优化了一个月。现在功能完全可以胜任 ”最好用的图片压缩工具“ 之列。悬浮窗十分强大",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11290",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11290"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】OpenAI Codex VS Code 扩展的本地会话伴生管理器。它读取本机 .codex 数据目录，按会话中的 cwd 将历史会话归入项目文件夹。",
+          "url": "https://github.com/MathsionYang/CodexChat-/releases",
+          "author": "MathsionYang",
+          "authorUrl": "https://github.com/MathsionYang",
+          "publishedAt": "2026-08-20T11:54:07Z",
+          "summary": "CodexChat 是 OpenAI Codex VS Code 扩展的本地会话伴生管理器。它读取本机 .codex 数据目录，按会话中的 cwd 将历史会话归入项目文件夹。 项目地址： 功能 自动扫描 sessions 和 archivedsessions。 按项目文件夹浏览本地 Codex 会话。 查看用户消息、Codex 回复和工具调用摘要。 监听本地会话变化并刷新。 打开项目工作区并进入官方 Codex 扩展。 在经过验证的 Codex 版本中恢复指定本地会话。 Codex 原始会话文件全程只读。 界面预览 项目会话 !项目会话 会话详情 !会话详情 token统计 <img width=\"493\" height=\"655\" alt=\"Image\" src=\" /",
+          "content": "CodexChat 是 OpenAI Codex VS Code 扩展的本地会话伴生管理器。它读取本机 .codex 数据目录，按会话中的 cwd 将历史会话归入项目文件夹。\n\n项目地址：https://github.com/MathsionYang/CodexChat-/releases\n## 功能\n- 自动扫描 sessions 和 archived_sessions。\n- 按项目文件夹浏览本地 Codex 会话。\n- 查看用户消息、Codex 回复和工具调用摘要。\n- 监听本地会话变化并刷新。\n- 打开项目工作区并进入官方 Codex 扩展。\n- 在经过验证的 Codex 版本中恢复指定本地会话。\n- Codex 原始会话文件全程只读。\n\n## 界面预览\n\n### 项目会话\n![项目会话](https://raw.githubusercontent.com/MathsionYang/CodexChat-/main/img/Snipaste_2026-08-19_15-30-30.png)\n\n### 会话详情\n![会话详情](https://raw.githubusercontent.com/MathsionYang/CodexChat-/main/img/Snipaste_2026-08-19_15-31-07.png)\n\n### token统计\n\n<img width=\"493\" height=\"655\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/513c65a6-d89b-4540-afc7-0c06462a9c43\" />\n\n\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11291",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11291"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "自荐开源项目：wsl-command —— 专为 WSL2 打造的零依赖极简控制台与进程管理工具",
+          "url": "https://github.com/kongaiyi917-source/wsl-command",
+          "author": "kongaiyi917-source",
+          "authorUrl": "https://github.com/kongaiyi917-source",
+          "publishedAt": "2026-08-19T16:20:51Z",
+          "summary": "项目名称 WSL Command (WSL 指挥中心) 项目地址 项目简介 一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，零外部第三方依赖，常驻内存仅约 20MB。 解决的痛点 在 WSL2 下做开发时，经常遇到以下烦恼： 1. Docker Desktop 过于笨重：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。 2. 多项目进程难以直观管理：在终端里开多个 dev server，往往需要频繁 ps ef | grep 或 lsof i 查端口、杀僵尸进程。 3. WSL 与 Windows 切换繁琐：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。 核心亮点 ⚡ 极致轻量与零依赖：后端纯 Python 标准库，前端原生现代 JS，无需 pip install 或 npm install 任何依赖，拉下来就能跑。 📊 可视化仪表盘：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。 🚀 进程智能识别与一键启停：自动识别 npm / Python / Dockercompose 等服务，支持快捷卡片置顶与进程树级优雅管理。 🌐 原生双语支持：内置完善的中/英文动态切换。 欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐",
+          "content": "### 项目名称\n**WSL Command (WSL 指挥中心)**\n\n### 项目地址\nhttps://github.com/kongaiyi917-source/wsl-command\n\n### 项目简介\n一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，**零外部第三方依赖**，常驻内存仅约 20MB。\n\n### 解决的痛点\n在 WSL2 下做开发时，经常遇到以下烦恼：\n1. **Docker Desktop 过于笨重**：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。\n2. **多项目进程难以直观管理**：在终端里开多个 dev server，往往需要频繁 `ps -ef | grep` 或 `lsof -i` 查端口、杀僵尸进程。\n3. **WSL 与 Windows 切换繁琐**：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。\n\n### 核心亮点\n- **⚡ 极致轻量与零依赖**：后端纯 Python 标准库，前端原生现代 JS，无需 `pip install` 或 `npm install` 任何依赖，拉下来就能跑。\n- **📊 可视化仪表盘**：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。\n- **🚀 进程智能识别与一键启停**：自动识别 npm / Python / Docker-compose 等服务，支持快捷卡片置顶与进程树级优雅管理。\n- **🌐 原生双语支持**：内置完善的中/英文动态切换。\n\n欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3563",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3563"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] SandBase CLI：一条命令连接 25 个 AI 客户端与 2,000+ 模型/API",
+          "url": "https://github.com/sandbaseai/cli",
+          "author": "denial123789",
+          "authorUrl": "https://github.com/denial123789",
+          "publishedAt": "2026-08-19T17:35:12Z",
+          "summary": "项目地址 类别 人工智能 项目标题 一条命令连接 25 个 AI 客户端与 2,000+ 模型/API 项目描述 SandBase CLI 是一个 Apache2.0 开源的命令行工具和本地 MCP 桥接器。它自动检测本机的 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 AI 客户端，通过统一流程完成 OAuth 授权和 MCP 配置，让这些客户端可以发现并调用 2,000+ AI 模型与 API。 项目重点处理手工配置最容易出错的部分：修改前验证目标客户端、保留原配置、限制敏感文件权限，出现问题时提供 doctor 诊断和回滚能力。用户也可以先运行只读的 catalog json 查看 25 个支持目标，不登录、不修改任何文件。 亮点 一套命令覆盖 25 个 AI 客户端目标，减少为每个工具分别查找配置路径和字段格式的重复工作。 本地 MCP Bridge 提供模型发现、能力检查、任务运行和运行记录查询等 6 个工具。 OAuth 引导代替手工复制多组 API Key；配置更新包含备份、校验和回滚。 提供中文、英文、日文、韩文、西班牙文等多语言 README。 发布页提供不可变安装包与 SHA256 校验值，客户端支持范围由可机器读取的 src/catalog.ts 维护。 示例代码 连接已检测到的客户端： bash npx y connect 只读查看支持的客户端： bash npx y catalog json 截图或演示视频 中文说明： 说明：npm 的 latest 当前仍落后于 GitHub Release，因此示例暂时使用不可变的 v0.1.17 Release 安装包。",
+          "content": "### 项目地址\n\nhttps://github.com/sandbaseai/cli\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n一条命令连接 25 个 AI 客户端与 2,000+ 模型/API\n\n### 项目描述\n\nSandBase CLI 是一个 Apache-2.0 开源的命令行工具和本地 MCP 桥接器。它自动检测本机的 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 AI 客户端，通过统一流程完成 OAuth 授权和 MCP 配置，让这些客户端可以发现并调用 2,000+ AI 模型与 API。\n\n项目重点处理手工配置最容易出错的部分：修改前验证目标客户端、保留原配置、限制敏感文件权限，出现问题时提供 `doctor` 诊断和回滚能力。用户也可以先运行只读的 `catalog --json` 查看 25 个支持目标，不登录、不修改任何文件。\n\n### 亮点\n\n- 一套命令覆盖 25 个 AI 客户端目标，减少为每个工具分别查找配置路径和字段格式的重复工作。\n- 本地 MCP Bridge 提供模型发现、能力检查、任务运行和运行记录查询等 6 个工具。\n- OAuth 引导代替手工复制多组 API Key；配置更新包含备份、校验和回滚。\n- 提供中文、英文、日文、韩文、西班牙文等多语言 README。\n- 发布页提供不可变安装包与 SHA-256 校验值，客户端支持范围由可机器读取的 `src/catalog.ts` 维护。\n\n### 示例代码\n\n连接已检测到的客户端：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz connect\n```\n\n只读查看支持的客户端：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz catalog --json\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/sandbaseai/cli/main/.github/assets/sandbase-cli-hero.webp\n\n中文说明：https://github.com/sandbaseai/cli/blob/main/README.zh-CN.md\n\n说明：npm 的 `latest` 当前仍落后于 GitHub Release，因此示例暂时使用不可变的 v0.1.17 Release 安装包。\n",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3564",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3564"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[自荐开源] LAN Chat：轻量级局域网聊天室 + 私人网盘 + WebRTC P2P 大文件直传系统",
+          "url": "https://github.com/EI3247/lan-chat",
+          "author": "EI3247",
+          "authorUrl": "https://github.com/EI3247",
+          "publishedAt": "2026-08-20T04:37:23Z",
+          "summary": "项目名称 LAN Chat (局域网即时通讯与文件共享系统) 项目地址 项目类别 Python / Web / 实用工具 项目标题 轻量级、开箱即用的局域网聊天室 + 私人网盘 + WebRTC P2P 大文件直传系统 项目描述 一个专为家庭 NAS、实验室、小型团队及办公室打造的轻量级局域网协同工具。采用 FastAPI + SQLite + 原生 JavaScript 开发，单个 Docker 容器直接拉起（仅几十 MB 内存占用），开箱即用。 解决的痛点 局域网多设备（手机/电脑/平板）跨端传输和沟通时，传统方案痛点明显： 1. 商业 IM 过于庞大：Rocket.Chat、Mattermost 动辄占用几个 G 内存且需额外数据库。 2. 纯快传工具无法持久化：Snapdrop 等点对点工具网页一关文件即丢，无法存网盘。 3. 公网工具受限：微信/QQ 传文件走外网限速且压缩画质。 核心亮点 💬 即时群聊与暗号式后台：支持文本、音视频、文件消息；聊天框直接输入超级密码秒跳 /admin 管理后台。 ⚡ WebRTC P2P 极速直传：局域网点对点流式传输，不耗费服务器带宽与磁盘，支持多文件队列与最大 5GB 大文件。 📂 公私双模式网盘 + Quick Drop：支持公开/私人个人网盘；提供 Quick Drop 目录，直接往 NAS 文件夹扔文件前端即时扫描呈现（免写数据库）。 🔑 独创「身份码」多端同步：换设备或换浏览器无需繁琐密码，凭 6 位自定义身份码秒级恢复个人账号、头像与私人文件。 📱 极简与全兼容：纯原生 JS 前端（零 Node 构建链），内置对低版本轻量 WebView 及 <dialog 的深度兼容。 🚀 双部署模式：支持 Docker Compose 一键启动，亦支持原生 Python 脚本直接运行（透传真实局域网 IP）。",
+          "content": "### 项目名称\n**LAN Chat (局域网即时通讯与文件共享系统)**\n\n### 项目地址\nhttps://github.com/EI3247/lan-chat\n\n### 项目类别\nPython / Web / 实用工具\n\n### 项目标题\n轻量级、开箱即用的局域网聊天室 + 私人网盘 + WebRTC P2P 大文件直传系统\n\n### 项目描述\n一个专为家庭 NAS、实验室、小型团队及办公室打造的轻量级局域网协同工具。采用 **FastAPI + SQLite + 原生 JavaScript** 开发，单个 Docker 容器直接拉起（仅几十 MB 内存占用），开箱即用。\n\n### 解决的痛点\n局域网多设备（手机/电脑/平板）跨端传输和沟通时，传统方案痛点明显：\n1. **商业 IM 过于庞大**：Rocket.Chat、Mattermost 动辄占用几个 G 内存且需额外数据库。\n2. **纯快传工具无法持久化**：Snapdrop 等点对点工具网页一关文件即丢，无法存网盘。\n3. **公网工具受限**：微信/QQ 传文件走外网限速且压缩画质。\n\n### 核心亮点\n- 💬 **即时群聊与暗号式后台**：支持文本、音视频、文件消息；聊天框直接输入超级密码秒跳 `/admin` 管理后台。\n- ⚡ **WebRTC P2P 极速直传**：局域网点对点流式传输，不耗费服务器带宽与磁盘，支持多文件队列与最大 5GB 大文件。\n- 📂 **公私双模式网盘 + Quick Drop**：支持公开/私人个人网盘；提供 Quick Drop 目录，直接往 NAS 文件夹扔文件前端即时扫描呈现（免写数据库）。\n- 🔑 **独创「身份码」多端同步**：换设备或换浏览器无需繁琐密码，凭 6 位自定义身份码秒级恢复个人账号、头像与私人文件。\n- 📱 **极简与全兼容**：纯原生 JS 前端（零 Node 构建链），内置对低版本轻量 WebView 及 `<dialog>` 的深度兼容。\n- 🚀 **双部署模式**：支持 Docker Compose 一键启动，亦支持原生 Python 脚本直接运行（透传真实局域网 IP）。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3565",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3565"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "vibecafe",
+      "sourceName": "VibeCafé 作品",
+      "items": [
+        {
+          "sourceId": "vibecafe",
+          "title": "黑神话系列游戏攻略 | Black Myth Guide",
+          "url": "https://vibecafe.ai/products/cmt1od5xk00010bj7bxkg7vw0",
+          "author": "arunfung",
+          "authorUrl": "https://vibecafe.ai/u/arunfung",
+          "publishedAt": "2026-08-20T15:28:09.032Z",
+          "summary": "黑神话系列独立攻略与官方信息，包括《黑神话：悟空》攻略和《黑神话：钟馗》动态。",
+          "content": "黑神话系列独立攻略与官方信息，包括《黑神话：悟空》攻略和《黑神话：钟馗》动态。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmt1od5xk00010bj7bxkg7vw0",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239604286-ewhnj5.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/mt1nubjk4w9r-YvLTCsYkBroO2trz9OX64mshOuOjsc.svg",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239604286-ewhnj5.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239603716-qqkx0h.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsdg9rmu00000akp6pbjvtnq/1787239604432-acanp8.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Icon Sizes: One PNG in. Every icon size out.",
+          "url": "https://vibecafe.ai/products/cmt1cxu9s00000ajgkqa98icu",
+          "author": "cain",
+          "authorUrl": "https://vibecafe.ai/u/cain",
+          "publishedAt": "2026-08-20T10:08:18.305Z",
+          "summary": "Need a full set of app icons? Drop in your image, pick platforms, export. Free desktop app.",
+          "content": "Need a full set of app icons? Drop in your image, pick platforms, export. Free desktop app.",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmt1cxu9s00000ajgkqa98icu",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq8e5ez200010bktkrlxa8ip/mt1btetclqsr-YaX4kp58agUrsLoQ57aEZbSU29XN9q.jpg",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq8e5ez200010bktkrlxa8ip/mt1btetd3oqf-QSx3P5MCkTHdil87B48FM4tm4ZGN4Y.svg",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq8e5ez200010bktkrlxa8ip/mt1btetclqsr-YaX4kp58agUrsLoQ57aEZbSU29XN9q.jpg"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Stamp Maker — 把每一张照片，变成你的专属复古邮票",
+          "url": "https://vibecafe.ai/products/cmt18jm8v00000akj2d3448ak",
+          "author": "extrastu",
+          "authorUrl": "https://vibecafe.ai/u/extrastu",
+          "publishedAt": "2026-08-20T08:05:16.255Z",
+          "summary": "一键生成真实物理齿孔邮票，支持满幅打孔、经典边框与透明 PNG 导出，手账与小红书图文必备神器。100% 纯本地离线处理。",
+          "content": "一键生成真实物理齿孔邮票，支持满幅打孔、经典边框与透明 PNG 导出，手账与小红书图文必备神器。100% 纯本地离线处理。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmt18jm8v00000akj2d3448ak",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/mt18h3j5f29j-G4ndGFAfmu9WME2p4erFxdkeHwuo7v.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/mt18h3j6pooz-6u7AefVhlEnvAosZYLK1NTzsuSkb0M.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/mt18h3j5f29j-G4ndGFAfmu9WME2p4erFxdkeHwuo7v.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1787213095803-rfimk5.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "汲作",
+          "url": "https://vibecafe.ai/products/cmt0xp00u00000ajaixjh8nvf",
+          "author": "Syc",
+          "authorUrl": "https://vibecafe.ai/u/syc",
+          "publishedAt": "2026-08-20T03:01:31.614Z",
+          "summary": "把收藏夹里的链接抓成正文，用你自己的模型做总结、翻译和脑图。数据全部留在本机。",
+          "content": "把收藏夹里的链接抓成正文，用你自己的模型做总结、翻译和脑图。数据全部留在本机。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmt0xp00u00000ajaixjh8nvf",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194792912-z6m3y3.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/mt0xk2txgm0l-f5ZVJUbsPZD7fNPJveV4Zo2yZAB70r.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194792912-z6m3y3.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194795091-xsedzy.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqp7nqm500000cjngfj7k68c/1787194796354-7k6f56.png"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Abstenence",
+          "url": "https://www.producthunt.com/products/abstenence/launches/abstenence?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Pay a commitment fee to abstain from something for 2-5 days",
+          "content": "Abstenence is a pay-to-commit habit tracker. Pick something to abstain from, stake $2–$100 on a short 2-5 day challenge, and pass or fail — no resets, no refunds. Real money makes discipline real.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1189237",
+          "logo": "https://ph-files.imgix.net/5178f102-5599-4ab8-98e6-536beb973239.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/ca5a798c-19f6-48ac-bd71-2a39efa2fded.png?auto=format",
+            "https://ph-files.imgix.net/ba397436-3861-4480-b66c-604f918db366.png?auto=format",
+            "https://ph-files.imgix.net/facf6a51-5ab4-4788-b86a-e22b995a5d9f.png?auto=format",
+            "https://ph-files.imgix.net/ef4739e0-33b0-4e31-a65c-125bcb0231ef.png?auto=format",
+            "https://ph-files.imgix.net/1998d8cc-ec37-4b30-816f-07f2f8ca0eaa.png?auto=format",
+            "https://ph-files.imgix.net/aa9e065b-842b-415b-ad8d-682e59b53d13.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/ca5a798c-19f6-48ac-bd71-2a39efa2fded.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "NobodyWho",
+          "url": "https://www.producthunt.com/products/nobodywho/launches/nobodywho?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Run AI models on any device",
+          "content": "NobodyWho is an inference engine for running LLMs fully on-device, built on llama.cpp. Open-source, free, no API keys, no cloud calls. We support Swift, Kotlin, Flutter, React Native, Python, and Godot. Includes type-safe tool calling with automatic grammar generation, multimodal input, Text-to-Speech & Speech-to-Text, GPU acceleration via Vulkan & Metal, and Hugging Face model downloads.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226610",
+          "logo": "https://ph-files.imgix.net/fce36bdf-7c3d-489e-ad9f-5c497c669730.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bf4e7068-008a-41e4-990a-bccee5ffb372.png?auto=format",
+            "https://ph-files.imgix.net/2bb5ce14-0ce9-4399-b3b2-076a49a22d17.png?auto=format",
+            "https://ph-files.imgix.net/463780b2-0bc1-42fa-abce-f8ac7d1bf882.png?auto=format",
+            "https://ph-files.imgix.net/4f6b3f78-217d-44eb-8f7c-cdb505dba879.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bf4e7068-008a-41e4-990a-bccee5ffb372.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "B2B Positioning Linter by aah, monster!",
+          "url": "https://www.producthunt.com/products/aah-monster/launches/b2b-positioning-linter-by-aah-monster?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Instant, cynical diagnostic for founder headlines & hooks",
+          "content": "Most B2B founders spend $50,000 on ads and agencies before admitting their positioning reads like an apologetic intern's resume. I built this deterministic linter to catch surface cowardice, buzzword slop, and title dumping in 5 seconds. Zero tracking. Zero email required. Everything runs in your browser. Paste your headline, get your score, and fix what is costing you pipeline: https://aah.monster/tools/positioning-linter/",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226537",
+          "logo": "https://ph-files.imgix.net/9cdd066e-2ae5-49f4-a87f-c148409f5e9a.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/700afc40-a20c-4eab-9d29-2136776e06b8.png?auto=format",
+            "https://ph-files.imgix.net/7800854b-b8fa-4bf6-8436-2a0b33ebf1a2.png?auto=format",
+            "https://ph-files.imgix.net/5a7085e6-24e2-4140-9a50-23f0ecbd7ed7.png?auto=format",
+            "https://ph-files.imgix.net/c66b136a-5bb9-4c79-aa55-885ee5b23797.png?auto=format",
+            "https://ph-files.imgix.net/e004a8cc-9b35-4ea8-bda3-4987b30fc8db.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/700afc40-a20c-4eab-9d29-2136776e06b8.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Table Edge",
+          "url": "https://www.producthunt.com/products/table-edge/launches/table-edge?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Play smarter. Lose less. Learn The Table Edge ",
+          "content": "Play Smarter, Lose Less, Learn the Table Edge. Learn the actual math behind blackjack, roulette, craps, and 12+ other casino games — not just play them. Walk a 2D casino floor, sit at any table, drill basic strategy until it sticks. Free chips only, never real money. New: a Wordle-style Daily Challenge (everyone gets the same shuffled shoe) with a live leaderboard and the whole site just got fully translated into Spanish, French, and Mandarin. With A lot more Updates to come",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1227298",
+          "logo": "https://ph-files.imgix.net/b6013cea-17bb-4dba-80ac-30d61d6dc2af.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4a63feda-0170-4ace-afad-6188c0320512.svg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4a63feda-0170-4ace-afad-6188c0320512.svg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "AstroShader",
+          "url": "https://www.producthunt.com/products/astroshader/launches/astroshader?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Astrophotography for iPhone",
+          "content": "Astrophotography for iPhone. The easy way to capture images of galaxies, nebulae, stars and the Milky Way. Capture controls, intervalometer, automatic alignment+stacking, stacking from your Photos library, editing tools, export format controls and more - all from your iPhone. AstroShader is $1.99 for lifetime access.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1227175",
+          "logo": "https://ph-files.imgix.net/320a4452-e99d-480b-be08-883c2a111da9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/5e605695-81c6-403b-b628-668d3e1a4449.png?auto=format",
+            "https://ph-files.imgix.net/f3020e1a-822e-4d56-85bc-d0d0c428355d.png?auto=format",
+            "https://ph-files.imgix.net/c60f2326-1236-4911-b35a-e7a1768ded4e.png?auto=format",
+            "https://ph-files.imgix.net/f069caa4-aaed-45cf-a560-a1ff615e2ee9.png?auto=format",
+            "https://ph-files.imgix.net/7b79a697-6efc-49fe-b16f-a864a512bb5e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/5e605695-81c6-403b-b628-668d3e1a4449.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "OmegleLite",
+          "url": "https://www.producthunt.com/products/omeglelite/launches/omeglelite-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Free anonymous video, voice & text chat — no signup",
+          "content": "OmegleLite brings back what made random chat great, without the mess that shut Omegle down. No accounts, no data collection beyond what's needed to match you — instant 1-on-1 video, voice, or text with someone new. What's different: fast WebRTC connections with no lag-heavy matching, dedicated chat rooms for 195+ countries so you choose who you meet, and a privacy-first design built from scratch, not bolted on. Built solo by a developer who wants random chat to feel safe and modern again.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1227111",
+          "logo": "https://ph-files.imgix.net/0d2279b7-4d61-43a3-86da-d2bbbde3a59c.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0954a7e9-489c-4de4-855c-d198d1cf7c53.png?auto=format",
+            "https://ph-files.imgix.net/3ccadea8-f3ac-4dcc-a56f-05b6f0d636de.png?auto=format",
+            "https://ph-files.imgix.net/3cd2377e-9740-42b4-8a61-97bee85e36a5.png?auto=format",
+            "https://ph-files.imgix.net/2ab2436c-6896-4f4c-b020-6b800796ec4a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0954a7e9-489c-4de4-855c-d198d1cf7c53.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Arcadely",
+          "url": "https://www.producthunt.com/products/arcadely/launches/arcadely?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Free browser games instantly, no download or signup needed",
+          "content": "Arcadely is free browser gaming with zero friction: no downloads, no accounts, no app store. Click a link and you're playing arcade, puzzle, word, and casual games, with leaderboards if you're competitive. Two things make it different: multiplayer works by sharing a link (challenge a friend to Word Tiles, our Scrabble-style game, in one click), and games keep working offline once loaded it's perfect for subway commutes and spotty wifi. New games ship regularly.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1227297",
+          "logo": "https://ph-files.imgix.net/cdd2fd92-7fa5-47bc-a10b-20efe01cb238.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/6b1b2f0e-4419-4f6d-91b1-b9fea4616b21.png?auto=format",
+            "https://ph-files.imgix.net/e98cc5b5-b11f-4c01-b5e2-d81e73466e37.png?auto=format",
+            "https://ph-files.imgix.net/07e1fdd6-9ec7-47c1-9312-3244676f809f.png?auto=format",
+            "https://ph-files.imgix.net/b3e8b380-2112-41c3-969d-22fb0ff50a5d.png?auto=format",
+            "https://ph-files.imgix.net/aa46b02c-7cc4-4bde-9667-098cb1d2b8be.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/6b1b2f0e-4419-4f6d-91b1-b9fea4616b21.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "The Success Blueprint ",
+          "url": "https://www.producthunt.com/products/the-success-blueprint/launches/the-success-blueprint?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "The Success Blueprint | Complete Notion Life Planner",
+          "content": "WHAT'S INSIDE: • 🌟 Vision & Life Direction • 🎯 Goal Setting & Progress Tracking • 🚀 Project & Action Planning • 📅 Monthly Calendar • ✅ Weekly Habit Tracker • 💪 Health & Wellbeing Check-ins • 💰 Finance & Savings Tracking • ✍️ Gratitude & Journaling • 💡 Ideas & Notes • 🔄 Weekly & Monthly Reviews Instead of simply making plans, use this planner to connect your vision → goals → actions → habits → progress → success.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1221061",
+          "logo": "https://ph-files.imgix.net/8292798c-7626-444a-a2fe-8ca9351898b9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/ea9384f9-96b7-4e79-b113-456f6b510286.png?auto=format",
+            "https://ph-files.imgix.net/b5667b2f-37e3-4b3c-92ba-5d308ce4ddba.png?auto=format",
+            "https://ph-files.imgix.net/2720a6e1-f7a0-469d-846b-c731578991c8.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/ea9384f9-96b7-4e79-b113-456f6b510286.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "HireYard",
+          "url": "https://www.producthunt.com/products/hireyard/launches/hireyard?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Equipment rental software that runs the whole yard",
+          "content": "HireYard runs the whole rental operation on one screen: public booking widget with double-booking prevention, QR scan in/out on mobile, GPS asset tracking, pooled and quantity assets, maintenance scheduling by hours or service intervals, PDF hire agreements, quotes, invoices and Stripe payments, multi-location and multi-user access, revenue reporting with CSV and PDF export, and Zapier. Built for plant, tool and event & leisure rental operators. 21-day free trial, no card required.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1227033",
+          "logo": "https://ph-files.imgix.net/1eeffc49-f752-4d5a-a739-bd0c2d95c899.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/962c2aab-486c-49e2-af0e-4a6cdc6bb4be.webp?auto=format",
+            "https://ph-files.imgix.net/bfba4176-2b87-484f-845b-f98c8141da52.png?auto=format",
+            "https://ph-files.imgix.net/3933e290-515a-40bb-ae72-9c742caa1302.png?auto=format",
+            "https://ph-files.imgix.net/8c3319eb-7dcb-4d1c-80f8-397fd33075c9.png?auto=format",
+            "https://ph-files.imgix.net/276856b0-0a35-4def-8953-1fa73294cdce.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/962c2aab-486c-49e2-af0e-4a6cdc6bb4be.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "CalcioCalc",
+          "url": "https://www.producthunt.com/products/calciocalc/launches/calciocalc?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "60 free calculators for AI, startup, marketing & finance",
+          "content": "CalcioCalc is a free calculator hub covering AI cost estimation, startup metrics (CAC, LTV, MRR, burn rate), marketing (ROAS, CPC, CPA), and personal finance (EMI, SIP, compound interest). Every calculator includes a plain-English explanation of the formula, a worked example, and common mistakes to avoid — not just a bare input box. We also publish deeper guides behind the numbers. No signup, no paywall — just fast, clear answers for founders, marketers, and anyone doing quick math.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226700",
+          "logo": "https://ph-files.imgix.net/49ac65c3-4526-41d7-95a4-71e8968ec5ca.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/27494e84-c655-4cff-b7c5-ab081afa3936.png?auto=format",
+            "https://ph-files.imgix.net/11877ad9-4143-4a98-a982-d7ae10917634.png?auto=format",
+            "https://ph-files.imgix.net/c5c44fc5-2121-4864-a736-2caf7a0cd53a.png?auto=format",
+            "https://ph-files.imgix.net/beebcb3f-d9ba-42dd-b32c-66d9f45dd575.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/27494e84-c655-4cff-b7c5-ab081afa3936.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "NayraTools",
+          "url": "https://www.producthunt.com/products/nayratools/launches/nayratools?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "AI Tools for Amazon, Flipkart & Meesho Sellers",
+          "content": "NayraTools is an all-in-one AI toolkit for e-commerce sellers on Amazon, Flipkart, Meesho & Shopify. It offers 25+ powerful AI tools to instantly generate high-volume SEO keywords, write high-converting product descriptions, analyze competitors, and score product listings. Supporting regional languages, NayraTools automates daily store operations and boosts marketplace sales effortlessly.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226983",
+          "logo": "https://ph-files.imgix.net/ee8e0a86-4c48-4b31-a1c5-d80212e73253.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/63ef66d0-5072-474a-a444-db7dfad95998.png?auto=format",
+            "https://ph-files.imgix.net/562022dd-8991-4125-a384-f8f997ae9dd3.png?auto=format",
+            "https://ph-files.imgix.net/23573305-51d6-4428-958d-e5c784999424.png?auto=format",
+            "https://ph-files.imgix.net/c8717b29-ffe1-48a9-9353-0ba786b117eb.png?auto=format",
+            "https://ph-files.imgix.net/68c753fc-96ba-490a-bbc0-73b5f89a68e1.png?auto=format",
+            "https://ph-files.imgix.net/9438b5e1-0e52-4dc5-b1c2-3a68536e74f9.png?auto=format",
+            "https://ph-files.imgix.net/9957302b-9b54-49d4-a440-702bda95d71e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/63ef66d0-5072-474a-a444-db7dfad95998.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Binadox",
+          "url": "https://www.producthunt.com/products/binadox/launches/binadox?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "One dashboard for cloud, SaaS and AI spend",
+          "content": "Most cost tools cover either cloud infrastructure or SaaS subscriptions. Binadox does both, plus AI spend, in one place. Connect AWS, Azure, GCP or DigitalOcean and see spend by account, service and tag, with anomaly alerts and rightsizing recommendations. Automatic discovery finds the SaaS your team actually uses, tracks seats against active users, and flags renewals before they hit. Includes a Terraform cost tracker and an LLM tracker for OpenAI, Vertex, Azure OpenAI and Bedrock.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226789",
+          "logo": "https://ph-files.imgix.net/8e51c41a-fc54-4c48-a099-c233f7b9ff50.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a57d7e27-4d4a-42c5-be76-c5d2f9703324.png?auto=format",
+            "https://ph-files.imgix.net/9fac27e4-9946-4817-a535-4537abe3b2cb.png?auto=format",
+            "https://ph-files.imgix.net/c284a18b-fa9b-4151-b190-ef38fab7c54d.png?auto=format",
+            "https://ph-files.imgix.net/df8b4951-781d-45bc-8bd6-a4e9cca1b4e1.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a57d7e27-4d4a-42c5-be76-c5d2f9703324.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ShForm",
+          "url": "https://www.producthunt.com/products/shform-form-builder/launches/shform?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "AI-powered forms with logic, automation & security",
+          "content": "ShForm is a form builder that helps you create powerful forms in minutes — no design or coding skills needed. Build with AI by simply describing what you need, start from a professionally designed template, or create from scratch with full control. Add conditional logic so forms adapt to each respondent, automate emails and data sync on submission, and keep everything secure with enterprise-grade protection. Manage and publish forms from web, iOS, or Android — anytime, anywhere.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226542",
+          "logo": "https://ph-files.imgix.net/466a8a14-6a39-42d0-919a-f885a374524b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/25a13142-2591-4d49-a6d0-16f220d0210f.jpeg?auto=format",
+            "https://ph-files.imgix.net/30d08c82-770f-45e6-a33d-24c4cf4474cb.png?auto=format",
+            "https://ph-files.imgix.net/0aee40af-3680-4eaf-82fe-f2ccb6ca7dce.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/25a13142-2591-4d49-a6d0-16f220d0210f.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "PolyglotGym",
+          "url": "https://www.producthunt.com/products/polyglotgym/launches/polyglotgym?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "A free gym for 100+ languages with real CEFR courses",
+          "content": "PolyglotGym is a free language gym: structured CEFR courses (A1-C2) with interactive exercises, grammar guides, spaced-repetition vocabulary, dialect comparisons, and native-quality audio for 100+ languages - including ones no big app teaches: Icelandic, Georgian, Belarusian, Mongolian, Tagalog, Luxembourgish. Explanations adapt to your native language instead of being translated, and courses are free without signup. Web, iOS, and Android.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1227053",
+          "logo": "https://ph-files.imgix.net/2075b477-9ad8-4c58-a2cb-d943ed80fc34.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2223b7af-cc71-42e1-a2b9-97ed2e4ddbb1.png?auto=format",
+            "https://ph-files.imgix.net/a8635479-3bfb-40a6-bf22-2d1c6919ccc6.jpeg?auto=format",
+            "https://ph-files.imgix.net/75301b80-d680-4340-baf1-466224a41aef.jpeg?auto=format",
+            "https://ph-files.imgix.net/3730f56f-e720-4818-a02f-232953cd59e7.jpeg?auto=format",
+            "https://ph-files.imgix.net/a9a256e0-7e0a-433c-8134-fea3a85bed8b.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2223b7af-cc71-42e1-a2b9-97ed2e4ddbb1.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Zelcast Eng Scorer",
+          "url": "https://www.producthunt.com/products/zelcast-eng-scorer/launches/zelcast-eng-scorer?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Your LinkedIn, scored the way startups actually hire",
+          "content": "Eng Scorer reads your LinkedIn the way a hungry, fast-growing startup actually would. You get a score out of 99, your engineer archetype, your rank against 24,000 real engineers, and your Zelcomp - the comp we think a profile like yours should be pulling in. Tap the seal. Watch the dollars fly. There’s a live leaderboard of the top 100 working engineers (upvotes break the ties). The alumni page shows exactly where the talent is flowing and which companies keep producing the good ones.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226812",
+          "logo": "https://ph-files.imgix.net/792f99b0-0405-4ce0-be73-a41c3f744cb3.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/ebad3c00-d0d1-48c8-a107-c4bac30c92e6.png?auto=format",
+            "https://ph-files.imgix.net/71250894-7db9-4752-bb1a-853a35c8ccac.png?auto=format",
+            "https://ph-files.imgix.net/6c15d87e-bb29-4390-a2bb-998c1751618a.png?auto=format",
+            "https://ph-files.imgix.net/b9e55241-aca4-46e2-86ac-4059f2c85cf5.png?auto=format",
+            "https://ph-files.imgix.net/95707986-4a30-4991-8c47-2623ad23f620.png?auto=format",
+            "https://ph-files.imgix.net/e5c9c0f7-6d1b-4664-b469-da2a71d19c5a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/ebad3c00-d0d1-48c8-a107-c4bac30c92e6.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Globerto",
+          "url": "https://www.producthunt.com/products/globerto/launches/globerto?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "AI travel concierge that matches hotels to how you travel",
+          "content": "Globerto is an AI-powered luxury hotel discovery and booking platform. Answer a few questions about your occasion, pace, and style. Instead of hundreds of undifferentiated listings, you get a shortlist matched to how you actually travel, with live rates and clear booking terms. Search by vibe (\"overwater villas,\" \"design hotels\"), compare, and book in one place.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1222515",
+          "logo": "https://ph-files.imgix.net/b4c6daa6-e457-442d-9c72-beab0972d4d1.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0c1d49d1-d78e-421b-a425-aa903de62522.jpeg?auto=format",
+            "https://ph-files.imgix.net/3ec1a7b2-830c-456e-9584-ded75f1fe49d.jpeg?auto=format",
+            "https://ph-files.imgix.net/a100c021-c7c4-4a58-a25e-13ebdb18f2a5.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0c1d49d1-d78e-421b-a425-aa903de62522.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "SoundTool",
+          "url": "https://www.producthunt.com/products/soundtool/launches/soundtool?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "61 free audio tools & 12 virtual instruments in 14 languages",
+          "content": "SoundTool — free, browser-based audio toolkit with 61 tools and 12 playable virtual instruments. AI voice cloning, speech-to-text, text-to- speech, AI noise removal, hum-to-instrument, vocal tuner + trim, merge, convert, EQ, reverb, BPM and more. Every instrument records and exports WAV — no account, no upload, 100% client-side. 14 languages. Built by a solo developer on the Web Audio API. Zero data collection: your audio never leaves the browser.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226894",
+          "logo": "https://ph-files.imgix.net/c0cf167d-dbfa-45ee-b296-655c33f76d86.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/362fb8d7-c1f1-430c-931f-f966aedf6962.png?auto=format",
+            "https://ph-files.imgix.net/c634e1fb-36f1-4a25-88a6-79fbff4b81ae.png?auto=format",
+            "https://ph-files.imgix.net/805cae44-23ba-4668-898c-c2618fb4ad8d.png?auto=format",
+            "https://ph-files.imgix.net/2faa738c-6d18-44ac-9bb1-102bcf4079e0.png?auto=format",
+            "https://ph-files.imgix.net/aa5c815b-cb01-4acc-81a8-68187c95e7ef.png?auto=format",
+            "https://ph-files.imgix.net/433ebeb1-0ff3-4c52-a26d-cbaba16fdd1b.png?auto=format",
+            "https://ph-files.imgix.net/ffe795c6-07fc-4721-b8b3-1af251ffa356.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/362fb8d7-c1f1-430c-931f-f966aedf6962.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Prune — Writing Clarity Editor",
+          "url": "https://www.producthunt.com/products/prune-writing-clarity-editor/launches/prune-writing-clarity-editor?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "Cut the clutter from your writing and make every sentence. ",
+          "content": "Prune is a writing clarity tool designed to help you turn complicated, wordy writing into clear, concise communication. Paste your writing, identify unnecessary words and phrases, simplify sentences, and improve readability while keeping your original meaning intact. Key features: ✂️ Remove unnecessary words ✍️ Improve sentence clarity 🔎 Identify wordy phrases 📖 Improve readability 🎯 Keep the original meaning ⚡ Make editing faster 📝 Create cleaner, more professional writing",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1223276",
+          "logo": "https://ph-files.imgix.net/aed79241-d04b-44f2-a10b-7bd52f9356d4.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/02e2ab4c-4b04-4402-abde-c0dcbb540160.jpeg?auto=format",
+            "https://ph-files.imgix.net/276c59c8-294b-4dc1-9e95-311c9d340440.jpeg?auto=format",
+            "https://ph-files.imgix.net/8bcde2be-2613-4efd-8754-a01a424903b7.jpeg?auto=format",
+            "https://ph-files.imgix.net/1af87810-0b53-4039-ada9-1b59ba6f4459.jpeg?auto=format",
+            "https://ph-files.imgix.net/f8603632-2a91-4470-beb3-e11dbf982466.jpeg?auto=format",
+            "https://ph-files.imgix.net/8078aebc-303f-439c-bd7c-bb71fac93a33.jpeg?auto=format",
+            "https://ph-files.imgix.net/ba011e63-aa97-4047-b081-50dcbaa251c8.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/02e2ab4c-4b04-4402-abde-c0dcbb540160.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "My Family Tree",
+          "url": "https://www.producthunt.com/products/my-family-tree-2/launches/my-family-tree-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "The family tree your whole family can actually edit",
+          "content": "Most family tree tools are built for genealogists digging through historical records. My Family Tree is built for the opposite problem: staying organized with the family you actually talk to. - Everyone can help build it - A real directory, not just names and dates - Time-boxed, view-only share links — send one branch to a cousin without giving them full access - Multi-script name support — type a name in English, see it rendered correctly in Gujarati/Hindi/etc.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226503",
+          "logo": "https://ph-files.imgix.net/f29c7424-35c9-4295-9be2-f369bc456b37.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1f5710e6-1e02-4ada-a500-a0d88c0aad98.png?auto=format",
+            "https://ph-files.imgix.net/dc5733cd-b8a4-47b0-92b0-f57f0c2cfdfe.jpeg?auto=format",
+            "https://ph-files.imgix.net/a07045dd-3393-409c-9c22-10a76ae1126c.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1f5710e6-1e02-4ada-a500-a0d88c0aad98.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Reel saver video and photo download",
+          "url": "https://www.producthunt.com/products/reel-saver-video-and-photo-download/launches/reel-saver-video-and-photo-download?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-20T07:01:00Z",
+          "summary": "All-in-one video & photo saver, editor, and creator",
+          "content": "Meet Reel Saver – Video & Photo Saver 📲✨ Save, organize, play, and create your favorite content—all in one powerful app! 🔥 ✨ What You Can Do: 📥 Save Instagram Reels, Photos & Videos 💚 Save WhatsApp Statuses 👻 Save Snapchat Photos & Videos 🐦 Save Twitter (X) Photos & Videos 📌 Save Pinterest Photos & Videos ▶️ YouTube Video and mp3 Download* 🤖 AI Image Generator 🖼️ Photo Collage Maker 🎬 Reel & Video Editor 🎵 Video to MP3 Converter 🪄 AI Background Eraser 📅 Daily Poster Creator",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226416",
+          "logo": "https://ph-files.imgix.net/4eafa778-089b-43f1-a100-fba98c4dc46f.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2e54614a-3526-4c40-9615-6fa5b5d6c9d9.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2e54614a-3526-4c40-9615-6fa5b5d6c9d9.jpeg?auto=format"
+        }
+      ]
+    }
+  ]
+}

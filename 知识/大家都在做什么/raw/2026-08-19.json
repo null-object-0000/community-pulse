@@ -1,1 +1,975 @@
-{"fetchedAt":"2026-09-07T08:44:26.751Z","date":"2026-08-19","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"TempCanvas","url":"https://tempcanvas.com/","author":"超能刚哥(长沙)","authorUrl":"","publishedAt":"2026-08-19T00:00:00+08:00","summary":"免费、无需注册的临时在线白板，打开即可快速画图、手写记录和导出 PNG，内容仅保存在浏览器本地","content":"免费、无需注册的临时在线白板，打开即可快速画图、手写记录和导出 PNG，内容仅保存在浏览器本地","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-19-TempCanvas-https://tempcanvas.com/"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源自荐】DeepSeek Harness GUI ：插件化实现在系统原生窗口中打开 DSH","url":"https://github.com/oodzchen/deepseek-harness-gui","author":"oodzchen","authorUrl":"https://github.com/oodzchen","publishedAt":"2026-08-18T19:03:24Z","summary":"项目地址： <img width=\"2011\" height=\"1367\" alt=\"Image\" src=\" /","content":"项目地址：https://github.com/oodzchen/deepseek-harness-gui\n\n<img width=\"2011\" height=\"1367\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d446a733-d354-4aa6-8a17-46c4cfd0e144\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11251","issueUrl":"https://github.com/ruanyf/weekly/issues/11251"},{"sourceId":"weekly-issues","title":"【开源自荐】pets：给每个 AI Agent 会话一只终端宠物","url":"https://github.com/TevvvB/termagitchi","author":"TevvvB","authorUrl":"https://github.com/TevvvB","publishedAt":"2026-08-18T21:12:14Z","summary":"大家好，我是 pets 的作者，自荐一个终端状态栏的小工具。 终端宠物大多属于「你」——一只宠物，慢慢养大。这个工具的宠物属于 AI Agent：每个 git worktree 是一个「巢穴」并分到一座城市，在里面干活的每个 Agent 会话各自得到一只生物，它的心情由那个 worktree 的整洁程度决定（未提交、未推送、落后于远端、测试状态）。同时开六个 Agent 就是六只生物，一眼能看出自己在看哪个会话、哪个出了问题。 41 种生物、5 档稀有度、闪光变体，16 座城市给巢穴命名，pets den 看收集进度 生物由会话哈希得出，不落盘，没有需要迁移或损坏的状态 状态栏每秒执行一次，只读两个缓存文件，不跑 git、不联网；重活交给节流的后台探针 Claude Code 已端到端验证；Codex 的钩子已写好但未在真实 Codex 上验证过（README 里写明了）。tmux 和 shell 提示符两种模式不依赖 Agent，可以配合 Aider、Amp、Gemini CLI 等任意工具 Go 编写，单个静态二进制，MIT，无运行时依赖 项目地址： 一句话介绍（可直接用）：一个 Go 编写的终端状态栏工具，为每个 AI Agent 会话生成一只宠物，每个 git worktree 是一个巢穴，宠物的心情反映该 worktree 的整洁程度，同时开多个 Agent 时可以一眼分清哪个会话出了问题。","content":"大家好，我是 pets 的作者，自荐一个终端状态栏的小工具。\n\n终端宠物大多属于「你」——一只宠物，慢慢养大。这个工具的宠物属于 **AI Agent**：每个 git worktree 是一个「巢穴」并分到一座城市，在里面干活的每个 Agent 会话各自得到一只生物，它的心情由那个 worktree 的整洁程度决定（未提交、未推送、落后于远端、测试状态）。同时开六个 Agent 就是六只生物，一眼能看出自己在看哪个会话、哪个出了问题。\n\n- 41 种生物、5 档稀有度、闪光变体，16 座城市给巢穴命名，`pets den` 看收集进度\n- 生物由会话哈希得出，不落盘，没有需要迁移或损坏的状态\n- 状态栏每秒执行一次，只读两个缓存文件，不跑 git、不联网；重活交给节流的后台探针\n- Claude Code 已端到端验证；Codex 的钩子已写好但未在真实 Codex 上验证过（README 里写明了）。tmux 和 shell 提示符两种模式不依赖 Agent，可以配合 Aider、Amp、Gemini CLI 等任意工具\n- Go 编写，单个静态二进制，MIT，无运行时依赖\n\n项目地址：https://github.com/TevvvB/termagitchi\n\n一句话介绍（可直接用）：一个 Go 编写的终端状态栏工具，为每个 AI Agent 会话生成一只宠物，每个 git worktree 是一个巢穴，宠物的心情反映该 worktree 的整洁程度，同时开多个 Agent 时可以一眼分清哪个会话出了问题。\n\n![](https://raw.githubusercontent.com/TevvvB/termagitchi/main/docs/demo.gif)","metrics":{"comments":2},"tags":["ruanyf-weekly","submission"],"externalId":"11252","issueUrl":"https://github.com/ruanyf/weekly/issues/11252"},{"sourceId":"weekly-issues","title":"【开源自荐】开源的 AI 视频创作引擎，把一整个剧组交给每一个开发者与创作者","url":"https://magiviz.com","author":"ItusiAI","authorUrl":"https://github.com/ItusiAI","publishedAt":"2026-08-19T00:41:21Z","summary":"Magiviz：开源的 AI 视频创作引擎，把一整个剧组交给每一个开发者与创作者 一句话简介：Magiviz 是一款 开源、基于 AI 的智能视频创作平台。从一段文字到一支成片，只需五分钟——而这一切，你可以直接 git clone 到自己的服务器上运行。 为什么是开源？ 过去几年，AI 视频生成模型飞速迭代——Veo、Kling、Seedance、Wan…… 模型越来越强，但 真正把它们串成\"剧本 → 角色 → 分镜 → 视频 → 成片\"完整工作流的产品，几乎全部闭源。 这意味着： 🔒 你的创作数据上传到别人服务器，无法本地化 💸 定价、积分规则、模型选择完全由平台决定 🧩 想加一个新模型？等官方排期 �️ 想改 UI、接私有模型、对接企业内部系统？没有 API、没有源码 Magiviz 选择把这一切打开。 ✅ 完整源码：前后端全部 MIT 协议开源 ✅ 模型可换：内置 12 种主流视频生成模型，支持替换为自部署模型 ✅ 数据自主：可自托管，数据完全留在自己的服务器 ✅ 自由改造：UI、计费、模型路由——想怎么改就怎么改 我们相信，AI 视频的下一步，不会只属于几家大厂。它属于每一个愿意动手的开发者，每一个想把故事讲出来的创作者。 一、Magiviz 是什么？ Magiviz 是一个开源的 AI 视频创作平台，把过去需要编剧、分镜师、美术、动画师、剪辑师协作数周的工作，压缩成\"一段话 → 一支片\"的体验。 🎬 支持好莱坞影视、动漫、故事剧情、广告、科普等多种视频类型 👤 覆盖个人创作者、品牌方、营销机构、教育工作者、自媒体团队 🧑‍💻 也覆盖独立开发者、SaaS 创业者、AI 应用集成商——你可以基于它做二次开发 零经验能上手，会写代码能改造。 二、五步 AI 工作流：一个真正的\"AI 剧组\" Magiviz 的核心流水线模拟了一个专业剧组的工作节奏，所有步骤都跑在你自己的（或部署好的）服务器上： 📝 AI 剧情生成 → 👥 主角设计 → 🖼️ 分镜图生成 → 🎬 剧情视频生成 → � 完整视频合成 | 步骤 | 能力 | 关键技术 | | | | | | 1. 剧情生成 | 输入故事大纲 → 输出结构化剧本（标题、场景、角色、对白、导演指令） | LLM + 非严格 JSON 容错解析 | | 2. 主角生成（并行）| 为每个角色自动绘制形象，支持参考图 | 文生图 / 图生图 | | 3. 分镜图生成（并行）| 高保真分镜图，含构图、光影、氛围 | 支持 首尾帧模式单独指定起止帧 | | 4. 剧情视频生成（并行）| 基于分镜图渲染每一段视频 | 支持视频 / 音频多模态参考 | | 5. 完整视频合成 | 拼接、加音频、加转场，输出可发布成片 | FAL AI 视频合成 | 🧠 几个让开发者眼前一亮的细节 可中断、可恢复：积分不足或用户手动暂停后，可从断点继续，已生成内容一份不丢 双层版本控制：versionGroupId + version 完整记录每次重新生成，历史永不丢失 媒体自动锁定：上传视频 / 音频后，自动锁定 Seedance 家族模型，并做格式 / 时长校验 实时进度推送：基于 Pusher，每完成一段立即更新 UI，失败有独立错误分支 三、12 款顶尖 AI 模型，开源、可替换 Magiviz 内置 Veo 3.1、Kling 3.0、Seedance 2.0 / 2.5、Wan 2.7、Gemini Omni、MiniMax H3、HappyHorse 等主流模型，auto 模式智能匹配最优模型，手动模式让你精细控制。 但更重要的：这一切都是开放的。 🔌 模型可插拔：/api/ai/generatestoryvideo 接口设计为模型无关，新增模型只需实现对应适配器 🔑 API Key 自管：.env 文件中配置你自己的 Kie.ai / ZenMux Key，没有中间商赚差价 🧪 可接入自部署模型：只要接口协议兼容，可以替换为本地部署的开源模型（如 Wan 2.1、CogVideoX 等） 参数面板提供完整控制旋钮： | 参数 | 可选 | | | | | 视频模型 | 12 种 AI 模型 + auto | | 生成模式 | auto / 首尾帧 | | 画面比例 | 16:9 / 9:16 | | 时长 | 15s / 30s / 60s | | 视频风格 | anime / hollywood / ads / auto | 四、不只是生成，更是完整的项目管理工具 开源项目的难点不只是\"能跑\"，还要\"能持续用\"。Magiviz 把项目管理也做到了生产级： 📋 项目列表：所有作品统一管理，支持状态 / 模型 / 风格 / 关键词筛选 📑 项目详情页：多 Tab 复合视图（概览、剧情、角色、分镜图、剧情视频、完整视频、历史版本） 📊 五步进度条：每一步都有图标和百分比，进度可视化 🔁 项目恢复：未完成项目可随时恢复，系统自动跳到对应步骤 � 素材库：参考图、视频片段统一管理，支持引用追踪、存储空间监控 �️ 一键导出：剧情 JSON、PNG 角色图、MP4 剧情视频、MP4 完整视频——一键下载 Magiviz 不是一次性 demo，而是一个可以和你长期协作的 AI 剧组。 五、国际化：中英文双语，从第一天就为全球准备 🌍 多语言 UI：内置中英文双语，基于 nextintl，扩展第三种语言只需一份字典文件 🔍 多语言 SEO：URL 结构、元数据、sitemap.xml、JSONLD 结构化数据全部本地化 🖼️ Open Graph 优化：社交分享卡片自动按语言生成 无论你是面向国内市场还是出海做英文内容，平台都为你准备好了。 六、技术栈：现代、开源、可改造 ┌─────────────────────────────────────────────────────────┐ │ 前端：Next.js 16 · TypeScript · Tailwind CSS │ │ Radix UI · Framer Motion · React Hook Form + Zod │ ├─────────────────────────────────────────────────────────┤ │ 后端：Next.js API Routes · NextAuth.js · Drizzle ORM │ │ PostgreSQL · Stripe · Resend · Pusher │ ├─────────────────────────────────────────────────────────┤ │ AI ：Kie.ai（视频生成）· ZenMux（剧情生成） │ │ 支持替换为自部署开源模型 │ └─────────────────────────────────────────────────────────┘ 每一个技术选型都是 主流、社区活跃、生产可用 的——你可以放心 fork，可以放心改造，可以放心上线。 写在最后：把表达权交还给每个人，把控制权交还给开发者 视频，是这个时代最强的表达语言。 但长久以来，它属于闭源平台、属于大预算、属于少数人。 Magiviz 想做的，是把这一切打开。 给 创作者：一段文字，就能拍出一支片 给 开发者：完整源码、清晰架构、灵活扩展 给 创业者：可以直接基于它做 SaaS、做内部工具、做行业解决方案 让每个人都能成为影视创作者，让每一行代码都为创造服务。 🔗 立即开始 | 入口 | 链接 | | | | | 🌐 官方在线版 | magiviz.com | | ⭐ GitHub 开源 | github.com/ItusiAI/OpenMagiviz |","content":"# Magiviz：开源的 AI 视频创作引擎，把一整个剧组交给每一个开发者与创作者\n\n> **一句话简介**：Magiviz 是一款 **开源、基于 AI 的智能视频创作平台**。从一段文字到一支成片，只需五分钟——而这一切，你可以直接 `git clone` 到自己的服务器上运行。\n\n---\n\n## 为什么是开源？\n\n过去几年，AI 视频生成模型飞速迭代——Veo、Kling、Seedance、Wan…… 模型越来越强，但 **真正把它们串成\"剧本 → 角色 → 分镜 → 视频 → 成片\"完整工作流的产品，几乎全部闭源**。\n\n这意味着：\n\n- 🔒 你的创作数据上传到别人服务器，无法本地化\n- 💸 定价、积分规则、模型选择完全由平台决定\n- 🧩 想加一个新模型？等官方排期\n- �️ 想改 UI、接私有模型、对接企业内部系统？没有 API、没有源码\n\n**Magiviz 选择把这一切打开。**\n\n- ✅ 完整源码：前后端全部 MIT 协议开源\n- ✅ 模型可换：内置 12 种主流视频生成模型，支持替换为自部署模型\n- ✅ 数据自主：可自托管，数据完全留在自己的服务器\n- ✅ 自由改造：UI、计费、模型路由——想怎么改就怎么改\n\n> 我们相信，AI 视频的下一步，不会只属于几家大厂。**它属于每一个愿意动手的开发者，每一个想把故事讲出来的创作者。**\n\n---\n\n## 一、Magiviz 是什么？\n\n**Magiviz** 是一个开源的 **AI 视频创作平台**，把过去需要编剧、分镜师、美术、动画师、剪辑师协作数周的工作，压缩成\"一段话 → 一支片\"的体验。\n\n- 🎬 支持好莱坞影视、动漫、故事剧情、广告、科普等多种视频类型\n- 👤 覆盖个人创作者、品牌方、营销机构、教育工作者、自媒体团队\n- 🧑‍💻 也覆盖独立开发者、SaaS 创业者、AI 应用集成商——你可以基于它做二次开发\n\n> **零经验能上手，会写代码能改造。**\n\n---\n\n## 二、五步 AI 工作流：一个真正的\"AI 剧组\"\n\nMagiviz 的核心流水线模拟了一个专业剧组的工作节奏，所有步骤都跑在你自己的（或部署好的）服务器上：\n\n```\n📝 AI 剧情生成 → 👥 主角设计 → 🖼️ 分镜图生成 → 🎬 剧情视频生成 → � 完整视频合成\n```\n\n| 步骤 | 能力 | 关键技术 |\n| --- | --- | --- |\n| **1. 剧情生成** | 输入故事大纲 → 输出结构化剧本（标题、场景、角色、对白、导演指令） | LLM + 非严格 JSON 容错解析 |\n| **2. 主角生成**（并行）| 为每个角色自动绘制形象，支持参考图 | 文生图 / 图生图 |\n| **3. 分镜图生成**（并行）| 高保真分镜图，含构图、光影、氛围 | 支持 **首尾帧模式**单独指定起止帧 |\n| **4. 剧情视频生成**（并行）| 基于分镜图渲染每一段视频 | 支持视频 / 音频多模态参考 |\n| **5. 完整视频合成** | 拼接、加音频、加转场，输出可发布成片 | FAL AI 视频合成 |\n\n### 🧠 几个让开发者眼前一亮的细节\n\n- **可中断、可恢复**：积分不足或用户手动暂停后，可从断点继续，已生成内容一份不丢\n- **双层版本控制**：`versionGroupId` + `version` 完整记录每次重新生成，历史永不丢失\n- **媒体自动锁定**：上传视频 / 音频后，自动锁定 Seedance 家族模型，并做格式 / 时长校验\n- **实时进度推送**：基于 Pusher，每完成一段立即更新 UI，失败有独立错误分支\n\n---\n\n## 三、12 款顶尖 AI 模型，开源、可替换\n\nMagiviz 内置 **Veo 3.1、Kling 3.0、Seedance 2.0 / 2.5、Wan 2.7、Gemini Omni、MiniMax H3、HappyHorse** 等主流模型，**auto 模式**智能匹配最优模型，**手动模式**让你精细控制。\n\n但更重要的：**这一切都是开放的。**\n\n- 🔌 **模型可插拔**：`/api/ai/generate-story-video` 接口设计为模型无关，新增模型只需实现对应适配器\n- 🔑 **API Key 自管**：`.env` 文件中配置你自己的 Kie.ai / ZenMux Key，没有中间商赚差价\n- 🧪 **可接入自部署模型**：只要接口协议兼容，可以替换为本地部署的开源模型（如 Wan 2.1、CogVideoX 等）\n\n参数面板提供完整控制旋钮：\n\n| 参数 | 可选 |\n| --- | --- |\n| 视频模型 | 12 种 AI 模型 + auto |\n| 生成模式 | auto / 首尾帧 |\n| 画面比例 | 16:9 / 9:16 |\n| 时长 | 15s / 30s / 60s |\n| 视频风格 | anime / hollywood / ads / auto |\n\n---\n\n## 四、不只是生成，更是完整的项目管理工具\n\n开源项目的难点不只是\"能跑\"，还要\"能持续用\"。Magiviz 把项目管理也做到了生产级：\n\n- 📋 **项目列表**：所有作品统一管理，支持状态 / 模型 / 风格 / 关键词筛选\n- 📑 **项目详情页**：多 Tab 复合视图（概览、剧情、角色、分镜图、剧情视频、完整视频、历史版本）\n- 📊 **五步进度条**：每一步都有图标和百分比，进度可视化\n- 🔁 **项目恢复**：未完成项目可随时恢复，系统自动跳到对应步骤\n- � **素材库**：参考图、视频片段统一管理，支持引用追踪、存储空间监控\n- �️ **一键导出**：剧情 JSON、PNG 角色图、MP4 剧情视频、MP4 完整视频——一键下载\n\n> **Magiviz 不是一次性 demo，而是一个可以和你长期协作的 AI 剧组。**\n\n---\n\n## 五、国际化：中英文双语，从第一天就为全球准备\n\n- 🌍 **多语言 UI**：内置中英文双语，基于 `next-intl`，扩展第三种语言只需一份字典文件\n- 🔍 **多语言 SEO**：URL 结构、元数据、`sitemap.xml`、`JSON-LD` 结构化数据全部本地化\n- 🖼️ **Open Graph 优化**：社交分享卡片自动按语言生成\n\n无论你是面向国内市场还是出海做英文内容，平台都为你准备好了。\n\n---\n\n## 六、技术栈：现代、开源、可改造\n\n```\n┌─────────────────────────────────────────────────────────┐\n│  前端：Next.js 16 · TypeScript · Tailwind CSS          │\n│        Radix UI · Framer Motion · React Hook Form + Zod │\n├─────────────────────────────────────────────────────────┤\n│  后端：Next.js API Routes · NextAuth.js · Drizzle ORM   │\n│        PostgreSQL · Stripe · Resend · Pusher            │\n├─────────────────────────────────────────────────────────┤\n│  AI  ：Kie.ai（视频生成）· ZenMux（剧情生成）             │\n│        支持替换为自部署开源模型                            │\n└─────────────────────────────────────────────────────────┘\n```\n\n每一个技术选型都是 **主流、社区活跃、生产可用** 的——你可以放心 fork，可以放心改造，可以放心上线。\n\n---\n\n## 写在最后：把表达权交还给每个人，把控制权交还给开发者\n\n视频，是这个时代最强的表达语言。\n但长久以来，它属于闭源平台、属于大预算、属于少数人。\n\n**Magiviz 想做的，是把这一切打开。**\n\n- 给 **创作者**：一段文字，就能拍出一支片\n- 给 **开发者**：完整源码、清晰架构、灵活扩展\n- 给 **创业者**：可以直接基于它做 SaaS、做内部工具、做行业解决方案\n\n> **让每个人都能成为影视创作者，让每一行代码都为创造服务。**\n\n---\n\n### 🔗 立即开始\n\n| 入口 | 链接 |\n| --- | --- |\n| 🌐 官方在线版 | [magiviz.com](https://magiviz.com) |\n| ⭐ GitHub 开源 | [github.com/ItusiAI/Open-Magiviz](https://github.com/ItusiAI/Open-Magiviz) |\n\n---","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11253","issueUrl":"https://github.com/ruanyf/weekly/issues/11253"},{"sourceId":"weekly-issues","title":"【文章自荐】100 年都没解决的问题：文胸尺码","url":"https://mp.weixin.qq.com/s/g8wZf8_s4mC8nQsO7puKDw","author":"zuzuAndroid","authorUrl":"https://github.com/zuzuAndroid","publishedAt":"2026-08-19T01:42:01Z","summary":"它是工程学在面对复杂生物多样性时，不得不做出的一次低头： 我们在一个连续的高维物理现实，与一个离散的低维商业系统之间，搭起了一座破破烂烂、但勉强能用的桥。 只要人类的身体依然存在生物学差异，只要衣物依然需要在物理仓库里一件件码放，这种代码与现实、算法与肉体之间的错位与较量，就永远不会结束。 原文地址：","content":"它是工程学在面对复杂生物多样性时，不得不做出的一次低头：\n\n我们在一个连续的高维物理现实，与一个离散的低维商业系统之间，搭起了一座破破烂烂、但勉强能用的桥。\n\n只要人类的身体依然存在生物学差异，只要衣物依然需要在物理仓库里一件件码放，这种代码与现实、算法与肉体之间的错位与较量，就永远不会结束。\n\n\n原文地址：\nhttps://mp.weixin.qq.com/s/g8wZf8_s4mC8nQsO7puKDw","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11255","issueUrl":"https://github.com/ruanyf/weekly/issues/11255"},{"sourceId":"weekly-issues","title":"【开源自荐】Cetus：把 Claude Code / Codex / DeepSeek Harness 变成常驻的 macOS 桌面助手","url":"https://github.com/drewnekota/cetus>","author":"william-jin-cmu","authorUrl":"https://github.com/william-jin-cmu","publishedAt":"2026-08-19T02:59:45Z","summary":"项目地址：< 一句话介绍 Cetus 是一个开源的 macOS 桌面客户端，把你已经在用的 Agent CLI（Claude Code、Codex、DeepSeek Harness 等）变成一个常驻的桌面助手：统一的聊天界面、定时任务、全局快捷键唤起、屏幕上下文，复用 CLI 已有的登录，不需要再配置一套账号。 !Cetus runtime picker 为什么做这个 我和身边不少朋友都会在终端里同时用多个 Agent Runtime（Claude Code 写前端、Codex 做数据分析和 Bug 巡检……），一度非常混乱，尤其是定时任务分散在不同工具里很难管理。于是最初版本就是一个支持多 Runtime 的统一 UI + 定时任务管理，后来逐步长成了完整的桌面助手层。 长期看，各家模型能力反复追赶互相超越，需要一个统一的客户端来按任务选择不同 Runtime；同时桌面客户端也能更好地为 Agent 记录上下文，让 Agent 的智能真正用在你正在做的事情上。Cetus 不替代这些 Runtime——它们仍是智能与执行引擎，Cetus 补上的是终端里放不下的那部分。 主要功能 Quick Launcher：按住两个 ⌘ 键，在任何应用上方唤出 Agent，自动带上当前截图、前台应用、浏览器 URL、选中文本作为可移除的上下文 定时任务（Automations）：把任意 Prompt 变成一次性或周期任务（at / every / cron / daily），每个任务保留自己选择的 Runtime 和模型，后台跑完等你回来审阅 全局快捷回复：在任何聊天、邮件、工单界面双击右 ⌥，Cetus 读取屏幕内容流式生成草稿回复，回车直接填入你原本的输入框 Screen Context：可选开启的屏幕记忆，本地截帧 + Apple Vision 端上 OCR，Agent 可以回忆和检索\"你之前在屏幕上看到的东西\"，图像和文本都不出本机 会议记忆：自动检测会议开始，端上转写为可搜索的笔记（纯文本，不存音频），之后可以直接问 Agent\"上次会上定的发布日期是什么\" 看板式任务审阅：每个对话是一张卡片，按 In progress / Needs review / Done 流转，后台任务不再淹没在终端 tab 里 其他：持久记忆、并行多方案（一个 Prompt 分发 N 个候选运行）、每对话独立 git worktree、语音听写、移动端远程跟进等 !Cetus demo 技术与开源 Tauri 2（Rust）+ Next.js，内置 pi runtime 作为 sidecar，支持 30+ 模型 Provider Claude Code / Codex / DeepSeek Harness 直接复用各自 CLI 的会话与登录，事件统一翻译进同一套流式 UI 完整开源，MIT 协议；预编译版本支持 Apple Silicon、macOS 13+ 欢迎 Star、提 Issue、交 PR，也欢迎提出真实反馈，谢谢！","content":"**项目地址**：<https://github.com/drewnekota/cetus>\n\n## 一句话介绍\n\nCetus 是一个开源的 macOS 桌面客户端，把你已经在用的 Agent CLI（Claude Code、Codex、DeepSeek Harness 等）变成一个常驻的桌面助手：统一的聊天界面、定时任务、全局快捷键唤起、屏幕上下文，复用 CLI 已有的登录，不需要再配置一套账号。\n\n![Cetus runtime picker](https://raw.githubusercontent.com/drewnekota/cetus/main/docs/screenshot-runtime-picker.png)\n\n## 为什么做这个\n\n我和身边不少朋友都会在终端里同时用多个 Agent Runtime（Claude Code 写前端、Codex 做数据分析和 Bug 巡检……），一度非常混乱，尤其是定时任务分散在不同工具里很难管理。于是最初版本就是一个支持多 Runtime 的统一 UI + 定时任务管理，后来逐步长成了完整的桌面助手层。\n\n长期看，各家模型能力反复追赶互相超越，需要一个统一的客户端来按任务选择不同 Runtime；同时桌面客户端也能更好地为 Agent 记录上下文，让 Agent 的智能真正用在你正在做的事情上。Cetus 不替代这些 Runtime——它们仍是智能与执行引擎，Cetus 补上的是终端里放不下的那部分。\n\n## 主要功能\n\n- **Quick Launcher**：按住两个 ⌘ 键，在任何应用上方唤出 Agent，自动带上当前截图、前台应用、浏览器 URL、选中文本作为可移除的上下文\n- **定时任务（Automations）**：把任意 Prompt 变成一次性或周期任务（at / every / cron / daily），每个任务保留自己选择的 Runtime 和模型，后台跑完等你回来审阅\n- **全局快捷回复**：在任何聊天、邮件、工单界面双击右 ⌥，Cetus 读取屏幕内容流式生成草稿回复，回车直接填入你原本的输入框\n- **Screen Context**：可选开启的屏幕记忆，本地截帧 + Apple Vision 端上 OCR，Agent 可以回忆和检索\"你之前在屏幕上看到的东西\"，图像和文本都不出本机\n- **会议记忆**：自动检测会议开始，端上转写为可搜索的笔记（纯文本，不存音频），之后可以直接问 Agent\"上次会上定的发布日期是什么\"\n- **看板式任务审阅**：每个对话是一张卡片，按 In progress / Needs review / Done 流转，后台任务不再淹没在终端 tab 里\n- 其他：持久记忆、并行多方案（一个 Prompt 分发 N 个候选运行）、每对话独立 git worktree、语音听写、移动端远程跟进等\n\n![Cetus demo](https://raw.githubusercontent.com/drewnekota/cetus/main/docs/cetus-demo.gif)\n\n## 技术与开源\n\n- Tauri 2（Rust）+ Next.js，内置 pi runtime 作为 sidecar，支持 30+ 模型 Provider\n- Claude Code / Codex / DeepSeek Harness 直接复用各自 CLI 的会话与登录，事件统一翻译进同一套流式 UI\n- 完整开源，MIT 协议；预编译版本支持 Apple Silicon、macOS 13+\n\n欢迎 Star、提 Issue、交 PR，也欢迎提出真实反馈，谢谢！\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11256","issueUrl":"https://github.com/ruanyf/weekly/issues/11256"},{"sourceId":"weekly-issues","title":"【开源自荐】Starcat：把 GitHub Stars 变成能用的本地知识库","url":"https://github.com/starcat-app/Starcat","author":"dong4j","authorUrl":"https://github.com/dong4j","publishedAt":"2026-08-19T04:47:44Z","summary":"项目地址： <img width=\"3116\" height=\"1872\" alt=\"Image\" src=\" / 介绍 Starcat 是一款开源的 macOS 原生应用。它会把 GitHub Stars 同步到本地，你可以搜索、打标签、跟踪更新，也可以用 AI 帮你读懂项目。数据保存在你自己的 Mac 上。 为什么做 Starcat GitHub 的 Star 列表是一条不断往下延伸的时间线。 我收藏过上千个仓库。想找回其中一个，经常要翻很久；好不容易找到了，几个月后也想不起当初为什么收藏。标签总是懒得整理，项目更新也经常要等刷到别人的推文才知道。 后来我开始重新思考 GitHub Star。我们习惯把它当成一个“以后再看”的书签，但收藏多了以后，它其实也记录了我们的专业兴趣和技能方向。 于是我做了 Starcat，把整理、理解、找回和评估 GitHub Stars 这几件事放到了同一个桌面应用里。 主要功能 仓库名、描述、Topics 和笔记都会进入 FTS5 索引，在本机毫秒级返回搜索结果。记不清仓库名时，还可以使用语义搜索。 AI 可以生成项目摘要、翻译 README。先弄清楚项目是做什么的、用了哪些技术，再决定要不要继续读。 AI 会推荐标签，但只提供建议。只有你确认后，标签才会写入。 可以订阅 Release。关注的仓库发布新版本时，Starcat 会发送通知。 Needs Review、Unmaintained、OpenSSF 分数等智能集合和仓库健康信息，可以帮你判断一个项目是否还值得继续关注。 浏览器插件、CLI 和 MCP 等周边项目，也都放在 starcatapp 组织下开源。 技术与开源 使用原生 SwiftUI 开发，不是 Electron、Tauri 或 Flutter，支持 macOS 15+ 和 Apple Silicon。 本地数据使用 GRDB 和 SQLite。仓库缓存可以重建，标签、笔记和状态则是用户自己的数据。 AI 采用 BYOK，Key 保存在 Keychain 中。 主仓库： 生态项目基本都已开源，只有用于 Direct 授权的 licenseapi 保持私有。客户端可以自行编译。","content":"**项目地址**：[https://github.com/starcat-app/Starcat](https://github.com/starcat-app/Starcat)\n\n<img width=\"3116\" height=\"1872\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/544b4562-6ca2-495e-b4b9-db9e3d1e8175\" />\n\n## 介绍\n\nStarcat 是一款开源的 macOS 原生应用。它会把 GitHub Stars 同步到本地，你可以搜索、打标签、跟踪更新，也可以用 AI 帮你读懂项目。数据保存在你自己的 Mac 上。\n\n## 为什么做 Starcat\n\nGitHub 的 Star 列表是一条不断往下延伸的时间线。\n\n我收藏过上千个仓库。想找回其中一个，经常要翻很久；好不容易找到了，几个月后也想不起当初为什么收藏。标签总是懒得整理，项目更新也经常要等刷到别人的推文才知道。\n\n后来我开始重新思考 GitHub Star。我们习惯把它当成一个“以后再看”的书签，但收藏多了以后，它其实也记录了我们的专业兴趣和技能方向。\n\n于是我做了 Starcat，把整理、理解、找回和评估 GitHub Stars 这几件事放到了同一个桌面应用里。\n\n## 主要功能\n\n- 仓库名、描述、Topics 和笔记都会进入 FTS5 索引，在本机毫秒级返回搜索结果。记不清仓库名时，还可以使用语义搜索。\n- AI 可以生成项目摘要、翻译 README。先弄清楚项目是做什么的、用了哪些技术，再决定要不要继续读。\n- AI 会推荐标签，但只提供建议。只有你确认后，标签才会写入。\n- 可以订阅 Release。关注的仓库发布新版本时，Starcat 会发送通知。\n- Needs Review、Unmaintained、OpenSSF 分数等智能集合和仓库健康信息，可以帮你判断一个项目是否还值得继续关注。\n- 浏览器插件、CLI 和 MCP 等周边项目，也都放在 [starcat-app](https://github.com/starcat-app) 组织下开源。\n\n## 技术与开源\n\n- 使用原生 SwiftUI 开发，不是 Electron、Tauri 或 Flutter，支持 macOS 15+ 和 Apple Silicon。\n- 本地数据使用 GRDB 和 SQLite。仓库缓存可以重建，标签、笔记和状态则是用户自己的数据。\n- AI 采用 BYOK，Key 保存在 Keychain 中。\n- 主仓库：[https://github.com/starcat-app/Starcat](https://github.com/starcat-app/Starcat)\n- 生态项目基本都已开源，只有用于 Direct 授权的 `license-api` 保持私有。客户端可以自行编译。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11257","issueUrl":"https://github.com/ruanyf/weekly/issues/11257"},{"sourceId":"weekly-issues","title":"【工具自荐】睡眠岛：一款免戴手表、真正睡着才停的助眠与睡眠监测 App","url":"https://www.sleepisland.org","author":"hanzg77","authorUrl":"https://github.com/hanzg77","publishedAt":"2026-08-19T09:17:31Z","summary":"阮老师好，向周刊自荐一款我独立开发了一年多的 iOS 助眠与健康产品——「睡眠岛」。 我自己睡觉必须听声音。但一直苦恼传统 App 的定时关闭太机械（设 30 分钟没睡着就停了，设一整夜又吵得慌），而且我非常讨厌戴着手表睡觉。 找不到顺手的工具，我花了一年多时间打磨了这个 App，核心做好了三点： 1. 真正睡着才停：手机放床头，通过自研轻量感应算法识别真实入睡状态。检测到真正睡着后，声音会自动平滑淡出，不打扰深度睡眠。 2. 免穿戴床头睡眠与鼾声监测：不需要戴 Apple Watch 或手环，手机放床头即可分析深浅睡眠阶段，并自动截取夜间鼾声与梦话片段。 3. 独立纯粹、零广告：不接入任何第三方追踪 SDK，核心助眠与监测功能完全免费，不搞流氓诱导订阅。 4. 沉浸式助眠资源：自己制作了一批助眠资源，也接入了播客 rss 系统。丰富的试听内容。 官网（可免安装直接在线试听）： App Store： 界面预览 !睡眠岛实机界面","content":"阮老师好，向周刊自荐一款我独立开发了一年多的 iOS 助眠与健康产品——**「睡眠岛」**。\n\n我自己睡觉必须听声音。但一直苦恼传统 App 的定时关闭太机械（设 30 分钟没睡着就停了，设一整夜又吵得慌），而且我非常讨厌戴着手表睡觉。\n\n找不到顺手的工具，我花了一年多时间打磨了这个 App，核心做好了三点：\n\n1. **真正睡着才停**：手机放床头，通过自研轻量感应算法识别真实入睡状态。检测到真正睡着后，声音会自动平滑淡出，不打扰深度睡眠。\n2. **免穿戴床头睡眠与鼾声监测**：不需要戴 Apple Watch 或手环，手机放床头即可分析深浅睡眠阶段，并自动截取夜间鼾声与梦话片段。\n3. **独立纯粹、零广告**：不接入任何第三方追踪 SDK，核心助眠与监测功能完全免费，不搞流氓诱导订阅。\n4. **沉浸式助眠资源**：自己制作了一批助眠资源，也接入了播客 rss 系统。丰富的试听内容。\n\n\n- **官网（可免安装直接在线试听）**：https://www.sleepisland.org\n- **App Store**：https://apps.apple.com/cn/app/id6747609991\n\n### 界面预览\n![睡眠岛实机界面](https://www.sleepisland.org/assets/screenshots/zh-Hans/screen_1.webp)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11258","issueUrl":"https://github.com/ruanyf/weekly/issues/11258"},{"sourceId":"weekly-issues","title":"【开源自荐】BookMate / 泊舟：把私人图书馆变成一个能长期共读、深入交谈的本地 AI 书友","url":"https://github.com/snailfrying-sxy/bookmate-local","author":"snailfrying-sxy","authorUrl":"https://github.com/snailfrying-sxy","publishedAt":"2026-08-19T09:53:28Z","summary":"BookMate（泊舟） 项目地址： 想做一个不止会\"总结一本书\"的阅读工具。 BookMate（泊舟） 是一个 localfirst 的私人 AI 书友与个人图书馆。它希望解决的不是\"如何快速获得答案\"，而是很多读者更熟悉的另一件事：读完一本书后，心里留下了一个问题、一句话或一种说不清的感受，却很难找到愿意同频深入聊下去的人。 在 BookMate 里，每本书都可以有一间长期存在的\"书房\"。即使没有 PDF、EPUB，也可以先从一本实体书、一句摘录、一段感想或一个问题开始；之后再逐步加入版本文件、阅读进度、剧透边界、摘录与读后感。AI 会围绕当前书房继续交流，而不是把所有文件混成一个泛知识库。 目前支持 本书房间与广泛书友两种对话方式 TXT、Markdown、PDF、EPUB 导入与本地检索 摘录、读后感、问题等阅读痕迹 一书多版本、阅读进度、剧透边界与交流姿态 OpenAI 兼容、Responses、Ollama / 局域网模型等模型配置，并可按轮切换 本地 SQLite 与文件存储、会话恢复、用户确认后才生效的记忆 基于阅读共鸣的下一本书推荐：推荐书也能直接建立书房，先聊聊是否适合自己 ️ 核心边界 1. 书不是文件：一本书的书房可以先于电子版存在。 2. AI 不能假装懂你：它不虚构经历、引文、页码或未使用的本地资料。 3. 隐私与透明：数据默认留在本地；若选择远程模型，相关摘录和笔记可能发送给该模型服务，界面会明确说明。 快速启动 Windows 用户：运行 .\\startlocal.ps1 即可启动。 Docker 部署：支持 Docker 容器化部署。 欢迎体验、提 Issue，或聊聊你觉得\"一个真正的 AI 书友\"应该如何陪人读书。 许可证说明：项目采用 PolyForm Noncommercial License 1.0.0，适合个人、教育、研究等非商业使用；商业使用需另行授权。","content":"\n# **BookMate（泊舟）**\n\n> **项目地址**：[https://github.com/snailfrying-sxy/bookmate-local](https://github.com/snailfrying-sxy/bookmate-local)\n\n想做一个不止会\"总结一本书\"的阅读工具。\n\n**BookMate（泊舟）** 是一个 local-first 的私人 AI 书友与个人图书馆。它希望解决的不是\"如何快速获得答案\"，而是很多读者更熟悉的另一件事：读完一本书后，心里留下了一个问题、一句话或一种说不清的感受，却很难找到愿意同频深入聊下去的人。\n\n在 BookMate 里，每本书都可以有一间长期存在的\"书房\"。即使没有 PDF、EPUB，也可以先从一本实体书、一句摘录、一段感想或一个问题开始；之后再逐步加入版本文件、阅读进度、剧透边界、摘录与读后感。AI 会围绕当前书房继续交流，而不是把所有文件混成一个泛知识库。\n\n---\n\n###  目前支持\n\n- **本书房间与广泛书友两种对话方式**\n- **TXT、Markdown、PDF、EPUB 导入与本地检索**\n- **摘录、读后感、问题等阅读痕迹**\n- **一书多版本、阅读进度、剧透边界与交流姿态**\n- **OpenAI 兼容、Responses、Ollama / 局域网模型等模型配置，并可按轮切换**\n- **本地 SQLite 与文件存储、会话恢复、用户确认后才生效的记忆**\n- **基于阅读共鸣的下一本书推荐**：推荐书也能直接建立书房，先聊聊是否适合自己\n\n---\n\n### ️ 核心边界\n\n1. **书不是文件**：一本书的书房可以先于电子版存在。\n2. **AI 不能假装懂你**：它不虚构经历、引文、页码或未使用的本地资料。\n3. **隐私与透明**：数据默认留在本地；若选择远程模型，相关摘录和笔记可能发送给该模型服务，界面会明确说明。\n\n---\n\n###  快速启动\n\n- **Windows 用户**：运行 `.\\start-local.ps1` 即可启动。\n- **Docker 部署**：支持 Docker 容器化部署。\n\n欢迎体验、提 Issue，或聊聊你觉得\"一个真正的 AI 书友\"应该如何陪人读书。\n\n---\n\n> **许可证说明**：项目采用 **PolyForm Noncommercial License 1.0.0**，适合个人、教育、研究等非商业使用；商业使用需另行授权。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11259","issueUrl":"https://github.com/ruanyf/weekly/issues/11259"},{"sourceId":"weekly-issues","title":"【工具自荐】免费的极简 chrome 新标签页 ZenPage 禅页","url":"https://chromewebstore.google.com/detail/%E7%A6%85%E9%A1%B5-zenpage/eeoglieochlkiieagkofojmhefbeeggj?authuser=0&hl=zh-CN","author":"lyuangg","authorUrl":"https://github.com/lyuangg","publishedAt":"2026-08-19T09:55:53Z","summary":"ZenPage 禅页是一个极简的 Chrome 新标签页, 功能极简只有: 快捷入口（自定义图标 + 任意协议链接） 时钟、搜索与书签。 快捷键一键直达。 <img width=\"1471\" height=\"733\" alt=\"Image\" src=\" /","content":"ZenPage 禅页是一个极简的 Chrome 新标签页, 功能极简只有:\n- 快捷入口（自定义图标 + 任意协议链接）\n- 时钟、搜索与书签。\n- 快捷键一键直达。\n\nhttps://chromewebstore.google.com/detail/%E7%A6%85%E9%A1%B5-zenpage/eeoglieochlkiieagkofojmhefbeeggj?authuser=0&hl=zh-CN\n\n\n<img width=\"1471\" height=\"733\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4af99705-0db0-4bb0-8c0c-7061fad69ca1\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11260","issueUrl":"https://github.com/ruanyf/weekly/issues/11260"},{"sourceId":"weekly-issues","title":"【工具自荐】一个协作式像素艺术和动画编辑器，可以和AI agents共同创作和编辑。","url":"https://github.com/osdodo/gridvana","author":"osdodo","authorUrl":"https://github.com/osdodo","publishedAt":"2026-08-19T10:51:15Z","summary":"Gridvana 是一个用Rust 编写的协作式像素艺术和动画编辑器，可以和AI agent共同创作和编辑。 项目地址： 网站： !Gridvana","content":"**Gridvana** 是一个用Rust 编写的协作式像素艺术和动画编辑器，可以和AI agent共同创作和编辑。\n\n项目地址：https://github.com/osdodo/gridvana\n\n网站：https://gridvana.imatrix.fun\n\n![Gridvana](https://raw.githubusercontent.com/osdodo/gridvana/refs/heads/main/screenshots/1.jpg)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11261","issueUrl":"https://github.com/ruanyf/weekly/issues/11261"},{"sourceId":"weekly-issues","title":"【开源自荐】Open DeepSeek Harness Desktop：带插件隔离和 IM 机器人的 DSH 桌面发行版","url":"https://github.com/flaqai/open-deepseek-harness-desktop","author":"hecoococ","authorUrl":"https://github.com/hecoococ","publishedAt":"2026-08-19T11:15:51Z","summary":"项目地址： 项目介绍 Open DeepSeek Harness Desktop 是一个社区维护的 DeepSeek Harness 桌面发行版。它保留官方 Harness 的插件化运行时和 Web 客户端，在外层增加 Electron 本地宿主、桌面打包、首次启动配置和插件生命周期管理。 它不只是把网页放进桌面窗口。客户端会启动并监管本机 Harness 服务，为页面提供受限制的系统集成，并负责普通插件无法介入的启动前检查。项目采用 MIT 许可证，不是 DeepSeek 官方产品，目前处于开发者预览阶段。 主要功能 完整桌面发行矩阵：项目面向 macOS Apple Silicon、macOS Intel、Windows x64，以及 Linux DEB、RPM 五种安装包维护统一的打包流程。 主题和聊天背景：内置跟随系统、浅色、深色及八套产品主题，同时提供八张背景插画，也可以上传只保存在本机的 PNG、JPEG 或 WebP 图片。 桌面复制支持：Electron 只向受监管的 Harness 页面开放经过净化的剪贴板写入权限，让消息和代码复制在客户端中正常工作，不开放剪贴板读取权限。 开箱即用的插件生态：安装包预设插件市场、Skill 选择器和 IM 机器人插件。它们都是普通、可卸载的 Harness 插件；用户卸载后，客户端不会在下次启动时自动装回。 微信、飞书等机器人连接：可以在设置中通过扫码、应用清单或现有凭据连接微信、飞书、钉钉、企业微信、QQ、Slack、Telegram、Discord 和 WhatsApp，并切换机器人使用的工作区或绑定已有会话。 依赖诊断与插件隔离：客户端可以检查共享运行时冲突、残留 Loader 条目和插件挂载失败。无法安全修复的插件会退出当前 profile 的活动依赖和启动顺序，并留下可重试、可卸载的隔离记录，让其余功能继续启动。 为什么依赖隔离必须由客户端完成 插件系统在功能不断增多后会遇到一个容易被忽略的问题：两个插件可能各自带入不同版本或不同物理副本的共享 Host 包。它们的包名和 API 看起来相同，Node.js 实际加载的却是两套对象。这样会造成服务注册在一套运行时、消费方却在另一套运行时查找，最终表现为插件无法挂载、Loader 条目失管，甚至整个 profile 无法启动。残留的清单项目、锁文件记录和中断安装留下的目录，也可能让下一次更新继续复现同一个错误。 普通诊断插件解决不了这个问题。插件代码只能在依赖解析、配置组合和运行时挂载成功后执行，而上述错误恰好发生在这些步骤之前。故障插件可能阻止诊断插件一起加载；诊断插件也不应该拥有修改其他插件清单、锁文件和启动顺序的权限。因此，这项能力必须放在掌握整个启动过程的客户端启动层。 每次检查时，启动层会遍历 profile 中直接安装插件的依赖图，区分合法的 peer dependency 与真正的共享运行时冲突，并比较关键 Host 包最终解析到的实际位置。它还会核对 profile 清单、锁文件、组合包顺序和磁盘目录，找出已经不属于当前依赖、却仍可能被 Loader 发现的残留项目。设置页提供“立即检查”和“检查并修复”两个入口：前者只读取并展示问题、依赖链和兼容性，后者才会执行受保护的修复操作。 修复会先尝试让插件统一使用桌面安装包提供的共享 Host 依赖，同时清理清单已经删除、锁文件却仍保留的根依赖记录。如果依赖关系能够安全收敛，插件可以继续留在当前 profile；如果插件版本确实不兼容，或者修复后仍存在两个共享运行时实例，客户端就不会带着不确定状态强行启动它。 无法安全修复的根插件会从活动依赖和组合包启动顺序中移出，并写入持久的隔离记录。隔离只针对被确认有问题的插件，不会删除用户的会话、模型配置或其他插件。只有故障插件的活动引用和残留目录已经退出当前 profile，隔离才算完成；如果安装工具在中途崩溃，下一次检查还会根据清单、锁文件、目录和隔离记录之间的差异继续恢复，而不是假装修复成功。 这种处理采用关闭式保护：只要客户端不能确认共享依赖已经统一，就不让故障插件进入当前运行时，但其余健康插件和核心功能仍可继续启动。用户可以在“设置 → 插件 → 诊断”中查看隔离原因，按原安装来源重试插件，或者在明确确认后卸载处于停用状态的残留。这样既避免一个扩展拖垮整个客户端，也保留了恢复插件和排查具体依赖链的机会。 <img width=\"1400\" height=\"869\" alt=\"Image\" src=\" / <img width=\"1411\" height=\"878\" alt=\"Image\" src=\" / 界面 | 主题设置 | 聊天背景 | | | | | !主题设置 | !聊天背景 | 社区插件预设，降低入门配置难度 支持包括微信、飞书等九种机器人连接deepseek harness： <img width=\"1134\" height=\"838\" alt=\"Image\" src=\" / 预设插件市场，方便搜索插件、安装插件和管理插件，必备插件： 预设skill调用插件，原版的\\看不见的skills可以通过小闪电选择并引用； 桌面安装包预设并感谢以下开源插件： dshim：微信、飞书等九种 IM 机器人连接。 dshskillpicker：在输入区选择并调用 Skill。 dshmarket：在 Harness 内浏览、搜索和管理插件。 项目仓库： 上游 DeepSeek Harness：","content":"项目地址：https://github.com/flaqai/open-deepseek-harness-desktop\n\n## 项目介绍\n\nOpen DeepSeek Harness Desktop 是一个社区维护的 DeepSeek Harness 桌面发行版。它保留官方 Harness 的插件化运行时和 Web 客户端，在外层增加 Electron 本地宿主、桌面打包、首次启动配置和插件生命周期管理。\n\n它不只是把网页放进桌面窗口。客户端会启动并监管本机 Harness 服务，为页面提供受限制的系统集成，并负责普通插件无法介入的启动前检查。项目采用 MIT 许可证，不是 DeepSeek 官方产品，目前处于开发者预览阶段。\n\n## 主要功能\n\n- **完整桌面发行矩阵**：项目面向 macOS Apple Silicon、macOS Intel、Windows x64，以及 Linux DEB、RPM 五种安装包维护统一的打包流程。\n- **主题和聊天背景**：内置跟随系统、浅色、深色及八套产品主题，同时提供八张背景插画，也可以上传只保存在本机的 PNG、JPEG 或 WebP 图片。\n- **桌面复制支持**：Electron 只向受监管的 Harness 页面开放经过净化的剪贴板写入权限，让消息和代码复制在客户端中正常工作，不开放剪贴板读取权限。\n- **开箱即用的插件生态**：安装包预设插件市场、Skill 选择器和 IM 机器人插件。它们都是普通、可卸载的 Harness 插件；用户卸载后，客户端不会在下次启动时自动装回。\n- **微信、飞书等机器人连接**：可以在设置中通过扫码、应用清单或现有凭据连接微信、飞书、钉钉、企业微信、QQ、Slack、Telegram、Discord 和 WhatsApp，并切换机器人使用的工作区或绑定已有会话。\n- **依赖诊断与插件隔离**：客户端可以检查共享运行时冲突、残留 Loader 条目和插件挂载失败。无法安全修复的插件会退出当前 profile 的活动依赖和启动顺序，并留下可重试、可卸载的隔离记录，让其余功能继续启动。\n\n## 为什么依赖隔离必须由客户端完成\n\n插件系统在功能不断增多后会遇到一个容易被忽略的问题：两个插件可能各自带入不同版本或不同物理副本的共享 Host 包。它们的包名和 API 看起来相同，Node.js 实际加载的却是两套对象。这样会造成服务注册在一套运行时、消费方却在另一套运行时查找，最终表现为插件无法挂载、Loader 条目失管，甚至整个 profile 无法启动。残留的清单项目、锁文件记录和中断安装留下的目录，也可能让下一次更新继续复现同一个错误。\n\n普通诊断插件解决不了这个问题。插件代码只能在依赖解析、配置组合和运行时挂载成功后执行，而上述错误恰好发生在这些步骤之前。故障插件可能阻止诊断插件一起加载；诊断插件也不应该拥有修改其他插件清单、锁文件和启动顺序的权限。因此，这项能力必须放在掌握整个启动过程的客户端启动层。\n\n每次检查时，启动层会遍历 profile 中直接安装插件的依赖图，区分合法的 peer dependency 与真正的共享运行时冲突，并比较关键 Host 包最终解析到的实际位置。它还会核对 profile 清单、锁文件、组合包顺序和磁盘目录，找出已经不属于当前依赖、却仍可能被 Loader 发现的残留项目。设置页提供“立即检查”和“检查并修复”两个入口：前者只读取并展示问题、依赖链和兼容性，后者才会执行受保护的修复操作。\n\n修复会先尝试让插件统一使用桌面安装包提供的共享 Host 依赖，同时清理清单已经删除、锁文件却仍保留的根依赖记录。如果依赖关系能够安全收敛，插件可以继续留在当前 profile；如果插件版本确实不兼容，或者修复后仍存在两个共享运行时实例，客户端就不会带着不确定状态强行启动它。\n\n无法安全修复的根插件会从活动依赖和组合包启动顺序中移出，并写入持久的隔离记录。隔离只针对被确认有问题的插件，不会删除用户的会话、模型配置或其他插件。只有故障插件的活动引用和残留目录已经退出当前 profile，隔离才算完成；如果安装工具在中途崩溃，下一次检查还会根据清单、锁文件、目录和隔离记录之间的差异继续恢复，而不是假装修复成功。\n\n这种处理采用关闭式保护：只要客户端不能确认共享依赖已经统一，就不让故障插件进入当前运行时，但其余健康插件和核心功能仍可继续启动。用户可以在“设置 → 插件 → 诊断”中查看隔离原因，按原安装来源重试插件，或者在明确确认后卸载处于停用状态的残留。这样既避免一个扩展拖垮整个客户端，也保留了恢复插件和排查具体依赖链的机会。\n\n<img width=\"1400\" height=\"869\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/104ae33c-19f1-4d52-bb6d-898ac73c0a04\" />\n\n<img width=\"1411\" height=\"878\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e2673f1a-4dd3-4823-9c6d-976129dc0326\" />\n\n## 界面\n\n| 主题设置 | 聊天背景 |\n| --- | --- |\n| ![主题设置](https://raw.githubusercontent.com/flaqai/open-deepseek-harness-desktop/master/assets/readme/theme-settings-zh.png) | ![聊天背景](https://raw.githubusercontent.com/flaqai/open-deepseek-harness-desktop/master/assets/readme/background-settings-zh.png) |\n\n## 社区插件预设，降低入门配置难度\n支持包括微信、飞书等九种机器人连接deepseek harness：\n<img width=\"1134\" height=\"838\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e7f13bcf-3703-4fde-9b02-607e5b3402fb\" />\n预设插件市场，方便搜索插件、安装插件和管理插件，必备插件：\n预设skill调用插件，原版的\\看不见的skills可以通过小闪电选择并引用；\n桌面安装包预设并感谢以下开源插件：\n\n- [dsh-im](https://github.com/xmanrui/dsh-im)：微信、飞书等九种 IM 机器人连接。\n- [dsh-skill-picker](https://github.com/a735624258/dsh-skill-picker)：在输入区选择并调用 Skill。\n- [dsh-market](https://github.com/dsh-market/dsh-market)：在 Harness 内浏览、搜索和管理插件。\n\n项目仓库：https://github.com/flaqai/open-deepseek-harness-desktop\n\n上游 DeepSeek Harness：https://github.com/deepseek-ai/deepseek-harness","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11262","issueUrl":"https://github.com/ruanyf/weekly/issues/11262"},{"sourceId":"weekly-issues","title":"【开源自荐】repo-cover：让编程智能体给仓库设计社交预览图，中文排版不再是豆腐","url":"https://github.com/sjh9714/repo-cover","author":"sjh9714","authorUrl":"https://github.com/sjh9714","publishedAt":"2026-08-19T11:19:47Z","summary":"项目地址： 介绍 repocover 是一个 Agent 技能（Claude Code、Codex、Cursor、opencode 都能用）。装上之后对智能体说一句\"给这个仓库做张社交预览卡片\"，它会读取仓库信息，把描述打磨成一行，写出一个自包含的 1280x640 HTML 文件，跑完检查后用本机 Chrome 导出 PNG，上传到 GitHub 的 Social preview 即可。 !四种风格 为什么做这个 每次把仓库链接发到群里，预览图要么是 GitHub 自动生成的灰色默认图，要么是生成器模板，谁的仓库都长一个样。中文描述更惨，很多生成器直接渲染成豆腐，或者在词中间断行。我不想为每个 side project 打开 Figma，所以让智能体来设计。 主要功能 不调用图像模型。设计品味写成模型无法偏离的数字约束：4px 网格、每张卡片一个强调色（自动加深到 WCAG 对比度）、按名称长度分级的标题字号 确定性检查：纯标准库的 Python 检查器校验画布尺寸、自包含、对比度和中日韩换行。中文有专门的字符预算，排版坏了直接判 FAIL 四种风格（editorial、poster、blueprint、gallery）。强调色来自仓库主语言，同心圆和图号来自仓库名哈希，不会有两张相同的卡片 保持新鲜：附带一个 GitHub Action 在 CI 里重新渲染，避免字体没加载完就截图的事故 在线画廊可以直接查看每张卡片的源码： !中文示例 诚实的数字 8 个内置示例全部通过 CI 检查 两个没有任何上下文的智能体冷启动运行这个技能，卡片都一次通过检查器；它们报告的 11 处文档问题已全部修复 这个仓库自己的社交预览图，就是这个技能的输出 MIT 协议。中文排版遇到坏例欢迎提 issue，会变成检查器的回归测试。","content":"项目地址：https://github.com/sjh9714/repo-cover\n\n## 介绍\n\nrepo-cover 是一个 Agent 技能（Claude Code、Codex、Cursor、opencode 都能用）。装上之后对智能体说一句\"给这个仓库做张社交预览卡片\"，它会读取仓库信息，把描述打磨成一行，写出一个自包含的 1280x640 HTML 文件，跑完检查后用本机 Chrome 导出 PNG，上传到 GitHub 的 Social preview 即可。\n\n![四种风格](https://raw.githubusercontent.com/sjh9714/repo-cover/main/docs/hero.png)\n\n## 为什么做这个\n\n每次把仓库链接发到群里，预览图要么是 GitHub 自动生成的灰色默认图，要么是生成器模板，谁的仓库都长一个样。中文描述更惨，很多生成器直接渲染成豆腐，或者在词中间断行。我不想为每个 side project 打开 Figma，所以让智能体来设计。\n\n## 主要功能\n\n- **不调用图像模型**。设计品味写成模型无法偏离的数字约束：4px 网格、每张卡片一个强调色（自动加深到 WCAG 对比度）、按名称长度分级的标题字号\n- **确定性检查**：纯标准库的 Python 检查器校验画布尺寸、自包含、对比度和中日韩换行。中文有专门的字符预算，排版坏了直接判 FAIL\n- **四种风格**（editorial、poster、blueprint、gallery）。强调色来自仓库主语言，同心圆和图号来自仓库名哈希，不会有两张相同的卡片\n- **保持新鲜**：附带一个 GitHub Action 在 CI 里重新渲染，避免字体没加载完就截图的事故\n- **在线画廊**可以直接查看每张卡片的源码：https://sjh9714.github.io/repo-cover/\n\n![中文示例](https://raw.githubusercontent.com/sjh9714/repo-cover/main/skills/repo-cover/assets/examples/editorial-chinese.png)\n\n## 诚实的数字\n\n- 8 个内置示例全部通过 CI 检查\n- 两个没有任何上下文的智能体冷启动运行这个技能，卡片都一次通过检查器；它们报告的 11 处文档问题已全部修复\n- 这个仓库自己的社交预览图，就是这个技能的输出\n\nMIT 协议。中文排版遇到坏例欢迎提 issue，会变成检查器的回归测试。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11263","issueUrl":"https://github.com/ruanyf/weekly/issues/11263"},{"sourceId":"weekly-issues","title":"【开源自荐】小红书时间线 — Chrome 扩展，把小红书个人主页按时间线模式排列","url":"https://github.com/shaozhengmao/xiaohongshu-timeline.git`","author":"shaozhengmao","authorUrl":"https://github.com/shaozhengmao","publishedAt":"2026-08-19T12:20:41Z","summary":"它做什么 把小红书个人主页默认的瀑布流网格，按发布时间倒序重排成时间线，自动按月分组（如 2026年8月、2026年7月），并支持「近 3 个月 / 近 6 个月 / 今年 / 自定义起止日期」等时间筛选。一眼看清自己（或关注的博主）这一年的内容节奏。 为什么做 小红书个人主页默认是推荐序，自己发过什么、按什么节奏发，回看时基本看不见。对内容创作者做复盘、对粉丝回溯某博主历史，网格视图都太碎。 技术亮点 Chrome MV3，contentscripts + world: \"MAIN\" 双脚本协同：主线程注入 inject.js 拦截 fetch / XMLHttpRequest，隔离环境 content.js 渲染浮窗和重排 DOM，二者通过 postMessage 通信。 首屏 SSR + 滚动分页数据自动合并；监听 history.pushState / popstate，页面切换自动清缓存、避免串号。 时间字段多格式兼容：13 位毫秒戳 / 10 位秒戳 / YYYYMMDD / MMDD / X 天前，解析失败归「未知时间」。 纯本地，不请求任何外部接口，不上传任何数据。 安装（未上架商店，「加载已解压」安装） 1. git clone 2. 打开 chrome://extensions/，右上角打开 开发者模式 3. 点击 加载已解压的扩展程序，选仓库根目录（含 manifest.json 的那个文件夹） 4. 打开任意小红书个人主页（xiaohongshu.com/user/profile/...），右上角出现「小红书时间线」浮窗 预览效果： <img width=\"743\" height=\"404\" alt=\"Image\" src=\" / 链接 仓库： License: MIT 当前版本：v0.2.6 ⚠️ 本项目与小红书（RED）官方无任何关联，仅个人学习与研究用途；使用者需自行遵守小红书平台服务条款。","content":"### 它做什么\n把小红书个人主页默认的瀑布流网格，**按发布时间倒序重排成时间线**，自动按月分组（如 `2026年8月`、`2026年7月`），并支持「近 3 个月 / 近 6 个月 / 今年 / 自定义起止日期」等时间筛选。一眼看清自己（或关注的博主）这一年的内容节奏。\n\n### 为什么做\n小红书个人主页默认是推荐序，**自己发过什么、按什么节奏发，回看时基本看不见**。对内容创作者做复盘、对粉丝回溯某博主历史，网格视图都太碎。\n\n### 技术亮点\n- Chrome **MV3**，`content_scripts` + `world: \"MAIN\"` 双脚本协同：主线程注入 `inject.js` 拦截 `fetch` / `XMLHttpRequest`，隔离环境 `content.js` 渲染浮窗和重排 DOM，二者通过 `postMessage` 通信。\n- 首屏 SSR + 滚动分页数据自动合并；监听 `history.pushState` / `popstate`，页面切换自动清缓存、避免串号。\n- 时间字段多格式兼容：13 位毫秒戳 / 10 位秒戳 / `YYYY-MM-DD` / `MM-DD` / `X 天前`，解析失败归「未知时间」。\n- 纯本地，**不请求任何外部接口，不上传任何数据**。\n\n### 安装（未上架商店，「加载已解压」安装）\n1. `git clone https://github.com/shaozhengmao/xiaohongshu-timeline.git`\n2. 打开 `chrome://extensions/`，右上角打开 **开发者模式**\n3. 点击 **加载已解压的扩展程序**，选仓库根目录（含 `manifest.json` 的那个文件夹）\n4. 打开任意小红书个人主页（`xiaohongshu.com/user/profile/...`），右上角出现「小红书时间线」浮窗\n\n预览效果：\n<img width=\"743\" height=\"404\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7fac956a-0dd6-4b5c-814b-7bcd6212c0dc\" />\n\n### 链接\n- 仓库：https://github.com/shaozhengmao/xiaohongshu-timeline\n- License: MIT\n- 当前版本：v0.2.6\n\n> ⚠️ 本项目与小红书（RED）官方**无任何关联**，仅个人学习与研究用途；使用者需自行遵守小红书平台服务条款。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11264","issueUrl":"https://github.com/ruanyf/weekly/issues/11264"},{"sourceId":"weekly-issues","title":"【开源自荐】Nebula Terminal：集成 AI CLI 会话管理、任务通知与 Markdown/TeX 渲染的 Windows 终端工作台","url":"https://github.com/Kuddev/nebula","author":"Kuddev","authorUrl":"https://github.com/Kuddev","publishedAt":"2026-08-19T14:04:54Z","summary":"• 项目地址： 开源协议：GPL3.0 Nebula Terminal <img width=\"1035\" height=\"600\" alt=\"Image\" src=\" / <img width=\"1035\" height=\"490\" alt=\"Image\" src=\" / <img width=\"1035\" height=\"603\" alt=\"Image\" src=\" / 简介 Nebula 是一个以常驻终端为核心的 Windows 原生 AI 开发工作台，使用纯 Rust 编写，构建在 Alacritty 衍生的终端内 核、GPU 加速渲染管线和 Zed 的 GPUI 框架之上。 它解决的第一个问题是：终端会话不应该随着窗口一起消失。关闭 Nebula 只会分离界面，不会杀死正在运行的 Shell、构建 任务、SSH 连接或 AI 对话；重新打开即可回到原来的标签、分屏、滚动内容和工作目录。系统重启或常驻进程退出后，也能 从持续保存的快照恢复工作区布局。 Nebula 也不把终端局限在命令输入框里。Claude Code、Codex 等 Agent 的运行状态与通知，文件与 Git/SVN 工作流，原生 SSH/SFTP，以及 Markdown、图片和 TeX 数学公式，都被统一进同一个可恢复的开发空间。 性能与实现 Nebula 使用 GPU 加速的字形与 UI quad 渲染器，并针对 Windows ConPTY 的启动、缩放和全屏 TUI 重绘路径进行优化。 窗口拖动期间只实时调整终端网格，结束后再向 PTY 合并提交最终尺寸，避免中间重绘污染滚动历史；ConPTY 启动握手会提 前预热，新标签页不需要等待额外往返。启动过程可以通过 NEBULABOOTTRACE=1 完整观测，历史记录和其他非关键数据采 用惰性加载。 项目目前主要面向 Windows 10/11，重点做好 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法组合输入等 Windows 开 发环境中的实际体验。 主要特性 常驻会话：关闭窗口只分离界面，PTY 和其中的任务继续运行；再次启动即可原地接回。 冷恢复与单实例：持续保存标签、分屏和工作目录；重复启动自动交给已有实例处理。 AI Agent 感知：识别 Claude Code、Codex 等 CLI，按 pane 显示运行、完成、等待输入、需要关注和失败等状态。 任务通知直达现场：Agent 完成任务或等待确认时发送桌面通知；点击通知直接切到对应标签和分屏。 本地与远程状态统一：远程 SSH pane 中的 Agent 事件也能通过经过认证的私有通道返回本地侧栏和通知系统。 Runtime API：外部工具和 Agent 可以读取窗口、标签、pane、进程、任务状态和终端输出，也可以创建标签与分屏、发送 命令、按键或 prompt，并等待任务结束。 增强提示符：提供历史和路径驱动的内联补全与候选列表，可用 Tab 或右方向键接受。 持久化命令历史：命令和常用目录跨会话保存，目录访问频率会参与补全排序。 内置 Powerline 提示符：显示当前目录、Git 分支和时间，PowerShell 与 Git Bash 无需额外安装提示符框架。 原生 SSH：读取 ~/.ssh/config，支持私钥、证书、加密密钥、Windows 凭据、keyboardinteractive 和 MFA。 连接复用与 SFTP：同一远程目标可以复用已认证连接；内置文件与目录上传、下载、重命名、删除、拖放传输、进度显示 和取消。 文件与版本控制工作区：在终端旁直接浏览本地或远程文件，并查看和操作 Git/SVN 工作区。 原生 Markdown/GFM 阅读器：支持标题、列表、表格、任务列表、代码块、引用、链接、远程与本地图片、常见 README HTML 和 CJK 正确换行。 原生 TeX 数学排版：支持行内与块级公式、分式、根式、上下标、极限、积分、矩阵、伸缩括号和常用数学符号，不依赖 WebView、JavaScript、MathJax 或外部 TeX。 标签页与可拖动分屏：标签栏可以放在顶部或左侧，支持拖拽排序、双击重命名、上下/左右分屏和焦点亮度区分。 快速终端：通过全局快捷键从屏幕顶部唤出 Quake 风格终端。 命令面板与设置标签页：主题、语言、Shell、补全方式、透明度、背景图片和标签位置可以直接配置并即时生效。 主题与桌面体验：提供成组的明暗主题、玻璃效果、系统明暗模式跟随、CJK 字体与输入法支持。 终端行内图片：支持 OSC 1337 图片协议，并将图片稳定锚定到滚动历史。 使用场景 长时间使用 Claude Code、Codex 等 AI CLI，希望同时管理多个 Agent，并在任务完成或等待输入时及时收到通知。 不希望关闭终端窗口就丢失正在运行的构建、服务、SSH 连接或进行到一半的 AI 对话。 希望把终端、文件浏览、Git/SVN、SSH/SFTP 和 Agent 控制集中在同一个开发空间中。 经常阅读包含图片、表格、代码块和数学公式的 README、技术文档、设计说明或研究笔记。 主要在 Windows 上开发，希望获得针对 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法深度适配的原生终端体验。 希望外部脚本或 Agent 能通过稳定接口创建 pane、执行命令、读取真实终端输出并等待任务状态变化。 Nebula 想做的不只是另一个 GPU 终端，而是一个以不会消失的终端会话为地基，将本地与远程开发、AI Agent 协作、版本 控制和技术文档统一起来的 Windows 原生工作空间。 欢迎试用，也欢迎提交 issue 和 PR。","content":"• 项目地址：https://github.com/Kuddev/nebula\n\n  开源协议：GPL-3.0\n\n  ## Nebula Terminal\n\n<img width=\"1035\" height=\"600\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/03e76893-0524-4595-9fb9-af3b011dd95f\" />\n\n<img width=\"1035\" height=\"490\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d0fb0089-b14f-4c87-9664-d3a2e62d4dfa\" />\n\n<img width=\"1035\" height=\"603\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/84832d4d-a93f-4670-97c0-5292eb9b0915\" />\n\n  ### 简介\n\n  Nebula 是一个以常驻终端为核心的 Windows 原生 AI 开发工作台，使用纯 Rust 编写，构建在 Alacritty 衍生的终端内\n  核、GPU 加速渲染管线和 Zed 的 GPUI 框架之上。\n\n  它解决的第一个问题是：终端会话不应该随着窗口一起消失。关闭 Nebula 只会分离界面，不会杀死正在运行的 Shell、构建\n  任务、SSH 连接或 AI 对话；重新打开即可回到原来的标签、分屏、滚动内容和工作目录。系统重启或常驻进程退出后，也能\n  从持续保存的快照恢复工作区布局。\n\n  Nebula 也不把终端局限在命令输入框里。Claude Code、Codex 等 Agent 的运行状态与通知，文件与 Git/SVN 工作流，原生\n  SSH/SFTP，以及 Markdown、图片和 TeX 数学公式，都被统一进同一个可恢复的开发空间。\n\n  ### 性能与实现\n\n  Nebula 使用 GPU 加速的字形与 UI quad 渲染器，并针对 Windows ConPTY 的启动、缩放和全屏 TUI 重绘路径进行优化。\n\n  窗口拖动期间只实时调整终端网格，结束后再向 PTY 合并提交最终尺寸，避免中间重绘污染滚动历史；ConPTY 启动握手会提\n  前预热，新标签页不需要等待额外往返。启动过程可以通过 NEBULA_BOOT_TRACE=1 完整观测，历史记录和其他非关键数据采\n  用惰性加载。\n\n  项目目前主要面向 Windows 10/11，重点做好 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法组合输入等 Windows 开\n  发环境中的实际体验。\n\n  ### 主要特性\n\n  - 常驻会话：关闭窗口只分离界面，PTY 和其中的任务继续运行；再次启动即可原地接回。\n  - 冷恢复与单实例：持续保存标签、分屏和工作目录；重复启动自动交给已有实例处理。\n  - AI Agent 感知：识别 Claude Code、Codex 等 CLI，按 pane 显示运行、完成、等待输入、需要关注和失败等状态。\n  - 任务通知直达现场：Agent 完成任务或等待确认时发送桌面通知；点击通知直接切到对应标签和分屏。\n  - 本地与远程状态统一：远程 SSH pane 中的 Agent 事件也能通过经过认证的私有通道返回本地侧栏和通知系统。\n  - Runtime API：外部工具和 Agent 可以读取窗口、标签、pane、进程、任务状态和终端输出，也可以创建标签与分屏、发送\n    命令、按键或 prompt，并等待任务结束。\n\n  - 增强提示符：提供历史和路径驱动的内联补全与候选列表，可用 Tab 或右方向键接受。\n  - 持久化命令历史：命令和常用目录跨会话保存，目录访问频率会参与补全排序。\n  - 内置 Powerline 提示符：显示当前目录、Git 分支和时间，PowerShell 与 Git Bash 无需额外安装提示符框架。\n  - 原生 SSH：读取 ~/.ssh/config，支持私钥、证书、加密密钥、Windows 凭据、keyboard-interactive 和 MFA。\n  - 连接复用与 SFTP：同一远程目标可以复用已认证连接；内置文件与目录上传、下载、重命名、删除、拖放传输、进度显示\n    和取消。\n\n  - 文件与版本控制工作区：在终端旁直接浏览本地或远程文件，并查看和操作 Git/SVN 工作区。\n  - 原生 Markdown/GFM 阅读器：支持标题、列表、表格、任务列表、代码块、引用、链接、远程与本地图片、常见 README\n    HTML 和 CJK 正确换行。\n\n  - 原生 TeX 数学排版：支持行内与块级公式、分式、根式、上下标、极限、积分、矩阵、伸缩括号和常用数学符号，不依赖\n    WebView、JavaScript、MathJax 或外部 TeX。\n\n  - 标签页与可拖动分屏：标签栏可以放在顶部或左侧，支持拖拽排序、双击重命名、上下/左右分屏和焦点亮度区分。\n  - 快速终端：通过全局快捷键从屏幕顶部唤出 Quake 风格终端。\n  - 命令面板与设置标签页：主题、语言、Shell、补全方式、透明度、背景图片和标签位置可以直接配置并即时生效。\n  - 主题与桌面体验：提供成组的明暗主题、玻璃效果、系统明暗模式跟随、CJK 字体与输入法支持。\n  - 终端行内图片：支持 OSC 1337 图片协议，并将图片稳定锚定到滚动历史。\n\n  ### 使用场景\n\n  - 长时间使用 Claude Code、Codex 等 AI CLI，希望同时管理多个 Agent，并在任务完成或等待输入时及时收到通知。\n  - 不希望关闭终端窗口就丢失正在运行的构建、服务、SSH 连接或进行到一半的 AI 对话。\n  - 希望把终端、文件浏览、Git/SVN、SSH/SFTP 和 Agent 控制集中在同一个开发空间中。\n  - 经常阅读包含图片、表格、代码块和数学公式的 README、技术文档、设计说明或研究笔记。\n  - 主要在 Windows 上开发，希望获得针对 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法深度适配的原生终端体验。\n  - 希望外部脚本或 Agent 能通过稳定接口创建 pane、执行命令、读取真实终端输出并等待任务状态变化。\n\n  Nebula 想做的不只是另一个 GPU 终端，而是一个以不会消失的终端会话为地基，将本地与远程开发、AI Agent 协作、版本\n  控制和技术文档统一起来的 Windows 原生工作空间。\n\n  欢迎试用，也欢迎提交 issue 和 PR。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11266","issueUrl":"https://github.com/ruanyf/weekly/issues/11266"},{"sourceId":"weekly-issues","title":"【开源自荐】WereadHelper：基于微信读书官方API实现的阅读笔记管理工具","url":"https://github.com/jachinq/weread_helper","author":"jachinq","authorUrl":"https://github.com/jachinq","publishedAt":"2026-08-19T14:22:21Z","summary":"纸间笔记 项目地址 微信读书里，划线往往停在书籍内，那些划线句子散落在各处，书架也很难按年份月份做筛选。 纸间笔记是个人自用的微信读书助手：把你的划线、想法、书架和阅读时长同步到本地，再用更适合回看、晒书、沉浸阅读的界面重新排版。官方 App 负责读；这里负责把读过的痕迹收成一座只属于你的小馆。 项目基于官方的AgentSkill 项目，数据走官方 Skills API，不是常规的使用登录 cookie 获取数据，不会有过期的麻烦，数据请求的是官方 API。密钥留在本机服务端，浏览器从不直连微信读书。可以本地开发、Docker 部署，也可以打成 Windows 便携桌面。 官方没有、这里有 下面四件事，是微信读书客户端里很难一次性做好、或根本没有的体验。它们也是这个项目真正想被记住的部分。 1. 随机笔记：每日随机抽签 首页不做信息流，做抽签。 每天从本地全部历史划线里抽出 5 条，排成散落的笔记卡片：原文、封面、书名、作者、划线日期。点开一张，卡片放大铺开，可左右翻阅当日这一批；从卡片也能直接进这本书的全书笔记。 同一天反复打开，默认看到的是同一批——像书桌上那几张便签，如果想换口味，点「换一批」即可重抽。 官方 App 一直没有提供方便的笔记回看功能，读得越多，在每本书里划线过的句子越难收集。纸间笔记把「偶然重逢一句旧话」做成首页仪式，与那些曾引起你共鸣的句子，再次相遇。 适合：早晨、睡前翻看、把一句喜欢的话截出来分享。 !home 2. 完整笔记列表：按书、按章，划线与想法并排 微信读书的笔记入口偏「当前在读」和单本上下文。纸间笔记把所有有笔记的书收成一张可检索的书单。 封面、书名、作者、划线数、想法数、阅读进度一目了然 按书名或作者即时筛选 点进一本书：按章节分组；划线原文与对应想法贴在一起，独立想法单独成块 侧栏目录可跳章；封面可展开书籍信息卡片 这是「完整」的含义：不是某一本的摘录导出，而是整座笔记库可浏览、可检索、可按章重读。划线不再只活在阅读器的高亮层里，而成为可以慢慢逛的文本。 适合：写读书笔记前的回看、找某句出处、把一本书的想法从头到尾读一遍。 !home 3. 书架按阅读时间筛选：晒出某年某月读过 / 读完的书 官方书架很难回答一个很具体的问题：这一年、这一个月，我到底摊开过哪些书？哪些读完了？（其实有入口，不过比较隐蔽，导致很少使用） 纸间笔记的书架按最近阅读时间排列，并提供： | 筛选 | 用途 | ||| | 年份 | 只看某一年动过的书 | | 月份 | 选定年份后再收窄到某月 | | 读完 | 只留下 读完 标记的书 | | 置顶 | 只看置顶 | | 书名 / 作者 | 在当前时间范围内再搜 | 年份选项来自书架上真实出现过的阅读时间，不会列出空年。选「2024 年 + 读完」，就是一份现成的年度读完墙；选某月，就是那个月的在读足迹。截一张书架网格，就是年终晒书、读书会分享、个人主页配图。 !home 4. 主题切换：支持九种风格 纸间笔记提供了九套主题，每套都有明亮 / 黑暗两种模式选择，总有一种风格适合你~ | 主题 | 气质 | 布局 | |||| | 胡桃灯影 | 暖木、灯火，默认馆藏 | 顶栏 | | 青瓷书斋 | 冷绿釉色，安静 | 顶栏 | | 朱砂线装 | 朱红线口，旧装帧 | 顶栏 | | 夜航墨水 | 深夜航行，侧栏书架 | 侧栏 | | 茶室苔绿 | 茶席与青苔 | 顶栏 | | 月光银箔 | 冷银与衬纸 | 侧栏 | | 铅字排印 | 等宽、印厂、纸边 | 侧栏 | | 秋柳柿红 | 秋色、柿子、暖边 | 顶栏 | | 海棠春笺 | 笺纸与海棠 | 侧栏 | !home 部分主题带一盏装饰灯；顶栏与侧栏两种壳，导航位置不同，同一套笔记换一种风格。应用名称也可自定义，从默认的「纸间笔记」改为任意你喜欢的名字。 !home 这里还有什么 特色之外，同步进来的统计数据同样拿来做展示了。 阅读统计 周 / 月 / 年 / 累计切换。历史年、月、周可步进；本地没有该周期快照时，按需向官方拉取并入库，不覆盖其它周期。总时长、阅读天数、日均；有每日时长则画分钟柱状图；有分类偏好则展示标签。时长按秒换算，页面上直接读小时与分钟。 !home 适合谁 重度微信读书用户、又嫌官方笔记管理不适合「展览」的人。 读过的书，合上后就再也不会翻开了？那些曾经让你思考的过的句子，也不再会看到了？那么「纸间笔记」将会很适合你，与那些划线过、思考过的句子，再次重逢吧~","content":"# 纸间笔记\n\n[项目地址](https://github.com/jachinq/weread_helper)\n\n微信读书里，划线往往停在书籍内，那些划线句子散落在各处，书架也很难按年份月份做筛选。\n\n**纸间笔记**是个人自用的微信读书助手：把你的划线、想法、书架和阅读时长同步到本地，再用更适合回看、晒书、沉浸阅读的界面重新排版。官方 App 负责读；这里负责把读过的痕迹收成一座只属于你的小馆。\n\n项目基于官方的[AgentSkill 项目](https://github.com/Tencent/WeChatReading)，数据走官方 [Skills API](https://weread.qq.com/r/weread-skills)，不是常规的使用登录 cookie 获取数据，不会有过期的麻烦，数据请求的是官方 API。密钥留在本机服务端，浏览器从不直连微信读书。可以本地开发、Docker 部署，也可以打成 Windows 便携桌面。\n\n## 官方没有、这里有\n\n下面四件事，是微信读书客户端里很难一次性做好、或根本没有的体验。它们也是这个项目真正想被记住的部分。\n\n### 1. 随机笔记：每日随机抽签\n\n首页不做信息流，做**抽签**。\n\n每天从本地全部历史划线里抽出 5 条，排成散落的笔记卡片：原文、封面、书名、作者、划线日期。点开一张，卡片放大铺开，可左右翻阅当日这一批；从卡片也能直接进这本书的全书笔记。\n\n同一天反复打开，默认看到的是同一批——像书桌上那几张便签，如果想换口味，点「换一批」即可重抽。\n\n官方 App 一直没有提供方便的笔记回看功能，读得越多，在每本书里划线过的句子越难收集。纸间笔记把**「偶然重逢一句旧话」**做成首页仪式，与那些曾引起你共鸣的句子，再次相遇。\n\n适合：早晨、睡前翻看、把一句喜欢的话截出来分享。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/home.webp?raw=true)\n\n### 2. 完整笔记列表：按书、按章，划线与想法并排\n\n微信读书的笔记入口偏「当前在读」和单本上下文。纸间笔记把**所有有笔记的书**收成一张可检索的书单。\n\n- 封面、书名、作者、划线数、想法数、阅读进度一目了然\n- 按书名或作者即时筛选\n- 点进一本书：按章节分组；划线原文与对应想法贴在一起，独立想法单独成块\n- 侧栏目录可跳章；封面可展开书籍信息卡片\n\n这是「完整」的含义：不是某一本的摘录导出，而是整座笔记库可浏览、可检索、可按章重读。划线不再只活在阅读器的高亮层里，而成为可以慢慢逛的文本。\n\n适合：写读书笔记前的回看、找某句出处、把一本书的想法从头到尾读一遍。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/notes.webp?raw=true)\n\n### 3. 书架按阅读时间筛选：晒出某年某月读过 / 读完的书\n\n官方书架很难回答一个很具体的问题：**这一年、这一个月，我到底摊开过哪些书？哪些读完了？**（其实有入口，不过比较隐蔽，导致很少使用）\n\n纸间笔记的书架按最近阅读时间排列，并提供：\n\n| 筛选 | 用途 |\n|------|------|\n| 年份 | 只看某一年动过的书 |\n| 月份 | 选定年份后再收窄到某月 |\n| 读完 | 只留下 `读完` 标记的书 |\n| 置顶 | 只看置顶 |\n| 书名 / 作者 | 在当前时间范围内再搜 |\n\n年份选项来自书架上真实出现过的阅读时间，不会列出空年。选「2024 年 + 读完」，就是一份现成的年度读完墙；选某月，就是那个月的在读足迹。截一张书架网格，就是年终晒书、读书会分享、个人主页配图。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/shelf.webp?raw=true)\n\n### 4. 主题切换：支持九种风格\n\n纸间笔记提供了九套主题，每套都有明亮 / 黑暗两种模式选择，总有一种风格适合你~\n\n| 主题 | 气质 | 布局 |\n|------|------|------|\n| 胡桃灯影 | 暖木、灯火，默认馆藏 | 顶栏 |\n| 青瓷书斋 | 冷绿釉色，安静 | 顶栏 |\n| 朱砂线装 | 朱红线口，旧装帧 | 顶栏 |\n| 夜航墨水 | 深夜航行，侧栏书架 | 侧栏 |\n| 茶室苔绿 | 茶席与青苔 | 顶栏 |\n| 月光银箔 | 冷银与衬纸 | 侧栏 |\n| 铅字排印 | 等宽、印厂、纸边 | 侧栏 |\n| 秋柳柿红 | 秋色、柿子、暖边 | 顶栏 |\n| 海棠春笺 | 笺纸与海棠 | 侧栏 |\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/settings.webp?raw=true)\n\n部分主题带一盏装饰灯；顶栏与侧栏两种壳，导航位置不同，同一套笔记换一种风格。应用名称也可自定义，从默认的「纸间笔记」改为任意你喜欢的名字。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/theme.webp?raw=true)\n\n## 这里还有什么\n\n特色之外，同步进来的统计数据同样拿来做展示了。\n\n**阅读统计**\n\n周 / 月 / 年 / 累计切换。历史年、月、周可步进；本地没有该周期快照时，按需向官方拉取并入库，不覆盖其它周期。总时长、阅读天数、日均；有每日时长则画分钟柱状图；有分类偏好则展示标签。时长按秒换算，页面上直接读小时与分钟。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/stats.webp?raw=true)\n\n\n## 适合谁\n\n重度微信读书用户、又嫌官方笔记管理不适合「展览」的人。\n\n读过的书，合上后就再也不会翻开了？那些曾经让你思考的过的句子，也不再会看到了？那么「纸间笔记」将会很适合你，与那些划线过、思考过的句子，再次重逢吧~","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11267","issueUrl":"https://github.com/ruanyf/weekly/issues/11267"},{"sourceId":"weekly-issues","title":"【Tool Recommendation】Kivora: One-Sentence + Product Image, AI-Generated Short Videos for Sales","url":"https://0d63b37e.kivora-112.pages.dev/","author":"zhangmask","authorUrl":"https://github.com/zhangmask","publishedAt":"2026-08-19T14:28:10Z","summary":"【Tool Recommendation】Kivora: OneSentence + Product Image, AIGenerated Short Videos for Sales Kivora is an AI short video generation tool for ecommerce sellers, suitable for quickly creating product promotional videos, sales videos, and short video ads. Kivora isn't simply an \"AIgenerated video\" tool. It focuses more on product display, product marketing, and short videos that drive sales. Suitable for: Crossborder ecommerce TikTok Shop Douyin ecommerce Xiaohongshu Amazon product marketing Independent websites Shopify merchants Ecommerce advertising creatives Product promotional videos Social media short videos It's incredibly easy to use: Enter a sentence and upload a product image, and it will automatically generate an ecommerce short video. No need to write scripts, edit, or build complex AI workflows. It's particularly suitable for crossborder ecommerce, TikTok shops, independent websites, and sellers who need to create product videos in batches. Several features I particularly value: OneSentence Generation: Directly describe the desired video; no need to study complex prompts. Product Image Video Generation: Existing product images can be used directly. Simple Operation: No need to learn professional video editing. Stability First: Emphasizes state saving during the generation process to avoid losing previously entered content and materials in case of generation errors. Suitable for Ecommerce Scenarios: Quickly create product display, advertising, and sales short videos. Kivora aims to solve a very specific problem: I don't want to create another \"allencompassing\" AI video platform. nor do I want users to open it only to find dozens of models and hundreds of parameters, unsure where to begin. Kivora prefers to simplify things: Product image + one sentence → One short product video clip. Making it accessible even to those without editing skills, and enabling small businesses without professional photography teams to quickly create marketing videos. If you are looking for tools like AI video generation, ecommerce videos, product image video generation, and sales short videos, you can give it a try. 👉 <img width=\"2350\" height=\"1364\" alt=\"Image\" src=\" /","content":"###【Tool Recommendation】Kivora: One-Sentence + Product Image, AI-Generated Short Videos for Sales\n\nKivora is an AI short video generation tool for e-commerce sellers, suitable for quickly creating product promotional videos, sales videos, and short video ads.\n\nKivora isn't simply an \"AI-generated video\" tool.\n\nIt focuses more on product display, product marketing, and short videos that drive sales.\n\nSuitable for:\n\nCross-border e-commerce\n\nTikTok Shop\n\nDouyin e-commerce\n\nXiaohongshu\n\nAmazon product marketing\n\nIndependent websites\n\nShopify merchants\n\nE-commerce advertising creatives\n\nProduct promotional videos\n\nSocial media short videos\n\nIt's incredibly easy to use: **Enter a sentence and upload a product image, and it will automatically generate an e-commerce short video**. No need to write scripts, edit, or build complex AI workflows.\n\nIt's particularly suitable for cross-border e-commerce, TikTok shops, independent websites, and sellers who need to create product videos in batches.\n\nSeveral features I particularly value:\n\n* **One-Sentence Generation**: Directly describe the desired video; no need to study complex prompts.\n\n* **Product Image Video Generation**: Existing product images can be used directly.\n\n* **Simple Operation**: No need to learn professional video editing.\n\n* **Stability First**: Emphasizes state saving during the generation process to avoid losing previously entered content and materials in case of generation errors.\n\n* **Suitable for E-commerce Scenarios**: Quickly create product display, advertising, and sales short videos.\n\n* Kivora aims to solve a very specific problem:\n\nI don't want to create another \"all-encompassing\" AI video platform.\n\nnor do I want users to open it only to find dozens of models and hundreds of parameters, unsure where to begin.\n\nKivora prefers to simplify things:\n\nProduct image + one sentence → One short product video clip.\n\nMaking it accessible even to those without editing skills, and enabling small businesses without professional photography teams to quickly create marketing videos.\n\nIf you are looking for tools like **AI video generation, e-commerce videos, product image video generation, and sales short videos**, you can give it a try. 👉 https://0d63b37e.kivora-112.pages.dev/\n\n<img width=\"2350\" height=\"1364\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/94df3ef5-1c08-45ec-8598-2cdab379d139\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11268","issueUrl":"https://github.com/ruanyf/weekly/issues/11268"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[Open Source] termagitchi: give every AI coding agent its own terminal pet","url":"https://github.com/TevvvB/termagitchi","author":"TevvvB","authorUrl":"https://github.com/TevvvB","publishedAt":"2026-08-18T21:10:41Z","summary":"Project URL Category Go Project Title Give every AI coding agent its own terminal pet Project Description A Go CLI that gives every AI coding agent session its own creature in the terminal status line, with one den per git worktree. Its mood tracks how tidy that worktree is, so six agents at once are six pets you can tell apart. Highlights Most terminal pets belong to you: one creature, nurtured over time. This one belongs to the agent, which is what makes it useful rather than decorative. When six Claude Code or Codex sessions are running across six worktrees, the status line tells you which session you are looking at and which one is in trouble, because the creature is derived from the session and its mood is derived from the worktree's tidiness. 41 species across 5 rarity bands, plus shiny variants, and 16 cities that name the dens. pets den shows the collection: which species you have found and which places you have worked in. A creature is a hash, not a record. Nothing is persisted to decide identity, so there is no state to migrate or corrupt. The statusline path runs once a second in every open session, so it reads two small cache files and nothing else: no git, no network. The expensive work happens in a throttled background probe. Verified end to end against Claude Code. The Codex hooks are written but have not been tested against a real Codex, and the README says so. The tmux and shellprompt modes need nothing from the agent at all, so they work with Aider, Amp, Gemini CLI or anything else. Installs itself into whichever agents you actually have, backs up every config it touches, and leaves your other hooks alone. pets uninstall reverses it. Single static binary, MIT, no runtime dependencies. Example Code markdown install, then wire into whichever agents are present curl fsSL | sh pets install one line per live session, across every worktree pets party the collection: species found, and cities worked in pets den Screenshots or Demo Videos !six worktrees, six creatures","content":"### Project URL\n\nhttps://github.com/TevvvB/termagitchi\n\n### Category\n\nGo\n\n### Project Title\n\nGive every AI coding agent its own terminal pet\n\n### Project Description\n\nA Go CLI that gives every AI coding agent session its own creature in the terminal status line, with one den per git worktree. Its mood tracks how tidy that worktree is, so six agents at once are six pets you can tell apart.\n\n### Highlights\n\nMost terminal pets belong to you: one creature, nurtured over time. This one belongs to the agent, which is what makes it useful rather than decorative. When six Claude Code or Codex sessions are running across six worktrees, the status line tells you which session you are looking at and which one is in trouble, because the creature is derived from the session and its mood is derived from the worktree's tidiness.\n\n- 41 species across 5 rarity bands, plus shiny variants, and 16 cities that name the dens. `pets den` shows the collection: which species you have found and which places you have worked in.\n- A creature is a hash, not a record. Nothing is persisted to decide identity, so there is no state to migrate or corrupt.\n- The status-line path runs once a second in every open session, so it reads two small cache files and nothing else: no git, no network. The expensive work happens in a throttled background probe.\n- Verified end to end against Claude Code. The Codex hooks are written but have not been tested against a real Codex, and the README says so. The tmux and shell-prompt modes need nothing from the agent at all, so they work with Aider, Amp, Gemini CLI or anything else.\n- Installs itself into whichever agents you actually have, backs up every config it touches, and leaves your other hooks alone. `pets uninstall` reverses it.\n- Single static binary, MIT, no runtime dependencies.\n\n### Example Code\n\n```markdown\n# install, then wire into whichever agents are present\ncurl -fsSL https://raw.githubusercontent.com/TevvvB/termagitchi/main/install.sh | sh\npets install\n\n# one line per live session, across every worktree\npets party\n\n# the collection: species found, and cities worked in\npets den\n```\n\n### Screenshots or Demo Videos\n\n![six worktrees, six creatures](https://raw.githubusercontent.com/TevvvB/termagitchi/main/docs/demo.gif)\n","metrics":{"comments":1},"tags":["hellogithub","submission"],"externalId":"3560","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3560"},{"sourceId":"hellogithub-issues","title":"[开源自荐] 优派简历: 一款高颜值 免费的AI在线简历生成器","url":"https://github.com/oopooa/opresume","author":"oopooa","authorUrl":"https://github.com/oopooa","publishedAt":"2026-08-19T09:57:51Z","summary":"项目地址 类别 其它 项目标题 用户可在线制作导出简历，支持多种模板，数据随时导出，不上传云端 项目描述 这是一个在线简历制作工具，完全免费，无广告，支持多种模板，简历数据随时导出，安全可靠。 亮点 AI润色，AI智能识别PDF导入 多种模板选择，排版任意调节 支持智能分页功能，不随意截断模块 支持根据工作经历自动推算工作经验 支持根据生日计算年龄，无需多次重复设置 支持隐私模式，对敏感信息一键打码，方便截图分享 示例代码 markdown 截图或演示视频 在线使用 <img width=\"1920\" height=\"1536\" alt=\"Image\" src=\" / <img width=\"984\" height=\"1179\" alt=\"Image\" src=\" /","content":"### 项目地址\n\nhttps://github.com/oopooa/opresume\n\n### 类别\n\n其它\n\n### 项目标题\n\n用户可在线制作导出简历，支持多种模板，数据随时导出，不上传云端\n\n### 项目描述\n\n这是一个在线简历制作工具，完全免费，无广告，支持多种模板，简历数据随时导出，安全可靠。\n\n### 亮点\n\n- AI润色，AI智能识别PDF导入\n- 多种模板选择，排版任意调节\n- 支持智能分页功能，不随意截断模块\n- 支持根据工作经历自动推算工作经验\n- 支持根据生日计算年龄，无需多次重复设置\n- 支持隐私模式，对敏感信息一键打码，方便截图分享\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n[在线使用](https://opresume.pages.dev/)\n\n<img width=\"1920\" height=\"1536\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/94c69707-c2d9-42ad-9480-ccb4d198515f\" />\n\n<img width=\"984\" height=\"1179\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/43c7a702-5b23-486c-b02d-3a4e73f98e70\" />","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3561","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3561"},{"sourceId":"hellogithub-issues","title":"[开源推荐] repo-cover","url":"https://github.com/sjh9714/repo-cover","author":"sjh9714","authorUrl":"https://github.com/sjh9714","publishedAt":"2026-08-19T11:18:42Z","summary":"项目地址 类别 人工智能 项目标题 让编程智能体为仓库设计社交预览图的 Agent 技能 项目描述 repocover 是一个 Agent 技能，让 Claude Code、Codex 等编程智能体为 GitHub 仓库设计社交预览图（og:image）。不调用图像模型，智能体直接写出一个自包含的 1280x640 HTML 文件，配套的 Python 检查器对对比度、文本溢出和中日韩换行做确定性校验，最后用本地 Chrome 导出 PNG。 亮点 设计品味不是靠提示词，而是写成模型无法偏离的数字约束（4px 网格、单强调色自动加深到 WCAG 对比度、按名称长度分级的字号）。中文排版是一等公民，使用 Noto Sans SC 和正确的换行规则，检查器会把排版破坏判为失败。四种风格由仓库的语言颜色和名称哈希派生，不会有两张相同的卡片。在线画廊可直接查看每张卡片的源码。 示例代码 markdown 截图或演示视频","content":"### 项目地址\n\nhttps://github.com/sjh9714/repo-cover\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n让编程智能体为仓库设计社交预览图的 Agent 技能\n\n### 项目描述\n\nrepo-cover 是一个 Agent 技能，让 Claude Code、Codex 等编程智能体为 GitHub 仓库设计社交预览图（og:image）。不调用图像模型，智能体直接写出一个自包含的 1280x640 HTML 文件，配套的 Python 检查器对对比度、文本溢出和中日韩换行做确定性校验，最后用本地 Chrome 导出 PNG。\n\n### 亮点\n\n设计品味不是靠提示词，而是写成模型无法偏离的数字约束（4px 网格、单强调色自动加深到 WCAG 对比度、按名称长度分级的字号）。中文排版是一等公民，使用 Noto Sans SC 和正确的换行规则，检查器会把排版破坏判为失败。四种风格由仓库的语言颜色和名称哈希派生，不会有两张相同的卡片。在线画廊可直接查看每张卡片的源码。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/sjh9714/repo-cover/main/docs/hero.png\n\nhttps://sjh9714.github.io/repo-cover/","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3562","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3562"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"vibecafe","sourceName":"VibeCafé 作品","items":[{"sourceId":"vibecafe","title":"CogineWork：一个可以自己 DIY 的本地优先 AI 工作台","url":"https://vibecafe.ai/products/cmszzsfxg00000aji4nbmd934","author":"Bambi","authorUrl":"https://vibecafe.ai/u/bambi111","publishedAt":"2026-08-19T11:12:25.252Z","summary":"不只使用 AI，更能 DIY 属于自己的 AI 工作台。","content":"不只使用 AI，更能 DIY 属于自己的 AI 工作台。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmszzsfxg00000aji4nbmd934","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887600825-purt9w.jpg","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/mszzj61ghlzi-zCV513CMks707pimM1csnanKkCzVm4.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887600825-purt9w.jpg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887658753-dahz69.jpg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887671908-8dc5qi.jpg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137557911-moymq2.jpg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558332-kzzuqx.jpg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558791-ky3c42.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558572-3h98de.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558173-55ynbp.jpg"]},{"sourceId":"vibecafe","title":"剪迹·Clipth","url":"https://vibecafe.ai/products/cmszzqtso00000akyel0lpr8r","author":"深海","authorUrl":"https://vibecafe.ai/u/wavever","publishedAt":"2026-08-19T11:11:09.912Z","summary":"一款键盘操作优先、支持 MCP 的 macOS 剪贴板管理器","content":"一款键盘操作优先、支持 MCP 的 macOS 剪贴板管理器","metrics":{},"tags":["vibecafe","product"],"externalId":"cmszzqtso00000akyel0lpr8r","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137423626-t3ebj2.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787136924129-qt0pad.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137423626-t3ebj2.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137503424-txy4r7.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137506042-56lguz.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137507817-b4qqa1.png"]},{"sourceId":"vibecafe","title":"牛来MBTI · NLTI","url":"https://vibecafe.ai/products/cmszivplz00000bhyzokdrhjr","author":"xter","authorUrl":"https://vibecafe.ai/u/xter","publishedAt":"2026-08-19T03:19:04.295Z","summary":"2026年最抽象的国产动画《牛来》主题角色测试。16道题，测测你是惊吓爆发型小牛、哲学引路鸟，还是隐藏款普通牛。","content":"2026年最抽象的国产动画《牛来》主题角色测试。16道题，测测你是惊吓爆发型小牛、哲学引路鸟，还是隐藏款普通牛。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmszivplz00000bhyzokdrhjr","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272919-ym4ddt.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/mszip1ne32pn-lwleORAw6xfqI3ejwEc8BTC7mM9n6l.svg","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272919-ym4ddt.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109271353-2yihk2.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272439-7udq3a.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272745-jp7btm.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109517655-bxypu8.png"]}]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"\"URL Shortener\"","url":"https://www.producthunt.com/products/url-shortener-12/launches/url-shortener-69ae679d-3587-4fbc-b0d1-181cd0a2334d?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"\"Shorten links, track clicks, tag campaigns — free forever\"","content":"\"Most free shorteners stop at making a link short. This one adds a built-in UTM campaign builder — fill in source/medium/campaign and it auto-tags your destination URL for Google Analytics or Meta Ads, no manual work needed. Paired with real click history, QR codes, password protection, and bulk shortening, it's built for anyone who wants to actually measure their links, not just shrink them — free to start, no sign-up required.\"","metrics":{},"tags":["producthunt","new"],"externalId":"1222030","logo":"https://ph-files.imgix.net/fa9b525f-bfdc-4ed6-b721-682e97f77228.png?auto=format","images":["https://ph-files.imgix.net/acc70a70-ce14-4e6a-b730-cfe6b660d58e.png?auto=format","https://ph-files.imgix.net/a05e9496-b898-4382-85e6-2f109d8b5e88.png?auto=format","https://ph-files.imgix.net/49c15592-e995-44e9-9c74-bb1deb47f620.png?auto=format","https://ph-files.imgix.net/140bd3de-cd7f-4cca-829e-912932e02f01.png?auto=format","https://ph-files.imgix.net/7abdac86-b083-42da-b92f-98e64e138a23.png?auto=format"],"image":"https://ph-files.imgix.net/acc70a70-ce14-4e6a-b730-cfe6b660d58e.png?auto=format"},{"sourceId":"producthunt","title":"QI Futsal","url":"https://www.producthunt.com/products/qi-futsal/launches/qi-futsal?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Deviens le coach que tes joueurs méritent ","content":"Quiz tactiques, modules et gamification futsal pour éducateurs, joueurs et gardiens. Compte 100% gratuit, sans carte bancaire. Créé ton accès en 30 secondes.","metrics":{},"tags":["producthunt","new"],"externalId":"1223865","logo":"https://ph-files.imgix.net/36545bad-bd26-4193-97df-ad57b386f3cd.png?auto=format","images":["https://ph-files.imgix.net/96df79cf-e4b7-43cb-af89-4cf1728c37a7.webp?auto=format","https://ph-files.imgix.net/5e2e50dc-e29d-4ed9-bfd0-ff9eb8331231.jpeg?auto=format","https://ph-files.imgix.net/3eb6af47-2bbe-42f3-a043-56d604197bdf.png?auto=format"],"image":"https://ph-files.imgix.net/96df79cf-e4b7-43cb-af89-4cf1728c37a7.webp?auto=format"},{"sourceId":"producthunt","title":"QuokkaJot — happier user insights","url":"https://www.producthunt.com/products/quokkajot-happier-user-insights/launches/quokkajot-happier-user-insights?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"🦘 Open-source feedback, roadmap & changelog platform.","content":"Open-source user feedback, roadmap, and changelog platform. QuokkaJot helps teams collect feature requests, prioritize ideas with votes, share public roadmaps, and close the loop when features ship. Built as a UserJot alternative with AI-powered feedback organization, self-hosting, APIs, and full data ownership. Collect feedback. Build better products. Keep users in the loop.","metrics":{},"tags":["producthunt","new"],"externalId":"1226164","logo":"https://ph-files.imgix.net/fe85e15d-8ae1-4b73-a58b-e2ff6d11c27d.png?auto=format","images":["https://ph-files.imgix.net/93a82506-43fd-4fc5-813e-b9dce56e7c3a.png?auto=format","https://ph-files.imgix.net/51452569-4eba-4798-be62-e7aff0e8d336.png?auto=format","https://ph-files.imgix.net/d384a4e1-cce4-4cb3-9549-8de0c4c2f9e4.png?auto=format","https://ph-files.imgix.net/0fc55541-1f47-4537-baab-1681d58e9a32.png?auto=format","https://ph-files.imgix.net/5736af17-3a2a-42e8-bf78-4675035eca4e.png?auto=format"],"image":"https://ph-files.imgix.net/93a82506-43fd-4fc5-813e-b9dce56e7c3a.png?auto=format"},{"sourceId":"producthunt","title":"Arzuno LeadLens","url":"https://www.producthunt.com/products/arzuno-leadlens/launches/arzuno-leadlens?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"fastest way to extract verified B2B leads from any linkedin.","content":"Arzuno LeadLens is a lightning fast Chrome extension built to pull verified B2B leads directly from your browser. Forget bulky scraping tools. We engineered a sleek intuitive tool that extracts emails, social profiles, and company data in one single click. It is perfectly optimized for agencies, sales teams, and solo founders who want clean data without the heavy lifting. Export straight to CSV and supercharge your outreach workflow right now.","metrics":{},"tags":["producthunt","new"],"externalId":"1226139","logo":"https://ph-files.imgix.net/8210fa99-6298-4fab-ba33-b30e936a677d.png?auto=format","images":["https://ph-files.imgix.net/d4ea7b53-46bb-463c-89b4-837608a05041.jpeg?auto=format","https://ph-files.imgix.net/c9787192-a592-45a8-ab9e-3c9606c29618.jpeg?auto=format","https://ph-files.imgix.net/67be9a80-6f98-4d75-a2c1-8db0e17ec391.png?auto=format","https://ph-files.imgix.net/f3d3c8fe-5930-49a0-9d59-bf9d62bf072e.png?auto=format","https://ph-files.imgix.net/dbe7ad7d-8cca-4374-a59a-c646d7f1190a.png?auto=format","https://ph-files.imgix.net/9ef773a2-fddd-4708-a51b-e26df511bfee.png?auto=format"],"image":"https://ph-files.imgix.net/d4ea7b53-46bb-463c-89b4-837608a05041.jpeg?auto=format"},{"sourceId":"producthunt","title":"Kayliquest","url":"https://www.producthunt.com/products/kayliquest/launches/kayliquest?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Socialnetwork","content":"KAYLI QUEST Chaque jour, une nouvelle quête. Kayli Quest est une plateforme sociale qui transforme le divertissement en véritable aventure. Découvre du contenu dans ton feed, accomplis des quêtes quotidiennes, gagne de l’XP, monte de niveau et interagis avec la communauté. Découvre du contenu Accomplis des quêtes Gagne de l’XP Monte de niveau Like et commente Ajoute des amis Développe ton profil Chaque interaction te permet de progresser et chaque journée apporte de nouvelles quêtes.","metrics":{},"tags":["producthunt","new"],"externalId":"1220786","logo":"https://ph-files.imgix.net/b2bd89f1-1be9-4920-91a8-3c2820b4295e.jpeg?auto=format","images":["https://ph-files.imgix.net/0d3d1a9d-b29a-4635-82b2-b4cd4802ac5c.jpeg?auto=format","https://ph-files.imgix.net/2c398199-f308-42c3-954e-f416fbae9a20.jpeg?auto=format","https://ph-files.imgix.net/d18f0c41-9396-4463-8414-b24fbc1f525b.jpeg?auto=format"],"image":"https://ph-files.imgix.net/0d3d1a9d-b29a-4635-82b2-b4cd4802ac5c.jpeg?auto=format"},{"sourceId":"producthunt","title":"Shrink Sleeve Label Manufacturer India ","url":"https://www.producthunt.com/products/shrink-sleeve-label-manufacturer-india/launches/shrink-sleeve-label-manufacturer-india?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Packaging Company  Label Printing Company  Printing ","content":"Orianaa Décorpack Pvt. Ltd. is a leading Indian packaging and label printing company specializing in Shrink Sleeve Labels, Pressure Sensitive Labels, In-Mould Labels, Heat Transfer Labels, BOPP Wrap Around Labels, and customized packaging solutions. With over 30 years of packaging expertise, Orianaa delivers innovative, high-quality labels for FMCG, food, beverage, pharmaceutical, cosmetics, and industrial brands.","metrics":{},"tags":["producthunt","new"],"externalId":"1225743","logo":"https://ph-files.imgix.net/c0a00f2e-01ac-4d19-912c-81671cd12a84.png?auto=format","images":["https://ph-files.imgix.net/073de810-7d14-48af-bd4b-c6b14b40ae2f.webp?auto=format"],"image":"https://ph-files.imgix.net/073de810-7d14-48af-bd4b-c6b14b40ae2f.webp?auto=format"},{"sourceId":"producthunt","title":"Catitos: Cat Health Tracker","url":"https://www.producthunt.com/products/catitos-cat-health-tracker/launches/catitos-cat-health-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Vaccines, meds and weight for your cat. Reminders for cats.","content":"Catitos keeps your cat's health in one place: vaccines, medications, weight, illnesses and photos. Whether you have one cat or twenty. Forget the paper vaccination booklet that always goes missing and the doses scribbled on the kitchen calendar. Catitos tells you when each one is due. Download Catitos and stop keeping your cat's health on sticky notes.","metrics":{},"tags":["producthunt","new"],"externalId":"1226071","logo":"https://ph-files.imgix.net/f0adea6c-fa58-475f-b2bc-83ec6a04352b.png?auto=format","images":["https://ph-files.imgix.net/e0537561-f3b5-410f-a8f9-40300367bc79.png?auto=format","https://ph-files.imgix.net/66cfd5a6-b6dc-4c6b-a75a-6d8e62ad6db1.png?auto=format","https://ph-files.imgix.net/53f9eb8a-7a00-44ac-a3ad-7343b6a24578.png?auto=format","https://ph-files.imgix.net/54f25aed-ff77-4346-be7d-c8669d9aa616.png?auto=format"],"image":"https://ph-files.imgix.net/e0537561-f3b5-410f-a8f9-40300367bc79.png?auto=format"},{"sourceId":"producthunt","title":"Family Budget Ledger","url":"https://www.producthunt.com/products/family-budget-ledger/launches/family-budget-ledger?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Track your budget, catch a shortfall before it hits","content":"Family Budget Ledger tracks 12 months of income and expenses and shows a running cash balance that turns red the moment it goes negative — an early warning instead of finding out from your bank statement. Add unlimited custom lines for anything that doesn't fit a standard category (rental income, a relative's contribution, whatever). Comes as both an offline HTML app and an Excel workbook. Compare your spending mix against editable benchmarks, see a visual breakdown by category.","metrics":{},"tags":["producthunt","new"],"externalId":"1226145","logo":"https://ph-files.imgix.net/0d839e9b-6360-4024-bb77-97d4b05a9440.png?auto=format","images":["https://ph-files.imgix.net/b1aaa3fc-2e03-41c6-81ba-5d07dcdc3227.png?auto=format","https://ph-files.imgix.net/be5eae4c-4273-4b4c-9ede-2d571f7e8a4a.png?auto=format","https://ph-files.imgix.net/c71c9ee0-6911-40f7-813c-000e7b1403c4.png?auto=format"],"image":"https://ph-files.imgix.net/b1aaa3fc-2e03-41c6-81ba-5d07dcdc3227.png?auto=format"},{"sourceId":"producthunt","title":"Skora","url":"https://www.producthunt.com/products/skora-2/launches/skora-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Free AI college counseling — essays, chances, matches","content":"Skora gives every student free AI essay feedback Brainstorm → Draft → Polishing → Final, real admission-chance estimates built on College Scorecard/IPEDS data, not guesses, and college matching by major. No credit card, free forever for students. Counselors get management + white-label tools on a paid tier.","metrics":{},"tags":["producthunt","new"],"externalId":"1215033","logo":"https://ph-files.imgix.net/18e9a367-218b-4dc5-8f24-b9f30d85c354.png?auto=format","images":["https://ph-files.imgix.net/31800ec3-dd27-445e-96a0-1e8a5b7f4f25.png?auto=format","https://ph-files.imgix.net/c5be2964-0b8f-4198-9c94-db49b2c64ead.png?auto=format","https://ph-files.imgix.net/5cfb426c-61d3-468d-a020-de7921eed259.png?auto=format"],"image":"https://ph-files.imgix.net/31800ec3-dd27-445e-96a0-1e8a5b7f4f25.png?auto=format"},{"sourceId":"producthunt","title":"ImagineMyHouse","url":"https://www.producthunt.com/products/imaginemyhouse/launches/imaginemyhouse?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Explore and compare AI home redesign styles in seconds","content":"Stuck on how to redesign your space? ImagineMyHouse turns your ideas into reality in seconds. Simply upload a photo of any interior room or house exterior to instantly explore dozens of design styles—from Japandi and Modern Minimalist to Warm Scandinavian. Test different furniture layouts, color palettes, and materials without hiring expensive designers or learning 3D software. Compare styles side-by-side and find the perfect look for your home before making any real changes.","metrics":{},"tags":["producthunt","new"],"externalId":"1224126","logo":"https://ph-files.imgix.net/74e6ad53-f9a6-4a87-8225-eb4788b7c677.svg?auto=format","images":["https://ph-files.imgix.net/bbfd6fc1-dc2a-482f-841c-547f9d3c97b3.jpeg?auto=format","https://ph-files.imgix.net/e12783d7-f894-40b9-9b6b-b505d532fc8b.webp?auto=format","https://ph-files.imgix.net/3bb84fd7-bcf9-44c6-836c-d63e797ce066.webp?auto=format"],"image":"https://ph-files.imgix.net/bbfd6fc1-dc2a-482f-841c-547f9d3c97b3.jpeg?auto=format"},{"sourceId":"producthunt","title":"WatchTowerOS","url":"https://www.producthunt.com/products/websentryx/launches/watchtoweros?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Intelligent protection, monitoring & insights for you.","content":"WatchTowerOS is an all-in-one website health and monitoring platform for performance, SEO, security, uptime, accessibility, and technical issues. Unlike traditional scanners, it uses AI to explain problems, prioritize what matters, and provide actionable fixes. Users can continuously monitor verified websites, track changes, generate reports, and access AI assistance. API and white-label capabilities make it ideal for developers and agencies.","metrics":{},"tags":["producthunt","new"],"externalId":"1218667","logo":"https://ph-files.imgix.net/0ba7b3bf-cda4-4738-b1d1-c55f9185e8de.png?auto=format","images":["https://ph-files.imgix.net/82ff2c7e-3762-4b19-a160-2053efb357a2.png?auto=format","https://ph-files.imgix.net/809cf840-2338-424b-b44e-b36253455240.png?auto=format","https://ph-files.imgix.net/4e1d22ce-109d-4916-b16e-01762c1c7fa1.png?auto=format","https://ph-files.imgix.net/36f7e123-eff1-4865-af88-9d61fac17b0d.png?auto=format","https://ph-files.imgix.net/78f18d3b-0603-4eac-92f5-1cf0ea1c80fe.jpeg?auto=format"],"image":"https://ph-files.imgix.net/82ff2c7e-3762-4b19-a160-2053efb357a2.png?auto=format"},{"sourceId":"producthunt","title":"MusicFX","url":"https://www.producthunt.com/products/musicfx-2/launches/musicfx-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"AI music creation, vocal removal, stem split & audio to MIDI","content":"Create complete songs from a prompt or lyrics, compare two versions, then extend, cover, remove vocals, split stems, or convert audio to MIDI.","metrics":{},"tags":["producthunt","new"],"externalId":"1226419","logo":"https://ph-files.imgix.net/b75e9605-0118-458d-b038-111491c6e0be.png?auto=format","images":["https://ph-files.imgix.net/a6c669cb-9b31-4a24-b26f-6462fcfaaded.png?auto=format"],"image":"https://ph-files.imgix.net/a6c669cb-9b31-4a24-b26f-6462fcfaaded.png?auto=format"},{"sourceId":"producthunt","title":"PitchPilot","url":"https://www.producthunt.com/products/pitchpilot-2/launches/pitchpilot-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Researched openers that sound like you did your homework.","content":"Cold emails get ignored because they're not about the person you're sending them to. Paste a prospect's LinkedIn profile and what you sell — PitchPilot scraps the web for all information and then writes 3 personalized opening lines that reference details a real person would notice. Not \"I noticed you work at [Company].\" Built for founders and SDRs tired of blank-subject-line syndrome. Free for 30 days, then $19/mo. Try the live demo before you even sign up.","metrics":{},"tags":["producthunt","new"],"externalId":"1217286","logo":"https://ph-files.imgix.net/d533468c-6f4d-4e49-adf4-df673ab2f6ef.png?auto=format","images":["https://ph-files.imgix.net/aaf670a0-910d-4d83-bad3-6fbd43254418.jpeg?auto=format","https://ph-files.imgix.net/d5c2f05f-5416-4989-af95-73d59e9769d6.jpeg?auto=format","https://ph-files.imgix.net/96ab6c12-7b1f-4c3d-90bb-1c7f73dbe651.jpeg?auto=format","https://ph-files.imgix.net/31ca04d3-a8c8-4ee1-9ef6-1a95800fad70.jpeg?auto=format","https://ph-files.imgix.net/40fc1dd8-9437-41ff-bd0b-8a4b2ce22503.jpeg?auto=format"],"image":"https://ph-files.imgix.net/aaf670a0-910d-4d83-bad3-6fbd43254418.jpeg?auto=format"},{"sourceId":"producthunt","title":"World Cup 2026 Schedule Calendar","url":"https://www.producthunt.com/products/world-cup-2026-schedule-calendar/launches/world-cup-2026-schedule-calendar?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"World Cup 2026 schedule website with a bilingual interface. ","content":"This project helps users follow the World Cup 2026 schedule on web and add the full fixture list to Google Calendar, Apple Calendar, Outlook, or any app that supports iCalendar. View the World Cup 2026 schedule on the website. Supports two languages: Vietnamese and English. Full schedule page organized by tournament rounds. Dedicated teams page. Add-to-calendar page with subscription options. WebCal support for one-time subscription with automatic updates.ics file download for manual import.","metrics":{},"tags":["producthunt","new"],"externalId":"1217009","logo":"https://ph-files.imgix.net/7ab09e0d-5ae5-4363-b448-0f6c1f1f2ff4.vnd.microsoft.icon?auto=format","images":["https://ph-files.imgix.net/2be7b306-149a-4723-b7d6-27b7a63cc032.png?auto=format"],"image":"https://ph-files.imgix.net/2be7b306-149a-4723-b7d6-27b7a63cc032.png?auto=format"},{"sourceId":"producthunt","title":"Lumen","url":"https://www.producthunt.com/products/lumen-14/launches/lumen-19?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Ship your AI SaaS landing page today","content":"Lumen is a production-ready landing page template for AI products and SaaS startups. Customize in 10 minutes, deploy to Vercel with one click, go live in hours. Includes 9 pages, 13 homepage sections, dark-first design, light/dark mode, SEO optimization, and accessibility. Perfect for founders who need a professional, conversion-focused site without hiring a designer. Zero backend, zero database, zero config. Built with Next.js, TypeScript, and Tailwind CSS.","metrics":{},"tags":["producthunt","new"],"externalId":"1225914","logo":"https://ph-files.imgix.net/f25bb6c7-5e75-478d-aee0-f3a690a9d98a.png?auto=format","images":["https://ph-files.imgix.net/bbbe6011-8e1a-4929-a9f6-2da7ae8acb1a.png?auto=format","https://ph-files.imgix.net/0d9275ec-bbd0-4f40-a8db-8201d8b2dacb.png?auto=format","https://ph-files.imgix.net/d226a557-491a-48ef-aecf-8f583fbf6651.png?auto=format","https://ph-files.imgix.net/f9391bae-4b49-469c-bedf-164a90561d22.png?auto=format","https://ph-files.imgix.net/eec53b46-173f-4573-8eb9-72ba373f25da.png?auto=format","https://ph-files.imgix.net/4a787ce7-4ee5-44ca-a578-d3923b051db4.png?auto=format","https://ph-files.imgix.net/249f7311-9ae0-4b38-93b7-28555a033eed.png?auto=format","https://ph-files.imgix.net/7e6487d8-34e2-4496-be98-2c052687049b.png?auto=format","https://ph-files.imgix.net/e70c362f-aa5e-4f56-acc7-83dfdd06ed1b.png?auto=format","https://ph-files.imgix.net/d2bc9607-4744-4c6e-b190-2db123580bc9.png?auto=format","https://ph-files.imgix.net/f76247f5-da52-4bbc-94ba-c1614145cc8e.png?auto=format"],"image":"https://ph-files.imgix.net/bbbe6011-8e1a-4929-a9f6-2da7ae8acb1a.png?auto=format"},{"sourceId":"producthunt","title":"MetawatchPHR","url":"https://www.producthunt.com/products/metawatchphr/launches/metawatchphr?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Your entire medical history. One private timeline.","content":"MetawatchPHR turns your lifetime of scattered medical files into one private, organized, searchable timeline — read by AI on your own computer, never in a cloud. Free forever; optional one-time hospital connectors. Windows beta; macOS follows.","metrics":{},"tags":["producthunt","new"],"externalId":"1226233","logo":"https://ph-files.imgix.net/1b2c7dee-b1be-43f9-8bc9-44fa67f69532.svg?auto=format","images":["https://ph-files.imgix.net/41982656-6ce7-49b9-8ce8-7a218d891888.jpeg?auto=format","https://ph-files.imgix.net/0970609a-6a4e-4236-aaee-e3f070a216ae.png?auto=format","https://ph-files.imgix.net/5cc874e3-bf72-44f1-a968-219a375605c0.png?auto=format","https://ph-files.imgix.net/628ae6ef-ed8e-4505-9b46-d5ba29daec9c.png?auto=format"],"image":"https://ph-files.imgix.net/41982656-6ce7-49b9-8ce8-7a218d891888.jpeg?auto=format"},{"sourceId":"producthunt","title":"Handover your job finding stress","url":"https://www.producthunt.com/products/handover-your-job-finding-stress/launches/handover-your-job-finding-stress?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Apply Jobs For your, Let you focus on my actual work","content":"Apply Jobs For your, Let you focus on my actual work","metrics":{},"tags":["producthunt","new"],"externalId":"1200346","logo":"https://ph-files.imgix.net/83a9df49-490a-4655-8b6a-3335d7127403.jpeg?auto=format","images":["https://ph-files.imgix.net/4c6e04d3-3243-4e54-a645-65c11cf269d5.jpeg?auto=format","https://ph-files.imgix.net/f1a9f411-8bdd-47b3-8521-7aa2cce082bc.jpeg?auto=format"],"image":"https://ph-files.imgix.net/4c6e04d3-3243-4e54-a645-65c11cf269d5.jpeg?auto=format"},{"sourceId":"producthunt","title":"RK Mint — Solana Meme Coin Launcher","url":"https://www.producthunt.com/products/rk-mint-solana-meme-coin-launcher/launches/rk-mint-solana-meme-coin-launcher?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"launch meme coins for 0.2 sol with mint and freeze revoked ","content":"RK Mint is a simple Solana token creation platform that lets users launch their own token for 0.2 SOL. The platform includes Mint Authority Revoke and Freeze Authority Revoke options, giving creators more control over their token setup and helping build trust with their community. RK Mint also features a referral program where users can earn a 20% commission by referring new creators to the platform.","metrics":{},"tags":["producthunt","new"],"externalId":"1226448","logo":"https://ph-files.imgix.net/3efb7ba5-15f8-42b1-b40c-326c8d469357.png?auto=format","images":["https://ph-files.imgix.net/43501eba-cb39-494f-a3f2-745975da60e9.png?auto=format","https://ph-files.imgix.net/3717126d-c6fe-4770-b238-105bf25156cc.png?auto=format","https://ph-files.imgix.net/84c0c427-c923-4964-915d-9c5abdb54ff9.png?auto=format"],"image":"https://ph-files.imgix.net/43501eba-cb39-494f-a3f2-745975da60e9.png?auto=format"},{"sourceId":"producthunt","title":"Bflix","url":"https://www.producthunt.com/products/bflix-2/launches/bflix-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Free Entertainment Site","content":"Bflix is a free streaming platform where you can watch movies and TV shows online without registration. Enjoy unlimited entertainment in HD quality.","metrics":{},"tags":["producthunt","new"],"externalId":"1226109","logo":"https://ph-files.imgix.net/f6cf80f8-a35e-47c3-aa7e-aa54761ebec4.webp?auto=format","images":["https://ph-files.imgix.net/b30c5505-c6ec-4320-9b8b-0a13d6fe279a.webp?auto=format"],"image":"https://ph-files.imgix.net/b30c5505-c6ec-4320-9b8b-0a13d6fe279a.webp?auto=format"},{"sourceId":"producthunt","title":"INTIMATE — Private Intimacy Analytics","url":"https://www.producthunt.com/products/intimate-private-intimacy-analytics/launches/intimate-private-intimacy-analytics?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-19T07:01:00Z","summary":"Track. Remember. Understand your intimate life.","content":"INTIMATE is a private personal analytics app for adults who want to keep track of their intimate encounters. Log a partner, date, location, rating, and optional private notes in seconds. Then turn your history into useful insights — encounter trends, partner statistics, ratings, activity reports, and more. No social feed. No dating. No sharing. Just your intimate history, organized in one private place. Built for curiosity, reflection, and understanding your own patterns. — privately and simply.","metrics":{},"tags":["producthunt","new"],"externalId":"1226075","logo":"https://ph-files.imgix.net/5cf04227-c257-4d95-bdb3-267c89c1522f.png?auto=format","images":["https://ph-files.imgix.net/48b8d708-24d9-4de5-bc6c-4df1f1c1f997.png?auto=format","https://ph-files.imgix.net/97c8241e-559d-42ad-a5e5-915047ae04ae.png?auto=format","https://ph-files.imgix.net/eff2a700-4113-4ab6-a3e6-3b773286df80.png?auto=format","https://ph-files.imgix.net/93b916e2-eca8-4535-b5b8-8a683be59c16.png?auto=format"],"image":"https://ph-files.imgix.net/48b8d708-24d9-4de5-bc6c-4df1f1c1f997.png?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T08:44:26.751Z",
+  "date": "2026-08-19",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "TempCanvas",
+          "url": "https://tempcanvas.com/",
+          "author": "超能刚哥(长沙)",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T00:00:00+08:00",
+          "summary": "免费、无需注册的临时在线白板，打开即可快速画图、手写记录和导出 PNG，内容仅保存在浏览器本地",
+          "content": "免费、无需注册的临时在线白板，打开即可快速画图、手写记录和导出 PNG，内容仅保存在浏览器本地",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-19-TempCanvas-https://tempcanvas.com/",
+          "siteLogo": "https://tempcanvas.com/apple-touch-icon.png"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】DeepSeek Harness GUI ：插件化实现在系统原生窗口中打开 DSH",
+          "url": "https://github.com/oodzchen/deepseek-harness-gui",
+          "author": "oodzchen",
+          "authorUrl": "https://github.com/oodzchen",
+          "publishedAt": "2026-08-18T19:03:24Z",
+          "summary": "项目地址： <img width=\"2011\" height=\"1367\" alt=\"Image\" src=\" /",
+          "content": "项目地址：https://github.com/oodzchen/deepseek-harness-gui\n\n<img width=\"2011\" height=\"1367\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d446a733-d354-4aa6-8a17-46c4cfd0e144\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11251",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11251"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】pets：给每个 AI Agent 会话一只终端宠物",
+          "url": "https://github.com/TevvvB/termagitchi",
+          "author": "TevvvB",
+          "authorUrl": "https://github.com/TevvvB",
+          "publishedAt": "2026-08-18T21:12:14Z",
+          "summary": "大家好，我是 pets 的作者，自荐一个终端状态栏的小工具。 终端宠物大多属于「你」——一只宠物，慢慢养大。这个工具的宠物属于 AI Agent：每个 git worktree 是一个「巢穴」并分到一座城市，在里面干活的每个 Agent 会话各自得到一只生物，它的心情由那个 worktree 的整洁程度决定（未提交、未推送、落后于远端、测试状态）。同时开六个 Agent 就是六只生物，一眼能看出自己在看哪个会话、哪个出了问题。 41 种生物、5 档稀有度、闪光变体，16 座城市给巢穴命名，pets den 看收集进度 生物由会话哈希得出，不落盘，没有需要迁移或损坏的状态 状态栏每秒执行一次，只读两个缓存文件，不跑 git、不联网；重活交给节流的后台探针 Claude Code 已端到端验证；Codex 的钩子已写好但未在真实 Codex 上验证过（README 里写明了）。tmux 和 shell 提示符两种模式不依赖 Agent，可以配合 Aider、Amp、Gemini CLI 等任意工具 Go 编写，单个静态二进制，MIT，无运行时依赖 项目地址： 一句话介绍（可直接用）：一个 Go 编写的终端状态栏工具，为每个 AI Agent 会话生成一只宠物，每个 git worktree 是一个巢穴，宠物的心情反映该 worktree 的整洁程度，同时开多个 Agent 时可以一眼分清哪个会话出了问题。",
+          "content": "大家好，我是 pets 的作者，自荐一个终端状态栏的小工具。\n\n终端宠物大多属于「你」——一只宠物，慢慢养大。这个工具的宠物属于 **AI Agent**：每个 git worktree 是一个「巢穴」并分到一座城市，在里面干活的每个 Agent 会话各自得到一只生物，它的心情由那个 worktree 的整洁程度决定（未提交、未推送、落后于远端、测试状态）。同时开六个 Agent 就是六只生物，一眼能看出自己在看哪个会话、哪个出了问题。\n\n- 41 种生物、5 档稀有度、闪光变体，16 座城市给巢穴命名，`pets den` 看收集进度\n- 生物由会话哈希得出，不落盘，没有需要迁移或损坏的状态\n- 状态栏每秒执行一次，只读两个缓存文件，不跑 git、不联网；重活交给节流的后台探针\n- Claude Code 已端到端验证；Codex 的钩子已写好但未在真实 Codex 上验证过（README 里写明了）。tmux 和 shell 提示符两种模式不依赖 Agent，可以配合 Aider、Amp、Gemini CLI 等任意工具\n- Go 编写，单个静态二进制，MIT，无运行时依赖\n\n项目地址：https://github.com/TevvvB/termagitchi\n\n一句话介绍（可直接用）：一个 Go 编写的终端状态栏工具，为每个 AI Agent 会话生成一只宠物，每个 git worktree 是一个巢穴，宠物的心情反映该 worktree 的整洁程度，同时开多个 Agent 时可以一眼分清哪个会话出了问题。\n\n![](https://raw.githubusercontent.com/TevvvB/termagitchi/main/docs/demo.gif)",
+          "metrics": {
+            "comments": 2
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11252",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11252"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】开源的 AI 视频创作引擎，把一整个剧组交给每一个开发者与创作者",
+          "url": "https://magiviz.com",
+          "author": "ItusiAI",
+          "authorUrl": "https://github.com/ItusiAI",
+          "publishedAt": "2026-08-19T00:41:21Z",
+          "summary": "Magiviz：开源的 AI 视频创作引擎，把一整个剧组交给每一个开发者与创作者 一句话简介：Magiviz 是一款 开源、基于 AI 的智能视频创作平台。从一段文字到一支成片，只需五分钟——而这一切，你可以直接 git clone 到自己的服务器上运行。 为什么是开源？ 过去几年，AI 视频生成模型飞速迭代——Veo、Kling、Seedance、Wan…… 模型越来越强，但 真正把它们串成\"剧本 → 角色 → 分镜 → 视频 → 成片\"完整工作流的产品，几乎全部闭源。 这意味着： 🔒 你的创作数据上传到别人服务器，无法本地化 💸 定价、积分规则、模型选择完全由平台决定 🧩 想加一个新模型？等官方排期 �️ 想改 UI、接私有模型、对接企业内部系统？没有 API、没有源码 Magiviz 选择把这一切打开。 ✅ 完整源码：前后端全部 MIT 协议开源 ✅ 模型可换：内置 12 种主流视频生成模型，支持替换为自部署模型 ✅ 数据自主：可自托管，数据完全留在自己的服务器 ✅ 自由改造：UI、计费、模型路由——想怎么改就怎么改 我们相信，AI 视频的下一步，不会只属于几家大厂。它属于每一个愿意动手的开发者，每一个想把故事讲出来的创作者。 一、Magiviz 是什么？ Magiviz 是一个开源的 AI 视频创作平台，把过去需要编剧、分镜师、美术、动画师、剪辑师协作数周的工作，压缩成\"一段话 → 一支片\"的体验。 🎬 支持好莱坞影视、动漫、故事剧情、广告、科普等多种视频类型 👤 覆盖个人创作者、品牌方、营销机构、教育工作者、自媒体团队 🧑‍💻 也覆盖独立开发者、SaaS 创业者、AI 应用集成商——你可以基于它做二次开发 零经验能上手，会写代码能改造。 二、五步 AI 工作流：一个真正的\"AI 剧组\" Magiviz 的核心流水线模拟了一个专业剧组的工作节奏，所有步骤都跑在你自己的（或部署好的）服务器上： 📝 AI 剧情生成 → 👥 主角设计 → 🖼️ 分镜图生成 → 🎬 剧情视频生成 → � 完整视频合成 | 步骤 | 能力 | 关键技术 | | | | | | 1. 剧情生成 | 输入故事大纲 → 输出结构化剧本（标题、场景、角色、对白、导演指令） | LLM + 非严格 JSON 容错解析 | | 2. 主角生成（并行）| 为每个角色自动绘制形象，支持参考图 | 文生图 / 图生图 | | 3. 分镜图生成（并行）| 高保真分镜图，含构图、光影、氛围 | 支持 首尾帧模式单独指定起止帧 | | 4. 剧情视频生成（并行）| 基于分镜图渲染每一段视频 | 支持视频 / 音频多模态参考 | | 5. 完整视频合成 | 拼接、加音频、加转场，输出可发布成片 | FAL AI 视频合成 | 🧠 几个让开发者眼前一亮的细节 可中断、可恢复：积分不足或用户手动暂停后，可从断点继续，已生成内容一份不丢 双层版本控制：versionGroupId + version 完整记录每次重新生成，历史永不丢失 媒体自动锁定：上传视频 / 音频后，自动锁定 Seedance 家族模型，并做格式 / 时长校验 实时进度推送：基于 Pusher，每完成一段立即更新 UI，失败有独立错误分支 三、12 款顶尖 AI 模型，开源、可替换 Magiviz 内置 Veo 3.1、Kling 3.0、Seedance 2.0 / 2.5、Wan 2.7、Gemini Omni、MiniMax H3、HappyHorse 等主流模型，auto 模式智能匹配最优模型，手动模式让你精细控制。 但更重要的：这一切都是开放的。 🔌 模型可插拔：/api/ai/generatestoryvideo 接口设计为模型无关，新增模型只需实现对应适配器 🔑 API Key 自管：.env 文件中配置你自己的 Kie.ai / ZenMux Key，没有中间商赚差价 🧪 可接入自部署模型：只要接口协议兼容，可以替换为本地部署的开源模型（如 Wan 2.1、CogVideoX 等） 参数面板提供完整控制旋钮： | 参数 | 可选 | | | | | 视频模型 | 12 种 AI 模型 + auto | | 生成模式 | auto / 首尾帧 | | 画面比例 | 16:9 / 9:16 | | 时长 | 15s / 30s / 60s | | 视频风格 | anime / hollywood / ads / auto | 四、不只是生成，更是完整的项目管理工具 开源项目的难点不只是\"能跑\"，还要\"能持续用\"。Magiviz 把项目管理也做到了生产级： 📋 项目列表：所有作品统一管理，支持状态 / 模型 / 风格 / 关键词筛选 📑 项目详情页：多 Tab 复合视图（概览、剧情、角色、分镜图、剧情视频、完整视频、历史版本） 📊 五步进度条：每一步都有图标和百分比，进度可视化 🔁 项目恢复：未完成项目可随时恢复，系统自动跳到对应步骤 � 素材库：参考图、视频片段统一管理，支持引用追踪、存储空间监控 �️ 一键导出：剧情 JSON、PNG 角色图、MP4 剧情视频、MP4 完整视频——一键下载 Magiviz 不是一次性 demo，而是一个可以和你长期协作的 AI 剧组。 五、国际化：中英文双语，从第一天就为全球准备 🌍 多语言 UI：内置中英文双语，基于 nextintl，扩展第三种语言只需一份字典文件 🔍 多语言 SEO：URL 结构、元数据、sitemap.xml、JSONLD 结构化数据全部本地化 🖼️ Open Graph 优化：社交分享卡片自动按语言生成 无论你是面向国内市场还是出海做英文内容，平台都为你准备好了。 六、技术栈：现代、开源、可改造 ┌─────────────────────────────────────────────────────────┐ │ 前端：Next.js 16 · TypeScript · Tailwind CSS │ │ Radix UI · Framer Motion · React Hook Form + Zod │ ├─────────────────────────────────────────────────────────┤ │ 后端：Next.js API Routes · NextAuth.js · Drizzle ORM │ │ PostgreSQL · Stripe · Resend · Pusher │ ├─────────────────────────────────────────────────────────┤ │ AI ：Kie.ai（视频生成）· ZenMux（剧情生成） │ │ 支持替换为自部署开源模型 │ └─────────────────────────────────────────────────────────┘ 每一个技术选型都是 主流、社区活跃、生产可用 的——你可以放心 fork，可以放心改造，可以放心上线。 写在最后：把表达权交还给每个人，把控制权交还给开发者 视频，是这个时代最强的表达语言。 但长久以来，它属于闭源平台、属于大预算、属于少数人。 Magiviz 想做的，是把这一切打开。 给 创作者：一段文字，就能拍出一支片 给 开发者：完整源码、清晰架构、灵活扩展 给 创业者：可以直接基于它做 SaaS、做内部工具、做行业解决方案 让每个人都能成为影视创作者，让每一行代码都为创造服务。 🔗 立即开始 | 入口 | 链接 | | | | | 🌐 官方在线版 | magiviz.com | | ⭐ GitHub 开源 | github.com/ItusiAI/OpenMagiviz |",
+          "content": "# Magiviz：开源的 AI 视频创作引擎，把一整个剧组交给每一个开发者与创作者\n\n> **一句话简介**：Magiviz 是一款 **开源、基于 AI 的智能视频创作平台**。从一段文字到一支成片，只需五分钟——而这一切，你可以直接 `git clone` 到自己的服务器上运行。\n\n---\n\n## 为什么是开源？\n\n过去几年，AI 视频生成模型飞速迭代——Veo、Kling、Seedance、Wan…… 模型越来越强，但 **真正把它们串成\"剧本 → 角色 → 分镜 → 视频 → 成片\"完整工作流的产品，几乎全部闭源**。\n\n这意味着：\n\n- 🔒 你的创作数据上传到别人服务器，无法本地化\n- 💸 定价、积分规则、模型选择完全由平台决定\n- 🧩 想加一个新模型？等官方排期\n- �️ 想改 UI、接私有模型、对接企业内部系统？没有 API、没有源码\n\n**Magiviz 选择把这一切打开。**\n\n- ✅ 完整源码：前后端全部 MIT 协议开源\n- ✅ 模型可换：内置 12 种主流视频生成模型，支持替换为自部署模型\n- ✅ 数据自主：可自托管，数据完全留在自己的服务器\n- ✅ 自由改造：UI、计费、模型路由——想怎么改就怎么改\n\n> 我们相信，AI 视频的下一步，不会只属于几家大厂。**它属于每一个愿意动手的开发者，每一个想把故事讲出来的创作者。**\n\n---\n\n## 一、Magiviz 是什么？\n\n**Magiviz** 是一个开源的 **AI 视频创作平台**，把过去需要编剧、分镜师、美术、动画师、剪辑师协作数周的工作，压缩成\"一段话 → 一支片\"的体验。\n\n- 🎬 支持好莱坞影视、动漫、故事剧情、广告、科普等多种视频类型\n- 👤 覆盖个人创作者、品牌方、营销机构、教育工作者、自媒体团队\n- 🧑‍💻 也覆盖独立开发者、SaaS 创业者、AI 应用集成商——你可以基于它做二次开发\n\n> **零经验能上手，会写代码能改造。**\n\n---\n\n## 二、五步 AI 工作流：一个真正的\"AI 剧组\"\n\nMagiviz 的核心流水线模拟了一个专业剧组的工作节奏，所有步骤都跑在你自己的（或部署好的）服务器上：\n\n```\n📝 AI 剧情生成 → 👥 主角设计 → 🖼️ 分镜图生成 → 🎬 剧情视频生成 → � 完整视频合成\n```\n\n| 步骤 | 能力 | 关键技术 |\n| --- | --- | --- |\n| **1. 剧情生成** | 输入故事大纲 → 输出结构化剧本（标题、场景、角色、对白、导演指令） | LLM + 非严格 JSON 容错解析 |\n| **2. 主角生成**（并行）| 为每个角色自动绘制形象，支持参考图 | 文生图 / 图生图 |\n| **3. 分镜图生成**（并行）| 高保真分镜图，含构图、光影、氛围 | 支持 **首尾帧模式**单独指定起止帧 |\n| **4. 剧情视频生成**（并行）| 基于分镜图渲染每一段视频 | 支持视频 / 音频多模态参考 |\n| **5. 完整视频合成** | 拼接、加音频、加转场，输出可发布成片 | FAL AI 视频合成 |\n\n### 🧠 几个让开发者眼前一亮的细节\n\n- **可中断、可恢复**：积分不足或用户手动暂停后，可从断点继续，已生成内容一份不丢\n- **双层版本控制**：`versionGroupId` + `version` 完整记录每次重新生成，历史永不丢失\n- **媒体自动锁定**：上传视频 / 音频后，自动锁定 Seedance 家族模型，并做格式 / 时长校验\n- **实时进度推送**：基于 Pusher，每完成一段立即更新 UI，失败有独立错误分支\n\n---\n\n## 三、12 款顶尖 AI 模型，开源、可替换\n\nMagiviz 内置 **Veo 3.1、Kling 3.0、Seedance 2.0 / 2.5、Wan 2.7、Gemini Omni、MiniMax H3、HappyHorse** 等主流模型，**auto 模式**智能匹配最优模型，**手动模式**让你精细控制。\n\n但更重要的：**这一切都是开放的。**\n\n- 🔌 **模型可插拔**：`/api/ai/generate-story-video` 接口设计为模型无关，新增模型只需实现对应适配器\n- 🔑 **API Key 自管**：`.env` 文件中配置你自己的 Kie.ai / ZenMux Key，没有中间商赚差价\n- 🧪 **可接入自部署模型**：只要接口协议兼容，可以替换为本地部署的开源模型（如 Wan 2.1、CogVideoX 等）\n\n参数面板提供完整控制旋钮：\n\n| 参数 | 可选 |\n| --- | --- |\n| 视频模型 | 12 种 AI 模型 + auto |\n| 生成模式 | auto / 首尾帧 |\n| 画面比例 | 16:9 / 9:16 |\n| 时长 | 15s / 30s / 60s |\n| 视频风格 | anime / hollywood / ads / auto |\n\n---\n\n## 四、不只是生成，更是完整的项目管理工具\n\n开源项目的难点不只是\"能跑\"，还要\"能持续用\"。Magiviz 把项目管理也做到了生产级：\n\n- 📋 **项目列表**：所有作品统一管理，支持状态 / 模型 / 风格 / 关键词筛选\n- 📑 **项目详情页**：多 Tab 复合视图（概览、剧情、角色、分镜图、剧情视频、完整视频、历史版本）\n- 📊 **五步进度条**：每一步都有图标和百分比，进度可视化\n- 🔁 **项目恢复**：未完成项目可随时恢复，系统自动跳到对应步骤\n- � **素材库**：参考图、视频片段统一管理，支持引用追踪、存储空间监控\n- �️ **一键导出**：剧情 JSON、PNG 角色图、MP4 剧情视频、MP4 完整视频——一键下载\n\n> **Magiviz 不是一次性 demo，而是一个可以和你长期协作的 AI 剧组。**\n\n---\n\n## 五、国际化：中英文双语，从第一天就为全球准备\n\n- 🌍 **多语言 UI**：内置中英文双语，基于 `next-intl`，扩展第三种语言只需一份字典文件\n- 🔍 **多语言 SEO**：URL 结构、元数据、`sitemap.xml`、`JSON-LD` 结构化数据全部本地化\n- 🖼️ **Open Graph 优化**：社交分享卡片自动按语言生成\n\n无论你是面向国内市场还是出海做英文内容，平台都为你准备好了。\n\n---\n\n## 六、技术栈：现代、开源、可改造\n\n```\n┌─────────────────────────────────────────────────────────┐\n│  前端：Next.js 16 · TypeScript · Tailwind CSS          │\n│        Radix UI · Framer Motion · React Hook Form + Zod │\n├─────────────────────────────────────────────────────────┤\n│  后端：Next.js API Routes · NextAuth.js · Drizzle ORM   │\n│        PostgreSQL · Stripe · Resend · Pusher            │\n├─────────────────────────────────────────────────────────┤\n│  AI  ：Kie.ai（视频生成）· ZenMux（剧情生成）             │\n│        支持替换为自部署开源模型                            │\n└─────────────────────────────────────────────────────────┘\n```\n\n每一个技术选型都是 **主流、社区活跃、生产可用** 的——你可以放心 fork，可以放心改造，可以放心上线。\n\n---\n\n## 写在最后：把表达权交还给每个人，把控制权交还给开发者\n\n视频，是这个时代最强的表达语言。\n但长久以来，它属于闭源平台、属于大预算、属于少数人。\n\n**Magiviz 想做的，是把这一切打开。**\n\n- 给 **创作者**：一段文字，就能拍出一支片\n- 给 **开发者**：完整源码、清晰架构、灵活扩展\n- 给 **创业者**：可以直接基于它做 SaaS、做内部工具、做行业解决方案\n\n> **让每个人都能成为影视创作者，让每一行代码都为创造服务。**\n\n---\n\n### 🔗 立即开始\n\n| 入口 | 链接 |\n| --- | --- |\n| 🌐 官方在线版 | [magiviz.com](https://magiviz.com) |\n| ⭐ GitHub 开源 | [github.com/ItusiAI/Open-Magiviz](https://github.com/ItusiAI/Open-Magiviz) |\n\n---",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11253",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11253"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【文章自荐】100 年都没解决的问题：文胸尺码",
+          "url": "https://mp.weixin.qq.com/s/g8wZf8_s4mC8nQsO7puKDw",
+          "author": "zuzuAndroid",
+          "authorUrl": "https://github.com/zuzuAndroid",
+          "publishedAt": "2026-08-19T01:42:01Z",
+          "summary": "它是工程学在面对复杂生物多样性时，不得不做出的一次低头： 我们在一个连续的高维物理现实，与一个离散的低维商业系统之间，搭起了一座破破烂烂、但勉强能用的桥。 只要人类的身体依然存在生物学差异，只要衣物依然需要在物理仓库里一件件码放，这种代码与现实、算法与肉体之间的错位与较量，就永远不会结束。 原文地址：",
+          "content": "它是工程学在面对复杂生物多样性时，不得不做出的一次低头：\n\n我们在一个连续的高维物理现实，与一个离散的低维商业系统之间，搭起了一座破破烂烂、但勉强能用的桥。\n\n只要人类的身体依然存在生物学差异，只要衣物依然需要在物理仓库里一件件码放，这种代码与现实、算法与肉体之间的错位与较量，就永远不会结束。\n\n\n原文地址：\nhttps://mp.weixin.qq.com/s/g8wZf8_s4mC8nQsO7puKDw",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11255",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11255"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Cetus：把 Claude Code / Codex / DeepSeek Harness 变成常驻的 macOS 桌面助手",
+          "url": "https://github.com/drewnekota/cetus>",
+          "author": "william-jin-cmu",
+          "authorUrl": "https://github.com/william-jin-cmu",
+          "publishedAt": "2026-08-19T02:59:45Z",
+          "summary": "项目地址：< 一句话介绍 Cetus 是一个开源的 macOS 桌面客户端，把你已经在用的 Agent CLI（Claude Code、Codex、DeepSeek Harness 等）变成一个常驻的桌面助手：统一的聊天界面、定时任务、全局快捷键唤起、屏幕上下文，复用 CLI 已有的登录，不需要再配置一套账号。 !Cetus runtime picker 为什么做这个 我和身边不少朋友都会在终端里同时用多个 Agent Runtime（Claude Code 写前端、Codex 做数据分析和 Bug 巡检……），一度非常混乱，尤其是定时任务分散在不同工具里很难管理。于是最初版本就是一个支持多 Runtime 的统一 UI + 定时任务管理，后来逐步长成了完整的桌面助手层。 长期看，各家模型能力反复追赶互相超越，需要一个统一的客户端来按任务选择不同 Runtime；同时桌面客户端也能更好地为 Agent 记录上下文，让 Agent 的智能真正用在你正在做的事情上。Cetus 不替代这些 Runtime——它们仍是智能与执行引擎，Cetus 补上的是终端里放不下的那部分。 主要功能 Quick Launcher：按住两个 ⌘ 键，在任何应用上方唤出 Agent，自动带上当前截图、前台应用、浏览器 URL、选中文本作为可移除的上下文 定时任务（Automations）：把任意 Prompt 变成一次性或周期任务（at / every / cron / daily），每个任务保留自己选择的 Runtime 和模型，后台跑完等你回来审阅 全局快捷回复：在任何聊天、邮件、工单界面双击右 ⌥，Cetus 读取屏幕内容流式生成草稿回复，回车直接填入你原本的输入框 Screen Context：可选开启的屏幕记忆，本地截帧 + Apple Vision 端上 OCR，Agent 可以回忆和检索\"你之前在屏幕上看到的东西\"，图像和文本都不出本机 会议记忆：自动检测会议开始，端上转写为可搜索的笔记（纯文本，不存音频），之后可以直接问 Agent\"上次会上定的发布日期是什么\" 看板式任务审阅：每个对话是一张卡片，按 In progress / Needs review / Done 流转，后台任务不再淹没在终端 tab 里 其他：持久记忆、并行多方案（一个 Prompt 分发 N 个候选运行）、每对话独立 git worktree、语音听写、移动端远程跟进等 !Cetus demo 技术与开源 Tauri 2（Rust）+ Next.js，内置 pi runtime 作为 sidecar，支持 30+ 模型 Provider Claude Code / Codex / DeepSeek Harness 直接复用各自 CLI 的会话与登录，事件统一翻译进同一套流式 UI 完整开源，MIT 协议；预编译版本支持 Apple Silicon、macOS 13+ 欢迎 Star、提 Issue、交 PR，也欢迎提出真实反馈，谢谢！",
+          "content": "**项目地址**：<https://github.com/drewnekota/cetus>\n\n## 一句话介绍\n\nCetus 是一个开源的 macOS 桌面客户端，把你已经在用的 Agent CLI（Claude Code、Codex、DeepSeek Harness 等）变成一个常驻的桌面助手：统一的聊天界面、定时任务、全局快捷键唤起、屏幕上下文，复用 CLI 已有的登录，不需要再配置一套账号。\n\n![Cetus runtime picker](https://raw.githubusercontent.com/drewnekota/cetus/main/docs/screenshot-runtime-picker.png)\n\n## 为什么做这个\n\n我和身边不少朋友都会在终端里同时用多个 Agent Runtime（Claude Code 写前端、Codex 做数据分析和 Bug 巡检……），一度非常混乱，尤其是定时任务分散在不同工具里很难管理。于是最初版本就是一个支持多 Runtime 的统一 UI + 定时任务管理，后来逐步长成了完整的桌面助手层。\n\n长期看，各家模型能力反复追赶互相超越，需要一个统一的客户端来按任务选择不同 Runtime；同时桌面客户端也能更好地为 Agent 记录上下文，让 Agent 的智能真正用在你正在做的事情上。Cetus 不替代这些 Runtime——它们仍是智能与执行引擎，Cetus 补上的是终端里放不下的那部分。\n\n## 主要功能\n\n- **Quick Launcher**：按住两个 ⌘ 键，在任何应用上方唤出 Agent，自动带上当前截图、前台应用、浏览器 URL、选中文本作为可移除的上下文\n- **定时任务（Automations）**：把任意 Prompt 变成一次性或周期任务（at / every / cron / daily），每个任务保留自己选择的 Runtime 和模型，后台跑完等你回来审阅\n- **全局快捷回复**：在任何聊天、邮件、工单界面双击右 ⌥，Cetus 读取屏幕内容流式生成草稿回复，回车直接填入你原本的输入框\n- **Screen Context**：可选开启的屏幕记忆，本地截帧 + Apple Vision 端上 OCR，Agent 可以回忆和检索\"你之前在屏幕上看到的东西\"，图像和文本都不出本机\n- **会议记忆**：自动检测会议开始，端上转写为可搜索的笔记（纯文本，不存音频），之后可以直接问 Agent\"上次会上定的发布日期是什么\"\n- **看板式任务审阅**：每个对话是一张卡片，按 In progress / Needs review / Done 流转，后台任务不再淹没在终端 tab 里\n- 其他：持久记忆、并行多方案（一个 Prompt 分发 N 个候选运行）、每对话独立 git worktree、语音听写、移动端远程跟进等\n\n![Cetus demo](https://raw.githubusercontent.com/drewnekota/cetus/main/docs/cetus-demo.gif)\n\n## 技术与开源\n\n- Tauri 2（Rust）+ Next.js，内置 pi runtime 作为 sidecar，支持 30+ 模型 Provider\n- Claude Code / Codex / DeepSeek Harness 直接复用各自 CLI 的会话与登录，事件统一翻译进同一套流式 UI\n- 完整开源，MIT 协议；预编译版本支持 Apple Silicon、macOS 13+\n\n欢迎 Star、提 Issue、交 PR，也欢迎提出真实反馈，谢谢！\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11256",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11256"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Starcat：把 GitHub Stars 变成能用的本地知识库",
+          "url": "https://github.com/starcat-app/Starcat",
+          "author": "dong4j",
+          "authorUrl": "https://github.com/dong4j",
+          "publishedAt": "2026-08-19T04:47:44Z",
+          "summary": "项目地址： <img width=\"3116\" height=\"1872\" alt=\"Image\" src=\" / 介绍 Starcat 是一款开源的 macOS 原生应用。它会把 GitHub Stars 同步到本地，你可以搜索、打标签、跟踪更新，也可以用 AI 帮你读懂项目。数据保存在你自己的 Mac 上。 为什么做 Starcat GitHub 的 Star 列表是一条不断往下延伸的时间线。 我收藏过上千个仓库。想找回其中一个，经常要翻很久；好不容易找到了，几个月后也想不起当初为什么收藏。标签总是懒得整理，项目更新也经常要等刷到别人的推文才知道。 后来我开始重新思考 GitHub Star。我们习惯把它当成一个“以后再看”的书签，但收藏多了以后，它其实也记录了我们的专业兴趣和技能方向。 于是我做了 Starcat，把整理、理解、找回和评估 GitHub Stars 这几件事放到了同一个桌面应用里。 主要功能 仓库名、描述、Topics 和笔记都会进入 FTS5 索引，在本机毫秒级返回搜索结果。记不清仓库名时，还可以使用语义搜索。 AI 可以生成项目摘要、翻译 README。先弄清楚项目是做什么的、用了哪些技术，再决定要不要继续读。 AI 会推荐标签，但只提供建议。只有你确认后，标签才会写入。 可以订阅 Release。关注的仓库发布新版本时，Starcat 会发送通知。 Needs Review、Unmaintained、OpenSSF 分数等智能集合和仓库健康信息，可以帮你判断一个项目是否还值得继续关注。 浏览器插件、CLI 和 MCP 等周边项目，也都放在 starcatapp 组织下开源。 技术与开源 使用原生 SwiftUI 开发，不是 Electron、Tauri 或 Flutter，支持 macOS 15+ 和 Apple Silicon。 本地数据使用 GRDB 和 SQLite。仓库缓存可以重建，标签、笔记和状态则是用户自己的数据。 AI 采用 BYOK，Key 保存在 Keychain 中。 主仓库： 生态项目基本都已开源，只有用于 Direct 授权的 licenseapi 保持私有。客户端可以自行编译。",
+          "content": "**项目地址**：[https://github.com/starcat-app/Starcat](https://github.com/starcat-app/Starcat)\n\n<img width=\"3116\" height=\"1872\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/544b4562-6ca2-495e-b4b9-db9e3d1e8175\" />\n\n## 介绍\n\nStarcat 是一款开源的 macOS 原生应用。它会把 GitHub Stars 同步到本地，你可以搜索、打标签、跟踪更新，也可以用 AI 帮你读懂项目。数据保存在你自己的 Mac 上。\n\n## 为什么做 Starcat\n\nGitHub 的 Star 列表是一条不断往下延伸的时间线。\n\n我收藏过上千个仓库。想找回其中一个，经常要翻很久；好不容易找到了，几个月后也想不起当初为什么收藏。标签总是懒得整理，项目更新也经常要等刷到别人的推文才知道。\n\n后来我开始重新思考 GitHub Star。我们习惯把它当成一个“以后再看”的书签，但收藏多了以后，它其实也记录了我们的专业兴趣和技能方向。\n\n于是我做了 Starcat，把整理、理解、找回和评估 GitHub Stars 这几件事放到了同一个桌面应用里。\n\n## 主要功能\n\n- 仓库名、描述、Topics 和笔记都会进入 FTS5 索引，在本机毫秒级返回搜索结果。记不清仓库名时，还可以使用语义搜索。\n- AI 可以生成项目摘要、翻译 README。先弄清楚项目是做什么的、用了哪些技术，再决定要不要继续读。\n- AI 会推荐标签，但只提供建议。只有你确认后，标签才会写入。\n- 可以订阅 Release。关注的仓库发布新版本时，Starcat 会发送通知。\n- Needs Review、Unmaintained、OpenSSF 分数等智能集合和仓库健康信息，可以帮你判断一个项目是否还值得继续关注。\n- 浏览器插件、CLI 和 MCP 等周边项目，也都放在 [starcat-app](https://github.com/starcat-app) 组织下开源。\n\n## 技术与开源\n\n- 使用原生 SwiftUI 开发，不是 Electron、Tauri 或 Flutter，支持 macOS 15+ 和 Apple Silicon。\n- 本地数据使用 GRDB 和 SQLite。仓库缓存可以重建，标签、笔记和状态则是用户自己的数据。\n- AI 采用 BYOK，Key 保存在 Keychain 中。\n- 主仓库：[https://github.com/starcat-app/Starcat](https://github.com/starcat-app/Starcat)\n- 生态项目基本都已开源，只有用于 Direct 授权的 `license-api` 保持私有。客户端可以自行编译。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11257",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11257"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】睡眠岛：一款免戴手表、真正睡着才停的助眠与睡眠监测 App",
+          "url": "https://www.sleepisland.org",
+          "author": "hanzg77",
+          "authorUrl": "https://github.com/hanzg77",
+          "publishedAt": "2026-08-19T09:17:31Z",
+          "summary": "阮老师好，向周刊自荐一款我独立开发了一年多的 iOS 助眠与健康产品——「睡眠岛」。 我自己睡觉必须听声音。但一直苦恼传统 App 的定时关闭太机械（设 30 分钟没睡着就停了，设一整夜又吵得慌），而且我非常讨厌戴着手表睡觉。 找不到顺手的工具，我花了一年多时间打磨了这个 App，核心做好了三点： 1. 真正睡着才停：手机放床头，通过自研轻量感应算法识别真实入睡状态。检测到真正睡着后，声音会自动平滑淡出，不打扰深度睡眠。 2. 免穿戴床头睡眠与鼾声监测：不需要戴 Apple Watch 或手环，手机放床头即可分析深浅睡眠阶段，并自动截取夜间鼾声与梦话片段。 3. 独立纯粹、零广告：不接入任何第三方追踪 SDK，核心助眠与监测功能完全免费，不搞流氓诱导订阅。 4. 沉浸式助眠资源：自己制作了一批助眠资源，也接入了播客 rss 系统。丰富的试听内容。 官网（可免安装直接在线试听）： App Store： 界面预览 !睡眠岛实机界面",
+          "content": "阮老师好，向周刊自荐一款我独立开发了一年多的 iOS 助眠与健康产品——**「睡眠岛」**。\n\n我自己睡觉必须听声音。但一直苦恼传统 App 的定时关闭太机械（设 30 分钟没睡着就停了，设一整夜又吵得慌），而且我非常讨厌戴着手表睡觉。\n\n找不到顺手的工具，我花了一年多时间打磨了这个 App，核心做好了三点：\n\n1. **真正睡着才停**：手机放床头，通过自研轻量感应算法识别真实入睡状态。检测到真正睡着后，声音会自动平滑淡出，不打扰深度睡眠。\n2. **免穿戴床头睡眠与鼾声监测**：不需要戴 Apple Watch 或手环，手机放床头即可分析深浅睡眠阶段，并自动截取夜间鼾声与梦话片段。\n3. **独立纯粹、零广告**：不接入任何第三方追踪 SDK，核心助眠与监测功能完全免费，不搞流氓诱导订阅。\n4. **沉浸式助眠资源**：自己制作了一批助眠资源，也接入了播客 rss 系统。丰富的试听内容。\n\n\n- **官网（可免安装直接在线试听）**：https://www.sleepisland.org\n- **App Store**：https://apps.apple.com/cn/app/id6747609991\n\n### 界面预览\n![睡眠岛实机界面](https://www.sleepisland.org/assets/screenshots/zh-Hans/screen_1.webp)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11258",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11258",
+          "siteLogo": "https://www.sleepisland.org/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】BookMate / 泊舟：把私人图书馆变成一个能长期共读、深入交谈的本地 AI 书友",
+          "url": "https://github.com/snailfrying-sxy/bookmate-local",
+          "author": "snailfrying-sxy",
+          "authorUrl": "https://github.com/snailfrying-sxy",
+          "publishedAt": "2026-08-19T09:53:28Z",
+          "summary": "BookMate（泊舟） 项目地址： 想做一个不止会\"总结一本书\"的阅读工具。 BookMate（泊舟） 是一个 localfirst 的私人 AI 书友与个人图书馆。它希望解决的不是\"如何快速获得答案\"，而是很多读者更熟悉的另一件事：读完一本书后，心里留下了一个问题、一句话或一种说不清的感受，却很难找到愿意同频深入聊下去的人。 在 BookMate 里，每本书都可以有一间长期存在的\"书房\"。即使没有 PDF、EPUB，也可以先从一本实体书、一句摘录、一段感想或一个问题开始；之后再逐步加入版本文件、阅读进度、剧透边界、摘录与读后感。AI 会围绕当前书房继续交流，而不是把所有文件混成一个泛知识库。 目前支持 本书房间与广泛书友两种对话方式 TXT、Markdown、PDF、EPUB 导入与本地检索 摘录、读后感、问题等阅读痕迹 一书多版本、阅读进度、剧透边界与交流姿态 OpenAI 兼容、Responses、Ollama / 局域网模型等模型配置，并可按轮切换 本地 SQLite 与文件存储、会话恢复、用户确认后才生效的记忆 基于阅读共鸣的下一本书推荐：推荐书也能直接建立书房，先聊聊是否适合自己 ️ 核心边界 1. 书不是文件：一本书的书房可以先于电子版存在。 2. AI 不能假装懂你：它不虚构经历、引文、页码或未使用的本地资料。 3. 隐私与透明：数据默认留在本地；若选择远程模型，相关摘录和笔记可能发送给该模型服务，界面会明确说明。 快速启动 Windows 用户：运行 .\\startlocal.ps1 即可启动。 Docker 部署：支持 Docker 容器化部署。 欢迎体验、提 Issue，或聊聊你觉得\"一个真正的 AI 书友\"应该如何陪人读书。 许可证说明：项目采用 PolyForm Noncommercial License 1.0.0，适合个人、教育、研究等非商业使用；商业使用需另行授权。",
+          "content": "\n# **BookMate（泊舟）**\n\n> **项目地址**：[https://github.com/snailfrying-sxy/bookmate-local](https://github.com/snailfrying-sxy/bookmate-local)\n\n想做一个不止会\"总结一本书\"的阅读工具。\n\n**BookMate（泊舟）** 是一个 local-first 的私人 AI 书友与个人图书馆。它希望解决的不是\"如何快速获得答案\"，而是很多读者更熟悉的另一件事：读完一本书后，心里留下了一个问题、一句话或一种说不清的感受，却很难找到愿意同频深入聊下去的人。\n\n在 BookMate 里，每本书都可以有一间长期存在的\"书房\"。即使没有 PDF、EPUB，也可以先从一本实体书、一句摘录、一段感想或一个问题开始；之后再逐步加入版本文件、阅读进度、剧透边界、摘录与读后感。AI 会围绕当前书房继续交流，而不是把所有文件混成一个泛知识库。\n\n---\n\n###  目前支持\n\n- **本书房间与广泛书友两种对话方式**\n- **TXT、Markdown、PDF、EPUB 导入与本地检索**\n- **摘录、读后感、问题等阅读痕迹**\n- **一书多版本、阅读进度、剧透边界与交流姿态**\n- **OpenAI 兼容、Responses、Ollama / 局域网模型等模型配置，并可按轮切换**\n- **本地 SQLite 与文件存储、会话恢复、用户确认后才生效的记忆**\n- **基于阅读共鸣的下一本书推荐**：推荐书也能直接建立书房，先聊聊是否适合自己\n\n---\n\n### ️ 核心边界\n\n1. **书不是文件**：一本书的书房可以先于电子版存在。\n2. **AI 不能假装懂你**：它不虚构经历、引文、页码或未使用的本地资料。\n3. **隐私与透明**：数据默认留在本地；若选择远程模型，相关摘录和笔记可能发送给该模型服务，界面会明确说明。\n\n---\n\n###  快速启动\n\n- **Windows 用户**：运行 `.\\start-local.ps1` 即可启动。\n- **Docker 部署**：支持 Docker 容器化部署。\n\n欢迎体验、提 Issue，或聊聊你觉得\"一个真正的 AI 书友\"应该如何陪人读书。\n\n---\n\n> **许可证说明**：项目采用 **PolyForm Noncommercial License 1.0.0**，适合个人、教育、研究等非商业使用；商业使用需另行授权。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11259",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11259"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】免费的极简 chrome 新标签页 ZenPage 禅页",
+          "url": "https://chromewebstore.google.com/detail/%E7%A6%85%E9%A1%B5-zenpage/eeoglieochlkiieagkofojmhefbeeggj?authuser=0&hl=zh-CN",
+          "author": "lyuangg",
+          "authorUrl": "https://github.com/lyuangg",
+          "publishedAt": "2026-08-19T09:55:53Z",
+          "summary": "ZenPage 禅页是一个极简的 Chrome 新标签页, 功能极简只有: 快捷入口（自定义图标 + 任意协议链接） 时钟、搜索与书签。 快捷键一键直达。 <img width=\"1471\" height=\"733\" alt=\"Image\" src=\" /",
+          "content": "ZenPage 禅页是一个极简的 Chrome 新标签页, 功能极简只有:\n- 快捷入口（自定义图标 + 任意协议链接）\n- 时钟、搜索与书签。\n- 快捷键一键直达。\n\nhttps://chromewebstore.google.com/detail/%E7%A6%85%E9%A1%B5-zenpage/eeoglieochlkiieagkofojmhefbeeggj?authuser=0&hl=zh-CN\n\n\n<img width=\"1471\" height=\"733\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4af99705-0db0-4bb0-8c0c-7061fad69ca1\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11260",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11260"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】一个协作式像素艺术和动画编辑器，可以和AI agents共同创作和编辑。",
+          "url": "https://github.com/osdodo/gridvana",
+          "author": "osdodo",
+          "authorUrl": "https://github.com/osdodo",
+          "publishedAt": "2026-08-19T10:51:15Z",
+          "summary": "Gridvana 是一个用Rust 编写的协作式像素艺术和动画编辑器，可以和AI agent共同创作和编辑。 项目地址： 网站： !Gridvana",
+          "content": "**Gridvana** 是一个用Rust 编写的协作式像素艺术和动画编辑器，可以和AI agent共同创作和编辑。\n\n项目地址：https://github.com/osdodo/gridvana\n\n网站：https://gridvana.imatrix.fun\n\n![Gridvana](https://raw.githubusercontent.com/osdodo/gridvana/refs/heads/main/screenshots/1.jpg)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11261",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11261"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Open DeepSeek Harness Desktop：带插件隔离和 IM 机器人的 DSH 桌面发行版",
+          "url": "https://github.com/flaqai/open-deepseek-harness-desktop",
+          "author": "hecoococ",
+          "authorUrl": "https://github.com/hecoococ",
+          "publishedAt": "2026-08-19T11:15:51Z",
+          "summary": "项目地址： 项目介绍 Open DeepSeek Harness Desktop 是一个社区维护的 DeepSeek Harness 桌面发行版。它保留官方 Harness 的插件化运行时和 Web 客户端，在外层增加 Electron 本地宿主、桌面打包、首次启动配置和插件生命周期管理。 它不只是把网页放进桌面窗口。客户端会启动并监管本机 Harness 服务，为页面提供受限制的系统集成，并负责普通插件无法介入的启动前检查。项目采用 MIT 许可证，不是 DeepSeek 官方产品，目前处于开发者预览阶段。 主要功能 完整桌面发行矩阵：项目面向 macOS Apple Silicon、macOS Intel、Windows x64，以及 Linux DEB、RPM 五种安装包维护统一的打包流程。 主题和聊天背景：内置跟随系统、浅色、深色及八套产品主题，同时提供八张背景插画，也可以上传只保存在本机的 PNG、JPEG 或 WebP 图片。 桌面复制支持：Electron 只向受监管的 Harness 页面开放经过净化的剪贴板写入权限，让消息和代码复制在客户端中正常工作，不开放剪贴板读取权限。 开箱即用的插件生态：安装包预设插件市场、Skill 选择器和 IM 机器人插件。它们都是普通、可卸载的 Harness 插件；用户卸载后，客户端不会在下次启动时自动装回。 微信、飞书等机器人连接：可以在设置中通过扫码、应用清单或现有凭据连接微信、飞书、钉钉、企业微信、QQ、Slack、Telegram、Discord 和 WhatsApp，并切换机器人使用的工作区或绑定已有会话。 依赖诊断与插件隔离：客户端可以检查共享运行时冲突、残留 Loader 条目和插件挂载失败。无法安全修复的插件会退出当前 profile 的活动依赖和启动顺序，并留下可重试、可卸载的隔离记录，让其余功能继续启动。 为什么依赖隔离必须由客户端完成 插件系统在功能不断增多后会遇到一个容易被忽略的问题：两个插件可能各自带入不同版本或不同物理副本的共享 Host 包。它们的包名和 API 看起来相同，Node.js 实际加载的却是两套对象。这样会造成服务注册在一套运行时、消费方却在另一套运行时查找，最终表现为插件无法挂载、Loader 条目失管，甚至整个 profile 无法启动。残留的清单项目、锁文件记录和中断安装留下的目录，也可能让下一次更新继续复现同一个错误。 普通诊断插件解决不了这个问题。插件代码只能在依赖解析、配置组合和运行时挂载成功后执行，而上述错误恰好发生在这些步骤之前。故障插件可能阻止诊断插件一起加载；诊断插件也不应该拥有修改其他插件清单、锁文件和启动顺序的权限。因此，这项能力必须放在掌握整个启动过程的客户端启动层。 每次检查时，启动层会遍历 profile 中直接安装插件的依赖图，区分合法的 peer dependency 与真正的共享运行时冲突，并比较关键 Host 包最终解析到的实际位置。它还会核对 profile 清单、锁文件、组合包顺序和磁盘目录，找出已经不属于当前依赖、却仍可能被 Loader 发现的残留项目。设置页提供“立即检查”和“检查并修复”两个入口：前者只读取并展示问题、依赖链和兼容性，后者才会执行受保护的修复操作。 修复会先尝试让插件统一使用桌面安装包提供的共享 Host 依赖，同时清理清单已经删除、锁文件却仍保留的根依赖记录。如果依赖关系能够安全收敛，插件可以继续留在当前 profile；如果插件版本确实不兼容，或者修复后仍存在两个共享运行时实例，客户端就不会带着不确定状态强行启动它。 无法安全修复的根插件会从活动依赖和组合包启动顺序中移出，并写入持久的隔离记录。隔离只针对被确认有问题的插件，不会删除用户的会话、模型配置或其他插件。只有故障插件的活动引用和残留目录已经退出当前 profile，隔离才算完成；如果安装工具在中途崩溃，下一次检查还会根据清单、锁文件、目录和隔离记录之间的差异继续恢复，而不是假装修复成功。 这种处理采用关闭式保护：只要客户端不能确认共享依赖已经统一，就不让故障插件进入当前运行时，但其余健康插件和核心功能仍可继续启动。用户可以在“设置 → 插件 → 诊断”中查看隔离原因，按原安装来源重试插件，或者在明确确认后卸载处于停用状态的残留。这样既避免一个扩展拖垮整个客户端，也保留了恢复插件和排查具体依赖链的机会。 <img width=\"1400\" height=\"869\" alt=\"Image\" src=\" / <img width=\"1411\" height=\"878\" alt=\"Image\" src=\" / 界面 | 主题设置 | 聊天背景 | | | | | !主题设置 | !聊天背景 | 社区插件预设，降低入门配置难度 支持包括微信、飞书等九种机器人连接deepseek harness： <img width=\"1134\" height=\"838\" alt=\"Image\" src=\" / 预设插件市场，方便搜索插件、安装插件和管理插件，必备插件： 预设skill调用插件，原版的\\看不见的skills可以通过小闪电选择并引用； 桌面安装包预设并感谢以下开源插件： dshim：微信、飞书等九种 IM 机器人连接。 dshskillpicker：在输入区选择并调用 Skill。 dshmarket：在 Harness 内浏览、搜索和管理插件。 项目仓库： 上游 DeepSeek Harness：",
+          "content": "项目地址：https://github.com/flaqai/open-deepseek-harness-desktop\n\n## 项目介绍\n\nOpen DeepSeek Harness Desktop 是一个社区维护的 DeepSeek Harness 桌面发行版。它保留官方 Harness 的插件化运行时和 Web 客户端，在外层增加 Electron 本地宿主、桌面打包、首次启动配置和插件生命周期管理。\n\n它不只是把网页放进桌面窗口。客户端会启动并监管本机 Harness 服务，为页面提供受限制的系统集成，并负责普通插件无法介入的启动前检查。项目采用 MIT 许可证，不是 DeepSeek 官方产品，目前处于开发者预览阶段。\n\n## 主要功能\n\n- **完整桌面发行矩阵**：项目面向 macOS Apple Silicon、macOS Intel、Windows x64，以及 Linux DEB、RPM 五种安装包维护统一的打包流程。\n- **主题和聊天背景**：内置跟随系统、浅色、深色及八套产品主题，同时提供八张背景插画，也可以上传只保存在本机的 PNG、JPEG 或 WebP 图片。\n- **桌面复制支持**：Electron 只向受监管的 Harness 页面开放经过净化的剪贴板写入权限，让消息和代码复制在客户端中正常工作，不开放剪贴板读取权限。\n- **开箱即用的插件生态**：安装包预设插件市场、Skill 选择器和 IM 机器人插件。它们都是普通、可卸载的 Harness 插件；用户卸载后，客户端不会在下次启动时自动装回。\n- **微信、飞书等机器人连接**：可以在设置中通过扫码、应用清单或现有凭据连接微信、飞书、钉钉、企业微信、QQ、Slack、Telegram、Discord 和 WhatsApp，并切换机器人使用的工作区或绑定已有会话。\n- **依赖诊断与插件隔离**：客户端可以检查共享运行时冲突、残留 Loader 条目和插件挂载失败。无法安全修复的插件会退出当前 profile 的活动依赖和启动顺序，并留下可重试、可卸载的隔离记录，让其余功能继续启动。\n\n## 为什么依赖隔离必须由客户端完成\n\n插件系统在功能不断增多后会遇到一个容易被忽略的问题：两个插件可能各自带入不同版本或不同物理副本的共享 Host 包。它们的包名和 API 看起来相同，Node.js 实际加载的却是两套对象。这样会造成服务注册在一套运行时、消费方却在另一套运行时查找，最终表现为插件无法挂载、Loader 条目失管，甚至整个 profile 无法启动。残留的清单项目、锁文件记录和中断安装留下的目录，也可能让下一次更新继续复现同一个错误。\n\n普通诊断插件解决不了这个问题。插件代码只能在依赖解析、配置组合和运行时挂载成功后执行，而上述错误恰好发生在这些步骤之前。故障插件可能阻止诊断插件一起加载；诊断插件也不应该拥有修改其他插件清单、锁文件和启动顺序的权限。因此，这项能力必须放在掌握整个启动过程的客户端启动层。\n\n每次检查时，启动层会遍历 profile 中直接安装插件的依赖图，区分合法的 peer dependency 与真正的共享运行时冲突，并比较关键 Host 包最终解析到的实际位置。它还会核对 profile 清单、锁文件、组合包顺序和磁盘目录，找出已经不属于当前依赖、却仍可能被 Loader 发现的残留项目。设置页提供“立即检查”和“检查并修复”两个入口：前者只读取并展示问题、依赖链和兼容性，后者才会执行受保护的修复操作。\n\n修复会先尝试让插件统一使用桌面安装包提供的共享 Host 依赖，同时清理清单已经删除、锁文件却仍保留的根依赖记录。如果依赖关系能够安全收敛，插件可以继续留在当前 profile；如果插件版本确实不兼容，或者修复后仍存在两个共享运行时实例，客户端就不会带着不确定状态强行启动它。\n\n无法安全修复的根插件会从活动依赖和组合包启动顺序中移出，并写入持久的隔离记录。隔离只针对被确认有问题的插件，不会删除用户的会话、模型配置或其他插件。只有故障插件的活动引用和残留目录已经退出当前 profile，隔离才算完成；如果安装工具在中途崩溃，下一次检查还会根据清单、锁文件、目录和隔离记录之间的差异继续恢复，而不是假装修复成功。\n\n这种处理采用关闭式保护：只要客户端不能确认共享依赖已经统一，就不让故障插件进入当前运行时，但其余健康插件和核心功能仍可继续启动。用户可以在“设置 → 插件 → 诊断”中查看隔离原因，按原安装来源重试插件，或者在明确确认后卸载处于停用状态的残留。这样既避免一个扩展拖垮整个客户端，也保留了恢复插件和排查具体依赖链的机会。\n\n<img width=\"1400\" height=\"869\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/104ae33c-19f1-4d52-bb6d-898ac73c0a04\" />\n\n<img width=\"1411\" height=\"878\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e2673f1a-4dd3-4823-9c6d-976129dc0326\" />\n\n## 界面\n\n| 主题设置 | 聊天背景 |\n| --- | --- |\n| ![主题设置](https://raw.githubusercontent.com/flaqai/open-deepseek-harness-desktop/master/assets/readme/theme-settings-zh.png) | ![聊天背景](https://raw.githubusercontent.com/flaqai/open-deepseek-harness-desktop/master/assets/readme/background-settings-zh.png) |\n\n## 社区插件预设，降低入门配置难度\n支持包括微信、飞书等九种机器人连接deepseek harness：\n<img width=\"1134\" height=\"838\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e7f13bcf-3703-4fde-9b02-607e5b3402fb\" />\n预设插件市场，方便搜索插件、安装插件和管理插件，必备插件：\n预设skill调用插件，原版的\\看不见的skills可以通过小闪电选择并引用；\n桌面安装包预设并感谢以下开源插件：\n\n- [dsh-im](https://github.com/xmanrui/dsh-im)：微信、飞书等九种 IM 机器人连接。\n- [dsh-skill-picker](https://github.com/a735624258/dsh-skill-picker)：在输入区选择并调用 Skill。\n- [dsh-market](https://github.com/dsh-market/dsh-market)：在 Harness 内浏览、搜索和管理插件。\n\n项目仓库：https://github.com/flaqai/open-deepseek-harness-desktop\n\n上游 DeepSeek Harness：https://github.com/deepseek-ai/deepseek-harness",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11262",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11262"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】repo-cover：让编程智能体给仓库设计社交预览图，中文排版不再是豆腐",
+          "url": "https://github.com/sjh9714/repo-cover",
+          "author": "sjh9714",
+          "authorUrl": "https://github.com/sjh9714",
+          "publishedAt": "2026-08-19T11:19:47Z",
+          "summary": "项目地址： 介绍 repocover 是一个 Agent 技能（Claude Code、Codex、Cursor、opencode 都能用）。装上之后对智能体说一句\"给这个仓库做张社交预览卡片\"，它会读取仓库信息，把描述打磨成一行，写出一个自包含的 1280x640 HTML 文件，跑完检查后用本机 Chrome 导出 PNG，上传到 GitHub 的 Social preview 即可。 !四种风格 为什么做这个 每次把仓库链接发到群里，预览图要么是 GitHub 自动生成的灰色默认图，要么是生成器模板，谁的仓库都长一个样。中文描述更惨，很多生成器直接渲染成豆腐，或者在词中间断行。我不想为每个 side project 打开 Figma，所以让智能体来设计。 主要功能 不调用图像模型。设计品味写成模型无法偏离的数字约束：4px 网格、每张卡片一个强调色（自动加深到 WCAG 对比度）、按名称长度分级的标题字号 确定性检查：纯标准库的 Python 检查器校验画布尺寸、自包含、对比度和中日韩换行。中文有专门的字符预算，排版坏了直接判 FAIL 四种风格（editorial、poster、blueprint、gallery）。强调色来自仓库主语言，同心圆和图号来自仓库名哈希，不会有两张相同的卡片 保持新鲜：附带一个 GitHub Action 在 CI 里重新渲染，避免字体没加载完就截图的事故 在线画廊可以直接查看每张卡片的源码： !中文示例 诚实的数字 8 个内置示例全部通过 CI 检查 两个没有任何上下文的智能体冷启动运行这个技能，卡片都一次通过检查器；它们报告的 11 处文档问题已全部修复 这个仓库自己的社交预览图，就是这个技能的输出 MIT 协议。中文排版遇到坏例欢迎提 issue，会变成检查器的回归测试。",
+          "content": "项目地址：https://github.com/sjh9714/repo-cover\n\n## 介绍\n\nrepo-cover 是一个 Agent 技能（Claude Code、Codex、Cursor、opencode 都能用）。装上之后对智能体说一句\"给这个仓库做张社交预览卡片\"，它会读取仓库信息，把描述打磨成一行，写出一个自包含的 1280x640 HTML 文件，跑完检查后用本机 Chrome 导出 PNG，上传到 GitHub 的 Social preview 即可。\n\n![四种风格](https://raw.githubusercontent.com/sjh9714/repo-cover/main/docs/hero.png)\n\n## 为什么做这个\n\n每次把仓库链接发到群里，预览图要么是 GitHub 自动生成的灰色默认图，要么是生成器模板，谁的仓库都长一个样。中文描述更惨，很多生成器直接渲染成豆腐，或者在词中间断行。我不想为每个 side project 打开 Figma，所以让智能体来设计。\n\n## 主要功能\n\n- **不调用图像模型**。设计品味写成模型无法偏离的数字约束：4px 网格、每张卡片一个强调色（自动加深到 WCAG 对比度）、按名称长度分级的标题字号\n- **确定性检查**：纯标准库的 Python 检查器校验画布尺寸、自包含、对比度和中日韩换行。中文有专门的字符预算，排版坏了直接判 FAIL\n- **四种风格**（editorial、poster、blueprint、gallery）。强调色来自仓库主语言，同心圆和图号来自仓库名哈希，不会有两张相同的卡片\n- **保持新鲜**：附带一个 GitHub Action 在 CI 里重新渲染，避免字体没加载完就截图的事故\n- **在线画廊**可以直接查看每张卡片的源码：https://sjh9714.github.io/repo-cover/\n\n![中文示例](https://raw.githubusercontent.com/sjh9714/repo-cover/main/skills/repo-cover/assets/examples/editorial-chinese.png)\n\n## 诚实的数字\n\n- 8 个内置示例全部通过 CI 检查\n- 两个没有任何上下文的智能体冷启动运行这个技能，卡片都一次通过检查器；它们报告的 11 处文档问题已全部修复\n- 这个仓库自己的社交预览图，就是这个技能的输出\n\nMIT 协议。中文排版遇到坏例欢迎提 issue，会变成检查器的回归测试。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11263",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11263"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】小红书时间线 — Chrome 扩展，把小红书个人主页按时间线模式排列",
+          "url": "https://github.com/shaozhengmao/xiaohongshu-timeline.git`",
+          "author": "shaozhengmao",
+          "authorUrl": "https://github.com/shaozhengmao",
+          "publishedAt": "2026-08-19T12:20:41Z",
+          "summary": "它做什么 把小红书个人主页默认的瀑布流网格，按发布时间倒序重排成时间线，自动按月分组（如 2026年8月、2026年7月），并支持「近 3 个月 / 近 6 个月 / 今年 / 自定义起止日期」等时间筛选。一眼看清自己（或关注的博主）这一年的内容节奏。 为什么做 小红书个人主页默认是推荐序，自己发过什么、按什么节奏发，回看时基本看不见。对内容创作者做复盘、对粉丝回溯某博主历史，网格视图都太碎。 技术亮点 Chrome MV3，contentscripts + world: \"MAIN\" 双脚本协同：主线程注入 inject.js 拦截 fetch / XMLHttpRequest，隔离环境 content.js 渲染浮窗和重排 DOM，二者通过 postMessage 通信。 首屏 SSR + 滚动分页数据自动合并；监听 history.pushState / popstate，页面切换自动清缓存、避免串号。 时间字段多格式兼容：13 位毫秒戳 / 10 位秒戳 / YYYYMMDD / MMDD / X 天前，解析失败归「未知时间」。 纯本地，不请求任何外部接口，不上传任何数据。 安装（未上架商店，「加载已解压」安装） 1. git clone 2. 打开 chrome://extensions/，右上角打开 开发者模式 3. 点击 加载已解压的扩展程序，选仓库根目录（含 manifest.json 的那个文件夹） 4. 打开任意小红书个人主页（xiaohongshu.com/user/profile/...），右上角出现「小红书时间线」浮窗 预览效果： <img width=\"743\" height=\"404\" alt=\"Image\" src=\" / 链接 仓库： License: MIT 当前版本：v0.2.6 ⚠️ 本项目与小红书（RED）官方无任何关联，仅个人学习与研究用途；使用者需自行遵守小红书平台服务条款。",
+          "content": "### 它做什么\n把小红书个人主页默认的瀑布流网格，**按发布时间倒序重排成时间线**，自动按月分组（如 `2026年8月`、`2026年7月`），并支持「近 3 个月 / 近 6 个月 / 今年 / 自定义起止日期」等时间筛选。一眼看清自己（或关注的博主）这一年的内容节奏。\n\n### 为什么做\n小红书个人主页默认是推荐序，**自己发过什么、按什么节奏发，回看时基本看不见**。对内容创作者做复盘、对粉丝回溯某博主历史，网格视图都太碎。\n\n### 技术亮点\n- Chrome **MV3**，`content_scripts` + `world: \"MAIN\"` 双脚本协同：主线程注入 `inject.js` 拦截 `fetch` / `XMLHttpRequest`，隔离环境 `content.js` 渲染浮窗和重排 DOM，二者通过 `postMessage` 通信。\n- 首屏 SSR + 滚动分页数据自动合并；监听 `history.pushState` / `popstate`，页面切换自动清缓存、避免串号。\n- 时间字段多格式兼容：13 位毫秒戳 / 10 位秒戳 / `YYYY-MM-DD` / `MM-DD` / `X 天前`，解析失败归「未知时间」。\n- 纯本地，**不请求任何外部接口，不上传任何数据**。\n\n### 安装（未上架商店，「加载已解压」安装）\n1. `git clone https://github.com/shaozhengmao/xiaohongshu-timeline.git`\n2. 打开 `chrome://extensions/`，右上角打开 **开发者模式**\n3. 点击 **加载已解压的扩展程序**，选仓库根目录（含 `manifest.json` 的那个文件夹）\n4. 打开任意小红书个人主页（`xiaohongshu.com/user/profile/...`），右上角出现「小红书时间线」浮窗\n\n预览效果：\n<img width=\"743\" height=\"404\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7fac956a-0dd6-4b5c-814b-7bcd6212c0dc\" />\n\n### 链接\n- 仓库：https://github.com/shaozhengmao/xiaohongshu-timeline\n- License: MIT\n- 当前版本：v0.2.6\n\n> ⚠️ 本项目与小红书（RED）官方**无任何关联**，仅个人学习与研究用途；使用者需自行遵守小红书平台服务条款。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11264",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11264"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Nebula Terminal：集成 AI CLI 会话管理、任务通知与 Markdown/TeX 渲染的 Windows 终端工作台",
+          "url": "https://github.com/Kuddev/nebula",
+          "author": "Kuddev",
+          "authorUrl": "https://github.com/Kuddev",
+          "publishedAt": "2026-08-19T14:04:54Z",
+          "summary": "• 项目地址： 开源协议：GPL3.0 Nebula Terminal <img width=\"1035\" height=\"600\" alt=\"Image\" src=\" / <img width=\"1035\" height=\"490\" alt=\"Image\" src=\" / <img width=\"1035\" height=\"603\" alt=\"Image\" src=\" / 简介 Nebula 是一个以常驻终端为核心的 Windows 原生 AI 开发工作台，使用纯 Rust 编写，构建在 Alacritty 衍生的终端内 核、GPU 加速渲染管线和 Zed 的 GPUI 框架之上。 它解决的第一个问题是：终端会话不应该随着窗口一起消失。关闭 Nebula 只会分离界面，不会杀死正在运行的 Shell、构建 任务、SSH 连接或 AI 对话；重新打开即可回到原来的标签、分屏、滚动内容和工作目录。系统重启或常驻进程退出后，也能 从持续保存的快照恢复工作区布局。 Nebula 也不把终端局限在命令输入框里。Claude Code、Codex 等 Agent 的运行状态与通知，文件与 Git/SVN 工作流，原生 SSH/SFTP，以及 Markdown、图片和 TeX 数学公式，都被统一进同一个可恢复的开发空间。 性能与实现 Nebula 使用 GPU 加速的字形与 UI quad 渲染器，并针对 Windows ConPTY 的启动、缩放和全屏 TUI 重绘路径进行优化。 窗口拖动期间只实时调整终端网格，结束后再向 PTY 合并提交最终尺寸，避免中间重绘污染滚动历史；ConPTY 启动握手会提 前预热，新标签页不需要等待额外往返。启动过程可以通过 NEBULABOOTTRACE=1 完整观测，历史记录和其他非关键数据采 用惰性加载。 项目目前主要面向 Windows 10/11，重点做好 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法组合输入等 Windows 开 发环境中的实际体验。 主要特性 常驻会话：关闭窗口只分离界面，PTY 和其中的任务继续运行；再次启动即可原地接回。 冷恢复与单实例：持续保存标签、分屏和工作目录；重复启动自动交给已有实例处理。 AI Agent 感知：识别 Claude Code、Codex 等 CLI，按 pane 显示运行、完成、等待输入、需要关注和失败等状态。 任务通知直达现场：Agent 完成任务或等待确认时发送桌面通知；点击通知直接切到对应标签和分屏。 本地与远程状态统一：远程 SSH pane 中的 Agent 事件也能通过经过认证的私有通道返回本地侧栏和通知系统。 Runtime API：外部工具和 Agent 可以读取窗口、标签、pane、进程、任务状态和终端输出，也可以创建标签与分屏、发送 命令、按键或 prompt，并等待任务结束。 增强提示符：提供历史和路径驱动的内联补全与候选列表，可用 Tab 或右方向键接受。 持久化命令历史：命令和常用目录跨会话保存，目录访问频率会参与补全排序。 内置 Powerline 提示符：显示当前目录、Git 分支和时间，PowerShell 与 Git Bash 无需额外安装提示符框架。 原生 SSH：读取 ~/.ssh/config，支持私钥、证书、加密密钥、Windows 凭据、keyboardinteractive 和 MFA。 连接复用与 SFTP：同一远程目标可以复用已认证连接；内置文件与目录上传、下载、重命名、删除、拖放传输、进度显示 和取消。 文件与版本控制工作区：在终端旁直接浏览本地或远程文件，并查看和操作 Git/SVN 工作区。 原生 Markdown/GFM 阅读器：支持标题、列表、表格、任务列表、代码块、引用、链接、远程与本地图片、常见 README HTML 和 CJK 正确换行。 原生 TeX 数学排版：支持行内与块级公式、分式、根式、上下标、极限、积分、矩阵、伸缩括号和常用数学符号，不依赖 WebView、JavaScript、MathJax 或外部 TeX。 标签页与可拖动分屏：标签栏可以放在顶部或左侧，支持拖拽排序、双击重命名、上下/左右分屏和焦点亮度区分。 快速终端：通过全局快捷键从屏幕顶部唤出 Quake 风格终端。 命令面板与设置标签页：主题、语言、Shell、补全方式、透明度、背景图片和标签位置可以直接配置并即时生效。 主题与桌面体验：提供成组的明暗主题、玻璃效果、系统明暗模式跟随、CJK 字体与输入法支持。 终端行内图片：支持 OSC 1337 图片协议，并将图片稳定锚定到滚动历史。 使用场景 长时间使用 Claude Code、Codex 等 AI CLI，希望同时管理多个 Agent，并在任务完成或等待输入时及时收到通知。 不希望关闭终端窗口就丢失正在运行的构建、服务、SSH 连接或进行到一半的 AI 对话。 希望把终端、文件浏览、Git/SVN、SSH/SFTP 和 Agent 控制集中在同一个开发空间中。 经常阅读包含图片、表格、代码块和数学公式的 README、技术文档、设计说明或研究笔记。 主要在 Windows 上开发，希望获得针对 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法深度适配的原生终端体验。 希望外部脚本或 Agent 能通过稳定接口创建 pane、执行命令、读取真实终端输出并等待任务状态变化。 Nebula 想做的不只是另一个 GPU 终端，而是一个以不会消失的终端会话为地基，将本地与远程开发、AI Agent 协作、版本 控制和技术文档统一起来的 Windows 原生工作空间。 欢迎试用，也欢迎提交 issue 和 PR。",
+          "content": "• 项目地址：https://github.com/Kuddev/nebula\n\n  开源协议：GPL-3.0\n\n  ## Nebula Terminal\n\n<img width=\"1035\" height=\"600\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/03e76893-0524-4595-9fb9-af3b011dd95f\" />\n\n<img width=\"1035\" height=\"490\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d0fb0089-b14f-4c87-9664-d3a2e62d4dfa\" />\n\n<img width=\"1035\" height=\"603\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/84832d4d-a93f-4670-97c0-5292eb9b0915\" />\n\n  ### 简介\n\n  Nebula 是一个以常驻终端为核心的 Windows 原生 AI 开发工作台，使用纯 Rust 编写，构建在 Alacritty 衍生的终端内\n  核、GPU 加速渲染管线和 Zed 的 GPUI 框架之上。\n\n  它解决的第一个问题是：终端会话不应该随着窗口一起消失。关闭 Nebula 只会分离界面，不会杀死正在运行的 Shell、构建\n  任务、SSH 连接或 AI 对话；重新打开即可回到原来的标签、分屏、滚动内容和工作目录。系统重启或常驻进程退出后，也能\n  从持续保存的快照恢复工作区布局。\n\n  Nebula 也不把终端局限在命令输入框里。Claude Code、Codex 等 Agent 的运行状态与通知，文件与 Git/SVN 工作流，原生\n  SSH/SFTP，以及 Markdown、图片和 TeX 数学公式，都被统一进同一个可恢复的开发空间。\n\n  ### 性能与实现\n\n  Nebula 使用 GPU 加速的字形与 UI quad 渲染器，并针对 Windows ConPTY 的启动、缩放和全屏 TUI 重绘路径进行优化。\n\n  窗口拖动期间只实时调整终端网格，结束后再向 PTY 合并提交最终尺寸，避免中间重绘污染滚动历史；ConPTY 启动握手会提\n  前预热，新标签页不需要等待额外往返。启动过程可以通过 NEBULA_BOOT_TRACE=1 完整观测，历史记录和其他非关键数据采\n  用惰性加载。\n\n  项目目前主要面向 Windows 10/11，重点做好 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法组合输入等 Windows 开\n  发环境中的实际体验。\n\n  ### 主要特性\n\n  - 常驻会话：关闭窗口只分离界面，PTY 和其中的任务继续运行；再次启动即可原地接回。\n  - 冷恢复与单实例：持续保存标签、分屏和工作目录；重复启动自动交给已有实例处理。\n  - AI Agent 感知：识别 Claude Code、Codex 等 CLI，按 pane 显示运行、完成、等待输入、需要关注和失败等状态。\n  - 任务通知直达现场：Agent 完成任务或等待确认时发送桌面通知；点击通知直接切到对应标签和分屏。\n  - 本地与远程状态统一：远程 SSH pane 中的 Agent 事件也能通过经过认证的私有通道返回本地侧栏和通知系统。\n  - Runtime API：外部工具和 Agent 可以读取窗口、标签、pane、进程、任务状态和终端输出，也可以创建标签与分屏、发送\n    命令、按键或 prompt，并等待任务结束。\n\n  - 增强提示符：提供历史和路径驱动的内联补全与候选列表，可用 Tab 或右方向键接受。\n  - 持久化命令历史：命令和常用目录跨会话保存，目录访问频率会参与补全排序。\n  - 内置 Powerline 提示符：显示当前目录、Git 分支和时间，PowerShell 与 Git Bash 无需额外安装提示符框架。\n  - 原生 SSH：读取 ~/.ssh/config，支持私钥、证书、加密密钥、Windows 凭据、keyboard-interactive 和 MFA。\n  - 连接复用与 SFTP：同一远程目标可以复用已认证连接；内置文件与目录上传、下载、重命名、删除、拖放传输、进度显示\n    和取消。\n\n  - 文件与版本控制工作区：在终端旁直接浏览本地或远程文件，并查看和操作 Git/SVN 工作区。\n  - 原生 Markdown/GFM 阅读器：支持标题、列表、表格、任务列表、代码块、引用、链接、远程与本地图片、常见 README\n    HTML 和 CJK 正确换行。\n\n  - 原生 TeX 数学排版：支持行内与块级公式、分式、根式、上下标、极限、积分、矩阵、伸缩括号和常用数学符号，不依赖\n    WebView、JavaScript、MathJax 或外部 TeX。\n\n  - 标签页与可拖动分屏：标签栏可以放在顶部或左侧，支持拖拽排序、双击重命名、上下/左右分屏和焦点亮度区分。\n  - 快速终端：通过全局快捷键从屏幕顶部唤出 Quake 风格终端。\n  - 命令面板与设置标签页：主题、语言、Shell、补全方式、透明度、背景图片和标签位置可以直接配置并即时生效。\n  - 主题与桌面体验：提供成组的明暗主题、玻璃效果、系统明暗模式跟随、CJK 字体与输入法支持。\n  - 终端行内图片：支持 OSC 1337 图片协议，并将图片稳定锚定到滚动历史。\n\n  ### 使用场景\n\n  - 长时间使用 Claude Code、Codex 等 AI CLI，希望同时管理多个 Agent，并在任务完成或等待输入时及时收到通知。\n  - 不希望关闭终端窗口就丢失正在运行的构建、服务、SSH 连接或进行到一半的 AI 对话。\n  - 希望把终端、文件浏览、Git/SVN、SSH/SFTP 和 Agent 控制集中在同一个开发空间中。\n  - 经常阅读包含图片、表格、代码块和数学公式的 README、技术文档、设计说明或研究笔记。\n  - 主要在 Windows 上开发，希望获得针对 ConPTY、PowerShell、Git Bash、WSL、CJK 和输入法深度适配的原生终端体验。\n  - 希望外部脚本或 Agent 能通过稳定接口创建 pane、执行命令、读取真实终端输出并等待任务状态变化。\n\n  Nebula 想做的不只是另一个 GPU 终端，而是一个以不会消失的终端会话为地基，将本地与远程开发、AI Agent 协作、版本\n  控制和技术文档统一起来的 Windows 原生工作空间。\n\n  欢迎试用，也欢迎提交 issue 和 PR。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11266",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11266"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】WereadHelper：基于微信读书官方API实现的阅读笔记管理工具",
+          "url": "https://github.com/jachinq/weread_helper",
+          "author": "jachinq",
+          "authorUrl": "https://github.com/jachinq",
+          "publishedAt": "2026-08-19T14:22:21Z",
+          "summary": "纸间笔记 项目地址 微信读书里，划线往往停在书籍内，那些划线句子散落在各处，书架也很难按年份月份做筛选。 纸间笔记是个人自用的微信读书助手：把你的划线、想法、书架和阅读时长同步到本地，再用更适合回看、晒书、沉浸阅读的界面重新排版。官方 App 负责读；这里负责把读过的痕迹收成一座只属于你的小馆。 项目基于官方的AgentSkill 项目，数据走官方 Skills API，不是常规的使用登录 cookie 获取数据，不会有过期的麻烦，数据请求的是官方 API。密钥留在本机服务端，浏览器从不直连微信读书。可以本地开发、Docker 部署，也可以打成 Windows 便携桌面。 官方没有、这里有 下面四件事，是微信读书客户端里很难一次性做好、或根本没有的体验。它们也是这个项目真正想被记住的部分。 1. 随机笔记：每日随机抽签 首页不做信息流，做抽签。 每天从本地全部历史划线里抽出 5 条，排成散落的笔记卡片：原文、封面、书名、作者、划线日期。点开一张，卡片放大铺开，可左右翻阅当日这一批；从卡片也能直接进这本书的全书笔记。 同一天反复打开，默认看到的是同一批——像书桌上那几张便签，如果想换口味，点「换一批」即可重抽。 官方 App 一直没有提供方便的笔记回看功能，读得越多，在每本书里划线过的句子越难收集。纸间笔记把「偶然重逢一句旧话」做成首页仪式，与那些曾引起你共鸣的句子，再次相遇。 适合：早晨、睡前翻看、把一句喜欢的话截出来分享。 !home 2. 完整笔记列表：按书、按章，划线与想法并排 微信读书的笔记入口偏「当前在读」和单本上下文。纸间笔记把所有有笔记的书收成一张可检索的书单。 封面、书名、作者、划线数、想法数、阅读进度一目了然 按书名或作者即时筛选 点进一本书：按章节分组；划线原文与对应想法贴在一起，独立想法单独成块 侧栏目录可跳章；封面可展开书籍信息卡片 这是「完整」的含义：不是某一本的摘录导出，而是整座笔记库可浏览、可检索、可按章重读。划线不再只活在阅读器的高亮层里，而成为可以慢慢逛的文本。 适合：写读书笔记前的回看、找某句出处、把一本书的想法从头到尾读一遍。 !home 3. 书架按阅读时间筛选：晒出某年某月读过 / 读完的书 官方书架很难回答一个很具体的问题：这一年、这一个月，我到底摊开过哪些书？哪些读完了？（其实有入口，不过比较隐蔽，导致很少使用） 纸间笔记的书架按最近阅读时间排列，并提供： | 筛选 | 用途 | ||| | 年份 | 只看某一年动过的书 | | 月份 | 选定年份后再收窄到某月 | | 读完 | 只留下 读完 标记的书 | | 置顶 | 只看置顶 | | 书名 / 作者 | 在当前时间范围内再搜 | 年份选项来自书架上真实出现过的阅读时间，不会列出空年。选「2024 年 + 读完」，就是一份现成的年度读完墙；选某月，就是那个月的在读足迹。截一张书架网格，就是年终晒书、读书会分享、个人主页配图。 !home 4. 主题切换：支持九种风格 纸间笔记提供了九套主题，每套都有明亮 / 黑暗两种模式选择，总有一种风格适合你~ | 主题 | 气质 | 布局 | |||| | 胡桃灯影 | 暖木、灯火，默认馆藏 | 顶栏 | | 青瓷书斋 | 冷绿釉色，安静 | 顶栏 | | 朱砂线装 | 朱红线口，旧装帧 | 顶栏 | | 夜航墨水 | 深夜航行，侧栏书架 | 侧栏 | | 茶室苔绿 | 茶席与青苔 | 顶栏 | | 月光银箔 | 冷银与衬纸 | 侧栏 | | 铅字排印 | 等宽、印厂、纸边 | 侧栏 | | 秋柳柿红 | 秋色、柿子、暖边 | 顶栏 | | 海棠春笺 | 笺纸与海棠 | 侧栏 | !home 部分主题带一盏装饰灯；顶栏与侧栏两种壳，导航位置不同，同一套笔记换一种风格。应用名称也可自定义，从默认的「纸间笔记」改为任意你喜欢的名字。 !home 这里还有什么 特色之外，同步进来的统计数据同样拿来做展示了。 阅读统计 周 / 月 / 年 / 累计切换。历史年、月、周可步进；本地没有该周期快照时，按需向官方拉取并入库，不覆盖其它周期。总时长、阅读天数、日均；有每日时长则画分钟柱状图；有分类偏好则展示标签。时长按秒换算，页面上直接读小时与分钟。 !home 适合谁 重度微信读书用户、又嫌官方笔记管理不适合「展览」的人。 读过的书，合上后就再也不会翻开了？那些曾经让你思考的过的句子，也不再会看到了？那么「纸间笔记」将会很适合你，与那些划线过、思考过的句子，再次重逢吧~",
+          "content": "# 纸间笔记\n\n[项目地址](https://github.com/jachinq/weread_helper)\n\n微信读书里，划线往往停在书籍内，那些划线句子散落在各处，书架也很难按年份月份做筛选。\n\n**纸间笔记**是个人自用的微信读书助手：把你的划线、想法、书架和阅读时长同步到本地，再用更适合回看、晒书、沉浸阅读的界面重新排版。官方 App 负责读；这里负责把读过的痕迹收成一座只属于你的小馆。\n\n项目基于官方的[AgentSkill 项目](https://github.com/Tencent/WeChatReading)，数据走官方 [Skills API](https://weread.qq.com/r/weread-skills)，不是常规的使用登录 cookie 获取数据，不会有过期的麻烦，数据请求的是官方 API。密钥留在本机服务端，浏览器从不直连微信读书。可以本地开发、Docker 部署，也可以打成 Windows 便携桌面。\n\n## 官方没有、这里有\n\n下面四件事，是微信读书客户端里很难一次性做好、或根本没有的体验。它们也是这个项目真正想被记住的部分。\n\n### 1. 随机笔记：每日随机抽签\n\n首页不做信息流，做**抽签**。\n\n每天从本地全部历史划线里抽出 5 条，排成散落的笔记卡片：原文、封面、书名、作者、划线日期。点开一张，卡片放大铺开，可左右翻阅当日这一批；从卡片也能直接进这本书的全书笔记。\n\n同一天反复打开，默认看到的是同一批——像书桌上那几张便签，如果想换口味，点「换一批」即可重抽。\n\n官方 App 一直没有提供方便的笔记回看功能，读得越多，在每本书里划线过的句子越难收集。纸间笔记把**「偶然重逢一句旧话」**做成首页仪式，与那些曾引起你共鸣的句子，再次相遇。\n\n适合：早晨、睡前翻看、把一句喜欢的话截出来分享。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/home.webp?raw=true)\n\n### 2. 完整笔记列表：按书、按章，划线与想法并排\n\n微信读书的笔记入口偏「当前在读」和单本上下文。纸间笔记把**所有有笔记的书**收成一张可检索的书单。\n\n- 封面、书名、作者、划线数、想法数、阅读进度一目了然\n- 按书名或作者即时筛选\n- 点进一本书：按章节分组；划线原文与对应想法贴在一起，独立想法单独成块\n- 侧栏目录可跳章；封面可展开书籍信息卡片\n\n这是「完整」的含义：不是某一本的摘录导出，而是整座笔记库可浏览、可检索、可按章重读。划线不再只活在阅读器的高亮层里，而成为可以慢慢逛的文本。\n\n适合：写读书笔记前的回看、找某句出处、把一本书的想法从头到尾读一遍。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/notes.webp?raw=true)\n\n### 3. 书架按阅读时间筛选：晒出某年某月读过 / 读完的书\n\n官方书架很难回答一个很具体的问题：**这一年、这一个月，我到底摊开过哪些书？哪些读完了？**（其实有入口，不过比较隐蔽，导致很少使用）\n\n纸间笔记的书架按最近阅读时间排列，并提供：\n\n| 筛选 | 用途 |\n|------|------|\n| 年份 | 只看某一年动过的书 |\n| 月份 | 选定年份后再收窄到某月 |\n| 读完 | 只留下 `读完` 标记的书 |\n| 置顶 | 只看置顶 |\n| 书名 / 作者 | 在当前时间范围内再搜 |\n\n年份选项来自书架上真实出现过的阅读时间，不会列出空年。选「2024 年 + 读完」，就是一份现成的年度读完墙；选某月，就是那个月的在读足迹。截一张书架网格，就是年终晒书、读书会分享、个人主页配图。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/shelf.webp?raw=true)\n\n### 4. 主题切换：支持九种风格\n\n纸间笔记提供了九套主题，每套都有明亮 / 黑暗两种模式选择，总有一种风格适合你~\n\n| 主题 | 气质 | 布局 |\n|------|------|------|\n| 胡桃灯影 | 暖木、灯火，默认馆藏 | 顶栏 |\n| 青瓷书斋 | 冷绿釉色，安静 | 顶栏 |\n| 朱砂线装 | 朱红线口，旧装帧 | 顶栏 |\n| 夜航墨水 | 深夜航行，侧栏书架 | 侧栏 |\n| 茶室苔绿 | 茶席与青苔 | 顶栏 |\n| 月光银箔 | 冷银与衬纸 | 侧栏 |\n| 铅字排印 | 等宽、印厂、纸边 | 侧栏 |\n| 秋柳柿红 | 秋色、柿子、暖边 | 顶栏 |\n| 海棠春笺 | 笺纸与海棠 | 侧栏 |\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/settings.webp?raw=true)\n\n部分主题带一盏装饰灯；顶栏与侧栏两种壳，导航位置不同，同一套笔记换一种风格。应用名称也可自定义，从默认的「纸间笔记」改为任意你喜欢的名字。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/theme.webp?raw=true)\n\n## 这里还有什么\n\n特色之外，同步进来的统计数据同样拿来做展示了。\n\n**阅读统计**\n\n周 / 月 / 年 / 累计切换。历史年、月、周可步进；本地没有该周期快照时，按需向官方拉取并入库，不覆盖其它周期。总时长、阅读天数、日均；有每日时长则画分钟柱状图；有分类偏好则展示标签。时长按秒换算，页面上直接读小时与分钟。\n\n![home](https://github.com/jachinq/weread_helper/blob/master/docs/assets/stats.webp?raw=true)\n\n\n## 适合谁\n\n重度微信读书用户、又嫌官方笔记管理不适合「展览」的人。\n\n读过的书，合上后就再也不会翻开了？那些曾经让你思考的过的句子，也不再会看到了？那么「纸间笔记」将会很适合你，与那些划线过、思考过的句子，再次重逢吧~",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11267",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11267"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【Tool Recommendation】Kivora: One-Sentence + Product Image, AI-Generated Short Videos for Sales",
+          "url": "https://0d63b37e.kivora-112.pages.dev/",
+          "author": "zhangmask",
+          "authorUrl": "https://github.com/zhangmask",
+          "publishedAt": "2026-08-19T14:28:10Z",
+          "summary": "【Tool Recommendation】Kivora: OneSentence + Product Image, AIGenerated Short Videos for Sales Kivora is an AI short video generation tool for ecommerce sellers, suitable for quickly creating product promotional videos, sales videos, and short video ads. Kivora isn't simply an \"AIgenerated video\" tool. It focuses more on product display, product marketing, and short videos that drive sales. Suitable for: Crossborder ecommerce TikTok Shop Douyin ecommerce Xiaohongshu Amazon product marketing Independent websites Shopify merchants Ecommerce advertising creatives Product promotional videos Social media short videos It's incredibly easy to use: Enter a sentence and upload a product image, and it will automatically generate an ecommerce short video. No need to write scripts, edit, or build complex AI workflows. It's particularly suitable for crossborder ecommerce, TikTok shops, independent websites, and sellers who need to create product videos in batches. Several features I particularly value: OneSentence Generation: Directly describe the desired video; no need to study complex prompts. Product Image Video Generation: Existing product images can be used directly. Simple Operation: No need to learn professional video editing. Stability First: Emphasizes state saving during the generation process to avoid losing previously entered content and materials in case of generation errors. Suitable for Ecommerce Scenarios: Quickly create product display, advertising, and sales short videos. Kivora aims to solve a very specific problem: I don't want to create another \"allencompassing\" AI video platform. nor do I want users to open it only to find dozens of models and hundreds of parameters, unsure where to begin. Kivora prefers to simplify things: Product image + one sentence → One short product video clip. Making it accessible even to those without editing skills, and enabling small businesses without professional photography teams to quickly create marketing videos. If you are looking for tools like AI video generation, ecommerce videos, product image video generation, and sales short videos, you can give it a try. 👉 <img width=\"2350\" height=\"1364\" alt=\"Image\" src=\" /",
+          "content": "###【Tool Recommendation】Kivora: One-Sentence + Product Image, AI-Generated Short Videos for Sales\n\nKivora is an AI short video generation tool for e-commerce sellers, suitable for quickly creating product promotional videos, sales videos, and short video ads.\n\nKivora isn't simply an \"AI-generated video\" tool.\n\nIt focuses more on product display, product marketing, and short videos that drive sales.\n\nSuitable for:\n\nCross-border e-commerce\n\nTikTok Shop\n\nDouyin e-commerce\n\nXiaohongshu\n\nAmazon product marketing\n\nIndependent websites\n\nShopify merchants\n\nE-commerce advertising creatives\n\nProduct promotional videos\n\nSocial media short videos\n\nIt's incredibly easy to use: **Enter a sentence and upload a product image, and it will automatically generate an e-commerce short video**. No need to write scripts, edit, or build complex AI workflows.\n\nIt's particularly suitable for cross-border e-commerce, TikTok shops, independent websites, and sellers who need to create product videos in batches.\n\nSeveral features I particularly value:\n\n* **One-Sentence Generation**: Directly describe the desired video; no need to study complex prompts.\n\n* **Product Image Video Generation**: Existing product images can be used directly.\n\n* **Simple Operation**: No need to learn professional video editing.\n\n* **Stability First**: Emphasizes state saving during the generation process to avoid losing previously entered content and materials in case of generation errors.\n\n* **Suitable for E-commerce Scenarios**: Quickly create product display, advertising, and sales short videos.\n\n* Kivora aims to solve a very specific problem:\n\nI don't want to create another \"all-encompassing\" AI video platform.\n\nnor do I want users to open it only to find dozens of models and hundreds of parameters, unsure where to begin.\n\nKivora prefers to simplify things:\n\nProduct image + one sentence → One short product video clip.\n\nMaking it accessible even to those without editing skills, and enabling small businesses without professional photography teams to quickly create marketing videos.\n\nIf you are looking for tools like **AI video generation, e-commerce videos, product image video generation, and sales short videos**, you can give it a try. 👉 https://0d63b37e.kivora-112.pages.dev/\n\n<img width=\"2350\" height=\"1364\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/94df3ef5-1c08-45ec-8598-2cdab379d139\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11268",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11268"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[Open Source] termagitchi: give every AI coding agent its own terminal pet",
+          "url": "https://github.com/TevvvB/termagitchi",
+          "author": "TevvvB",
+          "authorUrl": "https://github.com/TevvvB",
+          "publishedAt": "2026-08-18T21:10:41Z",
+          "summary": "Project URL Category Go Project Title Give every AI coding agent its own terminal pet Project Description A Go CLI that gives every AI coding agent session its own creature in the terminal status line, with one den per git worktree. Its mood tracks how tidy that worktree is, so six agents at once are six pets you can tell apart. Highlights Most terminal pets belong to you: one creature, nurtured over time. This one belongs to the agent, which is what makes it useful rather than decorative. When six Claude Code or Codex sessions are running across six worktrees, the status line tells you which session you are looking at and which one is in trouble, because the creature is derived from the session and its mood is derived from the worktree's tidiness. 41 species across 5 rarity bands, plus shiny variants, and 16 cities that name the dens. pets den shows the collection: which species you have found and which places you have worked in. A creature is a hash, not a record. Nothing is persisted to decide identity, so there is no state to migrate or corrupt. The statusline path runs once a second in every open session, so it reads two small cache files and nothing else: no git, no network. The expensive work happens in a throttled background probe. Verified end to end against Claude Code. The Codex hooks are written but have not been tested against a real Codex, and the README says so. The tmux and shellprompt modes need nothing from the agent at all, so they work with Aider, Amp, Gemini CLI or anything else. Installs itself into whichever agents you actually have, backs up every config it touches, and leaves your other hooks alone. pets uninstall reverses it. Single static binary, MIT, no runtime dependencies. Example Code markdown install, then wire into whichever agents are present curl fsSL | sh pets install one line per live session, across every worktree pets party the collection: species found, and cities worked in pets den Screenshots or Demo Videos !six worktrees, six creatures",
+          "content": "### Project URL\n\nhttps://github.com/TevvvB/termagitchi\n\n### Category\n\nGo\n\n### Project Title\n\nGive every AI coding agent its own terminal pet\n\n### Project Description\n\nA Go CLI that gives every AI coding agent session its own creature in the terminal status line, with one den per git worktree. Its mood tracks how tidy that worktree is, so six agents at once are six pets you can tell apart.\n\n### Highlights\n\nMost terminal pets belong to you: one creature, nurtured over time. This one belongs to the agent, which is what makes it useful rather than decorative. When six Claude Code or Codex sessions are running across six worktrees, the status line tells you which session you are looking at and which one is in trouble, because the creature is derived from the session and its mood is derived from the worktree's tidiness.\n\n- 41 species across 5 rarity bands, plus shiny variants, and 16 cities that name the dens. `pets den` shows the collection: which species you have found and which places you have worked in.\n- A creature is a hash, not a record. Nothing is persisted to decide identity, so there is no state to migrate or corrupt.\n- The status-line path runs once a second in every open session, so it reads two small cache files and nothing else: no git, no network. The expensive work happens in a throttled background probe.\n- Verified end to end against Claude Code. The Codex hooks are written but have not been tested against a real Codex, and the README says so. The tmux and shell-prompt modes need nothing from the agent at all, so they work with Aider, Amp, Gemini CLI or anything else.\n- Installs itself into whichever agents you actually have, backs up every config it touches, and leaves your other hooks alone. `pets uninstall` reverses it.\n- Single static binary, MIT, no runtime dependencies.\n\n### Example Code\n\n```markdown\n# install, then wire into whichever agents are present\ncurl -fsSL https://raw.githubusercontent.com/TevvvB/termagitchi/main/install.sh | sh\npets install\n\n# one line per live session, across every worktree\npets party\n\n# the collection: species found, and cities worked in\npets den\n```\n\n### Screenshots or Demo Videos\n\n![six worktrees, six creatures](https://raw.githubusercontent.com/TevvvB/termagitchi/main/docs/demo.gif)\n",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3560",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3560"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源自荐] 优派简历: 一款高颜值 免费的AI在线简历生成器",
+          "url": "https://github.com/oopooa/opresume",
+          "author": "oopooa",
+          "authorUrl": "https://github.com/oopooa",
+          "publishedAt": "2026-08-19T09:57:51Z",
+          "summary": "项目地址 类别 其它 项目标题 用户可在线制作导出简历，支持多种模板，数据随时导出，不上传云端 项目描述 这是一个在线简历制作工具，完全免费，无广告，支持多种模板，简历数据随时导出，安全可靠。 亮点 AI润色，AI智能识别PDF导入 多种模板选择，排版任意调节 支持智能分页功能，不随意截断模块 支持根据工作经历自动推算工作经验 支持根据生日计算年龄，无需多次重复设置 支持隐私模式，对敏感信息一键打码，方便截图分享 示例代码 markdown 截图或演示视频 在线使用 <img width=\"1920\" height=\"1536\" alt=\"Image\" src=\" / <img width=\"984\" height=\"1179\" alt=\"Image\" src=\" /",
+          "content": "### 项目地址\n\nhttps://github.com/oopooa/opresume\n\n### 类别\n\n其它\n\n### 项目标题\n\n用户可在线制作导出简历，支持多种模板，数据随时导出，不上传云端\n\n### 项目描述\n\n这是一个在线简历制作工具，完全免费，无广告，支持多种模板，简历数据随时导出，安全可靠。\n\n### 亮点\n\n- AI润色，AI智能识别PDF导入\n- 多种模板选择，排版任意调节\n- 支持智能分页功能，不随意截断模块\n- 支持根据工作经历自动推算工作经验\n- 支持根据生日计算年龄，无需多次重复设置\n- 支持隐私模式，对敏感信息一键打码，方便截图分享\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n[在线使用](https://opresume.pages.dev/)\n\n<img width=\"1920\" height=\"1536\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/94c69707-c2d9-42ad-9480-ccb4d198515f\" />\n\n<img width=\"984\" height=\"1179\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/43c7a702-5b23-486c-b02d-3a4e73f98e70\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3561",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3561"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] repo-cover",
+          "url": "https://github.com/sjh9714/repo-cover",
+          "author": "sjh9714",
+          "authorUrl": "https://github.com/sjh9714",
+          "publishedAt": "2026-08-19T11:18:42Z",
+          "summary": "项目地址 类别 人工智能 项目标题 让编程智能体为仓库设计社交预览图的 Agent 技能 项目描述 repocover 是一个 Agent 技能，让 Claude Code、Codex 等编程智能体为 GitHub 仓库设计社交预览图（og:image）。不调用图像模型，智能体直接写出一个自包含的 1280x640 HTML 文件，配套的 Python 检查器对对比度、文本溢出和中日韩换行做确定性校验，最后用本地 Chrome 导出 PNG。 亮点 设计品味不是靠提示词，而是写成模型无法偏离的数字约束（4px 网格、单强调色自动加深到 WCAG 对比度、按名称长度分级的字号）。中文排版是一等公民，使用 Noto Sans SC 和正确的换行规则，检查器会把排版破坏判为失败。四种风格由仓库的语言颜色和名称哈希派生，不会有两张相同的卡片。在线画廊可直接查看每张卡片的源码。 示例代码 markdown 截图或演示视频",
+          "content": "### 项目地址\n\nhttps://github.com/sjh9714/repo-cover\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n让编程智能体为仓库设计社交预览图的 Agent 技能\n\n### 项目描述\n\nrepo-cover 是一个 Agent 技能，让 Claude Code、Codex 等编程智能体为 GitHub 仓库设计社交预览图（og:image）。不调用图像模型，智能体直接写出一个自包含的 1280x640 HTML 文件，配套的 Python 检查器对对比度、文本溢出和中日韩换行做确定性校验，最后用本地 Chrome 导出 PNG。\n\n### 亮点\n\n设计品味不是靠提示词，而是写成模型无法偏离的数字约束（4px 网格、单强调色自动加深到 WCAG 对比度、按名称长度分级的字号）。中文排版是一等公民，使用 Noto Sans SC 和正确的换行规则，检查器会把排版破坏判为失败。四种风格由仓库的语言颜色和名称哈希派生，不会有两张相同的卡片。在线画廊可直接查看每张卡片的源码。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/sjh9714/repo-cover/main/docs/hero.png\n\nhttps://sjh9714.github.io/repo-cover/",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3562",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3562"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "vibecafe",
+      "sourceName": "VibeCafé 作品",
+      "items": [
+        {
+          "sourceId": "vibecafe",
+          "title": "CogineWork：一个可以自己 DIY 的本地优先 AI 工作台",
+          "url": "https://vibecafe.ai/products/cmszzsfxg00000aji4nbmd934",
+          "author": "Bambi",
+          "authorUrl": "https://vibecafe.ai/u/bambi111",
+          "publishedAt": "2026-08-19T11:12:25.252Z",
+          "summary": "不只使用 AI，更能 DIY 属于自己的 AI 工作台。",
+          "content": "不只使用 AI，更能 DIY 属于自己的 AI 工作台。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmszzsfxg00000aji4nbmd934",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887600825-purt9w.jpg",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/mszzj61ghlzi-zCV513CMks707pimM1csnanKkCzVm4.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887600825-purt9w.jpg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887658753-dahz69.jpg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787887671908-8dc5qi.jpg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137557911-moymq2.jpg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558332-kzzuqx.jpg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558791-ky3c42.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558572-3h98de.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryoegdi000004l87ui19nlm/1787137558173-55ynbp.jpg"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "剪迹·Clipth",
+          "url": "https://vibecafe.ai/products/cmszzqtso00000akyel0lpr8r",
+          "author": "深海",
+          "authorUrl": "https://vibecafe.ai/u/wavever",
+          "publishedAt": "2026-08-19T11:11:09.912Z",
+          "summary": "一款键盘操作优先、支持 MCP 的 macOS 剪贴板管理器",
+          "content": "一款键盘操作优先、支持 MCP 的 macOS 剪贴板管理器",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmszzqtso00000akyel0lpr8r",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137423626-t3ebj2.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787136924129-qt0pad.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137423626-t3ebj2.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137503424-txy4r7.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137506042-56lguz.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmo29icqi000007miz3p3nss2/1787137507817-b4qqa1.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "牛来MBTI · NLTI",
+          "url": "https://vibecafe.ai/products/cmszivplz00000bhyzokdrhjr",
+          "author": "xter",
+          "authorUrl": "https://vibecafe.ai/u/xter",
+          "publishedAt": "2026-08-19T03:19:04.295Z",
+          "summary": "2026年最抽象的国产动画《牛来》主题角色测试。16道题，测测你是惊吓爆发型小牛、哲学引路鸟，还是隐藏款普通牛。",
+          "content": "2026年最抽象的国产动画《牛来》主题角色测试。16道题，测测你是惊吓爆发型小牛、哲学引路鸟，还是隐藏款普通牛。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmszivplz00000bhyzokdrhjr",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272919-ym4ddt.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/mszip1ne32pn-lwleORAw6xfqI3ejwEc8BTC7mM9n6l.svg",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272919-ym4ddt.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109271353-2yihk2.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272439-7udq3a.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109272745-jp7btm.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmryklpq000000ajc5kyipd3x/1787109517655-bxypu8.png"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "\"URL Shortener\"",
+          "url": "https://www.producthunt.com/products/url-shortener-12/launches/url-shortener-69ae679d-3587-4fbc-b0d1-181cd0a2334d?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "\"Shorten links, track clicks, tag campaigns — free forever\"",
+          "content": "\"Most free shorteners stop at making a link short. This one adds a built-in UTM campaign builder — fill in source/medium/campaign and it auto-tags your destination URL for Google Analytics or Meta Ads, no manual work needed. Paired with real click history, QR codes, password protection, and bulk shortening, it's built for anyone who wants to actually measure their links, not just shrink them — free to start, no sign-up required.\"",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1222030",
+          "logo": "https://ph-files.imgix.net/fa9b525f-bfdc-4ed6-b721-682e97f77228.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/acc70a70-ce14-4e6a-b730-cfe6b660d58e.png?auto=format",
+            "https://ph-files.imgix.net/a05e9496-b898-4382-85e6-2f109d8b5e88.png?auto=format",
+            "https://ph-files.imgix.net/49c15592-e995-44e9-9c74-bb1deb47f620.png?auto=format",
+            "https://ph-files.imgix.net/140bd3de-cd7f-4cca-829e-912932e02f01.png?auto=format",
+            "https://ph-files.imgix.net/7abdac86-b083-42da-b92f-98e64e138a23.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/acc70a70-ce14-4e6a-b730-cfe6b660d58e.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "QI Futsal",
+          "url": "https://www.producthunt.com/products/qi-futsal/launches/qi-futsal?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Deviens le coach que tes joueurs méritent ",
+          "content": "Quiz tactiques, modules et gamification futsal pour éducateurs, joueurs et gardiens. Compte 100% gratuit, sans carte bancaire. Créé ton accès en 30 secondes.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1223865",
+          "logo": "https://ph-files.imgix.net/36545bad-bd26-4193-97df-ad57b386f3cd.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/96df79cf-e4b7-43cb-af89-4cf1728c37a7.webp?auto=format",
+            "https://ph-files.imgix.net/5e2e50dc-e29d-4ed9-bfd0-ff9eb8331231.jpeg?auto=format",
+            "https://ph-files.imgix.net/3eb6af47-2bbe-42f3-a043-56d604197bdf.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/96df79cf-e4b7-43cb-af89-4cf1728c37a7.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "QuokkaJot — happier user insights",
+          "url": "https://www.producthunt.com/products/quokkajot-happier-user-insights/launches/quokkajot-happier-user-insights?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "🦘 Open-source feedback, roadmap & changelog platform.",
+          "content": "Open-source user feedback, roadmap, and changelog platform. QuokkaJot helps teams collect feature requests, prioritize ideas with votes, share public roadmaps, and close the loop when features ship. Built as a UserJot alternative with AI-powered feedback organization, self-hosting, APIs, and full data ownership. Collect feedback. Build better products. Keep users in the loop.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226164",
+          "logo": "https://ph-files.imgix.net/fe85e15d-8ae1-4b73-a58b-e2ff6d11c27d.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/93a82506-43fd-4fc5-813e-b9dce56e7c3a.png?auto=format",
+            "https://ph-files.imgix.net/51452569-4eba-4798-be62-e7aff0e8d336.png?auto=format",
+            "https://ph-files.imgix.net/d384a4e1-cce4-4cb3-9549-8de0c4c2f9e4.png?auto=format",
+            "https://ph-files.imgix.net/0fc55541-1f47-4537-baab-1681d58e9a32.png?auto=format",
+            "https://ph-files.imgix.net/5736af17-3a2a-42e8-bf78-4675035eca4e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/93a82506-43fd-4fc5-813e-b9dce56e7c3a.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Arzuno LeadLens",
+          "url": "https://www.producthunt.com/products/arzuno-leadlens/launches/arzuno-leadlens?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "fastest way to extract verified B2B leads from any linkedin.",
+          "content": "Arzuno LeadLens is a lightning fast Chrome extension built to pull verified B2B leads directly from your browser. Forget bulky scraping tools. We engineered a sleek intuitive tool that extracts emails, social profiles, and company data in one single click. It is perfectly optimized for agencies, sales teams, and solo founders who want clean data without the heavy lifting. Export straight to CSV and supercharge your outreach workflow right now.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226139",
+          "logo": "https://ph-files.imgix.net/8210fa99-6298-4fab-ba33-b30e936a677d.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/d4ea7b53-46bb-463c-89b4-837608a05041.jpeg?auto=format",
+            "https://ph-files.imgix.net/c9787192-a592-45a8-ab9e-3c9606c29618.jpeg?auto=format",
+            "https://ph-files.imgix.net/67be9a80-6f98-4d75-a2c1-8db0e17ec391.png?auto=format",
+            "https://ph-files.imgix.net/f3d3c8fe-5930-49a0-9d59-bf9d62bf072e.png?auto=format",
+            "https://ph-files.imgix.net/dbe7ad7d-8cca-4374-a59a-c646d7f1190a.png?auto=format",
+            "https://ph-files.imgix.net/9ef773a2-fddd-4708-a51b-e26df511bfee.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/d4ea7b53-46bb-463c-89b4-837608a05041.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Kayliquest",
+          "url": "https://www.producthunt.com/products/kayliquest/launches/kayliquest?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Socialnetwork",
+          "content": "KAYLI QUEST Chaque jour, une nouvelle quête. Kayli Quest est une plateforme sociale qui transforme le divertissement en véritable aventure. Découvre du contenu dans ton feed, accomplis des quêtes quotidiennes, gagne de l’XP, monte de niveau et interagis avec la communauté. Découvre du contenu Accomplis des quêtes Gagne de l’XP Monte de niveau Like et commente Ajoute des amis Développe ton profil Chaque interaction te permet de progresser et chaque journée apporte de nouvelles quêtes.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1220786",
+          "logo": "https://ph-files.imgix.net/b2bd89f1-1be9-4920-91a8-3c2820b4295e.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0d3d1a9d-b29a-4635-82b2-b4cd4802ac5c.jpeg?auto=format",
+            "https://ph-files.imgix.net/2c398199-f308-42c3-954e-f416fbae9a20.jpeg?auto=format",
+            "https://ph-files.imgix.net/d18f0c41-9396-4463-8414-b24fbc1f525b.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0d3d1a9d-b29a-4635-82b2-b4cd4802ac5c.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Shrink Sleeve Label Manufacturer India ",
+          "url": "https://www.producthunt.com/products/shrink-sleeve-label-manufacturer-india/launches/shrink-sleeve-label-manufacturer-india?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Packaging Company  Label Printing Company  Printing ",
+          "content": "Orianaa Décorpack Pvt. Ltd. is a leading Indian packaging and label printing company specializing in Shrink Sleeve Labels, Pressure Sensitive Labels, In-Mould Labels, Heat Transfer Labels, BOPP Wrap Around Labels, and customized packaging solutions. With over 30 years of packaging expertise, Orianaa delivers innovative, high-quality labels for FMCG, food, beverage, pharmaceutical, cosmetics, and industrial brands.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1225743",
+          "logo": "https://ph-files.imgix.net/c0a00f2e-01ac-4d19-912c-81671cd12a84.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/073de810-7d14-48af-bd4b-c6b14b40ae2f.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/073de810-7d14-48af-bd4b-c6b14b40ae2f.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Catitos: Cat Health Tracker",
+          "url": "https://www.producthunt.com/products/catitos-cat-health-tracker/launches/catitos-cat-health-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Vaccines, meds and weight for your cat. Reminders for cats.",
+          "content": "Catitos keeps your cat's health in one place: vaccines, medications, weight, illnesses and photos. Whether you have one cat or twenty. Forget the paper vaccination booklet that always goes missing and the doses scribbled on the kitchen calendar. Catitos tells you when each one is due. Download Catitos and stop keeping your cat's health on sticky notes.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226071",
+          "logo": "https://ph-files.imgix.net/f0adea6c-fa58-475f-b2bc-83ec6a04352b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e0537561-f3b5-410f-a8f9-40300367bc79.png?auto=format",
+            "https://ph-files.imgix.net/66cfd5a6-b6dc-4c6b-a75a-6d8e62ad6db1.png?auto=format",
+            "https://ph-files.imgix.net/53f9eb8a-7a00-44ac-a3ad-7343b6a24578.png?auto=format",
+            "https://ph-files.imgix.net/54f25aed-ff77-4346-be7d-c8669d9aa616.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e0537561-f3b5-410f-a8f9-40300367bc79.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Family Budget Ledger",
+          "url": "https://www.producthunt.com/products/family-budget-ledger/launches/family-budget-ledger?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Track your budget, catch a shortfall before it hits",
+          "content": "Family Budget Ledger tracks 12 months of income and expenses and shows a running cash balance that turns red the moment it goes negative — an early warning instead of finding out from your bank statement. Add unlimited custom lines for anything that doesn't fit a standard category (rental income, a relative's contribution, whatever). Comes as both an offline HTML app and an Excel workbook. Compare your spending mix against editable benchmarks, see a visual breakdown by category.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226145",
+          "logo": "https://ph-files.imgix.net/0d839e9b-6360-4024-bb77-97d4b05a9440.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b1aaa3fc-2e03-41c6-81ba-5d07dcdc3227.png?auto=format",
+            "https://ph-files.imgix.net/be5eae4c-4273-4b4c-9ede-2d571f7e8a4a.png?auto=format",
+            "https://ph-files.imgix.net/c71c9ee0-6911-40f7-813c-000e7b1403c4.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b1aaa3fc-2e03-41c6-81ba-5d07dcdc3227.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Skora",
+          "url": "https://www.producthunt.com/products/skora-2/launches/skora-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Free AI college counseling — essays, chances, matches",
+          "content": "Skora gives every student free AI essay feedback Brainstorm → Draft → Polishing → Final, real admission-chance estimates built on College Scorecard/IPEDS data, not guesses, and college matching by major. No credit card, free forever for students. Counselors get management + white-label tools on a paid tier.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1215033",
+          "logo": "https://ph-files.imgix.net/18e9a367-218b-4dc5-8f24-b9f30d85c354.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/31800ec3-dd27-445e-96a0-1e8a5b7f4f25.png?auto=format",
+            "https://ph-files.imgix.net/c5be2964-0b8f-4198-9c94-db49b2c64ead.png?auto=format",
+            "https://ph-files.imgix.net/5cfb426c-61d3-468d-a020-de7921eed259.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/31800ec3-dd27-445e-96a0-1e8a5b7f4f25.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ImagineMyHouse",
+          "url": "https://www.producthunt.com/products/imaginemyhouse/launches/imaginemyhouse?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Explore and compare AI home redesign styles in seconds",
+          "content": "Stuck on how to redesign your space? ImagineMyHouse turns your ideas into reality in seconds. Simply upload a photo of any interior room or house exterior to instantly explore dozens of design styles—from Japandi and Modern Minimalist to Warm Scandinavian. Test different furniture layouts, color palettes, and materials without hiring expensive designers or learning 3D software. Compare styles side-by-side and find the perfect look for your home before making any real changes.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1224126",
+          "logo": "https://ph-files.imgix.net/74e6ad53-f9a6-4a87-8225-eb4788b7c677.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bbfd6fc1-dc2a-482f-841c-547f9d3c97b3.jpeg?auto=format",
+            "https://ph-files.imgix.net/e12783d7-f894-40b9-9b6b-b505d532fc8b.webp?auto=format",
+            "https://ph-files.imgix.net/3bb84fd7-bcf9-44c6-836c-d63e797ce066.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bbfd6fc1-dc2a-482f-841c-547f9d3c97b3.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "WatchTowerOS",
+          "url": "https://www.producthunt.com/products/websentryx/launches/watchtoweros?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Intelligent protection, monitoring & insights for you.",
+          "content": "WatchTowerOS is an all-in-one website health and monitoring platform for performance, SEO, security, uptime, accessibility, and technical issues. Unlike traditional scanners, it uses AI to explain problems, prioritize what matters, and provide actionable fixes. Users can continuously monitor verified websites, track changes, generate reports, and access AI assistance. API and white-label capabilities make it ideal for developers and agencies.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1218667",
+          "logo": "https://ph-files.imgix.net/0ba7b3bf-cda4-4738-b1d1-c55f9185e8de.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/82ff2c7e-3762-4b19-a160-2053efb357a2.png?auto=format",
+            "https://ph-files.imgix.net/809cf840-2338-424b-b44e-b36253455240.png?auto=format",
+            "https://ph-files.imgix.net/4e1d22ce-109d-4916-b16e-01762c1c7fa1.png?auto=format",
+            "https://ph-files.imgix.net/36f7e123-eff1-4865-af88-9d61fac17b0d.png?auto=format",
+            "https://ph-files.imgix.net/78f18d3b-0603-4eac-92f5-1cf0ea1c80fe.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/82ff2c7e-3762-4b19-a160-2053efb357a2.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "MusicFX",
+          "url": "https://www.producthunt.com/products/musicfx-2/launches/musicfx-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "AI music creation, vocal removal, stem split & audio to MIDI",
+          "content": "Create complete songs from a prompt or lyrics, compare two versions, then extend, cover, remove vocals, split stems, or convert audio to MIDI.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226419",
+          "logo": "https://ph-files.imgix.net/b75e9605-0118-458d-b038-111491c6e0be.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a6c669cb-9b31-4a24-b26f-6462fcfaaded.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a6c669cb-9b31-4a24-b26f-6462fcfaaded.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "PitchPilot",
+          "url": "https://www.producthunt.com/products/pitchpilot-2/launches/pitchpilot-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Researched openers that sound like you did your homework.",
+          "content": "Cold emails get ignored because they're not about the person you're sending them to. Paste a prospect's LinkedIn profile and what you sell — PitchPilot scraps the web for all information and then writes 3 personalized opening lines that reference details a real person would notice. Not \"I noticed you work at [Company].\" Built for founders and SDRs tired of blank-subject-line syndrome. Free for 30 days, then $19/mo. Try the live demo before you even sign up.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1217286",
+          "logo": "https://ph-files.imgix.net/d533468c-6f4d-4e49-adf4-df673ab2f6ef.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/aaf670a0-910d-4d83-bad3-6fbd43254418.jpeg?auto=format",
+            "https://ph-files.imgix.net/d5c2f05f-5416-4989-af95-73d59e9769d6.jpeg?auto=format",
+            "https://ph-files.imgix.net/96ab6c12-7b1f-4c3d-90bb-1c7f73dbe651.jpeg?auto=format",
+            "https://ph-files.imgix.net/31ca04d3-a8c8-4ee1-9ef6-1a95800fad70.jpeg?auto=format",
+            "https://ph-files.imgix.net/40fc1dd8-9437-41ff-bd0b-8a4b2ce22503.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/aaf670a0-910d-4d83-bad3-6fbd43254418.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "World Cup 2026 Schedule Calendar",
+          "url": "https://www.producthunt.com/products/world-cup-2026-schedule-calendar/launches/world-cup-2026-schedule-calendar?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "World Cup 2026 schedule website with a bilingual interface. ",
+          "content": "This project helps users follow the World Cup 2026 schedule on web and add the full fixture list to Google Calendar, Apple Calendar, Outlook, or any app that supports iCalendar. View the World Cup 2026 schedule on the website. Supports two languages: Vietnamese and English. Full schedule page organized by tournament rounds. Dedicated teams page. Add-to-calendar page with subscription options. WebCal support for one-time subscription with automatic updates.ics file download for manual import.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1217009",
+          "logo": "https://ph-files.imgix.net/7ab09e0d-5ae5-4363-b448-0f6c1f1f2ff4.vnd.microsoft.icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2be7b306-149a-4723-b7d6-27b7a63cc032.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2be7b306-149a-4723-b7d6-27b7a63cc032.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Lumen",
+          "url": "https://www.producthunt.com/products/lumen-14/launches/lumen-19?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Ship your AI SaaS landing page today",
+          "content": "Lumen is a production-ready landing page template for AI products and SaaS startups. Customize in 10 minutes, deploy to Vercel with one click, go live in hours. Includes 9 pages, 13 homepage sections, dark-first design, light/dark mode, SEO optimization, and accessibility. Perfect for founders who need a professional, conversion-focused site without hiring a designer. Zero backend, zero database, zero config. Built with Next.js, TypeScript, and Tailwind CSS.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1225914",
+          "logo": "https://ph-files.imgix.net/f25bb6c7-5e75-478d-aee0-f3a690a9d98a.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bbbe6011-8e1a-4929-a9f6-2da7ae8acb1a.png?auto=format",
+            "https://ph-files.imgix.net/0d9275ec-bbd0-4f40-a8db-8201d8b2dacb.png?auto=format",
+            "https://ph-files.imgix.net/d226a557-491a-48ef-aecf-8f583fbf6651.png?auto=format",
+            "https://ph-files.imgix.net/f9391bae-4b49-469c-bedf-164a90561d22.png?auto=format",
+            "https://ph-files.imgix.net/eec53b46-173f-4573-8eb9-72ba373f25da.png?auto=format",
+            "https://ph-files.imgix.net/4a787ce7-4ee5-44ca-a578-d3923b051db4.png?auto=format",
+            "https://ph-files.imgix.net/249f7311-9ae0-4b38-93b7-28555a033eed.png?auto=format",
+            "https://ph-files.imgix.net/7e6487d8-34e2-4496-be98-2c052687049b.png?auto=format",
+            "https://ph-files.imgix.net/e70c362f-aa5e-4f56-acc7-83dfdd06ed1b.png?auto=format",
+            "https://ph-files.imgix.net/d2bc9607-4744-4c6e-b190-2db123580bc9.png?auto=format",
+            "https://ph-files.imgix.net/f76247f5-da52-4bbc-94ba-c1614145cc8e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bbbe6011-8e1a-4929-a9f6-2da7ae8acb1a.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "MetawatchPHR",
+          "url": "https://www.producthunt.com/products/metawatchphr/launches/metawatchphr?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Your entire medical history. One private timeline.",
+          "content": "MetawatchPHR turns your lifetime of scattered medical files into one private, organized, searchable timeline — read by AI on your own computer, never in a cloud. Free forever; optional one-time hospital connectors. Windows beta; macOS follows.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226233",
+          "logo": "https://ph-files.imgix.net/1b2c7dee-b1be-43f9-8bc9-44fa67f69532.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/41982656-6ce7-49b9-8ce8-7a218d891888.jpeg?auto=format",
+            "https://ph-files.imgix.net/0970609a-6a4e-4236-aaee-e3f070a216ae.png?auto=format",
+            "https://ph-files.imgix.net/5cc874e3-bf72-44f1-a968-219a375605c0.png?auto=format",
+            "https://ph-files.imgix.net/628ae6ef-ed8e-4505-9b46-d5ba29daec9c.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/41982656-6ce7-49b9-8ce8-7a218d891888.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Handover your job finding stress",
+          "url": "https://www.producthunt.com/products/handover-your-job-finding-stress/launches/handover-your-job-finding-stress?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Apply Jobs For your, Let you focus on my actual work",
+          "content": "Apply Jobs For your, Let you focus on my actual work",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1200346",
+          "logo": "https://ph-files.imgix.net/83a9df49-490a-4655-8b6a-3335d7127403.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4c6e04d3-3243-4e54-a645-65c11cf269d5.jpeg?auto=format",
+            "https://ph-files.imgix.net/f1a9f411-8bdd-47b3-8521-7aa2cce082bc.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4c6e04d3-3243-4e54-a645-65c11cf269d5.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "RK Mint — Solana Meme Coin Launcher",
+          "url": "https://www.producthunt.com/products/rk-mint-solana-meme-coin-launcher/launches/rk-mint-solana-meme-coin-launcher?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "launch meme coins for 0.2 sol with mint and freeze revoked ",
+          "content": "RK Mint is a simple Solana token creation platform that lets users launch their own token for 0.2 SOL. The platform includes Mint Authority Revoke and Freeze Authority Revoke options, giving creators more control over their token setup and helping build trust with their community. RK Mint also features a referral program where users can earn a 20% commission by referring new creators to the platform.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226448",
+          "logo": "https://ph-files.imgix.net/3efb7ba5-15f8-42b1-b40c-326c8d469357.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/43501eba-cb39-494f-a3f2-745975da60e9.png?auto=format",
+            "https://ph-files.imgix.net/3717126d-c6fe-4770-b238-105bf25156cc.png?auto=format",
+            "https://ph-files.imgix.net/84c0c427-c923-4964-915d-9c5abdb54ff9.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/43501eba-cb39-494f-a3f2-745975da60e9.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Bflix",
+          "url": "https://www.producthunt.com/products/bflix-2/launches/bflix-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Free Entertainment Site",
+          "content": "Bflix is a free streaming platform where you can watch movies and TV shows online without registration. Enjoy unlimited entertainment in HD quality.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226109",
+          "logo": "https://ph-files.imgix.net/f6cf80f8-a35e-47c3-aa7e-aa54761ebec4.webp?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b30c5505-c6ec-4320-9b8b-0a13d6fe279a.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b30c5505-c6ec-4320-9b8b-0a13d6fe279a.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "INTIMATE — Private Intimacy Analytics",
+          "url": "https://www.producthunt.com/products/intimate-private-intimacy-analytics/launches/intimate-private-intimacy-analytics?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-19T07:01:00Z",
+          "summary": "Track. Remember. Understand your intimate life.",
+          "content": "INTIMATE is a private personal analytics app for adults who want to keep track of their intimate encounters. Log a partner, date, location, rating, and optional private notes in seconds. Then turn your history into useful insights — encounter trends, partner statistics, ratings, activity reports, and more. No social feed. No dating. No sharing. Just your intimate history, organized in one private place. Built for curiosity, reflection, and understanding your own patterns. — privately and simply.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1226075",
+          "logo": "https://ph-files.imgix.net/5cf04227-c257-4d95-bdb3-267c89c1522f.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/48b8d708-24d9-4de5-bc6c-4df1f1c1f997.png?auto=format",
+            "https://ph-files.imgix.net/97c8241e-559d-42ad-a5e5-915047ae04ae.png?auto=format",
+            "https://ph-files.imgix.net/eff2a700-4113-4ab6-a3e6-3b773286df80.png?auto=format",
+            "https://ph-files.imgix.net/93b916e2-eca8-4535-b5b8-8a683be59c16.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/48b8d708-24d9-4de5-bc6c-4df1f1c1f997.png?auto=format"
+        }
+      ]
+    }
+  ]
+}

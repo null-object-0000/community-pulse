@@ -1,1 +1,730 @@
-{"fetchedAt":"2026-09-07T09:34:03.156Z","date":"2026-05-22","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"随机头像","url":"https://appgallery.huawei.com/app/detail?id=com.xing.suijitouxiang","author":"asui(泉州)","authorUrl":"","publishedAt":"2026-05-22T00:00:00+08:00","summary":"鸿蒙App，支持鸿蒙5.0以上系统，一键生成风格多样的搞怪头像，支持下载","content":"鸿蒙App，支持鸿蒙5.0以上系统，一键生成风格多样的搞怪头像，支持下载","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-05-22-随机头像-https://appgallery.huawei.com/app/detail?id=com.xing.suijitouxiang"},{"sourceId":"chinese-indie-dev","title":"MeTool","url":"https://metool.online","author":"asui(泉州)","authorUrl":"","publishedAt":"2026-05-22T00:00:00+08:00","summary":"纯前端在线工具箱，86+ 工具覆盖图片、视频、3D、文档、开发等六大分类，全程浏览器本地处理，文件不上传、无需注册","content":"纯前端在线工具箱，86+ 工具覆盖图片、视频、3D、文档、开发等六大分类，全程浏览器本地处理，文件不上传、无需注册","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-05-22-MeTool-https://metool.online"},{"sourceId":"chinese-indie-dev","title":"isCompress","url":"https://www.iscompress.com/","author":"asui(泉州)","authorUrl":"","publishedAt":"2026-05-22T00:00:00+08:00","summary":"隐私安全的在线图片压缩工具，完全在浏览器本地处理，支持批量压缩与ZIP打包下载","content":"隐私安全的在线图片压缩工具，完全在浏览器本地处理，支持批量压缩与ZIP打包下载","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-05-22-isCompress-https://www.iscompress.com/"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源自荐】DApp Inspector：在 Chrome DevTools 里查看 DApp 与钱包之间的全部 RPC 通信","url":"https://github.com/beilunyang/dapp-inspector-extension","author":"beilunyang","authorUrl":"https://github.com/beilunyang","publishedAt":"2026-05-21T16:56:49Z","summary":"DApp Inspector 是一个 Chrome 扩展。装上之后 DevTools 里会多出一个面板，按时间顺序展示当前 tab 里 DApp 与 Web3 钱包（MetaMask、Rabby、OKX Wallet 等）之间所有的 JSONRPC 调用 —— 包括完整入参、返回值、错误、时延分解、链 ID、calldata 自动解码，以及一套用于调试的 Block / Throttle / Mock / Replay 规则引擎。 项目地址： Chrome 商店： 介绍页： 它解决什么问题？ DApp 与钱包之间的 RPC 通信对开发者来说一直是个黑盒： 网页点一个按钮，钱包跳出来要签什么、签名前后做了哪些 ethcall 探测、传了什么 calldata，从外面看不到。 MetaMask 自带的 activity log 只能看自己钱包发出去的请求，看不到 DApp 一侧的时延、参数处理、错误分支。 调试 DApp 的异常路径（钱包拒绝、网络超时、合约 revert）需要手工构造各种边界条件。 想复现用户反馈的奇怪 bug，需要还原他当时与钱包之间的完整调用序列。 之前我一直靠在 window.ethereum 上手动打 monkey patch 加日志，每个项目都要重写一遍，效率很低。索性做成扩展，所有 DApp 通用。 主要特性 全量捕获 拦截 window.ethereum.request 的所有调用，自动分类为 read / write / sign / subscribe 兼容 EIP6963 多钱包并存场景 完整记录入参、返回值、错误对象，原始 JSONRPC envelope 一键复制 时延分解 把一次调用拆成 6 段单独计时：DApp 发起 → 扩展排队 → throttle → 钱包审批 → RPC 往返 → 回到 DApp。可以一眼看出瓶颈是用户审批还是 RPC 节点。 Calldata 自动解码 内置 ERC20 / 721 / 1155 / Permit2 的 ABI，命中即 0ms 解码 命中不到时按 chainId + 合约地址 查 Sourcify，再降级到 4byte 选择器 拉到的 ABI 本地缓存 7 天，跨页面复用 对 ethsendTransaction / ethsignTransaction 会额外做风险评分（无限授权、setApprovalForAll 等） 调试规则引擎 Block —— 按方法名/origin 匹配，拒掉某些请求并返回自定义错误码，验证 DApp 的错误处理分支 Throttle —— 给匹配的请求加延迟，复现慢网络、loading state、超时分支 Mock —— 用预设结果短路掉某个调用，不真实上链 Replay —— 任何捕获到的调用都能重放一次，JSON 参数现场可编辑，钱包按原流程再次弹窗 隐私与本地化 全部在浏览器本地运行，没有 telemetry、没有账号、没有数据上传 ABI 解析的 Sourcify / 4byte 是按需才请求（和加载网页图片同一性质） 简体中文 / English 双语界面 适合谁使用？ DApp 前端开发者：调试合约调用、签名流程、错误分支 钱包扩展开发者：观察 DApp 一侧的调用模式和兼容性问题 安全审计 / 反钓鱼研究者：分析未知 DApp 调用了哪些方法、传了什么 calldata、有没有可疑的授权 想了解某个 DApp \"幕后到底做了什么\" 的 Web3 用户 技术栈 Chrome Manifest V3 TypeScript / React 18 / Zustand / Tailwind Vite + @crxjs/viteplugin Vitest（单元）+ Playwright（端到端） 协议：Apache2.0 截图 DevTools 面板（捕获列表 + 详情）： !panel 调用详情（参数 / 返回值 / 时延 / ReplayMockBlock）： !detail Options 页（规则管理）： !options 目前只支持 EVM，Solana / Sui 等其他生态在规划中。欢迎试用、提 issue、贡献代码。另外 README 末尾写了一个 logo 招募说明 —— 如果有设计师朋友感兴趣，欢迎一起完善这个项目。","content":"DApp Inspector 是一个 Chrome 扩展。装上之后 DevTools 里会多出一个面板，按时间顺序展示当前 tab 里 DApp 与 Web3 钱包（MetaMask、Rabby、OKX Wallet 等）之间所有的 JSON-RPC 调用 —— 包括完整入参、返回值、错误、时延分解、链 ID、calldata 自动解码，以及一套用于调试的 Block / Throttle / Mock / Replay 规则引擎。\n\n项目地址：https://github.com/beilunyang/dapp-inspector-extension\nChrome 商店：https://chromewebstore.google.com/detail/dapp-inspector/bcjlcalkhkfkcchgdokgngemjeemgmcj\n介绍页：https://dapp-inspector.chain.moe\n\n## 它解决什么问题？\n\nDApp 与钱包之间的 RPC 通信对开发者来说一直是个黑盒：\n\n- 网页点一个按钮，钱包跳出来要签什么、签名前后做了哪些 `eth_call` 探测、传了什么 calldata，从外面看不到。\n- MetaMask 自带的 activity log 只能看自己钱包发出去的请求，看不到 DApp 一侧的时延、参数处理、错误分支。\n- 调试 DApp 的异常路径（钱包拒绝、网络超时、合约 revert）需要手工构造各种边界条件。\n- 想复现用户反馈的奇怪 bug，需要还原他当时与钱包之间的完整调用序列。\n\n之前我一直靠在 `window.ethereum` 上手动打 monkey patch 加日志，每个项目都要重写一遍，效率很低。索性做成扩展，所有 DApp 通用。\n\n## 主要特性\n\n**全量捕获**\n\n- 拦截 `window.ethereum.request` 的所有调用，自动分类为 read / write / sign / subscribe\n- 兼容 EIP-6963 多钱包并存场景\n- 完整记录入参、返回值、错误对象，原始 JSON-RPC envelope 一键复制\n\n**时延分解**\n\n把一次调用拆成 6 段单独计时：DApp 发起 → 扩展排队 → throttle → 钱包审批 → RPC 往返 → 回到 DApp。可以一眼看出瓶颈是用户审批还是 RPC 节点。\n\n**Calldata 自动解码**\n\n- 内置 ERC-20 / 721 / 1155 / Permit2 的 ABI，命中即 0ms 解码\n- 命中不到时按 `chainId + 合约地址` 查 Sourcify，再降级到 4byte 选择器\n- 拉到的 ABI 本地缓存 7 天，跨页面复用\n- 对 `eth_sendTransaction` / `eth_signTransaction` 会额外做风险评分（无限授权、`setApprovalForAll` 等）\n\n**调试规则引擎**\n\n- **Block** —— 按方法名/origin 匹配，拒掉某些请求并返回自定义错误码，验证 DApp 的错误处理分支\n- **Throttle** —— 给匹配的请求加延迟，复现慢网络、loading state、超时分支\n- **Mock** —— 用预设结果短路掉某个调用，不真实上链\n- **Replay** —— 任何捕获到的调用都能重放一次，JSON 参数现场可编辑，钱包按原流程再次弹窗\n\n**隐私与本地化**\n\n- 全部在浏览器本地运行，没有 telemetry、没有账号、没有数据上传\n- ABI 解析的 Sourcify / 4byte 是按需才请求（和加载网页图片同一性质）\n- 简体中文 / English 双语界面\n\n## 适合谁使用？\n\n- DApp 前端开发者：调试合约调用、签名流程、错误分支\n- 钱包扩展开发者：观察 DApp 一侧的调用模式和兼容性问题\n- 安全审计 / 反钓鱼研究者：分析未知 DApp 调用了哪些方法、传了什么 calldata、有没有可疑的授权\n- 想了解某个 DApp \"幕后到底做了什么\" 的 Web3 用户\n\n## 技术栈\n\n- Chrome Manifest V3\n- TypeScript / React 18 / Zustand / Tailwind\n- Vite + `@crxjs/vite-plugin`\n- Vitest（单元）+ Playwright（端到端）\n- 协议：Apache-2.0\n\n## 截图\n\nDevTools 面板（捕获列表 + 详情）：\n\n![panel](https://github.com/beilunyang/dapp-inspector-extension/raw/main/docs/images/panel.png)\n\n调用详情（参数 / 返回值 / 时延 / Replay-Mock-Block）：\n\n![detail](https://github.com/beilunyang/dapp-inspector-extension/raw/main/docs/images/detail.png)\n\nOptions 页（规则管理）：\n\n![options](https://github.com/beilunyang/dapp-inspector-extension/raw/main/docs/images/options.png)\n\n\n目前只支持 EVM，Solana / Sui 等其他生态在规划中。欢迎试用、提 issue、贡献代码。另外 README 末尾写了一个 logo 招募说明 —— 如果有设计师朋友感兴趣，欢迎一起完善这个项目。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10022","issueUrl":"https://github.com/ruanyf/weekly/issues/10022"},{"sourceId":"weekly-issues","title":"【开源自荐】小马AI Hermes 中文增强包：让 Hermes Agent 界面和提示变成中文","url":"https://github.com/fresh-claw/hermes-zh-cn","author":"fresh-claw","authorUrl":"https://github.com/fresh-claw","publishedAt":"2026-05-21T20:04:30Z","summary":"项目名称 小马AI Hermes 中文增强包 项目链接 官网 一句话描述 让 Hermes Agent 的启动页、TUI、快捷指令、网关提示和权限审批提示变成中文。 详细介绍 Hermes Agent 默认界面和运行过程里有大量英文提示，新手在安装、审批命令、重启网关、使用快捷指令时容易卡住。这个中文增强包提供一条命令安装：未安装 Hermes 时先安装官方版，再应用中文补丁；已安装 Hermes 时自动识别版本并获取匹配补丁。 目前覆盖 Hermes v0.14.x、v0.13.x 和 v0.12.x 等旧版，包含启动页标题与图形、工具分类、快捷指令说明、Telegram/网关消息、ACP 权限审批、安装过程和错误提示等内容。 标签 AI Agent, Hermes Agent, 中文补丁, 汉化, 新手教程","content":"## 项目名称\n小马AI Hermes 中文增强包\n\n## 项目链接\nhttps://github.com/fresh-claw/hermes-zh-cn\n\n## 官网\nhttps://useai.live/hermes/\n\n## 一句话描述\n让 Hermes Agent 的启动页、TUI、快捷指令、网关提示和权限审批提示变成中文。\n\n## 详细介绍\nHermes Agent 默认界面和运行过程里有大量英文提示，新手在安装、审批命令、重启网关、使用快捷指令时容易卡住。这个中文增强包提供一条命令安装：未安装 Hermes 时先安装官方版，再应用中文补丁；已安装 Hermes 时自动识别版本并获取匹配补丁。\n\n目前覆盖 Hermes v0.14.x、v0.13.x 和 v0.12.x 等旧版，包含启动页标题与图形、工具分类、快捷指令说明、Telegram/网关消息、ACP 权限审批、安装过程和错误提示等内容。\n\n## 标签\nAI Agent, Hermes Agent, 中文补丁, 汉化, 新手教程\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10023","issueUrl":"https://github.com/ruanyf/weekly/issues/10023"},{"sourceId":"weekly-issues","title":"【网站自荐】AnimeLimitlessCodes：一个面向 Roblox 玩家快速查代码的轻量网页","url":"https://animelimitlesscodes.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=animelimitlesscodes_cold_start_202605&utm_content=issue_self_recommendation","author":"robot19960122-web","authorUrl":"https://github.com/robot19960122-web","publishedAt":"2026-05-22T01:22:15Z","summary":"阮老师您好，推荐一个刚上线的轻量网页工具：AnimeLimitlessCodes。 网站：Anime Limitless codes !AnimeLimitlessCodes preview 它是一个 fanmade 的 Roblox Anime Limitless codes tracker，主要给两类用户使用： 新玩家：想快速找到 starter rewards codes，并直接复制去兑换。 回流玩家：游戏更新后想看有没有新 codes、哪些旧 codes 已过期。 移动端搜索用户：只想看当前 codes 和兑换步骤，不想读很长的攻略文章。 目前页面做得比较克制： 首页优先展示当前 codes、复制按钮和最近更新时间。 单独整理 expired codes，避免用户反复尝试失效内容。 提供简短的 redeem steps，适配手机搜索场景。 不需要登录，不收费。 为什么做这个小站： 很多 Roblox codes 页面会写成很长的文章，移动端用户只是想完成“复制 code → 看兑换步骤 → 回到游戏”这个任务。这个站尝试用更短的信息结构承接这类长尾搜索需求，同时也作为一个独立站 SEO / AEO / 小工具运营实验。 说明：AnimeLimitlessCodes.com 不是 Roblox 或 Anime Limitless 的官方网站，也不与相关开发者有关联。Codes 可能会随游戏更新失效，页面只做整理和状态提示，不承诺任何 code 保证有效。 如果适合周刊“工具 / 资源 / 独立开发”栏目，欢迎收录。谢谢。","content":"阮老师您好，推荐一个刚上线的轻量网页工具：AnimeLimitlessCodes。\n\n网站：[Anime Limitless codes](https://animelimitlesscodes.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=animelimitlesscodes_cold_start_202605&utm_content=issue_self_recommendation)\n\n![AnimeLimitlessCodes preview](https://animelimitlesscodes.com/og-image.png)\n\n它是一个 fan-made 的 Roblox Anime Limitless codes tracker，主要给两类用户使用：\n\n- 新玩家：想快速找到 starter rewards codes，并直接复制去兑换。\n- 回流玩家：游戏更新后想看有没有新 codes、哪些旧 codes 已过期。\n- 移动端搜索用户：只想看当前 codes 和兑换步骤，不想读很长的攻略文章。\n\n目前页面做得比较克制：\n\n- 首页优先展示当前 codes、复制按钮和最近更新时间。\n- 单独整理 expired codes，避免用户反复尝试失效内容。\n- 提供简短的 redeem steps，适配手机搜索场景。\n- 不需要登录，不收费。\n\n为什么做这个小站：\n\n很多 Roblox codes 页面会写成很长的文章，移动端用户只是想完成“复制 code → 看兑换步骤 → 回到游戏”这个任务。这个站尝试用更短的信息结构承接这类长尾搜索需求，同时也作为一个独立站 SEO / AEO / 小工具运营实验。\n\n说明：AnimeLimitlessCodes.com 不是 Roblox 或 Anime Limitless 的官方网站，也不与相关开发者有关联。Codes 可能会随游戏更新失效，页面只做整理和状态提示，不承诺任何 code 保证有效。\n\n如果适合周刊“工具 / 资源 / 独立开发”栏目，欢迎收录。谢谢。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10024","issueUrl":"https://github.com/ruanyf/weekly/issues/10024"},{"sourceId":"weekly-issues","title":"【工具自荐】Z-Image AI:免费的在线 AI 图片生成器(文生图 / 图生图)","url":"https://z-image-ai.run","author":"eileendai0505-boop","authorUrl":"https://github.com/eileendai0505-boop","publishedAt":"2026-05-22T01:31:19Z","summary":"项目名称: ZImage AI 项目网址: 项目类型: 工具 / 在线服务 一句话介绍: 一个在线的 AI 图片生成工具,支持「文字生成图片」和「图片生成图片」,打开即用,无需安装。 简介 ZImage AI 是我开发的一个在线 AI 图片生成器,主打开箱即用:在网页里输入一段提示词(prompt)就能出图,也可以上传一张参考图做图生图(imagetoimage)。 特点: 两种模式:文生图(texttoimage)、图生图(imagetoimage),首页直接试用,不用反复跳转。 多个模型可选:内置 ZImage Turbo、FLUX、Seedream 等多种模型,可按需要切换。 常用参数齐全:支持选择宽高比、输出格式、生成数量、随机种子(seed)等。 免费额度:注册后有免费额度可以体验,无需先付费。 纯网页端:无需下载客户端,手机和电脑浏览器都能用。 适合需要快速生成插图、海报、头像、电商配图、社媒素材的人。 欢迎体验并提出建议:","content":"**项目名称:** Z-Image AI\n\n**项目网址:** https://z-image-ai.run\n\n**项目类型:** 工具 / 在线服务\n\n**一句话介绍:** 一个在线的 AI 图片生成工具,支持「文字生成图片」和「图片生成图片」,打开即用,无需安装。\n\n---\n\n### 简介\n\nZ-Image AI 是我开发的一个在线 AI 图片生成器,主打开箱即用:在网页里输入一段提示词(prompt)就能出图,也可以上传一张参考图做图生图(image-to-image)。\n\n特点:\n\n- **两种模式**:文生图(text-to-image)、图生图(image-to-image),首页直接试用,不用反复跳转。\n- **多个模型可选**:内置 Z-Image Turbo、FLUX、Seedream 等多种模型,可按需要切换。\n- **常用参数齐全**:支持选择宽高比、输出格式、生成数量、随机种子(seed)等。\n- **免费额度**:注册后有免费额度可以体验,无需先付费。\n- **纯网页端**:无需下载客户端,手机和电脑浏览器都能用。\n\n适合需要快速生成插图、海报、头像、电商配图、社媒素材的人。\n\n欢迎体验并提出建议:https://z-image-ai.run","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10025","issueUrl":"https://github.com/ruanyf/weekly/issues/10025"},{"sourceId":"weekly-issues","title":"docs(issue-397): fix typo","url":"https://github.com/ruanyf/weekly/issues/10026","author":"jeff-fe","authorUrl":"https://github.com/jeff-fe","publishedAt":"2026-05-22T02:39:48Z","summary":"","content":"","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10026","issueUrl":"https://github.com/ruanyf/weekly/issues/10026"},{"sourceId":"weekly-issues","title":"已撤回","url":"https://github.com/ruanyf/weekly/issues/10027","author":"campfirium","authorUrl":"https://github.com/campfirium","publishedAt":"2026-05-22T03:43:26Z","summary":"已撤回","content":"已撤回","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10027","issueUrl":"https://github.com/ruanyf/weekly/issues/10027"},{"sourceId":"weekly-issues","title":"【文章推荐】Claude Code 最佳实践指南（中文整理）","url":"https://mp.weixin.qq.com/s/Te_UyGAZcC06jCgHA8YL4w","author":"allenliule","authorUrl":"https://github.com/allenliule","publishedAt":"2026-05-22T03:49:10Z","summary":"把 Anthropic 官方的 Claude Code Best Practices 文档完整翻译整理成了中文操作手册，重点覆盖\"探索→计划→实现→验证\"工作流、CLAUDE.md 配置、Hooks/Subagents/Skills 等扩展能力，以及批量任务、并行会话、检查点恢复等实操细节。 适合正在用 Claude Code、Cursor 等 Coding Agent 的开发者参考。 链接： 原文出处：","content":"把 Anthropic 官方的 Claude Code Best Practices 文档完整翻译整理成了中文操作手册，重点覆盖\"探索→计划→实现→验证\"工作流、CLAUDE.md 配置、Hooks/Subagents/Skills 等扩展能力，以及批量任务、并行会话、检查点恢复等实操细节。\n适合正在用 Claude Code、Cursor 等 Coding Agent 的开发者参考。\n链接：https://mp.weixin.qq.com/s/Te_UyGAZcC06jCgHA8YL4w\n原文出处：https://code.claude.com/docs/en/best-practices","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10028","issueUrl":"https://github.com/ruanyf/weekly/issues/10028"},{"sourceId":"weekly-issues","title":"【开源自荐】EverOS：一个让 AI Agent 拥有长期记忆的开源系统，内置大量真实 Use Cases","url":"https://github.com/EverMind-AI/EverOS","author":"Yangtze-Seventh","authorUrl":"https://github.com/Yangtze-Seventh","publishedAt":"2026-05-22T03:58:02Z","summary":"EverOS 是一个开源的 AI Agent 长期记忆系统，目标是让 Agent 不再每次从零开始，而是能在不同会话、不同任务、不同工作流中持续记住上下文，并从过往经验中自动沉淀可复用的 Skills。 项目地址： 官网： 文档： EverOS 仓库里不只是一个记忆框架，还整理了很多可运行、可参考的真实 Use Cases，展示长期记忆可以怎样接入 Coding Agent、浏览器 Agent、AI companion、游戏 NPC、可穿戴设备、多 Agent 协作等场景。 <img width=\"2640\" height=\"1404\" alt=\"Image\" src=\" / 为什么 Agent 需要长期记忆？ 现在很多 AI Agent 很强，但最大的问题是“健忘”： 每次新会话都要重新介绍项目背景、用户偏好和任务目标。 Agent 做过一次任务，下次遇到类似问题还是重新摸索。 普通 RAG 更像查资料，很难保存 Agent 的操作过程、错误修正和成功经验。 多 Agent 协作时，不同 Agent 很难共享长期上下文。 EverOS 想解决的是这个问题：让 Agent 能记住自己做过什么、用户喜欢什么、项目约定是什么，以及哪些流程下次可以直接复用。 核心能力 1. Selfevolving Skill Memory EverOS 会记录 Agent 执行任务的轨迹，把一次次任务过程沉淀成 Cases，再从重复出现的成功路径中自动提炼出 Skills。 这意味着 Agent 可以逐渐学会： 某个项目常用的开发、测试、部署流程 用户喜欢的输出格式和沟通方式 某类问题过去如何成功解决 哪些工具、命令、文件和检查步骤最常用 下次再遇到类似任务时，Agent 可以直接复用已有 Skills，而不是从零推理。 <img width=\"2618\" height=\"1186\" alt=\"Image\" src=\" / 2. 多类型记忆 EverOS 区分不同类型的 Agent 记忆： Profile Memory：长期身份、偏好、角色和表达方式 Episodic Memory：过去发生过的事件、会话和任务历史 Procedural Memory：流程、技能和操作方式 Semantic Memory：事实、概念和长期知识 这让它既可以支持个人助手，也可以支持 Coding Agent、团队 Agent、多 Agent 系统和 AI companion。 <img width=\"2642\" height=\"958\" alt=\"Image\" src=\" / 3. mRAG 多模态写入与检索 EverOS 支持通过统一 API 处理多种资料类型，包括 URL、图片、PDF、Word、表格、PPT、邮件、HTML 和文本。 它使用 hybrid retrieval，把语义检索和关键词匹配结合起来，让 Agent 能在复杂资料里更准确地找到相关上下文。 <img width=\"2658\" height=\"1186\" alt=\"Image\" src=\" / Use Cases EverOS 最有意思的地方是，它不是只停留在框架层，而是已经有很多场景案例。下面是一些仓库里展示的方向。 <img width=\"1396\" height=\"1318\" alt=\"Image\" src=\" / 1. Coding Agent 的项目长期记忆 EverOS 可以接入 Claude Code、Codex、Cursor、Gemini CLI 等 Coding Agent，让它们记住一个项目的长期上下文。 例如： repo 结构 常用命令 代码规范 测试方式 团队习惯 过去踩过的坑 已经验证过的修复路径 这样 Coding Agent 每次进入项目时，不只是临时读文件，而是能继承过去的开发经验。 2. Browser Agent for Personal Memory 浏览器 Agent 经常需要跨网站完成任务，比如查资料、填表、整理信息、比较产品。 接入 EverOS 后，浏览器 Agent 可以记住用户长期偏好和历史上下文，在后续网页任务中复用。例如记住用户常用工作流、偏好的信息来源、表单填写习惯和过往研究记录。 3. MultiAgent Orchestration Platform 多 Agent 系统里，不同 Agent 需要分工协作：有的负责规划，有的负责写代码，有的负责测试，有的负责研究。 EverOS 可以提供共享记忆层，让多个 Agent 共享项目级上下文，同时保留各自的执行经验。这样一个 Agent 学到的经验，可以被后续 Agent 复用。 4. OpenClaw Agent Memory 对于 24/7 在线的 Agent 工作流，长期记忆尤其重要。 OpenClaw Agent Memory 展示了持续运行的 Agent 如何跨会话学习：它可以记录长期任务进展、用户偏好、历史决策和重复工作流，让 Agent 更像一个会积累经验的助手。 5. AI Companion / 数字角色 AI companion、Live2D 角色、虚拟人和游戏 NPC 都需要长期一致性。 接入 EverOS 后，角色可以记住用户过去说过的话、关系变化、共同经历和自身成长轨迹。它不再只是靠 prompt 扮演一个人格，而是能通过长期记忆形成更稳定的互动体验。 6. MemoryDriven MultiAgent NPC Experience 在游戏场景里，NPC 如果能记住玩家行为、剧情选择和过去互动，就能产生更自然的连续体验。 EverOS 的记忆能力可以用于构建带长期记忆的 NPC，让游戏角色不再只是一次性对话脚本，而是能随着玩家行为持续变化。 7. AI Wearable with Memory 可穿戴 AI 设备会持续接触真实生活场景，例如会议、对话、日程、位置和日常活动。 EverOS 可以把这些连续上下文整理成长期记忆，让 AI wearable 不只是录音或总结工具，而是能形成个人生活流记忆，并在后续提醒、问答、计划和回顾中复用。 8. Study Buddy with SelfEvolving Memory 学习助手如果有长期记忆，就可以记住学生的知识水平、薄弱点、学习节奏和历史错误。 EverOS 可以让 Study Buddy 根据长期学习轨迹调整辅导方式，并把有效的学习路径沉淀成可复用经验。 仓库结构 EverOS 仓库主要分为三部分： Use cases：各种长期记忆应用案例和集成示例 Architecture methods：可运行、可扩展的记忆架构，比如 EverCore、HyperMem Benchmarks：评估记忆质量和 Agent 自进化能力的开放基准，比如 EverMemBench、EvoAgentBench 如果只是想快速理解长期记忆能做什么，可以先看 Use cases；如果想接入自己的 Agent，可以从 EverCore 开始；如果想做评测，可以看 Benchmarks。 适合谁？ 正在做 AI Agent / Coding Agent / 多 Agent 系统的开发者 想给现有 AI 应用增加长期记忆能力的团队 做个人助手、AI companion、游戏 NPC、浏览器 Agent、可穿戴 AI 的产品团队 研究 Agent memory、自进化 Agent、长期一致性和个性化 AI 的研究者 技术栈：Python、TypeScript、JavaScript 许可证：Apache2.0","content":"EverOS 是一个开源的 AI Agent 长期记忆系统，目标是让 Agent 不再每次从零开始，而是能在不同会话、不同任务、不同工作流中持续记住上下文，并从过往经验中自动沉淀可复用的 Skills。\n\n项目地址：https://github.com/EverMind-AI/EverOS  \n官网：https://evermind.ai\n文档：https://docs.evermind.ai/introduction  \n\nEverOS 仓库里不只是一个记忆框架，还整理了很多可运行、可参考的真实 Use Cases，展示长期记忆可以怎样接入 Coding Agent、浏览器 Agent、AI companion、游戏 NPC、可穿戴设备、多 Agent 协作等场景。\n\n<img width=\"2640\" height=\"1404\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2fe57153-35a3-425d-8bad-283cda5c6834\" />\n\n## 为什么 Agent 需要长期记忆？\n\n现在很多 AI Agent 很强，但最大的问题是“健忘”：\n\n* 每次新会话都要重新介绍项目背景、用户偏好和任务目标。\n* Agent 做过一次任务，下次遇到类似问题还是重新摸索。\n* 普通 RAG 更像查资料，很难保存 Agent 的操作过程、错误修正和成功经验。\n* 多 Agent 协作时，不同 Agent 很难共享长期上下文。\n\nEverOS 想解决的是这个问题：让 Agent 能记住自己做过什么、用户喜欢什么、项目约定是什么，以及哪些流程下次可以直接复用。\n\n## 核心能力\n\n### 1. Self-evolving Skill Memory\n\nEverOS 会记录 Agent 执行任务的轨迹，把一次次任务过程沉淀成 Cases，再从重复出现的成功路径中自动提炼出 Skills。\n\n这意味着 Agent 可以逐渐学会：\n\n* 某个项目常用的开发、测试、部署流程\n* 用户喜欢的输出格式和沟通方式\n* 某类问题过去如何成功解决\n* 哪些工具、命令、文件和检查步骤最常用\n\n下次再遇到类似任务时，Agent 可以直接复用已有 Skills，而不是从零推理。\n\n<img width=\"2618\" height=\"1186\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d258935e-238f-4ffc-aeaf-8e14313ba03d\" />\n\n### 2. 多类型记忆\n\nEverOS 区分不同类型的 Agent 记忆：\n\n* Profile Memory：长期身份、偏好、角色和表达方式\n* Episodic Memory：过去发生过的事件、会话和任务历史\n* Procedural Memory：流程、技能和操作方式\n* Semantic Memory：事实、概念和长期知识\n\n这让它既可以支持个人助手，也可以支持 Coding Agent、团队 Agent、多 Agent 系统和 AI companion。\n\n<img width=\"2642\" height=\"958\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9cd67c36-bbf4-4e8e-926d-a6462f8d5c4e\" />\n\n### 3. mRAG 多模态写入与检索\n\nEverOS 支持通过统一 API 处理多种资料类型，包括 URL、图片、PDF、Word、表格、PPT、邮件、HTML 和文本。\n\n它使用 hybrid retrieval，把语义检索和关键词匹配结合起来，让 Agent 能在复杂资料里更准确地找到相关上下文。\n\n<img width=\"2658\" height=\"1186\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2310ba13-e611-4c09-a00f-a20755c97b6e\" />\n\n## Use Cases\n\nEverOS 最有意思的地方是，它不是只停留在框架层，而是已经有很多场景案例。下面是一些仓库里展示的方向。\n\n<img width=\"1396\" height=\"1318\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9e6913d9-88e1-482b-840f-04f2ea5b247b\" />\n\n### 1. Coding Agent 的项目长期记忆\n\nEverOS 可以接入 Claude Code、Codex、Cursor、Gemini CLI 等 Coding Agent，让它们记住一个项目的长期上下文。\n\n例如：\n\n* repo 结构\n* 常用命令\n* 代码规范\n* 测试方式\n* 团队习惯\n* 过去踩过的坑\n* 已经验证过的修复路径\n\n这样 Coding Agent 每次进入项目时，不只是临时读文件，而是能继承过去的开发经验。\n\n### 2. Browser Agent for Personal Memory\n\n浏览器 Agent 经常需要跨网站完成任务，比如查资料、填表、整理信息、比较产品。\n\n接入 EverOS 后，浏览器 Agent 可以记住用户长期偏好和历史上下文，在后续网页任务中复用。例如记住用户常用工作流、偏好的信息来源、表单填写习惯和过往研究记录。\n\n### 3. Multi-Agent Orchestration Platform\n\n多 Agent 系统里，不同 Agent 需要分工协作：有的负责规划，有的负责写代码，有的负责测试，有的负责研究。\n\nEverOS 可以提供共享记忆层，让多个 Agent 共享项目级上下文，同时保留各自的执行经验。这样一个 Agent 学到的经验，可以被后续 Agent 复用。\n\n### 4. OpenClaw Agent Memory\n\n对于 24/7 在线的 Agent 工作流，长期记忆尤其重要。\n\nOpenClaw Agent Memory 展示了持续运行的 Agent 如何跨会话学习：它可以记录长期任务进展、用户偏好、历史决策和重复工作流，让 Agent 更像一个会积累经验的助手。\n\n### 5. AI Companion / 数字角色\n\nAI companion、Live2D 角色、虚拟人和游戏 NPC 都需要长期一致性。\n\n接入 EverOS 后，角色可以记住用户过去说过的话、关系变化、共同经历和自身成长轨迹。它不再只是靠 prompt 扮演一个人格，而是能通过长期记忆形成更稳定的互动体验。\n\n### 6. Memory-Driven Multi-Agent NPC Experience\n\n在游戏场景里，NPC 如果能记住玩家行为、剧情选择和过去互动，就能产生更自然的连续体验。\n\nEverOS 的记忆能力可以用于构建带长期记忆的 NPC，让游戏角色不再只是一次性对话脚本，而是能随着玩家行为持续变化。\n\n### 7. AI Wearable with Memory\n\n可穿戴 AI 设备会持续接触真实生活场景，例如会议、对话、日程、位置和日常活动。\n\nEverOS 可以把这些连续上下文整理成长期记忆，让 AI wearable 不只是录音或总结工具，而是能形成个人生活流记忆，并在后续提醒、问答、计划和回顾中复用。\n\n### 8. Study Buddy with Self-Evolving Memory\n\n学习助手如果有长期记忆，就可以记住学生的知识水平、薄弱点、学习节奏和历史错误。\n\nEverOS 可以让 Study Buddy 根据长期学习轨迹调整辅导方式，并把有效的学习路径沉淀成可复用经验。\n\n## 仓库结构\n\nEverOS 仓库主要分为三部分：\n\n* Use cases：各种长期记忆应用案例和集成示例\n* Architecture methods：可运行、可扩展的记忆架构，比如 EverCore、HyperMem\n* Benchmarks：评估记忆质量和 Agent 自进化能力的开放基准，比如 EverMemBench、EvoAgentBench\n\n如果只是想快速理解长期记忆能做什么，可以先看 Use cases；如果想接入自己的 Agent，可以从 EverCore 开始；如果想做评测，可以看 Benchmarks。\n\n## 适合谁？\n\n* 正在做 AI Agent / Coding Agent / 多 Agent 系统的开发者\n* 想给现有 AI 应用增加长期记忆能力的团队\n* 做个人助手、AI companion、游戏 NPC、浏览器 Agent、可穿戴 AI 的产品团队\n* 研究 Agent memory、自进化 Agent、长期一致性和个性化 AI 的研究者\n\n技术栈：Python、TypeScript、JavaScript  \n许可证：Apache-2.0","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10029","issueUrl":"https://github.com/ruanyf/weekly/issues/10029"},{"sourceId":"weekly-issues","title":"【网站自荐】Subnautica2Tadpole：一个面向 Subnautica 2 玩家快速查 Tadpole 路线的轻量指南","url":"https://subnautica2tadpole.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=subnautica2tadpole_cold_start_202605&utm_content=issue_self_recommendation","author":"robot19960122-web","authorUrl":"https://github.com/robot19960122-web","publishedAt":"2026-05-22T05:15:43Z","summary":"大家好，推荐一个我做的英文小站： Subnautica 2 Tadpole guide 这是一个面向《Subnautica 2》Early Access 玩家做的 fanmade guide utility，主要解决玩家搜索 subnautica 2 tadpole、tadpole fragments、tadpole upgrades 之后，不想读很长攻略、只想快速知道 Tadpole 解锁路线和相关步骤的问题。 主要特点： 首屏先给 quick answer，不把玩家直接丢进长文章。 用 checklist 承接解锁、碎片、升级、Tadpole Pens 等任务步骤。 保留 spoilersafe 的展示方式，避免一上来暴露所有细节。 不做完整 interactive map，不复制官方素材或竞品点位库，只做 Tadpolefirst 的轻量路线整理。 技术上是 Next.js 15 + TypeScript + Tailwind + Cloudflare Workers 的静态内容工具。 这个站点是非官方 fanmade project，不隶属于 Unknown Worlds、Krafton 或 Subnautica 官方；因为游戏还在 Early Access，内容也会保持 conservative wording 和后续更新。 如果适合周刊的“工具/网站/独立开发实验”栏目，欢迎收录。 !Subnautica2Tadpole preview","content":"大家好，推荐一个我做的英文小站：\n\n[Subnautica 2 Tadpole guide](https://subnautica2tadpole.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=subnautica2tadpole_cold_start_202605&utm_content=issue_self_recommendation)\n\n这是一个面向《Subnautica 2》Early Access 玩家做的 fan-made guide utility，主要解决玩家搜索 `subnautica 2 tadpole`、`tadpole fragments`、`tadpole upgrades` 之后，不想读很长攻略、只想快速知道 Tadpole 解锁路线和相关步骤的问题。\n\n主要特点：\n\n- 首屏先给 quick answer，不把玩家直接丢进长文章。\n- 用 checklist 承接解锁、碎片、升级、Tadpole Pens 等任务步骤。\n- 保留 spoiler-safe 的展示方式，避免一上来暴露所有细节。\n- 不做完整 interactive map，不复制官方素材或竞品点位库，只做 Tadpole-first 的轻量路线整理。\n- 技术上是 Next.js 15 + TypeScript + Tailwind + Cloudflare Workers 的静态内容工具。\n\n这个站点是非官方 fan-made project，不隶属于 Unknown Worlds、Krafton 或 Subnautica 官方；因为游戏还在 Early Access，内容也会保持 conservative wording 和后续更新。\n\n如果适合周刊的“工具/网站/独立开发实验”栏目，欢迎收录。\n\n![Subnautica2Tadpole preview](https://subnautica2tadpole.com/og-image.png)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10030","issueUrl":"https://github.com/ruanyf/weekly/issues/10030"},{"sourceId":"weekly-issues","title":"【开源自荐】轻量级Skills管理软件","url":"https://github.com/im-fan/skill-manage","author":"im-fan","authorUrl":"https://github.com/im-fan","publishedAt":"2026-05-22T05:53:21Z","summary":"github： README： 轻量级Agent Skills管理，提供可视化页面，支持单Skill、Skills目录维护、Skills扫描、Skills下发、Agent Skills管理能力 方便快捷，使用简单，数据完全本地，支持npm快速安装维护 <img width=\"2010\" height=\"1088\" alt=\"Image\" src=\" /","content":"github：https://github.com/im-fan/skill-manage\nREADME：https://github.com/im-fan/skill-manage/blob/main/README-zh.md\n\n轻量级Agent Skills管理，提供可视化页面，支持单Skill、Skills目录维护、Skills扫描、Skills下发、Agent Skills管理能力\n方便快捷，使用简单，数据完全本地，支持npm快速安装维护\n\n<img width=\"2010\" height=\"1088\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d3e9062b-16ca-4e98-b530-89332ec949b6\" />\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10031","issueUrl":"https://github.com/ruanyf/weekly/issues/10031"},{"sourceId":"weekly-issues","title":"【工具自荐】AI Coding Pricing：AI 编程工具价格与限制对比站","url":"https://aicodingpricing.com/?utm_source=ruanyf_weekly&utm_medium=newsletter&utm_campaign=day0_cold_start","author":"mengjian-github","authorUrl":"https://github.com/mengjian-github","publishedAt":"2026-05-22T06:04:35Z","summary":"AI Coding Pricing：AI 编程工具价格与限制对比站 链接： 简介：这是一个面向开发者的 AI 编程工具价格对比站，整理 Claude Code、OpenAI Codex、Cursor、GitHub Copilot 等工具的订阅价格、使用限制、套餐差异和价格变更，并提供一个成本计算器，帮助开发者在升级或切换工具前估算真实成本。 推荐理由：AI 编程工具价格和限额变化很快，官方文档分散，开发者经常需要在多个页面之间对比。这个站把价格、限制、对比页和 changelog 放到一个入口，适合作为开发者选型前的快速参考。","content":"AI Coding Pricing：AI 编程工具价格与限制对比站\n\n链接：https://aicodingpricing.com/?utm_source=ruanyf_weekly&utm_medium=newsletter&utm_campaign=day0_cold_start\n\n简介：这是一个面向开发者的 AI 编程工具价格对比站，整理 Claude Code、OpenAI Codex、Cursor、GitHub Copilot 等工具的订阅价格、使用限制、套餐差异和价格变更，并提供一个成本计算器，帮助开发者在升级或切换工具前估算真实成本。\n\n推荐理由：AI 编程工具价格和限额变化很快，官方文档分散，开发者经常需要在多个页面之间对比。这个站把价格、限制、对比页和 changelog 放到一个入口，适合作为开发者选型前的快速参考。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10032","issueUrl":"https://github.com/ruanyf/weekly/issues/10032"},{"sourceId":"weekly-issues","title":"【开源自荐】CodeRAG：让 AI 真正读懂你的大规模代码仓库","url":"https://github.com/NothingToSay0031/code-rag","author":"NothingToSay0031","authorUrl":"https://github.com/NothingToSay0031","publishedAt":"2026-05-22T08:51:16Z","summary":"CodeRAG 是一个基于 Python、Treesitter、ChromaDB 与 HuggingFace Transformers 构建的本地代码库 RAG（检索增强生成）工具，专为大规模代码仓库设计。它通过 MCP 协议对外暴露服务，让 Claude Code、OpenCode 等 AI 编程助手获得代码库级别的上下文理解能力，即使面对数十万行代码的项目也不在话下，全程代码不出本机。 项目地址： 它解决什么问题？ 使用 AI 编程助手开发项目时，项目规模一旦大起来，问题就冒出来了： 几十万行代码、上千个文件，问 AI \"这个项目的认证逻辑在哪\"，它不知道，因为模型没见过你的代码 用自研框架或引擎开发，AI 完全不懂框架的 API 和约定，只能靠你自己翻源码 每次提需求都得手动从项目里复制粘贴一大段代码作为上下文，效率极低——大项目尤其难受 模型不清楚团队内部的编码约定和架构模式，生成的代码总对不上 私有仓库、涉密项目，不可能把代码贴到云端 AI——这条路直接堵死 根本原因不是模型能力不够，而是模型缺少足够的代码库上下文。项目越大，这个问题越严重。 CodeRAG 的思路很简单：先把你的代码库\"读一遍\"建好索引，之后 AI 每次需要上下文时自动检索最相关的代码片段注入对话。无论仓库多大——几十万行代码、上千个文件——检索都在毫秒级完成。整个过程全部在本地完成，索引、推理、检索都在本机运行。 主要特性 一条命令开箱即用：coderag init /path/to/repo 自动完成全量索引，同时在项目内生成 MCP 配置文件。AI Agent 打开该项目时自动激活 CodeRAG，无需额外配置。 语义 + 关键词混合检索：既支持\"这个项目怎么处理认证回调？\"这类自然语言语义搜索，也支持 handleAuthCallback 这样的精确符号搜索。通过 RRF 算法融合 BM25 和向量检索的排序结果，兼顾语义理解和精确匹配。 AST 感知分块：通过 Treesitter 解析代码，以函数、类、方法、结构体为单元分块，而不是按固定行数暴力切分。每个代码块语义完整，不会被拦腰截断。 多档次嵌入模型可选：默认使用 bgesmallenv1.5，在质量和速度上得到不错的权衡。无 GPU 时可切换 potioncode16M（256 维，~100MB 内存，纯 CPU），2 万文件 ~15 分钟完成索引。追求极致质量可选 Qwen3Embedding。安装脚本自动检测 GPU 并升级 PyTorch 至 CUDA 版本。 增量更新：基于文件内容 SHA256 哈希追踪变更。coderag init 是幂等的——未修改的文件直接跳过，只重建有变化的部分。改一行代码不会重建整个仓库。 零配置启动：大多数仓库不需要任何配置文件。include / exclude 选项和 .coderagfilter 文件用于需要自定义过滤规则的场景。 MCP 接口设计 CodeRAG 不是让用户手动执行搜索命令，而是以 MCP Tools 的形式对外暴露服务，AI Agent 在需要时自动调用： | Tool | 用途 | ||| | searchcode | 语义/关键词混合搜索代码，返回文件路径 + 行号 + 代码内容 | | searchdocs | 搜索项目中的 Markdown、RST 等文档 | | getfilesymbols | 获取指定文件中所有符号（函数、类、变量等）的索引信息 | | getrepostructure | 返回仓库目录树及各模块的简要描述 | | getsymbolinfo | 查询某个符号的定义位置、引用位置和相关代码块 | | readcode | 按行号范围读取文件内容，用于展开搜索结果、查看更多上下文 | | listindices | 列出所有已索引的代码库，支持多仓库场景 | 每个返回结果都附带文件路径、行号范围和上下文窗口，方便 AI 准确引用出处。 适合谁使用？ CodeRAG 比较适合这些场景： 接手大型代码库的开发者——几十万行代码、上百个模块，需要快速理解项目架构与约定 维护超大规模自研框架/引擎的团队（如自研游戏引擎、自研中间件），框架文档少，AI 无法从公开数据学到相关知识 对代码安全有严格要求的团队（金融、政务、军工等），代码不允许上传到第三方云端服务 维护遗留代码库的开发者，代码库历史悠久，隐含大量领域知识，但几乎没有文档 希望在 Claude Code、OpenCode 等工具中获得更精准的代码库上下文，减少手动贴代码的开发者 基于AST获取代码结构较为困难/时间较长，比如UE5源码。 安装方式 Windows（一行命令）： powershell irm | iex macOS / Linux： bash curl sSfL | bash 安装脚本自动检测 GPU 并将 PyTorch 升级为 CUDA 版本。 技术栈 检索与索引：Python + Treesitter + ChromaDB 嵌入推理：HuggingFace Transformers / Optimum + Qwen3 / BGE / Potion 系列模型 MCP 服务框架：FastMCP 关键词检索：BM25（内置实现） 引用查找：ripgrep CLI 入口：一行命令，底层由 uv 管理 Python 环境，自动安装依赖 语言支持：Python、JavaScript、TypeScript (含 TSX)、C、C++、Java、C、Rust、Go、Lua，以及 GLSL/HLSL/Metal 等着色器语言；同时支持 Markdown、RST、纯文本文档和 JSON/YAML/TOML 等配置文件 跨平台：Windows、macOS、Linux 许可证：MIT License 模型选择 | 模型 | 维度 | 速度 | 质量 | 硬件要求 | 内存占用 | ||||||| | Qwen3Embedding0.6B | 1024 | ★☆☆ | ★★★ | 推荐 CUDA GPU | ~2 GB | | BAAI/bgesmallenv1.5（默认） | 384 | ★★☆ | ★★☆ | 自动检测 | ~1.3 GB | 项目地址： 欢迎大家试用，也欢迎反馈和贡献。 本项目参考了 NVIDIA 与 EA 在大规模 C++ 代码库上的 RAG 实践经验，在其思路上进行了通用化设计，使任意语言、任意框架的仓库都能受益。","content":"CodeRAG 是一个基于 **Python、Tree-sitter、ChromaDB 与 HuggingFace Transformers** 构建的本地代码库 RAG（检索增强生成）工具，专为**大规模代码仓库**设计。它通过 MCP 协议对外暴露服务，让 Claude Code、OpenCode 等 AI 编程助手获得代码库级别的上下文理解能力，即使面对数十万行代码的项目也不在话下，全程代码不出本机。\n\n项目地址：https://github.com/NothingToSay0031/code-rag\n\n## 它解决什么问题？\n\n使用 AI 编程助手开发项目时，项目规模一旦大起来，问题就冒出来了：\n\n- 几十万行代码、上千个文件，问 AI \"这个项目的认证逻辑在哪\"，它不知道，因为模型没见过你的代码\n- 用自研框架或引擎开发，AI 完全不懂框架的 API 和约定，只能靠你自己翻源码\n- 每次提需求都得手动从项目里复制粘贴一大段代码作为上下文，效率极低——大项目尤其难受\n- 模型不清楚团队内部的编码约定和架构模式，生成的代码总对不上\n- 私有仓库、涉密项目，不可能把代码贴到云端 AI——这条路直接堵死\n\n根本原因不是模型能力不够，而是**模型缺少足够的代码库上下文**。项目越大，这个问题越严重。\n\nCodeRAG 的思路很简单：先把你的代码库\"读一遍\"建好索引，之后 AI 每次需要上下文时自动检索最相关的代码片段注入对话。无论仓库多大——几十万行代码、上千个文件——检索都在毫秒级完成。整个过程全部在本地完成，索引、推理、检索都在本机运行。\n\n## 主要特性\n\n- **一条命令开箱即用**：`code-rag init /path/to/repo` 自动完成全量索引，同时在项目内生成 MCP 配置文件。AI Agent 打开该项目时自动激活 CodeRAG，无需额外配置。\n- **语义 + 关键词混合检索**：既支持\"这个项目怎么处理认证回调？\"这类自然语言语义搜索，也支持 `handleAuthCallback` 这样的精确符号搜索。通过 RRF 算法融合 BM25 和向量检索的排序结果，兼顾语义理解和精确匹配。\n- **AST 感知分块**：通过 Tree-sitter 解析代码，以函数、类、方法、结构体为单元分块，而不是按固定行数暴力切分。每个代码块语义完整，不会被拦腰截断。\n- **多档次嵌入模型可选**：默认使用 bge-small-en-v1.5，在质量和速度上得到不错的权衡。无 GPU 时可切换 potion-code-16M（256 维，~100MB 内存，纯 CPU），2 万文件 ~15 分钟完成索引。追求极致质量可选 Qwen3-Embedding。安装脚本自动检测 GPU 并升级 PyTorch 至 CUDA 版本。\n- **增量更新**：基于文件内容 SHA-256 哈希追踪变更。`code-rag init` 是幂等的——未修改的文件直接跳过，只重建有变化的部分。改一行代码不会重建整个仓库。\n- **零配置启动**：大多数仓库不需要任何配置文件。`--include` / `--exclude` 选项和 `.coderagfilter` 文件用于需要自定义过滤规则的场景。\n\n## MCP 接口设计\n\nCodeRAG 不是让用户手动执行搜索命令，而是以 MCP Tools 的形式对外暴露服务，AI Agent 在需要时自动调用：\n\n| Tool | 用途 |\n|------|------|\n| `search_code` | 语义/关键词混合搜索代码，返回文件路径 + 行号 + 代码内容 |\n| `search_docs` | 搜索项目中的 Markdown、RST 等文档 |\n| `get_file_symbols` | 获取指定文件中所有符号（函数、类、变量等）的索引信息 |\n| `get_repo_structure` | 返回仓库目录树及各模块的简要描述 |\n| `get_symbol_info` | 查询某个符号的定义位置、引用位置和相关代码块 |\n| `read_code` | 按行号范围读取文件内容，用于展开搜索结果、查看更多上下文 |\n| `list_indices` | 列出所有已索引的代码库，支持多仓库场景 |\n\n每个返回结果都附带文件路径、行号范围和上下文窗口，方便 AI 准确引用出处。\n\n## 适合谁使用？\n\nCodeRAG 比较适合这些场景：\n\n- 接手大型代码库的开发者——几十万行代码、上百个模块，需要快速理解项目架构与约定\n- 维护超大规模自研框架/引擎的团队（如自研游戏引擎、自研中间件），框架文档少，AI 无法从公开数据学到相关知识\n- 对代码安全有严格要求的团队（金融、政务、军工等），代码不允许上传到第三方云端服务\n- 维护遗留代码库的开发者，代码库历史悠久，隐含大量领域知识，但几乎没有文档\n- 希望在 Claude Code、OpenCode 等工具中获得更精准的代码库上下文，减少手动贴代码的开发者\n- 基于AST获取代码结构较为困难/时间较长，比如UE5源码。\n\n## 安装方式\n\n**Windows（一行命令）：**\n\n```powershell\nirm https://raw.githubusercontent.com/NothingToSay0031/code-rag/master/install.ps1 | iex\n```\n\n**macOS / Linux：**\n\n```bash\ncurl -sSfL https://raw.githubusercontent.com/NothingToSay0031/code-rag/master/install.sh | bash\n```\n\n安装脚本自动检测 GPU 并将 PyTorch 升级为 CUDA 版本。\n\n## 技术栈\n\n- 检索与索引：Python + Tree-sitter + ChromaDB\n- 嵌入推理：HuggingFace Transformers / Optimum + Qwen3 / BGE / Potion 系列模型\n- MCP 服务框架：FastMCP\n- 关键词检索：BM25（内置实现）\n- 引用查找：ripgrep\n- CLI 入口：一行命令，底层由 uv 管理 Python 环境，自动安装依赖\n- 语言支持：Python、JavaScript、TypeScript (含 TSX)、C、C++、Java、C#、Rust、Go、Lua，以及 GLSL/HLSL/Metal 等着色器语言；同时支持 Markdown、RST、纯文本文档和 JSON/YAML/TOML 等配置文件\n- 跨平台：Windows、macOS、Linux\n- 许可证：MIT License\n\n## 模型选择\n\n| 模型 | 维度 | 速度 | 质量 | 硬件要求 | 内存占用 |\n|------|------|------|------|----------|----------|\n| **Qwen3-Embedding-0.6B** | 1024 | ★☆☆ | ★★★ | 推荐 CUDA GPU | ~2 GB |\n| BAAI/bge-small-en-v1.5（默认） | 384 | ★★☆ | ★★☆ | 自动检测 | ~1.3 GB |\n\n项目地址：https://github.com/NothingToSay0031/code-rag\n\n欢迎大家试用，也欢迎反馈和贡献。\n\n---\n\n*本项目参考了 [NVIDIA 与 EA 在大规模 C++ 代码库上的 RAG 实践经验](https://www.youtube.com/watch?v=jFFOC3UZTTk)，在其思路上进行了通用化设计，使任意语言、任意框架的仓库都能受益。*\n","metrics":{"comments":5},"tags":["ruanyf-weekly","submission"],"externalId":"10033","issueUrl":"https://github.com/ruanyf/weekly/issues/10033"},{"sourceId":"weekly-issues","title":"【工具自荐】软宝宝-一款可以由真实代码生成软著申请材料的工具网站 - https://rzcode.vip/","url":"https://rzcode.vip/","author":"coolguy2020","authorUrl":"https://github.com/coolguy2020","publishedAt":"2026-05-22T09:13:33Z","summary":"软宝宝（RZCode）—— 真实代码生成软著申请材料工具 项目简介 软宝宝（RZCode） 是一款专注于 软件著作权（软著）申请材料生成 的在线工具平台。网址： 用户可以直接上传本地真实项目代码，系统会自动分析、筛选并生成符合软著申请规范的源代码文档，大幅降低人工整理代码与编写文档的时间成本。 核心功能 1. 上传真实项目代码 支持多种上传方式： 上传本地项目文件夹 上传 ZIP 压缩包 自动处理大型项目文件 系统内置： 无用文件过滤 缓存文件过滤 第三方依赖过滤 编译产物过滤 可有效减少无关代码干扰。 2. 智能识别代码文件 上传后，系统会自动识别项目中的代码文件类型，例如： .py .js .ts .java .cpp .go .vue .html .css 并根据后缀自动分类。 用户可根据实际需要： 自由勾选需要保留的代码类型 自定义生成内容 精准控制软著代码范围 3. 一键生成软著源代码文档 用户点击下载后，系统可自动生成： 符合软著格式要求的代码文档 每页 50 行 共 60 页 自动分页 自动格式化 支持打印与提交 生成结果可直接用于软件著作权申请。 4. 免费生成代码文档 平台基础功能永久免费： ✅ 免费上传代码 ✅ 免费筛选代码文件 ✅ 免费生成软著代码文档 适合： 独立开发者 学生项目 创业团队 企业研发人员 5. 阿里云登录与项目管理 若用户需要： 多项目管理 多次生成 云端保存 历史记录管理 则可使用 阿里云账号登录。 登录后可获得： 项目管理能力 云端数据同步 更稳定的大文件处理能力 6. AI 自动生成操作说明文档（付费功能） 除了代码文档外，平台还支持： AI 智能生成软件操作说明书 用户只需： 1. 上传项目代码 2. 上传软件截图 系统即可基于： 上传代码结构 页面截图内容 功能逻辑分析 自动生成： 软件操作手册 功能说明文档 使用流程文档 真实可用的软著配套材料 技术特点 智能代码分析 系统会自动： 分析项目结构 提取核心业务代码 过滤无效文件 控制文档长度 提高软著材料质量。 AI 文档生成能力 结合： 大语言模型 OCR 图像识别 代码结构分析 API Token 推理能力 生成更接近真实软件项目的文档内容。 付费说明 由于 AI 文档生成需要消耗： API Token 图像识别资源 大模型推理资源 因此： 代码文档生成 永久免费 AI 操作说明文档生成 按次数付费生成 适用场景 软件著作权申请 高校毕业项目 创业项目材料整理 企业知识产权申报 项目代码归档 软件交付文档生成 平台优势 ✅ 真实代码生成 ✅ 自动过滤无效文件 ✅ 智能识别代码类型 ✅ 一键生成软著代码页 ✅ AI 自动生成操作文档 ✅ 降低软著申请门槛 ✅ 节省大量人工整理时间 官网 网站名称：RZCode 网站网址： 产品名称：软宝宝 功能定位：AI 驱动的软件著作权材料生成平台","content":"# 软宝宝（RZCode）—— 真实代码生成软著申请材料工具\n\n## 项目简介\n\n**软宝宝（RZCode）** 是一款专注于 **软件著作权（软著）申请材料生成** 的在线工具平台。网址：https://rzcode.vip/\n用户可以直接上传本地真实项目代码，系统会自动分析、筛选并生成符合软著申请规范的源代码文档，大幅降低人工整理代码与编写文档的时间成本。\n\n## 核心功能\n\n### 1. 上传真实项目代码\n\n支持多种上传方式：\n\n* 上传本地项目文件夹\n* 上传 ZIP 压缩包\n* 自动处理大型项目文件\n\n系统内置：\n\n* 无用文件过滤\n* 缓存文件过滤\n* 第三方依赖过滤\n* 编译产物过滤\n\n可有效减少无关代码干扰。\n\n---\n\n### 2. 智能识别代码文件\n\n上传后，系统会自动识别项目中的代码文件类型，例如：\n\n* `.py`\n* `.js`\n* `.ts`\n* `.java`\n* `.cpp`\n* `.go`\n* `.vue`\n* `.html`\n* `.css`\n\n并根据后缀自动分类。\n\n用户可根据实际需要：\n\n* 自由勾选需要保留的代码类型\n* 自定义生成内容\n* 精准控制软著代码范围\n\n---\n\n### 3. 一键生成软著源代码文档\n\n用户点击下载后，系统可自动生成：\n\n* 符合软著格式要求的代码文档\n* 每页 50 行\n* 共 60 页\n* 自动分页\n* 自动格式化\n* 支持打印与提交\n\n生成结果可直接用于软件著作权申请。\n\n---\n\n### 4. 免费生成代码文档\n\n平台基础功能永久免费：\n\n✅ 免费上传代码\n✅ 免费筛选代码文件\n✅ 免费生成软著代码文档\n\n适合：\n\n* 独立开发者\n* 学生项目\n* 创业团队\n* 企业研发人员\n\n---\n\n### 5. 阿里云登录与项目管理\n\n若用户需要：\n\n* 多项目管理\n* 多次生成\n* 云端保存\n* 历史记录管理\n\n则可使用 **阿里云账号登录**。\n\n登录后可获得：\n\n* 项目管理能力\n* 云端数据同步\n* 更稳定的大文件处理能力\n\n---\n\n### 6. AI 自动生成操作说明文档（付费功能）\n\n除了代码文档外，平台还支持：\n\n## AI 智能生成软件操作说明书\n\n用户只需：\n\n1. 上传项目代码\n2. 上传软件截图\n\n系统即可基于：\n\n* 上传代码结构\n* 页面截图内容\n* 功能逻辑分析\n\n自动生成：\n\n* 软件操作手册\n* 功能说明文档\n* 使用流程文档\n* 真实可用的软著配套材料\n\n---\n\n## 技术特点\n\n### 智能代码分析\n\n系统会自动：\n\n* 分析项目结构\n* 提取核心业务代码\n* 过滤无效文件\n* 控制文档长度\n\n提高软著材料质量。\n\n---\n\n### AI 文档生成能力\n\n结合：\n\n* 大语言模型\n* OCR 图像识别\n* 代码结构分析\n* API Token 推理能力\n\n生成更接近真实软件项目的文档内容。\n\n---\n\n## 付费说明\n\n由于 AI 文档生成需要消耗：\n\n* API Token\n* 图像识别资源\n* 大模型推理资源\n\n因此：\n\n### 代码文档生成\n\n永久免费\n\n### AI 操作说明文档生成\n\n按次数付费生成\n\n---\n\n## 适用场景\n\n* 软件著作权申请\n* 高校毕业项目\n* 创业项目材料整理\n* 企业知识产权申报\n* 项目代码归档\n* 软件交付文档生成\n\n---\n\n## 平台优势\n\n✅ 真实代码生成\n✅ 自动过滤无效文件\n✅ 智能识别代码类型\n✅ 一键生成软著代码页\n✅ AI 自动生成操作文档\n✅ 降低软著申请门槛\n✅ 节省大量人工整理时间\n\n---\n\n## 官网\n\n* 网站名称：**RZCode**\n* 网站网址：https://rzcode.vip/\n* 产品名称：**软宝宝**\n* 功能定位：**AI 驱动的软件著作权材料生成平台**\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10034","issueUrl":"https://github.com/ruanyf/weekly/issues/10034"},{"sourceId":"weekly-issues","title":"Java面试百科全书 - 300+真题一站式准备工具","url":"https://github.com/Abyte-zym/java-career-blog","author":"Abyte-zym","authorUrl":"https://github.com/Abyte-zym","publishedAt":"2026-05-22T12:34:54Z","summary":"项目信息 名称：Java面试百科全书 地址： 官网： 推荐理由 这是一个面向2026年Java求职者的开源面试准备工具集，包含： 📚 40+篇深度面试文章（HashMap源码到分布式系统设计全覆盖） 🧰 30+免费在线工具（简历生成器、面试模拟器、JD押题器、段位测试、技能雷达等） 📄 一页纸速查表（可打印PDF） 📋 30天通关清单（交互式打卡） ☕ 每日一签知识卡片（社交分享） 全部免费开源，GitHub Pages托管，持续更新。已帮助多个Java求职者拿到面试机会。 技术栈：纯HTML/CSS/JS，零依赖，响应式设计。","content":"## 项目信息\n\n**名称**：Java面试百科全书\n**地址**：https://github.com/Abyte-zym/java-career-blog\n**官网**：https://Abyte-zym.github.io/java-career-blog/\n\n## 推荐理由\n\n这是一个面向2026年Java求职者的开源面试准备工具集，包含：\n\n📚 40+篇深度面试文章（HashMap源码到分布式系统设计全覆盖）\n🧰 30+免费在线工具（简历生成器、面试模拟器、JD押题器、段位测试、技能雷达等）\n📄 一页纸速查表（可打印PDF）\n📋 30天通关清单（交互式打卡）\n☕ 每日一签知识卡片（社交分享）\n\n全部免费开源，GitHub Pages托管，持续更新。已帮助多个Java求职者拿到面试机会。\n\n技术栈：纯HTML/CSS/JS，零依赖，响应式设计。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10035","issueUrl":"https://github.com/ruanyf/weekly/issues/10035"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[{"sourceId":"weekly-issue","title":"OpenCode Mobile","url":"https://github.com/learning233/opencode_mobile","author":"learning233","authorUrl":"https://github.com/learning233","publishedAt":"2026-05-22T00:00:00+08:00","summary":"OpenCode 的非官方安卓客户端。","content":"OpenCode 的非官方安卓客户端。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-OpenCode Mobile-https://github.com/learning233/opencode_mobile","relatedIssue":"https://github.com/ruanyf/weekly/issues/11381","issue":"411"},{"sourceId":"weekly-issue","title":"Blob Downloader","url":"https://github.com/aeroxy/blob-downloader","author":"aeroxy","authorUrl":"https://github.com/aeroxy","publishedAt":"2026-05-22T00:00:00+08:00","summary":"Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。","content":"Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Blob Downloader-https://github.com/aeroxy/blob-downloader","relatedIssue":"https://github.com/ruanyf/weekly/issues/11392","issue":"411"},{"sourceId":"weekly-issue","title":"zlib","url":"https://github.com/heartleo/zlib","author":"heartleo","authorUrl":"https://github.com/heartleo","publishedAt":"2026-05-22T00:00:00+08:00","summary":"Go 语言编写的 Z-Library 图书馆命令行工具。","content":"Go 语言编写的 Z-Library 图书馆命令行工具。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-zlib-https://github.com/heartleo/zlib","relatedIssue":"https://github.com/ruanyf/weekly/issues/11405","issue":"411"},{"sourceId":"weekly-issue","title":"ATBClone","url":"https://github.com/aitobox/ATBClone","author":"aitoboxinc","authorUrl":"https://github.com/aitoboxinc","publishedAt":"2026-05-22T00:00:00+08:00","summary":"开源的 macOS 应用，允许应用程序多开，并进行分身管理。","content":"开源的 macOS 应用，允许应用程序多开，并进行分身管理。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-ATBClone-https://github.com/aitobox/ATBClone","relatedIssue":"https://github.com/ruanyf/weekly/issues/11432","issue":"411"},{"sourceId":"weekly-issue","title":"Orange Cloud","url":"https://github.com/chen2he/orange-cloud","author":"chen2he","authorUrl":"https://github.com/chen2he","publishedAt":"2026-05-22T00:00:00+08:00","summary":"开源的 Cloudflare 的 iOS 客户端。","content":"开源的 Cloudflare 的 iOS 客户端。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Orange Cloud-https://github.com/chen2he/orange-cloud","relatedIssue":"https://github.com/ruanyf/weekly/issues/11428","issue":"411"},{"sourceId":"weekly-issue","title":"Apolu","url":"https://apolu.app/zh-Hans","author":"chen2he","authorUrl":"https://github.com/chen2he","publishedAt":"2026-05-22T00:00:00+08:00","summary":"一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。","content":"一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Apolu-https://apolu.app/zh-Hans","relatedIssue":"https://github.com/ruanyf/weekly/issues/11429","issue":"411"},{"sourceId":"weekly-issue","title":"DanKS","url":"https://github.com/Calix-L/DanKS","author":"Calix-L","authorUrl":"https://github.com/Calix-L","publishedAt":"2026-05-22T00:00:00+08:00","summary":"金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。","content":"金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-DanKS-https://github.com/Calix-L/DanKS","relatedIssue":"https://github.com/ruanyf/weekly/issues/11422","issue":"411"},{"sourceId":"weekly-issue","title":"video-ai-talking","url":"https://github.com/yizhi-chengzi/video-ai-talking","author":"yizhi-chengzi","authorUrl":"https://github.com/yizhi-chengzi","publishedAt":"2026-05-22T00:00:00+08:00","summary":"一个开源 Web 应用，输入文案，生成真人口播视频。","content":"一个开源 Web 应用，输入文案，生成真人口播视频。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-video-ai-talking-https://github.com/yizhi-chengzi/video-ai-talking","relatedIssue":"https://github.com/ruanyf/weekly/issues/11449","issue":"411"},{"sourceId":"weekly-issue","title":"Git Agent","url":"https://github.com/adoin/git-Agent","author":"adoin","authorUrl":"https://github.com/adoin","publishedAt":"2026-05-22T00:00:00+08:00","summary":"开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。","content":"开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Git Agent-https://github.com/adoin/git-Agent","relatedIssue":"https://github.com/ruanyf/weekly/issues/11464","issue":"411"},{"sourceId":"weekly-issue","title":"Subtitle Scout","url":"https://github.com/fancydirty/subtitle-scout","author":"fancydirty","authorUrl":"https://github.com/fancydirty","publishedAt":"2026-05-22T00:00:00+08:00","summary":"一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。","content":"一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。","metrics":{},"tags":["ruanyf-weekly","official","工具"],"section":"工具","externalId":"411-Subtitle Scout-https://github.com/fancydirty/subtitle-scout","relatedIssue":"https://github.com/ruanyf/weekly/issues/11468","issue":"411"},{"sourceId":"weekly-issue","title":"Ad Astra","url":"https://github.com/gunerguner/AdAstra","author":"gunerguner","authorUrl":"https://github.com/gunerguner","publishedAt":"2026-05-22T00:00:00+08:00","summary":"可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。","content":"可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-Ad Astra-https://github.com/gunerguner/AdAstra","relatedIssue":"https://github.com/ruanyf/weekly/issues/11360","issue":"411"},{"sourceId":"weekly-issue","title":"3D 钢琴","url":"https://autopiano.cn/3d","author":"WarpPrism","authorUrl":"https://github.com/WarpPrism","publishedAt":"2026-05-22T00:00:00+08:00","summary":"在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。","content":"在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-3D 钢琴-https://autopiano.cn/3d","relatedIssue":"https://github.com/ruanyf/weekly/issues/11431","issue":"411"},{"sourceId":"weekly-issue","title":"ScriptSpool","url":"https://scriptspool.pixzens.com/zh/editor","author":"liyuouyu","authorUrl":"https://github.com/liyuouyu","publishedAt":"2026-05-22T00:00:00+08:00","summary":"这个网站将一段代码的输入变成逐键输入的动画。","content":"这个网站将一段代码的输入变成逐键输入的动画。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-ScriptSpool-https://scriptspool.pixzens.com/zh/editor","relatedIssue":"https://github.com/ruanyf/weekly/issues/11433","issue":"411"},{"sourceId":"weekly-issue","title":"卫生间建模","url":"https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom","author":"","authorUrl":"","publishedAt":"2026-05-22T00:00:00+08:00","summary":"这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。","content":"这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。","metrics":{},"tags":["ruanyf-weekly","official","资源"],"section":"资源","externalId":"411-卫生间建模-https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom","relatedIssue":null,"issue":"411"}]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[开源推荐] Hermes Edu Skills：把教育场景做成可复用、可导出、可迁移的 AI Agent 技能库。","url":"https://github.com/zhongweiv/hermes-edu-skills","author":"zhongweiv","authorUrl":"https://github.com/zhongweiv","publishedAt":"2026-05-21T17:57:29Z","summary":"项目地址 类别 人工智能 项目标题 中文教育 Agent Skill Pack：教材同步、备考复习、拍照答疑、错题复盘、亲子陪学、阅读写作和教师工具，Hermes Agent 可直接使用，也可导出到 OpenClaw/Codex/Cursor/Claude Code。 项目描述 让 Hermes Agent 和主流 AI 工具拥有中国教育场景能力的开源 Agent Skill Pack：教材同步、备考复习、错题复盘、每日练习、亲子陪学、阅读写作和教师工作流。 An open Agent Skill Pack that gives Hermes Agent and mainstream AI tools Chinafocused education capabilities: textbook sync, exam prep, mistake review, daily practice, family learning, reading/writing, and teacher workflows. Hermes Edu Skills 是一套面向中国教育场景的开源 Agent Skill Pack。它把教材同步、考试备考、拍照答疑、错题复盘、每日练习、阅读写作、亲子陪学、教师备课和家校沟通，整理成 170 个可浏览、可安装、可二次开发的产品级 Skill。 它不是 Prompt 合集，而是可被 Hermes Agent 识别的结构化能力库：每个 Skill 都有触发信号、适用角色、参数维度、使用边界和标准 SKILL.md。你可以直接装进 Hermes Agent，也可以导出给 OpenClaw、Codex、Cursor、Claude Code 或其它 Agent 工具。 如果你正在做 AI 学习助手、AI 老师、教研工具、家长陪学产品、题库/错题产品，或者只是想让自己的本地 Agent 更懂中国教材和学习场景，这个仓库可以直接作为起点。觉得有帮助的话，欢迎 Star，它会帮助更多中文教育 AI 开发者更快发现这个项目。 亮点 这是什么 | 问题 | 答案 | | | | | 这是什么 | 面向中国教育场景的开源 Agent Skill Pack。 | | 为什么需要 | 通用 Agent 通常不理解中国教材版本、年级册别、单元节奏、考试体系和家庭/教师真实工作流。 | | 怎么实现 | 用 170 个结构化 SKILL.md 把教育任务封装成 Agent 可发现、可调用、可安装的能力。 | | 默认平台 | Hermes Agent。 | | 可导出平台 | OpenClaw、Codex、Cursor、Claude Code、Generic Agent。 | | 开源内容 | 公开 Skill 文档、索引、校验工具和导出工具；不包含用户数据、密钥或商业后端实现。 | 为什么不是 Prompt 集合 | 能力 | Prompt 集合 | 通用 Agent Skills | Hermes Edu Skills | | | :: | :: | :: | | 中国教材版本对齐 | | 通常不支持 | 支持人教、统编、北师大、苏教、鲁科等教育场景 | | 年级/册别/单元/难度 | 靠手写提示词 | 部分支持 | 作为 Skill 参数和工作流约束 | | 真实教育任务 | 松散模板 | 通用能力 | 教材同步、错题复盘、备考复习、每日练习、教师工具 | | Hermes 原生识别 | | 不一定 | 标准 SKILL.md | | 多 Agent 复用 | | 不一定 | 可导出到 OpenClaw、Codex、Cursor、Claude Code | | 中文教育表达 | 不稳定 | 不稳定 | 围绕中国学生、家长、老师和教研场景编写 | | 二次开发 | 低 | 中 | 有目录、索引、校验和安装工具 | 谁适合用 | 你是谁 | 推荐先看 | 可以得到什么 | | | | | | Hermes Agent 用户 | 默认使用：Hermes Agent、学习核心能力 | 直接把中文教育 Skill 加到本地 Agent。 | | 教育 AI 开发者 | 项目结构、兼容说明 | 复用 Skill 结构、参数设计和工作流命名。 | | 老师 / 教研人员 | 老师工具、教材同步 | 参考备课、作业生成、单元复习和同步教学设计。 | | 家长 / 家庭教育产品 | 家庭教育、每日练习 | 构建陪伴、阅读、习惯和每日训练场景。 | | 学校 / 教培机构 | 老师工具、考试备考 | 了解备课、作业、班级分析、复习和教学支持产品形态。 | 分类总览 当前包含 170 个可安装 Skill，覆盖 9 个产品级分类。年级、册别、单元、课时、知识点和难度作为参数传入，不再拆成海量重复 Skill。 | 分类 | 安装选择器 | 适用场景 | 数量 | | | | | : | | <a href=\"textbooksync\"<codetextbooksync</code</a<br教材同步 | <codenpx: textbooksync</code<br<codenpm: category textbooksync</code | 面向中国教材版本、年级、册别、单元、课时和知识点的同步学习能力。年级、册别、单元和难度作为参数传入，不再拆成大量独立 Skill。 | 41 | | <a href=\"learningcore\"<codelearningcore</code</a<br学习核心能力 | <codenpx: learningcore</code<br<codenpm: category learningcore</code | 学习计划、拍照答疑、错题复盘、学情报告等通用学习闭环能力。 | 15 | | <a href=\"dailypractice\"<codedailypractice</code</a<br每日练习 | <codenpx: dailypractice</code<br<codenpm: category dailypractice</code | 面向每天短时高频训练，例如口算、听写、背诵、词汇、快速巩固。 | 28 | | <a href=\"readingwriting\"<codereadingwriting</code</a<br阅读写作 | <codenpx: readingwriting</code<br<codenpm: category readingwriting</code | 面向语文、英语、学术和职场表达的阅读与写作能力。 | 10 | | <a href=\"examprep\"<codeexamprep</code</a<br考试备考 | <codenpx: examprep</code<br<codenpm: category examprep</code | 面向期末、中考、高考、考研、四六级、考证和公务员等备考场景。 | 27 | | <a href=\"teachertools\"<codeteachertools</code</a<br老师工具 | <codenpx: teachertools</code<br<codenpm: category teachertools</code | 面向老师备课、作业生成、班级分析和家校沟通。 | 31 | | <a href=\"familyeducation\"<codefamilyeducation</code</a<br家庭教育 | <codenpx: familyeducation</code<br<codenpm: category familyeducation</code | 面向家长陪伴、亲子阅读、作业习惯和家庭沟通。 | 8 | | <a href=\"languagelearning\"<codelanguagelearning</code</a<br语言学习 | <codenpx: languagelearning</code<br<codenpm: category languagelearning</code | 面向成人英语、出国考试、口语、听力和长期语言能力提升。 | 3 | | <a href=\"careerlearning\"<codecareerlearning</code</a<br成人与职业学习 | <codenpx: careerlearning</code<br<codenpm: category careerlearning</code | 面向大学、成人学习、职业技能和考证场景。 | 7 | 示例代码 markdown 截图或演示视频","content":"### 项目地址\n\nhttps://github.com/zhongweiv/hermes-edu-skills\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n中文教育 Agent Skill Pack：教材同步、备考复习、拍照答疑、错题复盘、亲子陪学、阅读写作和教师工具，Hermes Agent 可直接使用，也可导出到 OpenClaw/Codex/Cursor/Claude Code。\n\n### 项目描述\n\n让 Hermes Agent 和主流 AI 工具拥有中国教育场景能力的开源 Agent Skill Pack：教材同步、备考复习、错题复盘、每日练习、亲子陪学、阅读写作和教师工作流。\n\nAn open Agent Skill Pack that gives Hermes Agent and mainstream AI tools China-focused education capabilities: textbook sync, exam prep, mistake review, daily practice, family learning, reading/writing, and teacher workflows.\n\nHermes Edu Skills 是一套面向中国教育场景的开源 Agent Skill Pack。它把教材同步、考试备考、拍照答疑、错题复盘、每日练习、阅读写作、亲子陪学、教师备课和家校沟通，整理成 170 个可浏览、可安装、可二次开发的产品级 Skill。\n\n它不是 Prompt 合集，而是可被 Hermes Agent 识别的结构化能力库：每个 Skill 都有触发信号、适用角色、参数维度、使用边界和标准 SKILL.md。你可以直接装进 Hermes Agent，也可以导出给 OpenClaw、Codex、Cursor、Claude Code 或其它 Agent 工具。\n\n如果你正在做 AI 学习助手、AI 老师、教研工具、家长陪学产品、题库/错题产品，或者只是想让自己的本地 Agent 更懂中国教材和学习场景，这个仓库可以直接作为起点。觉得有帮助的话，欢迎 Star，它会帮助更多中文教育 AI 开发者更快发现这个项目。\n\n### 亮点\n\n## 这是什么\n\n| 问题 | 答案 |\n| --- | --- |\n| 这是什么 | 面向中国教育场景的开源 Agent Skill Pack。 |\n| 为什么需要 | 通用 Agent 通常不理解中国教材版本、年级册别、单元节奏、考试体系和家庭/教师真实工作流。 |\n| 怎么实现 | 用 170 个结构化 `SKILL.md` 把教育任务封装成 Agent 可发现、可调用、可安装的能力。 |\n| 默认平台 | Hermes Agent。 |\n| 可导出平台 | OpenClaw、Codex、Cursor、Claude Code、Generic Agent。 |\n| 开源内容 | 公开 Skill 文档、索引、校验工具和导出工具；不包含用户数据、密钥或商业后端实现。 |\n\n## 为什么不是 Prompt 集合\n\n| 能力 | Prompt 集合 | 通用 Agent Skills | Hermes Edu Skills |\n| --- | :---: | :---: | :---: |\n| 中国教材版本对齐 | - | 通常不支持 | 支持人教、统编、北师大、苏教、鲁科等教育场景 |\n| 年级/册别/单元/难度 | 靠手写提示词 | 部分支持 | 作为 Skill 参数和工作流约束 |\n| 真实教育任务 | 松散模板 | 通用能力 | 教材同步、错题复盘、备考复习、每日练习、教师工具 |\n| Hermes 原生识别 | - | 不一定 | 标准 `SKILL.md` |\n| 多 Agent 复用 | - | 不一定 | 可导出到 OpenClaw、Codex、Cursor、Claude Code |\n| 中文教育表达 | 不稳定 | 不稳定 | 围绕中国学生、家长、老师和教研场景编写 |\n| 二次开发 | 低 | 中 | 有目录、索引、校验和安装工具 |\n\n## 谁适合用\n\n| 你是谁 | 推荐先看 | 可以得到什么 |\n| --- | --- | --- |\n| Hermes Agent 用户 | [默认使用：Hermes Agent](#默认使用hermes-agent)、[学习核心能力](#learning-core) | 直接把中文教育 Skill 加到本地 Agent。 |\n| 教育 AI 开发者 | [项目结构](#项目结构)、[兼容说明](#兼容说明) | 复用 Skill 结构、参数设计和工作流命名。 |\n| 老师 / 教研人员 | [老师工具](#teacher-tools)、[教材同步](#textbook-sync) | 参考备课、作业生成、单元复习和同步教学设计。 |\n| 家长 / 家庭教育产品 | [家庭教育](#family-education)、[每日练习](#daily-practice) | 构建陪伴、阅读、习惯和每日训练场景。 |\n| 学校 / 教培机构 | [老师工具](#teacher-tools)、[考试备考](#exam-prep) | 了解备课、作业、班级分析、复习和教学支持产品形态。 |\n\n## 分类总览\n\n当前包含 170 个可安装 Skill，覆盖 9 个产品级分类。年级、册别、单元、课时、知识点和难度作为参数传入，不再拆成海量重复 Skill。\n\n| 分类 | 安装选择器 | 适用场景 | 数量 |\n| --- | --- | --- | ---: |\n| <a href=\"#textbook-sync\"><code>textbook-sync</code></a><br>教材同步 | <code>npx: textbook-sync</code><br><code>npm: --category textbook-sync</code> | 面向中国教材版本、年级、册别、单元、课时和知识点的同步学习能力。年级、册别、单元和难度作为参数传入，不再拆成大量独立 Skill。 | 41 |\n| <a href=\"#learning-core\"><code>learning-core</code></a><br>学习核心能力 | <code>npx: learning-core</code><br><code>npm: --category learning-core</code> | 学习计划、拍照答疑、错题复盘、学情报告等通用学习闭环能力。 | 15 |\n| <a href=\"#daily-practice\"><code>daily-practice</code></a><br>每日练习 | <code>npx: daily-practice</code><br><code>npm: --category daily-practice</code> | 面向每天短时高频训练，例如口算、听写、背诵、词汇、快速巩固。 | 28 |\n| <a href=\"#reading-writing\"><code>reading-writing</code></a><br>阅读写作 | <code>npx: reading-writing</code><br><code>npm: --category reading-writing</code> | 面向语文、英语、学术和职场表达的阅读与写作能力。 | 10 |\n| <a href=\"#exam-prep\"><code>exam-prep</code></a><br>考试备考 | <code>npx: exam-prep</code><br><code>npm: --category exam-prep</code> | 面向期末、中考、高考、考研、四六级、考证和公务员等备考场景。 | 27 |\n| <a href=\"#teacher-tools\"><code>teacher-tools</code></a><br>老师工具 | <code>npx: teacher-tools</code><br><code>npm: --category teacher-tools</code> | 面向老师备课、作业生成、班级分析和家校沟通。 | 31 |\n| <a href=\"#family-education\"><code>family-education</code></a><br>家庭教育 | <code>npx: family-education</code><br><code>npm: --category family-education</code> | 面向家长陪伴、亲子阅读、作业习惯和家庭沟通。 | 8 |\n| <a href=\"#language-learning\"><code>language-learning</code></a><br>语言学习 | <code>npx: language-learning</code><br><code>npm: --category language-learning</code> | 面向成人英语、出国考试、口语、听力和长期语言能力提升。 | 3 |\n| <a href=\"#career-learning\"><code>career-learning</code></a><br>成人与职业学习 | <code>npx: career-learning</code><br><code>npm: --category career-learning</code> | 面向大学、成人学习、职业技能和考证场景。 | 7 |\n\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\nhttps://github.com/user-attachments/assets/846bb720-2782-443d-a3a6-8ce9fee01c2d","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3287","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3287"},{"sourceId":"hellogithub-issues","title":"[开源推荐] 小马AI Hermes 中文增强包","url":"https://github.com/fresh-claw/hermes-zh-cn","author":"fresh-claw","authorUrl":"https://github.com/fresh-claw","publishedAt":"2026-05-21T19:46:01Z","summary":"推荐项目 项目地址： 演示/官网： 项目标题 小马AI Hermes 中文增强包：一条命令安装 Hermes Agent 中文补丁 项目描述 这是一个面向中文用户的 Hermes Agent 汉化补丁和安装器。用户把“请访问 useai.live/hermes 安装汉化补丁”发给 Hermes，或在命令行运行一条安装命令，安装器会自动检测本机 Hermes 版本；未安装时先安装官方版，再匹配 0.14.x、0.13.x 或 legacy 中文包，覆盖启动页、TUI、快捷指令、工具分类、网关状态、ACP 权限、配对配置和审批提示等中文文案。 推荐理由 Hermes Agent 对中文新手的主要门槛不是模型能力，而是启动页、快捷指令、权限提示和运行状态大量英文。这个项目把安装流程做成网页和一键脚本，适合刚接触 AI Agent 的中文用户快速上手，也保留 GitHub 仓库和多版本 manifest，方便开发者查看补丁范围、hash 校验和版本兼容策略。 适合人群 刚开始使用 Hermes Agent 的中文用户 安装后启动页、快捷指令、工具列表仍是英文的人 想把 Hermes Agent 用到真实业务，但需要中文界面和中文答疑入口的人 安装方式 bash curl fsSL | bash 或者在 Hermes 对话框发送： text 请访问 useai.live/hermes 安装汉化补丁 亮点 支持 Hermes Agent v0.14.x、v0.13.x 和 legacy 老版本兼容路径 未安装 Hermes 时先安装官方版，再应用中文补丁 覆盖启动页、TUI、快捷指令、工具分类、网关、ACP、审批提示等常见英文界面 官网提供新手教程和“业务落地 / 疑难杂症”交流群入口 中文包文件带 SHA256 校验，便于复核和持续更新 许可证 MIT","content":"## 推荐项目\n\n- 项目地址：https://github.com/fresh-claw/hermes-zh-cn\n- 演示/官网：https://useai.live/hermes/\n\n## 项目标题\n\n小马AI Hermes 中文增强包：一条命令安装 Hermes Agent 中文补丁\n\n## 项目描述\n\n这是一个面向中文用户的 Hermes Agent 汉化补丁和安装器。用户把“请访问 useai.live/hermes 安装汉化补丁”发给 Hermes，或在命令行运行一条安装命令，安装器会自动检测本机 Hermes 版本；未安装时先安装官方版，再匹配 0.14.x、0.13.x 或 legacy 中文包，覆盖启动页、TUI、快捷指令、工具分类、网关状态、ACP 权限、配对配置和审批提示等中文文案。\n\n## 推荐理由\n\nHermes Agent 对中文新手的主要门槛不是模型能力，而是启动页、快捷指令、权限提示和运行状态大量英文。这个项目把安装流程做成网页和一键脚本，适合刚接触 AI Agent 的中文用户快速上手，也保留 GitHub 仓库和多版本 manifest，方便开发者查看补丁范围、hash 校验和版本兼容策略。\n\n## 适合人群\n\n- 刚开始使用 Hermes Agent 的中文用户\n- 安装后启动页、快捷指令、工具列表仍是英文的人\n- 想把 Hermes Agent 用到真实业务，但需要中文界面和中文答疑入口的人\n\n## 安装方式\n\n```bash\ncurl -fsSL https://useai.live/hermes/install.sh | bash\n```\n\n或者在 Hermes 对话框发送：\n\n```text\n请访问 useai.live/hermes 安装汉化补丁\n```\n\n## 亮点\n\n- 支持 Hermes Agent v0.14.x、v0.13.x 和 legacy 老版本兼容路径\n- 未安装 Hermes 时先安装官方版，再应用中文补丁\n- 覆盖启动页、TUI、快捷指令、工具分类、网关、ACP、审批提示等常见英文界面\n- 官网提供新手教程和“业务落地 / 疑难杂症”交流群入口\n- 中文包文件带 SHA256 校验，便于复核和持续更新\n\n## 许可证\n\nMIT\n","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3288","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3288"},{"sourceId":"hellogithub-issues","title":"[开源推荐] HarmonyOS NEXT 开发者 AI 技能包","url":"https://github.com/linhay/harmony-next.skills","author":"linhay","authorUrl":"https://github.com/linhay","publishedAt":"2026-05-22T03:17:03Z","summary":"项目地址 类别 人工智能 项目标题 HarmonyOS NEXT 开发者 AI 技能包 项目描述 这是一个面向 AI 编程助手的 HarmonyOS NEXT 离线参考技能库，覆盖 ArkTS、ArkUI、NDK、DevEco Studio、模拟器、调试、发布和自动化测试，帮助开发者把 API 查询、工具链排障和最小工程验证落到可追踪的本地文档与脚本。 亮点 面向 Agent 工作流设计：按 SKILL.md KITS/TASKMAP INDEX 目标 Markdown 渐进检索，减少模型凭记忆猜 API。 覆盖 API 1223 的本地知识源，包含 3,600+ 份 JsEtsAPIReference Markdown，适合离线查询和可追踪引用。 不只是 API 镜像：补充 DevEco Studio、HarmonyOS Emulator、HDC、uitest、签名、发布、性能和多端适配等实践入口。 提供可复制的 Empty Ability 最小工程模板，可用于 HAP 构建、安装启动、layout dump、截图和交互 smoke。","content":"### 项目地址\n\nhttps://github.com/linhay/harmony-next.skills\n\n### 类别\n\n人工智能\n\n### 项目标题\n\nHarmonyOS NEXT 开发者 AI 技能包\n\n### 项目描述\n\n这是一个面向 AI 编程助手的 HarmonyOS NEXT 离线参考技能库，覆盖 ArkTS、ArkUI、NDK、DevEco Studio、模拟器、调试、发布和自动化测试，帮助开发者把 API 查询、工具链排障和最小工程验证落到可追踪的本地文档与脚本。\n\n### 亮点\n\n- 面向 Agent 工作流设计：按 `SKILL.md -> KITS/TASK_MAP -> INDEX -> 目标 Markdown` 渐进检索，减少模型凭记忆猜 API。\n- 覆盖 API 12-23 的本地知识源，包含 3,600+ 份 JsEtsAPIReference Markdown，适合离线查询和可追踪引用。\n- 不只是 API 镜像：补充 DevEco Studio、HarmonyOS Emulator、HDC、uitest、签名、发布、性能和多端适配等实践入口。\n- 提供可复制的 Empty Ability 最小工程模板，可用于 HAP 构建、安装启动、layout dump、截图和交互 smoke。","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3289","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3289"},{"sourceId":"hellogithub-issues","title":"[开源自荐] stock-sdk：浏览器前端和 Node.js 都能直接调用的股票行情 SDK，零依赖、TypeScript 全类型、单测覆盖","url":"https://github.com/chengzuopeng/stock-sdk","author":"chengzuopeng","authorUrl":"https://github.com/chengzuopeng","publishedAt":"2026-05-22T08:00:35Z","summary":"项目地址： 官方文档： 在线 Playground： NPM： 看板 Demo： 一句话：给前端工程师的股票行情 SDK —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。 背景 股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。 stocksdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。 亮点 🌐 浏览器 + Node.js 双端：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理 📦 零依赖、轻量：发布包 gzip 后 ~27 KB，ESM + CJS 双格式 🧠 完整 TypeScript 类型：所有接口、字段、错误码都有类型，IDE 自动补全 📈 覆盖面广：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时 🔢 14 个内置技术指标：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC 🏛️ 专业数据：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存 🛡️ 请求治理：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖 🤖 AI / MCP 就绪：配套 stocksdkmcp，一行 npx 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills 使用示例 ts import { StockSDK } from 'stocksdk'; const sdk = new StockSDK(); // 浏览器也可直接调用 await sdk.getSimpleQuotes(['sh600519']); // A 股 await sdk.getHKQuotes(['hk00700']); // 港股 await sdk.getUSQuotes(['usAAPL.O']); // 美股 await sdk.getKLine('sh600519', 'day'); // K 线 await sdk.getNorthboundFlow(); // 北向资金 await sdk.getDragonTigerList(); // 龙虎榜 await sdk.getAllAShareQuotes(); // 全市场 5000+ 只一次拉 14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。 <img width=\"1080\" alt=\"Image\" src=\" /","content":"项目地址：https://github.com/chengzuopeng/stock-sdk\n官方文档：https://stock-sdk.linkdiary.cn/\n在线 Playground：https://stock-sdk.linkdiary.cn/playground/\nNPM：https://www.npmjs.com/package/stock-sdk\n看板 Demo：https://chengzuopeng.github.io/stock-dashboard/\n\n> 一句话：**给前端工程师的股票行情 SDK** —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。\n\n### 背景\n\n股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。\n\nstock-sdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。\n\n### 亮点\n\n- 🌐 **浏览器 + Node.js 双端**：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理\n- 📦 **零依赖、轻量**：发布包 gzip 后 ~27 KB，ESM + CJS 双格式\n- 🧠 **完整 TypeScript 类型**：所有接口、字段、错误码都有类型，IDE 自动补全\n- 📈 **覆盖面广**：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时\n- 🔢 **14 个内置技术指标**：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC\n- 🏛️ **专业数据**：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存\n- 🛡️ **请求治理**：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖\n- 🤖 **AI / MCP 就绪**：配套 [stock-sdk-mcp](https://www.npmjs.com/package/stock-sdk-mcp)，一行 npx 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills\n\n### 使用示例\nts\nimport { StockSDK } from 'stock-sdk';\nconst sdk = new StockSDK();\n// 浏览器也可直接调用\nawait sdk.getSimpleQuotes(['sh600519']);    // A 股\nawait sdk.getHKQuotes(['hk00700']);          // 港股\nawait sdk.getUSQuotes(['usAAPL.O']);         // 美股\nawait sdk.getKLine('sh600519', 'day');       // K 线\nawait sdk.getNorthboundFlow();               // 北向资金\nawait sdk.getDragonTigerList();              // 龙虎榜\nawait sdk.getAllAShareQuotes();              // 全市场 5000+ 只一次拉\n\n14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。\n\n<img width=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c8739e55-2ad5-4bf0-b1ec-d30f65640bc4\" />\n","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3290","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3290"},{"sourceId":"hellogithub-issues","title":"[开源自荐] AI Model Gateway：自托管 LLM 运营网关，解决上游模型不稳定","url":"https://github.com/SSC-STUDIO/Ai-Model-Gateway","author":"SSC-STUDIO","authorUrl":"https://github.com/SSC-STUDIO","publishedAt":"2026-05-22T14:06:53Z","summary":"项目地址 类别 Go 项目标题 AI Model Gateway：自托管 LLM 运营网关 项目描述 AI Model Gateway 是一个 Go 编写的自托管 LLM 运营网关，用一个小型三平面运行时把模型路由、上游失败切换、配置发布、遥测、审计、Benchmark 和软件更新放在一起。它适合想把 OpenAI/Anthropic 兼容入口、密钥、策略和运行数据留在自己环境里的团队，也能帮助初学者理解 AI 网关、可观测性和运维控制台的完整实现。 亮点 解决上游不稳定：支持模型/Provider 路由、fallback、健康探测和回环检测，上游接口抖动时可以自动切到备用模型。 自托管三平面架构：aigw supervise 拉起 data/control/telemetry 三个运行面，便于学习网关运行时拆分。 OpenAI/Anthropic 兼容入口：支持 Chat Completions、Responses、Anthropic Messages 等常见协议，方便 Codex、Claude Code、OpenClaw 等本地工具统一接入。 运维闭环完整：Admin UI 提供 Overview、Monitoring、Benchmark、Ops、Config、Logs，覆盖状态、流量、成本、审计、诊断、发布和回滚。 模型 Benchmark：支持 exact、judge、JSON、tool、stream 等评分模式，用真实请求比较不同模型效果。 软件内部更新：最新版本支持在 Admin Ops 和 aigw update 中检查 Release、下载校验、dryrun、本地应用和回滚。 安全与稳定性：包含 SSRF 防护、DNS pinning、限流、请求缓存、manifest 校验、更新包解压大小限制。 示例代码 bash 启动三平面运行时 ./dist/aigw supervise runtimeroot .gatewayruntime configdir configs bindir ./dist 检查网关状态 curl curl 检查并下载软件更新 ./dist/aigw update check ./dist/aigw update fetch 截图或演示视频 !Admin overview !Admin monitoring","content":"### 项目地址\n\nhttps://github.com/SSC-STUDIO/Ai-Model-Gateway\n\n### 类别\n\nGo\n\n### 项目标题\n\nAI Model Gateway：自托管 LLM 运营网关\n\n### 项目描述\n\nAI Model Gateway 是一个 Go 编写的自托管 LLM 运营网关，用一个小型三平面运行时把模型路由、上游失败切换、配置发布、遥测、审计、Benchmark 和软件更新放在一起。它适合想把 OpenAI/Anthropic 兼容入口、密钥、策略和运行数据留在自己环境里的团队，也能帮助初学者理解 AI 网关、可观测性和运维控制台的完整实现。\n\n### 亮点\n\n- **解决上游不稳定**：支持模型/Provider 路由、fallback、健康探测和回环检测，上游接口抖动时可以自动切到备用模型。\n- **自托管三平面架构**：`aigw supervise` 拉起 data/control/telemetry 三个运行面，便于学习网关运行时拆分。\n- **OpenAI/Anthropic 兼容入口**：支持 Chat Completions、Responses、Anthropic Messages 等常见协议，方便 Codex、Claude Code、OpenClaw 等本地工具统一接入。\n- **运维闭环完整**：Admin UI 提供 Overview、Monitoring、Benchmark、Ops、Config、Logs，覆盖状态、流量、成本、审计、诊断、发布和回滚。\n- **模型 Benchmark**：支持 exact、judge、JSON、tool、stream 等评分模式，用真实请求比较不同模型效果。\n- **软件内部更新**：最新版本支持在 Admin Ops 和 `aigw update` 中检查 Release、下载校验、dry-run、本地应用和回滚。\n- **安全与稳定性**：包含 SSRF 防护、DNS pinning、限流、请求缓存、manifest 校验、更新包解压大小限制。\n\n### 示例代码\n\n```bash\n# 启动三平面运行时\n./dist/aigw supervise -runtime-root .gateway-runtime -config-dir configs -bin-dir ./dist\n\n# 检查网关状态\ncurl http://127.0.0.1:18080/-/health\ncurl http://127.0.0.1:18080/v1/models\n\n# 检查并下载软件更新\n./dist/aigw update check\n./dist/aigw update fetch\n```\n\n### 截图或演示视频\n\n![Admin overview](https://raw.githubusercontent.com/SSC-STUDIO/Ai-Model-Gateway/main/docs/assets/admin-overview.png)\n\n![Admin monitoring](https://raw.githubusercontent.com/SSC-STUDIO/Ai-Model-Gateway/main/docs/assets/admin-monitoring.png)","metrics":{"comments":1},"tags":["hellogithub","submission"],"externalId":"3291","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3291"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]}]}
+{
+  "fetchedAt": "2026-09-07T09:34:03.156Z",
+  "date": "2026-05-22",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "随机头像",
+          "url": "https://appgallery.huawei.com/app/detail?id=com.xing.suijitouxiang",
+          "author": "asui(泉州)",
+          "authorUrl": "",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "鸿蒙App，支持鸿蒙5.0以上系统，一键生成风格多样的搞怪头像，支持下载",
+          "content": "鸿蒙App，支持鸿蒙5.0以上系统，一键生成风格多样的搞怪头像，支持下载",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-05-22-随机头像-https://appgallery.huawei.com/app/detail?id=com.xing.suijitouxiang"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "MeTool",
+          "url": "https://metool.online",
+          "author": "asui(泉州)",
+          "authorUrl": "",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "纯前端在线工具箱，86+ 工具覆盖图片、视频、3D、文档、开发等六大分类，全程浏览器本地处理，文件不上传、无需注册",
+          "content": "纯前端在线工具箱，86+ 工具覆盖图片、视频、3D、文档、开发等六大分类，全程浏览器本地处理，文件不上传、无需注册",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-05-22-MeTool-https://metool.online",
+          "siteLogo": "https://metool.online/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "isCompress",
+          "url": "https://www.iscompress.com/",
+          "author": "asui(泉州)",
+          "authorUrl": "",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "隐私安全的在线图片压缩工具，完全在浏览器本地处理，支持批量压缩与ZIP打包下载",
+          "content": "隐私安全的在线图片压缩工具，完全在浏览器本地处理，支持批量压缩与ZIP打包下载",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-05-22-isCompress-https://www.iscompress.com/",
+          "siteLogo": "https://www.iscompress.com/favicon.png"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】DApp Inspector：在 Chrome DevTools 里查看 DApp 与钱包之间的全部 RPC 通信",
+          "url": "https://github.com/beilunyang/dapp-inspector-extension",
+          "author": "beilunyang",
+          "authorUrl": "https://github.com/beilunyang",
+          "publishedAt": "2026-05-21T16:56:49Z",
+          "summary": "DApp Inspector 是一个 Chrome 扩展。装上之后 DevTools 里会多出一个面板，按时间顺序展示当前 tab 里 DApp 与 Web3 钱包（MetaMask、Rabby、OKX Wallet 等）之间所有的 JSONRPC 调用 —— 包括完整入参、返回值、错误、时延分解、链 ID、calldata 自动解码，以及一套用于调试的 Block / Throttle / Mock / Replay 规则引擎。 项目地址： Chrome 商店： 介绍页： 它解决什么问题？ DApp 与钱包之间的 RPC 通信对开发者来说一直是个黑盒： 网页点一个按钮，钱包跳出来要签什么、签名前后做了哪些 ethcall 探测、传了什么 calldata，从外面看不到。 MetaMask 自带的 activity log 只能看自己钱包发出去的请求，看不到 DApp 一侧的时延、参数处理、错误分支。 调试 DApp 的异常路径（钱包拒绝、网络超时、合约 revert）需要手工构造各种边界条件。 想复现用户反馈的奇怪 bug，需要还原他当时与钱包之间的完整调用序列。 之前我一直靠在 window.ethereum 上手动打 monkey patch 加日志，每个项目都要重写一遍，效率很低。索性做成扩展，所有 DApp 通用。 主要特性 全量捕获 拦截 window.ethereum.request 的所有调用，自动分类为 read / write / sign / subscribe 兼容 EIP6963 多钱包并存场景 完整记录入参、返回值、错误对象，原始 JSONRPC envelope 一键复制 时延分解 把一次调用拆成 6 段单独计时：DApp 发起 → 扩展排队 → throttle → 钱包审批 → RPC 往返 → 回到 DApp。可以一眼看出瓶颈是用户审批还是 RPC 节点。 Calldata 自动解码 内置 ERC20 / 721 / 1155 / Permit2 的 ABI，命中即 0ms 解码 命中不到时按 chainId + 合约地址 查 Sourcify，再降级到 4byte 选择器 拉到的 ABI 本地缓存 7 天，跨页面复用 对 ethsendTransaction / ethsignTransaction 会额外做风险评分（无限授权、setApprovalForAll 等） 调试规则引擎 Block —— 按方法名/origin 匹配，拒掉某些请求并返回自定义错误码，验证 DApp 的错误处理分支 Throttle —— 给匹配的请求加延迟，复现慢网络、loading state、超时分支 Mock —— 用预设结果短路掉某个调用，不真实上链 Replay —— 任何捕获到的调用都能重放一次，JSON 参数现场可编辑，钱包按原流程再次弹窗 隐私与本地化 全部在浏览器本地运行，没有 telemetry、没有账号、没有数据上传 ABI 解析的 Sourcify / 4byte 是按需才请求（和加载网页图片同一性质） 简体中文 / English 双语界面 适合谁使用？ DApp 前端开发者：调试合约调用、签名流程、错误分支 钱包扩展开发者：观察 DApp 一侧的调用模式和兼容性问题 安全审计 / 反钓鱼研究者：分析未知 DApp 调用了哪些方法、传了什么 calldata、有没有可疑的授权 想了解某个 DApp \"幕后到底做了什么\" 的 Web3 用户 技术栈 Chrome Manifest V3 TypeScript / React 18 / Zustand / Tailwind Vite + @crxjs/viteplugin Vitest（单元）+ Playwright（端到端） 协议：Apache2.0 截图 DevTools 面板（捕获列表 + 详情）： !panel 调用详情（参数 / 返回值 / 时延 / ReplayMockBlock）： !detail Options 页（规则管理）： !options 目前只支持 EVM，Solana / Sui 等其他生态在规划中。欢迎试用、提 issue、贡献代码。另外 README 末尾写了一个 logo 招募说明 —— 如果有设计师朋友感兴趣，欢迎一起完善这个项目。",
+          "content": "DApp Inspector 是一个 Chrome 扩展。装上之后 DevTools 里会多出一个面板，按时间顺序展示当前 tab 里 DApp 与 Web3 钱包（MetaMask、Rabby、OKX Wallet 等）之间所有的 JSON-RPC 调用 —— 包括完整入参、返回值、错误、时延分解、链 ID、calldata 自动解码，以及一套用于调试的 Block / Throttle / Mock / Replay 规则引擎。\n\n项目地址：https://github.com/beilunyang/dapp-inspector-extension\nChrome 商店：https://chromewebstore.google.com/detail/dapp-inspector/bcjlcalkhkfkcchgdokgngemjeemgmcj\n介绍页：https://dapp-inspector.chain.moe\n\n## 它解决什么问题？\n\nDApp 与钱包之间的 RPC 通信对开发者来说一直是个黑盒：\n\n- 网页点一个按钮，钱包跳出来要签什么、签名前后做了哪些 `eth_call` 探测、传了什么 calldata，从外面看不到。\n- MetaMask 自带的 activity log 只能看自己钱包发出去的请求，看不到 DApp 一侧的时延、参数处理、错误分支。\n- 调试 DApp 的异常路径（钱包拒绝、网络超时、合约 revert）需要手工构造各种边界条件。\n- 想复现用户反馈的奇怪 bug，需要还原他当时与钱包之间的完整调用序列。\n\n之前我一直靠在 `window.ethereum` 上手动打 monkey patch 加日志，每个项目都要重写一遍，效率很低。索性做成扩展，所有 DApp 通用。\n\n## 主要特性\n\n**全量捕获**\n\n- 拦截 `window.ethereum.request` 的所有调用，自动分类为 read / write / sign / subscribe\n- 兼容 EIP-6963 多钱包并存场景\n- 完整记录入参、返回值、错误对象，原始 JSON-RPC envelope 一键复制\n\n**时延分解**\n\n把一次调用拆成 6 段单独计时：DApp 发起 → 扩展排队 → throttle → 钱包审批 → RPC 往返 → 回到 DApp。可以一眼看出瓶颈是用户审批还是 RPC 节点。\n\n**Calldata 自动解码**\n\n- 内置 ERC-20 / 721 / 1155 / Permit2 的 ABI，命中即 0ms 解码\n- 命中不到时按 `chainId + 合约地址` 查 Sourcify，再降级到 4byte 选择器\n- 拉到的 ABI 本地缓存 7 天，跨页面复用\n- 对 `eth_sendTransaction` / `eth_signTransaction` 会额外做风险评分（无限授权、`setApprovalForAll` 等）\n\n**调试规则引擎**\n\n- **Block** —— 按方法名/origin 匹配，拒掉某些请求并返回自定义错误码，验证 DApp 的错误处理分支\n- **Throttle** —— 给匹配的请求加延迟，复现慢网络、loading state、超时分支\n- **Mock** —— 用预设结果短路掉某个调用，不真实上链\n- **Replay** —— 任何捕获到的调用都能重放一次，JSON 参数现场可编辑，钱包按原流程再次弹窗\n\n**隐私与本地化**\n\n- 全部在浏览器本地运行，没有 telemetry、没有账号、没有数据上传\n- ABI 解析的 Sourcify / 4byte 是按需才请求（和加载网页图片同一性质）\n- 简体中文 / English 双语界面\n\n## 适合谁使用？\n\n- DApp 前端开发者：调试合约调用、签名流程、错误分支\n- 钱包扩展开发者：观察 DApp 一侧的调用模式和兼容性问题\n- 安全审计 / 反钓鱼研究者：分析未知 DApp 调用了哪些方法、传了什么 calldata、有没有可疑的授权\n- 想了解某个 DApp \"幕后到底做了什么\" 的 Web3 用户\n\n## 技术栈\n\n- Chrome Manifest V3\n- TypeScript / React 18 / Zustand / Tailwind\n- Vite + `@crxjs/vite-plugin`\n- Vitest（单元）+ Playwright（端到端）\n- 协议：Apache-2.0\n\n## 截图\n\nDevTools 面板（捕获列表 + 详情）：\n\n![panel](https://github.com/beilunyang/dapp-inspector-extension/raw/main/docs/images/panel.png)\n\n调用详情（参数 / 返回值 / 时延 / Replay-Mock-Block）：\n\n![detail](https://github.com/beilunyang/dapp-inspector-extension/raw/main/docs/images/detail.png)\n\nOptions 页（规则管理）：\n\n![options](https://github.com/beilunyang/dapp-inspector-extension/raw/main/docs/images/options.png)\n\n\n目前只支持 EVM，Solana / Sui 等其他生态在规划中。欢迎试用、提 issue、贡献代码。另外 README 末尾写了一个 logo 招募说明 —— 如果有设计师朋友感兴趣，欢迎一起完善这个项目。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10022",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10022"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】小马AI Hermes 中文增强包：让 Hermes Agent 界面和提示变成中文",
+          "url": "https://github.com/fresh-claw/hermes-zh-cn",
+          "author": "fresh-claw",
+          "authorUrl": "https://github.com/fresh-claw",
+          "publishedAt": "2026-05-21T20:04:30Z",
+          "summary": "项目名称 小马AI Hermes 中文增强包 项目链接 官网 一句话描述 让 Hermes Agent 的启动页、TUI、快捷指令、网关提示和权限审批提示变成中文。 详细介绍 Hermes Agent 默认界面和运行过程里有大量英文提示，新手在安装、审批命令、重启网关、使用快捷指令时容易卡住。这个中文增强包提供一条命令安装：未安装 Hermes 时先安装官方版，再应用中文补丁；已安装 Hermes 时自动识别版本并获取匹配补丁。 目前覆盖 Hermes v0.14.x、v0.13.x 和 v0.12.x 等旧版，包含启动页标题与图形、工具分类、快捷指令说明、Telegram/网关消息、ACP 权限审批、安装过程和错误提示等内容。 标签 AI Agent, Hermes Agent, 中文补丁, 汉化, 新手教程",
+          "content": "## 项目名称\n小马AI Hermes 中文增强包\n\n## 项目链接\nhttps://github.com/fresh-claw/hermes-zh-cn\n\n## 官网\nhttps://useai.live/hermes/\n\n## 一句话描述\n让 Hermes Agent 的启动页、TUI、快捷指令、网关提示和权限审批提示变成中文。\n\n## 详细介绍\nHermes Agent 默认界面和运行过程里有大量英文提示，新手在安装、审批命令、重启网关、使用快捷指令时容易卡住。这个中文增强包提供一条命令安装：未安装 Hermes 时先安装官方版，再应用中文补丁；已安装 Hermes 时自动识别版本并获取匹配补丁。\n\n目前覆盖 Hermes v0.14.x、v0.13.x 和 v0.12.x 等旧版，包含启动页标题与图形、工具分类、快捷指令说明、Telegram/网关消息、ACP 权限审批、安装过程和错误提示等内容。\n\n## 标签\nAI Agent, Hermes Agent, 中文补丁, 汉化, 新手教程\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10023",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10023"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】AnimeLimitlessCodes：一个面向 Roblox 玩家快速查代码的轻量网页",
+          "url": "https://animelimitlesscodes.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=animelimitlesscodes_cold_start_202605&utm_content=issue_self_recommendation",
+          "author": "robot19960122-web",
+          "authorUrl": "https://github.com/robot19960122-web",
+          "publishedAt": "2026-05-22T01:22:15Z",
+          "summary": "阮老师您好，推荐一个刚上线的轻量网页工具：AnimeLimitlessCodes。 网站：Anime Limitless codes !AnimeLimitlessCodes preview 它是一个 fanmade 的 Roblox Anime Limitless codes tracker，主要给两类用户使用： 新玩家：想快速找到 starter rewards codes，并直接复制去兑换。 回流玩家：游戏更新后想看有没有新 codes、哪些旧 codes 已过期。 移动端搜索用户：只想看当前 codes 和兑换步骤，不想读很长的攻略文章。 目前页面做得比较克制： 首页优先展示当前 codes、复制按钮和最近更新时间。 单独整理 expired codes，避免用户反复尝试失效内容。 提供简短的 redeem steps，适配手机搜索场景。 不需要登录，不收费。 为什么做这个小站： 很多 Roblox codes 页面会写成很长的文章，移动端用户只是想完成“复制 code → 看兑换步骤 → 回到游戏”这个任务。这个站尝试用更短的信息结构承接这类长尾搜索需求，同时也作为一个独立站 SEO / AEO / 小工具运营实验。 说明：AnimeLimitlessCodes.com 不是 Roblox 或 Anime Limitless 的官方网站，也不与相关开发者有关联。Codes 可能会随游戏更新失效，页面只做整理和状态提示，不承诺任何 code 保证有效。 如果适合周刊“工具 / 资源 / 独立开发”栏目，欢迎收录。谢谢。",
+          "content": "阮老师您好，推荐一个刚上线的轻量网页工具：AnimeLimitlessCodes。\n\n网站：[Anime Limitless codes](https://animelimitlesscodes.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=animelimitlesscodes_cold_start_202605&utm_content=issue_self_recommendation)\n\n![AnimeLimitlessCodes preview](https://animelimitlesscodes.com/og-image.png)\n\n它是一个 fan-made 的 Roblox Anime Limitless codes tracker，主要给两类用户使用：\n\n- 新玩家：想快速找到 starter rewards codes，并直接复制去兑换。\n- 回流玩家：游戏更新后想看有没有新 codes、哪些旧 codes 已过期。\n- 移动端搜索用户：只想看当前 codes 和兑换步骤，不想读很长的攻略文章。\n\n目前页面做得比较克制：\n\n- 首页优先展示当前 codes、复制按钮和最近更新时间。\n- 单独整理 expired codes，避免用户反复尝试失效内容。\n- 提供简短的 redeem steps，适配手机搜索场景。\n- 不需要登录，不收费。\n\n为什么做这个小站：\n\n很多 Roblox codes 页面会写成很长的文章，移动端用户只是想完成“复制 code → 看兑换步骤 → 回到游戏”这个任务。这个站尝试用更短的信息结构承接这类长尾搜索需求，同时也作为一个独立站 SEO / AEO / 小工具运营实验。\n\n说明：AnimeLimitlessCodes.com 不是 Roblox 或 Anime Limitless 的官方网站，也不与相关开发者有关联。Codes 可能会随游戏更新失效，页面只做整理和状态提示，不承诺任何 code 保证有效。\n\n如果适合周刊“工具 / 资源 / 独立开发”栏目，欢迎收录。谢谢。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10024",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10024",
+          "siteLogo": "https://animelimitlesscodes.com/assets/logo-icon.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】Z-Image AI:免费的在线 AI 图片生成器(文生图 / 图生图)",
+          "url": "https://z-image-ai.run",
+          "author": "eileendai0505-boop",
+          "authorUrl": "https://github.com/eileendai0505-boop",
+          "publishedAt": "2026-05-22T01:31:19Z",
+          "summary": "项目名称: ZImage AI 项目网址: 项目类型: 工具 / 在线服务 一句话介绍: 一个在线的 AI 图片生成工具,支持「文字生成图片」和「图片生成图片」,打开即用,无需安装。 简介 ZImage AI 是我开发的一个在线 AI 图片生成器,主打开箱即用:在网页里输入一段提示词(prompt)就能出图,也可以上传一张参考图做图生图(imagetoimage)。 特点: 两种模式:文生图(texttoimage)、图生图(imagetoimage),首页直接试用,不用反复跳转。 多个模型可选:内置 ZImage Turbo、FLUX、Seedream 等多种模型,可按需要切换。 常用参数齐全:支持选择宽高比、输出格式、生成数量、随机种子(seed)等。 免费额度:注册后有免费额度可以体验,无需先付费。 纯网页端:无需下载客户端,手机和电脑浏览器都能用。 适合需要快速生成插图、海报、头像、电商配图、社媒素材的人。 欢迎体验并提出建议:",
+          "content": "**项目名称:** Z-Image AI\n\n**项目网址:** https://z-image-ai.run\n\n**项目类型:** 工具 / 在线服务\n\n**一句话介绍:** 一个在线的 AI 图片生成工具,支持「文字生成图片」和「图片生成图片」,打开即用,无需安装。\n\n---\n\n### 简介\n\nZ-Image AI 是我开发的一个在线 AI 图片生成器,主打开箱即用:在网页里输入一段提示词(prompt)就能出图,也可以上传一张参考图做图生图(image-to-image)。\n\n特点:\n\n- **两种模式**:文生图(text-to-image)、图生图(image-to-image),首页直接试用,不用反复跳转。\n- **多个模型可选**:内置 Z-Image Turbo、FLUX、Seedream 等多种模型,可按需要切换。\n- **常用参数齐全**:支持选择宽高比、输出格式、生成数量、随机种子(seed)等。\n- **免费额度**:注册后有免费额度可以体验,无需先付费。\n- **纯网页端**:无需下载客户端,手机和电脑浏览器都能用。\n\n适合需要快速生成插图、海报、头像、电商配图、社媒素材的人。\n\n欢迎体验并提出建议:https://z-image-ai.run",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10025",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10025",
+          "siteLogo": "https://z-image-ai.run/favicon.ico"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "docs(issue-397): fix typo",
+          "url": "https://github.com/ruanyf/weekly/issues/10026",
+          "author": "jeff-fe",
+          "authorUrl": "https://github.com/jeff-fe",
+          "publishedAt": "2026-05-22T02:39:48Z",
+          "summary": "",
+          "content": "",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10026",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10026"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "已撤回",
+          "url": "https://github.com/ruanyf/weekly/issues/10027",
+          "author": "campfirium",
+          "authorUrl": "https://github.com/campfirium",
+          "publishedAt": "2026-05-22T03:43:26Z",
+          "summary": "已撤回",
+          "content": "已撤回",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10027",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10027"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【文章推荐】Claude Code 最佳实践指南（中文整理）",
+          "url": "https://mp.weixin.qq.com/s/Te_UyGAZcC06jCgHA8YL4w",
+          "author": "allenliule",
+          "authorUrl": "https://github.com/allenliule",
+          "publishedAt": "2026-05-22T03:49:10Z",
+          "summary": "把 Anthropic 官方的 Claude Code Best Practices 文档完整翻译整理成了中文操作手册，重点覆盖\"探索→计划→实现→验证\"工作流、CLAUDE.md 配置、Hooks/Subagents/Skills 等扩展能力，以及批量任务、并行会话、检查点恢复等实操细节。 适合正在用 Claude Code、Cursor 等 Coding Agent 的开发者参考。 链接： 原文出处：",
+          "content": "把 Anthropic 官方的 Claude Code Best Practices 文档完整翻译整理成了中文操作手册，重点覆盖\"探索→计划→实现→验证\"工作流、CLAUDE.md 配置、Hooks/Subagents/Skills 等扩展能力，以及批量任务、并行会话、检查点恢复等实操细节。\n适合正在用 Claude Code、Cursor 等 Coding Agent 的开发者参考。\n链接：https://mp.weixin.qq.com/s/Te_UyGAZcC06jCgHA8YL4w\n原文出处：https://code.claude.com/docs/en/best-practices",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10028",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10028"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】EverOS：一个让 AI Agent 拥有长期记忆的开源系统，内置大量真实 Use Cases",
+          "url": "https://github.com/EverMind-AI/EverOS",
+          "author": "Yangtze-Seventh",
+          "authorUrl": "https://github.com/Yangtze-Seventh",
+          "publishedAt": "2026-05-22T03:58:02Z",
+          "summary": "EverOS 是一个开源的 AI Agent 长期记忆系统，目标是让 Agent 不再每次从零开始，而是能在不同会话、不同任务、不同工作流中持续记住上下文，并从过往经验中自动沉淀可复用的 Skills。 项目地址： 官网： 文档： EverOS 仓库里不只是一个记忆框架，还整理了很多可运行、可参考的真实 Use Cases，展示长期记忆可以怎样接入 Coding Agent、浏览器 Agent、AI companion、游戏 NPC、可穿戴设备、多 Agent 协作等场景。 <img width=\"2640\" height=\"1404\" alt=\"Image\" src=\" / 为什么 Agent 需要长期记忆？ 现在很多 AI Agent 很强，但最大的问题是“健忘”： 每次新会话都要重新介绍项目背景、用户偏好和任务目标。 Agent 做过一次任务，下次遇到类似问题还是重新摸索。 普通 RAG 更像查资料，很难保存 Agent 的操作过程、错误修正和成功经验。 多 Agent 协作时，不同 Agent 很难共享长期上下文。 EverOS 想解决的是这个问题：让 Agent 能记住自己做过什么、用户喜欢什么、项目约定是什么，以及哪些流程下次可以直接复用。 核心能力 1. Selfevolving Skill Memory EverOS 会记录 Agent 执行任务的轨迹，把一次次任务过程沉淀成 Cases，再从重复出现的成功路径中自动提炼出 Skills。 这意味着 Agent 可以逐渐学会： 某个项目常用的开发、测试、部署流程 用户喜欢的输出格式和沟通方式 某类问题过去如何成功解决 哪些工具、命令、文件和检查步骤最常用 下次再遇到类似任务时，Agent 可以直接复用已有 Skills，而不是从零推理。 <img width=\"2618\" height=\"1186\" alt=\"Image\" src=\" / 2. 多类型记忆 EverOS 区分不同类型的 Agent 记忆： Profile Memory：长期身份、偏好、角色和表达方式 Episodic Memory：过去发生过的事件、会话和任务历史 Procedural Memory：流程、技能和操作方式 Semantic Memory：事实、概念和长期知识 这让它既可以支持个人助手，也可以支持 Coding Agent、团队 Agent、多 Agent 系统和 AI companion。 <img width=\"2642\" height=\"958\" alt=\"Image\" src=\" / 3. mRAG 多模态写入与检索 EverOS 支持通过统一 API 处理多种资料类型，包括 URL、图片、PDF、Word、表格、PPT、邮件、HTML 和文本。 它使用 hybrid retrieval，把语义检索和关键词匹配结合起来，让 Agent 能在复杂资料里更准确地找到相关上下文。 <img width=\"2658\" height=\"1186\" alt=\"Image\" src=\" / Use Cases EverOS 最有意思的地方是，它不是只停留在框架层，而是已经有很多场景案例。下面是一些仓库里展示的方向。 <img width=\"1396\" height=\"1318\" alt=\"Image\" src=\" / 1. Coding Agent 的项目长期记忆 EverOS 可以接入 Claude Code、Codex、Cursor、Gemini CLI 等 Coding Agent，让它们记住一个项目的长期上下文。 例如： repo 结构 常用命令 代码规范 测试方式 团队习惯 过去踩过的坑 已经验证过的修复路径 这样 Coding Agent 每次进入项目时，不只是临时读文件，而是能继承过去的开发经验。 2. Browser Agent for Personal Memory 浏览器 Agent 经常需要跨网站完成任务，比如查资料、填表、整理信息、比较产品。 接入 EverOS 后，浏览器 Agent 可以记住用户长期偏好和历史上下文，在后续网页任务中复用。例如记住用户常用工作流、偏好的信息来源、表单填写习惯和过往研究记录。 3. MultiAgent Orchestration Platform 多 Agent 系统里，不同 Agent 需要分工协作：有的负责规划，有的负责写代码，有的负责测试，有的负责研究。 EverOS 可以提供共享记忆层，让多个 Agent 共享项目级上下文，同时保留各自的执行经验。这样一个 Agent 学到的经验，可以被后续 Agent 复用。 4. OpenClaw Agent Memory 对于 24/7 在线的 Agent 工作流，长期记忆尤其重要。 OpenClaw Agent Memory 展示了持续运行的 Agent 如何跨会话学习：它可以记录长期任务进展、用户偏好、历史决策和重复工作流，让 Agent 更像一个会积累经验的助手。 5. AI Companion / 数字角色 AI companion、Live2D 角色、虚拟人和游戏 NPC 都需要长期一致性。 接入 EverOS 后，角色可以记住用户过去说过的话、关系变化、共同经历和自身成长轨迹。它不再只是靠 prompt 扮演一个人格，而是能通过长期记忆形成更稳定的互动体验。 6. MemoryDriven MultiAgent NPC Experience 在游戏场景里，NPC 如果能记住玩家行为、剧情选择和过去互动，就能产生更自然的连续体验。 EverOS 的记忆能力可以用于构建带长期记忆的 NPC，让游戏角色不再只是一次性对话脚本，而是能随着玩家行为持续变化。 7. AI Wearable with Memory 可穿戴 AI 设备会持续接触真实生活场景，例如会议、对话、日程、位置和日常活动。 EverOS 可以把这些连续上下文整理成长期记忆，让 AI wearable 不只是录音或总结工具，而是能形成个人生活流记忆，并在后续提醒、问答、计划和回顾中复用。 8. Study Buddy with SelfEvolving Memory 学习助手如果有长期记忆，就可以记住学生的知识水平、薄弱点、学习节奏和历史错误。 EverOS 可以让 Study Buddy 根据长期学习轨迹调整辅导方式，并把有效的学习路径沉淀成可复用经验。 仓库结构 EverOS 仓库主要分为三部分： Use cases：各种长期记忆应用案例和集成示例 Architecture methods：可运行、可扩展的记忆架构，比如 EverCore、HyperMem Benchmarks：评估记忆质量和 Agent 自进化能力的开放基准，比如 EverMemBench、EvoAgentBench 如果只是想快速理解长期记忆能做什么，可以先看 Use cases；如果想接入自己的 Agent，可以从 EverCore 开始；如果想做评测，可以看 Benchmarks。 适合谁？ 正在做 AI Agent / Coding Agent / 多 Agent 系统的开发者 想给现有 AI 应用增加长期记忆能力的团队 做个人助手、AI companion、游戏 NPC、浏览器 Agent、可穿戴 AI 的产品团队 研究 Agent memory、自进化 Agent、长期一致性和个性化 AI 的研究者 技术栈：Python、TypeScript、JavaScript 许可证：Apache2.0",
+          "content": "EverOS 是一个开源的 AI Agent 长期记忆系统，目标是让 Agent 不再每次从零开始，而是能在不同会话、不同任务、不同工作流中持续记住上下文，并从过往经验中自动沉淀可复用的 Skills。\n\n项目地址：https://github.com/EverMind-AI/EverOS  \n官网：https://evermind.ai\n文档：https://docs.evermind.ai/introduction  \n\nEverOS 仓库里不只是一个记忆框架，还整理了很多可运行、可参考的真实 Use Cases，展示长期记忆可以怎样接入 Coding Agent、浏览器 Agent、AI companion、游戏 NPC、可穿戴设备、多 Agent 协作等场景。\n\n<img width=\"2640\" height=\"1404\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2fe57153-35a3-425d-8bad-283cda5c6834\" />\n\n## 为什么 Agent 需要长期记忆？\n\n现在很多 AI Agent 很强，但最大的问题是“健忘”：\n\n* 每次新会话都要重新介绍项目背景、用户偏好和任务目标。\n* Agent 做过一次任务，下次遇到类似问题还是重新摸索。\n* 普通 RAG 更像查资料，很难保存 Agent 的操作过程、错误修正和成功经验。\n* 多 Agent 协作时，不同 Agent 很难共享长期上下文。\n\nEverOS 想解决的是这个问题：让 Agent 能记住自己做过什么、用户喜欢什么、项目约定是什么，以及哪些流程下次可以直接复用。\n\n## 核心能力\n\n### 1. Self-evolving Skill Memory\n\nEverOS 会记录 Agent 执行任务的轨迹，把一次次任务过程沉淀成 Cases，再从重复出现的成功路径中自动提炼出 Skills。\n\n这意味着 Agent 可以逐渐学会：\n\n* 某个项目常用的开发、测试、部署流程\n* 用户喜欢的输出格式和沟通方式\n* 某类问题过去如何成功解决\n* 哪些工具、命令、文件和检查步骤最常用\n\n下次再遇到类似任务时，Agent 可以直接复用已有 Skills，而不是从零推理。\n\n<img width=\"2618\" height=\"1186\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d258935e-238f-4ffc-aeaf-8e14313ba03d\" />\n\n### 2. 多类型记忆\n\nEverOS 区分不同类型的 Agent 记忆：\n\n* Profile Memory：长期身份、偏好、角色和表达方式\n* Episodic Memory：过去发生过的事件、会话和任务历史\n* Procedural Memory：流程、技能和操作方式\n* Semantic Memory：事实、概念和长期知识\n\n这让它既可以支持个人助手，也可以支持 Coding Agent、团队 Agent、多 Agent 系统和 AI companion。\n\n<img width=\"2642\" height=\"958\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9cd67c36-bbf4-4e8e-926d-a6462f8d5c4e\" />\n\n### 3. mRAG 多模态写入与检索\n\nEverOS 支持通过统一 API 处理多种资料类型，包括 URL、图片、PDF、Word、表格、PPT、邮件、HTML 和文本。\n\n它使用 hybrid retrieval，把语义检索和关键词匹配结合起来，让 Agent 能在复杂资料里更准确地找到相关上下文。\n\n<img width=\"2658\" height=\"1186\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2310ba13-e611-4c09-a00f-a20755c97b6e\" />\n\n## Use Cases\n\nEverOS 最有意思的地方是，它不是只停留在框架层，而是已经有很多场景案例。下面是一些仓库里展示的方向。\n\n<img width=\"1396\" height=\"1318\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9e6913d9-88e1-482b-840f-04f2ea5b247b\" />\n\n### 1. Coding Agent 的项目长期记忆\n\nEverOS 可以接入 Claude Code、Codex、Cursor、Gemini CLI 等 Coding Agent，让它们记住一个项目的长期上下文。\n\n例如：\n\n* repo 结构\n* 常用命令\n* 代码规范\n* 测试方式\n* 团队习惯\n* 过去踩过的坑\n* 已经验证过的修复路径\n\n这样 Coding Agent 每次进入项目时，不只是临时读文件，而是能继承过去的开发经验。\n\n### 2. Browser Agent for Personal Memory\n\n浏览器 Agent 经常需要跨网站完成任务，比如查资料、填表、整理信息、比较产品。\n\n接入 EverOS 后，浏览器 Agent 可以记住用户长期偏好和历史上下文，在后续网页任务中复用。例如记住用户常用工作流、偏好的信息来源、表单填写习惯和过往研究记录。\n\n### 3. Multi-Agent Orchestration Platform\n\n多 Agent 系统里，不同 Agent 需要分工协作：有的负责规划，有的负责写代码，有的负责测试，有的负责研究。\n\nEverOS 可以提供共享记忆层，让多个 Agent 共享项目级上下文，同时保留各自的执行经验。这样一个 Agent 学到的经验，可以被后续 Agent 复用。\n\n### 4. OpenClaw Agent Memory\n\n对于 24/7 在线的 Agent 工作流，长期记忆尤其重要。\n\nOpenClaw Agent Memory 展示了持续运行的 Agent 如何跨会话学习：它可以记录长期任务进展、用户偏好、历史决策和重复工作流，让 Agent 更像一个会积累经验的助手。\n\n### 5. AI Companion / 数字角色\n\nAI companion、Live2D 角色、虚拟人和游戏 NPC 都需要长期一致性。\n\n接入 EverOS 后，角色可以记住用户过去说过的话、关系变化、共同经历和自身成长轨迹。它不再只是靠 prompt 扮演一个人格，而是能通过长期记忆形成更稳定的互动体验。\n\n### 6. Memory-Driven Multi-Agent NPC Experience\n\n在游戏场景里，NPC 如果能记住玩家行为、剧情选择和过去互动，就能产生更自然的连续体验。\n\nEverOS 的记忆能力可以用于构建带长期记忆的 NPC，让游戏角色不再只是一次性对话脚本，而是能随着玩家行为持续变化。\n\n### 7. AI Wearable with Memory\n\n可穿戴 AI 设备会持续接触真实生活场景，例如会议、对话、日程、位置和日常活动。\n\nEverOS 可以把这些连续上下文整理成长期记忆，让 AI wearable 不只是录音或总结工具，而是能形成个人生活流记忆，并在后续提醒、问答、计划和回顾中复用。\n\n### 8. Study Buddy with Self-Evolving Memory\n\n学习助手如果有长期记忆，就可以记住学生的知识水平、薄弱点、学习节奏和历史错误。\n\nEverOS 可以让 Study Buddy 根据长期学习轨迹调整辅导方式，并把有效的学习路径沉淀成可复用经验。\n\n## 仓库结构\n\nEverOS 仓库主要分为三部分：\n\n* Use cases：各种长期记忆应用案例和集成示例\n* Architecture methods：可运行、可扩展的记忆架构，比如 EverCore、HyperMem\n* Benchmarks：评估记忆质量和 Agent 自进化能力的开放基准，比如 EverMemBench、EvoAgentBench\n\n如果只是想快速理解长期记忆能做什么，可以先看 Use cases；如果想接入自己的 Agent，可以从 EverCore 开始；如果想做评测，可以看 Benchmarks。\n\n## 适合谁？\n\n* 正在做 AI Agent / Coding Agent / 多 Agent 系统的开发者\n* 想给现有 AI 应用增加长期记忆能力的团队\n* 做个人助手、AI companion、游戏 NPC、浏览器 Agent、可穿戴 AI 的产品团队\n* 研究 Agent memory、自进化 Agent、长期一致性和个性化 AI 的研究者\n\n技术栈：Python、TypeScript、JavaScript  \n许可证：Apache-2.0",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10029",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10029"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】Subnautica2Tadpole：一个面向 Subnautica 2 玩家快速查 Tadpole 路线的轻量指南",
+          "url": "https://subnautica2tadpole.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=subnautica2tadpole_cold_start_202605&utm_content=issue_self_recommendation",
+          "author": "robot19960122-web",
+          "authorUrl": "https://github.com/robot19960122-web",
+          "publishedAt": "2026-05-22T05:15:43Z",
+          "summary": "大家好，推荐一个我做的英文小站： Subnautica 2 Tadpole guide 这是一个面向《Subnautica 2》Early Access 玩家做的 fanmade guide utility，主要解决玩家搜索 subnautica 2 tadpole、tadpole fragments、tadpole upgrades 之后，不想读很长攻略、只想快速知道 Tadpole 解锁路线和相关步骤的问题。 主要特点： 首屏先给 quick answer，不把玩家直接丢进长文章。 用 checklist 承接解锁、碎片、升级、Tadpole Pens 等任务步骤。 保留 spoilersafe 的展示方式，避免一上来暴露所有细节。 不做完整 interactive map，不复制官方素材或竞品点位库，只做 Tadpolefirst 的轻量路线整理。 技术上是 Next.js 15 + TypeScript + Tailwind + Cloudflare Workers 的静态内容工具。 这个站点是非官方 fanmade project，不隶属于 Unknown Worlds、Krafton 或 Subnautica 官方；因为游戏还在 Early Access，内容也会保持 conservative wording 和后续更新。 如果适合周刊的“工具/网站/独立开发实验”栏目，欢迎收录。 !Subnautica2Tadpole preview",
+          "content": "大家好，推荐一个我做的英文小站：\n\n[Subnautica 2 Tadpole guide](https://subnautica2tadpole.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=subnautica2tadpole_cold_start_202605&utm_content=issue_self_recommendation)\n\n这是一个面向《Subnautica 2》Early Access 玩家做的 fan-made guide utility，主要解决玩家搜索 `subnautica 2 tadpole`、`tadpole fragments`、`tadpole upgrades` 之后，不想读很长攻略、只想快速知道 Tadpole 解锁路线和相关步骤的问题。\n\n主要特点：\n\n- 首屏先给 quick answer，不把玩家直接丢进长文章。\n- 用 checklist 承接解锁、碎片、升级、Tadpole Pens 等任务步骤。\n- 保留 spoiler-safe 的展示方式，避免一上来暴露所有细节。\n- 不做完整 interactive map，不复制官方素材或竞品点位库，只做 Tadpole-first 的轻量路线整理。\n- 技术上是 Next.js 15 + TypeScript + Tailwind + Cloudflare Workers 的静态内容工具。\n\n这个站点是非官方 fan-made project，不隶属于 Unknown Worlds、Krafton 或 Subnautica 官方；因为游戏还在 Early Access，内容也会保持 conservative wording 和后续更新。\n\n如果适合周刊的“工具/网站/独立开发实验”栏目，欢迎收录。\n\n![Subnautica2Tadpole preview](https://subnautica2tadpole.com/og-image.png)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10030",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10030",
+          "siteLogo": "https://subnautica2tadpole.com/apple-touch-icon.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】轻量级Skills管理软件",
+          "url": "https://github.com/im-fan/skill-manage",
+          "author": "im-fan",
+          "authorUrl": "https://github.com/im-fan",
+          "publishedAt": "2026-05-22T05:53:21Z",
+          "summary": "github： README： 轻量级Agent Skills管理，提供可视化页面，支持单Skill、Skills目录维护、Skills扫描、Skills下发、Agent Skills管理能力 方便快捷，使用简单，数据完全本地，支持npm快速安装维护 <img width=\"2010\" height=\"1088\" alt=\"Image\" src=\" /",
+          "content": "github：https://github.com/im-fan/skill-manage\nREADME：https://github.com/im-fan/skill-manage/blob/main/README-zh.md\n\n轻量级Agent Skills管理，提供可视化页面，支持单Skill、Skills目录维护、Skills扫描、Skills下发、Agent Skills管理能力\n方便快捷，使用简单，数据完全本地，支持npm快速安装维护\n\n<img width=\"2010\" height=\"1088\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d3e9062b-16ca-4e98-b530-89332ec949b6\" />\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10031",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10031"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】AI Coding Pricing：AI 编程工具价格与限制对比站",
+          "url": "https://aicodingpricing.com/?utm_source=ruanyf_weekly&utm_medium=newsletter&utm_campaign=day0_cold_start",
+          "author": "mengjian-github",
+          "authorUrl": "https://github.com/mengjian-github",
+          "publishedAt": "2026-05-22T06:04:35Z",
+          "summary": "AI Coding Pricing：AI 编程工具价格与限制对比站 链接： 简介：这是一个面向开发者的 AI 编程工具价格对比站，整理 Claude Code、OpenAI Codex、Cursor、GitHub Copilot 等工具的订阅价格、使用限制、套餐差异和价格变更，并提供一个成本计算器，帮助开发者在升级或切换工具前估算真实成本。 推荐理由：AI 编程工具价格和限额变化很快，官方文档分散，开发者经常需要在多个页面之间对比。这个站把价格、限制、对比页和 changelog 放到一个入口，适合作为开发者选型前的快速参考。",
+          "content": "AI Coding Pricing：AI 编程工具价格与限制对比站\n\n链接：https://aicodingpricing.com/?utm_source=ruanyf_weekly&utm_medium=newsletter&utm_campaign=day0_cold_start\n\n简介：这是一个面向开发者的 AI 编程工具价格对比站，整理 Claude Code、OpenAI Codex、Cursor、GitHub Copilot 等工具的订阅价格、使用限制、套餐差异和价格变更，并提供一个成本计算器，帮助开发者在升级或切换工具前估算真实成本。\n\n推荐理由：AI 编程工具价格和限额变化很快，官方文档分散，开发者经常需要在多个页面之间对比。这个站把价格、限制、对比页和 changelog 放到一个入口，适合作为开发者选型前的快速参考。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10032",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10032",
+          "siteLogo": "https://aicodingpricing.com/assets/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】CodeRAG：让 AI 真正读懂你的大规模代码仓库",
+          "url": "https://github.com/NothingToSay0031/code-rag",
+          "author": "NothingToSay0031",
+          "authorUrl": "https://github.com/NothingToSay0031",
+          "publishedAt": "2026-05-22T08:51:16Z",
+          "summary": "CodeRAG 是一个基于 Python、Treesitter、ChromaDB 与 HuggingFace Transformers 构建的本地代码库 RAG（检索增强生成）工具，专为大规模代码仓库设计。它通过 MCP 协议对外暴露服务，让 Claude Code、OpenCode 等 AI 编程助手获得代码库级别的上下文理解能力，即使面对数十万行代码的项目也不在话下，全程代码不出本机。 项目地址： 它解决什么问题？ 使用 AI 编程助手开发项目时，项目规模一旦大起来，问题就冒出来了： 几十万行代码、上千个文件，问 AI \"这个项目的认证逻辑在哪\"，它不知道，因为模型没见过你的代码 用自研框架或引擎开发，AI 完全不懂框架的 API 和约定，只能靠你自己翻源码 每次提需求都得手动从项目里复制粘贴一大段代码作为上下文，效率极低——大项目尤其难受 模型不清楚团队内部的编码约定和架构模式，生成的代码总对不上 私有仓库、涉密项目，不可能把代码贴到云端 AI——这条路直接堵死 根本原因不是模型能力不够，而是模型缺少足够的代码库上下文。项目越大，这个问题越严重。 CodeRAG 的思路很简单：先把你的代码库\"读一遍\"建好索引，之后 AI 每次需要上下文时自动检索最相关的代码片段注入对话。无论仓库多大——几十万行代码、上千个文件——检索都在毫秒级完成。整个过程全部在本地完成，索引、推理、检索都在本机运行。 主要特性 一条命令开箱即用：coderag init /path/to/repo 自动完成全量索引，同时在项目内生成 MCP 配置文件。AI Agent 打开该项目时自动激活 CodeRAG，无需额外配置。 语义 + 关键词混合检索：既支持\"这个项目怎么处理认证回调？\"这类自然语言语义搜索，也支持 handleAuthCallback 这样的精确符号搜索。通过 RRF 算法融合 BM25 和向量检索的排序结果，兼顾语义理解和精确匹配。 AST 感知分块：通过 Treesitter 解析代码，以函数、类、方法、结构体为单元分块，而不是按固定行数暴力切分。每个代码块语义完整，不会被拦腰截断。 多档次嵌入模型可选：默认使用 bgesmallenv1.5，在质量和速度上得到不错的权衡。无 GPU 时可切换 potioncode16M（256 维，~100MB 内存，纯 CPU），2 万文件 ~15 分钟完成索引。追求极致质量可选 Qwen3Embedding。安装脚本自动检测 GPU 并升级 PyTorch 至 CUDA 版本。 增量更新：基于文件内容 SHA256 哈希追踪变更。coderag init 是幂等的——未修改的文件直接跳过，只重建有变化的部分。改一行代码不会重建整个仓库。 零配置启动：大多数仓库不需要任何配置文件。include / exclude 选项和 .coderagfilter 文件用于需要自定义过滤规则的场景。 MCP 接口设计 CodeRAG 不是让用户手动执行搜索命令，而是以 MCP Tools 的形式对外暴露服务，AI Agent 在需要时自动调用： | Tool | 用途 | ||| | searchcode | 语义/关键词混合搜索代码，返回文件路径 + 行号 + 代码内容 | | searchdocs | 搜索项目中的 Markdown、RST 等文档 | | getfilesymbols | 获取指定文件中所有符号（函数、类、变量等）的索引信息 | | getrepostructure | 返回仓库目录树及各模块的简要描述 | | getsymbolinfo | 查询某个符号的定义位置、引用位置和相关代码块 | | readcode | 按行号范围读取文件内容，用于展开搜索结果、查看更多上下文 | | listindices | 列出所有已索引的代码库，支持多仓库场景 | 每个返回结果都附带文件路径、行号范围和上下文窗口，方便 AI 准确引用出处。 适合谁使用？ CodeRAG 比较适合这些场景： 接手大型代码库的开发者——几十万行代码、上百个模块，需要快速理解项目架构与约定 维护超大规模自研框架/引擎的团队（如自研游戏引擎、自研中间件），框架文档少，AI 无法从公开数据学到相关知识 对代码安全有严格要求的团队（金融、政务、军工等），代码不允许上传到第三方云端服务 维护遗留代码库的开发者，代码库历史悠久，隐含大量领域知识，但几乎没有文档 希望在 Claude Code、OpenCode 等工具中获得更精准的代码库上下文，减少手动贴代码的开发者 基于AST获取代码结构较为困难/时间较长，比如UE5源码。 安装方式 Windows（一行命令）： powershell irm | iex macOS / Linux： bash curl sSfL | bash 安装脚本自动检测 GPU 并将 PyTorch 升级为 CUDA 版本。 技术栈 检索与索引：Python + Treesitter + ChromaDB 嵌入推理：HuggingFace Transformers / Optimum + Qwen3 / BGE / Potion 系列模型 MCP 服务框架：FastMCP 关键词检索：BM25（内置实现） 引用查找：ripgrep CLI 入口：一行命令，底层由 uv 管理 Python 环境，自动安装依赖 语言支持：Python、JavaScript、TypeScript (含 TSX)、C、C++、Java、C、Rust、Go、Lua，以及 GLSL/HLSL/Metal 等着色器语言；同时支持 Markdown、RST、纯文本文档和 JSON/YAML/TOML 等配置文件 跨平台：Windows、macOS、Linux 许可证：MIT License 模型选择 | 模型 | 维度 | 速度 | 质量 | 硬件要求 | 内存占用 | ||||||| | Qwen3Embedding0.6B | 1024 | ★☆☆ | ★★★ | 推荐 CUDA GPU | ~2 GB | | BAAI/bgesmallenv1.5（默认） | 384 | ★★☆ | ★★☆ | 自动检测 | ~1.3 GB | 项目地址： 欢迎大家试用，也欢迎反馈和贡献。 本项目参考了 NVIDIA 与 EA 在大规模 C++ 代码库上的 RAG 实践经验，在其思路上进行了通用化设计，使任意语言、任意框架的仓库都能受益。",
+          "content": "CodeRAG 是一个基于 **Python、Tree-sitter、ChromaDB 与 HuggingFace Transformers** 构建的本地代码库 RAG（检索增强生成）工具，专为**大规模代码仓库**设计。它通过 MCP 协议对外暴露服务，让 Claude Code、OpenCode 等 AI 编程助手获得代码库级别的上下文理解能力，即使面对数十万行代码的项目也不在话下，全程代码不出本机。\n\n项目地址：https://github.com/NothingToSay0031/code-rag\n\n## 它解决什么问题？\n\n使用 AI 编程助手开发项目时，项目规模一旦大起来，问题就冒出来了：\n\n- 几十万行代码、上千个文件，问 AI \"这个项目的认证逻辑在哪\"，它不知道，因为模型没见过你的代码\n- 用自研框架或引擎开发，AI 完全不懂框架的 API 和约定，只能靠你自己翻源码\n- 每次提需求都得手动从项目里复制粘贴一大段代码作为上下文，效率极低——大项目尤其难受\n- 模型不清楚团队内部的编码约定和架构模式，生成的代码总对不上\n- 私有仓库、涉密项目，不可能把代码贴到云端 AI——这条路直接堵死\n\n根本原因不是模型能力不够，而是**模型缺少足够的代码库上下文**。项目越大，这个问题越严重。\n\nCodeRAG 的思路很简单：先把你的代码库\"读一遍\"建好索引，之后 AI 每次需要上下文时自动检索最相关的代码片段注入对话。无论仓库多大——几十万行代码、上千个文件——检索都在毫秒级完成。整个过程全部在本地完成，索引、推理、检索都在本机运行。\n\n## 主要特性\n\n- **一条命令开箱即用**：`code-rag init /path/to/repo` 自动完成全量索引，同时在项目内生成 MCP 配置文件。AI Agent 打开该项目时自动激活 CodeRAG，无需额外配置。\n- **语义 + 关键词混合检索**：既支持\"这个项目怎么处理认证回调？\"这类自然语言语义搜索，也支持 `handleAuthCallback` 这样的精确符号搜索。通过 RRF 算法融合 BM25 和向量检索的排序结果，兼顾语义理解和精确匹配。\n- **AST 感知分块**：通过 Tree-sitter 解析代码，以函数、类、方法、结构体为单元分块，而不是按固定行数暴力切分。每个代码块语义完整，不会被拦腰截断。\n- **多档次嵌入模型可选**：默认使用 bge-small-en-v1.5，在质量和速度上得到不错的权衡。无 GPU 时可切换 potion-code-16M（256 维，~100MB 内存，纯 CPU），2 万文件 ~15 分钟完成索引。追求极致质量可选 Qwen3-Embedding。安装脚本自动检测 GPU 并升级 PyTorch 至 CUDA 版本。\n- **增量更新**：基于文件内容 SHA-256 哈希追踪变更。`code-rag init` 是幂等的——未修改的文件直接跳过，只重建有变化的部分。改一行代码不会重建整个仓库。\n- **零配置启动**：大多数仓库不需要任何配置文件。`--include` / `--exclude` 选项和 `.coderagfilter` 文件用于需要自定义过滤规则的场景。\n\n## MCP 接口设计\n\nCodeRAG 不是让用户手动执行搜索命令，而是以 MCP Tools 的形式对外暴露服务，AI Agent 在需要时自动调用：\n\n| Tool | 用途 |\n|------|------|\n| `search_code` | 语义/关键词混合搜索代码，返回文件路径 + 行号 + 代码内容 |\n| `search_docs` | 搜索项目中的 Markdown、RST 等文档 |\n| `get_file_symbols` | 获取指定文件中所有符号（函数、类、变量等）的索引信息 |\n| `get_repo_structure` | 返回仓库目录树及各模块的简要描述 |\n| `get_symbol_info` | 查询某个符号的定义位置、引用位置和相关代码块 |\n| `read_code` | 按行号范围读取文件内容，用于展开搜索结果、查看更多上下文 |\n| `list_indices` | 列出所有已索引的代码库，支持多仓库场景 |\n\n每个返回结果都附带文件路径、行号范围和上下文窗口，方便 AI 准确引用出处。\n\n## 适合谁使用？\n\nCodeRAG 比较适合这些场景：\n\n- 接手大型代码库的开发者——几十万行代码、上百个模块，需要快速理解项目架构与约定\n- 维护超大规模自研框架/引擎的团队（如自研游戏引擎、自研中间件），框架文档少，AI 无法从公开数据学到相关知识\n- 对代码安全有严格要求的团队（金融、政务、军工等），代码不允许上传到第三方云端服务\n- 维护遗留代码库的开发者，代码库历史悠久，隐含大量领域知识，但几乎没有文档\n- 希望在 Claude Code、OpenCode 等工具中获得更精准的代码库上下文，减少手动贴代码的开发者\n- 基于AST获取代码结构较为困难/时间较长，比如UE5源码。\n\n## 安装方式\n\n**Windows（一行命令）：**\n\n```powershell\nirm https://raw.githubusercontent.com/NothingToSay0031/code-rag/master/install.ps1 | iex\n```\n\n**macOS / Linux：**\n\n```bash\ncurl -sSfL https://raw.githubusercontent.com/NothingToSay0031/code-rag/master/install.sh | bash\n```\n\n安装脚本自动检测 GPU 并将 PyTorch 升级为 CUDA 版本。\n\n## 技术栈\n\n- 检索与索引：Python + Tree-sitter + ChromaDB\n- 嵌入推理：HuggingFace Transformers / Optimum + Qwen3 / BGE / Potion 系列模型\n- MCP 服务框架：FastMCP\n- 关键词检索：BM25（内置实现）\n- 引用查找：ripgrep\n- CLI 入口：一行命令，底层由 uv 管理 Python 环境，自动安装依赖\n- 语言支持：Python、JavaScript、TypeScript (含 TSX)、C、C++、Java、C#、Rust、Go、Lua，以及 GLSL/HLSL/Metal 等着色器语言；同时支持 Markdown、RST、纯文本文档和 JSON/YAML/TOML 等配置文件\n- 跨平台：Windows、macOS、Linux\n- 许可证：MIT License\n\n## 模型选择\n\n| 模型 | 维度 | 速度 | 质量 | 硬件要求 | 内存占用 |\n|------|------|------|------|----------|----------|\n| **Qwen3-Embedding-0.6B** | 1024 | ★☆☆ | ★★★ | 推荐 CUDA GPU | ~2 GB |\n| BAAI/bge-small-en-v1.5（默认） | 384 | ★★☆ | ★★☆ | 自动检测 | ~1.3 GB |\n\n项目地址：https://github.com/NothingToSay0031/code-rag\n\n欢迎大家试用，也欢迎反馈和贡献。\n\n---\n\n*本项目参考了 [NVIDIA 与 EA 在大规模 C++ 代码库上的 RAG 实践经验](https://www.youtube.com/watch?v=jFFOC3UZTTk)，在其思路上进行了通用化设计，使任意语言、任意框架的仓库都能受益。*\n",
+          "metrics": {
+            "comments": 5
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10033",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10033"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】软宝宝-一款可以由真实代码生成软著申请材料的工具网站 - https://rzcode.vip/",
+          "url": "https://rzcode.vip/",
+          "author": "coolguy2020",
+          "authorUrl": "https://github.com/coolguy2020",
+          "publishedAt": "2026-05-22T09:13:33Z",
+          "summary": "软宝宝（RZCode）—— 真实代码生成软著申请材料工具 项目简介 软宝宝（RZCode） 是一款专注于 软件著作权（软著）申请材料生成 的在线工具平台。网址： 用户可以直接上传本地真实项目代码，系统会自动分析、筛选并生成符合软著申请规范的源代码文档，大幅降低人工整理代码与编写文档的时间成本。 核心功能 1. 上传真实项目代码 支持多种上传方式： 上传本地项目文件夹 上传 ZIP 压缩包 自动处理大型项目文件 系统内置： 无用文件过滤 缓存文件过滤 第三方依赖过滤 编译产物过滤 可有效减少无关代码干扰。 2. 智能识别代码文件 上传后，系统会自动识别项目中的代码文件类型，例如： .py .js .ts .java .cpp .go .vue .html .css 并根据后缀自动分类。 用户可根据实际需要： 自由勾选需要保留的代码类型 自定义生成内容 精准控制软著代码范围 3. 一键生成软著源代码文档 用户点击下载后，系统可自动生成： 符合软著格式要求的代码文档 每页 50 行 共 60 页 自动分页 自动格式化 支持打印与提交 生成结果可直接用于软件著作权申请。 4. 免费生成代码文档 平台基础功能永久免费： ✅ 免费上传代码 ✅ 免费筛选代码文件 ✅ 免费生成软著代码文档 适合： 独立开发者 学生项目 创业团队 企业研发人员 5. 阿里云登录与项目管理 若用户需要： 多项目管理 多次生成 云端保存 历史记录管理 则可使用 阿里云账号登录。 登录后可获得： 项目管理能力 云端数据同步 更稳定的大文件处理能力 6. AI 自动生成操作说明文档（付费功能） 除了代码文档外，平台还支持： AI 智能生成软件操作说明书 用户只需： 1. 上传项目代码 2. 上传软件截图 系统即可基于： 上传代码结构 页面截图内容 功能逻辑分析 自动生成： 软件操作手册 功能说明文档 使用流程文档 真实可用的软著配套材料 技术特点 智能代码分析 系统会自动： 分析项目结构 提取核心业务代码 过滤无效文件 控制文档长度 提高软著材料质量。 AI 文档生成能力 结合： 大语言模型 OCR 图像识别 代码结构分析 API Token 推理能力 生成更接近真实软件项目的文档内容。 付费说明 由于 AI 文档生成需要消耗： API Token 图像识别资源 大模型推理资源 因此： 代码文档生成 永久免费 AI 操作说明文档生成 按次数付费生成 适用场景 软件著作权申请 高校毕业项目 创业项目材料整理 企业知识产权申报 项目代码归档 软件交付文档生成 平台优势 ✅ 真实代码生成 ✅ 自动过滤无效文件 ✅ 智能识别代码类型 ✅ 一键生成软著代码页 ✅ AI 自动生成操作文档 ✅ 降低软著申请门槛 ✅ 节省大量人工整理时间 官网 网站名称：RZCode 网站网址： 产品名称：软宝宝 功能定位：AI 驱动的软件著作权材料生成平台",
+          "content": "# 软宝宝（RZCode）—— 真实代码生成软著申请材料工具\n\n## 项目简介\n\n**软宝宝（RZCode）** 是一款专注于 **软件著作权（软著）申请材料生成** 的在线工具平台。网址：https://rzcode.vip/\n用户可以直接上传本地真实项目代码，系统会自动分析、筛选并生成符合软著申请规范的源代码文档，大幅降低人工整理代码与编写文档的时间成本。\n\n## 核心功能\n\n### 1. 上传真实项目代码\n\n支持多种上传方式：\n\n* 上传本地项目文件夹\n* 上传 ZIP 压缩包\n* 自动处理大型项目文件\n\n系统内置：\n\n* 无用文件过滤\n* 缓存文件过滤\n* 第三方依赖过滤\n* 编译产物过滤\n\n可有效减少无关代码干扰。\n\n---\n\n### 2. 智能识别代码文件\n\n上传后，系统会自动识别项目中的代码文件类型，例如：\n\n* `.py`\n* `.js`\n* `.ts`\n* `.java`\n* `.cpp`\n* `.go`\n* `.vue`\n* `.html`\n* `.css`\n\n并根据后缀自动分类。\n\n用户可根据实际需要：\n\n* 自由勾选需要保留的代码类型\n* 自定义生成内容\n* 精准控制软著代码范围\n\n---\n\n### 3. 一键生成软著源代码文档\n\n用户点击下载后，系统可自动生成：\n\n* 符合软著格式要求的代码文档\n* 每页 50 行\n* 共 60 页\n* 自动分页\n* 自动格式化\n* 支持打印与提交\n\n生成结果可直接用于软件著作权申请。\n\n---\n\n### 4. 免费生成代码文档\n\n平台基础功能永久免费：\n\n✅ 免费上传代码\n✅ 免费筛选代码文件\n✅ 免费生成软著代码文档\n\n适合：\n\n* 独立开发者\n* 学生项目\n* 创业团队\n* 企业研发人员\n\n---\n\n### 5. 阿里云登录与项目管理\n\n若用户需要：\n\n* 多项目管理\n* 多次生成\n* 云端保存\n* 历史记录管理\n\n则可使用 **阿里云账号登录**。\n\n登录后可获得：\n\n* 项目管理能力\n* 云端数据同步\n* 更稳定的大文件处理能力\n\n---\n\n### 6. AI 自动生成操作说明文档（付费功能）\n\n除了代码文档外，平台还支持：\n\n## AI 智能生成软件操作说明书\n\n用户只需：\n\n1. 上传项目代码\n2. 上传软件截图\n\n系统即可基于：\n\n* 上传代码结构\n* 页面截图内容\n* 功能逻辑分析\n\n自动生成：\n\n* 软件操作手册\n* 功能说明文档\n* 使用流程文档\n* 真实可用的软著配套材料\n\n---\n\n## 技术特点\n\n### 智能代码分析\n\n系统会自动：\n\n* 分析项目结构\n* 提取核心业务代码\n* 过滤无效文件\n* 控制文档长度\n\n提高软著材料质量。\n\n---\n\n### AI 文档生成能力\n\n结合：\n\n* 大语言模型\n* OCR 图像识别\n* 代码结构分析\n* API Token 推理能力\n\n生成更接近真实软件项目的文档内容。\n\n---\n\n## 付费说明\n\n由于 AI 文档生成需要消耗：\n\n* API Token\n* 图像识别资源\n* 大模型推理资源\n\n因此：\n\n### 代码文档生成\n\n永久免费\n\n### AI 操作说明文档生成\n\n按次数付费生成\n\n---\n\n## 适用场景\n\n* 软件著作权申请\n* 高校毕业项目\n* 创业项目材料整理\n* 企业知识产权申报\n* 项目代码归档\n* 软件交付文档生成\n\n---\n\n## 平台优势\n\n✅ 真实代码生成\n✅ 自动过滤无效文件\n✅ 智能识别代码类型\n✅ 一键生成软著代码页\n✅ AI 自动生成操作文档\n✅ 降低软著申请门槛\n✅ 节省大量人工整理时间\n\n---\n\n## 官网\n\n* 网站名称：**RZCode**\n* 网站网址：https://rzcode.vip/\n* 产品名称：**软宝宝**\n* 功能定位：**AI 驱动的软件著作权材料生成平台**\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10034",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10034"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "Java面试百科全书 - 300+真题一站式准备工具",
+          "url": "https://github.com/Abyte-zym/java-career-blog",
+          "author": "Abyte-zym",
+          "authorUrl": "https://github.com/Abyte-zym",
+          "publishedAt": "2026-05-22T12:34:54Z",
+          "summary": "项目信息 名称：Java面试百科全书 地址： 官网： 推荐理由 这是一个面向2026年Java求职者的开源面试准备工具集，包含： 📚 40+篇深度面试文章（HashMap源码到分布式系统设计全覆盖） 🧰 30+免费在线工具（简历生成器、面试模拟器、JD押题器、段位测试、技能雷达等） 📄 一页纸速查表（可打印PDF） 📋 30天通关清单（交互式打卡） ☕ 每日一签知识卡片（社交分享） 全部免费开源，GitHub Pages托管，持续更新。已帮助多个Java求职者拿到面试机会。 技术栈：纯HTML/CSS/JS，零依赖，响应式设计。",
+          "content": "## 项目信息\n\n**名称**：Java面试百科全书\n**地址**：https://github.com/Abyte-zym/java-career-blog\n**官网**：https://Abyte-zym.github.io/java-career-blog/\n\n## 推荐理由\n\n这是一个面向2026年Java求职者的开源面试准备工具集，包含：\n\n📚 40+篇深度面试文章（HashMap源码到分布式系统设计全覆盖）\n🧰 30+免费在线工具（简历生成器、面试模拟器、JD押题器、段位测试、技能雷达等）\n📄 一页纸速查表（可打印PDF）\n📋 30天通关清单（交互式打卡）\n☕ 每日一签知识卡片（社交分享）\n\n全部免费开源，GitHub Pages托管，持续更新。已帮助多个Java求职者拿到面试机会。\n\n技术栈：纯HTML/CSS/JS，零依赖，响应式设计。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10035",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10035"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": [
+        {
+          "sourceId": "weekly-issue",
+          "title": "OpenCode Mobile",
+          "url": "https://github.com/learning233/opencode_mobile",
+          "author": "learning233",
+          "authorUrl": "https://github.com/learning233",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "OpenCode 的非官方安卓客户端。",
+          "content": "OpenCode 的非官方安卓客户端。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-OpenCode Mobile-https://github.com/learning233/opencode_mobile",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11381",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Blob Downloader",
+          "url": "https://github.com/aeroxy/blob-downloader",
+          "author": "aeroxy",
+          "authorUrl": "https://github.com/aeroxy",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。",
+          "content": "Chrome 浏览器插件，用来将网页的 blob 链接后面的视频和文件导出下载。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Blob Downloader-https://github.com/aeroxy/blob-downloader",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11392",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "zlib",
+          "url": "https://github.com/heartleo/zlib",
+          "author": "heartleo",
+          "authorUrl": "https://github.com/heartleo",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "Go 语言编写的 Z-Library 图书馆命令行工具。",
+          "content": "Go 语言编写的 Z-Library 图书馆命令行工具。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-zlib-https://github.com/heartleo/zlib",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11405",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "ATBClone",
+          "url": "https://github.com/aitobox/ATBClone",
+          "author": "aitoboxinc",
+          "authorUrl": "https://github.com/aitoboxinc",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "开源的 macOS 应用，允许应用程序多开，并进行分身管理。",
+          "content": "开源的 macOS 应用，允许应用程序多开，并进行分身管理。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-ATBClone-https://github.com/aitobox/ATBClone",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11432",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Orange Cloud",
+          "url": "https://github.com/chen2he/orange-cloud",
+          "author": "chen2he",
+          "authorUrl": "https://github.com/chen2he",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "开源的 Cloudflare 的 iOS 客户端。",
+          "content": "开源的 Cloudflare 的 iOS 客户端。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Orange Cloud-https://github.com/chen2he/orange-cloud",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11428",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Apolu",
+          "url": "https://apolu.app/zh-Hans",
+          "author": "chen2he",
+          "authorUrl": "https://github.com/chen2he",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。",
+          "content": "一款苹果设备应用，免费追踪某个 App 在各个 App Store 的排名和评论。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Apolu-https://apolu.app/zh-Hans",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11429",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "DanKS",
+          "url": "https://github.com/Calix-L/DanKS",
+          "author": "Calix-L",
+          "authorUrl": "https://github.com/Calix-L",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。",
+          "content": "金山软件 AI Product Center 发布的一个开源的掼蛋游戏智能体，可以用来玩掼蛋。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-DanKS-https://github.com/Calix-L/DanKS",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11422",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "video-ai-talking",
+          "url": "https://github.com/yizhi-chengzi/video-ai-talking",
+          "author": "yizhi-chengzi",
+          "authorUrl": "https://github.com/yizhi-chengzi",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "一个开源 Web 应用，输入文案，生成真人口播视频。",
+          "content": "一个开源 Web 应用，输入文案，生成真人口播视频。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-video-ai-talking-https://github.com/yizhi-chengzi/video-ai-talking",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11449",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Git Agent",
+          "url": "https://github.com/adoin/git-Agent",
+          "author": "adoin",
+          "authorUrl": "https://github.com/adoin",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。",
+          "content": "开源的跨平台 Git 桌面客户端，将工作区、提交历史、差异审查、三方合并放在一个窗口，支持 AI 功能。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Git Agent-https://github.com/adoin/git-Agent",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11464",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Subtitle Scout",
+          "url": "https://github.com/fancydirty/subtitle-scout",
+          "author": "fancydirty",
+          "authorUrl": "https://github.com/fancydirty",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。",
+          "content": "一个自托管的字幕应用，根据你的视频，自动搜五个字幕源，用 AI 找出最合适的字幕。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "工具"
+          ],
+          "section": "工具",
+          "externalId": "411-Subtitle Scout-https://github.com/fancydirty/subtitle-scout",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11468",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "Ad Astra",
+          "url": "https://github.com/gunerguner/AdAstra",
+          "author": "gunerguner",
+          "authorUrl": "https://github.com/gunerguner",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。",
+          "content": "可交互、可离线使用的实时星空 Web 应用，还原任意观测地点和观测时刻的天空，提供星空随时间的变化。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-Ad Astra-https://github.com/gunerguner/AdAstra",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11360",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "3D 钢琴",
+          "url": "https://autopiano.cn/3d",
+          "author": "WarpPrism",
+          "authorUrl": "https://github.com/WarpPrism",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。",
+          "content": "在一个 3D 钢琴上，可视化某个曲子或 MIDI 键盘演奏时的键位变化。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-3D 钢琴-https://autopiano.cn/3d",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11431",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "ScriptSpool",
+          "url": "https://scriptspool.pixzens.com/zh/editor",
+          "author": "liyuouyu",
+          "authorUrl": "https://github.com/liyuouyu",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "这个网站将一段代码的输入变成逐键输入的动画。",
+          "content": "这个网站将一段代码的输入变成逐键输入的动画。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-ScriptSpool-https://scriptspool.pixzens.com/zh/editor",
+          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11433",
+          "issue": "411"
+        },
+        {
+          "sourceId": "weekly-issue",
+          "title": "卫生间建模",
+          "url": "https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-05-22T00:00:00+08:00",
+          "summary": "这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。",
+          "content": "这个网站选取美国多个真实的家庭卫生间，进行 3D 建模。你可以在网页上360度浏览这些卫生间的模型。",
+          "metrics": {},
+          "tags": [
+            "ruanyf-weekly",
+            "official",
+            "资源"
+          ],
+          "section": "资源",
+          "externalId": "411-卫生间建模-https://restroomarchive.com/r/2024-10-16-commonwealth-bar-some-restroom",
+          "relatedIssue": null,
+          "issue": "411"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] Hermes Edu Skills：把教育场景做成可复用、可导出、可迁移的 AI Agent 技能库。",
+          "url": "https://github.com/zhongweiv/hermes-edu-skills",
+          "author": "zhongweiv",
+          "authorUrl": "https://github.com/zhongweiv",
+          "publishedAt": "2026-05-21T17:57:29Z",
+          "summary": "项目地址 类别 人工智能 项目标题 中文教育 Agent Skill Pack：教材同步、备考复习、拍照答疑、错题复盘、亲子陪学、阅读写作和教师工具，Hermes Agent 可直接使用，也可导出到 OpenClaw/Codex/Cursor/Claude Code。 项目描述 让 Hermes Agent 和主流 AI 工具拥有中国教育场景能力的开源 Agent Skill Pack：教材同步、备考复习、错题复盘、每日练习、亲子陪学、阅读写作和教师工作流。 An open Agent Skill Pack that gives Hermes Agent and mainstream AI tools Chinafocused education capabilities: textbook sync, exam prep, mistake review, daily practice, family learning, reading/writing, and teacher workflows. Hermes Edu Skills 是一套面向中国教育场景的开源 Agent Skill Pack。它把教材同步、考试备考、拍照答疑、错题复盘、每日练习、阅读写作、亲子陪学、教师备课和家校沟通，整理成 170 个可浏览、可安装、可二次开发的产品级 Skill。 它不是 Prompt 合集，而是可被 Hermes Agent 识别的结构化能力库：每个 Skill 都有触发信号、适用角色、参数维度、使用边界和标准 SKILL.md。你可以直接装进 Hermes Agent，也可以导出给 OpenClaw、Codex、Cursor、Claude Code 或其它 Agent 工具。 如果你正在做 AI 学习助手、AI 老师、教研工具、家长陪学产品、题库/错题产品，或者只是想让自己的本地 Agent 更懂中国教材和学习场景，这个仓库可以直接作为起点。觉得有帮助的话，欢迎 Star，它会帮助更多中文教育 AI 开发者更快发现这个项目。 亮点 这是什么 | 问题 | 答案 | | | | | 这是什么 | 面向中国教育场景的开源 Agent Skill Pack。 | | 为什么需要 | 通用 Agent 通常不理解中国教材版本、年级册别、单元节奏、考试体系和家庭/教师真实工作流。 | | 怎么实现 | 用 170 个结构化 SKILL.md 把教育任务封装成 Agent 可发现、可调用、可安装的能力。 | | 默认平台 | Hermes Agent。 | | 可导出平台 | OpenClaw、Codex、Cursor、Claude Code、Generic Agent。 | | 开源内容 | 公开 Skill 文档、索引、校验工具和导出工具；不包含用户数据、密钥或商业后端实现。 | 为什么不是 Prompt 集合 | 能力 | Prompt 集合 | 通用 Agent Skills | Hermes Edu Skills | | | :: | :: | :: | | 中国教材版本对齐 | | 通常不支持 | 支持人教、统编、北师大、苏教、鲁科等教育场景 | | 年级/册别/单元/难度 | 靠手写提示词 | 部分支持 | 作为 Skill 参数和工作流约束 | | 真实教育任务 | 松散模板 | 通用能力 | 教材同步、错题复盘、备考复习、每日练习、教师工具 | | Hermes 原生识别 | | 不一定 | 标准 SKILL.md | | 多 Agent 复用 | | 不一定 | 可导出到 OpenClaw、Codex、Cursor、Claude Code | | 中文教育表达 | 不稳定 | 不稳定 | 围绕中国学生、家长、老师和教研场景编写 | | 二次开发 | 低 | 中 | 有目录、索引、校验和安装工具 | 谁适合用 | 你是谁 | 推荐先看 | 可以得到什么 | | | | | | Hermes Agent 用户 | 默认使用：Hermes Agent、学习核心能力 | 直接把中文教育 Skill 加到本地 Agent。 | | 教育 AI 开发者 | 项目结构、兼容说明 | 复用 Skill 结构、参数设计和工作流命名。 | | 老师 / 教研人员 | 老师工具、教材同步 | 参考备课、作业生成、单元复习和同步教学设计。 | | 家长 / 家庭教育产品 | 家庭教育、每日练习 | 构建陪伴、阅读、习惯和每日训练场景。 | | 学校 / 教培机构 | 老师工具、考试备考 | 了解备课、作业、班级分析、复习和教学支持产品形态。 | 分类总览 当前包含 170 个可安装 Skill，覆盖 9 个产品级分类。年级、册别、单元、课时、知识点和难度作为参数传入，不再拆成海量重复 Skill。 | 分类 | 安装选择器 | 适用场景 | 数量 | | | | | : | | <a href=\"textbooksync\"<codetextbooksync</code</a<br教材同步 | <codenpx: textbooksync</code<br<codenpm: category textbooksync</code | 面向中国教材版本、年级、册别、单元、课时和知识点的同步学习能力。年级、册别、单元和难度作为参数传入，不再拆成大量独立 Skill。 | 41 | | <a href=\"learningcore\"<codelearningcore</code</a<br学习核心能力 | <codenpx: learningcore</code<br<codenpm: category learningcore</code | 学习计划、拍照答疑、错题复盘、学情报告等通用学习闭环能力。 | 15 | | <a href=\"dailypractice\"<codedailypractice</code</a<br每日练习 | <codenpx: dailypractice</code<br<codenpm: category dailypractice</code | 面向每天短时高频训练，例如口算、听写、背诵、词汇、快速巩固。 | 28 | | <a href=\"readingwriting\"<codereadingwriting</code</a<br阅读写作 | <codenpx: readingwriting</code<br<codenpm: category readingwriting</code | 面向语文、英语、学术和职场表达的阅读与写作能力。 | 10 | | <a href=\"examprep\"<codeexamprep</code</a<br考试备考 | <codenpx: examprep</code<br<codenpm: category examprep</code | 面向期末、中考、高考、考研、四六级、考证和公务员等备考场景。 | 27 | | <a href=\"teachertools\"<codeteachertools</code</a<br老师工具 | <codenpx: teachertools</code<br<codenpm: category teachertools</code | 面向老师备课、作业生成、班级分析和家校沟通。 | 31 | | <a href=\"familyeducation\"<codefamilyeducation</code</a<br家庭教育 | <codenpx: familyeducation</code<br<codenpm: category familyeducation</code | 面向家长陪伴、亲子阅读、作业习惯和家庭沟通。 | 8 | | <a href=\"languagelearning\"<codelanguagelearning</code</a<br语言学习 | <codenpx: languagelearning</code<br<codenpm: category languagelearning</code | 面向成人英语、出国考试、口语、听力和长期语言能力提升。 | 3 | | <a href=\"careerlearning\"<codecareerlearning</code</a<br成人与职业学习 | <codenpx: careerlearning</code<br<codenpm: category careerlearning</code | 面向大学、成人学习、职业技能和考证场景。 | 7 | 示例代码 markdown 截图或演示视频",
+          "content": "### 项目地址\n\nhttps://github.com/zhongweiv/hermes-edu-skills\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n中文教育 Agent Skill Pack：教材同步、备考复习、拍照答疑、错题复盘、亲子陪学、阅读写作和教师工具，Hermes Agent 可直接使用，也可导出到 OpenClaw/Codex/Cursor/Claude Code。\n\n### 项目描述\n\n让 Hermes Agent 和主流 AI 工具拥有中国教育场景能力的开源 Agent Skill Pack：教材同步、备考复习、错题复盘、每日练习、亲子陪学、阅读写作和教师工作流。\n\nAn open Agent Skill Pack that gives Hermes Agent and mainstream AI tools China-focused education capabilities: textbook sync, exam prep, mistake review, daily practice, family learning, reading/writing, and teacher workflows.\n\nHermes Edu Skills 是一套面向中国教育场景的开源 Agent Skill Pack。它把教材同步、考试备考、拍照答疑、错题复盘、每日练习、阅读写作、亲子陪学、教师备课和家校沟通，整理成 170 个可浏览、可安装、可二次开发的产品级 Skill。\n\n它不是 Prompt 合集，而是可被 Hermes Agent 识别的结构化能力库：每个 Skill 都有触发信号、适用角色、参数维度、使用边界和标准 SKILL.md。你可以直接装进 Hermes Agent，也可以导出给 OpenClaw、Codex、Cursor、Claude Code 或其它 Agent 工具。\n\n如果你正在做 AI 学习助手、AI 老师、教研工具、家长陪学产品、题库/错题产品，或者只是想让自己的本地 Agent 更懂中国教材和学习场景，这个仓库可以直接作为起点。觉得有帮助的话，欢迎 Star，它会帮助更多中文教育 AI 开发者更快发现这个项目。\n\n### 亮点\n\n## 这是什么\n\n| 问题 | 答案 |\n| --- | --- |\n| 这是什么 | 面向中国教育场景的开源 Agent Skill Pack。 |\n| 为什么需要 | 通用 Agent 通常不理解中国教材版本、年级册别、单元节奏、考试体系和家庭/教师真实工作流。 |\n| 怎么实现 | 用 170 个结构化 `SKILL.md` 把教育任务封装成 Agent 可发现、可调用、可安装的能力。 |\n| 默认平台 | Hermes Agent。 |\n| 可导出平台 | OpenClaw、Codex、Cursor、Claude Code、Generic Agent。 |\n| 开源内容 | 公开 Skill 文档、索引、校验工具和导出工具；不包含用户数据、密钥或商业后端实现。 |\n\n## 为什么不是 Prompt 集合\n\n| 能力 | Prompt 集合 | 通用 Agent Skills | Hermes Edu Skills |\n| --- | :---: | :---: | :---: |\n| 中国教材版本对齐 | - | 通常不支持 | 支持人教、统编、北师大、苏教、鲁科等教育场景 |\n| 年级/册别/单元/难度 | 靠手写提示词 | 部分支持 | 作为 Skill 参数和工作流约束 |\n| 真实教育任务 | 松散模板 | 通用能力 | 教材同步、错题复盘、备考复习、每日练习、教师工具 |\n| Hermes 原生识别 | - | 不一定 | 标准 `SKILL.md` |\n| 多 Agent 复用 | - | 不一定 | 可导出到 OpenClaw、Codex、Cursor、Claude Code |\n| 中文教育表达 | 不稳定 | 不稳定 | 围绕中国学生、家长、老师和教研场景编写 |\n| 二次开发 | 低 | 中 | 有目录、索引、校验和安装工具 |\n\n## 谁适合用\n\n| 你是谁 | 推荐先看 | 可以得到什么 |\n| --- | --- | --- |\n| Hermes Agent 用户 | [默认使用：Hermes Agent](#默认使用hermes-agent)、[学习核心能力](#learning-core) | 直接把中文教育 Skill 加到本地 Agent。 |\n| 教育 AI 开发者 | [项目结构](#项目结构)、[兼容说明](#兼容说明) | 复用 Skill 结构、参数设计和工作流命名。 |\n| 老师 / 教研人员 | [老师工具](#teacher-tools)、[教材同步](#textbook-sync) | 参考备课、作业生成、单元复习和同步教学设计。 |\n| 家长 / 家庭教育产品 | [家庭教育](#family-education)、[每日练习](#daily-practice) | 构建陪伴、阅读、习惯和每日训练场景。 |\n| 学校 / 教培机构 | [老师工具](#teacher-tools)、[考试备考](#exam-prep) | 了解备课、作业、班级分析、复习和教学支持产品形态。 |\n\n## 分类总览\n\n当前包含 170 个可安装 Skill，覆盖 9 个产品级分类。年级、册别、单元、课时、知识点和难度作为参数传入，不再拆成海量重复 Skill。\n\n| 分类 | 安装选择器 | 适用场景 | 数量 |\n| --- | --- | --- | ---: |\n| <a href=\"#textbook-sync\"><code>textbook-sync</code></a><br>教材同步 | <code>npx: textbook-sync</code><br><code>npm: --category textbook-sync</code> | 面向中国教材版本、年级、册别、单元、课时和知识点的同步学习能力。年级、册别、单元和难度作为参数传入，不再拆成大量独立 Skill。 | 41 |\n| <a href=\"#learning-core\"><code>learning-core</code></a><br>学习核心能力 | <code>npx: learning-core</code><br><code>npm: --category learning-core</code> | 学习计划、拍照答疑、错题复盘、学情报告等通用学习闭环能力。 | 15 |\n| <a href=\"#daily-practice\"><code>daily-practice</code></a><br>每日练习 | <code>npx: daily-practice</code><br><code>npm: --category daily-practice</code> | 面向每天短时高频训练，例如口算、听写、背诵、词汇、快速巩固。 | 28 |\n| <a href=\"#reading-writing\"><code>reading-writing</code></a><br>阅读写作 | <code>npx: reading-writing</code><br><code>npm: --category reading-writing</code> | 面向语文、英语、学术和职场表达的阅读与写作能力。 | 10 |\n| <a href=\"#exam-prep\"><code>exam-prep</code></a><br>考试备考 | <code>npx: exam-prep</code><br><code>npm: --category exam-prep</code> | 面向期末、中考、高考、考研、四六级、考证和公务员等备考场景。 | 27 |\n| <a href=\"#teacher-tools\"><code>teacher-tools</code></a><br>老师工具 | <code>npx: teacher-tools</code><br><code>npm: --category teacher-tools</code> | 面向老师备课、作业生成、班级分析和家校沟通。 | 31 |\n| <a href=\"#family-education\"><code>family-education</code></a><br>家庭教育 | <code>npx: family-education</code><br><code>npm: --category family-education</code> | 面向家长陪伴、亲子阅读、作业习惯和家庭沟通。 | 8 |\n| <a href=\"#language-learning\"><code>language-learning</code></a><br>语言学习 | <code>npx: language-learning</code><br><code>npm: --category language-learning</code> | 面向成人英语、出国考试、口语、听力和长期语言能力提升。 | 3 |\n| <a href=\"#career-learning\"><code>career-learning</code></a><br>成人与职业学习 | <code>npx: career-learning</code><br><code>npm: --category career-learning</code> | 面向大学、成人学习、职业技能和考证场景。 | 7 |\n\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\nhttps://github.com/user-attachments/assets/846bb720-2782-443d-a3a6-8ce9fee01c2d",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3287",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3287"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] 小马AI Hermes 中文增强包",
+          "url": "https://github.com/fresh-claw/hermes-zh-cn",
+          "author": "fresh-claw",
+          "authorUrl": "https://github.com/fresh-claw",
+          "publishedAt": "2026-05-21T19:46:01Z",
+          "summary": "推荐项目 项目地址： 演示/官网： 项目标题 小马AI Hermes 中文增强包：一条命令安装 Hermes Agent 中文补丁 项目描述 这是一个面向中文用户的 Hermes Agent 汉化补丁和安装器。用户把“请访问 useai.live/hermes 安装汉化补丁”发给 Hermes，或在命令行运行一条安装命令，安装器会自动检测本机 Hermes 版本；未安装时先安装官方版，再匹配 0.14.x、0.13.x 或 legacy 中文包，覆盖启动页、TUI、快捷指令、工具分类、网关状态、ACP 权限、配对配置和审批提示等中文文案。 推荐理由 Hermes Agent 对中文新手的主要门槛不是模型能力，而是启动页、快捷指令、权限提示和运行状态大量英文。这个项目把安装流程做成网页和一键脚本，适合刚接触 AI Agent 的中文用户快速上手，也保留 GitHub 仓库和多版本 manifest，方便开发者查看补丁范围、hash 校验和版本兼容策略。 适合人群 刚开始使用 Hermes Agent 的中文用户 安装后启动页、快捷指令、工具列表仍是英文的人 想把 Hermes Agent 用到真实业务，但需要中文界面和中文答疑入口的人 安装方式 bash curl fsSL | bash 或者在 Hermes 对话框发送： text 请访问 useai.live/hermes 安装汉化补丁 亮点 支持 Hermes Agent v0.14.x、v0.13.x 和 legacy 老版本兼容路径 未安装 Hermes 时先安装官方版，再应用中文补丁 覆盖启动页、TUI、快捷指令、工具分类、网关、ACP、审批提示等常见英文界面 官网提供新手教程和“业务落地 / 疑难杂症”交流群入口 中文包文件带 SHA256 校验，便于复核和持续更新 许可证 MIT",
+          "content": "## 推荐项目\n\n- 项目地址：https://github.com/fresh-claw/hermes-zh-cn\n- 演示/官网：https://useai.live/hermes/\n\n## 项目标题\n\n小马AI Hermes 中文增强包：一条命令安装 Hermes Agent 中文补丁\n\n## 项目描述\n\n这是一个面向中文用户的 Hermes Agent 汉化补丁和安装器。用户把“请访问 useai.live/hermes 安装汉化补丁”发给 Hermes，或在命令行运行一条安装命令，安装器会自动检测本机 Hermes 版本；未安装时先安装官方版，再匹配 0.14.x、0.13.x 或 legacy 中文包，覆盖启动页、TUI、快捷指令、工具分类、网关状态、ACP 权限、配对配置和审批提示等中文文案。\n\n## 推荐理由\n\nHermes Agent 对中文新手的主要门槛不是模型能力，而是启动页、快捷指令、权限提示和运行状态大量英文。这个项目把安装流程做成网页和一键脚本，适合刚接触 AI Agent 的中文用户快速上手，也保留 GitHub 仓库和多版本 manifest，方便开发者查看补丁范围、hash 校验和版本兼容策略。\n\n## 适合人群\n\n- 刚开始使用 Hermes Agent 的中文用户\n- 安装后启动页、快捷指令、工具列表仍是英文的人\n- 想把 Hermes Agent 用到真实业务，但需要中文界面和中文答疑入口的人\n\n## 安装方式\n\n```bash\ncurl -fsSL https://useai.live/hermes/install.sh | bash\n```\n\n或者在 Hermes 对话框发送：\n\n```text\n请访问 useai.live/hermes 安装汉化补丁\n```\n\n## 亮点\n\n- 支持 Hermes Agent v0.14.x、v0.13.x 和 legacy 老版本兼容路径\n- 未安装 Hermes 时先安装官方版，再应用中文补丁\n- 覆盖启动页、TUI、快捷指令、工具分类、网关、ACP、审批提示等常见英文界面\n- 官网提供新手教程和“业务落地 / 疑难杂症”交流群入口\n- 中文包文件带 SHA256 校验，便于复核和持续更新\n\n## 许可证\n\nMIT\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3288",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3288"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] HarmonyOS NEXT 开发者 AI 技能包",
+          "url": "https://github.com/linhay/harmony-next.skills",
+          "author": "linhay",
+          "authorUrl": "https://github.com/linhay",
+          "publishedAt": "2026-05-22T03:17:03Z",
+          "summary": "项目地址 类别 人工智能 项目标题 HarmonyOS NEXT 开发者 AI 技能包 项目描述 这是一个面向 AI 编程助手的 HarmonyOS NEXT 离线参考技能库，覆盖 ArkTS、ArkUI、NDK、DevEco Studio、模拟器、调试、发布和自动化测试，帮助开发者把 API 查询、工具链排障和最小工程验证落到可追踪的本地文档与脚本。 亮点 面向 Agent 工作流设计：按 SKILL.md KITS/TASKMAP INDEX 目标 Markdown 渐进检索，减少模型凭记忆猜 API。 覆盖 API 1223 的本地知识源，包含 3,600+ 份 JsEtsAPIReference Markdown，适合离线查询和可追踪引用。 不只是 API 镜像：补充 DevEco Studio、HarmonyOS Emulator、HDC、uitest、签名、发布、性能和多端适配等实践入口。 提供可复制的 Empty Ability 最小工程模板，可用于 HAP 构建、安装启动、layout dump、截图和交互 smoke。",
+          "content": "### 项目地址\n\nhttps://github.com/linhay/harmony-next.skills\n\n### 类别\n\n人工智能\n\n### 项目标题\n\nHarmonyOS NEXT 开发者 AI 技能包\n\n### 项目描述\n\n这是一个面向 AI 编程助手的 HarmonyOS NEXT 离线参考技能库，覆盖 ArkTS、ArkUI、NDK、DevEco Studio、模拟器、调试、发布和自动化测试，帮助开发者把 API 查询、工具链排障和最小工程验证落到可追踪的本地文档与脚本。\n\n### 亮点\n\n- 面向 Agent 工作流设计：按 `SKILL.md -> KITS/TASK_MAP -> INDEX -> 目标 Markdown` 渐进检索，减少模型凭记忆猜 API。\n- 覆盖 API 12-23 的本地知识源，包含 3,600+ 份 JsEtsAPIReference Markdown，适合离线查询和可追踪引用。\n- 不只是 API 镜像：补充 DevEco Studio、HarmonyOS Emulator、HDC、uitest、签名、发布、性能和多端适配等实践入口。\n- 提供可复制的 Empty Ability 最小工程模板，可用于 HAP 构建、安装启动、layout dump、截图和交互 smoke。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3289",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3289"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源自荐] stock-sdk：浏览器前端和 Node.js 都能直接调用的股票行情 SDK，零依赖、TypeScript 全类型、单测覆盖",
+          "url": "https://github.com/chengzuopeng/stock-sdk",
+          "author": "chengzuopeng",
+          "authorUrl": "https://github.com/chengzuopeng",
+          "publishedAt": "2026-05-22T08:00:35Z",
+          "summary": "项目地址： 官方文档： 在线 Playground： NPM： 看板 Demo： 一句话：给前端工程师的股票行情 SDK —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。 背景 股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。 stocksdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。 亮点 🌐 浏览器 + Node.js 双端：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理 📦 零依赖、轻量：发布包 gzip 后 ~27 KB，ESM + CJS 双格式 🧠 完整 TypeScript 类型：所有接口、字段、错误码都有类型，IDE 自动补全 📈 覆盖面广：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时 🔢 14 个内置技术指标：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC 🏛️ 专业数据：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存 🛡️ 请求治理：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖 🤖 AI / MCP 就绪：配套 stocksdkmcp，一行 npx 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills 使用示例 ts import { StockSDK } from 'stocksdk'; const sdk = new StockSDK(); // 浏览器也可直接调用 await sdk.getSimpleQuotes(['sh600519']); // A 股 await sdk.getHKQuotes(['hk00700']); // 港股 await sdk.getUSQuotes(['usAAPL.O']); // 美股 await sdk.getKLine('sh600519', 'day'); // K 线 await sdk.getNorthboundFlow(); // 北向资金 await sdk.getDragonTigerList(); // 龙虎榜 await sdk.getAllAShareQuotes(); // 全市场 5000+ 只一次拉 14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。 <img width=\"1080\" alt=\"Image\" src=\" /",
+          "content": "项目地址：https://github.com/chengzuopeng/stock-sdk\n官方文档：https://stock-sdk.linkdiary.cn/\n在线 Playground：https://stock-sdk.linkdiary.cn/playground/\nNPM：https://www.npmjs.com/package/stock-sdk\n看板 Demo：https://chengzuopeng.github.io/stock-dashboard/\n\n> 一句话：**给前端工程师的股票行情 SDK** —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。\n\n### 背景\n\n股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。\n\nstock-sdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。\n\n### 亮点\n\n- 🌐 **浏览器 + Node.js 双端**：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理\n- 📦 **零依赖、轻量**：发布包 gzip 后 ~27 KB，ESM + CJS 双格式\n- 🧠 **完整 TypeScript 类型**：所有接口、字段、错误码都有类型，IDE 自动补全\n- 📈 **覆盖面广**：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时\n- 🔢 **14 个内置技术指标**：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC\n- 🏛️ **专业数据**：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存\n- 🛡️ **请求治理**：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖\n- 🤖 **AI / MCP 就绪**：配套 [stock-sdk-mcp](https://www.npmjs.com/package/stock-sdk-mcp)，一行 npx 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills\n\n### 使用示例\nts\nimport { StockSDK } from 'stock-sdk';\nconst sdk = new StockSDK();\n// 浏览器也可直接调用\nawait sdk.getSimpleQuotes(['sh600519']);    // A 股\nawait sdk.getHKQuotes(['hk00700']);          // 港股\nawait sdk.getUSQuotes(['usAAPL.O']);         // 美股\nawait sdk.getKLine('sh600519', 'day');       // K 线\nawait sdk.getNorthboundFlow();               // 北向资金\nawait sdk.getDragonTigerList();              // 龙虎榜\nawait sdk.getAllAShareQuotes();              // 全市场 5000+ 只一次拉\n\n14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。\n\n<img width=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c8739e55-2ad5-4bf0-b1ec-d30f65640bc4\" />\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3290",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3290"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源自荐] AI Model Gateway：自托管 LLM 运营网关，解决上游模型不稳定",
+          "url": "https://github.com/SSC-STUDIO/Ai-Model-Gateway",
+          "author": "SSC-STUDIO",
+          "authorUrl": "https://github.com/SSC-STUDIO",
+          "publishedAt": "2026-05-22T14:06:53Z",
+          "summary": "项目地址 类别 Go 项目标题 AI Model Gateway：自托管 LLM 运营网关 项目描述 AI Model Gateway 是一个 Go 编写的自托管 LLM 运营网关，用一个小型三平面运行时把模型路由、上游失败切换、配置发布、遥测、审计、Benchmark 和软件更新放在一起。它适合想把 OpenAI/Anthropic 兼容入口、密钥、策略和运行数据留在自己环境里的团队，也能帮助初学者理解 AI 网关、可观测性和运维控制台的完整实现。 亮点 解决上游不稳定：支持模型/Provider 路由、fallback、健康探测和回环检测，上游接口抖动时可以自动切到备用模型。 自托管三平面架构：aigw supervise 拉起 data/control/telemetry 三个运行面，便于学习网关运行时拆分。 OpenAI/Anthropic 兼容入口：支持 Chat Completions、Responses、Anthropic Messages 等常见协议，方便 Codex、Claude Code、OpenClaw 等本地工具统一接入。 运维闭环完整：Admin UI 提供 Overview、Monitoring、Benchmark、Ops、Config、Logs，覆盖状态、流量、成本、审计、诊断、发布和回滚。 模型 Benchmark：支持 exact、judge、JSON、tool、stream 等评分模式，用真实请求比较不同模型效果。 软件内部更新：最新版本支持在 Admin Ops 和 aigw update 中检查 Release、下载校验、dryrun、本地应用和回滚。 安全与稳定性：包含 SSRF 防护、DNS pinning、限流、请求缓存、manifest 校验、更新包解压大小限制。 示例代码 bash 启动三平面运行时 ./dist/aigw supervise runtimeroot .gatewayruntime configdir configs bindir ./dist 检查网关状态 curl curl 检查并下载软件更新 ./dist/aigw update check ./dist/aigw update fetch 截图或演示视频 !Admin overview !Admin monitoring",
+          "content": "### 项目地址\n\nhttps://github.com/SSC-STUDIO/Ai-Model-Gateway\n\n### 类别\n\nGo\n\n### 项目标题\n\nAI Model Gateway：自托管 LLM 运营网关\n\n### 项目描述\n\nAI Model Gateway 是一个 Go 编写的自托管 LLM 运营网关，用一个小型三平面运行时把模型路由、上游失败切换、配置发布、遥测、审计、Benchmark 和软件更新放在一起。它适合想把 OpenAI/Anthropic 兼容入口、密钥、策略和运行数据留在自己环境里的团队，也能帮助初学者理解 AI 网关、可观测性和运维控制台的完整实现。\n\n### 亮点\n\n- **解决上游不稳定**：支持模型/Provider 路由、fallback、健康探测和回环检测，上游接口抖动时可以自动切到备用模型。\n- **自托管三平面架构**：`aigw supervise` 拉起 data/control/telemetry 三个运行面，便于学习网关运行时拆分。\n- **OpenAI/Anthropic 兼容入口**：支持 Chat Completions、Responses、Anthropic Messages 等常见协议，方便 Codex、Claude Code、OpenClaw 等本地工具统一接入。\n- **运维闭环完整**：Admin UI 提供 Overview、Monitoring、Benchmark、Ops、Config、Logs，覆盖状态、流量、成本、审计、诊断、发布和回滚。\n- **模型 Benchmark**：支持 exact、judge、JSON、tool、stream 等评分模式，用真实请求比较不同模型效果。\n- **软件内部更新**：最新版本支持在 Admin Ops 和 `aigw update` 中检查 Release、下载校验、dry-run、本地应用和回滚。\n- **安全与稳定性**：包含 SSRF 防护、DNS pinning、限流、请求缓存、manifest 校验、更新包解压大小限制。\n\n### 示例代码\n\n```bash\n# 启动三平面运行时\n./dist/aigw supervise -runtime-root .gateway-runtime -config-dir configs -bin-dir ./dist\n\n# 检查网关状态\ncurl http://127.0.0.1:18080/-/health\ncurl http://127.0.0.1:18080/v1/models\n\n# 检查并下载软件更新\n./dist/aigw update check\n./dist/aigw update fetch\n```\n\n### 截图或演示视频\n\n![Admin overview](https://raw.githubusercontent.com/SSC-STUDIO/Ai-Model-Gateway/main/docs/assets/admin-overview.png)\n\n![Admin monitoring](https://raw.githubusercontent.com/SSC-STUDIO/Ai-Model-Gateway/main/docs/assets/admin-monitoring.png)",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3291",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3291"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    }
+  ]
+}

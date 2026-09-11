@@ -1,1 +1,1167 @@
-{"fetchedAt":"2026-09-07T08:43:53.752Z","date":"2026-08-03","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"Routewise-AI","url":"https://routewise-ai.pages.dev/","author":"zhoujungis","authorUrl":"","publishedAt":"2026-08-03T00:00:00+08:00","summary":"旅行规划工具（免费），基于 GPT-5.6 大模型","content":"旅行规划工具（免费），基于 GPT-5.6 大模型","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-03-Routewise-AI-https://routewise-ai.pages.dev/"},{"sourceId":"chinese-indie-dev","title":"Zettaranc 知识库","url":"https://zknowledge.site/","author":"lululu811(乌鲁木齐)","authorUrl":"","publishedAt":"2026-08-03T00:00:00+08:00","summary":"整理万千（Z哥）直播、课程与社群内容构建的 A 股交易知识图谱，收录战法策略、买卖信号、资金仓位等交易概念 - [更多介绍](https://github.com/lululu811/zettaranc-skill/blob/main/README.md)","content":"整理万千（Z哥）直播、课程与社群内容构建的 A 股交易知识图谱，收录战法策略、买卖信号、资金仓位等交易概念 - [更多介绍](https://github.com/lululu811/zettaranc-skill/blob/main/README.md)","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-03-Zettaranc 知识库-https://zknowledge.site/"},{"sourceId":"chinese-indie-dev","title":"Snake PC Info","url":"https://github.com/WindowSSnake/Snake-PC-Info","author":"WindowSSnake(北京)","authorUrl":"","publishedAt":"2026-08-03T00:00:00+08:00","summary":"开源的 Windows 硬件检测工具，支持电池健康度检测和系统日志分析，中英文切换，自带环境","content":"开源的 Windows 硬件检测工具，支持电池健康度检测和系统日志分析，中英文切换，自带环境","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-03-Snake PC Info-https://github.com/WindowSSnake/Snake-PC-Info"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源自荐】LLM Wiki CLI - 基于 Karpathy 提出的 LLM Wiki 概念实现的 Agent 本地持久化记忆空间","url":"https://github.com/JanYork/llm-wiki-cli","author":"JanYork","authorUrl":"https://github.com/JanYork","publishedAt":"2026-08-03T01:47:36Z","summary":"项目地址： 中文文档： 最新版本：v0.3.0 开源协议：Apache2.0 项目介绍 AI Agent 很擅长阅读文档和解决当前问题，但会话结束后，已经完成的调查和整理往往也随之消失。下次遇到相似任务时，它又要重新搜索、重新阅读、重新建立上下文。 LLM Wiki CLI（命令名为 lwc）尝试解决这个问题：让 Agent 把经过筛选的本地文档整理成一份能够长期维护、来源可追溯的 Wiki。 Agent 负责理解、综合和修订知识，LWC 负责保存原始来源、Wiki 页面、引用关系、页面链接、检索索引和修改历史。这样，Agent 完成的有效工作可以跨会话继续积累，而不是每次都从原始资料重新开始。 思想来源 项目基于 Andrej Karpathy 提出的 LLM Wiki 概念： 让 LLM 增量构建并持续维护一份互相关联的 Wiki，而不是每次查询时重新从原始文档拼装答案。 LWC 将这个概念实现为一个基于 Rust 和 SQLite 的本地命令行工具，并提供配套的 Agent Skill。 与普通 RAG 的区别 典型的 RAG 工作方式是： text 查询 → 检索原始片段 → 生成一次性答案 LWC 的工作方式是： text 任务 → 读取已有 Wiki 和原始来源 → Agent 完成推理 → 将值得复用的结论写回 Wiki 检索只是 LWC 的一项能力，它的核心产物是一份持续修订的 Wiki。来源、引用、页面关系、矛盾和历史都会被保留下来。 LWC 可以与 RAG 配合，但它本身不依赖 embedding 或向量数据库。 主要特点 本地优先：使用 Rust 和 SQLite，日常存储与检索不依赖云端服务、后台守护进程或数据库服务器。 来源可追溯：原始资料保存为不可变快照，Wiki 页面可以明确引用对应来源。 知识持续写回：Agent 可以在完成任务后创建或修订页面，让有效结论跨会话复用。 项目与全局记忆分离：支持项目级 .lwc/ 和用户级 ~/.lwc/，避免不同项目的知识混在一起。 中英文词法检索：基于 SQLite FTS5/BM25，支持中文、英文和混合技术术语。 Wiki 关系图：保存页面之间的链接和引用关系，可以查询相关页面及结构化证据。 Markdown 投影：SQLite 是规范数据源，同时可以生成供人工审阅或 Obsidian 使用的 Markdown Wiki。 安全维护：提供 lint、索引重建、压缩、检查点和恢复等命令。 面向 Agent 的接口：命令以结构化 JSON 返回结果，仓库还提供配套的 usinglwc Skill。 安装 bash curl proto '=https' tlsv1.2 fsSL \\ | sh 也可以通过 Cargo 从源码安装： bash cargo install locked git README 中还提供了一段完整配置提示词，可以直接交给 Agent，由它完成 CLI、Skill 和全局记忆的安装配置。 适用场景 LWC 目前定位为单机、单用户的 Agent 知识库，适合长期软件项目、技术文档整理、研究资料维护，以及任何需要让 AI Agent 跨会话保留项目知识的工作流。","content":"项目地址：https://github.com/JanYork/llm-wiki-cli\n  中文文档：https://github.com/JanYork/llm-wiki-cli/blob/main/README.zh-CN.md\n  最新版本：v0.3.0\n  开源协议：Apache-2.0\n\n  ## 项目介绍\n\n  AI Agent 很擅长阅读文档和解决当前问题，但会话结束后，已经完成的调查和整理往往也随之消失。下次遇到相似任务时，它又要重新搜索、重新阅读、重新建立上下文。\n\n  LLM Wiki CLI（命令名为 `lwc`）尝试解决这个问题：让 Agent 把经过筛选的本地文档整理成一份能够长期维护、来源可追溯的 Wiki。\n\n  Agent 负责理解、综合和修订知识，LWC 负责保存原始来源、Wiki 页面、引用关系、页面链接、检索索引和修改历史。这样，Agent 完成的有效工作可以跨会话继续积累，而不是每次都从原始资料重新开始。\n\n  ## 思想来源\n\n  项目基于 Andrej Karpathy 提出的 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 概念：\n\n  > 让 LLM 增量构建并持续维护一份互相关联的 Wiki，而不是每次查询时重新从原始文档拼装答案。\n\n  LWC 将这个概念实现为一个基于 Rust 和 SQLite 的本地命令行工具，并提供配套的 Agent Skill。\n\n  ## 与普通 RAG 的区别\n\n  典型的 RAG 工作方式是：\n\n  ```text\n  查询 → 检索原始片段 → 生成一次性答案\n  ```\n\n  LWC 的工作方式是：\n\n  ```text\n  任务 → 读取已有 Wiki 和原始来源 → Agent 完成推理\n       → 将值得复用的结论写回 Wiki\n  ```\n\n  检索只是 LWC 的一项能力，它的核心产物是一份持续修订的 Wiki。来源、引用、页面关系、矛盾和历史都会被保留下来。\n\n  LWC 可以与 RAG 配合，但它本身不依赖 embedding 或向量数据库。\n\n  ## 主要特点\n\n  - **本地优先**：使用 Rust 和 SQLite，日常存储与检索不依赖云端服务、后台守护进程或数据库服务器。\n  - **来源可追溯**：原始资料保存为不可变快照，Wiki 页面可以明确引用对应来源。\n  - **知识持续写回**：Agent 可以在完成任务后创建或修订页面，让有效结论跨会话复用。\n  - **项目与全局记忆分离**：支持项目级 `.lwc/` 和用户级 `~/.lwc/`，避免不同项目的知识混在一起。\n  - **中英文词法检索**：基于 SQLite FTS5/BM25，支持中文、英文和混合技术术语。\n  - **Wiki 关系图**：保存页面之间的链接和引用关系，可以查询相关页面及结构化证据。\n  - **Markdown 投影**：SQLite 是规范数据源，同时可以生成供人工审阅或 Obsidian 使用的 Markdown Wiki。\n  - **安全维护**：提供 lint、索引重建、压缩、检查点和恢复等命令。\n  - **面向 Agent 的接口**：命令以结构化 JSON 返回结果，仓库还提供配套的 `using-lwc` Skill。\n\n  ## 安装\n\n  ```bash\n  curl --proto '=https' --tlsv1.2 -fsSL \\\n    https://github.com/JanYork/llm-wiki-cli/releases/latest/download/install.sh | sh\n  ```\n\n  也可以通过 Cargo 从源码安装：\n\n  ```bash\n  cargo install --locked --git https://github.com/JanYork/llm-wiki-cli\n  ```\n\n  README 中还提供了一段完整配置提示词，可以直接交给 Agent，由它完成 CLI、Skill 和全局记忆的安装配置。\n\n  ## 适用场景\n\n  LWC 目前定位为单机、单用户的 Agent 知识库，适合长期软件项目、技术文档整理、研究资料维护，以及任何需要让 AI Agent 跨会话保留项目知识的工作流。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10993","issueUrl":"https://github.com/ruanyf/weekly/issues/10993"},{"sourceId":"weekly-issues","title":"【APP自荐】vPlayer HiFi — 把 iOS 设备化身准专业 HiFi 播放器","url":"https://github.com/shanleiguang/vPlayer","author":"shanleiguang","authorUrl":"https://github.com/shanleiguang","publishedAt":"2026-08-03T02:38:08Z","summary":"缘起 记得准备高考的那段时间，每天除了必要的锻炼，其他精力基本全都用来复习，唯一的放松，就是在晚饭时刻，当母亲把做好的饭菜端到我的书桌上后，我便合上书本，一边吃饭，一边打开练习英语听力的磁带机，随手放一盘自己喜欢的磁带。也许是唐朝的《梦回唐朝》，也许是黑豹的《无地自容》（《黑豹I》），或者是郑钧的《回到拉萨》，还有老狼的《恋恋风尘》。在那个白衣飘飘的年代，同学们会互相借磁带听，女生还会把喜欢的歌词手抄到带着花边的本子上，叫做歌词本。上了大学，在1999年的某一天，我在校门口斜对面的汉唐书店偶然买了盘一个叫做朴树的年轻人发行的专辑《我去2000年》，回到宿舍，同学们还都不知道这人是谁呢。后来他发行了第二张专辑《生如夏花》，我依然记得曾给某人在电话里清唱这张专辑里的《我爱你，再见》，而她人在电话那头早已哭的稀里哗啦。大学四年一晃而过，毕业季的旧货市场上，有个低年级的漂亮女生要打包全收我的那些旧磁带和杂志，我仔细地挑出了这盘《我去2000年》，连同在音乐学院、外语学院外打卡带地摊收的一套红、蓝、黑封面的披头士和当年一本叫做 Music Heaven 音乐期刊里带的那些极具风格化的欧美乐队歌手合集的磁带一起背回了家，直到现在，它们还安静的躺在我书柜的角落里，嗯，丢不走的行李，是我不变的心。上班后第一个月工资，我拿出大部分买了台蓝色的 Sony CD 便携播放器和森海塞尔 PX500 耳机，认认真真的煲够了一百小时，那时候经常光顾本地一家特色 CD 小卖店，店里全是复刻的国外经典 CD，平克弗洛伊德、披头士、大门、皇后、老鹰、恐怖海峡、涅槃等等，于此同时，互联网 P2P 开始有了萌芽，于是各种音乐专辑下载了一堆一堆，而电脑上的音乐播放器用过不少，比如 Winamp、Foobar2000、Audivana、HQplayer，还有特别小众的 BugHead。就这样，一转眼好多年过去了，现在的我更多是用手机听歌，不知不觉也已经成为 Apple Music 订阅用户好多年。就在最近，我开始学习 iOS应用开发，涌入脑海的第一个想法，就是开发一款能够运行在新老 iPhone、iPad 上的 HiFi 播放器，让家中 NAS、移动硬盘上那些之前认真下载、分门别类整理却沉默无言了许久的音频文件再次复活起来，于是，vPlayer HiFi，一款 iOS 上追求纯粹音质的 HiFi 播放器就这样诞生了。 命名 vPlayer 便是 Very Pure Layer 的简写，但这也的确反应了这款 App 的设计理念，就是希望把音频处理过程用分层方式直观的展现出来，让用户能够清楚的看到0、1组成的数字文件是怎么一步步转化成最终能够听到的波形数据，同时每一层又都可以单独启停或调整参数，可以方便地对比听感带来的轻微差别，从而找到那组最讨好自己耳朵的组合。巧合的是，我平时喜欢听古典弦乐，所以给它选了张小提琴作为 App 图标，而小提琴的英文也恰是字母 v 打头。 优缺点 在进行功能性介绍之前，先说说它优点和短板。优点包括： 它采用 Apple iOS 开发框架，能够同时支持 iPhone 和 iPad，未来还可以很方便的向MacOS、tvOS 平台移植。在用户管理方面，一个 Apple ID 账号的一次订购就能实现跨设备的统一认证和鉴权。 现代 iPhone 的硬件处理能力已经非常强大，拿两三年前的 iPhone15Promax 来说，它拥有 8G 统一内存（实测单一应用最多可用到 3G 左右）和最低 256G 存储容量（一张 CD 按照 500MB 计算，也可以轻松存储几十张），即便是运行本地离线量化 AI 模型也完全没有问题（详见我另一个App—锦囊AI ）。单从音频解码角度看，其实并不需要太大处理能力，实践证明，只要做好精细的资源分配回收，即便是2014年左右的 iPhone7，照样可以轻松实现 DSD 解码重播。 它可以通过 Airplay 协议方便的连接苹果生态，比如 Studio Display、AppleTV 等。 它能让你淘汰的老旧 iPhone、iPad 变废为宝。vPlayer HiFi 还有一个未上架的仅保留核心功能的版本，能够支持 iPhone7~X 的老iPhone，甚至我还为乔布斯时代的 iPhone4 移植了一个自用的 Jailbreak 版本，当 3.5mm 耳机口外接上更加古早的电子管收音机，听张人声爵士或者小提琴奏鸣曲，那情绪价值绝对是满满的。 相对的，它的短板也是明显的： iPhone、iPad 自带的 DAC 只支持44.1kHz和48kHz 解码率，这对于 HiFi 显然是不够的。如果音频原始码率是 96kHz 或是经 DSD2PCM 后的 176.4kHz 和 352.8kHz，又或者原始的44.1kHz 经软件 SRC、FIR 重采样至更高采样率后，一旦选择经过 iPhone、iPad 自身 DAC 解码重播，依然会重采样回落到 44.1kHz 或 48kHz。 这正是 vPlayer HiFi App与专业 HiFi 硬件播放器的最大区别，它只是一款运行在 iOS 上的应用软件，虽然 iPhone、iPad 的软件运行环境、CPU内存等基础硬件能力足够胜任对音源的处理，但其内置 DAC 解码重播的确是 HiFi 的短板。解决方案其实也很简单，连接外置 DAC 作为纯粹数播节点就可以了。然而，即便是使用 iPhone、iPad 的内置 DAC 播放，你也能清晰感受到 vPlayer HiFi 带来听感的明显提升。 主要功能 可视化信号链：信号处理以节点路径方式呈现DSD · MEM · SRC ⊕ FIR · EQ · DITH。点任意节点即可进入对应设置面板——切换 DSD 滤波器、设置 MEM 内存预分配空间、选择 SRC 算法、调整 FIR 参数、微调 EQ等。 Bit‑Perfect：采用定制化的 AudioUnit 音频处理管线与内、外部 DAC 对接，精确匹配音源原始采样率，确保 iOS 系统不介入、不重采样、零染指。 Native DSD Playback：支持常见音源格式 MP3 、AIFF、M4A（AAC）、WAV、FLAC外，还支持 DSD（DSF、DFF） 解码，提供多种 DSD FIR 降采样滤波器（陡峭 / 平缓 / 宽带宽），输出采样率包括 176.4kHz 和 352.8kHz，保留 DSD 原生特质。更支持SACD‑R ISO 镜像解析，内置原生 Scarlet Book TOC 解析器可直接解析 SACD‑R 的 ISO 镜像文件，形成音轨目录，并自动提取单音轨独立 DSD 文件点播。 Memory Playback：得益于 iPhone、iPad 的大内存，可将整首曲目一次全部载入预热后的专属内存缓冲区再重播，足以容纳一整张 CD Wav 文件或一首高码率 DSD 文件，从而彻底消除实时文件读写 I/O 带来的时基抖动（Jitter），让声音背景更纯净。虽然技术上有玄学成分在里面，但实际听感确有比较明显的改善。 多相 SRC + FIR 升频：提供 6 种采样率转换算法（从线性到 Sinc‑512 抽头），均采用 Kaiser 窗多相重采样。独立 FIR 升频支持 2× / 4× / 8× 倍率，抽头数可选（31 / 63 / 127），并可切换为同态最小相位模式。 10 段图形均衡器EQ：每段 ±12 dB 手动调节，并配有频段参考指南。响应瞬时、零延迟，可从信号链工具栏一键开启或关闭。内置 638 款 AutoEq 耳机预设，直接加载来自 oratory1990 测量数据库的固定频段 EQ 校正曲线，选择耳机品牌与型号后，即可一键应用，同时自动计算前置增益（Preamp），防止削波失真。 本地文件播放：通过 Finder 或 iTunes 将专辑文件夹拖放至 App 的共享目录，下拉即可刷新，左滑也可删除。 网络文件播放：支持局域网内 Samba 网络存储服务接入，采用边下载、边缓存、再播放的保守策略，完全避免网络抖动对播放质量的影响。特别针对 SACDR ISO 大型文件（一般在 3G 左右），实现了单音轨 DSD 文件提取，从而大大缩短网络下载等待时长。对于喜欢的专辑，又可以左滑下载到 iPhone 本地。 双主题：提供“暗色”与“银色”两套界面风格，点击 vPlayer 标题即可轻松切换。 Lab 音频实验室：简易Room EQ 测量流程：两部 iPhone 协同开展，一部连接到房间音响系统并运行本 App 播放一段 20Hz 至 20kHz 的内置测量文件（务必提前带好耳塞），同时在听位头部位置，用另一部 iPhone 自带的录音 App 进行记录（提前打开高保真录音选项），最后将这段录音 Airdrop 到前一部 iPhone，App 加载后会自动对照原始测量文件，针对性的计算当前房间的 EQ 参数建议并可在 EQ 面板选择性启用。其精准度取决于第二台 iPhone 的录音精度，如换作高质量的便携录音设备参照性会更强。它主要是提供一种折衷的测量方法，在不改变现实听音环境基础上，可以明显改善低频污染。Shazam 歌曲识别：集成 Apple ShazamKit，轻点即可识别正在播放的音乐，获取专辑封面、风格、歌手信息。音乐绘画（Music Painting）：内置生成式艺术引擎，每首曲目都会绘制出独特的视觉画面，可选择“星座”或“印象”两种风格。画作可保存至画廊，随时浏览回味。 获取方式 希望喜欢音乐的你能够喜欢这款纯粹但绝不简单的 HiFi 播放器，它的特点正如老狼《恋恋风尘》专辑插页里的一句话：一杯清水，一种声音。 GitHub vPlayer HiFi Project 使用 iOS 设备登录 Apple App Store，搜索 vPlayer HiFi 即可。vPlayer HiFi App <img width=\"512\" alt=\"Image\" src=\" /","content":"\n**缘起**\n\n记得准备高考的那段时间，每天除了必要的锻炼，其他精力基本全都用来复习，唯一的放松，就是在晚饭时刻，当母亲把做好的饭菜端到我的书桌上后，我便合上书本，一边吃饭，一边打开练习英语听力的磁带机，随手放一盘自己喜欢的磁带。也许是唐朝的《梦回唐朝》，也许是黑豹的《无地自容》（《黑豹I》），或者是郑钧的《回到拉萨》，还有老狼的《恋恋风尘》。在那个白衣飘飘的年代，同学们会互相借磁带听，女生还会把喜欢的歌词手抄到带着花边的本子上，叫做歌词本。上了大学，在1999年的某一天，我在校门口斜对面的汉唐书店偶然买了盘一个叫做朴树的年轻人发行的专辑《我去2000年》，回到宿舍，同学们还都不知道这人是谁呢。后来他发行了第二张专辑《生如夏花》，我依然记得曾给某人在电话里清唱这张专辑里的《我爱你，再见》，而她人在电话那头早已哭的稀里哗啦。大学四年一晃而过，毕业季的旧货市场上，有个低年级的漂亮女生要打包全收我的那些旧磁带和杂志，我仔细地挑出了这盘《我去2000年》，连同在音乐学院、外语学院外打卡带地摊收的一套红、蓝、黑封面的披头士和当年一本叫做 Music Heaven 音乐期刊里带的那些极具风格化的欧美乐队歌手合集的磁带一起背回了家，直到现在，它们还安静的躺在我书柜的角落里，嗯，丢不走的行李，是我不变的心。上班后第一个月工资，我拿出大部分买了台蓝色的 Sony CD 便携播放器和森海塞尔 PX500 耳机，认认真真的煲够了一百小时，那时候经常光顾本地一家特色 CD 小卖店，店里全是复刻的国外经典 CD，平克弗洛伊德、披头士、大门、皇后、老鹰、恐怖海峡、涅槃等等，于此同时，互联网 P2P 开始有了萌芽，于是各种音乐专辑下载了一堆一堆，而电脑上的音乐播放器用过不少，比如 Winamp、Foobar2000、Audivana、HQplayer，还有特别小众的 BugHead。就这样，一转眼好多年过去了，现在的我更多是用手机听歌，不知不觉也已经成为 Apple Music  订阅用户好多年。就在最近，我开始学习 iOS应用开发，涌入脑海的第一个想法，就是开发一款能够运行在新老 iPhone、iPad 上的 HiFi 播放器，让家中 NAS、移动硬盘上那些之前认真下载、分门别类整理却沉默无言了许久的音频文件再次复活起来，于是，vPlayer HiFi，一款 iOS 上追求纯粹音质的 HiFi 播放器就这样诞生了。\n\n**命名**\n\nvPlayer 便是 Very Pure Layer 的简写，但这也的确反应了这款 App 的设计理念，就是希望把音频处理过程用分层方式直观的展现出来，让用户能够清楚的看到0、1组成的数字文件是怎么一步步转化成最终能够听到的波形数据，同时每一层又都可以单独启停或调整参数，可以方便地对比听感带来的轻微差别，从而找到那组最讨好自己耳朵的组合。巧合的是，我平时喜欢听古典弦乐，所以给它选了张小提琴作为 App 图标，而小提琴的英文也恰是字母 v 打头。\n\n**优缺点**\n\n在进行功能性介绍之前，先说说它优点和短板。优点包括：\n\n- 它采用 Apple iOS 开发框架，能够同时支持 iPhone 和 iPad，未来还可以很方便的向MacOS、tvOS 平台移植。在用户管理方面，一个 Apple ID 账号的一次订购就能实现跨设备的统一认证和鉴权。\n- 现代 iPhone 的硬件处理能力已经非常强大，拿两三年前的 iPhone15Promax 来说，它拥有 8G 统一内存（实测单一应用最多可用到 3G 左右）和最低 256G 存储容量（一张 CD 按照 500MB 计算，也可以轻松存储几十张），即便是运行本地离线量化 AI 模型也完全没有问题（详见我另一个App—锦囊AI ）。单从音频解码角度看，其实并不需要太大处理能力，实践证明，只要做好精细的资源分配回收，即便是2014年左右的 iPhone7，照样可以轻松实现 DSD 解码重播。\n- 它可以通过 Airplay 协议方便的连接苹果生态，比如 Studio Display、AppleTV 等。\n- 它能让你淘汰的老旧 iPhone、iPad 变废为宝。vPlayer HiFi 还有一个未上架的仅保留核心功能的版本，能够支持 iPhone7~X 的老iPhone，甚至我还为乔布斯时代的 iPhone4 移植了一个自用的 Jailbreak 版本，当 3.5mm 耳机口外接上更加古早的电子管收音机，听张人声爵士或者小提琴奏鸣曲，那情绪价值绝对是满满的。\n\n相对的，它的短板也是明显的：\n\n- iPhone、iPad 自带的 DAC 只支持44.1kHz和48kHz 解码率，这对于 HiFi 显然是不够的。如果音频原始码率是 96kHz 或是经 DSD2PCM 后的 176.4kHz 和 352.8kHz，又或者原始的44.1kHz 经软件 SRC、FIR 重采样至更高采样率后，一旦选择经过 iPhone、iPad 自身 DAC 解码重播，依然会重采样回落到 44.1kHz 或 48kHz。\n- 这正是 vPlayer HiFi  App与专业 HiFi 硬件播放器的最大区别，它只是一款运行在 iOS 上的应用软件，虽然 iPhone、iPad 的软件运行环境、CPU内存等基础硬件能力足够胜任对音源的处理，但其内置 DAC 解码重播的确是 HiFi 的短板。解决方案其实也很简单，连接外置 DAC 作为纯粹数播节点就可以了。然而，即便是使用 iPhone、iPad 的内置 DAC 播放，你也能清晰感受到 vPlayer HiFi 带来听感的明显提升。\n\n**主要功能**\n\n- 可视化信号链：信号处理以节点路径方式呈现DSD · MEM · SRC ⊕ FIR · EQ · DITH。点任意节点即可进入对应设置面板——切换 DSD 滤波器、设置 MEM 内存预分配空间、选择 SRC 算法、调整 FIR 参数、微调 EQ等。\n- Bit‑Perfect：采用定制化的 AudioUnit 音频处理管线与内、外部 DAC 对接，精确匹配音源原始采样率，确保 iOS 系统不介入、不重采样、零染指。\n- Native DSD Playback：支持常见音源格式 MP3 、AIFF、M4A（AAC）、WAV、FLAC外，还支持 DSD（DSF、DFF） 解码，提供多种 DSD FIR 降采样滤波器（陡峭 / 平缓 / 宽带宽），输出采样率包括 176.4kHz  和 352.8kHz，保留 DSD 原生特质。更支持SACD‑R ISO 镜像解析，内置原生 Scarlet Book TOC 解析器可直接解析 SACD‑R 的 ISO 镜像文件，形成音轨目录，并自动提取单音轨独立 DSD 文件点播。\n- Memory Playback：得益于 iPhone、iPad 的大内存，可将整首曲目一次全部载入预热后的专属内存缓冲区再重播，足以容纳一整张 CD Wav 文件或一首高码率 DSD 文件，从而彻底消除实时文件读写 I/O 带来的时基抖动（Jitter），让声音背景更纯净。虽然技术上有玄学成分在里面，但实际听感确有比较明显的改善。\n- 多相 SRC + FIR 升频：提供 6 种采样率转换算法（从线性到 Sinc‑512 抽头），均采用 Kaiser 窗多相重采样。独立 FIR 升频支持 2× / 4× / 8× 倍率，抽头数可选（31 / 63 / 127），并可切换为同态最小相位模式。\n- 10 段图形均衡器EQ：每段 ±12 dB 手动调节，并配有频段参考指南。响应瞬时、零延迟，可从信号链工具栏一键开启或关闭。内置 638 款 AutoEq 耳机预设，直接加载来自 oratory1990 测量数据库的固定频段 EQ 校正曲线，选择耳机品牌与型号后，即可一键应用，同时自动计算前置增益（Preamp），防止削波失真。\n- 本地文件播放：通过 Finder 或 iTunes 将专辑文件夹拖放至 App 的共享目录，下拉即可刷新，左滑也可删除。\n- 网络文件播放：支持局域网内 Samba 网络存储服务接入，采用边下载、边缓存、再播放的保守策略，完全避免网络抖动对播放质量的影响。特别针对 SACD-R ISO 大型文件（一般在 3G 左右），实现了单音轨 DSD 文件提取，从而大大缩短网络下载等待时长。对于喜欢的专辑，又可以左滑下载到 iPhone 本地。\n- 双主题：提供“暗色”与“银色”两套界面风格，点击 vPlayer 标题即可轻松切换。\n- Lab 音频实验室：简易Room EQ 测量流程：两部 iPhone 协同开展，一部连接到房间音响系统并运行本 App 播放一段 20Hz 至 20kHz 的内置测量文件（务必提前带好耳塞），同时在听位头部位置，用另一部 iPhone 自带的录音 App 进行记录（提前打开高保真录音选项），最后将这段录音 Airdrop 到前一部 iPhone，App 加载后会自动对照原始测量文件，针对性的计算当前房间的 EQ 参数建议并可在 EQ 面板选择性启用。其精准度取决于第二台 iPhone 的录音精度，如换作高质量的便携录音设备参照性会更强。它主要是提供一种折衷的测量方法，在不改变现实听音环境基础上，可以明显改善低频污染。Shazam 歌曲识别：集成 Apple ShazamKit，轻点即可识别正在播放的音乐，获取专辑封面、风格、歌手信息。音乐绘画（Music Painting）：内置生成式艺术引擎，每首曲目都会绘制出独特的视觉画面，可选择“星座”或“印象”两种风格。画作可保存至画廊，随时浏览回味。\n\n**获取方式**\n\n希望喜欢音乐的你能够喜欢这款纯粹但绝不简单的 HiFi 播放器，它的特点正如老狼《恋恋风尘》专辑插页里的一句话：一杯清水，一种声音。\n**[GitHub vPlayer HiFi Project](https://github.com/shanleiguang/vPlayer)**\n**使用 iOS 设备登录 Apple App Store，搜索 vPlayer HiFi 即可。**[vPlayer HiFi App](https://apps.apple.com/cn/app/vplayer-hifi/id6783141736)\n\n<img width=\"512\"  alt=\"Image\" src=\"https://github.com/user-attachments/assets/f6b39d99-d3ac-41f9-9184-11f1a471121c\" />\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10994","issueUrl":"https://github.com/ruanyf/weekly/issues/10994"},{"sourceId":"weekly-issues","title":"【开源项目推荐】starfolio-worker：Cloudflare Worker 自建 GitHub 星标曲线图，替代 star-history","url":"https://github.com/yuhp/starfolio-worker","author":"yuhp","authorUrl":"https://github.com/yuhp","publishedAt":"2026-08-03T02:41:04Z","summary":"解决痛点 GitHub近期收紧Stargazer API权限，starhistory 现在需要拥有仓库写入权限的Token，存在密钥泄露风险。 仓库地址 整体设计 starfolioworker 部署于 Cloudflare Worker + KV，定时抓取仓库星标数据、生成SVG曲线图并缓存。 ✅ 使用Cloudflare免费额度即可运行 ✅ 无需提供高权限GitHub Token ✅ 对外直接输出缓存好的星标历史SVG图表 ✅ 支持亮色与暗色主题 配套介绍文章： Blog: 公众号： 嵌入 Readme 示例 可直接嵌入README示例（跟随系统自动切换明暗主题）： html <a href=\" <picture <source media=\"(preferscolorscheme: dark)\" srcset=\" / <source media=\"(preferscolorscheme: light)\" srcset=\" / <img alt=\"Star History Chart\" src=\" / </picture </a 效果预览 <a href=\" <picture <source media=\"(preferscolorscheme: dark)\" srcset=\" / <source media=\"(preferscolorscheme: light)\" srcset=\" / <img alt=\"Star History Chart\" src=\" / </picture </a","content":"## 解决痛点\nGitHub近期收紧Stargazer API权限，star-history 现在需要拥有仓库**写入权限**的Token，存在密钥泄露风险。\n\n## 仓库地址\nhttps://github.com/yuhp/starfolio-worker\n\n## 整体设计\nstarfolio-worker 部署于 Cloudflare Worker + KV，定时抓取仓库星标数据、生成SVG曲线图并缓存。\n✅ 使用Cloudflare免费额度即可运行\n✅ 无需提供高权限GitHub Token\n✅ 对外直接输出缓存好的星标历史SVG图表\n✅ 支持亮色与暗色主题\n\n\n\n## 配套介绍文章：\n- Blog:  https://yuhp.dev/zh/posts/starfolio-worker/\n- 公众号：https://mp.weixin.qq.com/s/gTjiJQi-1H5h0RRxcjYflg\n\n## 嵌入 Readme 示例\n可直接嵌入README示例（跟随系统自动切换明暗主题）：\n```html\n<a href=\"https://yuhp.dev/zh/posts/starfolio-worker/\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=dark\" />\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n    <img alt=\"Star History Chart\" src=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n  </picture>\n</a>\n```\n\n### 效果预览\n<a href=\"https://yuhp.dev/zh/posts/starfolio-worker/\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=dark\" />\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n    <img alt=\"Star History Chart\" src=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n  </picture>\n</a>\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10995","issueUrl":"https://github.com/ruanyf/weekly/issues/10995"},{"sourceId":"weekly-issues","title":"【文章推荐】Why Software Factories Fail（为什么软件工厂会失败）","url":"https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md","author":"hnl1","authorUrl":"https://github.com/hnl1","publishedAt":"2026-08-03T06:16:48Z","summary":"（英文） 作者 Dex Horthy 是 HumanLayer 创始人、12Factor Agents 的作者。文章反驳\"关灯软件工厂\"——即代码全部由 AI 编写、没有人类审查。 周刊第 385 期的\"言论\"栏目曾引用 StrongDM 关灯工厂的三条规则（代码绝不由人编写、不得由人审查），这篇正好是反方观点。","content":"https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md （英文）\n\n作者 Dex Horthy 是 HumanLayer 创始人、12-Factor Agents 的作者。文章反驳\"关灯软件工厂\"——即代码全部由 AI 编写、没有人类审查。\n\n周刊第 385 期的\"言论\"栏目曾引用 StrongDM 关灯工厂的三条规则（代码绝不由人编写、不得由人审查），这篇正好是反方观点。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10996","issueUrl":"https://github.com/ruanyf/weekly/issues/10996"},{"sourceId":"weekly-issues","title":"【开源自荐】每日更新的Ai知识库， skills 大全","url":"https://github.com/Awesome-AI-Pedia/Awesome-AI-Pedia","author":"Awesome-AI-Pedia","authorUrl":"https://github.com/Awesome-AI-Pedia","publishedAt":"2026-08-03T06:51:11Z","summary":"每日更新的Ai知识库， skills 大全","content":"每日更新的Ai知识库， skills 大全 https://github.com/Awesome-AI-Pedia/Awesome-AI-Pedia","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10997","issueUrl":"https://github.com/ruanyf/weekly/issues/10997"},{"sourceId":"weekly-issues","title":"【工具自荐】ToolFun：批量文件重命名和图片处理工具","url":"https://toolfun.top/","author":"qinleilxl","authorUrl":"https://github.com/qinleilxl","publishedAt":"2026-08-03T08:29:57Z","summary":"ToolFun 是一个免费的浏览器本地工具箱，目前主要提供批量文件重命名和图片处理功能。 批量重命名工具支持添加前后缀、文字替换、自动编号等规则，可以一次处理多个文件。 图片工具支持格式转换、压缩、尺寸调整、裁剪、旋转、favicon 制作和逐帧动画生成。 所有文件都只在浏览器本地处理，不上传服务器，无需注册，也不用安装软件。 项目地址：","content":"ToolFun 是一个免费的浏览器本地工具箱，目前主要提供批量文件重命名和图片处理功能。\n\n批量重命名工具支持添加前后缀、文字替换、自动编号等规则，可以一次处理多个文件。\n\n图片工具支持格式转换、压缩、尺寸调整、裁剪、旋转、favicon 制作和逐帧动画生成。\n\n所有文件都只在浏览器本地处理，不上传服务器，无需注册，也不用安装软件。\n\n项目地址：https://toolfun.top/","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"10998","issueUrl":"https://github.com/ruanyf/weekly/issues/10998"},{"sourceId":"weekly-issues","title":"【开源自荐】HugAgentOS：开源的桌面端自进化 Agent Harness","url":"https://raw.githubusercontent.com/ZJU-REAL/HugAgentOS/main/install.sh","author":"Luhaozhu","authorUrl":"https://github.com/Luhaozhu","publishedAt":"2026-08-03T08:49:03Z","summary":"项目简介 HugAgentOS 是由浙江大学人工智能省部共建协同创新中心 Agent Harness 团队研发的开源、自托管智能体工作平台，对比ChatGPT桌面端、WorkBuddy、悟空等桌面harness平台，HugAgentOS同时提供 Windows、macOS 和 Linux 桌面客户端。 它将 Skills、MCP、插件、子智能体、Plan Mode、Automation、沙箱执行和数据画布集成在同一工作区，让 Agent 不只回答问题，还能规划任务、调用工具、处理文件、执行流程并交付成果。 核心特色：受控自进化 HugAgentOS 通过记忆、技能与编排三大引擎形成自进化闭环： 1. 记忆进化：从用户任务中沉淀长期记忆，保留有价值的经验。 2. 技能进化：将长期记忆中可复用的成功路径提炼为 Skills。 3. 编排进化：把 Skills、Tools 与子智能体的稳定协作方式固化为能力编排。 整个过程遵循“从点到线、再到面”的演进路径。所有进化内容都需要经过用户审批，获得确认后才会进入正式 Agent 资产，避免无序生长，并支持审计与回滚。 系统还以领域本体约束语义、规则、权限和使用场景，让进化沿预先定义的业务边界持续进行。 其他特点 支持 OpenAI 兼容接口及本地模型 内置私有知识库 RAG、长期记忆和 MCP 工具生态 支持代码及文档沙箱执行 支持自动化任务、批量执行与子智能体协作 数据和模型配置均可由用户自行掌控 支持多端互联互通，服务端部署，桌面端启动云端环境 部署方式 桌面客户端：支持 Windows、macOS、Linux 一键安装：适合 Linux、macOS 和 WSL2 个人体验 Docker Compose：适合团队、服务器和长期运行环境 一键安装命令： bash curl fsSL | bash 欢迎关注并下载桌面端 GitHub： 中文介绍： 桌面版下载：","content":"## 项目简介\n\nHugAgentOS 是由浙江大学人工智能省部共建协同创新中心 Agent Harness 团队研发的开源、自托管智能体工作平台，对比ChatGPT桌面端、WorkBuddy、悟空等桌面harness平台，HugAgentOS同时提供 Windows、macOS 和 Linux 桌面客户端。\n\n它将 Skills、MCP、插件、子智能体、Plan Mode、Automation、沙箱执行和数据画布集成在同一工作区，让 Agent 不只回答问题，还能规划任务、调用工具、处理文件、执行流程并交付成果。\n\n## 核心特色：受控自进化\n\nHugAgentOS 通过记忆、技能与编排三大引擎形成自进化闭环：\n\n1. **记忆进化**：从用户任务中沉淀长期记忆，保留有价值的经验。\n2. **技能进化**：将长期记忆中可复用的成功路径提炼为 Skills。\n3. **编排进化**：把 Skills、Tools 与子智能体的稳定协作方式固化为能力编排。\n\n整个过程遵循“从点到线、再到面”的演进路径。所有进化内容都需要经过用户审批，获得确认后才会进入正式 Agent 资产，避免无序生长，并支持审计与回滚。\n\n系统还以领域本体约束语义、规则、权限和使用场景，让进化沿预先定义的业务边界持续进行。\n\n## 其他特点\n\n- 支持 OpenAI 兼容接口及本地模型\n- 内置私有知识库 RAG、长期记忆和 MCP 工具生态\n- 支持代码及文档沙箱执行\n- 支持自动化任务、批量执行与子智能体协作\n- 数据和模型配置均可由用户自行掌控\n- 支持多端互联互通，服务端部署，桌面端启动云端环境\n\n## 部署方式\n\n- **桌面客户端**：支持 Windows、macOS、Linux\n- **一键安装**：适合 Linux、macOS 和 WSL2 个人体验\n- **Docker Compose**：适合团队、服务器和长期运行环境\n\n一键安装命令：\n\n```bash\ncurl -fsSL https://raw.githubusercontent.com/ZJU-REAL/HugAgentOS/main/install.sh | bash\n\n## 欢迎关注并下载桌面端\n\nGitHub：https://github.com/ZJU-REAL/HugAgentOS\n中文介绍：https://github.com/ZJU-REAL/HugAgentOS/blob/main/README_CN.md\n桌面版下载：https://github.com/ZJU-REAL/HugAgentOS/releases","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10999","issueUrl":"https://github.com/ruanyf/weekly/issues/10999"},{"sourceId":"weekly-issues","title":"【开源自荐】Spring AI ERP Assistant：能查询业务数据并自动生成图表的 ERP 智能助手","url":"https://github.com/ly1836/spring-ai-rag-demo","author":"ly1836","authorUrl":"https://github.com/ly1836","publishedAt":"2026-08-03T10:11:48Z","summary":"项目地址 项目简介 这是一个基于 Spring AI 2.0 和 Spring Boot 4 开发的开源 ERP 智能助手。 项目将 Tool Calling 和 RAG 结合起来：用户可以直接用自然语言查询销售订单、库存、采购、生产、质检等 ERP 业务数据，也可以导入 PDF、Word、Excel 等企业文档进行知识问答。 与普通聊天 Demo 不同，系统能够把 Tool 返回的真实业务数据自动转换成条形图、折线图、饼图、甘特图、雷达图等图表，目前支持 23 种图表。 主要特点 内置销售、采购、生产、质检、仓库、财务、售后、委外 8 大 ERP 模块，共 39 个代码 Tool 支持在运行期间维护动态 SQL Tool，并限制为只读查询、绑定参数和租户数据隔离 Tool 查询结果可以自动生成 23 种 ECharts 图表 使用 PgVector 和本地 ONNX Embedding 实现 RAG 知识库 支持 DeepSeek、通义千问和 Gemini 多模型切换 支持 SSE 流式对话、数据库会话记忆、Tool 调用追踪和 Token 计费 提供 Docker Compose、初始化演示数据和中英文文档 使用 Apache2.0 开源协议 技术栈 Java 17+、Spring Boot 4.0.7、Spring AI 2.0.0、MySQL、PostgreSQL、PgVector、Apache ECharts。 运行效果 !Spring AI ERP Assistant Demo 最新版本：3.0.4 项目仓库：","content":"## 项目地址\n\nhttps://github.com/ly1836/spring-ai-rag-demo\n\n## 项目简介\n\n这是一个基于 Spring AI 2.0 和 Spring Boot 4 开发的开源 ERP 智能助手。\n\n项目将 Tool Calling 和 RAG 结合起来：用户可以直接用自然语言查询销售订单、库存、采购、生产、质检等 ERP 业务数据，也可以导入 PDF、Word、Excel 等企业文档进行知识问答。\n\n与普通聊天 Demo 不同，系统能够把 Tool 返回的真实业务数据自动转换成条形图、折线图、饼图、甘特图、雷达图等图表，目前支持 23 种图表。\n\n## 主要特点\n\n- 内置销售、采购、生产、质检、仓库、财务、售后、委外 8 大 ERP 模块，共 39 个代码 Tool\n- 支持在运行期间维护动态 SQL Tool，并限制为只读查询、绑定参数和租户数据隔离\n- Tool 查询结果可以自动生成 23 种 ECharts 图表\n- 使用 PgVector 和本地 ONNX Embedding 实现 RAG 知识库\n- 支持 DeepSeek、通义千问和 Gemini 多模型切换\n- 支持 SSE 流式对话、数据库会话记忆、Tool 调用追踪和 Token 计费\n- 提供 Docker Compose、初始化演示数据和中英文文档\n- 使用 Apache-2.0 开源协议\n\n## 技术栈\n\nJava 17+、Spring Boot 4.0.7、Spring AI 2.0.0、MySQL、PostgreSQL、PgVector、Apache ECharts。\n\n## 运行效果\n\n![Spring AI ERP Assistant Demo](https://raw.githubusercontent.com/ly1836/spring-ai-rag-demo/main/doc/img.gif)\n\n最新版本：3.0.4  \n项目仓库：https://github.com/ly1836/spring-ai-rag-demo","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11000","issueUrl":"https://github.com/ruanyf/weekly/issues/11000"},{"sourceId":"weekly-issues","title":"【工具自荐】YouTube to MP4：优先尝试 1080p，不可用时自动回退","url":"https://youtubetowav.io/youtube-to-mp4-converter","author":"ethanjamescolez","authorUrl":"https://github.com/ethanjamescolez","publishedAt":"2026-08-03T11:34:39Z","summary":"名称 YouTube to MP4 converter 链接 一句话简介 一个无需注册的 YouTube 转 MP4 网页工具：优先尝试 1080p，不可用时自动回退到 720p、480p 或 360p，并提供进度和结果预览。 推荐理由 这类工具最容易把“1080p”写成保证，但实际分辨率会受到来源视频和当前转换服务影响。这个页面把回退路径直接做进工作流：先尝试 1080p，失败时继续尝试较低档位，而不是让用户只看到一个笼统的失败结果。 它与站内已有的 WAV / MP3 音频页面不同，解决的是需要保留视频画面的 MP4 输出场景。当前支持标准 YouTube URL、youtu.be 链接、Shorts 链接和 video ID；转换过程中可以查看进度，结果返回后也可以先预览，再决定是否打开或下载临时文件。 当前路径 1. 粘贴 YouTube URL、youtu.be 链接、Shorts 链接或 video ID。 2. 启动 MP4 转换任务。 3. 查看处理进度和实际返回的分辨率。 4. 在浏览器中预览转换结果。 5. 确认内容和画质符合预期后，再打开或下载临时结果。 使用前说明 分辨率和可用性取决于来源媒体与当前第三方转换服务；1080p 只是优先尝试，不是保证。1080p 流程限 90 分钟，较低分辨率限 120 分钟。该工具不是 YouTube 官方服务，也不保证每个 URL 或每个视频都能转换。生成结果应视为临时交付链接，用户只应处理自己拥有或已获下载许可的内容。","content":"## 名称\n\nYouTube to MP4 converter\n\n## 链接\n\nhttps://youtubetowav.io/youtube-to-mp4-converter\n\n## 一句话简介\n\n一个无需注册的 YouTube 转 MP4 网页工具：优先尝试 1080p，不可用时自动回退到 720p、480p 或 360p，并提供进度和结果预览。\n\n## 推荐理由\n\n这类工具最容易把“1080p”写成保证，但实际分辨率会受到来源视频和当前转换服务影响。这个页面把回退路径直接做进工作流：先尝试 1080p，失败时继续尝试较低档位，而不是让用户只看到一个笼统的失败结果。\n\n它与站内已有的 WAV / MP3 音频页面不同，解决的是需要保留视频画面的 MP4 输出场景。当前支持标准 YouTube URL、youtu.be 链接、Shorts 链接和 video ID；转换过程中可以查看进度，结果返回后也可以先预览，再决定是否打开或下载临时文件。\n\n## 当前路径\n\n1. 粘贴 YouTube URL、youtu.be 链接、Shorts 链接或 video ID。\n2. 启动 MP4 转换任务。\n3. 查看处理进度和实际返回的分辨率。\n4. 在浏览器中预览转换结果。\n5. 确认内容和画质符合预期后，再打开或下载临时结果。\n\n## 使用前说明\n\n分辨率和可用性取决于来源媒体与当前第三方转换服务；1080p 只是优先尝试，不是保证。1080p 流程限 90 分钟，较低分辨率限 120 分钟。该工具不是 YouTube 官方服务，也不保证每个 URL 或每个视频都能转换。生成结果应视为临时交付链接，用户只应处理自己拥有或已获下载许可的内容。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11001","issueUrl":"https://github.com/ruanyf/weekly/issues/11001"},{"sourceId":"weekly-issues","title":"【工具自荐】MovePlaybook：无需账户、浏览器本地保存的搬家清单","url":"https://moveplaybook.app/","author":"lionchain100-alt","authorUrl":"https://github.com/lionchain100-alt","publishedAt":"2026-08-03T13:21:55Z","summary":"我做了一个免费的 Web 工具 MovePlaybook，面向正在安排家庭搬家的人。 用户填写搬家日期后，工具会把常见事项整理到时间线中；可以修改任务日期、添加自己的提醒、临时隐藏不适用的事项，并导出打印版 PDF。无需注册，计划只保存在当前浏览器中。 网站： 我是这个工具的开发者。它目前主要面向英语用户；涉及房东、搬家公司、公用事业或政府部门的具体要求，仍应以当地机构的确认信息为准。","content":"我做了一个免费的 Web 工具 MovePlaybook，面向正在安排家庭搬家的人。\n\n用户填写搬家日期后，工具会把常见事项整理到时间线中；可以修改任务日期、添加自己的提醒、临时隐藏不适用的事项，并导出打印版 PDF。无需注册，计划只保存在当前浏览器中。\n\n网站：https://moveplaybook.app/\n\n我是这个工具的开发者。它目前主要面向英语用户；涉及房东、搬家公司、公用事业或政府部门的具体要求，仍应以当地机构的确认信息为准。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11002","issueUrl":"https://github.com/ruanyf/weekly/issues/11002"},{"sourceId":"weekly-issues","title":"【开源自荐】Axiom Launcher -- 一个用 Python 编写的 CLI 第三方 Minecraft: Java Edition 启动器。","url":"https://github.com/sudo1123/axiom-launcher","author":"sudo1123","authorUrl":"https://github.com/sudo1123","publishedAt":"2026-08-03T13:43:08Z","summary":"产品名称：Axiom Launcher GitHub仓库地址： 简介：Axiom Launcher 是一款用 Python 编写的第三方 Minecraft: Java Edition 启动器，以命令行方式运行。它自动下载游戏版本、依赖库、原生库与资源文件，并自动安装对应 Java，解决配置与下载痛点。代码几乎仅依赖 Python 标准库，唯一第三方依赖为 requests。内置 Mojang 官方源与 BMCLAPI 镜像源，可按网络环境切换；支持多实例管理、智能参数解析、完整性检查，适合命令行玩家与自动化部署场景。未来将加入参数式命令行界面，使启动器更 AI 友好、便于脚本与智能助手调用；同时支持 Microsoft 正版账号登录，兼顾离线与正版需求。 （项目仍在alpha阶段，现有v0.12.0已实现完整的初始化流程，目前暂无正式release, 烦请克隆仓库或者至最新tag处下载源代码运行）","content":"产品名称：Axiom Launcher\n\nGitHub仓库地址：https://github.com/sudo1123/axiom-launcher\n\n简介：Axiom Launcher 是一款用 Python 编写的第三方 Minecraft: Java Edition 启动器，以命令行方式运行。它自动下载游戏版本、依赖库、原生库与资源文件，并自动安装对应 Java，解决配置与下载痛点。代码几乎仅依赖 Python 标准库，唯一第三方依赖为 requests。内置 Mojang 官方源与 BMCLAPI 镜像源，可按网络环境切换；支持多实例管理、智能参数解析、完整性检查，适合命令行玩家与自动化部署场景。未来将加入参数式命令行界面，使启动器更 AI 友好、便于脚本与智能助手调用；同时支持 Microsoft 正版账号登录，兼顾离线与正版需求。\n （项目仍在alpha阶段，现有v0.12.0已实现完整的初始化流程，目前暂无正式release,  烦请克隆仓库或者至最新tag处下载源代码运行）","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11003","issueUrl":"https://github.com/ruanyf/weekly/issues/11003"},{"sourceId":"weekly-issues","title":"【开源自荐】跨 Agent、跨设备的一个记忆外挂（当 Claude 被封之后的记忆迁移工具","url":"https://memu.so/（在","author":"Koimiao-zz","authorUrl":"https://github.com/Koimiao-zz","publishedAt":"2026-08-03T13:53:43Z","summary":"memU 2.0 已上线。 这次最值得体验的是，memU 的个人记忆现在可以跨 Agent 、跨设备使用。 无论你在 Codex 、Claude Code 、Cursor 、Openclaw 之间切换，还是换一台设备，都能继续使用同一份上下文和知识。 接入也更简单：把 memU 的 Skill 链接交给常用 Agent 即可；之后记忆沉淀和检索会在后台自动进行，Dashboard 也能查看和管理自己的记忆。 另外，memU 依然保持轻量、开源，核心记忆逻辑约 500 行代码，方便开发者按自己的工作流定制。 欢迎现在试试新版本（完全免费）： Quick start 里面复制代码粘贴给 Agent 即可使用，非常丝滑～） 开源版本本地部署也是完全没问题的呢，请到 readme 了解详情： <img width=\"2208\" height=\"1436\" alt=\"Image\" src=\" /","content":"memU 2.0 已上线。 这次最值得体验的是，memU 的个人记忆现在可以跨 Agent 、跨设备使用。\n\n无论你在 Codex 、Claude Code 、Cursor 、Openclaw 之间切换，还是换一台设备，都能继续使用同一份上下文和知识。\n\n接入也更简单：把 memU 的 Skill 链接交给常用 Agent 即可；之后记忆沉淀和检索会在后台自动进行，Dashboard 也能查看和管理自己的记忆。\n\n另外，memU 依然保持轻量、开源，核心记忆逻辑约 500 行代码，方便开发者按自己的工作流定制。\n\n欢迎现在试试新版本（完全免费）： [https://memu.so/（在](https://memu.so/%EF%BC%88%E5%9C%A8) Quick start 里面复制代码粘贴给 Agent 即可使用，非常丝滑～）\n\n开源版本本地部署也是完全没问题的呢，请到 readme 了解详情： https://github.com/NevaMind-AI/memU\n\n<img width=\"2208\" height=\"1436\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/67060ea3-7786-459a-a303-6cb801958a74\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11004","issueUrl":"https://github.com/ruanyf/weekly/issues/11004"},{"sourceId":"weekly-issues","title":"【开源自荐】evalint：审计你的 LLM 评测集，找出标准答案写错的题","url":"https://github.com/CAOShurong/evalint","author":"CAOShurong","authorUrl":"https://github.com/CAOShurong","publishedAt":"2026-08-03T15:09:24Z","summary":"项目地址： 所有评测框架都在帮你跑 LLM 测试用例，却没有一个会问：这些用例本身出得好不好？ 于是你得到一个排行榜：claudesonnet 0.729、gpt4o 0.729。两个数字、三位小数，但你没法知道这个差距有没有意义、240 道题里有多少道其实什么都测不出来，以及哪几道的标准答案本身就是错的。 evalint 读你已经有的结果文件（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），回答这三件事。 一、这个排行榜可信吗 它算 KR20 信度，以及由此得出的「能分辨的最小分差」。示例数据里这个值是 0.026，所以上面那两个模型被判定为并列，而不是排出第一第二。 二、你有多少题在白烧钱 所有模型都答对的题，在数学上不可能改变排名——但每跑一次就要花一次 API 调用，永远花下去。示例的 240 道题里，58 道完全影响不了结果，151 道就能复现一模一样的排名，每次跑省 37% 的调用。 三、哪些题的标准答案是错的 如果一道题越差的模型反而越容易答对，那不存在「这题很难」的解释——只可能是答案写错了，而差模型恰好烂到能跟错答案对上。 !item map 图里每个点是一道题，虚线以下就是这种反向题。那 10 道红点是我故意埋进去的错题，一道不多一道不少全被找出来。 最费劲的部分其实是「学会不下结论」。 只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两个分布完全重叠——任何阈值都分不开。一个据此报「发现 21 道坏题」的工具，会让人白白去查 13 道好题。所以现在每个指控都跑一次置换检验；只有 3 个模型时它直接说「证不了」，而不是编个自信的数字。一个总是误报的检查工具，第二次谎报之后就会被卸载，然后什么都查不到了。 零运行时依赖，不用 numpy 也不用 pandas，Python 3.9+，Linux / Windows / macOS 都测过。 bash pip install evalint evalint results.csv","content":"**项目地址：** https://github.com/CAOShurong/evalint\n\n所有评测框架都在帮你跑 LLM 测试用例，却没有一个会问：**这些用例本身出得好不好？**\n\n于是你得到一个排行榜：`claude-sonnet 0.729`、`gpt-4o 0.729`。两个数字、三位小数，但你没法知道这个差距有没有意义、240 道题里有多少道其实什么都测不出来，以及哪几道的标准答案本身就是错的。\n\nevalint 读你已经有的结果文件（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），回答这三件事。\n\n**一、这个排行榜可信吗**\n\n它算 KR-20 信度，以及由此得出的「能分辨的最小分差」。示例数据里这个值是 0.026，所以上面那两个模型被判定为**并列**，而不是排出第一第二。\n\n**二、你有多少题在白烧钱**\n\n所有模型都答对的题，在数学上不可能改变排名——但每跑一次就要花一次 API 调用，永远花下去。示例的 240 道题里，58 道完全影响不了结果，151 道就能复现一模一样的排名，**每次跑省 37% 的调用**。\n\n**三、哪些题的标准答案是错的**\n\n如果一道题**越差的模型反而越容易答对**，那不存在「这题很难」的解释——只可能是答案写错了，而差模型恰好烂到能跟错答案对上。\n\n![item map](https://raw.githubusercontent.com/CAOShurong/evalint/main/docs/item-map.png)\n\n图里每个点是一道题，虚线以下就是这种反向题。那 10 道红点是我故意埋进去的错题，一道不多一道不少全被找出来。\n\n**最费劲的部分其实是「学会不下结论」。** 只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两个分布完全重叠——**任何阈值都分不开**。一个据此报「发现 21 道坏题」的工具，会让人白白去查 13 道好题。所以现在每个指控都跑一次置换检验；只有 3 个模型时它直接说「证不了」，而不是编个自信的数字。一个总是误报的检查工具，第二次谎报之后就会被卸载，然后什么都查不到了。\n\n零运行时依赖，不用 numpy 也不用 pandas，Python 3.9+，Linux / Windows / macOS 都测过。\n\n```bash\npip install evalint\nevalint results.csv\n```\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11005","issueUrl":"https://github.com/ruanyf/weekly/issues/11005"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[开源自荐] 基于 Spring AI 的 ERP 智能助手","url":"https://github.com/ly1836/spring-ai-rag-demo","author":"ly1836","authorUrl":"https://github.com/ly1836","publishedAt":"2026-08-03T10:07:47Z","summary":"项目地址 类别 Java 项目标题 基于 Spring AI 的可运行 ERP 智能助手 项目描述 这是一个基于 Spring AI 2.0 和 Spring Boot 4 构建的制造业 ERP 智能助手，集成 RAG、39 个业务查询 Tool、会话记忆、多租户隔离、调用追踪、计费和图表生成。项目提供中英文文档、演示数据与 Docker Compose，适合 Java 开发者学习企业 AI 应用的完整落地方式。 亮点 不只是简单的聊天或文档问答 Demo，而是一个可以直接运行的完整 ERP AI 应用，包含前端、后端、数据库、演示数据和 Docker 部署。 内置销售、采购、生产、质检、库存、财务、售后和委外 8 个 ERP 模块，共 39 个业务查询 Tool。 支持运行时配置动态数据库 Tool，并通过只读 SELECT、绑定参数、结果行数限制和租户条件注入降低 SQL 风险。 RAG 使用 PostgreSQL、PgVector 和本地 ONNX Embedding 模型，支持导入 PDF、Word、Excel 和 TXT 文档。 图表不是直接执行大模型生成的 ECharts 配置，而是由大模型选择类型，后端根据真实 Tool 结果生成可信 ChartSpec，目前支持 23 种图表。 支持 DeepSeek、通义千问和 Google Gemini，并包含 JDBC 会话记忆、SSE 流式响应、Tool 调用追踪和 Token 计费。 提供中英文 README、Apache2.0 License、Docker Compose、初始化演示数据和动态 GIF，方便 Java 开发者学习和二次开发。 示例代码 markdown $env:DEEPSEEKAPIKEY=\"yourdeepseekkey\" $env:ERPDBPASSWORD=\"yourmysqlpassword\" docker compose up d 截图或演示视频 !Spring AI ERP 智能助手演示","content":"### 项目地址\n\nhttps://github.com/ly1836/spring-ai-rag-demo\n\n### 类别\n\nJava\n\n### 项目标题\n\n基于 Spring AI 的可运行 ERP 智能助手\n\n### 项目描述\n\n这是一个基于 Spring AI 2.0 和 Spring Boot 4 构建的制造业 ERP 智能助手，集成 RAG、39 个业务查询 Tool、会话记忆、多租户隔离、调用追踪、计费和图表生成。项目提供中英文文档、演示数据与 Docker Compose，适合 Java 开发者学习企业 AI 应用的完整落地方式。\n\n### 亮点\n\n- 不只是简单的聊天或文档问答 Demo，而是一个可以直接运行的完整 ERP AI 应用，包含前端、后端、数据库、演示数据和 Docker 部署。\n- 内置销售、采购、生产、质检、库存、财务、售后和委外 8 个 ERP 模块，共 39 个业务查询 Tool。\n- 支持运行时配置动态数据库 Tool，并通过只读 SELECT、绑定参数、结果行数限制和租户条件注入降低 SQL 风险。\n- RAG 使用 PostgreSQL、PgVector 和本地 ONNX Embedding 模型，支持导入 PDF、Word、Excel 和 TXT 文档。\n- 图表不是直接执行大模型生成的 ECharts 配置，而是由大模型选择类型，后端根据真实 Tool 结果生成可信 ChartSpec，目前支持 23 种图表。\n- 支持 DeepSeek、通义千问和 Google Gemini，并包含 JDBC 会话记忆、SSE 流式响应、Tool 调用追踪和 Token 计费。\n- 提供中英文 README、Apache-2.0 License、Docker Compose、初始化演示数据和动态 GIF，方便 Java 开发者学习和二次开发。\n\n### 示例代码\n\n```markdown\n$env:DEEPSEEK_API_KEY=\"your-deepseek-key\"\n$env:ERP_DB_PASSWORD=\"your-mysql-password\"\n\ndocker compose up -d\n```\n\n### 截图或演示视频\n\n![Spring AI ERP 智能助手演示](https://raw.githubusercontent.com/ly1836/spring-ai-rag-demo/main/doc/img.gif)","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3509","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3509"},{"sourceId":"hellogithub-issues","title":"[开源推荐] GOTO：记得一点，就能找到","url":"https://github.com/longqiyua/goto","author":"longqiyua","authorUrl":"https://github.com/longqiyua","publishedAt":"2026-08-03T14:34:25Z","summary":"项目地址 类别 Kotlin 项目标题 GOTO：记得一点，就能找到 项目描述 GOTO 当前阶段已实现为 以单一搜索框为核心的 Android 本地应用搜索与智能启动工具。它试图解决的并不只是“更快搜索应用”，而是让用户在记不清名称、输错字符，甚至只记得用途的情况下，依然能够找到目标应用。 用户可以输入中文名、拼音、首字母、英文缩写、T9 数字、用途词或带有错字的模糊线索。GOTO 会结合精确匹配、拼音检索、模糊纠错、键盘距离、应用标签与使用行为，从多个维度召回候选并进行排序，让搜索不再依赖准确记忆和准确输入。 项目由四个边界清晰、彼此解耦，并可独立演进的核心模块构成。四者分别负责输入预联想、搜索与排序、知识与状态存储，以及主动情境决策，共同组成 GOTO 的本地智能启动体系。 1. GOTO Prethink：搜索开始前的可解释预联想层：负责在正式搜索前分析用户的原始输入，针对重复字符、字符交换、键盘误触、不完整前缀和相近拼写，生成少量带有置信度与解释信息的平行候选。例如，用户输入 ggooogoto 时，它可以联想到 goto；输入 chorme 时，可以生成 chrome 候选。Prethink 不会偷偷修改用户输入，原始查询始终保留最高权重，所有联想结果最终仍交由 GOTO Engine 统一匹配和排序。 模块同时提供 JavaScript、Kotlin 和 Rust 实现，并通过统一 API 契约保持跨平台行为一致。 仓库地址： 2. GOTO Engine：无状态的本地搜索与智能排序引擎，它是整个系统的核心计算层，负责搜索触发、索引构建、关键词匹配、输入纠错、候选召回、语义检索和个性化重排，但自身不保存任何用户数据。搜索流程按照“精确匹配 → 前缀匹配 → 模糊匹配”的优先级执行，支持中文名称、拼音、英文名称、缩写、T9、分类和标签等多种检索方式，并结合 Trie 前缀树、IndexTree、Jaccard 相似度、字符顺序恢复和键盘物理距离处理误触与模糊输入。Engine 还包含一套不依赖大型语言模型的“模拟智能”机制：它会读取 GOTO Base 中的启动热力图、时段排名、应用转移矩阵、用户上下文和反馈链，根据当前时间、前序应用与历史选择，对搜索结果进行无状态重排。当常规规则搜索无法得到结果时，Engine 可以通过 BM25 对应用描述进行本地语义检索；同时支持基于 BGEsmall 嵌入模型定期重建个人化 RAG 数据库，并以灰度过渡方式更新新旧索引。 模块提供 JavaScript、Kotlin 和 Rust 三种实现，共用相同的算法契约、功能开关和接口定义。 仓库地址： 3. GOTO Base：本地优先的知识、记忆与模型数据底座，他是 GOTO 唯一的持久状态层。它不负责搜索、评分或提醒决策，而是统一保存整个系统需要的公共知识、个人习惯和设备特征，并向 Engine 与 Where 提供结构化读写接口。 Base 将数据物理划分为三个层级： 公共层：保存应用名称、别名、分类、近义词、功能描述、意图标签、RAG 向量库、提示词模板和节假日等可跨用户共享的数据。 个人层：保存用户的启动热力图、分时段排名、应用转移矩阵、搜索点击反馈和个性化偏好。 设备层：承载与当前设备相关的电池、音频、运动、屏幕、网络等瞬时特征，以及可选的本地文件索引。 公共层内置基于 bgesmallzhv1.5 的本地嵌入模型和 512 维应用向量数据，可完全离线运行，也允许切换为其他本地模型或云端接口。公共知识库支持版本化批量更新与回滚，而个人层和设备层不会因为公共库升级而被覆盖。 用户可以分别清除个人记忆、设备数据或全部学习状态，使本地智能能力保持可查看、可重置和可控制。 仓库地址： 4. GOTO Where：判断“现在是否应该出现”的主动决策层，他并不是一个简单的通知模块，而是 GOTO 的主动情境决策层。它负责读取当前信号与历史使用模式，生成可能的操作候选，并依次判断：用户现在可能需要什么、当前是不是合适的时机、是否值得打断，以及应该通过什么方式呈现。 Where 会结合时间模式、前台应用、应用转移关系、设备状态和历史提醒反馈生成候选。例如，当用户在特定时间经常打开某个应用，或使用完相机后通常进入图片分享应用，Where 可以根据这些稳定模式形成提醒建议。 为了避免智能提醒变成骚扰，它内置独立的时机判断和防打扰策略，并根据用户的打开、忽略、拒绝和关闭行为调整后续权重。正反馈缓慢增加权重，负反馈快速降低权重，连续忽略则会逐渐停止对应提醒。 Where 本身不直接依赖 Android 通知 API，通知只是其中一种可替换的投递方式。核心决策通过平台无关的 Port 接口实现，并提供 Kotlin、JavaScript 和 Rust 三种版本，使其可以用于 Android、Web、桌面端或其他宿主环境。 仓库地址： 软件的搜索、统计与行为学习全部均在设备本地完成，无需登录云端账号；相关数据可查看、可清理，智能学习能力也可以关闭。 GOTO 希望实现的最终目标不是让用户更擅长搜索，而是让应用在需要时更容易出现—最好的搜索，是不再需要搜索。 2026.08.03 亮点 1. 记得一点线索，就能找到应用：不需要准确记住应用名称。中文名、拼音全拼、拼音首字母、英文缩写、T9 数字、用途标签，甚至一段不完整的模糊输入，都可以成为搜索线索。 2. 输错了，也不必重新输入：GOTO 针对手机小键盘上的误触、漏字、字符交换和邻位按键错误设计了专门的容错机制，能够区分“只是打错了”和“输入内容根本不相关”，尽可能从错误输入中恢复真实意图。 3. 所有操作，都围绕一个搜索框完成。首页默认不提供层叠复杂菜单和多层入口。输入线索、查看候选、启动应用、记录反馈形成一条完整路径，让用户几乎不需要学习操作方式，打开即可使用。 4. 越用越顺手，但不会自作主张：GOTO 会根据启动频率、使用时段、搜索点击和忽略行为逐渐调整结果排序。明确输入和确定性匹配始终优先，学习机制只负责优化候选顺序，不会擅自替用户决定要打开什么。 5. 本地也有“类智能”，数据由用户控制：搜索记录、行为统计、个性化排序和主要智能能力在设备本地完成，无需登录云端账号。相关数据可以查看、清理或关闭，在获得个性化体验的同时，保留对数据和功能的控制权。 6. 不只帮你找到，也尝试在需要时提前出现： GOTO 会结合时间、当前应用和近期使用关系，在合适的情境下提供应用建议，进一步减少主动搜索。 示例代码 markdown 截图或演示视频 无需安装，直接在浏览器中体验 GOTO 的核心交互： (2026.08.11 链接“goto”更改为全大写“GOTO”） 补充说明：具体的应用演示 已部署在仓库对应的github page；具体请跳转查看","content":"### 项目地址\n\nhttps://github.com/longqiyua/goto\n\n### 类别\n\nKotlin\n\n### 项目标题\n\nGOTO：记得一点，就能找到\n\n### 项目描述\n\nGOTO 当前阶段已实现为 以单一搜索框为核心的 Android 本地应用搜索与智能启动工具。它试图解决的并不只是“更快搜索应用”，而是让用户在记不清名称、输错字符，甚至只记得用途的情况下，依然能够找到目标应用。\n\n用户可以输入中文名、拼音、首字母、英文缩写、T9 数字、用途词或带有错字的模糊线索。GOTO 会结合精确匹配、拼音检索、模糊纠错、键盘距离、应用标签与使用行为，从多个维度召回候选并进行排序，让搜索不再依赖准确记忆和准确输入。\n\n项目由四个边界清晰、彼此解耦，并可独立演进的核心模块构成。四者分别负责输入预联想、搜索与排序、知识与状态存储，以及主动情境决策，共同组成 GOTO 的本地智能启动体系。\n1. GOTO Prethink：搜索开始前的可解释预联想层：负责在正式搜索前分析用户的原始输入，针对重复字符、字符交换、键盘误触、不完整前缀和相近拼写，生成少量带有置信度与解释信息的平行候选。例如，用户输入 ggooogoto 时，它可以联想到 goto；输入 chorme 时，可以生成 chrome 候选。Prethink 不会偷偷修改用户输入，原始查询始终保留最高权重，所有联想结果最终仍交由 GOTO Engine 统一匹配和排序。\n模块同时提供 JavaScript、Kotlin 和 Rust 实现，并通过统一 API 契约保持跨平台行为一致。\n仓库地址：https://github.com/longqiyua/goto-prethink\n\n2. GOTO Engine：无状态的本地搜索与智能排序引擎，它是整个系统的核心计算层，负责搜索触发、索引构建、关键词匹配、输入纠错、候选召回、语义检索和个性化重排，但自身不保存任何用户数据。搜索流程按照“精确匹配 → 前缀匹配 → 模糊匹配”的优先级执行，支持中文名称、拼音、英文名称、缩写、T9、分类和标签等多种检索方式，并结合 Trie 前缀树、IndexTree、Jaccard 相似度、字符顺序恢复和键盘物理距离处理误触与模糊输入。Engine 还包含一套不依赖大型语言模型的“模拟智能”机制：它会读取 GOTO Base 中的启动热力图、时段排名、应用转移矩阵、用户上下文和反馈链，根据当前时间、前序应用与历史选择，对搜索结果进行无状态重排。当常规规则搜索无法得到结果时，Engine 可以通过 BM25 对应用描述进行本地语义检索；同时支持基于 BGE-small 嵌入模型定期重建个人化 RAG 数据库，并以灰度过渡方式更新新旧索引。\n模块提供 JavaScript、Kotlin 和 Rust 三种实现，共用相同的算法契约、功能开关和接口定义。\n仓库地址：https://github.com/longqiyua/goto-engine\n\n3. GOTO Base：本地优先的知识、记忆与模型数据底座，他是 GOTO 唯一的持久状态层。它不负责搜索、评分或提醒决策，而是统一保存整个系统需要的公共知识、个人习惯和设备特征，并向 Engine 与 Where 提供结构化读写接口。\nBase 将数据物理划分为三个层级：\n公共层：保存应用名称、别名、分类、近义词、功能描述、意图标签、RAG 向量库、提示词模板和节假日等可跨用户共享的数据。\n个人层：保存用户的启动热力图、分时段排名、应用转移矩阵、搜索点击反馈和个性化偏好。\n设备层：承载与当前设备相关的电池、音频、运动、屏幕、网络等瞬时特征，以及可选的本地文件索引。\n公共层内置基于 bge-small-zh-v1.5 的本地嵌入模型和 512 维应用向量数据，可完全离线运行，也允许切换为其他本地模型或云端接口。公共知识库支持版本化批量更新与回滚，而个人层和设备层不会因为公共库升级而被覆盖。\n用户可以分别清除个人记忆、设备数据或全部学习状态，使本地智能能力保持可查看、可重置和可控制。\n仓库地址：https://github.com/longqiyua/goto-base\n\n4. GOTO Where：判断“现在是否应该出现”的主动决策层，他并不是一个简单的通知模块，而是 GOTO 的主动情境决策层。它负责读取当前信号与历史使用模式，生成可能的操作候选，并依次判断：用户现在可能需要什么、当前是不是合适的时机、是否值得打断，以及应该通过什么方式呈现。\nWhere 会结合时间模式、前台应用、应用转移关系、设备状态和历史提醒反馈生成候选。例如，当用户在特定时间经常打开某个应用，或使用完相机后通常进入图片分享应用，Where 可以根据这些稳定模式形成提醒建议。\n为了避免智能提醒变成骚扰，它内置独立的时机判断和防打扰策略，并根据用户的打开、忽略、拒绝和关闭行为调整后续权重。正反馈缓慢增加权重，负反馈快速降低权重，连续忽略则会逐渐停止对应提醒。\nWhere 本身不直接依赖 Android 通知 API，通知只是其中一种可替换的投递方式。核心决策通过平台无关的 Port 接口实现，并提供 Kotlin、JavaScript 和 Rust 三种版本，使其可以用于 Android、Web、桌面端或其他宿主环境。\n仓库地址：https://github.com/longqiyua/goto-where\n\n软件的搜索、统计与行为学习全部均在设备本地完成，无需登录云端账号；相关数据可查看、可清理，智能学习能力也可以关闭。\nGOTO 希望实现的最终目标不是让用户更擅长搜索，而是让应用在需要时更容易出现—**最好的搜索，是不再需要搜索。**\n\n2026.08.03\n\n### 亮点\n\n1. **记得一点线索，就能找到应用**：不需要准确记住应用名称。中文名、拼音全拼、拼音首字母、英文缩写、T9 数字、用途标签，甚至一段不完整的模糊输入，都可以成为搜索线索。\n\n2. **输错了，也不必重新输入**：GOTO 针对手机小键盘上的误触、漏字、字符交换和邻位按键错误设计了专门的容错机制，能够区分“只是打错了”和“输入内容根本不相关”，尽可能从错误输入中恢复真实意图。\n\n3. **所有操作，都围绕一个搜索框完成**。首页默认不提供层叠复杂菜单和多层入口。输入线索、查看候选、启动应用、记录反馈形成一条完整路径，让用户几乎不需要学习操作方式，打开即可使用。\n\n4. **越用越顺手，但不会自作主张**：GOTO 会根据启动频率、使用时段、搜索点击和忽略行为逐渐调整结果排序。明确输入和确定性匹配始终优先，学习机制只负责优化候选顺序，不会擅自替用户决定要打开什么。\n\n5. **本地也有“类智能”，数据由用户控制**：搜索记录、行为统计、个性化排序和主要智能能力在设备本地完成，无需登录云端账号。相关数据可以查看、清理或关闭，在获得个性化体验的同时，保留对数据和功能的控制权。\n\n6. **不只帮你找到，也尝试在需要时提前出现**： GOTO 会结合时间、当前应用和近期使用关系，在合适的情境下提供应用建议，进一步减少主动搜索。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n无需安装，直接在浏览器中体验 **GOTO 的核心交互**：\nhttps://longqiyua.github.io/GOTO/ \n(2026.08.11 链接“goto”更改为全大写“GOTO”）\n\n\n补充说明：具体的应用演示 已部署在仓库对应的github page；具体请跳转查看","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3510","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3510"},{"sourceId":"hellogithub-issues","title":"[开源推荐] evalint：审计 LLM 评测集本身好不好的命令行工具","url":"https://github.com/CAOShurong/evalint","author":"CAOShurong","authorUrl":"https://github.com/CAOShurong","publishedAt":"2026-08-03T15:08:59Z","summary":"项目地址 类别 人工智能 项目标题 审计 LLM 评测集本身好不好的命令行工具 项目描述 所有评测框架都在帮你跑测试用例，却没有一个会问这些用例本身出得好不好。evalint 读取你已有的评测结果（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），算出这份评测集的信度、它能分辨的最小分差，找出所有模型都答对因而无法区分模型的废题、重复题，以及标准答案本身就写错的题目。零运行时依赖，纯标准库实现。 亮点 1. 判断「标准答案写错了」的思路很直接：如果一道题越差的模型反而越容易答对，那不可能是因为题难——只可能是标准答案错了，而差模型恰好烂到跟错答案对上。 2. 它拒绝过度断言。 这是我觉得最值得说的部分：只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两者完全重叠，任何阈值都分不开。所以每个指控都跑置换检验；只有 3 个模型时它会直接说「证不了」，而不是编一个看起来很自信的数字。 3. 告诉你能删掉多少题。 所有模型都答对的题在数学上不可能影响排名，但每跑一次就烧一次 API 调用。示例数据 240 道题里，58 道完全不影响结果，151 道就能复现一模一样的排名——每次跑省 37% 的调用。而且这个结论是验证过的：每一层精简都重新算一遍排名，排名一变就整个回滚。 4. 零依赖。 不用装 numpy 或 pandas。会用到这个工具的人本来就已经不信任自己的评测数字了，再让他先装一套数值计算栈，结果就是永远不会装。 示例代码 bash pip install evalint evalint results.csv evalint exampleresults.csv 240 items · 8 systems · 1920 scores Measurement reliability 0.92 strong enough to trust small differences smallest real difference 0.026 systems closer than this are not distinguishable informative █████████··· 182/240 58 cannot affect the ranking Paying for, not using 46 every system passes 12 no system passes 47 nearduplicate of another item 151 of 240 items reproduce the same ranking 37% fewer calls per run Probably broken BROKEN item056 discrimination 0.92 · chance 0.040 BROKEN item057 discrimination 0.92 · chance 0.017 ... Ranking claudesonnet 0.729 gpt4o 0.729 tied with the leader 最后两行是重点：两个模型分数相同，而这份评测集能分辨的最小差距是 0.026，所以它报「并列」而不是排出第一第二。 截图或演示视频 每个点是一道题，横轴是难度，纵轴是区分度。虚线以下的题是「越差的模型越容易答对」的那些——图中那 10 道是我故意埋进去的错题，evalint 一道不多一道不少全部找出来了。 !item map","content":"### 项目地址\n\nhttps://github.com/CAOShurong/evalint\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n审计 LLM 评测集本身好不好的命令行工具\n\n### 项目描述\n\n所有评测框架都在帮你跑测试用例，却没有一个会问这些用例本身出得好不好。evalint 读取你已有的评测结果（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），算出这份评测集的信度、它能分辨的最小分差，找出所有模型都答对因而无法区分模型的废题、重复题，以及标准答案本身就写错的题目。零运行时依赖，纯标准库实现。\n\n### 亮点\n\n**1. 判断「标准答案写错了」的思路很直接**：如果一道题**越差的模型反而越容易答对**，那不可能是因为题难——只可能是标准答案错了，而差模型恰好烂到跟错答案对上。\n\n**2. 它拒绝过度断言。** 这是我觉得最值得说的部分：只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两者完全重叠，任何阈值都分不开。所以每个指控都跑置换检验；只有 3 个模型时它会直接说「证不了」，而不是编一个看起来很自信的数字。\n\n**3. 告诉你能删掉多少题。** 所有模型都答对的题在数学上不可能影响排名，但每跑一次就烧一次 API 调用。示例数据 240 道题里，58 道完全不影响结果，151 道就能复现一模一样的排名——每次跑省 37% 的调用。而且这个结论是**验证过的**：每一层精简都重新算一遍排名，排名一变就整个回滚。\n\n**4. 零依赖。** 不用装 numpy 或 pandas。会用到这个工具的人本来就已经不信任自己的评测数字了，再让他先装一套数值计算栈，结果就是永远不会装。\n\n### 示例代码\n\n```bash\npip install evalint\nevalint results.csv\n```\n\n```\nevalint  example-results.csv\n  240 items · 8 systems · 1920 scores\n\nMeasurement\n  reliability     0.92   strong enough to trust small differences\n  smallest real difference  0.026   systems closer than this are not distinguishable\n  informative     █████████··· 182/240   58 cannot affect the ranking\n\nPaying for, not using\n     46  every system passes\n     12  no system passes\n     47  near-duplicate of another item\n\n  151 of 240 items reproduce the same ranking   37% fewer calls per run\n\nProbably broken\n  BROKEN item-056   discrimination -0.92 · chance 0.040\n  BROKEN item-057   discrimination -0.92 · chance 0.017\n  ...\n\nRanking\n  claude-sonnet   0.729\n  gpt-4o          0.729  tied with the leader\n```\n\n最后两行是重点：两个模型分数相同，而这份评测集能分辨的最小差距是 0.026，所以它报「并列」而不是排出第一第二。\n\n### 截图或演示视频\n\n每个点是一道题，横轴是难度，纵轴是区分度。虚线以下的题是「越差的模型越容易答对」的那些——图中那 10 道是我故意埋进去的错题，evalint 一道不多一道不少全部找出来了。\n\n![item map](https://raw.githubusercontent.com/CAOShurong/evalint/main/docs/item-map.png)\n","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3511","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3511"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"vibecafe","sourceName":"VibeCafé 作品","items":[{"sourceId":"vibecafe","title":"Vibe Usage Quote/0","url":"https://vibecafe.ai/products/cmsdais0400010akfno93aqg0","author":"zzzhizhi","authorUrl":"https://vibecafe.ai/u/zzzhizhi","publishedAt":"2026-08-03T13:54:08.068Z","summary":"在 Quote/0 画板上展示你的 Vibe Usage 数据","content":"在 Quote/0 画板上展示你的 Vibe Usage 数据","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsdais0400010akfno93aqg0","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/msda9ud2cvjg-o2PLMbo6avjtTgPiOMEADBK6gNeU2E.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/1785764860225-s10rle.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/msda9ud2cvjg-o2PLMbo6avjtTgPiOMEADBK6gNeU2E.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/1785765094919-hs1vye.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/1785765137993-qi890a.png"]},{"sourceId":"vibecafe","title":"ThreadWave | Grow on X without living on X","url":"https://vibecafe.ai/products/cmsda1dxp00000aghihjerggd","author":"Rain Miao","authorUrl":"https://vibecafe.ai/u/rain8miao","publishedAt":"2026-08-03T13:40:36.685Z","summary":"ThreadWave 是一款 X 增长智能体，让你像 Vibe Coding 一样轻松运营和增长 X 账号。","content":"ThreadWave 是一款 X 增长智能体，让你像 Vibe Coding 一样轻松运营和增长 X 账号。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsda1dxp00000aghihjerggd","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd9tald00000agmmob8zuhd/msd9wo4ykm27-X8iDq1krQgVwDkls96hZMT8mL0Lxto.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd9tald00000agmmob8zuhd/msd9wo50ewri-0uTj8I8ve0BbAy6ht1jSaDMb9yrhQQ.ico","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd9tald00000agmmob8zuhd/msd9wo4ykm27-X8iDq1krQgVwDkls96hZMT8mL0Lxto.png"]},{"sourceId":"vibecafe","title":"VizText — AI Diagram Generator from Prompt or Chat","url":"https://vibecafe.ai/products/cmsd99evu00000aja1uhvqeeh","author":"犀利豆","authorUrl":"https://vibecafe.ai/u/xilidou","publishedAt":"2026-08-03T13:18:51.546Z","summary":"AI diagram generator with two modes: Quick or Chat","content":"AI diagram generator with two modes: Quick or Chat","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd99evu00000aja1uhvqeeh","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785763075561-fduoku.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993155639-j4rdis.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785763075561-fduoku.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993191008-97ev3a.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993214640-0dtyxe.webp","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993190971-nr7o3n.png"]},{"sourceId":"vibecafe","title":"光码接收器","url":"https://vibecafe.ai/products/cmsd95ksa00030ajcxevzmb1y","author":"老 A","authorUrl":"https://vibecafe.ai/u/laoa","publishedAt":"2026-08-03T13:15:52.570Z","summary":"QRREC 可以让两台设备仅通过“屏幕 + 摄像头”离线传输文件。","content":"QRREC 可以让两台设备仅通过“屏幕 + 摄像头”离线传输文件。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd95ksa00030ajcxevzmb1y","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmruas87500000ai2549y9r4f/1785762905913-1jwhq3.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmruas87500000ai2549y9r4f/1785762545669-ocd6y6.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmruas87500000ai2549y9r4f/1785762905913-1jwhq3.png"]},{"sourceId":"vibecafe","title":"Codex重置追踪","url":"https://vibecafe.ai/products/cmsd8k5no00000ai3tz8y1kql","author":"wong2","authorUrl":"https://vibecafe.ai/u/wong2","publishedAt":"2026-08-03T12:59:13.188Z","summary":"追踪和预警Codex重置","content":"追踪和预警Codex重置","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd8k5no00000ai3tz8y1kql","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd8goyw00030akkiv59hsp9/msd8h0nzkzry-3DfiezPhbGd5WyybhXRW3cDLNzU799.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd8goyw00030akkiv59hsp9/msd8h0o0kb9a-AWQiVXs0ekfRUzMxn552RZDDbmoOJe.jpg","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd8goyw00030akkiv59hsp9/msd8h0nzkzry-3DfiezPhbGd5WyybhXRW3cDLNzU799.png"]},{"sourceId":"vibecafe","title":"Neobank 几种模式的对标分析 — 支无不言 Research","url":"https://vibecafe.ai/products/cmsd3d2fb00000akseeb1xq2y","author":"ivyleanin","authorUrl":"https://vibecafe.ai/u/ivyleanin","publishedAt":"2026-08-03T10:33:44.328Z","summary":"拆解 Nubank、Revolut、Mercury、Lemon Cash 四种 Neobank 打法的付费研究报告，46 页 PDF，作者 Ivy。","content":"拆解 Nubank、Revolut、Mercury、Lemon Cash 四种 Neobank 打法的付费研究报告，46 页 PDF，作者 Ivy。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd3d2fb00000akseeb1xq2y","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd39era00000ahtnrz4u3x6/1785753169802-brlvu0.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd39era00000ahtnrz4u3x6/1785753150687-llst53.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd39era00000ahtnrz4u3x6/1785753169802-brlvu0.png"]},{"sourceId":"vibecafe","title":"flomoplus - 灵感收藏与网页剪藏 App - App Store","url":"https://vibecafe.ai/products/cmsd2lzil00000akpyhsob30s","author":"extrastu","authorUrl":"https://vibecafe.ai/u/extrastu","publishedAt":"2026-08-03T10:12:40.845Z","summary":"在 App Store 下载“金苹 卢”的“flomoplus - 灵感收藏与网页剪藏”。查看截屏、评分及评论、用户提示以及更多类似“flomoplus - 灵感收藏与网页剪藏”的 App。","content":"在 App Store 下载“金苹 卢”的“flomoplus - 灵感收藏与网页剪藏”。查看截屏、评分及评论、用户提示以及更多类似“flomoplus - 灵感收藏与网页剪藏”的 App。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd2lzil00000akpyhsob30s","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752006674-0a672q.webp","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785751978415-i50r0h.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752006674-0a672q.webp","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752006686-cteist.webp","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752720612-ojuwbs.webp","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752720731-zqisxq.webp","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752742375-1edvdq.webp","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752742337-8zo9k5.webp"]},{"sourceId":"vibecafe","title":"YOKAI.JP","url":"https://vibecafe.ai/products/cmsd0l3ev00000ai2nvou1xv1","author":"Kira","authorUrl":"https://vibecafe.ai/u/kira","publishedAt":"2026-08-03T09:16:00.009Z","summary":"妖怪图鉴 - 认识妖怪。与灵魂交谈。与它结缘。","content":"妖怪图鉴 - 认识妖怪。与灵魂交谈。与它结缘。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd0l3ev00000ai2nvou1xv1","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785747833094-c8mm52.jpg","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785747679575-gat8nr.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785747833094-c8mm52.jpg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748370846-748slp.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748383260-ktq6ll.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748395964-s6it05.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748408893-i8ied0.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748421831-sjfbe5.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748432196-8flwbo.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748445816-8av9to.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748473314-b1sym0.png"]},{"sourceId":"vibecafe","title":"EmuVault | A Curated Retro Game Archive","url":"https://vibecafe.ai/products/cmsd05bh700050ahw8mwd5b68","author":"Warn","authorUrl":"https://vibecafe.ai/u/warn","publishedAt":"2026-08-03T09:03:43.963Z","summary":"Explore a curated archive of playable retro game records organized by platform, genre, year, and dev","content":"Explore a curated archive of playable retro game records organized by platform, genre, year, and dev","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd05bh700050ahw8mwd5b68","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsczy54x00000aky88xgvd69/msczz4a7bpt3-ZaCdWTBWVAjfkdvd4VxOrlbJXDMNro.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsczy54x00000aky88xgvd69/msczz4a8reyc-kHm0kXaLSr15lT25eH6uzr7tI9MvyX.svg","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsczy54x00000aky88xgvd69/msczz4a7bpt3-ZaCdWTBWVAjfkdvd4VxOrlbJXDMNro.png"]},{"sourceId":"vibecafe","title":"/vibex","url":"https://vibecafe.ai/products/cmsd01ldn00000al1ze0xlztd","author":"krhougs","authorUrl":"https://vibecafe.ai/u/krhougs","publishedAt":"2026-08-03T09:00:50.172Z","summary":"连上家里电脑，随时随地猛猛蹬。","content":"连上家里电脑，随时随地猛猛蹬。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmsd01ldn00000al1ze0xlztd","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785749611579-4lhgic.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/msczecwyc5r2-8KnHL8llD6nV5AFaevuwdNSQ0OLHAf.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785749611579-4lhgic.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747331854-ker3io.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747873808-mdd5rc.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747323914-evk06e.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747344032-lyaywk.jpg"]},{"sourceId":"vibecafe","title":"三慢问道 · 道德经 · 流动人生","url":"https://vibecafe.ai/products/cmscvltbb00000akqkxeahkpo","author":"elian","authorUrl":"https://vibecafe.ai/u/elian","publishedAt":"2026-08-03T06:56:35.496Z","summary":"最美道德经AI","content":"最美道德经AI","metrics":{},"tags":["vibecafe","product"],"externalId":"cmscvltbb00000akqkxeahkpo","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089289-8gcm8i.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785739755048-pqljw4.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089289-8gcm8i.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089845-15nr40.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740090044-o0lgt6.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740085554-mup5zm.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740072226-s45d2a.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089925-oobbo2.png"]},{"sourceId":"vibecafe","title":"Symbols Copy and Paste - Symbol Town","url":"https://vibecafe.ai/products/cmscnvfjw00010aj7e06zqy4z","author":"Jaksay","authorUrl":"https://vibecafe.ai/u/jaksay","publishedAt":"2026-08-03T03:20:07.293Z","summary":"Explore a rich collection of Unicode symbols: ★ stars, © copyright, ♥ hearts, ℃ temperature and more","content":"Explore a rich collection of Unicode symbols: ★ stars, © copyright, ♥ hearts, ℃ temperature and more","metrics":{},"tags":["vibecafe","product"],"externalId":"cmscnvfjw00010aj7e06zqy4z","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727186465-gizg6u.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727581415-idua0b.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727186465-gizg6u.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727869090-q4wmhd.png"]}]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"GarageMaster App","url":"https://www.producthunt.com/products/garagemaster-app/launches/garagemaster-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Manage car clubs, events, and drives in one app","content":"GarageMaster is the all‑in‑one car‑club management app for enthusiasts and organisers. Manage memberships, events, and classic registration compliance; coordinate group drives with built‑in maps; track attendance; and handle payments, all from one beautifully designed platform. Whether you run a classic club, performance group, or social motoring community, GarageMaster keeps your club connected and organised.","metrics":{},"tags":["producthunt","new"],"externalId":"1212035","logo":"https://ph-files.imgix.net/162b5a9f-98b3-4fca-95cb-9a36d0adfc99.png?auto=format","images":["https://ph-files.imgix.net/162e4adc-22ae-4e47-bdf1-d4079d4ef3f2.png?auto=format","https://ph-files.imgix.net/a9e36f09-5497-4a7d-b488-e1608b3831e3.jpeg?auto=format","https://ph-files.imgix.net/d29ef797-914b-49ff-b7d7-c384728d4eb3.png?auto=format"],"image":"https://ph-files.imgix.net/162e4adc-22ae-4e47-bdf1-d4079d4ef3f2.png?auto=format"},{"sourceId":"producthunt","title":"Qwen3.8-Max","url":"https://www.producthunt.com/products/qwen3/launches/qwen3-8-max?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Qwen’s most capable model for coding and cowork","content":"Qwen3.8-Max is Qwen’s most capable model to date, a 2.4T-parameter MoE with 95B active parameters, 1M context, and multimodal agent capabilities for coding, research, cowork, and long-horizon tasks.","metrics":{},"tags":["producthunt","new"],"externalId":"1213396","logo":"https://ph-files.imgix.net/fe882c3d-cbc0-4ae5-b5c3-7064e095d3f5.png?auto=format","images":["https://ph-files.imgix.net/619335d6-0640-41ab-9642-b8d08d999c53.png?auto=format","https://ph-files.imgix.net/4d1e62d1-4ef1-4e9e-b7c0-6a5e7ff59033.png?auto=format","https://ph-files.imgix.net/ab9981b9-b333-4e92-b0ea-947fbf714630.png?auto=format","https://ph-files.imgix.net/f87a3e71-6bd7-482a-b2b1-41772f5b765d.png?auto=format","https://ph-files.imgix.net/8164cba3-cf30-4b0b-849d-a0e43836d644.png?auto=format","https://ph-files.imgix.net/fc5493b6-8a63-4788-b7a1-2e509b05988d.png?auto=format","https://ph-files.imgix.net/5eff85b9-2b0a-4c1a-817f-3b07e5b28604.png?auto=format","https://ph-files.imgix.net/5c65acdb-c69a-4469-a486-a7a0fd92c662.png?auto=format","https://ph-files.imgix.net/cb768c1e-1d75-4161-ab0f-8e82117850f0.png?auto=format","https://ph-files.imgix.net/8dc03afc-b581-42c6-beac-f29e4e37318d.png?auto=format","https://ph-files.imgix.net/6e93ac77-3c8e-401c-9d04-1439ca480451.png?auto=format","https://ph-files.imgix.net/c3bc11a2-b358-4e2d-b048-e4e9182b1a28.png?auto=format","https://ph-files.imgix.net/e789b84c-9766-47b6-bd43-7165dba557d2.png?auto=format","https://ph-files.imgix.net/ed435608-3614-486e-a888-43da5c34c73a.png?auto=format","https://ph-files.imgix.net/d9da6133-92fb-45ed-8ddc-e9181a69de6b.png?auto=format","https://ph-files.imgix.net/9ed9a776-902e-44dd-b462-7cf76266ba7f.jpeg?auto=format"],"image":"https://ph-files.imgix.net/619335d6-0640-41ab-9642-b8d08d999c53.png?auto=format"},{"sourceId":"producthunt","title":"AgentSky","url":"https://www.producthunt.com/products/agentsky/launches/agentsky?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Any harness, any LLM — cloud-hosted agents on demand.","content":"Managed agent as a service: launch a long-horizon AI agent in one click — Claude Code, Codex, Hermes, or OpenClaw — with full history, managed recovery, and access through WhatsApp, iMessage, Telegram, Slack, web, API developers, and CLI.","metrics":{},"tags":["producthunt","new"],"externalId":"1211254","logo":"https://ph-files.imgix.net/a50c630a-ee2b-422e-93ef-44116a39bd2c.png?auto=format","images":["https://ph-files.imgix.net/6dd00586-2463-4cd6-8e7c-07854bb731de.png?auto=format","https://ph-files.imgix.net/00e63dda-ca67-4e28-b504-07f2a92fb863.jpeg?auto=format","https://ph-files.imgix.net/4f8a912d-cb52-499d-8c7f-b083426ae06f.jpeg?auto=format","https://ph-files.imgix.net/c213e148-f92c-499e-8dd8-05635dac86fe.jpeg?auto=format","https://ph-files.imgix.net/8dc8ad3b-8e28-4a7a-99e0-5f35e4175f6f.jpeg?auto=format","https://ph-files.imgix.net/b534f5fc-606f-4bb3-83a8-e7e3535a9a5d.jpeg?auto=format","https://ph-files.imgix.net/037dc7d9-fb20-4842-8a15-13eb15566de1.jpeg?auto=format"],"image":"https://ph-files.imgix.net/6dd00586-2463-4cd6-8e7c-07854bb731de.png?auto=format"},{"sourceId":"producthunt","title":"mpai","url":"https://www.producthunt.com/products/mpai/launches/mpai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Make existing Codex and Claude Code sessions multiplayer","content":"Open-source terminal multiplayer for Codex and Claude Code. Join a teammate's explicitly shared native session from another Mac, arrive with the real context, and prompt with your name attached. Tailscale stays private; the host Mac stays in control.","metrics":{},"tags":["producthunt","new"],"externalId":"1213234","logo":"https://ph-files.imgix.net/34a6bb78-5b92-4110-8a97-664b4ffdd716.png?auto=format","images":["https://ph-files.imgix.net/846fea0e-f4df-47e4-9502-ac2a85fb0ba8.png?auto=format","https://ph-files.imgix.net/c240d90d-d0a7-47c3-8056-94afd0bb81c2.png?auto=format","https://ph-files.imgix.net/009fd06d-eca8-4e50-87ee-6171e70a60c0.png?auto=format","https://ph-files.imgix.net/a47318d7-fcae-4ff7-9427-72fe20ce34b7.png?auto=format","https://ph-files.imgix.net/d00a814a-b843-4bda-8f91-b0901b7163e6.jpeg?auto=format"],"image":"https://ph-files.imgix.net/846fea0e-f4df-47e4-9502-ac2a85fb0ba8.png?auto=format"},{"sourceId":"producthunt","title":"Daily Digest for Product Hunt","url":"https://www.producthunt.com/products/daily-digest-for-product-hunt/launches/daily-digest-for-product-hunt?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Daily 1-min curated summary of Product Hunt launches","content":"Get the most out of Product Hunt without spending hours scrolling. Daily Digest for Product Hunt delivers a curated 1-minute summary of new launches directly to your inbox every weekday morning (PT). What’s included: - Handpicked Key Launches with target audience insights (Best for...) - Scenario-based recommendations & key takeaways - Editor's Note summarizing the key theme of today's lineup Save time, stay updated, and let curated launches come to you.","metrics":{},"tags":["producthunt","new"],"externalId":"1212731","logo":"https://ph-files.imgix.net/23534940-6ff4-4e17-ba89-3b81f89e929a.png?auto=format","images":["https://ph-files.imgix.net/22418739-0d44-4462-b3e8-4f5fcc9c4141.png?auto=format","https://ph-files.imgix.net/50adafb0-0c1d-4b2c-a78e-151fdb243cdd.png?auto=format","https://ph-files.imgix.net/5c8c3256-082a-4d9b-a561-c7123ceb575b.png?auto=format"],"image":"https://ph-files.imgix.net/22418739-0d44-4462-b3e8-4f5fcc9c4141.png?auto=format"},{"sourceId":"producthunt","title":"Archevo","url":"https://www.producthunt.com/products/archevo/launches/archevo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Archevo is the all-in-one Business Growth Operating System.","content":"Archevo is the Growth Operating System for African businesses. It replaces spreadsheets and scattered tools with one platform to manage products, orders, customers, payments, and analytics. Built for Nigerian SMEs, Archevo lets you launch a professional online store in minutes, accept payments via Paystack, track inventory, and automate onboarding all from a single dashboard. With built-in AI assistance. Archevo helps you sell smarter, not harder. Start free for your first 100 orders.","metrics":{},"tags":["producthunt","new"],"externalId":"1189676","logo":"https://ph-files.imgix.net/530dea17-e5ca-4cf5-855f-362f0b966574.png?auto=format","images":["https://ph-files.imgix.net/376f1a9e-f1ad-44d1-8849-8bbb49e19548.png?auto=format"],"image":"https://ph-files.imgix.net/376f1a9e-f1ad-44d1-8849-8bbb49e19548.png?auto=format"},{"sourceId":"producthunt","title":"YouTube to MP3 by Aciole","url":"https://www.producthunt.com/products/youtube-to-mp3-by-aciole/launches/youtube-to-mp3-by-aciole?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"A multilingual YouTube to MP3 converter for Windows","content":"YouTube to MP3 by Aciole is a multilingual Windows application that converts YouTube videos into MP3 audio files. It features a simple interface, download queue, real-time progress, automatic setup of required components and a built-in update system. If the internet connection drops, the app waits and automatically resumes the conversion. Available in eight language variants. Intended for content users own or have permission to download.","metrics":{},"tags":["producthunt","new"],"externalId":"1212509","logo":"https://ph-files.imgix.net/d1422542-399e-41e8-a830-f82ebf23a5e5.png?auto=format","images":["https://ph-files.imgix.net/7a107019-9e49-47c7-9294-a0a948bb3041.png?auto=format"],"image":"https://ph-files.imgix.net/7a107019-9e49-47c7-9294-a0a948bb3041.png?auto=format"},{"sourceId":"producthunt","title":"TripNestIQ Radar AI","url":"https://www.producthunt.com/products/tripnestiq-radar-ai/launches/tripnestiq-radar-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Find trips worldwide that fit your complete budget","content":"TripNestIQ Radar AI helps travelers discover where they can go within their complete trip budget. Choose your departure airport, travel dates, region, trip length, hotel preference and budget. Radar AI searches flights and live hotels, compares matching destinations, and shows estimated total costs, remaining budget and smart deal scores. Start with your budget, not a destination. It works in your browser and can also be installed as a web app on your phone or computer.","metrics":{},"tags":["producthunt","new"],"externalId":"1206775","logo":"https://ph-files.imgix.net/d56d5eb1-1afb-4fb5-9996-b4ed44113cc8.png?auto=format","images":["https://ph-files.imgix.net/9ab3aff8-faad-4386-b990-d618fbd6b362.jpeg?auto=format","https://ph-files.imgix.net/0dc88c22-ef3c-4cbe-ba9a-dd3b0a629535.jpeg?auto=format","https://ph-files.imgix.net/7038151b-ab50-491f-a8c7-b1e0bb6099f4.jpeg?auto=format"],"image":"https://ph-files.imgix.net/9ab3aff8-faad-4386-b990-d618fbd6b362.jpeg?auto=format"},{"sourceId":"producthunt","title":"Dodast-Synced Media Player","url":"https://www.producthunt.com/products/dodast-synced-media-player/launches/dodast-synced-media-player?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Every phone in the room, playing in perfect sync","content":"Dodast turns any group of phones, tablets, or laptops on the same Wi-Fi into one perfectly synced player. When you're together in the same room, load up your music and video library and let every connected device play as one — in step, down to matching lip-sync on video. Each person gets their own volume and latency controls right from their phone. Built with Kotlin Multiplatform, so Android and iOS get the exact same experience — great for shared listening and watch parties.","metrics":{},"tags":["producthunt","new"],"externalId":"1213082","logo":"https://ph-files.imgix.net/2be22bf6-6504-43d5-83be-67d9c52a21fe.png?auto=format","images":["https://ph-files.imgix.net/52cf8112-3cb2-4cd9-9b99-de426f4c75a9.webp?auto=format","https://ph-files.imgix.net/ee32e93f-3cae-4fc0-9922-b4a70171d963.webp?auto=format","https://ph-files.imgix.net/6922c480-89ca-4ea8-9a49-fb73d6abc029.webp?auto=format","https://ph-files.imgix.net/4076bfcb-b3f9-4283-94f0-61dfe9855c50.webp?auto=format","https://ph-files.imgix.net/58c0bdab-f345-4523-bf35-4e64a71c7db6.webp?auto=format","https://ph-files.imgix.net/fe033943-dab1-431f-908b-4ec856b4ca03.webp?auto=format","https://ph-files.imgix.net/b6b1ca42-63e2-484f-a048-f636ab6fd340.jpeg?auto=format"],"image":"https://ph-files.imgix.net/52cf8112-3cb2-4cd9-9b99-de426f4c75a9.webp?auto=format"},{"sourceId":"producthunt","title":"HunarHub","url":"https://www.producthunt.com/products/hunarhub-2/launches/hunarhub-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Find Skilled Freelancers. Get Hired. Earn More.","content":"I am 16 year old boy from india who developed this app Independently In india,I have assume that the people of india are very talanted and skilledBut for work online they need to depend on foreigner Apps which often use the dollar payment system So i have make this app based on fully indian system and indian upi system In the app if you need workers you can make an job and if you need work or wanna became a freelancer so you can apply for that job Its easy and fully secured App So check out!!","metrics":{},"tags":["producthunt","new"],"externalId":"1212987","logo":"https://ph-files.imgix.net/8722c066-4c4c-46db-8665-41ca5f07bb13.png?auto=format","images":["https://ph-files.imgix.net/587f8f78-7f8c-4fbf-aff9-68531bc2f252.jpeg?auto=format","https://ph-files.imgix.net/6bbea542-ced0-4ea5-bacb-20d86149cde9.jpeg?auto=format","https://ph-files.imgix.net/d78b2ba0-615b-4722-942d-b502769a3f5d.jpeg?auto=format","https://ph-files.imgix.net/37036f87-c04a-4f0b-9a40-47726a94c352.jpeg?auto=format","https://ph-files.imgix.net/dd475b65-4655-43c6-bf15-747a62ddf36c.jpeg?auto=format","https://ph-files.imgix.net/a77d5337-99e7-45e6-84c1-ebdd3da08ee1.jpeg?auto=format","https://ph-files.imgix.net/fd5fd533-5a23-4946-8a37-9fec14491555.jpeg?auto=format","https://ph-files.imgix.net/0a3419bc-1a79-4079-8313-9f65f14a7c52.jpeg?auto=format"],"image":"https://ph-files.imgix.net/587f8f78-7f8c-4fbf-aff9-68531bc2f252.jpeg?auto=format"},{"sourceId":"producthunt","title":"pulse. by dhi Hospitality","url":"https://www.producthunt.com/products/pulse-by-dhi-hospitality/launches/pulse-by-dhi-hospitality?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Hotel commercial intelligence for GMs.","content":"pulse. unifies marketing, revenue management, and distribution in one Integrated Commercial System: helping hotels grow incremental net margin.","metrics":{},"tags":["producthunt","new"],"externalId":"1210400","logo":"https://ph-files.imgix.net/eeeb8975-41a3-4606-80cc-f2fa16c2f0be.jpeg?auto=format","images":["https://ph-files.imgix.net/9d7cb133-0cc1-4ee5-a6a1-caa630b2a976.jpeg?auto=format"],"image":"https://ph-files.imgix.net/9d7cb133-0cc1-4ee5-a6a1-caa630b2a976.jpeg?auto=format"},{"sourceId":"producthunt","title":"NativePort","url":"https://www.producthunt.com/products/nativeport/launches/nativeport?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"One key and balance for provider-native agent APIs","content":"NativePort gives AI agent builders one key and credit balance for native provider search, scraping, browser automation, voice, and model inference APIs. Choose the provider and keep its native request and response format, with no normalized wrapper or automatic routing. Pay each provider's metered usage with no per request markup. A 5.5% fee applies only when adding credits. Public, dated benchmarks compare quality, latency, cost, and errors where our evaluation corpora cover the provider.","metrics":{},"tags":["producthunt","new"],"externalId":"1211575","logo":"https://ph-files.imgix.net/7c15060f-3a6a-4170-a79e-84d7dae136e6.svg?auto=format","images":["https://ph-files.imgix.net/88032a3e-4123-4e1c-937f-e1a377cef94f.png?auto=format","https://ph-files.imgix.net/c91d11d0-2053-484b-8825-578ec61788d8.jpeg?auto=format"],"image":"https://ph-files.imgix.net/88032a3e-4123-4e1c-937f-e1a377cef94f.png?auto=format"},{"sourceId":"producthunt","title":"Brusnika.LMS","url":"https://www.producthunt.com/products/brusnika-lms/launches/brusnika-lms?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Corporate LMS that lives inside your CRM","content":"Brusnika LMS helps companies deliver learning inside everyday work processes through integrations, automation and AI.","metrics":{},"tags":["producthunt","new"],"externalId":"1212255","logo":"https://ph-files.imgix.net/2736c6d6-7cd8-45d0-9de6-d7c3dd3f03c8.vnd.microsoft.icon?auto=format","images":["https://ph-files.imgix.net/174dd113-3af3-4abc-8fb6-785b07a83e12.png?auto=format","https://ph-files.imgix.net/3e2bc568-6a1f-479c-a096-d798755bd6df.jpeg?auto=format","https://ph-files.imgix.net/99b6f900-aeb3-46f5-b7c0-fd2582636061.jpeg?auto=format","https://ph-files.imgix.net/ff384041-707c-46fc-9f28-cccb58907073.jpeg?auto=format"],"image":"https://ph-files.imgix.net/174dd113-3af3-4abc-8fb6-785b07a83e12.png?auto=format"},{"sourceId":"producthunt","title":"PlayPatch","url":"https://www.producthunt.com/products/playpatch/launches/playpatch?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Clean group games and prompts for family play","content":"PlayPatch is a local game host for clean group play. Pick a scene, read a playful prompt, and keep the table moving with simple rounds for family nights, birthdays, classroom icebreakers, road trips, rainy days, no-prop games, sleepovers, and calm wind-down moments without accounts, ads, tracking, or chat.","metrics":{},"tags":["producthunt","new"],"externalId":"1209400","logo":"https://ph-files.imgix.net/96b87dfe-49e4-4c66-9b21-9e62e81c13d7.png?auto=format","images":["https://ph-files.imgix.net/621ac734-a4be-45da-88a2-5f25e175053e.png?auto=format","https://ph-files.imgix.net/c8586ddc-887e-40f8-b6d7-02412ac7216a.png?auto=format","https://ph-files.imgix.net/414ab292-7067-43ed-9774-18240d9b4606.png?auto=format","https://ph-files.imgix.net/36377b82-cc0b-4e58-b401-c10efb044618.png?auto=format"],"image":"https://ph-files.imgix.net/621ac734-a4be-45da-88a2-5f25e175053e.png?auto=format"},{"sourceId":"producthunt","title":"VewMe","url":"https://www.producthunt.com/products/vewme/launches/vewme?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Power your brand ","content":"VewMe helps creators, coaches, and brands own their audience instead of renting it. Launch your own branded platform with a custom domain, memberships, paid content, live streaming, Stories, group messaging, events, and more. Build recurring revenue, strengthen your community, and grow your business on your terms.","metrics":{},"tags":["producthunt","new"],"externalId":"1207297","logo":"https://ph-files.imgix.net/9ca040c6-78da-43c0-94d0-1e71bc45f8d2.png?auto=format","images":["https://ph-files.imgix.net/daf5d433-6f6f-4beb-b8d5-ce3bbd63fe6c.png?auto=format","https://ph-files.imgix.net/ab480414-1b59-48b3-89e4-497d883ed13b.jpeg?auto=format"],"image":"https://ph-files.imgix.net/daf5d433-6f6f-4beb-b8d5-ce3bbd63fe6c.png?auto=format"},{"sourceId":"producthunt","title":"Murmell","url":"https://www.producthunt.com/products/murmell/launches/murmell?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Cloud canvas where your team and AI agents works together","content":"Murmell is a shared cloud canvas where your team and AI agents work in the same room, on the same repo, with a preview and more coming in the future. Close your laptop and the work keeps going. Agents claim files before they write, so people and agents can move at once without overwriting each other. Run Claude Code, Codex, Kimi, and OpenCode together today, with more agents on the way (OpenClaw, Hermes, and more), and your work lands back in git, so you can always find your projects there.","metrics":{},"tags":["producthunt","new"],"externalId":"1213367","logo":"https://ph-files.imgix.net/0536077d-456d-48e7-a004-9760a0425971.svg?auto=format","images":["https://ph-files.imgix.net/2ef3156a-06cc-4308-ad2e-d95c8bed6378.jpeg?auto=format","https://ph-files.imgix.net/314b188d-ab16-485e-a1c1-6fd9a51d995f.png?auto=format","https://ph-files.imgix.net/fd8014da-2d8a-4727-b1ba-564f7a3265e4.png?auto=format","https://ph-files.imgix.net/ba72fff6-69f3-4bf8-9475-0c63139fb584.png?auto=format","https://ph-files.imgix.net/4c7b5be1-7134-4f88-bd47-c14be5411bed.png?auto=format"],"image":"https://ph-files.imgix.net/2ef3156a-06cc-4308-ad2e-d95c8bed6378.jpeg?auto=format"},{"sourceId":"producthunt","title":"AbilityMic","url":"https://www.producthunt.com/products/abilitymic/launches/abilitymic?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"AI-powered AAC and home control for Apple devices","content":"AbilityMic goes beyond a communication board: it combines AAC with private, on-device Apple Intelligence and native HomeKit automation. Smart suggestions and sentence completion speed up communication, while optional AI can generate boards and symbols. Users can speak, control HomeKit accessories, access HealthKit and emergency tools, and move across the Apple ecosystem. Core AAC works offline with 5,400+ symbols, OBF/OBL support, VoiceOver, Switch Control, and no tracking without consent.","metrics":{},"tags":["producthunt","new"],"externalId":"1212833","logo":"https://ph-files.imgix.net/eeef744d-f967-4c21-920b-1a85bbcef771.svg?auto=format","images":["https://ph-files.imgix.net/933431da-01a8-48c1-8a7d-5ccf848e3af7.png?auto=format","https://ph-files.imgix.net/c3cbd595-11a4-4b2e-81a9-bdef0f063904.png?auto=format","https://ph-files.imgix.net/9cda02c6-c1db-4ee9-9ae6-661bfa075d1a.png?auto=format"],"image":"https://ph-files.imgix.net/933431da-01a8-48c1-8a7d-5ccf848e3af7.png?auto=format"},{"sourceId":"producthunt","title":"elmentore","url":"https://www.producthunt.com/products/elmentore/launches/elmentore?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"AI Mentorship & Senior Code Reviews for Developers","content":"elmentore is an AI-driven developer mentorship platform designed to take software engineers from learning basics to landing senior developer roles. Unlike static video courses, elmentore enforces learning through: • 12-Week Structured Career Roadmaps (Frontend, Backend, Fullstack, DevOps) • Automated Senior-Level Code Reviews with actionable feedback & hireability scores • Daily Coding Challenges & Weekly Evaluation Tests • Adaptive Remedial Catch-Up Modules for weak topics","metrics":{},"tags":["producthunt","new"],"externalId":"1213407","logo":"https://ph-files.imgix.net/d6d9afa3-1707-4772-b0eb-e9edc50370e9.png?auto=format","images":["https://ph-files.imgix.net/32faa178-054c-43ca-a33d-6d4ca5851037.jpeg?auto=format"],"image":"https://ph-files.imgix.net/32faa178-054c-43ca-a33d-6d4ca5851037.jpeg?auto=format"},{"sourceId":"producthunt","title":"IO Tools 3.0 (Revamp)","url":"https://www.producthunt.com/products/io-tools/launches/io-tools-3-0-revamp?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"900+ free tools and growing, redesigned - now with API + MCP","content":"IO Tools is a free tools platform - 900+ utilities for everyday tasks, no signup needed. 3.0 is a full rebuild: redesigned UI, faster load times across the board, and a public API + MCP server so you can plug IO Tools straight into your AI agent workflows instead of opening a browser tab. We've grown from ~40 to 700+ daily clicks. This release is about making that same toolkit usable anywhere - browser, API, or agent.","metrics":{},"tags":["producthunt","new"],"externalId":"1212814","logo":"https://ph-files.imgix.net/92e8c276-6981-4a55-bf13-e211b3d895ee.png?auto=format","images":["https://ph-files.imgix.net/16ebfe23-de34-493f-9f78-191088b484f5.png?auto=format","https://ph-files.imgix.net/f377875b-9945-4ef7-a2e9-65562a8881cb.jpeg?auto=format","https://ph-files.imgix.net/9a4c5e07-af62-4705-a40c-8f1d9a339007.jpeg?auto=format","https://ph-files.imgix.net/992d704c-fcd4-4ad2-8ed7-57977216a73c.jpeg?auto=format"],"image":"https://ph-files.imgix.net/16ebfe23-de34-493f-9f78-191088b484f5.png?auto=format"},{"sourceId":"producthunt","title":"Snapdown","url":"https://www.producthunt.com/products/snapdown-2/launches/snapdown-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-03T07:01:00Z","summary":"Turn anything on your Mac screen into clean Markdown","content":"Snapdown turns any part of your Mac screen into structured Markdown, preserving headings, lists, tables, and text instead of flattening everything into plain OCR. Capture with one shortcut, paste anywhere, and keep every screenshot local on Apple silicon.","metrics":{},"tags":["producthunt","new"],"externalId":"1212818","logo":"https://ph-files.imgix.net/9d16f201-8c28-43c4-a36b-fd63e8ed2887.png?auto=format","images":["https://ph-files.imgix.net/b610558b-d8d7-4e82-b9fa-65bcbdd50e42.png?auto=format","https://ph-files.imgix.net/26fbe4f1-3e95-4458-903e-3f561b32c661.gif?auto=format","https://ph-files.imgix.net/4b283075-a53b-4ac7-8486-67981df0299b.gif?auto=format","https://ph-files.imgix.net/576711a3-22da-448b-af65-2fc7eca206af.png?auto=format","https://ph-files.imgix.net/b7d86af0-1dc7-479b-90be-45ad9c6ff2aa.png?auto=format"],"image":"https://ph-files.imgix.net/b610558b-d8d7-4e82-b9fa-65bcbdd50e42.png?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T08:43:53.752Z",
+  "date": "2026-08-03",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Routewise-AI",
+          "url": "https://routewise-ai.pages.dev/",
+          "author": "zhoujungis",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T00:00:00+08:00",
+          "summary": "旅行规划工具（免费），基于 GPT-5.6 大模型",
+          "content": "旅行规划工具（免费），基于 GPT-5.6 大模型",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-03-Routewise-AI-https://routewise-ai.pages.dev/",
+          "siteLogo": "https://routewise-ai.pages.dev/favicon.svg?v=2"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Zettaranc 知识库",
+          "url": "https://zknowledge.site/",
+          "author": "lululu811(乌鲁木齐)",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T00:00:00+08:00",
+          "summary": "整理万千（Z哥）直播、课程与社群内容构建的 A 股交易知识图谱，收录战法策略、买卖信号、资金仓位等交易概念 - [更多介绍](https://github.com/lululu811/zettaranc-skill/blob/main/README.md)",
+          "content": "整理万千（Z哥）直播、课程与社群内容构建的 A 股交易知识图谱，收录战法策略、买卖信号、资金仓位等交易概念 - [更多介绍](https://github.com/lululu811/zettaranc-skill/blob/main/README.md)",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-03-Zettaranc 知识库-https://zknowledge.site/",
+          "siteLogo": "https://zknowledge.site/favicon.svg"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Snake PC Info",
+          "url": "https://github.com/WindowSSnake/Snake-PC-Info",
+          "author": "WindowSSnake(北京)",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T00:00:00+08:00",
+          "summary": "开源的 Windows 硬件检测工具，支持电池健康度检测和系统日志分析，中英文切换，自带环境",
+          "content": "开源的 Windows 硬件检测工具，支持电池健康度检测和系统日志分析，中英文切换，自带环境",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-03-Snake PC Info-https://github.com/WindowSSnake/Snake-PC-Info"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】LLM Wiki CLI - 基于 Karpathy 提出的 LLM Wiki 概念实现的 Agent 本地持久化记忆空间",
+          "url": "https://github.com/JanYork/llm-wiki-cli",
+          "author": "JanYork",
+          "authorUrl": "https://github.com/JanYork",
+          "publishedAt": "2026-08-03T01:47:36Z",
+          "summary": "项目地址： 中文文档： 最新版本：v0.3.0 开源协议：Apache2.0 项目介绍 AI Agent 很擅长阅读文档和解决当前问题，但会话结束后，已经完成的调查和整理往往也随之消失。下次遇到相似任务时，它又要重新搜索、重新阅读、重新建立上下文。 LLM Wiki CLI（命令名为 lwc）尝试解决这个问题：让 Agent 把经过筛选的本地文档整理成一份能够长期维护、来源可追溯的 Wiki。 Agent 负责理解、综合和修订知识，LWC 负责保存原始来源、Wiki 页面、引用关系、页面链接、检索索引和修改历史。这样，Agent 完成的有效工作可以跨会话继续积累，而不是每次都从原始资料重新开始。 思想来源 项目基于 Andrej Karpathy 提出的 LLM Wiki 概念： 让 LLM 增量构建并持续维护一份互相关联的 Wiki，而不是每次查询时重新从原始文档拼装答案。 LWC 将这个概念实现为一个基于 Rust 和 SQLite 的本地命令行工具，并提供配套的 Agent Skill。 与普通 RAG 的区别 典型的 RAG 工作方式是： text 查询 → 检索原始片段 → 生成一次性答案 LWC 的工作方式是： text 任务 → 读取已有 Wiki 和原始来源 → Agent 完成推理 → 将值得复用的结论写回 Wiki 检索只是 LWC 的一项能力，它的核心产物是一份持续修订的 Wiki。来源、引用、页面关系、矛盾和历史都会被保留下来。 LWC 可以与 RAG 配合，但它本身不依赖 embedding 或向量数据库。 主要特点 本地优先：使用 Rust 和 SQLite，日常存储与检索不依赖云端服务、后台守护进程或数据库服务器。 来源可追溯：原始资料保存为不可变快照，Wiki 页面可以明确引用对应来源。 知识持续写回：Agent 可以在完成任务后创建或修订页面，让有效结论跨会话复用。 项目与全局记忆分离：支持项目级 .lwc/ 和用户级 ~/.lwc/，避免不同项目的知识混在一起。 中英文词法检索：基于 SQLite FTS5/BM25，支持中文、英文和混合技术术语。 Wiki 关系图：保存页面之间的链接和引用关系，可以查询相关页面及结构化证据。 Markdown 投影：SQLite 是规范数据源，同时可以生成供人工审阅或 Obsidian 使用的 Markdown Wiki。 安全维护：提供 lint、索引重建、压缩、检查点和恢复等命令。 面向 Agent 的接口：命令以结构化 JSON 返回结果，仓库还提供配套的 usinglwc Skill。 安装 bash curl proto '=https' tlsv1.2 fsSL \\ | sh 也可以通过 Cargo 从源码安装： bash cargo install locked git README 中还提供了一段完整配置提示词，可以直接交给 Agent，由它完成 CLI、Skill 和全局记忆的安装配置。 适用场景 LWC 目前定位为单机、单用户的 Agent 知识库，适合长期软件项目、技术文档整理、研究资料维护，以及任何需要让 AI Agent 跨会话保留项目知识的工作流。",
+          "content": "项目地址：https://github.com/JanYork/llm-wiki-cli\n  中文文档：https://github.com/JanYork/llm-wiki-cli/blob/main/README.zh-CN.md\n  最新版本：v0.3.0\n  开源协议：Apache-2.0\n\n  ## 项目介绍\n\n  AI Agent 很擅长阅读文档和解决当前问题，但会话结束后，已经完成的调查和整理往往也随之消失。下次遇到相似任务时，它又要重新搜索、重新阅读、重新建立上下文。\n\n  LLM Wiki CLI（命令名为 `lwc`）尝试解决这个问题：让 Agent 把经过筛选的本地文档整理成一份能够长期维护、来源可追溯的 Wiki。\n\n  Agent 负责理解、综合和修订知识，LWC 负责保存原始来源、Wiki 页面、引用关系、页面链接、检索索引和修改历史。这样，Agent 完成的有效工作可以跨会话继续积累，而不是每次都从原始资料重新开始。\n\n  ## 思想来源\n\n  项目基于 Andrej Karpathy 提出的 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 概念：\n\n  > 让 LLM 增量构建并持续维护一份互相关联的 Wiki，而不是每次查询时重新从原始文档拼装答案。\n\n  LWC 将这个概念实现为一个基于 Rust 和 SQLite 的本地命令行工具，并提供配套的 Agent Skill。\n\n  ## 与普通 RAG 的区别\n\n  典型的 RAG 工作方式是：\n\n  ```text\n  查询 → 检索原始片段 → 生成一次性答案\n  ```\n\n  LWC 的工作方式是：\n\n  ```text\n  任务 → 读取已有 Wiki 和原始来源 → Agent 完成推理\n       → 将值得复用的结论写回 Wiki\n  ```\n\n  检索只是 LWC 的一项能力，它的核心产物是一份持续修订的 Wiki。来源、引用、页面关系、矛盾和历史都会被保留下来。\n\n  LWC 可以与 RAG 配合，但它本身不依赖 embedding 或向量数据库。\n\n  ## 主要特点\n\n  - **本地优先**：使用 Rust 和 SQLite，日常存储与检索不依赖云端服务、后台守护进程或数据库服务器。\n  - **来源可追溯**：原始资料保存为不可变快照，Wiki 页面可以明确引用对应来源。\n  - **知识持续写回**：Agent 可以在完成任务后创建或修订页面，让有效结论跨会话复用。\n  - **项目与全局记忆分离**：支持项目级 `.lwc/` 和用户级 `~/.lwc/`，避免不同项目的知识混在一起。\n  - **中英文词法检索**：基于 SQLite FTS5/BM25，支持中文、英文和混合技术术语。\n  - **Wiki 关系图**：保存页面之间的链接和引用关系，可以查询相关页面及结构化证据。\n  - **Markdown 投影**：SQLite 是规范数据源，同时可以生成供人工审阅或 Obsidian 使用的 Markdown Wiki。\n  - **安全维护**：提供 lint、索引重建、压缩、检查点和恢复等命令。\n  - **面向 Agent 的接口**：命令以结构化 JSON 返回结果，仓库还提供配套的 `using-lwc` Skill。\n\n  ## 安装\n\n  ```bash\n  curl --proto '=https' --tlsv1.2 -fsSL \\\n    https://github.com/JanYork/llm-wiki-cli/releases/latest/download/install.sh | sh\n  ```\n\n  也可以通过 Cargo 从源码安装：\n\n  ```bash\n  cargo install --locked --git https://github.com/JanYork/llm-wiki-cli\n  ```\n\n  README 中还提供了一段完整配置提示词，可以直接交给 Agent，由它完成 CLI、Skill 和全局记忆的安装配置。\n\n  ## 适用场景\n\n  LWC 目前定位为单机、单用户的 Agent 知识库，适合长期软件项目、技术文档整理、研究资料维护，以及任何需要让 AI Agent 跨会话保留项目知识的工作流。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10993",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10993"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【APP自荐】vPlayer HiFi — 把 iOS 设备化身准专业 HiFi 播放器",
+          "url": "https://github.com/shanleiguang/vPlayer",
+          "author": "shanleiguang",
+          "authorUrl": "https://github.com/shanleiguang",
+          "publishedAt": "2026-08-03T02:38:08Z",
+          "summary": "缘起 记得准备高考的那段时间，每天除了必要的锻炼，其他精力基本全都用来复习，唯一的放松，就是在晚饭时刻，当母亲把做好的饭菜端到我的书桌上后，我便合上书本，一边吃饭，一边打开练习英语听力的磁带机，随手放一盘自己喜欢的磁带。也许是唐朝的《梦回唐朝》，也许是黑豹的《无地自容》（《黑豹I》），或者是郑钧的《回到拉萨》，还有老狼的《恋恋风尘》。在那个白衣飘飘的年代，同学们会互相借磁带听，女生还会把喜欢的歌词手抄到带着花边的本子上，叫做歌词本。上了大学，在1999年的某一天，我在校门口斜对面的汉唐书店偶然买了盘一个叫做朴树的年轻人发行的专辑《我去2000年》，回到宿舍，同学们还都不知道这人是谁呢。后来他发行了第二张专辑《生如夏花》，我依然记得曾给某人在电话里清唱这张专辑里的《我爱你，再见》，而她人在电话那头早已哭的稀里哗啦。大学四年一晃而过，毕业季的旧货市场上，有个低年级的漂亮女生要打包全收我的那些旧磁带和杂志，我仔细地挑出了这盘《我去2000年》，连同在音乐学院、外语学院外打卡带地摊收的一套红、蓝、黑封面的披头士和当年一本叫做 Music Heaven 音乐期刊里带的那些极具风格化的欧美乐队歌手合集的磁带一起背回了家，直到现在，它们还安静的躺在我书柜的角落里，嗯，丢不走的行李，是我不变的心。上班后第一个月工资，我拿出大部分买了台蓝色的 Sony CD 便携播放器和森海塞尔 PX500 耳机，认认真真的煲够了一百小时，那时候经常光顾本地一家特色 CD 小卖店，店里全是复刻的国外经典 CD，平克弗洛伊德、披头士、大门、皇后、老鹰、恐怖海峡、涅槃等等，于此同时，互联网 P2P 开始有了萌芽，于是各种音乐专辑下载了一堆一堆，而电脑上的音乐播放器用过不少，比如 Winamp、Foobar2000、Audivana、HQplayer，还有特别小众的 BugHead。就这样，一转眼好多年过去了，现在的我更多是用手机听歌，不知不觉也已经成为 Apple Music 订阅用户好多年。就在最近，我开始学习 iOS应用开发，涌入脑海的第一个想法，就是开发一款能够运行在新老 iPhone、iPad 上的 HiFi 播放器，让家中 NAS、移动硬盘上那些之前认真下载、分门别类整理却沉默无言了许久的音频文件再次复活起来，于是，vPlayer HiFi，一款 iOS 上追求纯粹音质的 HiFi 播放器就这样诞生了。 命名 vPlayer 便是 Very Pure Layer 的简写，但这也的确反应了这款 App 的设计理念，就是希望把音频处理过程用分层方式直观的展现出来，让用户能够清楚的看到0、1组成的数字文件是怎么一步步转化成最终能够听到的波形数据，同时每一层又都可以单独启停或调整参数，可以方便地对比听感带来的轻微差别，从而找到那组最讨好自己耳朵的组合。巧合的是，我平时喜欢听古典弦乐，所以给它选了张小提琴作为 App 图标，而小提琴的英文也恰是字母 v 打头。 优缺点 在进行功能性介绍之前，先说说它优点和短板。优点包括： 它采用 Apple iOS 开发框架，能够同时支持 iPhone 和 iPad，未来还可以很方便的向MacOS、tvOS 平台移植。在用户管理方面，一个 Apple ID 账号的一次订购就能实现跨设备的统一认证和鉴权。 现代 iPhone 的硬件处理能力已经非常强大，拿两三年前的 iPhone15Promax 来说，它拥有 8G 统一内存（实测单一应用最多可用到 3G 左右）和最低 256G 存储容量（一张 CD 按照 500MB 计算，也可以轻松存储几十张），即便是运行本地离线量化 AI 模型也完全没有问题（详见我另一个App—锦囊AI ）。单从音频解码角度看，其实并不需要太大处理能力，实践证明，只要做好精细的资源分配回收，即便是2014年左右的 iPhone7，照样可以轻松实现 DSD 解码重播。 它可以通过 Airplay 协议方便的连接苹果生态，比如 Studio Display、AppleTV 等。 它能让你淘汰的老旧 iPhone、iPad 变废为宝。vPlayer HiFi 还有一个未上架的仅保留核心功能的版本，能够支持 iPhone7~X 的老iPhone，甚至我还为乔布斯时代的 iPhone4 移植了一个自用的 Jailbreak 版本，当 3.5mm 耳机口外接上更加古早的电子管收音机，听张人声爵士或者小提琴奏鸣曲，那情绪价值绝对是满满的。 相对的，它的短板也是明显的： iPhone、iPad 自带的 DAC 只支持44.1kHz和48kHz 解码率，这对于 HiFi 显然是不够的。如果音频原始码率是 96kHz 或是经 DSD2PCM 后的 176.4kHz 和 352.8kHz，又或者原始的44.1kHz 经软件 SRC、FIR 重采样至更高采样率后，一旦选择经过 iPhone、iPad 自身 DAC 解码重播，依然会重采样回落到 44.1kHz 或 48kHz。 这正是 vPlayer HiFi App与专业 HiFi 硬件播放器的最大区别，它只是一款运行在 iOS 上的应用软件，虽然 iPhone、iPad 的软件运行环境、CPU内存等基础硬件能力足够胜任对音源的处理，但其内置 DAC 解码重播的确是 HiFi 的短板。解决方案其实也很简单，连接外置 DAC 作为纯粹数播节点就可以了。然而，即便是使用 iPhone、iPad 的内置 DAC 播放，你也能清晰感受到 vPlayer HiFi 带来听感的明显提升。 主要功能 可视化信号链：信号处理以节点路径方式呈现DSD · MEM · SRC ⊕ FIR · EQ · DITH。点任意节点即可进入对应设置面板——切换 DSD 滤波器、设置 MEM 内存预分配空间、选择 SRC 算法、调整 FIR 参数、微调 EQ等。 Bit‑Perfect：采用定制化的 AudioUnit 音频处理管线与内、外部 DAC 对接，精确匹配音源原始采样率，确保 iOS 系统不介入、不重采样、零染指。 Native DSD Playback：支持常见音源格式 MP3 、AIFF、M4A（AAC）、WAV、FLAC外，还支持 DSD（DSF、DFF） 解码，提供多种 DSD FIR 降采样滤波器（陡峭 / 平缓 / 宽带宽），输出采样率包括 176.4kHz 和 352.8kHz，保留 DSD 原生特质。更支持SACD‑R ISO 镜像解析，内置原生 Scarlet Book TOC 解析器可直接解析 SACD‑R 的 ISO 镜像文件，形成音轨目录，并自动提取单音轨独立 DSD 文件点播。 Memory Playback：得益于 iPhone、iPad 的大内存，可将整首曲目一次全部载入预热后的专属内存缓冲区再重播，足以容纳一整张 CD Wav 文件或一首高码率 DSD 文件，从而彻底消除实时文件读写 I/O 带来的时基抖动（Jitter），让声音背景更纯净。虽然技术上有玄学成分在里面，但实际听感确有比较明显的改善。 多相 SRC + FIR 升频：提供 6 种采样率转换算法（从线性到 Sinc‑512 抽头），均采用 Kaiser 窗多相重采样。独立 FIR 升频支持 2× / 4× / 8× 倍率，抽头数可选（31 / 63 / 127），并可切换为同态最小相位模式。 10 段图形均衡器EQ：每段 ±12 dB 手动调节，并配有频段参考指南。响应瞬时、零延迟，可从信号链工具栏一键开启或关闭。内置 638 款 AutoEq 耳机预设，直接加载来自 oratory1990 测量数据库的固定频段 EQ 校正曲线，选择耳机品牌与型号后，即可一键应用，同时自动计算前置增益（Preamp），防止削波失真。 本地文件播放：通过 Finder 或 iTunes 将专辑文件夹拖放至 App 的共享目录，下拉即可刷新，左滑也可删除。 网络文件播放：支持局域网内 Samba 网络存储服务接入，采用边下载、边缓存、再播放的保守策略，完全避免网络抖动对播放质量的影响。特别针对 SACDR ISO 大型文件（一般在 3G 左右），实现了单音轨 DSD 文件提取，从而大大缩短网络下载等待时长。对于喜欢的专辑，又可以左滑下载到 iPhone 本地。 双主题：提供“暗色”与“银色”两套界面风格，点击 vPlayer 标题即可轻松切换。 Lab 音频实验室：简易Room EQ 测量流程：两部 iPhone 协同开展，一部连接到房间音响系统并运行本 App 播放一段 20Hz 至 20kHz 的内置测量文件（务必提前带好耳塞），同时在听位头部位置，用另一部 iPhone 自带的录音 App 进行记录（提前打开高保真录音选项），最后将这段录音 Airdrop 到前一部 iPhone，App 加载后会自动对照原始测量文件，针对性的计算当前房间的 EQ 参数建议并可在 EQ 面板选择性启用。其精准度取决于第二台 iPhone 的录音精度，如换作高质量的便携录音设备参照性会更强。它主要是提供一种折衷的测量方法，在不改变现实听音环境基础上，可以明显改善低频污染。Shazam 歌曲识别：集成 Apple ShazamKit，轻点即可识别正在播放的音乐，获取专辑封面、风格、歌手信息。音乐绘画（Music Painting）：内置生成式艺术引擎，每首曲目都会绘制出独特的视觉画面，可选择“星座”或“印象”两种风格。画作可保存至画廊，随时浏览回味。 获取方式 希望喜欢音乐的你能够喜欢这款纯粹但绝不简单的 HiFi 播放器，它的特点正如老狼《恋恋风尘》专辑插页里的一句话：一杯清水，一种声音。 GitHub vPlayer HiFi Project 使用 iOS 设备登录 Apple App Store，搜索 vPlayer HiFi 即可。vPlayer HiFi App <img width=\"512\" alt=\"Image\" src=\" /",
+          "content": "\n**缘起**\n\n记得准备高考的那段时间，每天除了必要的锻炼，其他精力基本全都用来复习，唯一的放松，就是在晚饭时刻，当母亲把做好的饭菜端到我的书桌上后，我便合上书本，一边吃饭，一边打开练习英语听力的磁带机，随手放一盘自己喜欢的磁带。也许是唐朝的《梦回唐朝》，也许是黑豹的《无地自容》（《黑豹I》），或者是郑钧的《回到拉萨》，还有老狼的《恋恋风尘》。在那个白衣飘飘的年代，同学们会互相借磁带听，女生还会把喜欢的歌词手抄到带着花边的本子上，叫做歌词本。上了大学，在1999年的某一天，我在校门口斜对面的汉唐书店偶然买了盘一个叫做朴树的年轻人发行的专辑《我去2000年》，回到宿舍，同学们还都不知道这人是谁呢。后来他发行了第二张专辑《生如夏花》，我依然记得曾给某人在电话里清唱这张专辑里的《我爱你，再见》，而她人在电话那头早已哭的稀里哗啦。大学四年一晃而过，毕业季的旧货市场上，有个低年级的漂亮女生要打包全收我的那些旧磁带和杂志，我仔细地挑出了这盘《我去2000年》，连同在音乐学院、外语学院外打卡带地摊收的一套红、蓝、黑封面的披头士和当年一本叫做 Music Heaven 音乐期刊里带的那些极具风格化的欧美乐队歌手合集的磁带一起背回了家，直到现在，它们还安静的躺在我书柜的角落里，嗯，丢不走的行李，是我不变的心。上班后第一个月工资，我拿出大部分买了台蓝色的 Sony CD 便携播放器和森海塞尔 PX500 耳机，认认真真的煲够了一百小时，那时候经常光顾本地一家特色 CD 小卖店，店里全是复刻的国外经典 CD，平克弗洛伊德、披头士、大门、皇后、老鹰、恐怖海峡、涅槃等等，于此同时，互联网 P2P 开始有了萌芽，于是各种音乐专辑下载了一堆一堆，而电脑上的音乐播放器用过不少，比如 Winamp、Foobar2000、Audivana、HQplayer，还有特别小众的 BugHead。就这样，一转眼好多年过去了，现在的我更多是用手机听歌，不知不觉也已经成为 Apple Music  订阅用户好多年。就在最近，我开始学习 iOS应用开发，涌入脑海的第一个想法，就是开发一款能够运行在新老 iPhone、iPad 上的 HiFi 播放器，让家中 NAS、移动硬盘上那些之前认真下载、分门别类整理却沉默无言了许久的音频文件再次复活起来，于是，vPlayer HiFi，一款 iOS 上追求纯粹音质的 HiFi 播放器就这样诞生了。\n\n**命名**\n\nvPlayer 便是 Very Pure Layer 的简写，但这也的确反应了这款 App 的设计理念，就是希望把音频处理过程用分层方式直观的展现出来，让用户能够清楚的看到0、1组成的数字文件是怎么一步步转化成最终能够听到的波形数据，同时每一层又都可以单独启停或调整参数，可以方便地对比听感带来的轻微差别，从而找到那组最讨好自己耳朵的组合。巧合的是，我平时喜欢听古典弦乐，所以给它选了张小提琴作为 App 图标，而小提琴的英文也恰是字母 v 打头。\n\n**优缺点**\n\n在进行功能性介绍之前，先说说它优点和短板。优点包括：\n\n- 它采用 Apple iOS 开发框架，能够同时支持 iPhone 和 iPad，未来还可以很方便的向MacOS、tvOS 平台移植。在用户管理方面，一个 Apple ID 账号的一次订购就能实现跨设备的统一认证和鉴权。\n- 现代 iPhone 的硬件处理能力已经非常强大，拿两三年前的 iPhone15Promax 来说，它拥有 8G 统一内存（实测单一应用最多可用到 3G 左右）和最低 256G 存储容量（一张 CD 按照 500MB 计算，也可以轻松存储几十张），即便是运行本地离线量化 AI 模型也完全没有问题（详见我另一个App—锦囊AI ）。单从音频解码角度看，其实并不需要太大处理能力，实践证明，只要做好精细的资源分配回收，即便是2014年左右的 iPhone7，照样可以轻松实现 DSD 解码重播。\n- 它可以通过 Airplay 协议方便的连接苹果生态，比如 Studio Display、AppleTV 等。\n- 它能让你淘汰的老旧 iPhone、iPad 变废为宝。vPlayer HiFi 还有一个未上架的仅保留核心功能的版本，能够支持 iPhone7~X 的老iPhone，甚至我还为乔布斯时代的 iPhone4 移植了一个自用的 Jailbreak 版本，当 3.5mm 耳机口外接上更加古早的电子管收音机，听张人声爵士或者小提琴奏鸣曲，那情绪价值绝对是满满的。\n\n相对的，它的短板也是明显的：\n\n- iPhone、iPad 自带的 DAC 只支持44.1kHz和48kHz 解码率，这对于 HiFi 显然是不够的。如果音频原始码率是 96kHz 或是经 DSD2PCM 后的 176.4kHz 和 352.8kHz，又或者原始的44.1kHz 经软件 SRC、FIR 重采样至更高采样率后，一旦选择经过 iPhone、iPad 自身 DAC 解码重播，依然会重采样回落到 44.1kHz 或 48kHz。\n- 这正是 vPlayer HiFi  App与专业 HiFi 硬件播放器的最大区别，它只是一款运行在 iOS 上的应用软件，虽然 iPhone、iPad 的软件运行环境、CPU内存等基础硬件能力足够胜任对音源的处理，但其内置 DAC 解码重播的确是 HiFi 的短板。解决方案其实也很简单，连接外置 DAC 作为纯粹数播节点就可以了。然而，即便是使用 iPhone、iPad 的内置 DAC 播放，你也能清晰感受到 vPlayer HiFi 带来听感的明显提升。\n\n**主要功能**\n\n- 可视化信号链：信号处理以节点路径方式呈现DSD · MEM · SRC ⊕ FIR · EQ · DITH。点任意节点即可进入对应设置面板——切换 DSD 滤波器、设置 MEM 内存预分配空间、选择 SRC 算法、调整 FIR 参数、微调 EQ等。\n- Bit‑Perfect：采用定制化的 AudioUnit 音频处理管线与内、外部 DAC 对接，精确匹配音源原始采样率，确保 iOS 系统不介入、不重采样、零染指。\n- Native DSD Playback：支持常见音源格式 MP3 、AIFF、M4A（AAC）、WAV、FLAC外，还支持 DSD（DSF、DFF） 解码，提供多种 DSD FIR 降采样滤波器（陡峭 / 平缓 / 宽带宽），输出采样率包括 176.4kHz  和 352.8kHz，保留 DSD 原生特质。更支持SACD‑R ISO 镜像解析，内置原生 Scarlet Book TOC 解析器可直接解析 SACD‑R 的 ISO 镜像文件，形成音轨目录，并自动提取单音轨独立 DSD 文件点播。\n- Memory Playback：得益于 iPhone、iPad 的大内存，可将整首曲目一次全部载入预热后的专属内存缓冲区再重播，足以容纳一整张 CD Wav 文件或一首高码率 DSD 文件，从而彻底消除实时文件读写 I/O 带来的时基抖动（Jitter），让声音背景更纯净。虽然技术上有玄学成分在里面，但实际听感确有比较明显的改善。\n- 多相 SRC + FIR 升频：提供 6 种采样率转换算法（从线性到 Sinc‑512 抽头），均采用 Kaiser 窗多相重采样。独立 FIR 升频支持 2× / 4× / 8× 倍率，抽头数可选（31 / 63 / 127），并可切换为同态最小相位模式。\n- 10 段图形均衡器EQ：每段 ±12 dB 手动调节，并配有频段参考指南。响应瞬时、零延迟，可从信号链工具栏一键开启或关闭。内置 638 款 AutoEq 耳机预设，直接加载来自 oratory1990 测量数据库的固定频段 EQ 校正曲线，选择耳机品牌与型号后，即可一键应用，同时自动计算前置增益（Preamp），防止削波失真。\n- 本地文件播放：通过 Finder 或 iTunes 将专辑文件夹拖放至 App 的共享目录，下拉即可刷新，左滑也可删除。\n- 网络文件播放：支持局域网内 Samba 网络存储服务接入，采用边下载、边缓存、再播放的保守策略，完全避免网络抖动对播放质量的影响。特别针对 SACD-R ISO 大型文件（一般在 3G 左右），实现了单音轨 DSD 文件提取，从而大大缩短网络下载等待时长。对于喜欢的专辑，又可以左滑下载到 iPhone 本地。\n- 双主题：提供“暗色”与“银色”两套界面风格，点击 vPlayer 标题即可轻松切换。\n- Lab 音频实验室：简易Room EQ 测量流程：两部 iPhone 协同开展，一部连接到房间音响系统并运行本 App 播放一段 20Hz 至 20kHz 的内置测量文件（务必提前带好耳塞），同时在听位头部位置，用另一部 iPhone 自带的录音 App 进行记录（提前打开高保真录音选项），最后将这段录音 Airdrop 到前一部 iPhone，App 加载后会自动对照原始测量文件，针对性的计算当前房间的 EQ 参数建议并可在 EQ 面板选择性启用。其精准度取决于第二台 iPhone 的录音精度，如换作高质量的便携录音设备参照性会更强。它主要是提供一种折衷的测量方法，在不改变现实听音环境基础上，可以明显改善低频污染。Shazam 歌曲识别：集成 Apple ShazamKit，轻点即可识别正在播放的音乐，获取专辑封面、风格、歌手信息。音乐绘画（Music Painting）：内置生成式艺术引擎，每首曲目都会绘制出独特的视觉画面，可选择“星座”或“印象”两种风格。画作可保存至画廊，随时浏览回味。\n\n**获取方式**\n\n希望喜欢音乐的你能够喜欢这款纯粹但绝不简单的 HiFi 播放器，它的特点正如老狼《恋恋风尘》专辑插页里的一句话：一杯清水，一种声音。\n**[GitHub vPlayer HiFi Project](https://github.com/shanleiguang/vPlayer)**\n**使用 iOS 设备登录 Apple App Store，搜索 vPlayer HiFi 即可。**[vPlayer HiFi App](https://apps.apple.com/cn/app/vplayer-hifi/id6783141736)\n\n<img width=\"512\"  alt=\"Image\" src=\"https://github.com/user-attachments/assets/f6b39d99-d3ac-41f9-9184-11f1a471121c\" />\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10994",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10994"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源项目推荐】starfolio-worker：Cloudflare Worker 自建 GitHub 星标曲线图，替代 star-history",
+          "url": "https://github.com/yuhp/starfolio-worker",
+          "author": "yuhp",
+          "authorUrl": "https://github.com/yuhp",
+          "publishedAt": "2026-08-03T02:41:04Z",
+          "summary": "解决痛点 GitHub近期收紧Stargazer API权限，starhistory 现在需要拥有仓库写入权限的Token，存在密钥泄露风险。 仓库地址 整体设计 starfolioworker 部署于 Cloudflare Worker + KV，定时抓取仓库星标数据、生成SVG曲线图并缓存。 ✅ 使用Cloudflare免费额度即可运行 ✅ 无需提供高权限GitHub Token ✅ 对外直接输出缓存好的星标历史SVG图表 ✅ 支持亮色与暗色主题 配套介绍文章： Blog: 公众号： 嵌入 Readme 示例 可直接嵌入README示例（跟随系统自动切换明暗主题）： html <a href=\" <picture <source media=\"(preferscolorscheme: dark)\" srcset=\" / <source media=\"(preferscolorscheme: light)\" srcset=\" / <img alt=\"Star History Chart\" src=\" / </picture </a 效果预览 <a href=\" <picture <source media=\"(preferscolorscheme: dark)\" srcset=\" / <source media=\"(preferscolorscheme: light)\" srcset=\" / <img alt=\"Star History Chart\" src=\" / </picture </a",
+          "content": "## 解决痛点\nGitHub近期收紧Stargazer API权限，star-history 现在需要拥有仓库**写入权限**的Token，存在密钥泄露风险。\n\n## 仓库地址\nhttps://github.com/yuhp/starfolio-worker\n\n## 整体设计\nstarfolio-worker 部署于 Cloudflare Worker + KV，定时抓取仓库星标数据、生成SVG曲线图并缓存。\n✅ 使用Cloudflare免费额度即可运行\n✅ 无需提供高权限GitHub Token\n✅ 对外直接输出缓存好的星标历史SVG图表\n✅ 支持亮色与暗色主题\n\n\n\n## 配套介绍文章：\n- Blog:  https://yuhp.dev/zh/posts/starfolio-worker/\n- 公众号：https://mp.weixin.qq.com/s/gTjiJQi-1H5h0RRxcjYflg\n\n## 嵌入 Readme 示例\n可直接嵌入README示例（跟随系统自动切换明暗主题）：\n```html\n<a href=\"https://yuhp.dev/zh/posts/starfolio-worker/\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=dark\" />\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n    <img alt=\"Star History Chart\" src=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n  </picture>\n</a>\n```\n\n### 效果预览\n<a href=\"https://yuhp.dev/zh/posts/starfolio-worker/\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=dark\" />\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n    <img alt=\"Star History Chart\" src=\"https://sh.yuhp.dev/star-history/opencode-models-discovery?theme=light\" />\n  </picture>\n</a>\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10995",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10995"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【文章推荐】Why Software Factories Fail（为什么软件工厂会失败）",
+          "url": "https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md",
+          "author": "hnl1",
+          "authorUrl": "https://github.com/hnl1",
+          "publishedAt": "2026-08-03T06:16:48Z",
+          "summary": "（英文） 作者 Dex Horthy 是 HumanLayer 创始人、12Factor Agents 的作者。文章反驳\"关灯软件工厂\"——即代码全部由 AI 编写、没有人类审查。 周刊第 385 期的\"言论\"栏目曾引用 StrongDM 关灯工厂的三条规则（代码绝不由人编写、不得由人审查），这篇正好是反方观点。",
+          "content": "https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md （英文）\n\n作者 Dex Horthy 是 HumanLayer 创始人、12-Factor Agents 的作者。文章反驳\"关灯软件工厂\"——即代码全部由 AI 编写、没有人类审查。\n\n周刊第 385 期的\"言论\"栏目曾引用 StrongDM 关灯工厂的三条规则（代码绝不由人编写、不得由人审查），这篇正好是反方观点。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10996",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10996"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】每日更新的Ai知识库， skills 大全",
+          "url": "https://github.com/Awesome-AI-Pedia/Awesome-AI-Pedia",
+          "author": "Awesome-AI-Pedia",
+          "authorUrl": "https://github.com/Awesome-AI-Pedia",
+          "publishedAt": "2026-08-03T06:51:11Z",
+          "summary": "每日更新的Ai知识库， skills 大全",
+          "content": "每日更新的Ai知识库， skills 大全 https://github.com/Awesome-AI-Pedia/Awesome-AI-Pedia",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10997",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10997"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】ToolFun：批量文件重命名和图片处理工具",
+          "url": "https://toolfun.top/",
+          "author": "qinleilxl",
+          "authorUrl": "https://github.com/qinleilxl",
+          "publishedAt": "2026-08-03T08:29:57Z",
+          "summary": "ToolFun 是一个免费的浏览器本地工具箱，目前主要提供批量文件重命名和图片处理功能。 批量重命名工具支持添加前后缀、文字替换、自动编号等规则，可以一次处理多个文件。 图片工具支持格式转换、压缩、尺寸调整、裁剪、旋转、favicon 制作和逐帧动画生成。 所有文件都只在浏览器本地处理，不上传服务器，无需注册，也不用安装软件。 项目地址：",
+          "content": "ToolFun 是一个免费的浏览器本地工具箱，目前主要提供批量文件重命名和图片处理功能。\n\n批量重命名工具支持添加前后缀、文字替换、自动编号等规则，可以一次处理多个文件。\n\n图片工具支持格式转换、压缩、尺寸调整、裁剪、旋转、favicon 制作和逐帧动画生成。\n\n所有文件都只在浏览器本地处理，不上传服务器，无需注册，也不用安装软件。\n\n项目地址：https://toolfun.top/",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10998",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10998",
+          "siteLogo": "https://toolfun.top/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】HugAgentOS：开源的桌面端自进化 Agent Harness",
+          "url": "https://raw.githubusercontent.com/ZJU-REAL/HugAgentOS/main/install.sh",
+          "author": "Luhaozhu",
+          "authorUrl": "https://github.com/Luhaozhu",
+          "publishedAt": "2026-08-03T08:49:03Z",
+          "summary": "项目简介 HugAgentOS 是由浙江大学人工智能省部共建协同创新中心 Agent Harness 团队研发的开源、自托管智能体工作平台，对比ChatGPT桌面端、WorkBuddy、悟空等桌面harness平台，HugAgentOS同时提供 Windows、macOS 和 Linux 桌面客户端。 它将 Skills、MCP、插件、子智能体、Plan Mode、Automation、沙箱执行和数据画布集成在同一工作区，让 Agent 不只回答问题，还能规划任务、调用工具、处理文件、执行流程并交付成果。 核心特色：受控自进化 HugAgentOS 通过记忆、技能与编排三大引擎形成自进化闭环： 1. 记忆进化：从用户任务中沉淀长期记忆，保留有价值的经验。 2. 技能进化：将长期记忆中可复用的成功路径提炼为 Skills。 3. 编排进化：把 Skills、Tools 与子智能体的稳定协作方式固化为能力编排。 整个过程遵循“从点到线、再到面”的演进路径。所有进化内容都需要经过用户审批，获得确认后才会进入正式 Agent 资产，避免无序生长，并支持审计与回滚。 系统还以领域本体约束语义、规则、权限和使用场景，让进化沿预先定义的业务边界持续进行。 其他特点 支持 OpenAI 兼容接口及本地模型 内置私有知识库 RAG、长期记忆和 MCP 工具生态 支持代码及文档沙箱执行 支持自动化任务、批量执行与子智能体协作 数据和模型配置均可由用户自行掌控 支持多端互联互通，服务端部署，桌面端启动云端环境 部署方式 桌面客户端：支持 Windows、macOS、Linux 一键安装：适合 Linux、macOS 和 WSL2 个人体验 Docker Compose：适合团队、服务器和长期运行环境 一键安装命令： bash curl fsSL | bash 欢迎关注并下载桌面端 GitHub： 中文介绍： 桌面版下载：",
+          "content": "## 项目简介\n\nHugAgentOS 是由浙江大学人工智能省部共建协同创新中心 Agent Harness 团队研发的开源、自托管智能体工作平台，对比ChatGPT桌面端、WorkBuddy、悟空等桌面harness平台，HugAgentOS同时提供 Windows、macOS 和 Linux 桌面客户端。\n\n它将 Skills、MCP、插件、子智能体、Plan Mode、Automation、沙箱执行和数据画布集成在同一工作区，让 Agent 不只回答问题，还能规划任务、调用工具、处理文件、执行流程并交付成果。\n\n## 核心特色：受控自进化\n\nHugAgentOS 通过记忆、技能与编排三大引擎形成自进化闭环：\n\n1. **记忆进化**：从用户任务中沉淀长期记忆，保留有价值的经验。\n2. **技能进化**：将长期记忆中可复用的成功路径提炼为 Skills。\n3. **编排进化**：把 Skills、Tools 与子智能体的稳定协作方式固化为能力编排。\n\n整个过程遵循“从点到线、再到面”的演进路径。所有进化内容都需要经过用户审批，获得确认后才会进入正式 Agent 资产，避免无序生长，并支持审计与回滚。\n\n系统还以领域本体约束语义、规则、权限和使用场景，让进化沿预先定义的业务边界持续进行。\n\n## 其他特点\n\n- 支持 OpenAI 兼容接口及本地模型\n- 内置私有知识库 RAG、长期记忆和 MCP 工具生态\n- 支持代码及文档沙箱执行\n- 支持自动化任务、批量执行与子智能体协作\n- 数据和模型配置均可由用户自行掌控\n- 支持多端互联互通，服务端部署，桌面端启动云端环境\n\n## 部署方式\n\n- **桌面客户端**：支持 Windows、macOS、Linux\n- **一键安装**：适合 Linux、macOS 和 WSL2 个人体验\n- **Docker Compose**：适合团队、服务器和长期运行环境\n\n一键安装命令：\n\n```bash\ncurl -fsSL https://raw.githubusercontent.com/ZJU-REAL/HugAgentOS/main/install.sh | bash\n\n## 欢迎关注并下载桌面端\n\nGitHub：https://github.com/ZJU-REAL/HugAgentOS\n中文介绍：https://github.com/ZJU-REAL/HugAgentOS/blob/main/README_CN.md\n桌面版下载：https://github.com/ZJU-REAL/HugAgentOS/releases",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10999",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10999"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Spring AI ERP Assistant：能查询业务数据并自动生成图表的 ERP 智能助手",
+          "url": "https://github.com/ly1836/spring-ai-rag-demo",
+          "author": "ly1836",
+          "authorUrl": "https://github.com/ly1836",
+          "publishedAt": "2026-08-03T10:11:48Z",
+          "summary": "项目地址 项目简介 这是一个基于 Spring AI 2.0 和 Spring Boot 4 开发的开源 ERP 智能助手。 项目将 Tool Calling 和 RAG 结合起来：用户可以直接用自然语言查询销售订单、库存、采购、生产、质检等 ERP 业务数据，也可以导入 PDF、Word、Excel 等企业文档进行知识问答。 与普通聊天 Demo 不同，系统能够把 Tool 返回的真实业务数据自动转换成条形图、折线图、饼图、甘特图、雷达图等图表，目前支持 23 种图表。 主要特点 内置销售、采购、生产、质检、仓库、财务、售后、委外 8 大 ERP 模块，共 39 个代码 Tool 支持在运行期间维护动态 SQL Tool，并限制为只读查询、绑定参数和租户数据隔离 Tool 查询结果可以自动生成 23 种 ECharts 图表 使用 PgVector 和本地 ONNX Embedding 实现 RAG 知识库 支持 DeepSeek、通义千问和 Gemini 多模型切换 支持 SSE 流式对话、数据库会话记忆、Tool 调用追踪和 Token 计费 提供 Docker Compose、初始化演示数据和中英文文档 使用 Apache2.0 开源协议 技术栈 Java 17+、Spring Boot 4.0.7、Spring AI 2.0.0、MySQL、PostgreSQL、PgVector、Apache ECharts。 运行效果 !Spring AI ERP Assistant Demo 最新版本：3.0.4 项目仓库：",
+          "content": "## 项目地址\n\nhttps://github.com/ly1836/spring-ai-rag-demo\n\n## 项目简介\n\n这是一个基于 Spring AI 2.0 和 Spring Boot 4 开发的开源 ERP 智能助手。\n\n项目将 Tool Calling 和 RAG 结合起来：用户可以直接用自然语言查询销售订单、库存、采购、生产、质检等 ERP 业务数据，也可以导入 PDF、Word、Excel 等企业文档进行知识问答。\n\n与普通聊天 Demo 不同，系统能够把 Tool 返回的真实业务数据自动转换成条形图、折线图、饼图、甘特图、雷达图等图表，目前支持 23 种图表。\n\n## 主要特点\n\n- 内置销售、采购、生产、质检、仓库、财务、售后、委外 8 大 ERP 模块，共 39 个代码 Tool\n- 支持在运行期间维护动态 SQL Tool，并限制为只读查询、绑定参数和租户数据隔离\n- Tool 查询结果可以自动生成 23 种 ECharts 图表\n- 使用 PgVector 和本地 ONNX Embedding 实现 RAG 知识库\n- 支持 DeepSeek、通义千问和 Gemini 多模型切换\n- 支持 SSE 流式对话、数据库会话记忆、Tool 调用追踪和 Token 计费\n- 提供 Docker Compose、初始化演示数据和中英文文档\n- 使用 Apache-2.0 开源协议\n\n## 技术栈\n\nJava 17+、Spring Boot 4.0.7、Spring AI 2.0.0、MySQL、PostgreSQL、PgVector、Apache ECharts。\n\n## 运行效果\n\n![Spring AI ERP Assistant Demo](https://raw.githubusercontent.com/ly1836/spring-ai-rag-demo/main/doc/img.gif)\n\n最新版本：3.0.4  \n项目仓库：https://github.com/ly1836/spring-ai-rag-demo",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11000",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11000"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】YouTube to MP4：优先尝试 1080p，不可用时自动回退",
+          "url": "https://youtubetowav.io/youtube-to-mp4-converter",
+          "author": "ethanjamescolez",
+          "authorUrl": "https://github.com/ethanjamescolez",
+          "publishedAt": "2026-08-03T11:34:39Z",
+          "summary": "名称 YouTube to MP4 converter 链接 一句话简介 一个无需注册的 YouTube 转 MP4 网页工具：优先尝试 1080p，不可用时自动回退到 720p、480p 或 360p，并提供进度和结果预览。 推荐理由 这类工具最容易把“1080p”写成保证，但实际分辨率会受到来源视频和当前转换服务影响。这个页面把回退路径直接做进工作流：先尝试 1080p，失败时继续尝试较低档位，而不是让用户只看到一个笼统的失败结果。 它与站内已有的 WAV / MP3 音频页面不同，解决的是需要保留视频画面的 MP4 输出场景。当前支持标准 YouTube URL、youtu.be 链接、Shorts 链接和 video ID；转换过程中可以查看进度，结果返回后也可以先预览，再决定是否打开或下载临时文件。 当前路径 1. 粘贴 YouTube URL、youtu.be 链接、Shorts 链接或 video ID。 2. 启动 MP4 转换任务。 3. 查看处理进度和实际返回的分辨率。 4. 在浏览器中预览转换结果。 5. 确认内容和画质符合预期后，再打开或下载临时结果。 使用前说明 分辨率和可用性取决于来源媒体与当前第三方转换服务；1080p 只是优先尝试，不是保证。1080p 流程限 90 分钟，较低分辨率限 120 分钟。该工具不是 YouTube 官方服务，也不保证每个 URL 或每个视频都能转换。生成结果应视为临时交付链接，用户只应处理自己拥有或已获下载许可的内容。",
+          "content": "## 名称\n\nYouTube to MP4 converter\n\n## 链接\n\nhttps://youtubetowav.io/youtube-to-mp4-converter\n\n## 一句话简介\n\n一个无需注册的 YouTube 转 MP4 网页工具：优先尝试 1080p，不可用时自动回退到 720p、480p 或 360p，并提供进度和结果预览。\n\n## 推荐理由\n\n这类工具最容易把“1080p”写成保证，但实际分辨率会受到来源视频和当前转换服务影响。这个页面把回退路径直接做进工作流：先尝试 1080p，失败时继续尝试较低档位，而不是让用户只看到一个笼统的失败结果。\n\n它与站内已有的 WAV / MP3 音频页面不同，解决的是需要保留视频画面的 MP4 输出场景。当前支持标准 YouTube URL、youtu.be 链接、Shorts 链接和 video ID；转换过程中可以查看进度，结果返回后也可以先预览，再决定是否打开或下载临时文件。\n\n## 当前路径\n\n1. 粘贴 YouTube URL、youtu.be 链接、Shorts 链接或 video ID。\n2. 启动 MP4 转换任务。\n3. 查看处理进度和实际返回的分辨率。\n4. 在浏览器中预览转换结果。\n5. 确认内容和画质符合预期后，再打开或下载临时结果。\n\n## 使用前说明\n\n分辨率和可用性取决于来源媒体与当前第三方转换服务；1080p 只是优先尝试，不是保证。1080p 流程限 90 分钟，较低分辨率限 120 分钟。该工具不是 YouTube 官方服务，也不保证每个 URL 或每个视频都能转换。生成结果应视为临时交付链接，用户只应处理自己拥有或已获下载许可的内容。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11001",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11001"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】MovePlaybook：无需账户、浏览器本地保存的搬家清单",
+          "url": "https://moveplaybook.app/",
+          "author": "lionchain100-alt",
+          "authorUrl": "https://github.com/lionchain100-alt",
+          "publishedAt": "2026-08-03T13:21:55Z",
+          "summary": "我做了一个免费的 Web 工具 MovePlaybook，面向正在安排家庭搬家的人。 用户填写搬家日期后，工具会把常见事项整理到时间线中；可以修改任务日期、添加自己的提醒、临时隐藏不适用的事项，并导出打印版 PDF。无需注册，计划只保存在当前浏览器中。 网站： 我是这个工具的开发者。它目前主要面向英语用户；涉及房东、搬家公司、公用事业或政府部门的具体要求，仍应以当地机构的确认信息为准。",
+          "content": "我做了一个免费的 Web 工具 MovePlaybook，面向正在安排家庭搬家的人。\n\n用户填写搬家日期后，工具会把常见事项整理到时间线中；可以修改任务日期、添加自己的提醒、临时隐藏不适用的事项，并导出打印版 PDF。无需注册，计划只保存在当前浏览器中。\n\n网站：https://moveplaybook.app/\n\n我是这个工具的开发者。它目前主要面向英语用户；涉及房东、搬家公司、公用事业或政府部门的具体要求，仍应以当地机构的确认信息为准。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11002",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11002",
+          "siteLogo": "https://moveplaybook.app/favicon.ico"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Axiom Launcher -- 一个用 Python 编写的 CLI 第三方 Minecraft: Java Edition 启动器。",
+          "url": "https://github.com/sudo1123/axiom-launcher",
+          "author": "sudo1123",
+          "authorUrl": "https://github.com/sudo1123",
+          "publishedAt": "2026-08-03T13:43:08Z",
+          "summary": "产品名称：Axiom Launcher GitHub仓库地址： 简介：Axiom Launcher 是一款用 Python 编写的第三方 Minecraft: Java Edition 启动器，以命令行方式运行。它自动下载游戏版本、依赖库、原生库与资源文件，并自动安装对应 Java，解决配置与下载痛点。代码几乎仅依赖 Python 标准库，唯一第三方依赖为 requests。内置 Mojang 官方源与 BMCLAPI 镜像源，可按网络环境切换；支持多实例管理、智能参数解析、完整性检查，适合命令行玩家与自动化部署场景。未来将加入参数式命令行界面，使启动器更 AI 友好、便于脚本与智能助手调用；同时支持 Microsoft 正版账号登录，兼顾离线与正版需求。 （项目仍在alpha阶段，现有v0.12.0已实现完整的初始化流程，目前暂无正式release, 烦请克隆仓库或者至最新tag处下载源代码运行）",
+          "content": "产品名称：Axiom Launcher\n\nGitHub仓库地址：https://github.com/sudo1123/axiom-launcher\n\n简介：Axiom Launcher 是一款用 Python 编写的第三方 Minecraft: Java Edition 启动器，以命令行方式运行。它自动下载游戏版本、依赖库、原生库与资源文件，并自动安装对应 Java，解决配置与下载痛点。代码几乎仅依赖 Python 标准库，唯一第三方依赖为 requests。内置 Mojang 官方源与 BMCLAPI 镜像源，可按网络环境切换；支持多实例管理、智能参数解析、完整性检查，适合命令行玩家与自动化部署场景。未来将加入参数式命令行界面，使启动器更 AI 友好、便于脚本与智能助手调用；同时支持 Microsoft 正版账号登录，兼顾离线与正版需求。\n （项目仍在alpha阶段，现有v0.12.0已实现完整的初始化流程，目前暂无正式release,  烦请克隆仓库或者至最新tag处下载源代码运行）",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11003",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11003"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】跨 Agent、跨设备的一个记忆外挂（当 Claude 被封之后的记忆迁移工具",
+          "url": "https://memu.so/（在",
+          "author": "Koimiao-zz",
+          "authorUrl": "https://github.com/Koimiao-zz",
+          "publishedAt": "2026-08-03T13:53:43Z",
+          "summary": "memU 2.0 已上线。 这次最值得体验的是，memU 的个人记忆现在可以跨 Agent 、跨设备使用。 无论你在 Codex 、Claude Code 、Cursor 、Openclaw 之间切换，还是换一台设备，都能继续使用同一份上下文和知识。 接入也更简单：把 memU 的 Skill 链接交给常用 Agent 即可；之后记忆沉淀和检索会在后台自动进行，Dashboard 也能查看和管理自己的记忆。 另外，memU 依然保持轻量、开源，核心记忆逻辑约 500 行代码，方便开发者按自己的工作流定制。 欢迎现在试试新版本（完全免费）： Quick start 里面复制代码粘贴给 Agent 即可使用，非常丝滑～） 开源版本本地部署也是完全没问题的呢，请到 readme 了解详情： <img width=\"2208\" height=\"1436\" alt=\"Image\" src=\" /",
+          "content": "memU 2.0 已上线。 这次最值得体验的是，memU 的个人记忆现在可以跨 Agent 、跨设备使用。\n\n无论你在 Codex 、Claude Code 、Cursor 、Openclaw 之间切换，还是换一台设备，都能继续使用同一份上下文和知识。\n\n接入也更简单：把 memU 的 Skill 链接交给常用 Agent 即可；之后记忆沉淀和检索会在后台自动进行，Dashboard 也能查看和管理自己的记忆。\n\n另外，memU 依然保持轻量、开源，核心记忆逻辑约 500 行代码，方便开发者按自己的工作流定制。\n\n欢迎现在试试新版本（完全免费）： [https://memu.so/（在](https://memu.so/%EF%BC%88%E5%9C%A8) Quick start 里面复制代码粘贴给 Agent 即可使用，非常丝滑～）\n\n开源版本本地部署也是完全没问题的呢，请到 readme 了解详情： https://github.com/NevaMind-AI/memU\n\n<img width=\"2208\" height=\"1436\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/67060ea3-7786-459a-a303-6cb801958a74\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11004",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11004"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】evalint：审计你的 LLM 评测集，找出标准答案写错的题",
+          "url": "https://github.com/CAOShurong/evalint",
+          "author": "CAOShurong",
+          "authorUrl": "https://github.com/CAOShurong",
+          "publishedAt": "2026-08-03T15:09:24Z",
+          "summary": "项目地址： 所有评测框架都在帮你跑 LLM 测试用例，却没有一个会问：这些用例本身出得好不好？ 于是你得到一个排行榜：claudesonnet 0.729、gpt4o 0.729。两个数字、三位小数，但你没法知道这个差距有没有意义、240 道题里有多少道其实什么都测不出来，以及哪几道的标准答案本身就是错的。 evalint 读你已经有的结果文件（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），回答这三件事。 一、这个排行榜可信吗 它算 KR20 信度，以及由此得出的「能分辨的最小分差」。示例数据里这个值是 0.026，所以上面那两个模型被判定为并列，而不是排出第一第二。 二、你有多少题在白烧钱 所有模型都答对的题，在数学上不可能改变排名——但每跑一次就要花一次 API 调用，永远花下去。示例的 240 道题里，58 道完全影响不了结果，151 道就能复现一模一样的排名，每次跑省 37% 的调用。 三、哪些题的标准答案是错的 如果一道题越差的模型反而越容易答对，那不存在「这题很难」的解释——只可能是答案写错了，而差模型恰好烂到能跟错答案对上。 !item map 图里每个点是一道题，虚线以下就是这种反向题。那 10 道红点是我故意埋进去的错题，一道不多一道不少全被找出来。 最费劲的部分其实是「学会不下结论」。 只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两个分布完全重叠——任何阈值都分不开。一个据此报「发现 21 道坏题」的工具，会让人白白去查 13 道好题。所以现在每个指控都跑一次置换检验；只有 3 个模型时它直接说「证不了」，而不是编个自信的数字。一个总是误报的检查工具，第二次谎报之后就会被卸载，然后什么都查不到了。 零运行时依赖，不用 numpy 也不用 pandas，Python 3.9+，Linux / Windows / macOS 都测过。 bash pip install evalint evalint results.csv",
+          "content": "**项目地址：** https://github.com/CAOShurong/evalint\n\n所有评测框架都在帮你跑 LLM 测试用例，却没有一个会问：**这些用例本身出得好不好？**\n\n于是你得到一个排行榜：`claude-sonnet 0.729`、`gpt-4o 0.729`。两个数字、三位小数，但你没法知道这个差距有没有意义、240 道题里有多少道其实什么都测不出来，以及哪几道的标准答案本身就是错的。\n\nevalint 读你已经有的结果文件（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），回答这三件事。\n\n**一、这个排行榜可信吗**\n\n它算 KR-20 信度，以及由此得出的「能分辨的最小分差」。示例数据里这个值是 0.026，所以上面那两个模型被判定为**并列**，而不是排出第一第二。\n\n**二、你有多少题在白烧钱**\n\n所有模型都答对的题，在数学上不可能改变排名——但每跑一次就要花一次 API 调用，永远花下去。示例的 240 道题里，58 道完全影响不了结果，151 道就能复现一模一样的排名，**每次跑省 37% 的调用**。\n\n**三、哪些题的标准答案是错的**\n\n如果一道题**越差的模型反而越容易答对**，那不存在「这题很难」的解释——只可能是答案写错了，而差模型恰好烂到能跟错答案对上。\n\n![item map](https://raw.githubusercontent.com/CAOShurong/evalint/main/docs/item-map.png)\n\n图里每个点是一道题，虚线以下就是这种反向题。那 10 道红点是我故意埋进去的错题，一道不多一道不少全被找出来。\n\n**最费劲的部分其实是「学会不下结论」。** 只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两个分布完全重叠——**任何阈值都分不开**。一个据此报「发现 21 道坏题」的工具，会让人白白去查 13 道好题。所以现在每个指控都跑一次置换检验；只有 3 个模型时它直接说「证不了」，而不是编个自信的数字。一个总是误报的检查工具，第二次谎报之后就会被卸载，然后什么都查不到了。\n\n零运行时依赖，不用 numpy 也不用 pandas，Python 3.9+，Linux / Windows / macOS 都测过。\n\n```bash\npip install evalint\nevalint results.csv\n```\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11005",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11005"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源自荐] 基于 Spring AI 的 ERP 智能助手",
+          "url": "https://github.com/ly1836/spring-ai-rag-demo",
+          "author": "ly1836",
+          "authorUrl": "https://github.com/ly1836",
+          "publishedAt": "2026-08-03T10:07:47Z",
+          "summary": "项目地址 类别 Java 项目标题 基于 Spring AI 的可运行 ERP 智能助手 项目描述 这是一个基于 Spring AI 2.0 和 Spring Boot 4 构建的制造业 ERP 智能助手，集成 RAG、39 个业务查询 Tool、会话记忆、多租户隔离、调用追踪、计费和图表生成。项目提供中英文文档、演示数据与 Docker Compose，适合 Java 开发者学习企业 AI 应用的完整落地方式。 亮点 不只是简单的聊天或文档问答 Demo，而是一个可以直接运行的完整 ERP AI 应用，包含前端、后端、数据库、演示数据和 Docker 部署。 内置销售、采购、生产、质检、库存、财务、售后和委外 8 个 ERP 模块，共 39 个业务查询 Tool。 支持运行时配置动态数据库 Tool，并通过只读 SELECT、绑定参数、结果行数限制和租户条件注入降低 SQL 风险。 RAG 使用 PostgreSQL、PgVector 和本地 ONNX Embedding 模型，支持导入 PDF、Word、Excel 和 TXT 文档。 图表不是直接执行大模型生成的 ECharts 配置，而是由大模型选择类型，后端根据真实 Tool 结果生成可信 ChartSpec，目前支持 23 种图表。 支持 DeepSeek、通义千问和 Google Gemini，并包含 JDBC 会话记忆、SSE 流式响应、Tool 调用追踪和 Token 计费。 提供中英文 README、Apache2.0 License、Docker Compose、初始化演示数据和动态 GIF，方便 Java 开发者学习和二次开发。 示例代码 markdown $env:DEEPSEEKAPIKEY=\"yourdeepseekkey\" $env:ERPDBPASSWORD=\"yourmysqlpassword\" docker compose up d 截图或演示视频 !Spring AI ERP 智能助手演示",
+          "content": "### 项目地址\n\nhttps://github.com/ly1836/spring-ai-rag-demo\n\n### 类别\n\nJava\n\n### 项目标题\n\n基于 Spring AI 的可运行 ERP 智能助手\n\n### 项目描述\n\n这是一个基于 Spring AI 2.0 和 Spring Boot 4 构建的制造业 ERP 智能助手，集成 RAG、39 个业务查询 Tool、会话记忆、多租户隔离、调用追踪、计费和图表生成。项目提供中英文文档、演示数据与 Docker Compose，适合 Java 开发者学习企业 AI 应用的完整落地方式。\n\n### 亮点\n\n- 不只是简单的聊天或文档问答 Demo，而是一个可以直接运行的完整 ERP AI 应用，包含前端、后端、数据库、演示数据和 Docker 部署。\n- 内置销售、采购、生产、质检、库存、财务、售后和委外 8 个 ERP 模块，共 39 个业务查询 Tool。\n- 支持运行时配置动态数据库 Tool，并通过只读 SELECT、绑定参数、结果行数限制和租户条件注入降低 SQL 风险。\n- RAG 使用 PostgreSQL、PgVector 和本地 ONNX Embedding 模型，支持导入 PDF、Word、Excel 和 TXT 文档。\n- 图表不是直接执行大模型生成的 ECharts 配置，而是由大模型选择类型，后端根据真实 Tool 结果生成可信 ChartSpec，目前支持 23 种图表。\n- 支持 DeepSeek、通义千问和 Google Gemini，并包含 JDBC 会话记忆、SSE 流式响应、Tool 调用追踪和 Token 计费。\n- 提供中英文 README、Apache-2.0 License、Docker Compose、初始化演示数据和动态 GIF，方便 Java 开发者学习和二次开发。\n\n### 示例代码\n\n```markdown\n$env:DEEPSEEK_API_KEY=\"your-deepseek-key\"\n$env:ERP_DB_PASSWORD=\"your-mysql-password\"\n\ndocker compose up -d\n```\n\n### 截图或演示视频\n\n![Spring AI ERP 智能助手演示](https://raw.githubusercontent.com/ly1836/spring-ai-rag-demo/main/doc/img.gif)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3509",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3509"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] GOTO：记得一点，就能找到",
+          "url": "https://github.com/longqiyua/goto",
+          "author": "longqiyua",
+          "authorUrl": "https://github.com/longqiyua",
+          "publishedAt": "2026-08-03T14:34:25Z",
+          "summary": "项目地址 类别 Kotlin 项目标题 GOTO：记得一点，就能找到 项目描述 GOTO 当前阶段已实现为 以单一搜索框为核心的 Android 本地应用搜索与智能启动工具。它试图解决的并不只是“更快搜索应用”，而是让用户在记不清名称、输错字符，甚至只记得用途的情况下，依然能够找到目标应用。 用户可以输入中文名、拼音、首字母、英文缩写、T9 数字、用途词或带有错字的模糊线索。GOTO 会结合精确匹配、拼音检索、模糊纠错、键盘距离、应用标签与使用行为，从多个维度召回候选并进行排序，让搜索不再依赖准确记忆和准确输入。 项目由四个边界清晰、彼此解耦，并可独立演进的核心模块构成。四者分别负责输入预联想、搜索与排序、知识与状态存储，以及主动情境决策，共同组成 GOTO 的本地智能启动体系。 1. GOTO Prethink：搜索开始前的可解释预联想层：负责在正式搜索前分析用户的原始输入，针对重复字符、字符交换、键盘误触、不完整前缀和相近拼写，生成少量带有置信度与解释信息的平行候选。例如，用户输入 ggooogoto 时，它可以联想到 goto；输入 chorme 时，可以生成 chrome 候选。Prethink 不会偷偷修改用户输入，原始查询始终保留最高权重，所有联想结果最终仍交由 GOTO Engine 统一匹配和排序。 模块同时提供 JavaScript、Kotlin 和 Rust 实现，并通过统一 API 契约保持跨平台行为一致。 仓库地址： 2. GOTO Engine：无状态的本地搜索与智能排序引擎，它是整个系统的核心计算层，负责搜索触发、索引构建、关键词匹配、输入纠错、候选召回、语义检索和个性化重排，但自身不保存任何用户数据。搜索流程按照“精确匹配 → 前缀匹配 → 模糊匹配”的优先级执行，支持中文名称、拼音、英文名称、缩写、T9、分类和标签等多种检索方式，并结合 Trie 前缀树、IndexTree、Jaccard 相似度、字符顺序恢复和键盘物理距离处理误触与模糊输入。Engine 还包含一套不依赖大型语言模型的“模拟智能”机制：它会读取 GOTO Base 中的启动热力图、时段排名、应用转移矩阵、用户上下文和反馈链，根据当前时间、前序应用与历史选择，对搜索结果进行无状态重排。当常规规则搜索无法得到结果时，Engine 可以通过 BM25 对应用描述进行本地语义检索；同时支持基于 BGEsmall 嵌入模型定期重建个人化 RAG 数据库，并以灰度过渡方式更新新旧索引。 模块提供 JavaScript、Kotlin 和 Rust 三种实现，共用相同的算法契约、功能开关和接口定义。 仓库地址： 3. GOTO Base：本地优先的知识、记忆与模型数据底座，他是 GOTO 唯一的持久状态层。它不负责搜索、评分或提醒决策，而是统一保存整个系统需要的公共知识、个人习惯和设备特征，并向 Engine 与 Where 提供结构化读写接口。 Base 将数据物理划分为三个层级： 公共层：保存应用名称、别名、分类、近义词、功能描述、意图标签、RAG 向量库、提示词模板和节假日等可跨用户共享的数据。 个人层：保存用户的启动热力图、分时段排名、应用转移矩阵、搜索点击反馈和个性化偏好。 设备层：承载与当前设备相关的电池、音频、运动、屏幕、网络等瞬时特征，以及可选的本地文件索引。 公共层内置基于 bgesmallzhv1.5 的本地嵌入模型和 512 维应用向量数据，可完全离线运行，也允许切换为其他本地模型或云端接口。公共知识库支持版本化批量更新与回滚，而个人层和设备层不会因为公共库升级而被覆盖。 用户可以分别清除个人记忆、设备数据或全部学习状态，使本地智能能力保持可查看、可重置和可控制。 仓库地址： 4. GOTO Where：判断“现在是否应该出现”的主动决策层，他并不是一个简单的通知模块，而是 GOTO 的主动情境决策层。它负责读取当前信号与历史使用模式，生成可能的操作候选，并依次判断：用户现在可能需要什么、当前是不是合适的时机、是否值得打断，以及应该通过什么方式呈现。 Where 会结合时间模式、前台应用、应用转移关系、设备状态和历史提醒反馈生成候选。例如，当用户在特定时间经常打开某个应用，或使用完相机后通常进入图片分享应用，Where 可以根据这些稳定模式形成提醒建议。 为了避免智能提醒变成骚扰，它内置独立的时机判断和防打扰策略，并根据用户的打开、忽略、拒绝和关闭行为调整后续权重。正反馈缓慢增加权重，负反馈快速降低权重，连续忽略则会逐渐停止对应提醒。 Where 本身不直接依赖 Android 通知 API，通知只是其中一种可替换的投递方式。核心决策通过平台无关的 Port 接口实现，并提供 Kotlin、JavaScript 和 Rust 三种版本，使其可以用于 Android、Web、桌面端或其他宿主环境。 仓库地址： 软件的搜索、统计与行为学习全部均在设备本地完成，无需登录云端账号；相关数据可查看、可清理，智能学习能力也可以关闭。 GOTO 希望实现的最终目标不是让用户更擅长搜索，而是让应用在需要时更容易出现—最好的搜索，是不再需要搜索。 2026.08.03 亮点 1. 记得一点线索，就能找到应用：不需要准确记住应用名称。中文名、拼音全拼、拼音首字母、英文缩写、T9 数字、用途标签，甚至一段不完整的模糊输入，都可以成为搜索线索。 2. 输错了，也不必重新输入：GOTO 针对手机小键盘上的误触、漏字、字符交换和邻位按键错误设计了专门的容错机制，能够区分“只是打错了”和“输入内容根本不相关”，尽可能从错误输入中恢复真实意图。 3. 所有操作，都围绕一个搜索框完成。首页默认不提供层叠复杂菜单和多层入口。输入线索、查看候选、启动应用、记录反馈形成一条完整路径，让用户几乎不需要学习操作方式，打开即可使用。 4. 越用越顺手，但不会自作主张：GOTO 会根据启动频率、使用时段、搜索点击和忽略行为逐渐调整结果排序。明确输入和确定性匹配始终优先，学习机制只负责优化候选顺序，不会擅自替用户决定要打开什么。 5. 本地也有“类智能”，数据由用户控制：搜索记录、行为统计、个性化排序和主要智能能力在设备本地完成，无需登录云端账号。相关数据可以查看、清理或关闭，在获得个性化体验的同时，保留对数据和功能的控制权。 6. 不只帮你找到，也尝试在需要时提前出现： GOTO 会结合时间、当前应用和近期使用关系，在合适的情境下提供应用建议，进一步减少主动搜索。 示例代码 markdown 截图或演示视频 无需安装，直接在浏览器中体验 GOTO 的核心交互： (2026.08.11 链接“goto”更改为全大写“GOTO”） 补充说明：具体的应用演示 已部署在仓库对应的github page；具体请跳转查看",
+          "content": "### 项目地址\n\nhttps://github.com/longqiyua/goto\n\n### 类别\n\nKotlin\n\n### 项目标题\n\nGOTO：记得一点，就能找到\n\n### 项目描述\n\nGOTO 当前阶段已实现为 以单一搜索框为核心的 Android 本地应用搜索与智能启动工具。它试图解决的并不只是“更快搜索应用”，而是让用户在记不清名称、输错字符，甚至只记得用途的情况下，依然能够找到目标应用。\n\n用户可以输入中文名、拼音、首字母、英文缩写、T9 数字、用途词或带有错字的模糊线索。GOTO 会结合精确匹配、拼音检索、模糊纠错、键盘距离、应用标签与使用行为，从多个维度召回候选并进行排序，让搜索不再依赖准确记忆和准确输入。\n\n项目由四个边界清晰、彼此解耦，并可独立演进的核心模块构成。四者分别负责输入预联想、搜索与排序、知识与状态存储，以及主动情境决策，共同组成 GOTO 的本地智能启动体系。\n1. GOTO Prethink：搜索开始前的可解释预联想层：负责在正式搜索前分析用户的原始输入，针对重复字符、字符交换、键盘误触、不完整前缀和相近拼写，生成少量带有置信度与解释信息的平行候选。例如，用户输入 ggooogoto 时，它可以联想到 goto；输入 chorme 时，可以生成 chrome 候选。Prethink 不会偷偷修改用户输入，原始查询始终保留最高权重，所有联想结果最终仍交由 GOTO Engine 统一匹配和排序。\n模块同时提供 JavaScript、Kotlin 和 Rust 实现，并通过统一 API 契约保持跨平台行为一致。\n仓库地址：https://github.com/longqiyua/goto-prethink\n\n2. GOTO Engine：无状态的本地搜索与智能排序引擎，它是整个系统的核心计算层，负责搜索触发、索引构建、关键词匹配、输入纠错、候选召回、语义检索和个性化重排，但自身不保存任何用户数据。搜索流程按照“精确匹配 → 前缀匹配 → 模糊匹配”的优先级执行，支持中文名称、拼音、英文名称、缩写、T9、分类和标签等多种检索方式，并结合 Trie 前缀树、IndexTree、Jaccard 相似度、字符顺序恢复和键盘物理距离处理误触与模糊输入。Engine 还包含一套不依赖大型语言模型的“模拟智能”机制：它会读取 GOTO Base 中的启动热力图、时段排名、应用转移矩阵、用户上下文和反馈链，根据当前时间、前序应用与历史选择，对搜索结果进行无状态重排。当常规规则搜索无法得到结果时，Engine 可以通过 BM25 对应用描述进行本地语义检索；同时支持基于 BGE-small 嵌入模型定期重建个人化 RAG 数据库，并以灰度过渡方式更新新旧索引。\n模块提供 JavaScript、Kotlin 和 Rust 三种实现，共用相同的算法契约、功能开关和接口定义。\n仓库地址：https://github.com/longqiyua/goto-engine\n\n3. GOTO Base：本地优先的知识、记忆与模型数据底座，他是 GOTO 唯一的持久状态层。它不负责搜索、评分或提醒决策，而是统一保存整个系统需要的公共知识、个人习惯和设备特征，并向 Engine 与 Where 提供结构化读写接口。\nBase 将数据物理划分为三个层级：\n公共层：保存应用名称、别名、分类、近义词、功能描述、意图标签、RAG 向量库、提示词模板和节假日等可跨用户共享的数据。\n个人层：保存用户的启动热力图、分时段排名、应用转移矩阵、搜索点击反馈和个性化偏好。\n设备层：承载与当前设备相关的电池、音频、运动、屏幕、网络等瞬时特征，以及可选的本地文件索引。\n公共层内置基于 bge-small-zh-v1.5 的本地嵌入模型和 512 维应用向量数据，可完全离线运行，也允许切换为其他本地模型或云端接口。公共知识库支持版本化批量更新与回滚，而个人层和设备层不会因为公共库升级而被覆盖。\n用户可以分别清除个人记忆、设备数据或全部学习状态，使本地智能能力保持可查看、可重置和可控制。\n仓库地址：https://github.com/longqiyua/goto-base\n\n4. GOTO Where：判断“现在是否应该出现”的主动决策层，他并不是一个简单的通知模块，而是 GOTO 的主动情境决策层。它负责读取当前信号与历史使用模式，生成可能的操作候选，并依次判断：用户现在可能需要什么、当前是不是合适的时机、是否值得打断，以及应该通过什么方式呈现。\nWhere 会结合时间模式、前台应用、应用转移关系、设备状态和历史提醒反馈生成候选。例如，当用户在特定时间经常打开某个应用，或使用完相机后通常进入图片分享应用，Where 可以根据这些稳定模式形成提醒建议。\n为了避免智能提醒变成骚扰，它内置独立的时机判断和防打扰策略，并根据用户的打开、忽略、拒绝和关闭行为调整后续权重。正反馈缓慢增加权重，负反馈快速降低权重，连续忽略则会逐渐停止对应提醒。\nWhere 本身不直接依赖 Android 通知 API，通知只是其中一种可替换的投递方式。核心决策通过平台无关的 Port 接口实现，并提供 Kotlin、JavaScript 和 Rust 三种版本，使其可以用于 Android、Web、桌面端或其他宿主环境。\n仓库地址：https://github.com/longqiyua/goto-where\n\n软件的搜索、统计与行为学习全部均在设备本地完成，无需登录云端账号；相关数据可查看、可清理，智能学习能力也可以关闭。\nGOTO 希望实现的最终目标不是让用户更擅长搜索，而是让应用在需要时更容易出现—**最好的搜索，是不再需要搜索。**\n\n2026.08.03\n\n### 亮点\n\n1. **记得一点线索，就能找到应用**：不需要准确记住应用名称。中文名、拼音全拼、拼音首字母、英文缩写、T9 数字、用途标签，甚至一段不完整的模糊输入，都可以成为搜索线索。\n\n2. **输错了，也不必重新输入**：GOTO 针对手机小键盘上的误触、漏字、字符交换和邻位按键错误设计了专门的容错机制，能够区分“只是打错了”和“输入内容根本不相关”，尽可能从错误输入中恢复真实意图。\n\n3. **所有操作，都围绕一个搜索框完成**。首页默认不提供层叠复杂菜单和多层入口。输入线索、查看候选、启动应用、记录反馈形成一条完整路径，让用户几乎不需要学习操作方式，打开即可使用。\n\n4. **越用越顺手，但不会自作主张**：GOTO 会根据启动频率、使用时段、搜索点击和忽略行为逐渐调整结果排序。明确输入和确定性匹配始终优先，学习机制只负责优化候选顺序，不会擅自替用户决定要打开什么。\n\n5. **本地也有“类智能”，数据由用户控制**：搜索记录、行为统计、个性化排序和主要智能能力在设备本地完成，无需登录云端账号。相关数据可以查看、清理或关闭，在获得个性化体验的同时，保留对数据和功能的控制权。\n\n6. **不只帮你找到，也尝试在需要时提前出现**： GOTO 会结合时间、当前应用和近期使用关系，在合适的情境下提供应用建议，进一步减少主动搜索。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n无需安装，直接在浏览器中体验 **GOTO 的核心交互**：\nhttps://longqiyua.github.io/GOTO/ \n(2026.08.11 链接“goto”更改为全大写“GOTO”）\n\n\n补充说明：具体的应用演示 已部署在仓库对应的github page；具体请跳转查看",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3510",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3510"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] evalint：审计 LLM 评测集本身好不好的命令行工具",
+          "url": "https://github.com/CAOShurong/evalint",
+          "author": "CAOShurong",
+          "authorUrl": "https://github.com/CAOShurong",
+          "publishedAt": "2026-08-03T15:08:59Z",
+          "summary": "项目地址 类别 人工智能 项目标题 审计 LLM 评测集本身好不好的命令行工具 项目描述 所有评测框架都在帮你跑测试用例，却没有一个会问这些用例本身出得好不好。evalint 读取你已有的评测结果（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），算出这份评测集的信度、它能分辨的最小分差，找出所有模型都答对因而无法区分模型的废题、重复题，以及标准答案本身就写错的题目。零运行时依赖，纯标准库实现。 亮点 1. 判断「标准答案写错了」的思路很直接：如果一道题越差的模型反而越容易答对，那不可能是因为题难——只可能是标准答案错了，而差模型恰好烂到跟错答案对上。 2. 它拒绝过度断言。 这是我觉得最值得说的部分：只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两者完全重叠，任何阈值都分不开。所以每个指控都跑置换检验；只有 3 个模型时它会直接说「证不了」，而不是编一个看起来很自信的数字。 3. 告诉你能删掉多少题。 所有模型都答对的题在数学上不可能影响排名，但每跑一次就烧一次 API 调用。示例数据 240 道题里，58 道完全不影响结果，151 道就能复现一模一样的排名——每次跑省 37% 的调用。而且这个结论是验证过的：每一层精简都重新算一遍排名，排名一变就整个回滚。 4. 零依赖。 不用装 numpy 或 pandas。会用到这个工具的人本来就已经不信任自己的评测数字了，再让他先装一套数值计算栈，结果就是永远不会装。 示例代码 bash pip install evalint evalint results.csv evalint exampleresults.csv 240 items · 8 systems · 1920 scores Measurement reliability 0.92 strong enough to trust small differences smallest real difference 0.026 systems closer than this are not distinguishable informative █████████··· 182/240 58 cannot affect the ranking Paying for, not using 46 every system passes 12 no system passes 47 nearduplicate of another item 151 of 240 items reproduce the same ranking 37% fewer calls per run Probably broken BROKEN item056 discrimination 0.92 · chance 0.040 BROKEN item057 discrimination 0.92 · chance 0.017 ... Ranking claudesonnet 0.729 gpt4o 0.729 tied with the leader 最后两行是重点：两个模型分数相同，而这份评测集能分辨的最小差距是 0.026，所以它报「并列」而不是排出第一第二。 截图或演示视频 每个点是一道题，横轴是难度，纵轴是区分度。虚线以下的题是「越差的模型越容易答对」的那些——图中那 10 道是我故意埋进去的错题，evalint 一道不多一道不少全部找出来了。 !item map",
+          "content": "### 项目地址\n\nhttps://github.com/CAOShurong/evalint\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n审计 LLM 评测集本身好不好的命令行工具\n\n### 项目描述\n\n所有评测框架都在帮你跑测试用例，却没有一个会问这些用例本身出得好不好。evalint 读取你已有的评测结果（CSV / JSONL / promptfoo / OpenAI evals 都能直接读），算出这份评测集的信度、它能分辨的最小分差，找出所有模型都答对因而无法区分模型的废题、重复题，以及标准答案本身就写错的题目。零运行时依赖，纯标准库实现。\n\n### 亮点\n\n**1. 判断「标准答案写错了」的思路很直接**：如果一道题**越差的模型反而越容易答对**，那不可能是因为题难——只可能是标准答案错了，而差模型恰好烂到跟错答案对上。\n\n**2. 它拒绝过度断言。** 这是我觉得最值得说的部分：只有 5 个模型时，真正的坏题相关系数是 −0.60，而纯属运气的正常题能到 −0.71，两者完全重叠，任何阈值都分不开。所以每个指控都跑置换检验；只有 3 个模型时它会直接说「证不了」，而不是编一个看起来很自信的数字。\n\n**3. 告诉你能删掉多少题。** 所有模型都答对的题在数学上不可能影响排名，但每跑一次就烧一次 API 调用。示例数据 240 道题里，58 道完全不影响结果，151 道就能复现一模一样的排名——每次跑省 37% 的调用。而且这个结论是**验证过的**：每一层精简都重新算一遍排名，排名一变就整个回滚。\n\n**4. 零依赖。** 不用装 numpy 或 pandas。会用到这个工具的人本来就已经不信任自己的评测数字了，再让他先装一套数值计算栈，结果就是永远不会装。\n\n### 示例代码\n\n```bash\npip install evalint\nevalint results.csv\n```\n\n```\nevalint  example-results.csv\n  240 items · 8 systems · 1920 scores\n\nMeasurement\n  reliability     0.92   strong enough to trust small differences\n  smallest real difference  0.026   systems closer than this are not distinguishable\n  informative     █████████··· 182/240   58 cannot affect the ranking\n\nPaying for, not using\n     46  every system passes\n     12  no system passes\n     47  near-duplicate of another item\n\n  151 of 240 items reproduce the same ranking   37% fewer calls per run\n\nProbably broken\n  BROKEN item-056   discrimination -0.92 · chance 0.040\n  BROKEN item-057   discrimination -0.92 · chance 0.017\n  ...\n\nRanking\n  claude-sonnet   0.729\n  gpt-4o          0.729  tied with the leader\n```\n\n最后两行是重点：两个模型分数相同，而这份评测集能分辨的最小差距是 0.026，所以它报「并列」而不是排出第一第二。\n\n### 截图或演示视频\n\n每个点是一道题，横轴是难度，纵轴是区分度。虚线以下的题是「越差的模型越容易答对」的那些——图中那 10 道是我故意埋进去的错题，evalint 一道不多一道不少全部找出来了。\n\n![item map](https://raw.githubusercontent.com/CAOShurong/evalint/main/docs/item-map.png)\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3511",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3511"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "vibecafe",
+      "sourceName": "VibeCafé 作品",
+      "items": [
+        {
+          "sourceId": "vibecafe",
+          "title": "Vibe Usage Quote/0",
+          "url": "https://vibecafe.ai/products/cmsdais0400010akfno93aqg0",
+          "author": "zzzhizhi",
+          "authorUrl": "https://vibecafe.ai/u/zzzhizhi",
+          "publishedAt": "2026-08-03T13:54:08.068Z",
+          "summary": "在 Quote/0 画板上展示你的 Vibe Usage 数据",
+          "content": "在 Quote/0 画板上展示你的 Vibe Usage 数据",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsdais0400010akfno93aqg0",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/msda9ud2cvjg-o2PLMbo6avjtTgPiOMEADBK6gNeU2E.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/1785764860225-s10rle.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/msda9ud2cvjg-o2PLMbo6avjtTgPiOMEADBK6gNeU2E.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/1785765094919-hs1vye.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmbr5dno0001l20456cwfvlc/1785765137993-qi890a.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "ThreadWave | Grow on X without living on X",
+          "url": "https://vibecafe.ai/products/cmsda1dxp00000aghihjerggd",
+          "author": "Rain Miao",
+          "authorUrl": "https://vibecafe.ai/u/rain8miao",
+          "publishedAt": "2026-08-03T13:40:36.685Z",
+          "summary": "ThreadWave 是一款 X 增长智能体，让你像 Vibe Coding 一样轻松运营和增长 X 账号。",
+          "content": "ThreadWave 是一款 X 增长智能体，让你像 Vibe Coding 一样轻松运营和增长 X 账号。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsda1dxp00000aghihjerggd",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd9tald00000agmmob8zuhd/msd9wo4ykm27-X8iDq1krQgVwDkls96hZMT8mL0Lxto.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd9tald00000agmmob8zuhd/msd9wo50ewri-0uTj8I8ve0BbAy6ht1jSaDMb9yrhQQ.ico",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd9tald00000agmmob8zuhd/msd9wo4ykm27-X8iDq1krQgVwDkls96hZMT8mL0Lxto.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "VizText — AI Diagram Generator from Prompt or Chat",
+          "url": "https://vibecafe.ai/products/cmsd99evu00000aja1uhvqeeh",
+          "author": "犀利豆",
+          "authorUrl": "https://vibecafe.ai/u/xilidou",
+          "publishedAt": "2026-08-03T13:18:51.546Z",
+          "summary": "AI diagram generator with two modes: Quick or Chat",
+          "content": "AI diagram generator with two modes: Quick or Chat",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd99evu00000aja1uhvqeeh",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785763075561-fduoku.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993155639-j4rdis.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785763075561-fduoku.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993191008-97ev3a.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993214640-0dtyxe.webp",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd90uri00020ajhid523omj/1785993190971-nr7o3n.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "光码接收器",
+          "url": "https://vibecafe.ai/products/cmsd95ksa00030ajcxevzmb1y",
+          "author": "老 A",
+          "authorUrl": "https://vibecafe.ai/u/laoa",
+          "publishedAt": "2026-08-03T13:15:52.570Z",
+          "summary": "QRREC 可以让两台设备仅通过“屏幕 + 摄像头”离线传输文件。",
+          "content": "QRREC 可以让两台设备仅通过“屏幕 + 摄像头”离线传输文件。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd95ksa00030ajcxevzmb1y",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmruas87500000ai2549y9r4f/1785762905913-1jwhq3.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmruas87500000ai2549y9r4f/1785762545669-ocd6y6.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmruas87500000ai2549y9r4f/1785762905913-1jwhq3.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Codex重置追踪",
+          "url": "https://vibecafe.ai/products/cmsd8k5no00000ai3tz8y1kql",
+          "author": "wong2",
+          "authorUrl": "https://vibecafe.ai/u/wong2",
+          "publishedAt": "2026-08-03T12:59:13.188Z",
+          "summary": "追踪和预警Codex重置",
+          "content": "追踪和预警Codex重置",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd8k5no00000ai3tz8y1kql",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd8goyw00030akkiv59hsp9/msd8h0nzkzry-3DfiezPhbGd5WyybhXRW3cDLNzU799.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd8goyw00030akkiv59hsp9/msd8h0o0kb9a-AWQiVXs0ekfRUzMxn552RZDDbmoOJe.jpg",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd8goyw00030akkiv59hsp9/msd8h0nzkzry-3DfiezPhbGd5WyybhXRW3cDLNzU799.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Neobank 几种模式的对标分析 — 支无不言 Research",
+          "url": "https://vibecafe.ai/products/cmsd3d2fb00000akseeb1xq2y",
+          "author": "ivyleanin",
+          "authorUrl": "https://vibecafe.ai/u/ivyleanin",
+          "publishedAt": "2026-08-03T10:33:44.328Z",
+          "summary": "拆解 Nubank、Revolut、Mercury、Lemon Cash 四种 Neobank 打法的付费研究报告，46 页 PDF，作者 Ivy。",
+          "content": "拆解 Nubank、Revolut、Mercury、Lemon Cash 四种 Neobank 打法的付费研究报告，46 页 PDF，作者 Ivy。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd3d2fb00000akseeb1xq2y",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd39era00000ahtnrz4u3x6/1785753169802-brlvu0.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd39era00000ahtnrz4u3x6/1785753150687-llst53.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsd39era00000ahtnrz4u3x6/1785753169802-brlvu0.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "flomoplus - 灵感收藏与网页剪藏 App - App Store",
+          "url": "https://vibecafe.ai/products/cmsd2lzil00000akpyhsob30s",
+          "author": "extrastu",
+          "authorUrl": "https://vibecafe.ai/u/extrastu",
+          "publishedAt": "2026-08-03T10:12:40.845Z",
+          "summary": "在 App Store 下载“金苹 卢”的“flomoplus - 灵感收藏与网页剪藏”。查看截屏、评分及评论、用户提示以及更多类似“flomoplus - 灵感收藏与网页剪藏”的 App。",
+          "content": "在 App Store 下载“金苹 卢”的“flomoplus - 灵感收藏与网页剪藏”。查看截屏、评分及评论、用户提示以及更多类似“flomoplus - 灵感收藏与网页剪藏”的 App。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd2lzil00000akpyhsob30s",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752006674-0a672q.webp",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785751978415-i50r0h.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752006674-0a672q.webp",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752006686-cteist.webp",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752720612-ojuwbs.webp",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752720731-zqisxq.webp",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752742375-1edvdq.webp",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsv08q800000ahyelllqshf/1785752742337-8zo9k5.webp"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "YOKAI.JP",
+          "url": "https://vibecafe.ai/products/cmsd0l3ev00000ai2nvou1xv1",
+          "author": "Kira",
+          "authorUrl": "https://vibecafe.ai/u/kira",
+          "publishedAt": "2026-08-03T09:16:00.009Z",
+          "summary": "妖怪图鉴 - 认识妖怪。与灵魂交谈。与它结缘。",
+          "content": "妖怪图鉴 - 认识妖怪。与灵魂交谈。与它结缘。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd0l3ev00000ai2nvou1xv1",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785747833094-c8mm52.jpg",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785747679575-gat8nr.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785747833094-c8mm52.jpg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748370846-748slp.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748383260-ktq6ll.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748395964-s6it05.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748408893-i8ied0.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748421831-sjfbe5.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748432196-8flwbo.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748445816-8av9to.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmrsqxsn000000aghumsf0rpb/1785748473314-b1sym0.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "EmuVault | A Curated Retro Game Archive",
+          "url": "https://vibecafe.ai/products/cmsd05bh700050ahw8mwd5b68",
+          "author": "Warn",
+          "authorUrl": "https://vibecafe.ai/u/warn",
+          "publishedAt": "2026-08-03T09:03:43.963Z",
+          "summary": "Explore a curated archive of playable retro game records organized by platform, genre, year, and dev",
+          "content": "Explore a curated archive of playable retro game records organized by platform, genre, year, and dev",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd05bh700050ahw8mwd5b68",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsczy54x00000aky88xgvd69/msczz4a7bpt3-ZaCdWTBWVAjfkdvd4VxOrlbJXDMNro.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsczy54x00000aky88xgvd69/msczz4a8reyc-kHm0kXaLSr15lT25eH6uzr7tI9MvyX.svg",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmsczy54x00000aky88xgvd69/msczz4a7bpt3-ZaCdWTBWVAjfkdvd4VxOrlbJXDMNro.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "/vibex",
+          "url": "https://vibecafe.ai/products/cmsd01ldn00000al1ze0xlztd",
+          "author": "krhougs",
+          "authorUrl": "https://vibecafe.ai/u/krhougs",
+          "publishedAt": "2026-08-03T09:00:50.172Z",
+          "summary": "连上家里电脑，随时随地猛猛蹬。",
+          "content": "连上家里电脑，随时随地猛猛蹬。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmsd01ldn00000al1ze0xlztd",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785749611579-4lhgic.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/msczecwyc5r2-8KnHL8llD6nV5AFaevuwdNSQ0OLHAf.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785749611579-4lhgic.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747331854-ker3io.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747873808-mdd5rc.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747323914-evk06e.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmmxhinl4000004ldbdf1znq1/1785747344032-lyaywk.jpg"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "三慢问道 · 道德经 · 流动人生",
+          "url": "https://vibecafe.ai/products/cmscvltbb00000akqkxeahkpo",
+          "author": "elian",
+          "authorUrl": "https://vibecafe.ai/u/elian",
+          "publishedAt": "2026-08-03T06:56:35.496Z",
+          "summary": "最美道德经AI",
+          "content": "最美道德经AI",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmscvltbb00000akqkxeahkpo",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089289-8gcm8i.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785739755048-pqljw4.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089289-8gcm8i.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089845-15nr40.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740090044-o0lgt6.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740085554-mup5zm.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740072226-s45d2a.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmscv8tzs00060ajec9edifq1/1785740089925-oobbo2.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Symbols Copy and Paste - Symbol Town",
+          "url": "https://vibecafe.ai/products/cmscnvfjw00010aj7e06zqy4z",
+          "author": "Jaksay",
+          "authorUrl": "https://vibecafe.ai/u/jaksay",
+          "publishedAt": "2026-08-03T03:20:07.293Z",
+          "summary": "Explore a rich collection of Unicode symbols: ★ stars, © copyright, ♥ hearts, ℃ temperature and more",
+          "content": "Explore a rich collection of Unicode symbols: ★ stars, © copyright, ♥ hearts, ℃ temperature and more",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmscnvfjw00010aj7e06zqy4z",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727186465-gizg6u.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727581415-idua0b.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727186465-gizg6u.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1785727869090-q4wmhd.png"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "GarageMaster App",
+          "url": "https://www.producthunt.com/products/garagemaster-app/launches/garagemaster-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Manage car clubs, events, and drives in one app",
+          "content": "GarageMaster is the all‑in‑one car‑club management app for enthusiasts and organisers. Manage memberships, events, and classic registration compliance; coordinate group drives with built‑in maps; track attendance; and handle payments, all from one beautifully designed platform. Whether you run a classic club, performance group, or social motoring community, GarageMaster keeps your club connected and organised.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212035",
+          "logo": "https://ph-files.imgix.net/162b5a9f-98b3-4fca-95cb-9a36d0adfc99.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/162e4adc-22ae-4e47-bdf1-d4079d4ef3f2.png?auto=format",
+            "https://ph-files.imgix.net/a9e36f09-5497-4a7d-b488-e1608b3831e3.jpeg?auto=format",
+            "https://ph-files.imgix.net/d29ef797-914b-49ff-b7d7-c384728d4eb3.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/162e4adc-22ae-4e47-bdf1-d4079d4ef3f2.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Qwen3.8-Max",
+          "url": "https://www.producthunt.com/products/qwen3/launches/qwen3-8-max?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Qwen’s most capable model for coding and cowork",
+          "content": "Qwen3.8-Max is Qwen’s most capable model to date, a 2.4T-parameter MoE with 95B active parameters, 1M context, and multimodal agent capabilities for coding, research, cowork, and long-horizon tasks.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1213396",
+          "logo": "https://ph-files.imgix.net/fe882c3d-cbc0-4ae5-b5c3-7064e095d3f5.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/619335d6-0640-41ab-9642-b8d08d999c53.png?auto=format",
+            "https://ph-files.imgix.net/4d1e62d1-4ef1-4e9e-b7c0-6a5e7ff59033.png?auto=format",
+            "https://ph-files.imgix.net/ab9981b9-b333-4e92-b0ea-947fbf714630.png?auto=format",
+            "https://ph-files.imgix.net/f87a3e71-6bd7-482a-b2b1-41772f5b765d.png?auto=format",
+            "https://ph-files.imgix.net/8164cba3-cf30-4b0b-849d-a0e43836d644.png?auto=format",
+            "https://ph-files.imgix.net/fc5493b6-8a63-4788-b7a1-2e509b05988d.png?auto=format",
+            "https://ph-files.imgix.net/5eff85b9-2b0a-4c1a-817f-3b07e5b28604.png?auto=format",
+            "https://ph-files.imgix.net/5c65acdb-c69a-4469-a486-a7a0fd92c662.png?auto=format",
+            "https://ph-files.imgix.net/cb768c1e-1d75-4161-ab0f-8e82117850f0.png?auto=format",
+            "https://ph-files.imgix.net/8dc03afc-b581-42c6-beac-f29e4e37318d.png?auto=format",
+            "https://ph-files.imgix.net/6e93ac77-3c8e-401c-9d04-1439ca480451.png?auto=format",
+            "https://ph-files.imgix.net/c3bc11a2-b358-4e2d-b048-e4e9182b1a28.png?auto=format",
+            "https://ph-files.imgix.net/e789b84c-9766-47b6-bd43-7165dba557d2.png?auto=format",
+            "https://ph-files.imgix.net/ed435608-3614-486e-a888-43da5c34c73a.png?auto=format",
+            "https://ph-files.imgix.net/d9da6133-92fb-45ed-8ddc-e9181a69de6b.png?auto=format",
+            "https://ph-files.imgix.net/9ed9a776-902e-44dd-b462-7cf76266ba7f.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/619335d6-0640-41ab-9642-b8d08d999c53.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "AgentSky",
+          "url": "https://www.producthunt.com/products/agentsky/launches/agentsky?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Any harness, any LLM — cloud-hosted agents on demand.",
+          "content": "Managed agent as a service: launch a long-horizon AI agent in one click — Claude Code, Codex, Hermes, or OpenClaw — with full history, managed recovery, and access through WhatsApp, iMessage, Telegram, Slack, web, API developers, and CLI.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1211254",
+          "logo": "https://ph-files.imgix.net/a50c630a-ee2b-422e-93ef-44116a39bd2c.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/6dd00586-2463-4cd6-8e7c-07854bb731de.png?auto=format",
+            "https://ph-files.imgix.net/00e63dda-ca67-4e28-b504-07f2a92fb863.jpeg?auto=format",
+            "https://ph-files.imgix.net/4f8a912d-cb52-499d-8c7f-b083426ae06f.jpeg?auto=format",
+            "https://ph-files.imgix.net/c213e148-f92c-499e-8dd8-05635dac86fe.jpeg?auto=format",
+            "https://ph-files.imgix.net/8dc8ad3b-8e28-4a7a-99e0-5f35e4175f6f.jpeg?auto=format",
+            "https://ph-files.imgix.net/b534f5fc-606f-4bb3-83a8-e7e3535a9a5d.jpeg?auto=format",
+            "https://ph-files.imgix.net/037dc7d9-fb20-4842-8a15-13eb15566de1.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/6dd00586-2463-4cd6-8e7c-07854bb731de.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "mpai",
+          "url": "https://www.producthunt.com/products/mpai/launches/mpai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Make existing Codex and Claude Code sessions multiplayer",
+          "content": "Open-source terminal multiplayer for Codex and Claude Code. Join a teammate's explicitly shared native session from another Mac, arrive with the real context, and prompt with your name attached. Tailscale stays private; the host Mac stays in control.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1213234",
+          "logo": "https://ph-files.imgix.net/34a6bb78-5b92-4110-8a97-664b4ffdd716.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/846fea0e-f4df-47e4-9502-ac2a85fb0ba8.png?auto=format",
+            "https://ph-files.imgix.net/c240d90d-d0a7-47c3-8056-94afd0bb81c2.png?auto=format",
+            "https://ph-files.imgix.net/009fd06d-eca8-4e50-87ee-6171e70a60c0.png?auto=format",
+            "https://ph-files.imgix.net/a47318d7-fcae-4ff7-9427-72fe20ce34b7.png?auto=format",
+            "https://ph-files.imgix.net/d00a814a-b843-4bda-8f91-b0901b7163e6.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/846fea0e-f4df-47e4-9502-ac2a85fb0ba8.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Daily Digest for Product Hunt",
+          "url": "https://www.producthunt.com/products/daily-digest-for-product-hunt/launches/daily-digest-for-product-hunt?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Daily 1-min curated summary of Product Hunt launches",
+          "content": "Get the most out of Product Hunt without spending hours scrolling. Daily Digest for Product Hunt delivers a curated 1-minute summary of new launches directly to your inbox every weekday morning (PT). What’s included: - Handpicked Key Launches with target audience insights (Best for...) - Scenario-based recommendations & key takeaways - Editor's Note summarizing the key theme of today's lineup Save time, stay updated, and let curated launches come to you.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212731",
+          "logo": "https://ph-files.imgix.net/23534940-6ff4-4e17-ba89-3b81f89e929a.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/22418739-0d44-4462-b3e8-4f5fcc9c4141.png?auto=format",
+            "https://ph-files.imgix.net/50adafb0-0c1d-4b2c-a78e-151fdb243cdd.png?auto=format",
+            "https://ph-files.imgix.net/5c8c3256-082a-4d9b-a561-c7123ceb575b.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/22418739-0d44-4462-b3e8-4f5fcc9c4141.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Archevo",
+          "url": "https://www.producthunt.com/products/archevo/launches/archevo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Archevo is the all-in-one Business Growth Operating System.",
+          "content": "Archevo is the Growth Operating System for African businesses. It replaces spreadsheets and scattered tools with one platform to manage products, orders, customers, payments, and analytics. Built for Nigerian SMEs, Archevo lets you launch a professional online store in minutes, accept payments via Paystack, track inventory, and automate onboarding all from a single dashboard. With built-in AI assistance. Archevo helps you sell smarter, not harder. Start free for your first 100 orders.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1189676",
+          "logo": "https://ph-files.imgix.net/530dea17-e5ca-4cf5-855f-362f0b966574.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/376f1a9e-f1ad-44d1-8849-8bbb49e19548.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/376f1a9e-f1ad-44d1-8849-8bbb49e19548.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "YouTube to MP3 by Aciole",
+          "url": "https://www.producthunt.com/products/youtube-to-mp3-by-aciole/launches/youtube-to-mp3-by-aciole?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "A multilingual YouTube to MP3 converter for Windows",
+          "content": "YouTube to MP3 by Aciole is a multilingual Windows application that converts YouTube videos into MP3 audio files. It features a simple interface, download queue, real-time progress, automatic setup of required components and a built-in update system. If the internet connection drops, the app waits and automatically resumes the conversion. Available in eight language variants. Intended for content users own or have permission to download.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212509",
+          "logo": "https://ph-files.imgix.net/d1422542-399e-41e8-a830-f82ebf23a5e5.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/7a107019-9e49-47c7-9294-a0a948bb3041.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/7a107019-9e49-47c7-9294-a0a948bb3041.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "TripNestIQ Radar AI",
+          "url": "https://www.producthunt.com/products/tripnestiq-radar-ai/launches/tripnestiq-radar-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Find trips worldwide that fit your complete budget",
+          "content": "TripNestIQ Radar AI helps travelers discover where they can go within their complete trip budget. Choose your departure airport, travel dates, region, trip length, hotel preference and budget. Radar AI searches flights and live hotels, compares matching destinations, and shows estimated total costs, remaining budget and smart deal scores. Start with your budget, not a destination. It works in your browser and can also be installed as a web app on your phone or computer.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1206775",
+          "logo": "https://ph-files.imgix.net/d56d5eb1-1afb-4fb5-9996-b4ed44113cc8.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/9ab3aff8-faad-4386-b990-d618fbd6b362.jpeg?auto=format",
+            "https://ph-files.imgix.net/0dc88c22-ef3c-4cbe-ba9a-dd3b0a629535.jpeg?auto=format",
+            "https://ph-files.imgix.net/7038151b-ab50-491f-a8c7-b1e0bb6099f4.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/9ab3aff8-faad-4386-b990-d618fbd6b362.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Dodast-Synced Media Player",
+          "url": "https://www.producthunt.com/products/dodast-synced-media-player/launches/dodast-synced-media-player?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Every phone in the room, playing in perfect sync",
+          "content": "Dodast turns any group of phones, tablets, or laptops on the same Wi-Fi into one perfectly synced player. When you're together in the same room, load up your music and video library and let every connected device play as one — in step, down to matching lip-sync on video. Each person gets their own volume and latency controls right from their phone. Built with Kotlin Multiplatform, so Android and iOS get the exact same experience — great for shared listening and watch parties.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1213082",
+          "logo": "https://ph-files.imgix.net/2be22bf6-6504-43d5-83be-67d9c52a21fe.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/52cf8112-3cb2-4cd9-9b99-de426f4c75a9.webp?auto=format",
+            "https://ph-files.imgix.net/ee32e93f-3cae-4fc0-9922-b4a70171d963.webp?auto=format",
+            "https://ph-files.imgix.net/6922c480-89ca-4ea8-9a49-fb73d6abc029.webp?auto=format",
+            "https://ph-files.imgix.net/4076bfcb-b3f9-4283-94f0-61dfe9855c50.webp?auto=format",
+            "https://ph-files.imgix.net/58c0bdab-f345-4523-bf35-4e64a71c7db6.webp?auto=format",
+            "https://ph-files.imgix.net/fe033943-dab1-431f-908b-4ec856b4ca03.webp?auto=format",
+            "https://ph-files.imgix.net/b6b1ca42-63e2-484f-a048-f636ab6fd340.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/52cf8112-3cb2-4cd9-9b99-de426f4c75a9.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "HunarHub",
+          "url": "https://www.producthunt.com/products/hunarhub-2/launches/hunarhub-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Find Skilled Freelancers. Get Hired. Earn More.",
+          "content": "I am 16 year old boy from india who developed this app Independently In india,I have assume that the people of india are very talanted and skilledBut for work online they need to depend on foreigner Apps which often use the dollar payment system So i have make this app based on fully indian system and indian upi system In the app if you need workers you can make an job and if you need work or wanna became a freelancer so you can apply for that job Its easy and fully secured App So check out!!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212987",
+          "logo": "https://ph-files.imgix.net/8722c066-4c4c-46db-8665-41ca5f07bb13.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/587f8f78-7f8c-4fbf-aff9-68531bc2f252.jpeg?auto=format",
+            "https://ph-files.imgix.net/6bbea542-ced0-4ea5-bacb-20d86149cde9.jpeg?auto=format",
+            "https://ph-files.imgix.net/d78b2ba0-615b-4722-942d-b502769a3f5d.jpeg?auto=format",
+            "https://ph-files.imgix.net/37036f87-c04a-4f0b-9a40-47726a94c352.jpeg?auto=format",
+            "https://ph-files.imgix.net/dd475b65-4655-43c6-bf15-747a62ddf36c.jpeg?auto=format",
+            "https://ph-files.imgix.net/a77d5337-99e7-45e6-84c1-ebdd3da08ee1.jpeg?auto=format",
+            "https://ph-files.imgix.net/fd5fd533-5a23-4946-8a37-9fec14491555.jpeg?auto=format",
+            "https://ph-files.imgix.net/0a3419bc-1a79-4079-8313-9f65f14a7c52.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/587f8f78-7f8c-4fbf-aff9-68531bc2f252.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "pulse. by dhi Hospitality",
+          "url": "https://www.producthunt.com/products/pulse-by-dhi-hospitality/launches/pulse-by-dhi-hospitality?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Hotel commercial intelligence for GMs.",
+          "content": "pulse. unifies marketing, revenue management, and distribution in one Integrated Commercial System: helping hotels grow incremental net margin.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1210400",
+          "logo": "https://ph-files.imgix.net/eeeb8975-41a3-4606-80cc-f2fa16c2f0be.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/9d7cb133-0cc1-4ee5-a6a1-caa630b2a976.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/9d7cb133-0cc1-4ee5-a6a1-caa630b2a976.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "NativePort",
+          "url": "https://www.producthunt.com/products/nativeport/launches/nativeport?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "One key and balance for provider-native agent APIs",
+          "content": "NativePort gives AI agent builders one key and credit balance for native provider search, scraping, browser automation, voice, and model inference APIs. Choose the provider and keep its native request and response format, with no normalized wrapper or automatic routing. Pay each provider's metered usage with no per request markup. A 5.5% fee applies only when adding credits. Public, dated benchmarks compare quality, latency, cost, and errors where our evaluation corpora cover the provider.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1211575",
+          "logo": "https://ph-files.imgix.net/7c15060f-3a6a-4170-a79e-84d7dae136e6.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/88032a3e-4123-4e1c-937f-e1a377cef94f.png?auto=format",
+            "https://ph-files.imgix.net/c91d11d0-2053-484b-8825-578ec61788d8.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/88032a3e-4123-4e1c-937f-e1a377cef94f.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Brusnika.LMS",
+          "url": "https://www.producthunt.com/products/brusnika-lms/launches/brusnika-lms?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Corporate LMS that lives inside your CRM",
+          "content": "Brusnika LMS helps companies deliver learning inside everyday work processes through integrations, automation and AI.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212255",
+          "logo": "https://ph-files.imgix.net/2736c6d6-7cd8-45d0-9de6-d7c3dd3f03c8.vnd.microsoft.icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/174dd113-3af3-4abc-8fb6-785b07a83e12.png?auto=format",
+            "https://ph-files.imgix.net/3e2bc568-6a1f-479c-a096-d798755bd6df.jpeg?auto=format",
+            "https://ph-files.imgix.net/99b6f900-aeb3-46f5-b7c0-fd2582636061.jpeg?auto=format",
+            "https://ph-files.imgix.net/ff384041-707c-46fc-9f28-cccb58907073.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/174dd113-3af3-4abc-8fb6-785b07a83e12.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "PlayPatch",
+          "url": "https://www.producthunt.com/products/playpatch/launches/playpatch?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Clean group games and prompts for family play",
+          "content": "PlayPatch is a local game host for clean group play. Pick a scene, read a playful prompt, and keep the table moving with simple rounds for family nights, birthdays, classroom icebreakers, road trips, rainy days, no-prop games, sleepovers, and calm wind-down moments without accounts, ads, tracking, or chat.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1209400",
+          "logo": "https://ph-files.imgix.net/96b87dfe-49e4-4c66-9b21-9e62e81c13d7.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/621ac734-a4be-45da-88a2-5f25e175053e.png?auto=format",
+            "https://ph-files.imgix.net/c8586ddc-887e-40f8-b6d7-02412ac7216a.png?auto=format",
+            "https://ph-files.imgix.net/414ab292-7067-43ed-9774-18240d9b4606.png?auto=format",
+            "https://ph-files.imgix.net/36377b82-cc0b-4e58-b401-c10efb044618.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/621ac734-a4be-45da-88a2-5f25e175053e.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "VewMe",
+          "url": "https://www.producthunt.com/products/vewme/launches/vewme?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Power your brand ",
+          "content": "VewMe helps creators, coaches, and brands own their audience instead of renting it. Launch your own branded platform with a custom domain, memberships, paid content, live streaming, Stories, group messaging, events, and more. Build recurring revenue, strengthen your community, and grow your business on your terms.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1207297",
+          "logo": "https://ph-files.imgix.net/9ca040c6-78da-43c0-94d0-1e71bc45f8d2.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/daf5d433-6f6f-4beb-b8d5-ce3bbd63fe6c.png?auto=format",
+            "https://ph-files.imgix.net/ab480414-1b59-48b3-89e4-497d883ed13b.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/daf5d433-6f6f-4beb-b8d5-ce3bbd63fe6c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Murmell",
+          "url": "https://www.producthunt.com/products/murmell/launches/murmell?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Cloud canvas where your team and AI agents works together",
+          "content": "Murmell is a shared cloud canvas where your team and AI agents work in the same room, on the same repo, with a preview and more coming in the future. Close your laptop and the work keeps going. Agents claim files before they write, so people and agents can move at once without overwriting each other. Run Claude Code, Codex, Kimi, and OpenCode together today, with more agents on the way (OpenClaw, Hermes, and more), and your work lands back in git, so you can always find your projects there.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1213367",
+          "logo": "https://ph-files.imgix.net/0536077d-456d-48e7-a004-9760a0425971.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2ef3156a-06cc-4308-ad2e-d95c8bed6378.jpeg?auto=format",
+            "https://ph-files.imgix.net/314b188d-ab16-485e-a1c1-6fd9a51d995f.png?auto=format",
+            "https://ph-files.imgix.net/fd8014da-2d8a-4727-b1ba-564f7a3265e4.png?auto=format",
+            "https://ph-files.imgix.net/ba72fff6-69f3-4bf8-9475-0c63139fb584.png?auto=format",
+            "https://ph-files.imgix.net/4c7b5be1-7134-4f88-bd47-c14be5411bed.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2ef3156a-06cc-4308-ad2e-d95c8bed6378.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "AbilityMic",
+          "url": "https://www.producthunt.com/products/abilitymic/launches/abilitymic?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "AI-powered AAC and home control for Apple devices",
+          "content": "AbilityMic goes beyond a communication board: it combines AAC with private, on-device Apple Intelligence and native HomeKit automation. Smart suggestions and sentence completion speed up communication, while optional AI can generate boards and symbols. Users can speak, control HomeKit accessories, access HealthKit and emergency tools, and move across the Apple ecosystem. Core AAC works offline with 5,400+ symbols, OBF/OBL support, VoiceOver, Switch Control, and no tracking without consent.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212833",
+          "logo": "https://ph-files.imgix.net/eeef744d-f967-4c21-920b-1a85bbcef771.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/933431da-01a8-48c1-8a7d-5ccf848e3af7.png?auto=format",
+            "https://ph-files.imgix.net/c3cbd595-11a4-4b2e-81a9-bdef0f063904.png?auto=format",
+            "https://ph-files.imgix.net/9cda02c6-c1db-4ee9-9ae6-661bfa075d1a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/933431da-01a8-48c1-8a7d-5ccf848e3af7.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "elmentore",
+          "url": "https://www.producthunt.com/products/elmentore/launches/elmentore?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "AI Mentorship & Senior Code Reviews for Developers",
+          "content": "elmentore is an AI-driven developer mentorship platform designed to take software engineers from learning basics to landing senior developer roles. Unlike static video courses, elmentore enforces learning through: • 12-Week Structured Career Roadmaps (Frontend, Backend, Fullstack, DevOps) • Automated Senior-Level Code Reviews with actionable feedback & hireability scores • Daily Coding Challenges & Weekly Evaluation Tests • Adaptive Remedial Catch-Up Modules for weak topics",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1213407",
+          "logo": "https://ph-files.imgix.net/d6d9afa3-1707-4772-b0eb-e9edc50370e9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/32faa178-054c-43ca-a33d-6d4ca5851037.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/32faa178-054c-43ca-a33d-6d4ca5851037.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "IO Tools 3.0 (Revamp)",
+          "url": "https://www.producthunt.com/products/io-tools/launches/io-tools-3-0-revamp?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "900+ free tools and growing, redesigned - now with API + MCP",
+          "content": "IO Tools is a free tools platform - 900+ utilities for everyday tasks, no signup needed. 3.0 is a full rebuild: redesigned UI, faster load times across the board, and a public API + MCP server so you can plug IO Tools straight into your AI agent workflows instead of opening a browser tab. We've grown from ~40 to 700+ daily clicks. This release is about making that same toolkit usable anywhere - browser, API, or agent.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212814",
+          "logo": "https://ph-files.imgix.net/92e8c276-6981-4a55-bf13-e211b3d895ee.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/16ebfe23-de34-493f-9f78-191088b484f5.png?auto=format",
+            "https://ph-files.imgix.net/f377875b-9945-4ef7-a2e9-65562a8881cb.jpeg?auto=format",
+            "https://ph-files.imgix.net/9a4c5e07-af62-4705-a40c-8f1d9a339007.jpeg?auto=format",
+            "https://ph-files.imgix.net/992d704c-fcd4-4ad2-8ed7-57977216a73c.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/16ebfe23-de34-493f-9f78-191088b484f5.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Snapdown",
+          "url": "https://www.producthunt.com/products/snapdown-2/launches/snapdown-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-03T07:01:00Z",
+          "summary": "Turn anything on your Mac screen into clean Markdown",
+          "content": "Snapdown turns any part of your Mac screen into structured Markdown, preserving headings, lists, tables, and text instead of flattening everything into plain OCR. Capture with one shortcut, paste anywhere, and keep every screenshot local on Apple silicon.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1212818",
+          "logo": "https://ph-files.imgix.net/9d16f201-8c28-43c4-a36b-fd63e8ed2887.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b610558b-d8d7-4e82-b9fa-65bcbdd50e42.png?auto=format",
+            "https://ph-files.imgix.net/26fbe4f1-3e95-4458-903e-3f561b32c661.gif?auto=format",
+            "https://ph-files.imgix.net/4b283075-a53b-4ac7-8486-67981df0299b.gif?auto=format",
+            "https://ph-files.imgix.net/576711a3-22da-448b-af65-2fc7eca206af.png?auto=format",
+            "https://ph-files.imgix.net/b7d86af0-1dc7-479b-90be-45ad9c6ff2aa.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b610558b-d8d7-4e82-b9fa-65bcbdd50e42.png?auto=format"
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,10 @@
  * day (its regular rows) and the report of the previous day (its Trending rows, which are filed
  * under the observation day). Both are recomputed here, which is why the check window is two days.
  *
+ * Two things are deliberately lenient: a day with no candidate rows needs no file at all (several
+ * calendar days have no 日报), and a server that answers an icon without an `image/*` content-type
+ * is only a warning — the icon was accepted because its bytes sniff as an image.
+ *
  * Usage:
  *   node scripts/validate_site_logos_raw.js --date 2026-09-10
  *   node scripts/validate_site_logos_raw.js --start 2026-09-01 --end 2026-09-10
@@ -58,7 +62,7 @@ function isPlatformHost(value) {
   } catch (_) { return false; }
 }
 
-function validateRecord(record, index, errors) {
+function validateRecord(record, index, errors, warnings = []) {
   const where = `records[${index}]`;
   for (const field of ['sourceId', 'pageUrl', 'status']) {
     if (typeof record[field] !== 'string' || !record[field]) errors.push(`${where}.${field} is missing`);
@@ -77,7 +81,9 @@ function validateRecord(record, index, errors) {
   if (record.status === 'ok') {
     if (!isHttpUrl(record.iconUrl)) errors.push(`${where}.iconUrl is not an http(s) URL`);
     if (!ICON_KINDS.includes(record.iconKind)) errors.push(`${where}.iconKind is invalid: ${record.iconKind}`);
-    if (!String(record.contentType || '').startsWith('image/')) errors.push(`${where}.contentType is not an image: ${record.contentType}`);
+    // The server header is only a hint: the icon was accepted because its bytes sniff as an image
+    // (`iconKind`), and some hosts answer an apple-touch-icon with octet-stream or no header at all.
+    if (!String(record.contentType || '').startsWith('image/')) warnings.push(`${where}.contentType is not an image: ${record.contentType}`);
     if (!Number.isInteger(record.byteLength) || record.byteLength <= 0) errors.push(`${where}.byteLength must be a positive integer`);
     if (!/^[a-f0-9]{64}$/.test(String(record.contentSha256 || ''))) errors.push(`${where}.contentSha256 is not a sha256`);
     if (!(record.attempts || []).some((attempt) => attempt.url === record.iconUrl && attempt.status === 'ok')) {
@@ -108,7 +114,7 @@ function validateDocument(document, file, date, expected, errors, warnings) {
   if (document.failureCount !== failureCount) errors.push(`${file}: failureCount ${document.failureCount} != ${failureCount}`);
   if (document.pageCount !== pageCount) errors.push(`${file}: pageCount ${document.pageCount} != ${pageCount}`);
   if (!document.capture || document.capture.mode !== 'website-logo-fallback') errors.push(`${file}: capture.mode is missing`);
-  document.records.forEach((record, index) => validateRecord(record, index, errors));
+  document.records.forEach((record, index) => validateRecord(record, index, errors, warnings));
 
   const covered = new Set(document.records.map((record) => `${record.sourceId}\u0000${record.externalId || record.pageUrl}`));
   const uncovered = [...expected.keys()].filter((key) => !covered.has(key));
@@ -138,11 +144,17 @@ function main() {
   let logos = 0;
   for (const day of dates) {
     const file = path.join(outRoot, `${day}.json`);
-    if (!fs.existsSync(file)) { errors.push(`${file}: missing`); continue; }
+    // A day without a single candidate row needs no file: the 日报 itself is missing for those days
+    // (no report was generated then), so there is nothing to fall back for.
+    const { byFileDate } = collectCandidates({ start: shiftDate(day, -1), end: day, sourceRawRoot, rawRoot, strict: false }, sources);
+    const expected = byFileDate.get(day) || new Map();
+    if (!fs.existsSync(file)) {
+      if (expected.size) errors.push(`${file}: missing (${expected.size} candidate row(s) expect it)`);
+      continue;
+    }
     let document;
     try { document = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (error) { errors.push(`${file}: ${error.message}`); continue; }
-    const { byFileDate } = collectCandidates({ start: shiftDate(day, -1), end: day, sourceRawRoot, rawRoot, strict: false }, sources);
-    validateDocument(document, file, day, byFileDate.get(day) || new Map(), errors, warnings);
+    validateDocument(document, file, day, expected, errors, warnings);
     records += (document.records || []).length;
     logos += document.records?.filter((record) => record.status === 'ok').length || 0;
     console.log(`${file}: ${document.itemCount}/${document.candidateCount} logos (${document.missingCount} without an icon, ${document.failureCount} failed)`);

@@ -1,1 +1,327 @@
-{"fetchedAt":"2026-09-07T09:29:04.601Z","date":"2026-05-14","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"Kooky","url":"https://github.com/iAmCorey/kooky","author":"Corey Chiu(深圳)","authorUrl":"","publishedAt":"2026-05-14T00:00:00+08:00","summary":"专为 AI coding 设计的 terminal，支持一键启动 Claude Code/Codex 等各种 agent，Vertical tabs + split pane，多 Workspace 管理+分屏并行，Agent 状态展示，Git 分支/变化，Node/Python/Proxy 等各环境展示以及一键切换，本地运行，无云服务和功能，基于 libghostty GPU 渲染，丝滑使用","content":"专为 AI coding 设计的 terminal，支持一键启动 Claude Code/Codex 等各种 agent，Vertical tabs + split pane，多 Workspace 管理+分屏并行，Agent 状态展示，Git 分支/变化，Node/Python/Proxy 等各环境展示以及一键切换，本地运行，无云服务和功能，基于 libghostty GPU 渲染，丝滑使用","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-05-14-Kooky-https://github.com/iAmCorey/kooky"},{"sourceId":"chinese-indie-dev","title":"EazySend","url":"https://eazysend.app/download.html","author":"刀刀","authorUrl":"","publishedAt":"2026-05-14T00:00:00+08:00","summary":"跨平台文件传输，支持 Android/iOS/Win/Mac/Linux","content":"跨平台文件传输，支持 Android/iOS/Win/Mac/Linux","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-05-14-EazySend-https://eazysend.app/download.html"},{"sourceId":"chinese-indie-dev","title":"在线云朵识别","url":"https://whatisthiscloud.org/zh","author":"zhugezifang","authorUrl":"","publishedAt":"2026-05-14T00:00:00+08:00","summary":"上传天空照片，用 AI 即时完成云识别与云分类，了解积云、层云、卷云等常见云型及典型天气、出现高度与形成过程，适合学生、摄影爱好者与天气科普学习。","content":"上传天空照片，用 AI 即时完成云识别与云分类，了解积云、层云、卷云等常见云型及典型天气、出现高度与形成过程，适合学生、摄影爱好者与天气科普学习。","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-05-14-在线云朵识别-https://whatisthiscloud.org/zh"},{"sourceId":"chinese-indie-dev","title":"全屏守门员","url":"https://chromewebstore.google.com/detail/screen-break-keeper/mnmaobcpbjhbheefbgkomgflmgphbfne","author":"zhugezifang","authorUrl":"","publishedAt":"2026-05-14T00:00:00+08:00","summary":"浏览器休息提醒插件，全屏沉浸式宠物互动定时提醒休息可自定义视频图片，免费无广告、无注册、零AI","content":"浏览器休息提醒插件，全屏沉浸式宠物互动定时提醒休息可自定义视频图片，免费无广告、无注册、零AI","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-05-14-全屏守门员-https://chromewebstore.google.com/detail/screen-break-keeper/mnmaobcpbjhbheefbgkomgflmgphbfne"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源自荐】Katamino Tower 百变方块立体塔 3D 拼图求解器（MRV 回溯 + 3D 交互可视化）","url":"https://github.com/niyongsheng/katamino-tower","author":"infohuilang","authorUrl":"https://github.com/infohuilang","publishedAt":"2026-05-14T00:24:32Z","summary":"项目地址： 玩过这款 Puzzle 的人都知道，包装上的「6岁+」多少有点挑衅的意味。 15 块异形积木，绕中心立柱填满 5 层圆柱，每层 12 列。规则很简单，拼接过程就有多折磨人。 第一步，写 C 求解器。 搜索空间约 250 万种环配置。用 MRV 回溯算法每次挑候选最少的格子下手，10~200 次尝试就能找到一个解。顺便加了 OpenMP 多线程，a 参数一键穷举所有解。 第二步，做 3D 可视化。 光有答案还不够直观，最好是能可视化拼接结果。用 Three.js 做了个交互页面，拖拽旋转视角、R 键翻转，自动求解。 bash gcc o kataminotowersolver kataminotowersolver.c && ./kataminotowersolver open kataminotowersolver.html !kataminotower","content":"项目地址：https://github.com/niyongsheng/katamino-tower\n\n---\n\n玩过这款 Puzzle 的人都知道，包装上的「6岁+」多少有点挑衅的意味。\n\n15 块异形积木，绕中心立柱填满 5 层圆柱，每层 12 列。规则很简单，拼接过程就有多折磨人。\n\n**第一步，写 C 求解器。** 搜索空间约 250 万种环配置。用 MRV 回溯算法每次挑候选最少的格子下手，10~200 次尝试就能找到一个解。顺便加了 OpenMP 多线程，-a 参数一键穷举所有解。\n\n**第二步，做 3D 可视化。** 光有答案还不够直观，最好是能可视化拼接结果。用 Three.js 做了个交互页面，拖拽旋转视角、R 键翻转，自动求解。\n\n```bash\ngcc -o katamino_tower_solver katamino_tower_solver.c && ./katamino_tower_solver\nopen katamino_tower_solver.html\n```\n\n![katamino-tower](https://raw.githubusercontent.com/niyongsheng/katamino-tower/main/katamino-tower.png)\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9930","issueUrl":"https://github.com/ruanyf/weekly/issues/9930"},{"sourceId":"weekly-issues","title":"【开源自荐】 一个优雅、现代化的个人网站导航管理系统","url":"https://nav.agently.top/","author":"yunlongwen","authorUrl":"https://github.com/yunlongwen","publishedAt":"2026-05-14T04:17:21Z","summary":"演示: 仓库：","content":"演示: https://nav.agently.top/\n仓库：https://github.com/yunlongwen/NavGate","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9931","issueUrl":"https://github.com/ruanyf/weekly/issues/9931"},{"sourceId":"weekly-issues","title":"【开源自荐】DataFlow：工业级自动化数据清洗、合成系统，用于模型训练、RAG 搭建","url":"https://github.com/OpenDCAI/DataFlow","author":"Jununn","authorUrl":"https://github.com/Jununn","publishedAt":"2026-05-14T06:21:39Z","summary":"仓库地址： 新增 Skills 功能： DataFlow：一站式 LLM 训练数据准备系统 数据清洗 · 数据合成 · 可视化 pipeline · Skill 调用 🌟 DataFlow 是一个专门为从嘈杂来源（PDF、纯文本、低质量 QA）中生成、精炼、评估和过滤高质量 AI 数据而设计的数据准备和训练系统，从而通过针对性训练（预训练、指令微调 SFT、强化学习训练 RL）或 RAG 系统，提升大语言模型 (LLM) 在医疗、金融、法律和学术研究等特定领域的性能。通过“基于算子 (operatorbased)”的设计，DataFlow 将整个数据清洗工作流转化为可重现、可重用且可共享的“流水线 (pipeline)”，为以数据为中心的 AI 社区提供核心基础设施。此外，我们开发了智能化的 DataFlowagent，能够根据需求通过重新组合现有算子或创建新算子来动态组装新的“流水线”。 近期，DataFlow 将自身能力与工程约束统一为 Agent 可使用的结构化规则——DataFlowSkills，并集成至 WebUI 界面中。通过对话交互，即可直接编写数据处理流水线，或修改现有流水线，节省人力与时间成本，实现数据工作流的自动化高效构建。 项目团队：北京大学 DCAI 团队，专注于大模型数据系统研究与 DataCentric AI 基础设施建设，开源 DataFlow、DataFlex、OneEval、OpenWorldLib 等多个项目。","content":"仓库地址：https://github.com/OpenDCAI/DataFlow\n新增 Skills 功能：https://github.com/OpenDCAI/DataFlow-Skills\n\nDataFlow：一站式 LLM 训练数据准备系统\n**数据清洗 · 数据合成 · 可视化 pipeline · Skill 调用** 🌟\n\nDataFlow 是一个专门为从嘈杂来源（PDF、纯文本、低质量 QA）中生成、精炼、评估和过滤高质量 AI 数据而设计的数据准备和训练系统，从而通过针对性训练（预训练、指令微调 SFT、强化学习训练 RL）或 RAG 系统，提升大语言模型 (LLM) 在医疗、金融、法律和学术研究等特定领域的性能。通过“基于算子 (operator-based)”的设计，DataFlow 将整个数据清洗工作流转化为可重现、可重用且可共享的“流水线 (pipeline)”，为以数据为中心的 AI 社区提供核心基础设施。此外，我们开发了智能化的 DataFlow-agent，能够根据需求通过重新组合现有算子或创建新算子来动态组装新的“流水线”。\n\n近期，DataFlow 将自身能力与工程约束统一为 Agent 可使用的结构化规则——**DataFlow-Skills，并集成至 WebUI 界面中**。通过对话交互，即可直接编写数据处理流水线，或修改现有流水线，节省人力与时间成本，实现数据工作流的自动化高效构建。\n\n项目团队：北京大学 DCAI 团队，专注于大模型数据系统研究与 Data-Centric AI 基础设施建设，开源 DataFlow、DataFlex、One-Eval、OpenWorldLib 等多个项目。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9932","issueUrl":"https://github.com/ruanyf/weekly/issues/9932"},{"sourceId":"weekly-issues","title":"【开源自荐】stock-sdk：浏览器前端和 Node.js 都能直接调用的股票行情 SDK，零依赖、TypeScript 全类型、单测覆盖","url":"https://github.com/chengzuopeng/stock-sdk","author":"chengzuopeng","authorUrl":"https://github.com/chengzuopeng","publishedAt":"2026-05-14T06:48:59Z","summary":"项目地址： 官方文档： 在线 Playground： NPM： 看板 Demo： 一句话：给前端工程师的股票行情 SDK —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。 背景 股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。 stocksdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。 亮点 🌐 浏览器 + Node.js 双端：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理 📦 零依赖、轻量：发布包 gzip 后 ~27 KB，ESM + CJS 双格式 🧠 完整 TypeScript 类型：所有接口、字段、错误码都有类型，IDE 自动补全 📈 覆盖面广：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时 🔢 14 个内置技术指标：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC 🏛️ 专业数据：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存 🛡️ 请求治理：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖 🤖 AI / MCP 就绪：配套 stocksdkmcp，一行 npx 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills 使用示例 ts import { StockSDK } from 'stocksdk'; const sdk = new StockSDK(); // 浏览器也可直接调用 await sdk.getSimpleQuotes(['sh600519']); // A 股 await sdk.getHKQuotes(['hk00700']); // 港股 await sdk.getUSQuotes(['usAAPL.O']); // 美股 await sdk.getKLine('sh600519', 'day'); // K 线 await sdk.getNorthboundFlow(); // 北向资金 await sdk.getDragonTigerList(); // 龙虎榜 await sdk.getAllAShareQuotes(); // 全市场 5000+ 只一次拉 14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。","content":"项目地址：https://github.com/chengzuopeng/stock-sdk\n官方文档：https://stock-sdk.linkdiary.cn/\n在线 Playground：https://stock-sdk.linkdiary.cn/playground/\nNPM：https://www.npmjs.com/package/stock-sdk\n看板 Demo：https://chengzuopeng.github.io/stock-dashboard/\n\n> 一句话：**给前端工程师的股票行情 SDK** —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。\n\n### 背景\n\n股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。\n\nstock-sdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。\n\n### 亮点\n\n- 🌐 **浏览器 + Node.js 双端**：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理\n- 📦 **零依赖、轻量**：发布包 gzip 后 ~27 KB，ESM + CJS 双格式\n- 🧠 **完整 TypeScript 类型**：所有接口、字段、错误码都有类型，IDE 自动补全\n- 📈 **覆盖面广**：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时\n- 🔢 **14 个内置技术指标**：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC\n- 🏛️ **专业数据**：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存\n- 🛡️ **请求治理**：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖\n- 🤖 **AI / MCP 就绪**：配套 [stock-sdk-mcp](https://www.npmjs.com/package/stock-sdk-mcp)，一行 `npx` 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills\n\n### 使用示例\n```ts\nimport { StockSDK } from 'stock-sdk';\nconst sdk = new StockSDK();\n// 浏览器也可直接调用\nawait sdk.getSimpleQuotes(['sh600519']);    // A 股\nawait sdk.getHKQuotes(['hk00700']);          // 港股\nawait sdk.getUSQuotes(['usAAPL.O']);         // 美股\nawait sdk.getKLine('sh600519', 'day');       // K 线\nawait sdk.getNorthboundFlow();               // 北向资金\nawait sdk.getDragonTigerList();              // 龙虎榜\nawait sdk.getAllAShareQuotes();              // 全市场 5000+ 只一次拉\n```\n\n14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9933","issueUrl":"https://github.com/ruanyf/weekly/issues/9933"},{"sourceId":"weekly-issues","title":"【开源自荐】：大模型30讲《Machine-Learning-Q-and-AI》中文翻译版、中文批注","url":"https://ningg.top/Machine-Learning-Q-and-AI/","author":"ningg","authorUrl":"https://github.com/ningg","publishedAt":"2026-05-14T08:39:23Z","summary":"本项目是系统性学习大模型技术要点的教程，基于原始的 《30 Essential Questions and Answers on Machine Learning and AI》 ，基于最先进的 AI 工具翻译，逐行校正添加中文批注，增强可读性。 1.你将收获什么？ 1. 系统性学习：大模型技术要点的教程 2. 熟悉核心的术语（英文 + 中文） 3. 共同维护，中文批注，增强可读性，贡献给开源社区 2.迭代计划 1. 首版：中文批注: ✅ 2. 导出 pdf 文件: ✅ 3. 同步到多个开源社区: TODO 3.在线阅读 网址： gitHub 地址： <div align=\"center\" <p 在线阅读： <a href=\" target=\"blank\"《大模型技术30讲》</a ，pdf 文件： <a href=\")LLM30EssentialLecturesAI.pdf\" target=\"blank\"《大模型技术30讲PDF版本》</a </p </p <p<em深入理解 LLM 核心原理，直击要点</em</p </div <div align='center' <img width=\"30%\" height=\"1201\" alt=\"Image\" src=\" / </div 4.如何贡献 我们欢迎任何形式的贡献！ 🐛 报告 Bug 发现问题请提交 Issue 💡 功能建议 有好想法就告诉我们 📝 内容完善 帮助改进教程内容 Note: 后续资料会附上贡献者名单.","content":"本项目是系统性学习大模型技术要点的教程，基于原始的 *《30 Essential Questions and Answers on Machine Learning and AI》* ，基于最先进的 AI 工具`翻译`，逐行校正添加`中文批注`，增强可读性。\n\n\n## 1.你将收获什么？\n\n1. 系统性学习：大模型技术要点的教程\n2. 熟悉核心的术语（英文 + 中文）\n3. 共同维护，中文批注，增强可读性，贡献给开源社区\n\n## 2.迭代计划\n\n1. 首版：中文批注: ✅\n2. 导出 pdf 文件: ✅\n3. 同步到多个开源社区: TODO\n\n\n\n## 3.在线阅读\n\n* 网址： [https://ningg.top/Machine-Learning-Q-and-AI/](https://ningg.top/Machine-Learning-Q-and-AI/)\n* gitHub 地址：[https://github.com/ningg/Machine-Learning-Q-and-AI](https://github.com/ningg/Machine-Learning-Q-and-AI)\n\n\n<div align=\"center\">\n  <p>\n    在线阅读：\n    <a href=\"https://ningg.top/Machine-Learning-Q-and-AI/\" target=\"_blank\">《大模型技术30讲》</a>\n    ，pdf 文件：\n    <a href=\"https://ningg.top/Machine-Learning-Q-and-AI/pdf/大模型技术30讲(英文&中文批注)_LLM_30_Essential_Lectures_AI.pdf\" target=\"_blank\">《大模型技术30讲-PDF版本》</a>\n  </p>\n</p> \n  <p><em>深入理解 LLM 核心原理，直击要点</em></p>\n</div>\n\n\n<div align='center'>\n\n<img width=\"30%\" height=\"1201\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/09e6c44d-7baa-4b1d-a8ca-6138e70d23f9\" />\n\n</div>\n\n\n\n## 4.如何贡献   \n\n我们欢迎任何形式的贡献！\n\n- 🐛 报告 Bug - 发现问题请提交 [Issue](https://github.com/ningg/Machine-Learning-Q-and-AI/issues)\n- 💡 功能建议 - 有好想法就告诉我们\n- 📝 内容完善 - 帮助改进教程内容\n\n> Note: 后续资料会附上贡献者名单.\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9934","issueUrl":"https://github.com/ruanyf/weekly/issues/9934"},{"sourceId":"weekly-issues","title":"【网站自荐】完全开源，去中心化的Holyshit期刊。","url":"https://www.holyshitjournal.org/","author":"Olcmyk","authorUrl":"https://github.com/Olcmyk","publishedAt":"2026-05-14T08:44:25Z","summary":"网站地址： 开源代码： 我复活了shit期刊 之前shit期刊火爆全网，但是因为种种原因停更了。我萌生了这个开发这个Holyshit期刊的想法，作为精神继承者。网站完全开源，而且无需注册登录，点击即可随时投稿投票。高度去中心化，没有评审团，ai打分和网友投票是入选的唯一标准。 欢迎大家来投稿自己的论文 <img width=\"1440\" height=\"823\" alt=\"Image\" src=\" / <img width=\"1440\" height=\"823\" alt=\"Image\" src=\" /","content":"网站地址：https://www.holyshitjournal.org/\n开源代码：https://github.com/Olcmyk/holyshit-journal\n## 我复活了shit期刊\n\n之前shit期刊火爆全网，但是因为种种原因停更了。我萌生了这个开发这个Holyshit期刊的想法，作为精神继承者。网站完全开源，而且无需注册登录，点击即可随时投稿投票。高度去中心化，没有评审团，ai打分和网友投票是入选的唯一标准。\n\n欢迎大家来投稿自己的论文\n\n<img width=\"1440\" height=\"823\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/83ba60bd-9a06-4ea8-a3fd-79df5d0bed7d\" />\n\n<img width=\"1440\" height=\"823\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c051cfc0-534f-421f-a0da-b674148876f7\" />","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"9935","issueUrl":"https://github.com/ruanyf/weekly/issues/9935"},{"sourceId":"weekly-issues","title":"【开源自荐】Zephyr — 基于 Rust + Tauri v2 的安全 Mihomo 代理客户端","url":"https://github.com/Juwan-Hwang/Zephyr","author":"Juwan-Hwang","authorUrl":"https://github.com/Juwan-Hwang","publishedAt":"2026-05-14T10:29:10Z","summary":"项目简介 Zephyr 是一款以安全为第一设计原则的跨平台 Mihomo（Clash Meta）桌面代理客户端，采用 Rust 后端 + 原生 JavaScript 前端架构，基于 Tauri v2 框架构建。 GitHub 地址： 为什么值得关注 1. 安全架构（13 层纵深防御） 这是 Zephyr 最大的差异化特点。项目实施了完整的纵深防御策略（Defense in Depth），覆盖全攻击面： CSP 内容安全策略：前端禁止 eval 和内联脚本，网络连接严格限制为本地 Mihomo 内核通信，前端无法直连外网 Tauri v2 最小权限模型：明确拒绝授予文件系统、命令执行、网络请求、剪贴板等高危权限 SSRF 完整防护链：协议白名单 + DNS Pinning + 私有 IP 拦截（IPv4/IPv6）+ 重定向链全链路复检 AES256GCM 加密存储：敏感数据加密，密钥与机器指纹绑定 CI/CD 安全流水线：集成 cargo audit、semgrep、dependencyreview 等 10 项自动化安全检查 详细安全文档： 2. 技术选型 相比 Electron 方案，Zephyr 选择 Tauri v2 + Rust： 不嵌入 Node.js 运行时，攻击面大幅缩小 内存占用更低，安装包体积更小 Rust 后端提供编译期内存安全保证 3. UI 设计 极简设计理念，无边框窗口 + 系统托盘，界面清爽优雅。 项目数据 ⭐ 200+ GitHub Stars 📦 600+ 下载量 🔧 10 个 Release 版本 💻 支持 Windows / macOS（Intel & Apple Silicon）/ Linux 📄 MIT 开源协议 适合谁 对代理客户端安全性有要求的用户 Rust / Tauri 技术栈的学习参考 追求轻量、美观桌面工具的用户","content":"## 项目简介\n\n**Zephyr** 是一款以安全为第一设计原则的跨平台 Mihomo（Clash Meta）桌面代理客户端，采用 Rust 后端 + 原生 JavaScript 前端架构，基于 Tauri v2 框架构建。\n\n**GitHub 地址：** https://github.com/Juwan-Hwang/Zephyr\n\n## 为什么值得关注\n\n### 1. 安全架构（13 层纵深防御）\n\n这是 Zephyr 最大的差异化特点。项目实施了完整的纵深防御策略（Defense in Depth），覆盖全攻击面：\n\n- **CSP 内容安全策略**：前端禁止 eval 和内联脚本，网络连接严格限制为本地 Mihomo 内核通信，前端无法直连外网\n- **Tauri v2 最小权限模型**：明确拒绝授予文件系统、命令执行、网络请求、剪贴板等高危权限\n- **SSRF 完整防护链**：协议白名单 + DNS Pinning + 私有 IP 拦截（IPv4/IPv6）+ 重定向链全链路复检\n- **AES-256-GCM 加密存储**：敏感数据加密，密钥与机器指纹绑定\n- **CI/CD 安全流水线**：集成 cargo audit、semgrep、dependency-review 等 10 项自动化安全检查\n\n详细安全文档：https://github.com/Juwan-Hwang/Zephyr/wiki/Security\n\n### 2. 技术选型\n\n相比 Electron 方案，Zephyr 选择 Tauri v2 + Rust：\n\n- 不嵌入 Node.js 运行时，攻击面大幅缩小\n- 内存占用更低，安装包体积更小\n- Rust 后端提供编译期内存安全保证\n\n### 3. UI 设计\n\n极简设计理念，无边框窗口 + 系统托盘，界面清爽优雅。\n\n## 项目数据\n\n- ⭐ 200+ GitHub Stars\n- 📦 600+ 下载量\n- 🔧 10 个 Release 版本\n- 💻 支持 Windows / macOS（Intel & Apple Silicon）/ Linux\n- 📄 MIT 开源协议\n\n## 适合谁\n\n- 对代理客户端安全性有要求的用户\n- Rust / Tauri 技术栈的学习参考\n- 追求轻量、美观桌面工具的用户\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9936","issueUrl":"https://github.com/ruanyf/weekly/issues/9936"},{"sourceId":"weekly-issues","title":"【开源教程自荐】用 vibecoding 做产品的实战指南，零编程基础到独立开发 SaaS，完整方法论 + 真实案例拆解 + 动手实践","url":"https://vibecoding.waytomaster.com","author":"tmwgsicp","authorUrl":"https://github.com/tmwgsicp","publishedAt":"2026-05-14T11:21:14Z","summary":"教程地址： 开源地址： 本教程能帮你: ✅ 掌握用 AI 做产品的方法论 ✅ 学会从 0 到 1 做 SaaS 产品 ✅ 获得真实的开发经验 本教程不能让你: ❌ 2 小时搭建完整网站 ❌ 零代码纯自然语言开发 ❌ 不学习就能做出产品 如果期待速成,本教程不适合你。 核心方法论(14 步) 从想法到上线的完整流程: 1、发现问题 如何找到值得做的问题 2、需求验证 验证是否有人需要 3、定义 MVP 最小可行产品 4、技术栈科普 前端/后端/数据库是什么 5、技术决策 选什么技术栈 6、环境搭建 AI 帮你配置开发环境 7、AI 协作 如何高效与 AI 配合 8、理解代码 看懂 AI 写的代码 9、测试策略 保证代码质量 10、架构设计 系统怎么设计 11、部署指南 域名、服务器、HTTPS 12、问题解决 上线后遇到问题怎么办 13、Git 和开源 版本管理和开源实践 14、迭代方法 如何持续优化","content":"教程地址：https://vibecoding.waytomaster.com\n开源地址：https://github.com/tmwgsicp/vibecoding-for-beginners\n本教程能帮你:\n\n✅ 掌握用 AI 做产品的方法论\n✅ 学会从 0 到 1 做 SaaS 产品\n✅ 获得真实的开发经验\n本教程不能让你:\n\n❌ 2 小时搭建完整网站\n❌ 零代码纯自然语言开发\n❌ 不学习就能做出产品\n如果期待速成,本教程不适合你。\n\n核心方法论(14 步)\n从想法到上线的完整流程:\n\n1、发现问题 - 如何找到值得做的问题\n2、需求验证 - 验证是否有人需要\n3、定义 MVP - 最小可行产品\n4、技术栈科普 - 前端/后端/数据库是什么\n5、技术决策 - 选什么技术栈\n6、环境搭建 - AI 帮你配置开发环境\n7、AI 协作 - 如何高效与 AI 配合\n8、理解代码 - 看懂 AI 写的代码\n9、测试策略 - 保证代码质量\n10、架构设计 - 系统怎么设计\n11、部署指南 - 域名、服务器、HTTPS\n12、问题解决 - 上线后遇到问题怎么办\n13、Git 和开源 - 版本管理和开源实践\n14、迭代方法 - 如何持续优化","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9937","issueUrl":"https://github.com/ruanyf/weekly/issues/9937"},{"sourceId":"weekly-issues","title":"【工具自荐】YouTube视频语音翻译","url":"https://github.com/user-attachments/assets/054b255f-c016-4dfa-bc3c-536f795ac828\"","author":"sfz009900","authorUrl":"https://github.com/sfz009900","publishedAt":"2026-05-14T13:46:42Z","summary":"类型：Chrome插件 特点：无需注册,一键操作 <img width=\"1920\" height=\"815\" alt=\"Image\" src=\" / 功能： 使用简单，无需注册,一键操作 演示： 官网：","content":"类型：Chrome插件\n\n特点：无需注册,一键操作\n\n<img width=\"1920\" height=\"815\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/054b255f-c016-4dfa-bc3c-536f795ac828\" />\n\n功能：\n\n使用简单，无需注册,一键操作\n\n演示：https://www.youtube.com/watch?v=VidOz0Jp9Io\n\n官网：https://lingtube.xyz\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9938","issueUrl":"https://github.com/ruanyf/weekly/issues/9938"},{"sourceId":"weekly-issues","title":"【开源自荐】：免费TTS，google/edge/openai","url":"https://github.com/lenML/oai-tts-router","author":"zhzLuke96","authorUrl":"https://github.com/zhzLuke96","publishedAt":"2026-05-14T13:56:15Z","summary":"项目： 简介：一键部署，免费使用 google/edge/openai tts，满足基础TTS需求 亮点：提供 openai tts api 入口，方便对接 原理：逆向公开api","content":"项目：https://github.com/lenML/oai-tts-router\n简介：一键部署，免费使用 google/edge/openai tts，满足基础TTS需求\n亮点：提供 openai tts api 入口，方便对接\n原理：逆向公开api","metrics":{"comments":4},"tags":["ruanyf-weekly","submission"],"externalId":"9939","issueUrl":"https://github.com/ruanyf/weekly/issues/9939"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[自荐项目] Suppr - 面向科研阅读的 AI 文献检索、翻译与深度研究工具","url":"http://suppr.wilddata.cn/","author":"zjg678","authorUrl":"https://github.com/zjg678","publishedAt":"2026-05-14T14:29:48Z","summary":"超能文献（Suppr） 让医学文献检索回归\"说人话\" 🔗 官网地址： <img width=\"1936\" height=\"1817\" alt=\"Image\" src=\" / 超能文献首页界面 中文自然语言搜PubMed 传统的PubMed检索，你需要先学会布尔逻辑、MeSH主题词、检索字段这些概念。但在超能文献里，你直接用中文描述你的需求就行了。 比如你可以这样搜：\"一型糖尿病近三年研究进展\"，或者\"GLP1 最新的临床试验\"，甚至\"JAMA近5年肿瘤相关临床试验研究，IF大于10\"。后台的大语言模型会自动把你的中文需求转化成精准的PubMed检索式，时间限定、期刊限定、作者限定、影响因子筛选这些复杂条件都能处理。 <img width=\"2401\" height=\"1932\" alt=\"Image\" src=\" / 我们做了大量的医学领域微调工作，让模型能理解医学术语和检索逻辑。举个例子，当你说\"糖尿病和心血管疾病的关系，最近5年，临床试验\"，模型会生成类似这样的检索式：(\"Diabetes Mellitus\"[MeSH Terms]) AND \"Cardiovascular Diseases\"[MeSH Terms] AND \"Clinical Trial\"[PT] AND (\"2020\"[PDAT] : \"2025\"[PDAT])。你完全不需要了解这些语法，但能享受到高级检索的精准度。 搜索结果出来后，不只是给你一堆文献列表，还会自动生成中文摘要总结和研究思维导图。思维导图可以一键下载，帮你快速梳理这个领域的研究脉络。文献引用也自动处理好了，支持AMA、APA、MLA、NLM等各种格式，复制粘贴就能用。 <img width=\"3033\" height=\"1927\" alt=\"Image\" src=\" / 数据库方面，目前覆盖PubMed全库4000多万篇医学文献，后续会接入更多数据源。 AI文档翻译，格式完全不乱 做过学术翻译的都知道，PDF翻译最烦的就是格式全乱了。图表挪位、公式变形、页眉页脚错位，翻译完还得花大量时间调格式。 我们在超能文献里专门解决了这个问题。支持PDF、PPT、Word、Excel、ePub这些常见格式，12种语言互译，最关键的是翻译后格式完全保持不变。 <img width=\"1526\" height=\"1757\" alt=\"Image\" src=\" / 技术上我们用了OCR加版面分析加深度学习的组合方案。先识别文档结构，区分出标题、正文、图表、公式这些不同的内容块，然后分块翻译，最后按原布局重组。图表和公式这些非文本内容会保留原样，避免翻译破坏掉原有信息。这个过程在底层做了大量优化，确保翻译后的文档跟原文档在排版上几乎一致。 25分钟生成文献综述 这个功能可能有点\"丧心病狂\"。输入一个研究主题，AI会自动检索相关文献，筛选高质量研究，提取核心观点，然后生成一篇结构完整的文献综述初稿。整个过程大概25分钟，你就能拿到一篇包含背景、研究现状、争议焦点、未来方向的综述文档。 <img width=\"2391\" height=\"1930\" alt=\"Image\" src=\" / 当然，这不是让你直接拿去当毕业论文交（别想了😂）。这个功能的定位是帮你快速建立对某个领域的全局认知，省掉前期大量文献筛选和阅读的时间。你可以基于这个初稿继续深入，补充细节，调整观点。相当于把原本可能需要一周的工作压缩到半小时，让你更快进入状态。 为什么要做这个工具 说实话，市面上文献工具不少。但我们团队本身就是从医学科研圈出来的，深知痛点在哪。 英文不好的同学，看文献真的很痛苦。每天抱着词典啃论文，效率低不说，还容易误解原意。PubMed虽然强大，但不会用检索式的话，基本就是浪费。读完几十篇文献再写综述，时间成本高到离谱。这些问题一直存在，但一直没有特别好的解决方案。 我们想做的就是把AI的能力真正落到实处，降低医学信息获取的门槛。不管是临床医生、医学生、还是药企研发人员，都能轻松获取到高质量的医学文献，不被语言和工具的复杂度困住。 产品目前处于公测阶段，每天有10次免费查询额度。我们还在快速迭代中，技术团队在深圳，核心成员来自医疗AI和大模型背景。核心技术已经申请了专利（CN118964589B），会持续投入做产品迭代和功能优化。 从公测到现在，用户量在稳定增长。专业术语翻译精度能达到98%以上，综述生成平均25分钟一篇。看到越来越多的医生和研究生在用，还会主动给我们反馈建议，这种感觉挺好的。 开发者生态 除了网页版，我们也在构建更丰富的开发者生态，让超能文献的能力可以集成到更多场景里。 Zotero翻译插件：如果你是Zotero用户，可以安装我们的插件，在文献管理器里直接右键翻译PDF文档。精准翻译，格式保持，无需离开Zotero环境。插件已经在GitHub开源。 👉 API接口：我们提供了完整的API服务，支持文献检索、文档翻译、深度研究等核心功能。如果你在做医学相关的应用或研究平台，可以直接调用我们的API，把这些能力集成进去。具体文档可以在官网查看。 MCP服务：对于需要更深度集成的场景，我们也提供了MCP（Model Context Protocol）服务支持，方便开发者在自己的AI应用中接入超能文献的能力。 这些工具和接口都是为了让超能文献的能力触达更多场景。如果你有集成需求或者合作想法，欢迎联系我们。 如果你也在做医学科研，欢迎试用并给我们反馈。有任何建议或Bug，可以在官网留言，或者给我们发邮件。我们也在寻找医学领域的合作伙伴和早期用户。 产品链接： 🌐 官网： 📦 Zotero插件： 🏢 公司官网： 期待你的体验和反馈！🚀 Disclosure: I maintain/am affiliated with this submission. Links are official product/source links only.","content":"# 超能文献（Suppr）- 让医学文献检索回归\"说人话\"\n\n🔗 **官网地址**：http://suppr.wilddata.cn/\n\n\n<img width=\"1936\" height=\"1817\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ab2c0134-0713-45b1-88f9-fff051e16be4\" />\n\n*超能文献首页界面*\n\n---\n\n## 中文自然语言搜PubMed\n\n传统的PubMed检索，你需要先学会布尔逻辑、MeSH主题词、检索字段这些概念。但在超能文献里，你直接用中文描述你的需求就行了。\n\n比如你可以这样搜：\"一型糖尿病近三年研究进展\"，或者\"GLP-1 最新的临床试验\"，甚至\"JAMA近5年肿瘤相关临床试验研究，IF大于10\"。后台的大语言模型会自动把你的中文需求转化成精准的PubMed检索式，时间限定、期刊限定、作者限定、影响因子筛选这些复杂条件都能处理。\n\n<img width=\"2401\" height=\"1932\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/07d754a9-bee4-4aed-adaa-d2d2c6debfad\" />\n\n我们做了大量的医学领域微调工作，让模型能理解医学术语和检索逻辑。举个例子，当你说\"糖尿病和心血管疾病的关系，最近5年，临床试验\"，模型会生成类似这样的检索式：`(\"Diabetes Mellitus\"[MeSH Terms]) AND \"Cardiovascular Diseases\"[MeSH Terms] AND \"Clinical Trial\"[PT] AND (\"2020\"[PDAT] : \"2025\"[PDAT])`。你完全不需要了解这些语法，但能享受到高级检索的精准度。\n\n搜索结果出来后，不只是给你一堆文献列表，还会自动生成中文摘要总结和研究思维导图。思维导图可以一键下载，帮你快速梳理这个领域的研究脉络。文献引用也自动处理好了，支持AMA、APA、MLA、NLM等各种格式，复制粘贴就能用。\n\n<img width=\"3033\" height=\"1927\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5bad3cb0-2fc8-476c-a69c-ef906803cb8c\" />\n\n数据库方面，目前覆盖PubMed全库4000多万篇医学文献，后续会接入更多数据源。\n\n---\n\n## AI文档翻译，格式完全不乱\n\n做过学术翻译的都知道，PDF翻译最烦的就是格式全乱了。图表挪位、公式变形、页眉页脚错位，翻译完还得花大量时间调格式。\n\n我们在超能文献里专门解决了这个问题。支持PDF、PPT、Word、Excel、ePub这些常见格式，12种语言互译，最关键的是**翻译后格式完全保持不变**。\n\n<img width=\"1526\" height=\"1757\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9e7e1e90-2ac3-4e91-9ef3-b13885e5c804\" />\n\n技术上我们用了OCR加版面分析加深度学习的组合方案。先识别文档结构，区分出标题、正文、图表、公式这些不同的内容块，然后分块翻译，最后按原布局重组。图表和公式这些非文本内容会保留原样，避免翻译破坏掉原有信息。这个过程在底层做了大量优化，确保翻译后的文档跟原文档在排版上几乎一致。\n\n---\n\n## 25分钟生成文献综述\n\n这个功能可能有点\"丧心病狂\"。输入一个研究主题，AI会自动检索相关文献，筛选高质量研究，提取核心观点，然后生成一篇结构完整的文献综述初稿。整个过程大概25分钟，你就能拿到一篇包含背景、研究现状、争议焦点、未来方向的综述文档。\n\n<img width=\"2391\" height=\"1930\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6b7e204d-93e7-4089-af34-b27e0d964baf\" />\n\n\n当然，这不是让你直接拿去当毕业论文交（别想了😂）。这个功能的定位是帮你快速建立对某个领域的全局认知，省掉前期大量文献筛选和阅读的时间。你可以基于这个初稿继续深入，补充细节，调整观点。相当于把原本可能需要一周的工作压缩到半小时，让你更快进入状态。\n\n---\n\n## 为什么要做这个工具\n\n说实话，市面上文献工具不少。但我们团队本身就是从医学科研圈出来的，深知痛点在哪。\n\n英文不好的同学，看文献真的很痛苦。每天抱着词典啃论文，效率低不说，还容易误解原意。PubMed虽然强大，但不会用检索式的话，基本就是浪费。读完几十篇文献再写综述，时间成本高到离谱。这些问题一直存在，但一直没有特别好的解决方案。\n\n我们想做的就是把AI的能力真正落到实处，降低医学信息获取的门槛。不管是临床医生、医学生、还是药企研发人员，都能轻松获取到高质量的医学文献，不被语言和工具的复杂度困住。\n\n产品目前处于公测阶段，每天有10次免费查询额度。我们还在快速迭代中，技术团队在深圳，核心成员来自医疗AI和大模型背景。核心技术已经申请了专利（CN118964589B），会持续投入做产品迭代和功能优化。\n\n从公测到现在，用户量在稳定增长。专业术语翻译精度能达到98%以上，综述生成平均25分钟一篇。看到越来越多的医生和研究生在用，还会主动给我们反馈建议，这种感觉挺好的。\n\n---\n\n## 开发者生态\n\n除了网页版，我们也在构建更丰富的开发者生态，让超能文献的能力可以集成到更多场景里。\n\n**Zotero翻译插件**：如果你是Zotero用户，可以安装我们的插件，在文献管理器里直接右键翻译PDF文档。精准翻译，格式保持，无需离开Zotero环境。插件已经在GitHub开源。\n👉 https://github.com/WildDataX/suppr-zotero-plugin\n\n**API接口**：我们提供了完整的API服务，支持文献检索、文档翻译、深度研究等核心功能。如果你在做医学相关的应用或研究平台，可以直接调用我们的API，把这些能力集成进去。具体文档可以在官网查看。https://openapi.suppr.wilddata.cn/introduction.html\n\n**MCP服务**：对于需要更深度集成的场景，我们也提供了MCP（Model Context Protocol）服务支持，方便开发者在自己的AI应用中接入超能文献的能力。https://github.com/WildDataX/suppr-mcp\n\n这些工具和接口都是为了让超能文献的能力触达更多场景。如果你有集成需求或者合作想法，欢迎联系我们。\n\n---\n\n如果你也在做医学科研，欢迎试用并给我们反馈。有任何建议或Bug，可以在官网留言，或者给我们发邮件。我们也在寻找医学领域的合作伙伴和早期用户。\n\n**产品链接**：\n- 🌐 官网：http://suppr.wilddata.cn/\n- 📦 Zotero插件：https://github.com/WildDataX/suppr-zotero-plugin\n- 🏢 公司官网：https://www.wilddata.cn/\n\n期待你的体验和反馈！🚀\n\n---\n\n---\n\nDisclosure: I maintain/am affiliated with this submission. Links are official product/source links only.\n","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3263","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3263"},{"sourceId":"hellogithub-issues","title":"Add contributor profile for Lucas Clark","url":"https://github.com/521xueweihan/HelloGitHub/issues/3264","author":"lucasclark7699-bot","authorUrl":"https://github.com/lucasclark7699-bot","publishedAt":"2026-05-14T14:52:21Z","summary":"","content":"","metrics":{"comments":2},"tags":["hellogithub","submission"],"externalId":"3264","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3264"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]}]}
+{
+  "fetchedAt": "2026-09-07T09:29:04.601Z",
+  "date": "2026-05-14",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Kooky",
+          "url": "https://github.com/iAmCorey/kooky",
+          "author": "Corey Chiu(深圳)",
+          "authorUrl": "",
+          "publishedAt": "2026-05-14T00:00:00+08:00",
+          "summary": "专为 AI coding 设计的 terminal，支持一键启动 Claude Code/Codex 等各种 agent，Vertical tabs + split pane，多 Workspace 管理+分屏并行，Agent 状态展示，Git 分支/变化，Node/Python/Proxy 等各环境展示以及一键切换，本地运行，无云服务和功能，基于 libghostty GPU 渲染，丝滑使用",
+          "content": "专为 AI coding 设计的 terminal，支持一键启动 Claude Code/Codex 等各种 agent，Vertical tabs + split pane，多 Workspace 管理+分屏并行，Agent 状态展示，Git 分支/变化，Node/Python/Proxy 等各环境展示以及一键切换，本地运行，无云服务和功能，基于 libghostty GPU 渲染，丝滑使用",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-05-14-Kooky-https://github.com/iAmCorey/kooky"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "EazySend",
+          "url": "https://eazysend.app/download.html",
+          "author": "刀刀",
+          "authorUrl": "",
+          "publishedAt": "2026-05-14T00:00:00+08:00",
+          "summary": "跨平台文件传输，支持 Android/iOS/Win/Mac/Linux",
+          "content": "跨平台文件传输，支持 Android/iOS/Win/Mac/Linux",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-05-14-EazySend-https://eazysend.app/download.html"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "在线云朵识别",
+          "url": "https://whatisthiscloud.org/zh",
+          "author": "zhugezifang",
+          "authorUrl": "",
+          "publishedAt": "2026-05-14T00:00:00+08:00",
+          "summary": "上传天空照片，用 AI 即时完成云识别与云分类，了解积云、层云、卷云等常见云型及典型天气、出现高度与形成过程，适合学生、摄影爱好者与天气科普学习。",
+          "content": "上传天空照片，用 AI 即时完成云识别与云分类，了解积云、层云、卷云等常见云型及典型天气、出现高度与形成过程，适合学生、摄影爱好者与天气科普学习。",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-05-14-在线云朵识别-https://whatisthiscloud.org/zh",
+          "siteLogo": "https://whatisthiscloud.org/images/favicon.ico"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "全屏守门员",
+          "url": "https://chromewebstore.google.com/detail/screen-break-keeper/mnmaobcpbjhbheefbgkomgflmgphbfne",
+          "author": "zhugezifang",
+          "authorUrl": "",
+          "publishedAt": "2026-05-14T00:00:00+08:00",
+          "summary": "浏览器休息提醒插件，全屏沉浸式宠物互动定时提醒休息可自定义视频图片，免费无广告、无注册、零AI",
+          "content": "浏览器休息提醒插件，全屏沉浸式宠物互动定时提醒休息可自定义视频图片，免费无广告、无注册、零AI",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-05-14-全屏守门员-https://chromewebstore.google.com/detail/screen-break-keeper/mnmaobcpbjhbheefbgkomgflmgphbfne"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Katamino Tower 百变方块立体塔 3D 拼图求解器（MRV 回溯 + 3D 交互可视化）",
+          "url": "https://github.com/niyongsheng/katamino-tower",
+          "author": "infohuilang",
+          "authorUrl": "https://github.com/infohuilang",
+          "publishedAt": "2026-05-14T00:24:32Z",
+          "summary": "项目地址： 玩过这款 Puzzle 的人都知道，包装上的「6岁+」多少有点挑衅的意味。 15 块异形积木，绕中心立柱填满 5 层圆柱，每层 12 列。规则很简单，拼接过程就有多折磨人。 第一步，写 C 求解器。 搜索空间约 250 万种环配置。用 MRV 回溯算法每次挑候选最少的格子下手，10~200 次尝试就能找到一个解。顺便加了 OpenMP 多线程，a 参数一键穷举所有解。 第二步，做 3D 可视化。 光有答案还不够直观，最好是能可视化拼接结果。用 Three.js 做了个交互页面，拖拽旋转视角、R 键翻转，自动求解。 bash gcc o kataminotowersolver kataminotowersolver.c && ./kataminotowersolver open kataminotowersolver.html !kataminotower",
+          "content": "项目地址：https://github.com/niyongsheng/katamino-tower\n\n---\n\n玩过这款 Puzzle 的人都知道，包装上的「6岁+」多少有点挑衅的意味。\n\n15 块异形积木，绕中心立柱填满 5 层圆柱，每层 12 列。规则很简单，拼接过程就有多折磨人。\n\n**第一步，写 C 求解器。** 搜索空间约 250 万种环配置。用 MRV 回溯算法每次挑候选最少的格子下手，10~200 次尝试就能找到一个解。顺便加了 OpenMP 多线程，-a 参数一键穷举所有解。\n\n**第二步，做 3D 可视化。** 光有答案还不够直观，最好是能可视化拼接结果。用 Three.js 做了个交互页面，拖拽旋转视角、R 键翻转，自动求解。\n\n```bash\ngcc -o katamino_tower_solver katamino_tower_solver.c && ./katamino_tower_solver\nopen katamino_tower_solver.html\n```\n\n![katamino-tower](https://raw.githubusercontent.com/niyongsheng/katamino-tower/main/katamino-tower.png)\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9930",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9930"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】 一个优雅、现代化的个人网站导航管理系统",
+          "url": "https://nav.agently.top/",
+          "author": "yunlongwen",
+          "authorUrl": "https://github.com/yunlongwen",
+          "publishedAt": "2026-05-14T04:17:21Z",
+          "summary": "演示: 仓库：",
+          "content": "演示: https://nav.agently.top/\n仓库：https://github.com/yunlongwen/NavGate",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9931",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9931"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】DataFlow：工业级自动化数据清洗、合成系统，用于模型训练、RAG 搭建",
+          "url": "https://github.com/OpenDCAI/DataFlow",
+          "author": "Jununn",
+          "authorUrl": "https://github.com/Jununn",
+          "publishedAt": "2026-05-14T06:21:39Z",
+          "summary": "仓库地址： 新增 Skills 功能： DataFlow：一站式 LLM 训练数据准备系统 数据清洗 · 数据合成 · 可视化 pipeline · Skill 调用 🌟 DataFlow 是一个专门为从嘈杂来源（PDF、纯文本、低质量 QA）中生成、精炼、评估和过滤高质量 AI 数据而设计的数据准备和训练系统，从而通过针对性训练（预训练、指令微调 SFT、强化学习训练 RL）或 RAG 系统，提升大语言模型 (LLM) 在医疗、金融、法律和学术研究等特定领域的性能。通过“基于算子 (operatorbased)”的设计，DataFlow 将整个数据清洗工作流转化为可重现、可重用且可共享的“流水线 (pipeline)”，为以数据为中心的 AI 社区提供核心基础设施。此外，我们开发了智能化的 DataFlowagent，能够根据需求通过重新组合现有算子或创建新算子来动态组装新的“流水线”。 近期，DataFlow 将自身能力与工程约束统一为 Agent 可使用的结构化规则——DataFlowSkills，并集成至 WebUI 界面中。通过对话交互，即可直接编写数据处理流水线，或修改现有流水线，节省人力与时间成本，实现数据工作流的自动化高效构建。 项目团队：北京大学 DCAI 团队，专注于大模型数据系统研究与 DataCentric AI 基础设施建设，开源 DataFlow、DataFlex、OneEval、OpenWorldLib 等多个项目。",
+          "content": "仓库地址：https://github.com/OpenDCAI/DataFlow\n新增 Skills 功能：https://github.com/OpenDCAI/DataFlow-Skills\n\nDataFlow：一站式 LLM 训练数据准备系统\n**数据清洗 · 数据合成 · 可视化 pipeline · Skill 调用** 🌟\n\nDataFlow 是一个专门为从嘈杂来源（PDF、纯文本、低质量 QA）中生成、精炼、评估和过滤高质量 AI 数据而设计的数据准备和训练系统，从而通过针对性训练（预训练、指令微调 SFT、强化学习训练 RL）或 RAG 系统，提升大语言模型 (LLM) 在医疗、金融、法律和学术研究等特定领域的性能。通过“基于算子 (operator-based)”的设计，DataFlow 将整个数据清洗工作流转化为可重现、可重用且可共享的“流水线 (pipeline)”，为以数据为中心的 AI 社区提供核心基础设施。此外，我们开发了智能化的 DataFlow-agent，能够根据需求通过重新组合现有算子或创建新算子来动态组装新的“流水线”。\n\n近期，DataFlow 将自身能力与工程约束统一为 Agent 可使用的结构化规则——**DataFlow-Skills，并集成至 WebUI 界面中**。通过对话交互，即可直接编写数据处理流水线，或修改现有流水线，节省人力与时间成本，实现数据工作流的自动化高效构建。\n\n项目团队：北京大学 DCAI 团队，专注于大模型数据系统研究与 Data-Centric AI 基础设施建设，开源 DataFlow、DataFlex、One-Eval、OpenWorldLib 等多个项目。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9932",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9932"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】stock-sdk：浏览器前端和 Node.js 都能直接调用的股票行情 SDK，零依赖、TypeScript 全类型、单测覆盖",
+          "url": "https://github.com/chengzuopeng/stock-sdk",
+          "author": "chengzuopeng",
+          "authorUrl": "https://github.com/chengzuopeng",
+          "publishedAt": "2026-05-14T06:48:59Z",
+          "summary": "项目地址： 官方文档： 在线 Playground： NPM： 看板 Demo： 一句话：给前端工程师的股票行情 SDK —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。 背景 股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。 stocksdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。 亮点 🌐 浏览器 + Node.js 双端：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理 📦 零依赖、轻量：发布包 gzip 后 ~27 KB，ESM + CJS 双格式 🧠 完整 TypeScript 类型：所有接口、字段、错误码都有类型，IDE 自动补全 📈 覆盖面广：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时 🔢 14 个内置技术指标：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC 🏛️ 专业数据：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存 🛡️ 请求治理：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖 🤖 AI / MCP 就绪：配套 stocksdkmcp，一行 npx 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills 使用示例 ts import { StockSDK } from 'stocksdk'; const sdk = new StockSDK(); // 浏览器也可直接调用 await sdk.getSimpleQuotes(['sh600519']); // A 股 await sdk.getHKQuotes(['hk00700']); // 港股 await sdk.getUSQuotes(['usAAPL.O']); // 美股 await sdk.getKLine('sh600519', 'day'); // K 线 await sdk.getNorthboundFlow(); // 北向资金 await sdk.getDragonTigerList(); // 龙虎榜 await sdk.getAllAShareQuotes(); // 全市场 5000+ 只一次拉 14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。",
+          "content": "项目地址：https://github.com/chengzuopeng/stock-sdk\n官方文档：https://stock-sdk.linkdiary.cn/\n在线 Playground：https://stock-sdk.linkdiary.cn/playground/\nNPM：https://www.npmjs.com/package/stock-sdk\n看板 Demo：https://chengzuopeng.github.io/stock-dashboard/\n\n> 一句话：**给前端工程师的股票行情 SDK** —— 不写 Python、不搭后端、不开代理，浏览器里就能直接拉 A 股 / 港股 / 美股 / 基金 / 期货 / 期权 的实时行情和 K 线。\n\n### 背景\n\n股票行情工具几乎都活在 Python 生态里（AkShare、tushare、baostock 一统天下）。前端做个看板、写个 Demo、跑个量化原型，要么得搭一层 Python 后端，要么得自己去戳腾讯/东方财富/雪球的接口、踩 GBK 编码、CORS、JSONP、并发限流的所有坑。\n\nstock-sdk 把这些活全干完了：浏览器端用 Script Tag Injection（JSONP）跨域，Node.js 端走标准 fetch，同一份 API 两端跑。\n\n### 亮点\n\n- 🌐 **浏览器 + Node.js 双端**：同一份代码，浏览器里靠 JSONP 直连数据源，没有 CORS，不用配代理\n- 📦 **零依赖、轻量**：发布包 gzip 后 ~27 KB，ESM + CJS 双格式\n- 🧠 **完整 TypeScript 类型**：所有接口、字段、错误码都有类型，IDE 自动补全\n- 📈 **覆盖面广**：A 股、港股、美股、公募基金的实时行情；日/周/月 K 线和 1/5/15/30/60 分钟 K 线；当日分时\n- 🔢 **14 个内置技术指标**：MA / MACD / BOLL / KDJ / RSI / WR / BIAS / CCI / ATR / OBV / ROC / DMI / SAR / KC\n- 🏛️ **专业数据**：龙虎榜、北向资金、资金流向、盘口大单、涨停池、大宗交易、融资融券、期货库存\n- 🛡️ **请求治理**：内置重试、限流、熔断、批量并发控制，可按 provider 维度覆盖\n- 🤖 **AI / MCP 就绪**：配套 [stock-sdk-mcp](https://www.npmjs.com/package/stock-sdk-mcp)，一行 `npx` 即可接入 Cursor / Claude Desktop / Gemini / Codex / OpenClaw，内置技术分析、智能选股、市场概览、实时监控 4 个 Skills\n\n### 使用示例\n```ts\nimport { StockSDK } from 'stock-sdk';\nconst sdk = new StockSDK();\n// 浏览器也可直接调用\nawait sdk.getSimpleQuotes(['sh600519']);    // A 股\nawait sdk.getHKQuotes(['hk00700']);          // 港股\nawait sdk.getUSQuotes(['usAAPL.O']);         // 美股\nawait sdk.getKLine('sh600519', 'day');       // K 线\nawait sdk.getNorthboundFlow();               // 北向资金\nawait sdk.getDragonTigerList();              // 龙虎榜\nawait sdk.getAllAShareQuotes();              // 全市场 5000+ 只一次拉\n```\n\n14 个技术指标（MA / MACD / BOLL / KDJ / RSI / ATR / DMI / SAR / KC …）和期货、期权、融资融券都有。完整 TypeScript 类型，发布包 gzip 27 KB。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9933",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9933"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】：大模型30讲《Machine-Learning-Q-and-AI》中文翻译版、中文批注",
+          "url": "https://ningg.top/Machine-Learning-Q-and-AI/",
+          "author": "ningg",
+          "authorUrl": "https://github.com/ningg",
+          "publishedAt": "2026-05-14T08:39:23Z",
+          "summary": "本项目是系统性学习大模型技术要点的教程，基于原始的 《30 Essential Questions and Answers on Machine Learning and AI》 ，基于最先进的 AI 工具翻译，逐行校正添加中文批注，增强可读性。 1.你将收获什么？ 1. 系统性学习：大模型技术要点的教程 2. 熟悉核心的术语（英文 + 中文） 3. 共同维护，中文批注，增强可读性，贡献给开源社区 2.迭代计划 1. 首版：中文批注: ✅ 2. 导出 pdf 文件: ✅ 3. 同步到多个开源社区: TODO 3.在线阅读 网址： gitHub 地址： <div align=\"center\" <p 在线阅读： <a href=\" target=\"blank\"《大模型技术30讲》</a ，pdf 文件： <a href=\")LLM30EssentialLecturesAI.pdf\" target=\"blank\"《大模型技术30讲PDF版本》</a </p </p <p<em深入理解 LLM 核心原理，直击要点</em</p </div <div align='center' <img width=\"30%\" height=\"1201\" alt=\"Image\" src=\" / </div 4.如何贡献 我们欢迎任何形式的贡献！ 🐛 报告 Bug 发现问题请提交 Issue 💡 功能建议 有好想法就告诉我们 📝 内容完善 帮助改进教程内容 Note: 后续资料会附上贡献者名单.",
+          "content": "本项目是系统性学习大模型技术要点的教程，基于原始的 *《30 Essential Questions and Answers on Machine Learning and AI》* ，基于最先进的 AI 工具`翻译`，逐行校正添加`中文批注`，增强可读性。\n\n\n## 1.你将收获什么？\n\n1. 系统性学习：大模型技术要点的教程\n2. 熟悉核心的术语（英文 + 中文）\n3. 共同维护，中文批注，增强可读性，贡献给开源社区\n\n## 2.迭代计划\n\n1. 首版：中文批注: ✅\n2. 导出 pdf 文件: ✅\n3. 同步到多个开源社区: TODO\n\n\n\n## 3.在线阅读\n\n* 网址： [https://ningg.top/Machine-Learning-Q-and-AI/](https://ningg.top/Machine-Learning-Q-and-AI/)\n* gitHub 地址：[https://github.com/ningg/Machine-Learning-Q-and-AI](https://github.com/ningg/Machine-Learning-Q-and-AI)\n\n\n<div align=\"center\">\n  <p>\n    在线阅读：\n    <a href=\"https://ningg.top/Machine-Learning-Q-and-AI/\" target=\"_blank\">《大模型技术30讲》</a>\n    ，pdf 文件：\n    <a href=\"https://ningg.top/Machine-Learning-Q-and-AI/pdf/大模型技术30讲(英文&中文批注)_LLM_30_Essential_Lectures_AI.pdf\" target=\"_blank\">《大模型技术30讲-PDF版本》</a>\n  </p>\n</p> \n  <p><em>深入理解 LLM 核心原理，直击要点</em></p>\n</div>\n\n\n<div align='center'>\n\n<img width=\"30%\" height=\"1201\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/09e6c44d-7baa-4b1d-a8ca-6138e70d23f9\" />\n\n</div>\n\n\n\n## 4.如何贡献   \n\n我们欢迎任何形式的贡献！\n\n- 🐛 报告 Bug - 发现问题请提交 [Issue](https://github.com/ningg/Machine-Learning-Q-and-AI/issues)\n- 💡 功能建议 - 有好想法就告诉我们\n- 📝 内容完善 - 帮助改进教程内容\n\n> Note: 后续资料会附上贡献者名单.\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9934",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9934"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】完全开源，去中心化的Holyshit期刊。",
+          "url": "https://www.holyshitjournal.org/",
+          "author": "Olcmyk",
+          "authorUrl": "https://github.com/Olcmyk",
+          "publishedAt": "2026-05-14T08:44:25Z",
+          "summary": "网站地址： 开源代码： 我复活了shit期刊 之前shit期刊火爆全网，但是因为种种原因停更了。我萌生了这个开发这个Holyshit期刊的想法，作为精神继承者。网站完全开源，而且无需注册登录，点击即可随时投稿投票。高度去中心化，没有评审团，ai打分和网友投票是入选的唯一标准。 欢迎大家来投稿自己的论文 <img width=\"1440\" height=\"823\" alt=\"Image\" src=\" / <img width=\"1440\" height=\"823\" alt=\"Image\" src=\" /",
+          "content": "网站地址：https://www.holyshitjournal.org/\n开源代码：https://github.com/Olcmyk/holyshit-journal\n## 我复活了shit期刊\n\n之前shit期刊火爆全网，但是因为种种原因停更了。我萌生了这个开发这个Holyshit期刊的想法，作为精神继承者。网站完全开源，而且无需注册登录，点击即可随时投稿投票。高度去中心化，没有评审团，ai打分和网友投票是入选的唯一标准。\n\n欢迎大家来投稿自己的论文\n\n<img width=\"1440\" height=\"823\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/83ba60bd-9a06-4ea8-a3fd-79df5d0bed7d\" />\n\n<img width=\"1440\" height=\"823\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c051cfc0-534f-421f-a0da-b674148876f7\" />",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9935",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9935"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Zephyr — 基于 Rust + Tauri v2 的安全 Mihomo 代理客户端",
+          "url": "https://github.com/Juwan-Hwang/Zephyr",
+          "author": "Juwan-Hwang",
+          "authorUrl": "https://github.com/Juwan-Hwang",
+          "publishedAt": "2026-05-14T10:29:10Z",
+          "summary": "项目简介 Zephyr 是一款以安全为第一设计原则的跨平台 Mihomo（Clash Meta）桌面代理客户端，采用 Rust 后端 + 原生 JavaScript 前端架构，基于 Tauri v2 框架构建。 GitHub 地址： 为什么值得关注 1. 安全架构（13 层纵深防御） 这是 Zephyr 最大的差异化特点。项目实施了完整的纵深防御策略（Defense in Depth），覆盖全攻击面： CSP 内容安全策略：前端禁止 eval 和内联脚本，网络连接严格限制为本地 Mihomo 内核通信，前端无法直连外网 Tauri v2 最小权限模型：明确拒绝授予文件系统、命令执行、网络请求、剪贴板等高危权限 SSRF 完整防护链：协议白名单 + DNS Pinning + 私有 IP 拦截（IPv4/IPv6）+ 重定向链全链路复检 AES256GCM 加密存储：敏感数据加密，密钥与机器指纹绑定 CI/CD 安全流水线：集成 cargo audit、semgrep、dependencyreview 等 10 项自动化安全检查 详细安全文档： 2. 技术选型 相比 Electron 方案，Zephyr 选择 Tauri v2 + Rust： 不嵌入 Node.js 运行时，攻击面大幅缩小 内存占用更低，安装包体积更小 Rust 后端提供编译期内存安全保证 3. UI 设计 极简设计理念，无边框窗口 + 系统托盘，界面清爽优雅。 项目数据 ⭐ 200+ GitHub Stars 📦 600+ 下载量 🔧 10 个 Release 版本 💻 支持 Windows / macOS（Intel & Apple Silicon）/ Linux 📄 MIT 开源协议 适合谁 对代理客户端安全性有要求的用户 Rust / Tauri 技术栈的学习参考 追求轻量、美观桌面工具的用户",
+          "content": "## 项目简介\n\n**Zephyr** 是一款以安全为第一设计原则的跨平台 Mihomo（Clash Meta）桌面代理客户端，采用 Rust 后端 + 原生 JavaScript 前端架构，基于 Tauri v2 框架构建。\n\n**GitHub 地址：** https://github.com/Juwan-Hwang/Zephyr\n\n## 为什么值得关注\n\n### 1. 安全架构（13 层纵深防御）\n\n这是 Zephyr 最大的差异化特点。项目实施了完整的纵深防御策略（Defense in Depth），覆盖全攻击面：\n\n- **CSP 内容安全策略**：前端禁止 eval 和内联脚本，网络连接严格限制为本地 Mihomo 内核通信，前端无法直连外网\n- **Tauri v2 最小权限模型**：明确拒绝授予文件系统、命令执行、网络请求、剪贴板等高危权限\n- **SSRF 完整防护链**：协议白名单 + DNS Pinning + 私有 IP 拦截（IPv4/IPv6）+ 重定向链全链路复检\n- **AES-256-GCM 加密存储**：敏感数据加密，密钥与机器指纹绑定\n- **CI/CD 安全流水线**：集成 cargo audit、semgrep、dependency-review 等 10 项自动化安全检查\n\n详细安全文档：https://github.com/Juwan-Hwang/Zephyr/wiki/Security\n\n### 2. 技术选型\n\n相比 Electron 方案，Zephyr 选择 Tauri v2 + Rust：\n\n- 不嵌入 Node.js 运行时，攻击面大幅缩小\n- 内存占用更低，安装包体积更小\n- Rust 后端提供编译期内存安全保证\n\n### 3. UI 设计\n\n极简设计理念，无边框窗口 + 系统托盘，界面清爽优雅。\n\n## 项目数据\n\n- ⭐ 200+ GitHub Stars\n- 📦 600+ 下载量\n- 🔧 10 个 Release 版本\n- 💻 支持 Windows / macOS（Intel & Apple Silicon）/ Linux\n- 📄 MIT 开源协议\n\n## 适合谁\n\n- 对代理客户端安全性有要求的用户\n- Rust / Tauri 技术栈的学习参考\n- 追求轻量、美观桌面工具的用户\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9936",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9936"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源教程自荐】用 vibecoding 做产品的实战指南，零编程基础到独立开发 SaaS，完整方法论 + 真实案例拆解 + 动手实践",
+          "url": "https://vibecoding.waytomaster.com",
+          "author": "tmwgsicp",
+          "authorUrl": "https://github.com/tmwgsicp",
+          "publishedAt": "2026-05-14T11:21:14Z",
+          "summary": "教程地址： 开源地址： 本教程能帮你: ✅ 掌握用 AI 做产品的方法论 ✅ 学会从 0 到 1 做 SaaS 产品 ✅ 获得真实的开发经验 本教程不能让你: ❌ 2 小时搭建完整网站 ❌ 零代码纯自然语言开发 ❌ 不学习就能做出产品 如果期待速成,本教程不适合你。 核心方法论(14 步) 从想法到上线的完整流程: 1、发现问题 如何找到值得做的问题 2、需求验证 验证是否有人需要 3、定义 MVP 最小可行产品 4、技术栈科普 前端/后端/数据库是什么 5、技术决策 选什么技术栈 6、环境搭建 AI 帮你配置开发环境 7、AI 协作 如何高效与 AI 配合 8、理解代码 看懂 AI 写的代码 9、测试策略 保证代码质量 10、架构设计 系统怎么设计 11、部署指南 域名、服务器、HTTPS 12、问题解决 上线后遇到问题怎么办 13、Git 和开源 版本管理和开源实践 14、迭代方法 如何持续优化",
+          "content": "教程地址：https://vibecoding.waytomaster.com\n开源地址：https://github.com/tmwgsicp/vibecoding-for-beginners\n本教程能帮你:\n\n✅ 掌握用 AI 做产品的方法论\n✅ 学会从 0 到 1 做 SaaS 产品\n✅ 获得真实的开发经验\n本教程不能让你:\n\n❌ 2 小时搭建完整网站\n❌ 零代码纯自然语言开发\n❌ 不学习就能做出产品\n如果期待速成,本教程不适合你。\n\n核心方法论(14 步)\n从想法到上线的完整流程:\n\n1、发现问题 - 如何找到值得做的问题\n2、需求验证 - 验证是否有人需要\n3、定义 MVP - 最小可行产品\n4、技术栈科普 - 前端/后端/数据库是什么\n5、技术决策 - 选什么技术栈\n6、环境搭建 - AI 帮你配置开发环境\n7、AI 协作 - 如何高效与 AI 配合\n8、理解代码 - 看懂 AI 写的代码\n9、测试策略 - 保证代码质量\n10、架构设计 - 系统怎么设计\n11、部署指南 - 域名、服务器、HTTPS\n12、问题解决 - 上线后遇到问题怎么办\n13、Git 和开源 - 版本管理和开源实践\n14、迭代方法 - 如何持续优化",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9937",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9937"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】YouTube视频语音翻译",
+          "url": "https://github.com/user-attachments/assets/054b255f-c016-4dfa-bc3c-536f795ac828\"",
+          "author": "sfz009900",
+          "authorUrl": "https://github.com/sfz009900",
+          "publishedAt": "2026-05-14T13:46:42Z",
+          "summary": "类型：Chrome插件 特点：无需注册,一键操作 <img width=\"1920\" height=\"815\" alt=\"Image\" src=\" / 功能： 使用简单，无需注册,一键操作 演示： 官网：",
+          "content": "类型：Chrome插件\n\n特点：无需注册,一键操作\n\n<img width=\"1920\" height=\"815\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/054b255f-c016-4dfa-bc3c-536f795ac828\" />\n\n功能：\n\n使用简单，无需注册,一键操作\n\n演示：https://www.youtube.com/watch?v=VidOz0Jp9Io\n\n官网：https://lingtube.xyz\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9938",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9938"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】：免费TTS，google/edge/openai",
+          "url": "https://github.com/lenML/oai-tts-router",
+          "author": "zhzLuke96",
+          "authorUrl": "https://github.com/zhzLuke96",
+          "publishedAt": "2026-05-14T13:56:15Z",
+          "summary": "项目： 简介：一键部署，免费使用 google/edge/openai tts，满足基础TTS需求 亮点：提供 openai tts api 入口，方便对接 原理：逆向公开api",
+          "content": "项目：https://github.com/lenML/oai-tts-router\n简介：一键部署，免费使用 google/edge/openai tts，满足基础TTS需求\n亮点：提供 openai tts api 入口，方便对接\n原理：逆向公开api",
+          "metrics": {
+            "comments": 4
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9939",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9939"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[自荐项目] Suppr - 面向科研阅读的 AI 文献检索、翻译与深度研究工具",
+          "url": "http://suppr.wilddata.cn/",
+          "author": "zjg678",
+          "authorUrl": "https://github.com/zjg678",
+          "publishedAt": "2026-05-14T14:29:48Z",
+          "summary": "超能文献（Suppr） 让医学文献检索回归\"说人话\" 🔗 官网地址： <img width=\"1936\" height=\"1817\" alt=\"Image\" src=\" / 超能文献首页界面 中文自然语言搜PubMed 传统的PubMed检索，你需要先学会布尔逻辑、MeSH主题词、检索字段这些概念。但在超能文献里，你直接用中文描述你的需求就行了。 比如你可以这样搜：\"一型糖尿病近三年研究进展\"，或者\"GLP1 最新的临床试验\"，甚至\"JAMA近5年肿瘤相关临床试验研究，IF大于10\"。后台的大语言模型会自动把你的中文需求转化成精准的PubMed检索式，时间限定、期刊限定、作者限定、影响因子筛选这些复杂条件都能处理。 <img width=\"2401\" height=\"1932\" alt=\"Image\" src=\" / 我们做了大量的医学领域微调工作，让模型能理解医学术语和检索逻辑。举个例子，当你说\"糖尿病和心血管疾病的关系，最近5年，临床试验\"，模型会生成类似这样的检索式：(\"Diabetes Mellitus\"[MeSH Terms]) AND \"Cardiovascular Diseases\"[MeSH Terms] AND \"Clinical Trial\"[PT] AND (\"2020\"[PDAT] : \"2025\"[PDAT])。你完全不需要了解这些语法，但能享受到高级检索的精准度。 搜索结果出来后，不只是给你一堆文献列表，还会自动生成中文摘要总结和研究思维导图。思维导图可以一键下载，帮你快速梳理这个领域的研究脉络。文献引用也自动处理好了，支持AMA、APA、MLA、NLM等各种格式，复制粘贴就能用。 <img width=\"3033\" height=\"1927\" alt=\"Image\" src=\" / 数据库方面，目前覆盖PubMed全库4000多万篇医学文献，后续会接入更多数据源。 AI文档翻译，格式完全不乱 做过学术翻译的都知道，PDF翻译最烦的就是格式全乱了。图表挪位、公式变形、页眉页脚错位，翻译完还得花大量时间调格式。 我们在超能文献里专门解决了这个问题。支持PDF、PPT、Word、Excel、ePub这些常见格式，12种语言互译，最关键的是翻译后格式完全保持不变。 <img width=\"1526\" height=\"1757\" alt=\"Image\" src=\" / 技术上我们用了OCR加版面分析加深度学习的组合方案。先识别文档结构，区分出标题、正文、图表、公式这些不同的内容块，然后分块翻译，最后按原布局重组。图表和公式这些非文本内容会保留原样，避免翻译破坏掉原有信息。这个过程在底层做了大量优化，确保翻译后的文档跟原文档在排版上几乎一致。 25分钟生成文献综述 这个功能可能有点\"丧心病狂\"。输入一个研究主题，AI会自动检索相关文献，筛选高质量研究，提取核心观点，然后生成一篇结构完整的文献综述初稿。整个过程大概25分钟，你就能拿到一篇包含背景、研究现状、争议焦点、未来方向的综述文档。 <img width=\"2391\" height=\"1930\" alt=\"Image\" src=\" / 当然，这不是让你直接拿去当毕业论文交（别想了😂）。这个功能的定位是帮你快速建立对某个领域的全局认知，省掉前期大量文献筛选和阅读的时间。你可以基于这个初稿继续深入，补充细节，调整观点。相当于把原本可能需要一周的工作压缩到半小时，让你更快进入状态。 为什么要做这个工具 说实话，市面上文献工具不少。但我们团队本身就是从医学科研圈出来的，深知痛点在哪。 英文不好的同学，看文献真的很痛苦。每天抱着词典啃论文，效率低不说，还容易误解原意。PubMed虽然强大，但不会用检索式的话，基本就是浪费。读完几十篇文献再写综述，时间成本高到离谱。这些问题一直存在，但一直没有特别好的解决方案。 我们想做的就是把AI的能力真正落到实处，降低医学信息获取的门槛。不管是临床医生、医学生、还是药企研发人员，都能轻松获取到高质量的医学文献，不被语言和工具的复杂度困住。 产品目前处于公测阶段，每天有10次免费查询额度。我们还在快速迭代中，技术团队在深圳，核心成员来自医疗AI和大模型背景。核心技术已经申请了专利（CN118964589B），会持续投入做产品迭代和功能优化。 从公测到现在，用户量在稳定增长。专业术语翻译精度能达到98%以上，综述生成平均25分钟一篇。看到越来越多的医生和研究生在用，还会主动给我们反馈建议，这种感觉挺好的。 开发者生态 除了网页版，我们也在构建更丰富的开发者生态，让超能文献的能力可以集成到更多场景里。 Zotero翻译插件：如果你是Zotero用户，可以安装我们的插件，在文献管理器里直接右键翻译PDF文档。精准翻译，格式保持，无需离开Zotero环境。插件已经在GitHub开源。 👉 API接口：我们提供了完整的API服务，支持文献检索、文档翻译、深度研究等核心功能。如果你在做医学相关的应用或研究平台，可以直接调用我们的API，把这些能力集成进去。具体文档可以在官网查看。 MCP服务：对于需要更深度集成的场景，我们也提供了MCP（Model Context Protocol）服务支持，方便开发者在自己的AI应用中接入超能文献的能力。 这些工具和接口都是为了让超能文献的能力触达更多场景。如果你有集成需求或者合作想法，欢迎联系我们。 如果你也在做医学科研，欢迎试用并给我们反馈。有任何建议或Bug，可以在官网留言，或者给我们发邮件。我们也在寻找医学领域的合作伙伴和早期用户。 产品链接： 🌐 官网： 📦 Zotero插件： 🏢 公司官网： 期待你的体验和反馈！🚀 Disclosure: I maintain/am affiliated with this submission. Links are official product/source links only.",
+          "content": "# 超能文献（Suppr）- 让医学文献检索回归\"说人话\"\n\n🔗 **官网地址**：http://suppr.wilddata.cn/\n\n\n<img width=\"1936\" height=\"1817\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ab2c0134-0713-45b1-88f9-fff051e16be4\" />\n\n*超能文献首页界面*\n\n---\n\n## 中文自然语言搜PubMed\n\n传统的PubMed检索，你需要先学会布尔逻辑、MeSH主题词、检索字段这些概念。但在超能文献里，你直接用中文描述你的需求就行了。\n\n比如你可以这样搜：\"一型糖尿病近三年研究进展\"，或者\"GLP-1 最新的临床试验\"，甚至\"JAMA近5年肿瘤相关临床试验研究，IF大于10\"。后台的大语言模型会自动把你的中文需求转化成精准的PubMed检索式，时间限定、期刊限定、作者限定、影响因子筛选这些复杂条件都能处理。\n\n<img width=\"2401\" height=\"1932\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/07d754a9-bee4-4aed-adaa-d2d2c6debfad\" />\n\n我们做了大量的医学领域微调工作，让模型能理解医学术语和检索逻辑。举个例子，当你说\"糖尿病和心血管疾病的关系，最近5年，临床试验\"，模型会生成类似这样的检索式：`(\"Diabetes Mellitus\"[MeSH Terms]) AND \"Cardiovascular Diseases\"[MeSH Terms] AND \"Clinical Trial\"[PT] AND (\"2020\"[PDAT] : \"2025\"[PDAT])`。你完全不需要了解这些语法，但能享受到高级检索的精准度。\n\n搜索结果出来后，不只是给你一堆文献列表，还会自动生成中文摘要总结和研究思维导图。思维导图可以一键下载，帮你快速梳理这个领域的研究脉络。文献引用也自动处理好了，支持AMA、APA、MLA、NLM等各种格式，复制粘贴就能用。\n\n<img width=\"3033\" height=\"1927\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5bad3cb0-2fc8-476c-a69c-ef906803cb8c\" />\n\n数据库方面，目前覆盖PubMed全库4000多万篇医学文献，后续会接入更多数据源。\n\n---\n\n## AI文档翻译，格式完全不乱\n\n做过学术翻译的都知道，PDF翻译最烦的就是格式全乱了。图表挪位、公式变形、页眉页脚错位，翻译完还得花大量时间调格式。\n\n我们在超能文献里专门解决了这个问题。支持PDF、PPT、Word、Excel、ePub这些常见格式，12种语言互译，最关键的是**翻译后格式完全保持不变**。\n\n<img width=\"1526\" height=\"1757\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9e7e1e90-2ac3-4e91-9ef3-b13885e5c804\" />\n\n技术上我们用了OCR加版面分析加深度学习的组合方案。先识别文档结构，区分出标题、正文、图表、公式这些不同的内容块，然后分块翻译，最后按原布局重组。图表和公式这些非文本内容会保留原样，避免翻译破坏掉原有信息。这个过程在底层做了大量优化，确保翻译后的文档跟原文档在排版上几乎一致。\n\n---\n\n## 25分钟生成文献综述\n\n这个功能可能有点\"丧心病狂\"。输入一个研究主题，AI会自动检索相关文献，筛选高质量研究，提取核心观点，然后生成一篇结构完整的文献综述初稿。整个过程大概25分钟，你就能拿到一篇包含背景、研究现状、争议焦点、未来方向的综述文档。\n\n<img width=\"2391\" height=\"1930\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6b7e204d-93e7-4089-af34-b27e0d964baf\" />\n\n\n当然，这不是让你直接拿去当毕业论文交（别想了😂）。这个功能的定位是帮你快速建立对某个领域的全局认知，省掉前期大量文献筛选和阅读的时间。你可以基于这个初稿继续深入，补充细节，调整观点。相当于把原本可能需要一周的工作压缩到半小时，让你更快进入状态。\n\n---\n\n## 为什么要做这个工具\n\n说实话，市面上文献工具不少。但我们团队本身就是从医学科研圈出来的，深知痛点在哪。\n\n英文不好的同学，看文献真的很痛苦。每天抱着词典啃论文，效率低不说，还容易误解原意。PubMed虽然强大，但不会用检索式的话，基本就是浪费。读完几十篇文献再写综述，时间成本高到离谱。这些问题一直存在，但一直没有特别好的解决方案。\n\n我们想做的就是把AI的能力真正落到实处，降低医学信息获取的门槛。不管是临床医生、医学生、还是药企研发人员，都能轻松获取到高质量的医学文献，不被语言和工具的复杂度困住。\n\n产品目前处于公测阶段，每天有10次免费查询额度。我们还在快速迭代中，技术团队在深圳，核心成员来自医疗AI和大模型背景。核心技术已经申请了专利（CN118964589B），会持续投入做产品迭代和功能优化。\n\n从公测到现在，用户量在稳定增长。专业术语翻译精度能达到98%以上，综述生成平均25分钟一篇。看到越来越多的医生和研究生在用，还会主动给我们反馈建议，这种感觉挺好的。\n\n---\n\n## 开发者生态\n\n除了网页版，我们也在构建更丰富的开发者生态，让超能文献的能力可以集成到更多场景里。\n\n**Zotero翻译插件**：如果你是Zotero用户，可以安装我们的插件，在文献管理器里直接右键翻译PDF文档。精准翻译，格式保持，无需离开Zotero环境。插件已经在GitHub开源。\n👉 https://github.com/WildDataX/suppr-zotero-plugin\n\n**API接口**：我们提供了完整的API服务，支持文献检索、文档翻译、深度研究等核心功能。如果你在做医学相关的应用或研究平台，可以直接调用我们的API，把这些能力集成进去。具体文档可以在官网查看。https://openapi.suppr.wilddata.cn/introduction.html\n\n**MCP服务**：对于需要更深度集成的场景，我们也提供了MCP（Model Context Protocol）服务支持，方便开发者在自己的AI应用中接入超能文献的能力。https://github.com/WildDataX/suppr-mcp\n\n这些工具和接口都是为了让超能文献的能力触达更多场景。如果你有集成需求或者合作想法，欢迎联系我们。\n\n---\n\n如果你也在做医学科研，欢迎试用并给我们反馈。有任何建议或Bug，可以在官网留言，或者给我们发邮件。我们也在寻找医学领域的合作伙伴和早期用户。\n\n**产品链接**：\n- 🌐 官网：http://suppr.wilddata.cn/\n- 📦 Zotero插件：https://github.com/WildDataX/suppr-zotero-plugin\n- 🏢 公司官网：https://www.wilddata.cn/\n\n期待你的体验和反馈！🚀\n\n---\n\n---\n\nDisclosure: I maintain/am affiliated with this submission. Links are official product/source links only.\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3263",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3263"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "Add contributor profile for Lucas Clark",
+          "url": "https://github.com/521xueweihan/HelloGitHub/issues/3264",
+          "author": "lucasclark7699-bot",
+          "authorUrl": "https://github.com/lucasclark7699-bot",
+          "publishedAt": "2026-05-14T14:52:21Z",
+          "summary": "",
+          "content": "",
+          "metrics": {
+            "comments": 2
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3264",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3264"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    }
+  ]
+}

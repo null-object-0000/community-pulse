@@ -1,1 +1,828 @@
-{"fetchedAt":"2026-09-07T08:45:00.053Z","date":"2026-08-30","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"Ikat","url":"https://ikat.app","author":"Hongshiqiang","authorUrl":"","publishedAt":"2026-08-30T00:00:00+08:00","summary":"多模型 AI 视频生成工作台，在同一界面使用 Wan 3.0、Kling 3.0、Seedance 2.5、MiniMax H3，支持文生视频和图生视频","content":"多模型 AI 视频生成工作台，在同一界面使用 Wan 3.0、Kling 3.0、Seedance 2.5、MiniMax H3，支持文生视频和图生视频","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-30-Ikat-https://ikat.app"},{"sourceId":"chinese-indie-dev","title":"EasyMap Desktop","url":"http://www.easymap.online/","author":"easymap-gis(合肥)","authorUrl":"","publishedAt":"2026-08-30T00:00:00+08:00","summary":"面向测绘、规划、应急与数据治理的桌面 GIS 平台工具集，地图制图、数据目录、58 个地理处理工具、模型构建器与在线地图下载器一站齐备，解压即用、数据不出内网","content":"面向测绘、规划、应急与数据治理的桌面 GIS 平台工具集，地图制图、数据目录、58 个地理处理工具、模型构建器与在线地图下载器一站齐备，解压即用、数据不出内网","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-30-EasyMap Desktop-http://www.easymap.online/"},{"sourceId":"chinese-indie-dev","title":"FishCare AI","url":"https://www.fishcareai.com/","author":"Viki Wu","authorUrl":"","publishedAt":"2026-08-30T00:00:00+08:00","summary":"观赏鱼饲养指南与免费工具站，买鱼前先查混养兼容性（4000+ 鱼种组合对照页）、鱼缸最小尺寸、水质参数和投喂量，覆盖斗鱼、孔雀鱼、七彩神仙等常见品种，免费无需注册","content":"观赏鱼饲养指南与免费工具站，买鱼前先查混养兼容性（4000+ 鱼种组合对照页）、鱼缸最小尺寸、水质参数和投喂量，覆盖斗鱼、孔雀鱼、七彩神仙等常见品种，免费无需注册","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-08-30-FishCare AI-https://www.fishcareai.com/"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"自荐：ScholarSeed——AI 时代学术论文的确定性质检门禁（41 个工具，纯标准库，零依赖）","url":"https://github.com/Morningstar202604/ScholarSeed","author":"Morningstar202604","authorUrl":"https://github.com/Morningstar202604","publishedAt":"2026-08-29T21:00:11Z","summary":"向周刊推荐一个开源项目，供挑选。 ScholarSeed —— AI 时代学术论文的确定性质检门禁 仓库： （GitCode: ） 许可证：PolyForm Noncommercial 1.0.0（学习/研究/个人使用免费） 安装：npm i g scholarseed 或直接克隆使用，纯 Python 标准库，零依赖 它解决什么问题：现在大量学生和研究者用 AI 辅助写论文，常见的翻车点很具体——编造的参考文献、p=0.000 这种统计错误、样本量前后矛盾、图表编号断层、\"研究表明/专家认为\"却不给出处。这些恰恰是编辑和审稿人一眼就抓的东西。 ScholarSeed 提供 41 个确定性检查工具（MCP 服务器 + CLI），全部规则可复现、带行号证据： 引文核验：逐条实时比对 Crossref / Semantic Scholar / OpenAlex，编造的 DOI 当场判 C 级，可作 CI 硬门禁 统计红线：p 值必须有检验方法名、显著结论必须配效应量、不可能值（|r|1）直接报错 数字一致性：互斥分桶加和越界（\"300 人，其中 180…另外 200…\"）、摘要与正文样本数对不上 文献质量：完整性（缺来源/缺卷期页/GBT 7714 类型标识）、时效性（全部早于 10 年）、链接可信（占位域名/可选联网验活） AI 腔自检：51 条模板短语、模糊归因、句长突发性——定位是\"帮你把稿子改朴素\"，不做\"AI 率\"判决 工程方面：237 个单元测试，阈值经 70 篇 arXiv 真实论文校准，另附一套 31 处埋雷的检测率评测（benchmarks/personaeval/，可复现）。姊妹项目 AgentSeed 做代码侧的同类防幻觉门禁。 定位上它不替人写论文，只负责\"交得出去\"这一段。如果与周刊选题方向不合，无妨，感谢阅读。","content":"向周刊推荐一个开源项目，供挑选。\n\n**ScholarSeed** —— AI 时代学术论文的确定性质检门禁\n\n- 仓库：https://github.com/Morningstar202604/ScholarSeed （GitCode: https://gitcode.com/badhope/ScholarSeed ）\n- 许可证：PolyForm Noncommercial 1.0.0（学习/研究/个人使用免费）\n- 安装：`npm i -g scholarseed` 或直接克隆使用，纯 Python 标准库，零依赖\n\n**它解决什么问题**：现在大量学生和研究者用 AI 辅助写论文，常见的翻车点很具体——编造的参考文献、`p=0.000` 这种统计错误、样本量前后矛盾、图表编号断层、\"研究表明/专家认为\"却不给出处。这些恰恰是编辑和审稿人一眼就抓的东西。\n\nScholarSeed 提供 41 个确定性检查工具（MCP 服务器 + CLI），全部规则可复现、带行号证据：\n\n- **引文核验**：逐条实时比对 Crossref / Semantic Scholar / OpenAlex，编造的 DOI 当场判 C 级，可作 CI 硬门禁\n- **统计红线**：p 值必须有检验方法名、显著结论必须配效应量、不可能值（|r|>1）直接报错\n- **数字一致性**：互斥分桶加和越界（\"300 人，其中 180…另外 200…\"）、摘要与正文样本数对不上\n- **文献质量**：完整性（缺来源/缺卷期页/GB-T 7714 类型标识）、时效性（全部早于 10 年）、链接可信（占位域名/可选联网验活）\n- **AI 腔自检**：51 条模板短语、模糊归因、句长突发性——定位是\"帮你把稿子改朴素\"，不做\"AI 率\"判决\n\n工程方面：237 个单元测试，阈值经 70 篇 arXiv 真实论文校准，另附一套 31 处埋雷的检测率评测（`benchmarks/persona_eval/`，可复现）。姊妹项目 [AgentSeed](https://github.com/Morningstar202604/AgentSeed) 做代码侧的同类防幻觉门禁。\n\n定位上它不替人写论文，只负责\"交得出去\"这一段。如果与周刊选题方向不合，无妨，感谢阅读。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11419","issueUrl":"https://github.com/ruanyf/weekly/issues/11419"},{"sourceId":"weekly-issues","title":"【开源自荐】chrome-devtools-cli v2.0.0 支持 microsoft edge 了","url":"https://github.com/aeroxy/chrome-devtools-cli","author":"aeroxy","authorUrl":"https://github.com/aeroxy","publishedAt":"2026-08-30T05:25:04Z","summary":"edge 本来就是 chromium，协议完全一样，加上 browser edge 就能连 edge 的 profile，macos linux windows 都支持，channel 也能一起用 不过真正的问题是加了第二个浏览器之后才暴露出来的，之前守护进程只按 uid 区分，第一条命令连上哪个浏览器就锁定哪个，后面再传 browser 会被直接忽略，你要 edge，它给你 chrome 的结果，还不报错 现在守护进程按 websocket 端点的哈希来区分，chrome、edge、每个 headless 实例各有各的，可以同时跑 顺带加了 listdaemons，能看到每个守护进程的 pid、连的哪个浏览器、跑了多久，killdaemon 现在只杀你参数指向的那个，杀 edge 不会顺手把 chrome 的干掉，要全清用 all 还修了个我自己最在意的安全问题，daemon 被 sigkill 之后 pid 文件会留下来，系统可能把这个 pid 分给别的进程，之前 killdaemon 会直接发信号过去，现在会先确认 socket 上真的有 daemon 在监听，而且整个检查过程加了锁，避免中途有新 daemon 启动 报错也会说清楚是哪个浏览器，不会连 edge 超时却让你去检查 chrome 有一个破坏性改动，所以直接跳大版本，killdaemon 从全局变成按端点，脚本里想全清的话记得改成 all 需要 rust 1.89 以上 Repo: aeroxy/chromedevtoolscli","content":"edge 本来就是 chromium，协议完全一样，加上 --browser edge 就能连 edge 的 profile，macos linux windows 都支持，channel 也能一起用\n\n不过真正的问题是加了第二个浏览器之后才暴露出来的，之前守护进程只按 uid 区分，第一条命令连上哪个浏览器就锁定哪个，后面再传 --browser 会被直接忽略，你要 edge，它给你 chrome 的结果，还不报错\n\n现在守护进程按 websocket 端点的哈希来区分，chrome、edge、每个 headless 实例各有各的，可以同时跑\n\n顺带加了 list-daemons，能看到每个守护进程的 pid、连的哪个浏览器、跑了多久，kill-daemon 现在只杀你参数指向的那个，杀 edge 不会顺手把 chrome 的干掉，要全清用 --all\n\n还修了个我自己最在意的安全问题，daemon 被 sigkill 之后 pid 文件会留下来，系统可能把这个 pid 分给别的进程，之前 kill-daemon 会直接发信号过去，现在会先确认 socket 上真的有 daemon 在监听，而且整个检查过程加了锁，避免中途有新 daemon 启动\n\n报错也会说清楚是哪个浏览器，不会连 edge 超时却让你去检查 chrome\n\n有一个破坏性改动，所以直接跳大版本，kill-daemon 从全局变成按端点，脚本里想全清的话记得改成 --all\n\n需要 rust 1.89 以上\n\nRepo: [aeroxy/chrome-devtools-cli](https://github.com/aeroxy/chrome-devtools-cli)","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11420","issueUrl":"https://github.com/ruanyf/weekly/issues/11420"},{"sourceId":"weekly-issues","title":"【开源自荐】@do-md/core-react：从零写的 30KB Markdown 编辑器内核，不基于 ProseMirror / Slate / Lexical","url":"https://www.domd.app/editor","author":"do-md","authorUrl":"https://github.com/do-md","publishedAt":"2026-08-30T08:07:48Z","summary":"利益相关：我是作者。 @domd/corereact 是一个 Markdown 所见即所得编辑器内核，Brotli 压缩后 30 KB+，运行时零依赖（peer 只有 React、React DOM 和 Immer）。 在线编辑demo： <img width=\"1280\" height=\"800\" alt=\"Image\" src=\" / 背景 ProseMirror、Slate、Lexical 这类通用富文本框架，Markdown 只是导入导出格式：编辑发生在各自的富文本模型上，进出都要过一层转换。这个内核反过来，Markdown 文本本身就是编辑时的模型，没有这层转换。 代价是它只做 Markdown，做不了通用富文本。换来的是： 20,000 行的 Markdown 文档可以顺滑编辑，不用退回纯文本视图 AI 逐 token 吐 Markdown 时，代码围栏没闭合、表格只写了一半，也能实时正确渲染；结束符到了不会闪一下重排 同一段落里的离线并发修改可以合并，不是段落级的后写覆盖 多个编辑器实时同步，带远端光标；远端变更只重放到受影响的节点，不替换整篇文档 演示（无需注册） 流式写入： 离线合并： 实时协同： 仓库 内核源码在 .packages/@domd/core，npm 包是 @domd/corereact。同一仓库里还有用它做的 DOMD：原生 macOS 应用、Quick Look 预览和一个给 agent 用的 CLI。 许可证分两层：应用层（macOS / Web 应用、插件）是 MIT；内核自 0.11.0 起是 GPL3.0，并按 GPL 第 7 条附加「小型主体」和「FOSS 许可证」两条例外（0.10.0 及更早是 PolyForm Noncommercial）。","content":"利益相关：我是作者。\n\n`@do-md/core-react` 是一个 Markdown 所见即所得编辑器内核，Brotli 压缩后 30 KB+，运行时零依赖（peer 只有 React、React DOM 和 Immer）。\n\n在线编辑demo：https://www.domd.app/editor\n\n<img width=\"1280\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9fb64b6e-5714-4a14-8bfc-215db03a5590\" />\n\n## 背景\n\nProseMirror、Slate、Lexical 这类通用富文本框架，Markdown 只是导入导出格式：编辑发生在各自的富文本模型上，进出都要过一层转换。这个内核反过来，Markdown 文本本身就是编辑时的模型，没有这层转换。\n\n代价是它只做 Markdown，做不了通用富文本。换来的是：\n\n- 20,000 行的 Markdown 文档可以顺滑编辑，不用退回纯文本视图\n- AI 逐 token 吐 Markdown 时，代码围栏没闭合、表格只写了一半，也能实时正确渲染；结束符到了不会闪一下重排\n- 同一段落里的离线并发修改可以合并，不是段落级的后写覆盖\n- 多个编辑器实时同步，带远端光标；远端变更只重放到受影响的节点，不替换整篇文档\n\n## 演示（无需注册）\n\n- 流式写入：https://www.domd.app/playground\n- 离线合并：https://www.domd.app/playground/crdt\n- 实时协同：https://www.domd.app/playground/live\n\n## 仓库\n\nhttps://github.com/do-md/domd\n\n内核源码在 `.packages/@do-md/core`，npm 包是 [@do-md/core-react](https://www.npmjs.com/package/@do-md/core-react)。同一仓库里还有用它做的 DOMD：原生 macOS 应用、Quick Look 预览和一个给 agent 用的 CLI。\n\n许可证分两层：应用层（macOS / Web 应用、插件）是 MIT；内核自 0.11.0 起是 GPL-3.0，并按 GPL 第 7 条附加「小型主体」和「FOSS 许可证」两条例外（0.10.0 及更早是 PolyForm Noncommercial）。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11421","issueUrl":"https://github.com/ruanyf/weekly/issues/11421"},{"sourceId":"weekly-issues","title":"【开源自荐】DanKS：金山开源的 SOTA 级掼蛋智能体，完整开放三代技术路线（AI/强化学习项目）","url":"https://github.com/Calix-L/DanKS","author":"Calix-L","authorUrl":"https://github.com/Calix-L","publishedAt":"2026-08-30T09:26:44Z","summary":"DanKS 是金山 AI Product Center 发起的掼蛋 AI 项目，仓库公开了从结构化检索到 PPO 自博弈的完整三代技术路线，配套共享的 108 张牌掼蛋规则引擎和可在线对战的 Demo。 项目地址： 在线体验： !DanKS 宣传页 !在线 Demo 对局预览 核心特性 三代路线完整可读：V1 结构化检索加 NumPy 选择器，V2 学习型选择加 ONNX 选择器，V3 记忆感知策略加 PPO，逐代可运行可比较 SOTA 实战实力：在完整掼蛋晋级赛协议下，面对多种学习型与规则型基线均取得领先结果，实验数据见 CardKS 仓库 全链路实现：覆盖规则引擎、合法动作生成、结构化召回、状态与候选特征、策略与价值网络、PPO 训练、checkpoint 管理与原生 C++ 加速 共享规则引擎可独立使用：from guandan import Environment 即可起一桌四人牌局 在线 Demo 支持中英文界面，1 个人类座位对 3 个 Bot 座位 支持 CPU、NVIDIA CUDA 12.8、昇腾 NPU 三类加速后端 安装 最短可运行路径（CPU 上跑 V3）： bash git clone cd DanKS python3.11 m venv .venv source .venv/bin/activate python m pip install upgrade pip python m pip install e versions/v3 python m pip install torch==2.8.0 indexurl python examples/retrievalquickstart.py version v3 python examples/v3modelsmoke.py Windows PowerShell 请使用 .venv\\Scripts\\Activate.ps1。 技术栈：Python 3.10+、PyTorch 2.8、ONNX Runtime、NumPy、pybind11；Apache2.0 协议。","content":"\nDanKS 是金山 AI Product Center 发起的掼蛋 AI 项目，仓库公开了从结构化检索到 PPO 自博弈的完整三代技术路线，配套共享的 108 张牌掼蛋规则引擎和可在线对战的 Demo。\n\n项目地址：https://github.com/Calix-L/DanKS\n在线体验：https://calixlin.com/CardKS/\n\n![DanKS 宣传页](https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-promotional-hero-v2.png)\n\n![在线 Demo 对局预览](https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-online-demo.gif)\n\n## 核心特性\n\n- 三代路线完整可读：V1 结构化检索加 NumPy 选择器，V2 学习型选择加 ONNX 选择器，V3 记忆感知策略加 PPO，逐代可运行可比较\n- SOTA 实战实力：在完整掼蛋晋级赛协议下，面对多种学习型与规则型基线均取得领先结果，实验数据见 CardKS 仓库\n- 全链路实现：覆盖规则引擎、合法动作生成、结构化召回、状态与候选特征、策略与价值网络、PPO 训练、checkpoint 管理与原生 C++ 加速\n- 共享规则引擎可独立使用：`from guandan import Environment` 即可起一桌四人牌局\n- 在线 Demo 支持中英文界面，1 个人类座位对 3 个 Bot 座位\n- 支持 CPU、NVIDIA CUDA 12.8、昇腾 NPU 三类加速后端\n\n## 安装\n\n最短可运行路径（CPU 上跑 V3）：\n\n```bash\ngit clone https://github.com/Calix-L/DanKS.git\ncd DanKS\npython3.11 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -e versions/v3\npython -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu\npython examples/retrieval_quickstart.py --version v3\npython examples/v3_model_smoke.py\n```\n\nWindows PowerShell 请使用 `.venv\\Scripts\\Activate.ps1`。\n\n技术栈：Python 3.10+、PyTorch 2.8、ONNX Runtime、NumPy、pybind11；Apache-2.0 协议。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11422","issueUrl":"https://github.com/ruanyf/weekly/issues/11422"},{"sourceId":"weekly-issues","title":"【开源自荐】AI-Novel-Writer：从灵感到修稿的小说创作桌面软件","url":"https://www.orz.md/ai-novel-writer/","author":"EthanYoQ","authorUrl":"https://github.com/EthanYoQ","publishedAt":"2026-08-30T11:28:23Z","summary":"作品主页： GitHub： AINovelWriter 是一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、草稿、审稿和修稿放进同一个项目流程。 它提供 Windows 与 macOS 安装包，支持用户自行配置 OpenAIcompatible 云模型或 Ollama。生成章节时会组织相关蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，最终是否合并修订仍由作者决定。小说项目和本地数据库保存在用户电脑中；使用云模型时，生成所需上下文会发送给用户选择的服务商。另有独立的 DeepSeek Harness 插件开发预览。","content":"作品主页：https://www.orz.md/ai-novel-writer/\nGitHub：https://github.com/EthanYoQ/AI-Novel-Writer\n\nAI-Novel-Writer 是一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、草稿、审稿和修稿放进同一个项目流程。\n\n它提供 Windows 与 macOS 安装包，支持用户自行配置 OpenAI-compatible 云模型或 Ollama。生成章节时会组织相关蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，最终是否合并修订仍由作者决定。小说项目和本地数据库保存在用户电脑中；使用云模型时，生成所需上下文会发送给用户选择的服务商。另有独立的 DeepSeek Harness 插件开发预览。","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"11423","issueUrl":"https://github.com/ruanyf/weekly/issues/11423"},{"sourceId":"weekly-issues","title":"【工具自荐】HelloGen：AI 生图免费不限量无水印，图片和视频模型任选","url":"https://hellogen.ai/","author":"chenchiwei","authorUrl":"https://github.com/chenchiwei","publishedAt":"2026-08-30T12:38:03Z","summary":"网址： 一个多模型的 AI 图片 / 视频生成站，说三个和同类不太一样的地方。 1. 生图免费不限量，无水印，带商用授权 注册后生成图片不限张数、不加水印，输出带商用授权，也不占视频那边的额度。不是「免费 N 张再引导付费」那种。 2. 图片和视频模型自己挑 图片：ZImage Turbo、Qwen Image Edit、GPT Image 2、Nano Banana（Lite / 2 / Pro）、Seedream（4.5 / 5.0 Lite / 5.0 Pro） 视频：Seedance 2、Veo 3.1、Kling 3.0、MiniMax H3 懒得挑也行，直接用大白话把需求说出来，助手会替你选模型。 3. 先报价再生成，失败不扣费 视频按秒计费，每次提交前先把这一条要花多少积分算出来给你看，确认了才跑；跑失败不扣费。 收费 图片一直免费。视频用积分：积分包 $4.90 / 500 积分起，不过期；也可以走 Basic / Pro 月订阅。","content":"**网址**：https://hellogen.ai/\n\n一个多模型的 AI 图片 / 视频生成站，说三个和同类不太一样的地方。\n\n### 1. 生图免费不限量，无水印，带商用授权\n\n注册后生成图片不限张数、不加水印，输出带商用授权，也不占视频那边的额度。不是「免费 N 张再引导付费」那种。\n\n### 2. 图片和视频模型自己挑\n\n- 图片：Z-Image Turbo、Qwen Image Edit、GPT Image 2、Nano Banana（Lite / 2 / Pro）、Seedream（4.5 / 5.0 Lite / 5.0 Pro）\n- 视频：Seedance 2、Veo 3.1、Kling 3.0、MiniMax H3\n\n懒得挑也行，直接用大白话把需求说出来，助手会替你选模型。\n\n### 3. 先报价再生成，失败不扣费\n\n视频按秒计费，每次提交前先把这一条要花多少积分算出来给你看，确认了才跑；跑失败不扣费。\n\n### 收费\n\n图片一直免费。视频用积分：积分包 $4.90 / 500 积分起，不过期；也可以走 Basic / Pro 月订阅。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11424","issueUrl":"https://github.com/ruanyf/weekly/issues/11424"},{"sourceId":"weekly-issues","title":"【工具自荐】PNG Binder：在浏览器本地把多张 PNG/JPEG 整理成一个 PDF","url":"https://pngbinder.com/","author":"lionchain100-alt","authorUrl":"https://github.com/lionchain100-alt","publishedAt":"2026-08-30T14:11:01Z","summary":"项目地址 项目简介 PNG Binder 是一个免费的浏览器本地图片转 PDF 工具，适合把截图、收据、扫描页或作品集页面整理成一个按顺序排列的 PDF。 它支持一次处理最多 50 张 PNG、JPG 或 JPEG 图片，可以拖拽排序、直接粘贴图片，并设置自动、A4 或 US Letter 页面尺寸、方向和边距。 转换在浏览器本地完成，图片不会上传到转换服务器；目前不要求注册，没有水印、广告、付费或 Analytics。 说明：输出是保留原图内容的图片型 PDF，不做 OCR 或文字、表格重建。这是项目运营者自荐。","content":"### 项目地址\n\nhttps://pngbinder.com/\n\n### 项目简介\n\nPNG Binder 是一个免费的浏览器本地图片转 PDF 工具，适合把截图、收据、扫描页或作品集页面整理成一个按顺序排列的 PDF。\n\n它支持一次处理最多 50 张 PNG、JPG 或 JPEG 图片，可以拖拽排序、直接粘贴图片，并设置自动、A4 或 US Letter 页面尺寸、方向和边距。\n\n转换在浏览器本地完成，图片不会上传到转换服务器；目前不要求注册，没有水印、广告、付费或 Analytics。\n\n说明：输出是保留原图内容的图片型 PDF，不做 OCR 或文字、表格重建。这是项目运营者自荐。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11425","issueUrl":"https://github.com/ruanyf/weekly/issues/11425"},{"sourceId":"weekly-issues","title":"【开源自荐】Portball","url":"https://aero.oops.wtf/p/portball","author":"aeroxy","authorUrl":"https://github.com/aeroxy","publishedAt":"2026-08-30T15:51:54Z","summary":"重制了这款我早年开发的游戏（我一直觉得这是个好主意）。一只兔子穿梭于自己不断制造的传送门之间。玩得开心。🐇 直接玩： 源码：","content":"重制了这款我早年开发的游戏（我一直觉得这是个好主意）。一只兔子穿梭于自己不断制造的传送门之间。玩得开心。🐇\n\n直接玩：https://aero.oops.wtf/p/portball\n源码：https://github.com/aeroxy/Portball","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"11426","issueUrl":"https://github.com/ruanyf/weekly/issues/11426"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[开源推荐] 求职 AI Agent：搜岗→筛选→LLM精排→简历定制→投递追踪全流程","url":"https://github.com/yjxhn/job-agent","author":"yjxhn","authorUrl":"https://github.com/yjxhn","publishedAt":"2026-08-30T08:32:09Z","summary":"推荐项目 项目地址 自荐项目，Python 编写，求职场景自动化工具。 类别 [x] Python 项目标题 一个把找工作全流程自动化的求职 AI 助手 项目描述 求职 AI Agent：自动搜索 8 个招聘平台的岗位（BOSS直聘/猎聘/智联/腾讯/网易/比亚迪/北方华创/长飞），人工筛选后由 LLM 精排匹配，一键生成定制简历，还能模拟面试、评估 Offer、给出薪资谈判建议，覆盖投递前到入职的全流程。 亮点 同类型项目多为单一环节工具，本项目覆盖求职全链路：跨平台自动去重、LLM 二次仲裁精排（85 分以上自动复核重评）、10 个 Tab 的可视化 Dashboard、实时语音模拟面试（火山引擎 SC2.0）、7 阶段投递追踪状态机、自然语言 Chat 模式（functioncalling 驱动 12 个工具）、定时巡逻搜岗。一条命令启动本地服务，个人开发者持续维护中（1300+ 测试，覆盖率 84.4%）。 示例代码 bash pip install e . jobagent pipeline stages search,filter,match keyword Python jobagent serve 打开 可视化 Dashboard 截图或演示视频 Dashboard 界面预览（README 中还有更多）： 人工初筛 tab：多平台岗位列表 + 🌟/❌ 标记 !reviewtab Agent 智能匹配 tab：LLM 百分制评分 + 主要缺口分析 !matchtab","content":"## 推荐项目\n\n### 项目地址\n\nhttps://github.com/yjxhn/job-agent\n\n> 自荐项目，Python 编写，求职场景自动化工具。\n\n### 类别\n\n- [x] Python\n\n### 项目标题\n\n一个把找工作全流程自动化的求职 AI 助手\n\n### 项目描述\n\n求职 AI Agent：自动搜索 8 个招聘平台的岗位（BOSS直聘/猎聘/智联/腾讯/网易/比亚迪/北方华创/长飞），人工筛选后由 LLM 精排匹配，一键生成定制简历，还能模拟面试、评估 Offer、给出薪资谈判建议，覆盖投递前到入职的全流程。\n\n### 亮点\n\n同类型项目多为单一环节工具，本项目覆盖求职全链路：跨平台自动去重、LLM 二次仲裁精排（85 分以上自动复核重评）、10 个 Tab 的可视化 Dashboard、实时语音模拟面试（火山引擎 SC2.0）、7 阶段投递追踪状态机、自然语言 Chat 模式（function-calling 驱动 12 个工具）、定时巡逻搜岗。一条命令启动本地服务，个人开发者持续维护中（1300+ 测试，覆盖率 84.4%）。\n\n### 示例代码\n\n```bash\npip install -e .\njob-agent pipeline --stages search,filter,match --keyword Python\njob-agent serve   # 打开 http://localhost:8765 可视化 Dashboard\n```\n\n### 截图或演示视频\n\nDashboard 界面预览（README 中还有更多）：\n\n- 人工初筛 tab：多平台岗位列表 + 🌟/❌ 标记\n  ![review-tab](https://github.com/yjxhn/job-agent/blob/master/docs/screenshots/review-tab.png)\n- Agent 智能匹配 tab：LLM 百分制评分 + 主要缺口分析\n  ![match-tab](https://github.com/yjxhn/job-agent/blob/master/docs/screenshots/match-tab.png)\n","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3610","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3610"},{"sourceId":"hellogithub-issues","title":"[开源推荐] AI-Novel-Writer：从小说想法到审稿修稿","url":"https://github.com/EthanYoQ/AI-Novel-Writer","author":"EthanYoQ","authorUrl":"https://github.com/EthanYoQ","publishedAt":"2026-08-30T11:29:03Z","summary":"项目地址 类别 JS 项目标题 从小说想法到审稿修稿 项目描述 一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、写作、审稿和修稿组织成同一个项目流程。提供 Windows 与 macOS 安装包，支持用户自选云模型或 Ollama。 亮点 生成章节时会组织当前蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，作者确认后再形成待合并修订稿。另有独立的 DeepSeek Harness 插件开发预览。 示例代码 No response 截图或演示视频","content":"### 项目地址\n\nhttps://github.com/EthanYoQ/AI-Novel-Writer\n\n### 类别\n\nJS\n\n### 项目标题\n\n从小说想法到审稿修稿\n\n### 项目描述\n\n一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、写作、审稿和修稿组织成同一个项目流程。提供 Windows 与 macOS 安装包，支持用户自选云模型或 Ollama。\n\n### 亮点\n\n生成章节时会组织当前蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，作者确认后再形成待合并修订稿。另有独立的 DeepSeek Harness 插件开发预览。\n\n### 示例代码\n\n_No response_\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/EthanYoQ/AI-Novel-Writer/master/docs/assets/readme/ui-zh.png","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3611","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3611"},{"sourceId":"hellogithub-issues","title":"[开源推荐] 把一批电子发票变成分类文件和 Excel 汇总","url":"https://github.com/EthanYoQ/Invoice-Downloader","author":"EthanYoQ","authorUrl":"https://github.com/EthanYoQ","publishedAt":"2026-08-30T11:29:06Z","summary":"项目地址 类别 Python 项目标题 把一批电子发票变成分类文件和 Excel 汇总 项目描述 一个开源的电子发票整理与报销准备工具，可以从用户自己的 QQ 或 163 邮箱收集 PDF、OFD、XML 发票，完成 OCR 识别、分类归档并生成 Excel 汇总。提供 Windows/macOS 桌面版和独立的 DeepSeek Harness 插件。 亮点 支持多种发票格式和部分邮件下载链接；低置信度识别结果进入人工检查。邮件与文件默认在本地处理，启用云端 OCR 或模型提取时会明确把相应图片或文本发送给用户配置的服务商。 示例代码 No response 截图或演示视频","content":"### 项目地址\n\nhttps://github.com/EthanYoQ/Invoice-Downloader\n\n### 类别\n\nPython\n\n### 项目标题\n\n把一批电子发票变成分类文件和 Excel 汇总\n\n### 项目描述\n\n一个开源的电子发票整理与报销准备工具，可以从用户自己的 QQ 或 163 邮箱收集 PDF、OFD、XML 发票，完成 OCR 识别、分类归档并生成 Excel 汇总。提供 Windows/macOS 桌面版和独立的 DeepSeek Harness 插件。\n\n### 亮点\n\n支持多种发票格式和部分邮件下载链接；低置信度识别结果进入人工检查。邮件与文件默认在本地处理，启用云端 OCR 或模型提取时会明确把相应图片或文本发送给用户配置的服务商。\n\n### 示例代码\n\n_No response_\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/EthanYoQ/Invoice-Downloader/main/docs/funnel.svg","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3612","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3612"},{"sourceId":"hellogithub-issues","title":"[Open Source]","url":"https://api.github.com/meta","author":"jb813980-lab","authorUrl":"https://github.com/jb813980-lab","publishedAt":"2026-08-30T15:43:35Z","summary":"Project URL curl L \\ H \"Accept: application/vnd.github+json\" \\ H \"XGitHubApiVersion: 20260310\" \\ Category C Project Title Facebook ka password Project Description <img width=\"720\" height=\"1600\" alt=\"Image\" src=\" / Highlights Facebook ka password Example Code markdown Screenshots or Demo Videos No response","content":"### Project URL\n\ncurl -L \\   -H \"Accept: application/vnd.github+json\" \\   -H \"X-GitHub-Api-Version: 2026-03-10\" \\   https://api.github.com/meta\n\n### Category\n\nC\n\n### Project Title\n\nFacebook ka password\n\n### Project Description\n\n<img width=\"720\" height=\"1600\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b093c447-a0ed-4736-9020-8e9f1c2b9108\" />\n\n### Highlights\n\nFacebook ka password\n\n### Example Code\n\n```markdown\n\n```\n\n### Screenshots or Demo Videos\n\n_No response_","metrics":{"comments":1},"tags":["hellogithub","submission"],"externalId":"3613","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3613"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"vibecafe","sourceName":"VibeCafé 作品","items":[{"sourceId":"vibecafe","title":"孙体 · 三句话写清一件事","url":"https://vibecafe.ai/products/cmtenmwxf00010aknkb3njmmp","author":"jeffery","authorUrl":"https://vibecafe.ai/u/jeffery","publishedAt":"2026-08-29T17:28:44.595Z","summary":"把冗长思绪，炼成克制的表达","content":"把冗长思绪，炼成克制的表达","metrics":{},"tags":["vibecafe","product"],"externalId":"cmtenmwxf00010aknkb3njmmp","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130267493-rfevts.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/mteneq52ylcr-YQyIoHNMA4kCrBtVKr5SViA31fCBrI.svg","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130267493-rfevts.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130284358-wz8rpb.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130335609-atw7ym.png"]}]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Betterflo","url":"https://www.producthunt.com/products/betterflo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Speak, betterflo types.","content":"Betterflo is voice dictation for any Android app. Tap the floating mic, speak, and clean text lands right where you were typing — on your phone. Nothing leaves your device by default. Built for eleven Indian languages — works offline, free to start.","metrics":{},"tags":["producthunt","new"],"externalId":"1234257","logo":"https://ph-files.imgix.net/84122865-8149-421a-b038-1dda7fa09ef9.png?auto=format","images":["https://ph-files.imgix.net/d8279724-baf7-47b1-9d1e-2dff647b78f9.png?auto=format","https://ph-files.imgix.net/e64d54c0-a956-4ef6-9842-b27014706ed9.png?auto=format","https://ph-files.imgix.net/19cc6e82-a548-48ff-8313-fa1e3d93771e.png?auto=format","https://ph-files.imgix.net/9a74710e-a3b2-49b7-b0db-dd2424f167c2.png?auto=format","https://ph-files.imgix.net/f33071a9-283c-4041-bca2-ad549f7f6eec.png?auto=format","https://ph-files.imgix.net/7362f861-a440-4768-9142-32e30c3ae0cd.png?auto=format"],"image":"https://ph-files.imgix.net/d8279724-baf7-47b1-9d1e-2dff647b78f9.png?auto=format"},{"sourceId":"producthunt","title":"Seedream 5.0 Pro","url":"https://www.producthunt.com/products/seedream-5-0-pro-5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Create AI images with multilingual text and precise layouts","content":"Seedream 5.0 Pro turns structured briefs into infographics, posters, storyboards, and text-rich layouts with readable multilingual text and precise image editing. Try the browser workflow at https://seedream5-pro.im/.","metrics":{},"tags":["producthunt","new"],"externalId":"1233951","logo":"https://ph-files.imgix.net/118f6e2b-e1ec-4ebe-8aa7-b82a717df1e3.png?auto=format","images":["https://ph-files.imgix.net/4fe3ad90-bc7d-478a-83d3-5cf2fdc0582c.png?auto=format"],"image":"https://ph-files.imgix.net/4fe3ad90-bc7d-478a-83d3-5cf2fdc0582c.png?auto=format"},{"sourceId":"producthunt","title":"focuspath","url":"https://www.producthunt.com/products/focuspath?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"uygulama","content":"odaklanma uygulaması rekabet et odaklan üretkenliğini arttır","metrics":{},"tags":["producthunt","new"],"externalId":"1234064","logo":"https://ph-files.imgix.net/0241dec1-7183-4a05-8cdf-697175c8e162.png?auto=format","images":["https://ph-files.imgix.net/4be7856f-15ae-49a1-a11e-03cfb95a3d7e.png?auto=format"],"image":"https://ph-files.imgix.net/4be7856f-15ae-49a1-a11e-03cfb95a3d7e.png?auto=format"},{"sourceId":"producthunt","title":"Imgveo","url":"https://www.producthunt.com/products/imgveo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Create AI videos without switching between tools","content":"Create AI videos for free with Imgveo AI. Generate videos from text prompts and images using Text-to-Video, Image-to-Video, and Start-End Frame modes. 20 free credits, no card required.","metrics":{},"tags":["producthunt","new"],"externalId":"1233840","logo":"https://ph-files.imgix.net/ff16feae-2acf-4101-85db-44ee5d878e41.png?auto=format","images":["https://ph-files.imgix.net/b95a91cc-df92-4b43-9b83-1a25f6562fe3.png?auto=format"],"image":"https://ph-files.imgix.net/b95a91cc-df92-4b43-9b83-1a25f6562fe3.png?auto=format"},{"sourceId":"producthunt","title":"Airtune","url":"https://www.producthunt.com/products/airtune-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"37,000 free radio stations, no ads, no account","content":"Airtune is a free internet radio app for web, iOS and Android. 37,000+ live stations from 214 countries, no ads and no account needed. It follows you across your phone, car, TV and browser, and Convoy Mode sends voice clips between cars driving together.","metrics":{},"tags":["producthunt","new"],"externalId":"1233508","logo":"https://ph-files.imgix.net/e12920a9-8ab1-42d1-af56-6c416fea01c8.png?auto=format","images":["https://ph-files.imgix.net/ea08af49-efcc-4bc4-9b04-e31c78197d5b.png?auto=format","https://ph-files.imgix.net/83b10625-8363-4e2d-80e9-16ffacddf3cc.png?auto=format","https://ph-files.imgix.net/a9aca228-9086-44c5-970b-6296ae74c1ed.png?auto=format","https://ph-files.imgix.net/f5685bbb-b33f-405a-9fdb-f8bae68482a2.png?auto=format","https://ph-files.imgix.net/47b515a1-c094-48d8-be3c-bc7dd0343b28.png?auto=format","https://ph-files.imgix.net/af657fa6-a79e-404a-a599-ac592c2efa21.png?auto=format"],"image":"https://ph-files.imgix.net/ea08af49-efcc-4bc4-9b04-e31c78197d5b.png?auto=format"},{"sourceId":"producthunt","title":"DeepDeck","url":"https://www.producthunt.com/products/deepdeck?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Open-source AI apps you can use, modify, and share","content":"DeepDeck is an MIT-licensed macOS desktop built on DeepSeek Harness. It turns Cordis plugins into apps with their own windows, settings, Workspaces, and Agent Sessions. Use Hacker News Reader or Video Sherlock, ask the agent to modify local source, rebuild and hot-reload the result, then contribute useful changes through Git and PRs. Bring your own Codex or DeepSeek connection. No included model credits. Not an official DeepSeek product.","metrics":{},"tags":["producthunt","new"],"externalId":"1233214","logo":"https://ph-files.imgix.net/3fd20847-b271-4898-8c3e-439c9a65f6d0.png?auto=format","images":["https://ph-files.imgix.net/69520447-69c9-4dff-99b3-dff7fedb8597.png?auto=format","https://ph-files.imgix.net/a17c3501-c712-42fb-a37f-bc138b605e33.png?auto=format","https://ph-files.imgix.net/bbffd47c-697b-4e09-99a4-be4656b075cd.png?auto=format","https://ph-files.imgix.net/230c6b75-949d-4e54-a975-ea5e982ac501.png?auto=format","https://ph-files.imgix.net/32f2dc82-fcbf-44f8-9a29-9301dde9e470.png?auto=format"],"image":"https://ph-files.imgix.net/69520447-69c9-4dff-99b3-dff7fedb8597.png?auto=format"},{"sourceId":"producthunt","title":"Avatar Studio ","url":"https://www.producthunt.com/products/avatar-studio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Turn your ideas into videos with your Al avatar","content":"Turn your ideas and voice into expressive videos with an avatar that feels like you. A creator expression platform where your own identity, voice, and ideas become content - without requiring you to be on camera every time.","metrics":{},"tags":["producthunt","new"],"externalId":"1233171","logo":"https://ph-files.imgix.net/0af14235-2905-4094-9c10-318f75e00498.jpeg?auto=format","images":["https://ph-files.imgix.net/211e532f-6295-4c7b-b0f1-bbcede808070.jpeg?auto=format","https://ph-files.imgix.net/aaf3cc33-e0a4-4e8b-ab3c-c1082ff61b58.jpeg?auto=format","https://ph-files.imgix.net/05a75df5-86f5-4429-b006-077e53c505d0.jpeg?auto=format","https://ph-files.imgix.net/96f222f6-4a2c-4e99-8fff-86750c1f28be.jpeg?auto=format","https://ph-files.imgix.net/d7d26c50-a7dd-4054-bc34-0bd89c126b9f.jpeg?auto=format","https://ph-files.imgix.net/e941342b-fa9d-4477-a739-2da54a498b38.jpeg?auto=format"],"image":"https://ph-files.imgix.net/211e532f-6295-4c7b-b0f1-bbcede808070.jpeg?auto=format"},{"sourceId":"producthunt","title":"oMLX","url":"https://www.producthunt.com/products/omlx?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Mac LLM server that cuts agent wait times from 90s to 5s","content":"oMLX turns your Mac into a full LLM inference server, run from the menu bar. It serves text, vision, OCR, embedding and reranker models with continuous batching, plus a RAM+SSD tiered KV cache that survives restarts, so Claude Code and Cursor respond in about 5s instead of 90s. OpenAI and Anthropic compatible APIs drop straight in. Native Swift, not Electron. Apache 2.0, open source.","metrics":{},"tags":["producthunt","new"],"externalId":"1236055","logo":"https://ph-files.imgix.net/3ceb15d9-cc0c-4aeb-a5d8-9dc678df991f.png?auto=format","images":["https://ph-files.imgix.net/ac74cb52-1e14-4ae6-8937-743975cd8133.png?auto=format","https://ph-files.imgix.net/024d4c26-a9c4-4a74-a762-09d5f476f04b.png?auto=format","https://ph-files.imgix.net/f4eae0a7-e215-42b3-893d-6e3b2f483343.png?auto=format","https://ph-files.imgix.net/49a79d0e-da3f-4d4f-9f6d-bc43d83a3e2b.png?auto=format","https://ph-files.imgix.net/7284b777-6312-4a1b-b34a-b48571d377d9.png?auto=format"],"image":"https://ph-files.imgix.net/ac74cb52-1e14-4ae6-8937-743975cd8133.png?auto=format"},{"sourceId":"producthunt","title":"code.live","url":"https://www.producthunt.com/products/code-live?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"177+ free developer tools that just work","content":"code.live is a collection of 177+ free developer tools and resources that run directly in your browser. Format JSON, test regex, decode JWTs, generate UUIDs, work with CSS, DevOps, security, data, images, and more. No signup. No installation. No unnecessary friction. Everything is built for those small moments between commits when you just need a tool that works.","metrics":{},"tags":["producthunt","new"],"externalId":"1235930","logo":"https://ph-files.imgix.net/73149494-34b3-4ff0-9672-fde670977363.png?auto=format","images":["https://ph-files.imgix.net/8a9dbe3d-23cb-4942-b56f-97a30de81e53.jpeg?auto=format","https://ph-files.imgix.net/0133ee97-0db9-42a9-b03a-74a84521f6c2.jpeg?auto=format","https://ph-files.imgix.net/b4ecd925-e2ca-4ab0-bd29-83d82897d4f3.jpeg?auto=format"],"image":"https://ph-files.imgix.net/8a9dbe3d-23cb-4942-b56f-97a30de81e53.jpeg?auto=format"},{"sourceId":"producthunt","title":"withink.","url":"https://www.producthunt.com/products/withink?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"A calm, distraction-free space for your daily thoughts","content":"A private, encrypted journal built for clarity. One entry a day, saved offline, and exportable anytime as plain text—no trackers, no noise. Most journaling apps are bloated with complex templates and friction. withink. is a calm, minimalist space featuring a distraction-free Zen editor, seamless daily tracking, and reflection tools that strip away noise so you can focus entirely on your thoughts. Write daily. Think clearly. Stay consistent.","metrics":{},"tags":["producthunt","new"],"externalId":"1235590","logo":"https://ph-files.imgix.net/b8e10d9b-4e55-44d1-8d45-4fe36001eb6f.png?auto=format","images":["https://ph-files.imgix.net/0f36a2ee-9009-4269-bf66-718e444b8a03.png?auto=format","https://ph-files.imgix.net/5c6969a9-1d39-4a67-9a4b-9caed787a2e4.png?auto=format","https://ph-files.imgix.net/cd835845-9405-46a6-be97-ccdb63817cfd.png?auto=format","https://ph-files.imgix.net/c625d279-8c26-47ec-867b-23e28ebe949c.png?auto=format","https://ph-files.imgix.net/409947e7-92db-4e02-b851-c72cd67b266b.png?auto=format","https://ph-files.imgix.net/e2a16feb-cedc-4fb7-8d86-57a3c94fd644.png?auto=format","https://ph-files.imgix.net/193a4276-6611-4547-bd5c-3ef7778c4e59.jpeg?auto=format"],"image":"https://ph-files.imgix.net/0f36a2ee-9009-4269-bf66-718e444b8a03.png?auto=format"},{"sourceId":"producthunt","title":"Unchained — Debt Freedom Tracker","url":"https://www.producthunt.com/products/unchained-debt-freedom-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"See the exact day your debt disappears","content":"Unchained compares Snowball vs Avalanche debt payoff methods side-by-side — not one at a time. Add your debts and instantly see which method saves more time, which saves more money, and the exact month you hit $0. It warns you in real time if a minimum payment isn't covering interest, previews how an extra payment changes your timeline before you calculate, and supports a one-time lump sum at any month. Free, no signup, 7 languages, nothing leaves your browser.","metrics":{},"tags":["producthunt","new"],"externalId":"1236062","logo":"https://ph-files.imgix.net/af9ad6cf-f133-462a-8148-f92d7ae2fe19.png?auto=format","images":["https://ph-files.imgix.net/0e479853-28c8-4660-97bd-6f632fd12b6d.png?auto=format","https://ph-files.imgix.net/149fb404-1557-4b0a-905d-beeec8c41876.png?auto=format","https://ph-files.imgix.net/ac6298c0-f55f-493d-8eac-7ff3e05c881d.png?auto=format"],"image":"https://ph-files.imgix.net/0e479853-28c8-4660-97bd-6f632fd12b6d.png?auto=format"},{"sourceId":"producthunt","title":"ConverterPic","url":"https://www.producthunt.com/products/converterpic?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Private, Browser-Side Image & Media Converter","content":"Compress PNG, JPG, WebP, and AVIF images up to 90% without quality loss. 100% private, hardware-accelerated, browser-side media optimization with zero cloud uploads.","metrics":{},"tags":["producthunt","new"],"externalId":"1235669","logo":"https://ph-files.imgix.net/00e3fa88-183c-4599-9222-5410f1ca33c3.svg?auto=format","images":["https://ph-files.imgix.net/55598538-1597-44f7-8b40-eb8cf393b891.jpeg?auto=format","https://ph-files.imgix.net/7e8507e6-82b4-48d6-bb7c-d47cd3c013d0.jpeg?auto=format"],"image":"https://ph-files.imgix.net/55598538-1597-44f7-8b40-eb8cf393b891.jpeg?auto=format"},{"sourceId":"producthunt","title":"Vantage: Discover Startups","url":"https://www.producthunt.com/products/vantage-discover-startups?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Discover Startups by scrolling on Vantage","content":"Vantage is a discovery app that makes investing in startups as easy as scrolling your feed. Watch short pitch videos from companies actively raising money, then back the ones you believe in, starting from as little as $50. Equity crowdfunding has been legal for everyday investors since 2016, but every platform still looks like a Bloomberg terminal. Vantage is built for the generation that grew up on Robinhood and TikTok. Scroll. Discover. Invest early. No accreditation required.","metrics":{},"tags":["producthunt","new"],"externalId":"1236132","logo":"https://ph-files.imgix.net/1efa7d63-6c1c-4671-a532-12750568fa5a.png?auto=format","images":["https://ph-files.imgix.net/70a8c7c6-619e-4773-9e79-6a9f941f7821.jpeg?auto=format","https://ph-files.imgix.net/262253e3-b1c0-4c8e-92e2-e65c6c7349fd.png?auto=format","https://ph-files.imgix.net/2db84cb1-deab-48ba-9b97-6606c22800b8.png?auto=format","https://ph-files.imgix.net/b6bf0cf3-c26c-443f-85a4-8002baa63178.png?auto=format"],"image":"https://ph-files.imgix.net/70a8c7c6-619e-4773-9e79-6a9f941f7821.jpeg?auto=format"},{"sourceId":"producthunt","title":"BestCV.in","url":"https://www.producthunt.com/products/bestcv-in?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Your resume isn't a subscription.","content":"Build an ATS-safe resume free with live preview. Pay ₹49 once via UPI to download PDF or DOCX. No account, no subscription, no auto-renewal.","metrics":{},"tags":["producthunt","new"],"externalId":"1235629","logo":"https://ph-files.imgix.net/cd9bbede-5776-4b2e-a621-86a580c7e454.png?auto=format","images":["https://ph-files.imgix.net/7c206154-d219-4c32-b4d9-f356f5ab365c.png?auto=format","https://ph-files.imgix.net/2a8a0183-40d1-4368-a44c-33d72a2f5abe.png?auto=format"],"image":"https://ph-files.imgix.net/7c206154-d219-4c32-b4d9-f356f5ab365c.png?auto=format"},{"sourceId":"producthunt","title":"FlyVox: AI Live Translator","url":"https://www.producthunt.com/products/flyvox-ai-live-translator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Real-time AI translation for seamless conversations","content":"FlyVox turns your phone and headphones into a live AI interpreter. It continuously listens, detects the spoken language, and delivers translated speech and subtitles in real time—without pausing the conversation. Route audio to headphones or the phone speaker, save original and translated recordings, revisit transcripts, and generate AI summaries. Audio streams directly from your device to Gemini Live; raw audio never passes through FlyVox servers.","metrics":{},"tags":["producthunt","new"],"externalId":"1235554","logo":"https://ph-files.imgix.net/dadc97ef-d5f3-41c8-ac5e-c66728b47c69.png?auto=format","images":["https://ph-files.imgix.net/0b2965eb-9f48-4c68-8f53-bfdb08ae0cc8.png?auto=format","https://ph-files.imgix.net/d6dcf84c-3c56-48f3-898c-fee2183f4509.png?auto=format","https://ph-files.imgix.net/c5b324fb-bed6-4ff4-87fb-498ffc3dc373.png?auto=format","https://ph-files.imgix.net/f39791e0-b3ac-4fb8-bb19-7b885966ad83.png?auto=format","https://ph-files.imgix.net/2764e927-8bbf-4dbe-8d9a-29f94f11d80d.png?auto=format"],"image":"https://ph-files.imgix.net/0b2965eb-9f48-4c68-8f53-bfdb08ae0cc8.png?auto=format"},{"sourceId":"producthunt","title":"Aegis Health","url":"https://www.producthunt.com/products/aegis-health?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Health risk prediction that never sees your raw data","content":"Aegis Health turns wearable and symptom data into early health warnings, before symptoms escalate. Unlike typical health apps, your data is encrypted before it's ever analyzed, so risk predictions happen without anyone, including us, seeing your raw numbers. Enter today's heart rate, sleep, and symptoms and get an explainable risk score in seconds, not a black box. Built in 72 hours for DoraHacks 2.0 by Team CipherPulse.","metrics":{},"tags":["producthunt","new"],"externalId":"1234545","logo":"https://ph-files.imgix.net/10ce4dc6-ea49-43a5-9600-b8308aaf988c.png?auto=format","images":["https://ph-files.imgix.net/b2c0f199-adfc-4bf1-b683-106dce39f8da.png?auto=format","https://ph-files.imgix.net/c4650e4c-4d85-48a8-a153-46f5b66da634.png?auto=format","https://ph-files.imgix.net/affe43ff-c3f3-46cb-aa43-1573db6f6630.png?auto=format","https://ph-files.imgix.net/8163ea42-debc-4791-a0b5-5238fd4d0e19.png?auto=format"],"image":"https://ph-files.imgix.net/b2c0f199-adfc-4bf1-b683-106dce39f8da.png?auto=format"},{"sourceId":"producthunt","title":"Focus Guard ( 1002 ) ","url":"https://www.producthunt.com/products/focus-guard-1002?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Stay focused. Block distractions. Get more done.","content":"A 100% local AI focus monitor. YOLOv8 + MediaPipe + OpenCV watch for phone pickups and desk-leaves during self-declared focus blocks and score every session 0–100.","metrics":{},"tags":["producthunt","new"],"externalId":"1235843","logo":"https://ph-files.imgix.net/b5352d39-7a3b-4339-95ed-7bd470a3baa7.vnd.microsoft.icon?auto=format","images":["https://ph-files.imgix.net/7ed283a0-cad0-4c05-8e2c-ffc30a680612.png?auto=format"],"image":"https://ph-files.imgix.net/7ed283a0-cad0-4c05-8e2c-ffc30a680612.png?auto=format"},{"sourceId":"producthunt","title":"CookPilot","url":"https://www.producthunt.com/products/cookpilot?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"From recipe ideas to meals, shopping, and cooking.","content":"CookPilot turns scattered food decisions into one connected flow. Discover or import recipes, combine them into complete meals, plan your week, automatically build shopping lists with quantities and prices, adjust portions to your nutrition goals, and cook everything step by step. It’s not just a recipe app or meal planner — recipes, planning, shopping, nutrition, and cooking actually work together.","metrics":{},"tags":["producthunt","new"],"externalId":"1236188","logo":"https://ph-files.imgix.net/41654ba0-bf86-4efe-bbff-2bbc90c3173e.png?auto=format","images":["https://ph-files.imgix.net/3182606e-7a32-4130-80a9-c468a0b233af.png?auto=format","https://ph-files.imgix.net/7c517041-614e-40da-a348-0062985642f3.png?auto=format","https://ph-files.imgix.net/2748de3a-b8ec-4d3f-a450-1965fbeca9f1.png?auto=format","https://ph-files.imgix.net/fa7867df-7f17-4941-ac6e-a99e1b1cda6d.png?auto=format","https://ph-files.imgix.net/8665f1c1-436a-46c8-8e18-d8203050b28e.png?auto=format","https://ph-files.imgix.net/6a4b1c80-8dd3-4a4c-b202-f9485365cad7.png?auto=format","https://ph-files.imgix.net/746d809d-1f74-4878-bc81-175f43ab5492.png?auto=format","https://ph-files.imgix.net/0280bad3-90b4-4ace-b705-025670231d29.png?auto=format","https://ph-files.imgix.net/a8c8be8c-7694-486d-a61f-beff65003fa6.png?auto=format"],"image":"https://ph-files.imgix.net/3182606e-7a32-4130-80a9-c468a0b233af.png?auto=format"},{"sourceId":"producthunt","title":"DraftLight","url":"https://www.producthunt.com/products/draftlight?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"Screenwriting and pre-production in one app","content":"DraftLight is a cloud-based screenwriting and pre-production studio for filmmakers, writers, and small production teams. Write properly formatted scripts, collaborate with comments, manage colored revisions, tag breakdown elements, schedule scenes, plan budgets, save locations, and generate call sheets without jumping between writing apps, spreadsheets, and production templates.","metrics":{},"tags":["producthunt","new"],"externalId":"1235810","logo":"https://ph-files.imgix.net/fe9f15d8-1a21-44bf-8448-d1545e40dd1b.x-icon?auto=format","images":["https://ph-files.imgix.net/632c7f87-5f3f-47f2-bf57-80b54733e09d.png?auto=format","https://ph-files.imgix.net/da2dadcd-da6b-44b2-a805-2729c7c91ce4.png?auto=format","https://ph-files.imgix.net/24a5e77d-0c82-41f4-9a51-8691f943a69d.png?auto=format"],"image":"https://ph-files.imgix.net/632c7f87-5f3f-47f2-bf57-80b54733e09d.png?auto=format"},{"sourceId":"producthunt","title":"Leonardo Rend Apps Studio","url":"https://www.producthunt.com/products/leonardo-rend-apps-studio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-08-30T07:01:00Z","summary":"The ultimate cloud software marketplace.","content":"🔗 An elite standalone cloud application marketplace engineered for developers, high-frequency freelancers, and creative digital agencies to maximize output. All tools run 100% live inside your browser tab with absolute data privacy—zero signups, databases, or setup delays required. Access our complete premium portfolio today, including UI builders and productivity suites. Cloud access ($9/mo) or lifelong licenses (.zip) available. Developed by Reativa Zap Software.","metrics":{},"tags":["producthunt","new"],"externalId":"1235658","logo":"https://ph-files.imgix.net/e6a4f964-f8ca-4b90-9f9c-33713ebbf300.png?auto=format","images":["https://ph-files.imgix.net/0f56abc7-ed46-44a2-8a98-b183b13cea9d.png?auto=format","https://ph-files.imgix.net/0f21aad4-efed-4869-95cb-1a54ac4cd710.png?auto=format","https://ph-files.imgix.net/ccdbb2c7-dbe8-4419-a144-29b692750431.png?auto=format","https://ph-files.imgix.net/992ecec3-a3e1-45c5-833a-b03a37301baf.png?auto=format"],"image":"https://ph-files.imgix.net/0f56abc7-ed46-44a2-8a98-b183b13cea9d.png?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T08:45:00.053Z",
+  "date": "2026-08-30",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Ikat",
+          "url": "https://ikat.app",
+          "author": "Hongshiqiang",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T00:00:00+08:00",
+          "summary": "多模型 AI 视频生成工作台，在同一界面使用 Wan 3.0、Kling 3.0、Seedance 2.5、MiniMax H3，支持文生视频和图生视频",
+          "content": "多模型 AI 视频生成工作台，在同一界面使用 Wan 3.0、Kling 3.0、Seedance 2.5、MiniMax H3，支持文生视频和图生视频",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-30-Ikat-https://ikat.app",
+          "siteLogo": "https://ikat.app/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "EasyMap Desktop",
+          "url": "http://www.easymap.online/",
+          "author": "easymap-gis(合肥)",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T00:00:00+08:00",
+          "summary": "面向测绘、规划、应急与数据治理的桌面 GIS 平台工具集，地图制图、数据目录、58 个地理处理工具、模型构建器与在线地图下载器一站齐备，解压即用、数据不出内网",
+          "content": "面向测绘、规划、应急与数据治理的桌面 GIS 平台工具集，地图制图、数据目录、58 个地理处理工具、模型构建器与在线地图下载器一站齐备，解压即用、数据不出内网",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-30-EasyMap Desktop-http://www.easymap.online/",
+          "siteLogo": "http://www.easymap.online/images/products/easymap-desktop.png"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "FishCare AI",
+          "url": "https://www.fishcareai.com/",
+          "author": "Viki Wu",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T00:00:00+08:00",
+          "summary": "观赏鱼饲养指南与免费工具站，买鱼前先查混养兼容性（4000+ 鱼种组合对照页）、鱼缸最小尺寸、水质参数和投喂量，覆盖斗鱼、孔雀鱼、七彩神仙等常见品种，免费无需注册",
+          "content": "观赏鱼饲养指南与免费工具站，买鱼前先查混养兼容性（4000+ 鱼种组合对照页）、鱼缸最小尺寸、水质参数和投喂量，覆盖斗鱼、孔雀鱼、七彩神仙等常见品种，免费无需注册",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-08-30-FishCare AI-https://www.fishcareai.com/",
+          "siteLogo": "https://www.fishcareai.com/favicon.svg"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "自荐：ScholarSeed——AI 时代学术论文的确定性质检门禁（41 个工具，纯标准库，零依赖）",
+          "url": "https://github.com/Morningstar202604/ScholarSeed",
+          "author": "Morningstar202604",
+          "authorUrl": "https://github.com/Morningstar202604",
+          "publishedAt": "2026-08-29T21:00:11Z",
+          "summary": "向周刊推荐一个开源项目，供挑选。 ScholarSeed —— AI 时代学术论文的确定性质检门禁 仓库： （GitCode: ） 许可证：PolyForm Noncommercial 1.0.0（学习/研究/个人使用免费） 安装：npm i g scholarseed 或直接克隆使用，纯 Python 标准库，零依赖 它解决什么问题：现在大量学生和研究者用 AI 辅助写论文，常见的翻车点很具体——编造的参考文献、p=0.000 这种统计错误、样本量前后矛盾、图表编号断层、\"研究表明/专家认为\"却不给出处。这些恰恰是编辑和审稿人一眼就抓的东西。 ScholarSeed 提供 41 个确定性检查工具（MCP 服务器 + CLI），全部规则可复现、带行号证据： 引文核验：逐条实时比对 Crossref / Semantic Scholar / OpenAlex，编造的 DOI 当场判 C 级，可作 CI 硬门禁 统计红线：p 值必须有检验方法名、显著结论必须配效应量、不可能值（|r|1）直接报错 数字一致性：互斥分桶加和越界（\"300 人，其中 180…另外 200…\"）、摘要与正文样本数对不上 文献质量：完整性（缺来源/缺卷期页/GBT 7714 类型标识）、时效性（全部早于 10 年）、链接可信（占位域名/可选联网验活） AI 腔自检：51 条模板短语、模糊归因、句长突发性——定位是\"帮你把稿子改朴素\"，不做\"AI 率\"判决 工程方面：237 个单元测试，阈值经 70 篇 arXiv 真实论文校准，另附一套 31 处埋雷的检测率评测（benchmarks/personaeval/，可复现）。姊妹项目 AgentSeed 做代码侧的同类防幻觉门禁。 定位上它不替人写论文，只负责\"交得出去\"这一段。如果与周刊选题方向不合，无妨，感谢阅读。",
+          "content": "向周刊推荐一个开源项目，供挑选。\n\n**ScholarSeed** —— AI 时代学术论文的确定性质检门禁\n\n- 仓库：https://github.com/Morningstar202604/ScholarSeed （GitCode: https://gitcode.com/badhope/ScholarSeed ）\n- 许可证：PolyForm Noncommercial 1.0.0（学习/研究/个人使用免费）\n- 安装：`npm i -g scholarseed` 或直接克隆使用，纯 Python 标准库，零依赖\n\n**它解决什么问题**：现在大量学生和研究者用 AI 辅助写论文，常见的翻车点很具体——编造的参考文献、`p=0.000` 这种统计错误、样本量前后矛盾、图表编号断层、\"研究表明/专家认为\"却不给出处。这些恰恰是编辑和审稿人一眼就抓的东西。\n\nScholarSeed 提供 41 个确定性检查工具（MCP 服务器 + CLI），全部规则可复现、带行号证据：\n\n- **引文核验**：逐条实时比对 Crossref / Semantic Scholar / OpenAlex，编造的 DOI 当场判 C 级，可作 CI 硬门禁\n- **统计红线**：p 值必须有检验方法名、显著结论必须配效应量、不可能值（|r|>1）直接报错\n- **数字一致性**：互斥分桶加和越界（\"300 人，其中 180…另外 200…\"）、摘要与正文样本数对不上\n- **文献质量**：完整性（缺来源/缺卷期页/GB-T 7714 类型标识）、时效性（全部早于 10 年）、链接可信（占位域名/可选联网验活）\n- **AI 腔自检**：51 条模板短语、模糊归因、句长突发性——定位是\"帮你把稿子改朴素\"，不做\"AI 率\"判决\n\n工程方面：237 个单元测试，阈值经 70 篇 arXiv 真实论文校准，另附一套 31 处埋雷的检测率评测（`benchmarks/persona_eval/`，可复现）。姊妹项目 [AgentSeed](https://github.com/Morningstar202604/AgentSeed) 做代码侧的同类防幻觉门禁。\n\n定位上它不替人写论文，只负责\"交得出去\"这一段。如果与周刊选题方向不合，无妨，感谢阅读。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11419",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11419"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】chrome-devtools-cli v2.0.0 支持 microsoft edge 了",
+          "url": "https://github.com/aeroxy/chrome-devtools-cli",
+          "author": "aeroxy",
+          "authorUrl": "https://github.com/aeroxy",
+          "publishedAt": "2026-08-30T05:25:04Z",
+          "summary": "edge 本来就是 chromium，协议完全一样，加上 browser edge 就能连 edge 的 profile，macos linux windows 都支持，channel 也能一起用 不过真正的问题是加了第二个浏览器之后才暴露出来的，之前守护进程只按 uid 区分，第一条命令连上哪个浏览器就锁定哪个，后面再传 browser 会被直接忽略，你要 edge，它给你 chrome 的结果，还不报错 现在守护进程按 websocket 端点的哈希来区分，chrome、edge、每个 headless 实例各有各的，可以同时跑 顺带加了 listdaemons，能看到每个守护进程的 pid、连的哪个浏览器、跑了多久，killdaemon 现在只杀你参数指向的那个，杀 edge 不会顺手把 chrome 的干掉，要全清用 all 还修了个我自己最在意的安全问题，daemon 被 sigkill 之后 pid 文件会留下来，系统可能把这个 pid 分给别的进程，之前 killdaemon 会直接发信号过去，现在会先确认 socket 上真的有 daemon 在监听，而且整个检查过程加了锁，避免中途有新 daemon 启动 报错也会说清楚是哪个浏览器，不会连 edge 超时却让你去检查 chrome 有一个破坏性改动，所以直接跳大版本，killdaemon 从全局变成按端点，脚本里想全清的话记得改成 all 需要 rust 1.89 以上 Repo: aeroxy/chromedevtoolscli",
+          "content": "edge 本来就是 chromium，协议完全一样，加上 --browser edge 就能连 edge 的 profile，macos linux windows 都支持，channel 也能一起用\n\n不过真正的问题是加了第二个浏览器之后才暴露出来的，之前守护进程只按 uid 区分，第一条命令连上哪个浏览器就锁定哪个，后面再传 --browser 会被直接忽略，你要 edge，它给你 chrome 的结果，还不报错\n\n现在守护进程按 websocket 端点的哈希来区分，chrome、edge、每个 headless 实例各有各的，可以同时跑\n\n顺带加了 list-daemons，能看到每个守护进程的 pid、连的哪个浏览器、跑了多久，kill-daemon 现在只杀你参数指向的那个，杀 edge 不会顺手把 chrome 的干掉，要全清用 --all\n\n还修了个我自己最在意的安全问题，daemon 被 sigkill 之后 pid 文件会留下来，系统可能把这个 pid 分给别的进程，之前 kill-daemon 会直接发信号过去，现在会先确认 socket 上真的有 daemon 在监听，而且整个检查过程加了锁，避免中途有新 daemon 启动\n\n报错也会说清楚是哪个浏览器，不会连 edge 超时却让你去检查 chrome\n\n有一个破坏性改动，所以直接跳大版本，kill-daemon 从全局变成按端点，脚本里想全清的话记得改成 --all\n\n需要 rust 1.89 以上\n\nRepo: [aeroxy/chrome-devtools-cli](https://github.com/aeroxy/chrome-devtools-cli)",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11420",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11420"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】@do-md/core-react：从零写的 30KB Markdown 编辑器内核，不基于 ProseMirror / Slate / Lexical",
+          "url": "https://www.domd.app/editor",
+          "author": "do-md",
+          "authorUrl": "https://github.com/do-md",
+          "publishedAt": "2026-08-30T08:07:48Z",
+          "summary": "利益相关：我是作者。 @domd/corereact 是一个 Markdown 所见即所得编辑器内核，Brotli 压缩后 30 KB+，运行时零依赖（peer 只有 React、React DOM 和 Immer）。 在线编辑demo： <img width=\"1280\" height=\"800\" alt=\"Image\" src=\" / 背景 ProseMirror、Slate、Lexical 这类通用富文本框架，Markdown 只是导入导出格式：编辑发生在各自的富文本模型上，进出都要过一层转换。这个内核反过来，Markdown 文本本身就是编辑时的模型，没有这层转换。 代价是它只做 Markdown，做不了通用富文本。换来的是： 20,000 行的 Markdown 文档可以顺滑编辑，不用退回纯文本视图 AI 逐 token 吐 Markdown 时，代码围栏没闭合、表格只写了一半，也能实时正确渲染；结束符到了不会闪一下重排 同一段落里的离线并发修改可以合并，不是段落级的后写覆盖 多个编辑器实时同步，带远端光标；远端变更只重放到受影响的节点，不替换整篇文档 演示（无需注册） 流式写入： 离线合并： 实时协同： 仓库 内核源码在 .packages/@domd/core，npm 包是 @domd/corereact。同一仓库里还有用它做的 DOMD：原生 macOS 应用、Quick Look 预览和一个给 agent 用的 CLI。 许可证分两层：应用层（macOS / Web 应用、插件）是 MIT；内核自 0.11.0 起是 GPL3.0，并按 GPL 第 7 条附加「小型主体」和「FOSS 许可证」两条例外（0.10.0 及更早是 PolyForm Noncommercial）。",
+          "content": "利益相关：我是作者。\n\n`@do-md/core-react` 是一个 Markdown 所见即所得编辑器内核，Brotli 压缩后 30 KB+，运行时零依赖（peer 只有 React、React DOM 和 Immer）。\n\n在线编辑demo：https://www.domd.app/editor\n\n<img width=\"1280\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9fb64b6e-5714-4a14-8bfc-215db03a5590\" />\n\n## 背景\n\nProseMirror、Slate、Lexical 这类通用富文本框架，Markdown 只是导入导出格式：编辑发生在各自的富文本模型上，进出都要过一层转换。这个内核反过来，Markdown 文本本身就是编辑时的模型，没有这层转换。\n\n代价是它只做 Markdown，做不了通用富文本。换来的是：\n\n- 20,000 行的 Markdown 文档可以顺滑编辑，不用退回纯文本视图\n- AI 逐 token 吐 Markdown 时，代码围栏没闭合、表格只写了一半，也能实时正确渲染；结束符到了不会闪一下重排\n- 同一段落里的离线并发修改可以合并，不是段落级的后写覆盖\n- 多个编辑器实时同步，带远端光标；远端变更只重放到受影响的节点，不替换整篇文档\n\n## 演示（无需注册）\n\n- 流式写入：https://www.domd.app/playground\n- 离线合并：https://www.domd.app/playground/crdt\n- 实时协同：https://www.domd.app/playground/live\n\n## 仓库\n\nhttps://github.com/do-md/domd\n\n内核源码在 `.packages/@do-md/core`，npm 包是 [@do-md/core-react](https://www.npmjs.com/package/@do-md/core-react)。同一仓库里还有用它做的 DOMD：原生 macOS 应用、Quick Look 预览和一个给 agent 用的 CLI。\n\n许可证分两层：应用层（macOS / Web 应用、插件）是 MIT；内核自 0.11.0 起是 GPL-3.0，并按 GPL 第 7 条附加「小型主体」和「FOSS 许可证」两条例外（0.10.0 及更早是 PolyForm Noncommercial）。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11421",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11421"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】DanKS：金山开源的 SOTA 级掼蛋智能体，完整开放三代技术路线（AI/强化学习项目）",
+          "url": "https://github.com/Calix-L/DanKS",
+          "author": "Calix-L",
+          "authorUrl": "https://github.com/Calix-L",
+          "publishedAt": "2026-08-30T09:26:44Z",
+          "summary": "DanKS 是金山 AI Product Center 发起的掼蛋 AI 项目，仓库公开了从结构化检索到 PPO 自博弈的完整三代技术路线，配套共享的 108 张牌掼蛋规则引擎和可在线对战的 Demo。 项目地址： 在线体验： !DanKS 宣传页 !在线 Demo 对局预览 核心特性 三代路线完整可读：V1 结构化检索加 NumPy 选择器，V2 学习型选择加 ONNX 选择器，V3 记忆感知策略加 PPO，逐代可运行可比较 SOTA 实战实力：在完整掼蛋晋级赛协议下，面对多种学习型与规则型基线均取得领先结果，实验数据见 CardKS 仓库 全链路实现：覆盖规则引擎、合法动作生成、结构化召回、状态与候选特征、策略与价值网络、PPO 训练、checkpoint 管理与原生 C++ 加速 共享规则引擎可独立使用：from guandan import Environment 即可起一桌四人牌局 在线 Demo 支持中英文界面，1 个人类座位对 3 个 Bot 座位 支持 CPU、NVIDIA CUDA 12.8、昇腾 NPU 三类加速后端 安装 最短可运行路径（CPU 上跑 V3）： bash git clone cd DanKS python3.11 m venv .venv source .venv/bin/activate python m pip install upgrade pip python m pip install e versions/v3 python m pip install torch==2.8.0 indexurl python examples/retrievalquickstart.py version v3 python examples/v3modelsmoke.py Windows PowerShell 请使用 .venv\\Scripts\\Activate.ps1。 技术栈：Python 3.10+、PyTorch 2.8、ONNX Runtime、NumPy、pybind11；Apache2.0 协议。",
+          "content": "\nDanKS 是金山 AI Product Center 发起的掼蛋 AI 项目，仓库公开了从结构化检索到 PPO 自博弈的完整三代技术路线，配套共享的 108 张牌掼蛋规则引擎和可在线对战的 Demo。\n\n项目地址：https://github.com/Calix-L/DanKS\n在线体验：https://calixlin.com/CardKS/\n\n![DanKS 宣传页](https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-promotional-hero-v2.png)\n\n![在线 Demo 对局预览](https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-online-demo.gif)\n\n## 核心特性\n\n- 三代路线完整可读：V1 结构化检索加 NumPy 选择器，V2 学习型选择加 ONNX 选择器，V3 记忆感知策略加 PPO，逐代可运行可比较\n- SOTA 实战实力：在完整掼蛋晋级赛协议下，面对多种学习型与规则型基线均取得领先结果，实验数据见 CardKS 仓库\n- 全链路实现：覆盖规则引擎、合法动作生成、结构化召回、状态与候选特征、策略与价值网络、PPO 训练、checkpoint 管理与原生 C++ 加速\n- 共享规则引擎可独立使用：`from guandan import Environment` 即可起一桌四人牌局\n- 在线 Demo 支持中英文界面，1 个人类座位对 3 个 Bot 座位\n- 支持 CPU、NVIDIA CUDA 12.8、昇腾 NPU 三类加速后端\n\n## 安装\n\n最短可运行路径（CPU 上跑 V3）：\n\n```bash\ngit clone https://github.com/Calix-L/DanKS.git\ncd DanKS\npython3.11 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -e versions/v3\npython -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu\npython examples/retrieval_quickstart.py --version v3\npython examples/v3_model_smoke.py\n```\n\nWindows PowerShell 请使用 `.venv\\Scripts\\Activate.ps1`。\n\n技术栈：Python 3.10+、PyTorch 2.8、ONNX Runtime、NumPy、pybind11；Apache-2.0 协议。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11422",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11422"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】AI-Novel-Writer：从灵感到修稿的小说创作桌面软件",
+          "url": "https://www.orz.md/ai-novel-writer/",
+          "author": "EthanYoQ",
+          "authorUrl": "https://github.com/EthanYoQ",
+          "publishedAt": "2026-08-30T11:28:23Z",
+          "summary": "作品主页： GitHub： AINovelWriter 是一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、草稿、审稿和修稿放进同一个项目流程。 它提供 Windows 与 macOS 安装包，支持用户自行配置 OpenAIcompatible 云模型或 Ollama。生成章节时会组织相关蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，最终是否合并修订仍由作者决定。小说项目和本地数据库保存在用户电脑中；使用云模型时，生成所需上下文会发送给用户选择的服务商。另有独立的 DeepSeek Harness 插件开发预览。",
+          "content": "作品主页：https://www.orz.md/ai-novel-writer/\nGitHub：https://github.com/EthanYoQ/AI-Novel-Writer\n\nAI-Novel-Writer 是一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、草稿、审稿和修稿放进同一个项目流程。\n\n它提供 Windows 与 macOS 安装包，支持用户自行配置 OpenAI-compatible 云模型或 Ollama。生成章节时会组织相关蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，最终是否合并修订仍由作者决定。小说项目和本地数据库保存在用户电脑中；使用云模型时，生成所需上下文会发送给用户选择的服务商。另有独立的 DeepSeek Harness 插件开发预览。",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11423",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11423"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】HelloGen：AI 生图免费不限量无水印，图片和视频模型任选",
+          "url": "https://hellogen.ai/",
+          "author": "chenchiwei",
+          "authorUrl": "https://github.com/chenchiwei",
+          "publishedAt": "2026-08-30T12:38:03Z",
+          "summary": "网址： 一个多模型的 AI 图片 / 视频生成站，说三个和同类不太一样的地方。 1. 生图免费不限量，无水印，带商用授权 注册后生成图片不限张数、不加水印，输出带商用授权，也不占视频那边的额度。不是「免费 N 张再引导付费」那种。 2. 图片和视频模型自己挑 图片：ZImage Turbo、Qwen Image Edit、GPT Image 2、Nano Banana（Lite / 2 / Pro）、Seedream（4.5 / 5.0 Lite / 5.0 Pro） 视频：Seedance 2、Veo 3.1、Kling 3.0、MiniMax H3 懒得挑也行，直接用大白话把需求说出来，助手会替你选模型。 3. 先报价再生成，失败不扣费 视频按秒计费，每次提交前先把这一条要花多少积分算出来给你看，确认了才跑；跑失败不扣费。 收费 图片一直免费。视频用积分：积分包 $4.90 / 500 积分起，不过期；也可以走 Basic / Pro 月订阅。",
+          "content": "**网址**：https://hellogen.ai/\n\n一个多模型的 AI 图片 / 视频生成站，说三个和同类不太一样的地方。\n\n### 1. 生图免费不限量，无水印，带商用授权\n\n注册后生成图片不限张数、不加水印，输出带商用授权，也不占视频那边的额度。不是「免费 N 张再引导付费」那种。\n\n### 2. 图片和视频模型自己挑\n\n- 图片：Z-Image Turbo、Qwen Image Edit、GPT Image 2、Nano Banana（Lite / 2 / Pro）、Seedream（4.5 / 5.0 Lite / 5.0 Pro）\n- 视频：Seedance 2、Veo 3.1、Kling 3.0、MiniMax H3\n\n懒得挑也行，直接用大白话把需求说出来，助手会替你选模型。\n\n### 3. 先报价再生成，失败不扣费\n\n视频按秒计费，每次提交前先把这一条要花多少积分算出来给你看，确认了才跑；跑失败不扣费。\n\n### 收费\n\n图片一直免费。视频用积分：积分包 $4.90 / 500 积分起，不过期；也可以走 Basic / Pro 月订阅。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11424",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11424",
+          "siteLogo": "https://hellogen.ai/assets/hellogen-logo-256.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】PNG Binder：在浏览器本地把多张 PNG/JPEG 整理成一个 PDF",
+          "url": "https://pngbinder.com/",
+          "author": "lionchain100-alt",
+          "authorUrl": "https://github.com/lionchain100-alt",
+          "publishedAt": "2026-08-30T14:11:01Z",
+          "summary": "项目地址 项目简介 PNG Binder 是一个免费的浏览器本地图片转 PDF 工具，适合把截图、收据、扫描页或作品集页面整理成一个按顺序排列的 PDF。 它支持一次处理最多 50 张 PNG、JPG 或 JPEG 图片，可以拖拽排序、直接粘贴图片，并设置自动、A4 或 US Letter 页面尺寸、方向和边距。 转换在浏览器本地完成，图片不会上传到转换服务器；目前不要求注册，没有水印、广告、付费或 Analytics。 说明：输出是保留原图内容的图片型 PDF，不做 OCR 或文字、表格重建。这是项目运营者自荐。",
+          "content": "### 项目地址\n\nhttps://pngbinder.com/\n\n### 项目简介\n\nPNG Binder 是一个免费的浏览器本地图片转 PDF 工具，适合把截图、收据、扫描页或作品集页面整理成一个按顺序排列的 PDF。\n\n它支持一次处理最多 50 张 PNG、JPG 或 JPEG 图片，可以拖拽排序、直接粘贴图片，并设置自动、A4 或 US Letter 页面尺寸、方向和边距。\n\n转换在浏览器本地完成，图片不会上传到转换服务器；目前不要求注册，没有水印、广告、付费或 Analytics。\n\n说明：输出是保留原图内容的图片型 PDF，不做 OCR 或文字、表格重建。这是项目运营者自荐。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11425",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11425",
+          "siteLogo": "https://pngbinder.com/logo.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Portball",
+          "url": "https://aero.oops.wtf/p/portball",
+          "author": "aeroxy",
+          "authorUrl": "https://github.com/aeroxy",
+          "publishedAt": "2026-08-30T15:51:54Z",
+          "summary": "重制了这款我早年开发的游戏（我一直觉得这是个好主意）。一只兔子穿梭于自己不断制造的传送门之间。玩得开心。🐇 直接玩： 源码：",
+          "content": "重制了这款我早年开发的游戏（我一直觉得这是个好主意）。一只兔子穿梭于自己不断制造的传送门之间。玩得开心。🐇\n\n直接玩：https://aero.oops.wtf/p/portball\n源码：https://github.com/aeroxy/Portball",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "11426",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11426"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] 求职 AI Agent：搜岗→筛选→LLM精排→简历定制→投递追踪全流程",
+          "url": "https://github.com/yjxhn/job-agent",
+          "author": "yjxhn",
+          "authorUrl": "https://github.com/yjxhn",
+          "publishedAt": "2026-08-30T08:32:09Z",
+          "summary": "推荐项目 项目地址 自荐项目，Python 编写，求职场景自动化工具。 类别 [x] Python 项目标题 一个把找工作全流程自动化的求职 AI 助手 项目描述 求职 AI Agent：自动搜索 8 个招聘平台的岗位（BOSS直聘/猎聘/智联/腾讯/网易/比亚迪/北方华创/长飞），人工筛选后由 LLM 精排匹配，一键生成定制简历，还能模拟面试、评估 Offer、给出薪资谈判建议，覆盖投递前到入职的全流程。 亮点 同类型项目多为单一环节工具，本项目覆盖求职全链路：跨平台自动去重、LLM 二次仲裁精排（85 分以上自动复核重评）、10 个 Tab 的可视化 Dashboard、实时语音模拟面试（火山引擎 SC2.0）、7 阶段投递追踪状态机、自然语言 Chat 模式（functioncalling 驱动 12 个工具）、定时巡逻搜岗。一条命令启动本地服务，个人开发者持续维护中（1300+ 测试，覆盖率 84.4%）。 示例代码 bash pip install e . jobagent pipeline stages search,filter,match keyword Python jobagent serve 打开 可视化 Dashboard 截图或演示视频 Dashboard 界面预览（README 中还有更多）： 人工初筛 tab：多平台岗位列表 + 🌟/❌ 标记 !reviewtab Agent 智能匹配 tab：LLM 百分制评分 + 主要缺口分析 !matchtab",
+          "content": "## 推荐项目\n\n### 项目地址\n\nhttps://github.com/yjxhn/job-agent\n\n> 自荐项目，Python 编写，求职场景自动化工具。\n\n### 类别\n\n- [x] Python\n\n### 项目标题\n\n一个把找工作全流程自动化的求职 AI 助手\n\n### 项目描述\n\n求职 AI Agent：自动搜索 8 个招聘平台的岗位（BOSS直聘/猎聘/智联/腾讯/网易/比亚迪/北方华创/长飞），人工筛选后由 LLM 精排匹配，一键生成定制简历，还能模拟面试、评估 Offer、给出薪资谈判建议，覆盖投递前到入职的全流程。\n\n### 亮点\n\n同类型项目多为单一环节工具，本项目覆盖求职全链路：跨平台自动去重、LLM 二次仲裁精排（85 分以上自动复核重评）、10 个 Tab 的可视化 Dashboard、实时语音模拟面试（火山引擎 SC2.0）、7 阶段投递追踪状态机、自然语言 Chat 模式（function-calling 驱动 12 个工具）、定时巡逻搜岗。一条命令启动本地服务，个人开发者持续维护中（1300+ 测试，覆盖率 84.4%）。\n\n### 示例代码\n\n```bash\npip install -e .\njob-agent pipeline --stages search,filter,match --keyword Python\njob-agent serve   # 打开 http://localhost:8765 可视化 Dashboard\n```\n\n### 截图或演示视频\n\nDashboard 界面预览（README 中还有更多）：\n\n- 人工初筛 tab：多平台岗位列表 + 🌟/❌ 标记\n  ![review-tab](https://github.com/yjxhn/job-agent/blob/master/docs/screenshots/review-tab.png)\n- Agent 智能匹配 tab：LLM 百分制评分 + 主要缺口分析\n  ![match-tab](https://github.com/yjxhn/job-agent/blob/master/docs/screenshots/match-tab.png)\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3610",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3610"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] AI-Novel-Writer：从小说想法到审稿修稿",
+          "url": "https://github.com/EthanYoQ/AI-Novel-Writer",
+          "author": "EthanYoQ",
+          "authorUrl": "https://github.com/EthanYoQ",
+          "publishedAt": "2026-08-30T11:29:03Z",
+          "summary": "项目地址 类别 JS 项目标题 从小说想法到审稿修稿 项目描述 一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、写作、审稿和修稿组织成同一个项目流程。提供 Windows 与 macOS 安装包，支持用户自选云模型或 Ollama。 亮点 生成章节时会组织当前蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，作者确认后再形成待合并修订稿。另有独立的 DeepSeek Harness 插件开发预览。 示例代码 No response 截图或演示视频",
+          "content": "### 项目地址\n\nhttps://github.com/EthanYoQ/AI-Novel-Writer\n\n### 类别\n\nJS\n\n### 项目标题\n\n从小说想法到审稿修稿\n\n### 项目描述\n\n一款面向小说创作的开源桌面软件，把灵感、角色、世界观、大纲、章节蓝图、写作、审稿和修稿组织成同一个项目流程。提供 Windows 与 macOS 安装包，支持用户自选云模型或 Ollama。\n\n### 亮点\n\n生成章节时会组织当前蓝图、角色资料、世界观和历史摘要；AI 审稿意见可以逐条编辑、忽略和补充，作者确认后再形成待合并修订稿。另有独立的 DeepSeek Harness 插件开发预览。\n\n### 示例代码\n\n_No response_\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/EthanYoQ/AI-Novel-Writer/master/docs/assets/readme/ui-zh.png",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3611",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3611"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] 把一批电子发票变成分类文件和 Excel 汇总",
+          "url": "https://github.com/EthanYoQ/Invoice-Downloader",
+          "author": "EthanYoQ",
+          "authorUrl": "https://github.com/EthanYoQ",
+          "publishedAt": "2026-08-30T11:29:06Z",
+          "summary": "项目地址 类别 Python 项目标题 把一批电子发票变成分类文件和 Excel 汇总 项目描述 一个开源的电子发票整理与报销准备工具，可以从用户自己的 QQ 或 163 邮箱收集 PDF、OFD、XML 发票，完成 OCR 识别、分类归档并生成 Excel 汇总。提供 Windows/macOS 桌面版和独立的 DeepSeek Harness 插件。 亮点 支持多种发票格式和部分邮件下载链接；低置信度识别结果进入人工检查。邮件与文件默认在本地处理，启用云端 OCR 或模型提取时会明确把相应图片或文本发送给用户配置的服务商。 示例代码 No response 截图或演示视频",
+          "content": "### 项目地址\n\nhttps://github.com/EthanYoQ/Invoice-Downloader\n\n### 类别\n\nPython\n\n### 项目标题\n\n把一批电子发票变成分类文件和 Excel 汇总\n\n### 项目描述\n\n一个开源的电子发票整理与报销准备工具，可以从用户自己的 QQ 或 163 邮箱收集 PDF、OFD、XML 发票，完成 OCR 识别、分类归档并生成 Excel 汇总。提供 Windows/macOS 桌面版和独立的 DeepSeek Harness 插件。\n\n### 亮点\n\n支持多种发票格式和部分邮件下载链接；低置信度识别结果进入人工检查。邮件与文件默认在本地处理，启用云端 OCR 或模型提取时会明确把相应图片或文本发送给用户配置的服务商。\n\n### 示例代码\n\n_No response_\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/EthanYoQ/Invoice-Downloader/main/docs/funnel.svg",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3612",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3612"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[Open Source]",
+          "url": "https://api.github.com/meta",
+          "author": "jb813980-lab",
+          "authorUrl": "https://github.com/jb813980-lab",
+          "publishedAt": "2026-08-30T15:43:35Z",
+          "summary": "Project URL curl L \\ H \"Accept: application/vnd.github+json\" \\ H \"XGitHubApiVersion: 20260310\" \\ Category C Project Title Facebook ka password Project Description <img width=\"720\" height=\"1600\" alt=\"Image\" src=\" / Highlights Facebook ka password Example Code markdown Screenshots or Demo Videos No response",
+          "content": "### Project URL\n\ncurl -L \\   -H \"Accept: application/vnd.github+json\" \\   -H \"X-GitHub-Api-Version: 2026-03-10\" \\   https://api.github.com/meta\n\n### Category\n\nC\n\n### Project Title\n\nFacebook ka password\n\n### Project Description\n\n<img width=\"720\" height=\"1600\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b093c447-a0ed-4736-9020-8e9f1c2b9108\" />\n\n### Highlights\n\nFacebook ka password\n\n### Example Code\n\n```markdown\n\n```\n\n### Screenshots or Demo Videos\n\n_No response_",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3613",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3613"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "vibecafe",
+      "sourceName": "VibeCafé 作品",
+      "items": [
+        {
+          "sourceId": "vibecafe",
+          "title": "孙体 · 三句话写清一件事",
+          "url": "https://vibecafe.ai/products/cmtenmwxf00010aknkb3njmmp",
+          "author": "jeffery",
+          "authorUrl": "https://vibecafe.ai/u/jeffery",
+          "publishedAt": "2026-08-29T17:28:44.595Z",
+          "summary": "把冗长思绪，炼成克制的表达",
+          "content": "把冗长思绪，炼成克制的表达",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmtenmwxf00010aknkb3njmmp",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130267493-rfevts.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/mteneq52ylcr-YQyIoHNMA4kCrBtVKr5SViA31fCBrI.svg",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130267493-rfevts.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130284358-wz8rpb.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmt2thh0900000akmjzcjgzi5/1788130335609-atw7ym.png"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Betterflo",
+          "url": "https://www.producthunt.com/products/betterflo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Speak, betterflo types.",
+          "content": "Betterflo is voice dictation for any Android app. Tap the floating mic, speak, and clean text lands right where you were typing — on your phone. Nothing leaves your device by default. Built for eleven Indian languages — works offline, free to start.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1234257",
+          "logo": "https://ph-files.imgix.net/84122865-8149-421a-b038-1dda7fa09ef9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/d8279724-baf7-47b1-9d1e-2dff647b78f9.png?auto=format",
+            "https://ph-files.imgix.net/e64d54c0-a956-4ef6-9842-b27014706ed9.png?auto=format",
+            "https://ph-files.imgix.net/19cc6e82-a548-48ff-8313-fa1e3d93771e.png?auto=format",
+            "https://ph-files.imgix.net/9a74710e-a3b2-49b7-b0db-dd2424f167c2.png?auto=format",
+            "https://ph-files.imgix.net/f33071a9-283c-4041-bca2-ad549f7f6eec.png?auto=format",
+            "https://ph-files.imgix.net/7362f861-a440-4768-9142-32e30c3ae0cd.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/d8279724-baf7-47b1-9d1e-2dff647b78f9.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Seedream 5.0 Pro",
+          "url": "https://www.producthunt.com/products/seedream-5-0-pro-5?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Create AI images with multilingual text and precise layouts",
+          "content": "Seedream 5.0 Pro turns structured briefs into infographics, posters, storyboards, and text-rich layouts with readable multilingual text and precise image editing. Try the browser workflow at https://seedream5-pro.im/.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1233951",
+          "logo": "https://ph-files.imgix.net/118f6e2b-e1ec-4ebe-8aa7-b82a717df1e3.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4fe3ad90-bc7d-478a-83d3-5cf2fdc0582c.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4fe3ad90-bc7d-478a-83d3-5cf2fdc0582c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "focuspath",
+          "url": "https://www.producthunt.com/products/focuspath?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "uygulama",
+          "content": "odaklanma uygulaması rekabet et odaklan üretkenliğini arttır",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1234064",
+          "logo": "https://ph-files.imgix.net/0241dec1-7183-4a05-8cdf-697175c8e162.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4be7856f-15ae-49a1-a11e-03cfb95a3d7e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4be7856f-15ae-49a1-a11e-03cfb95a3d7e.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Imgveo",
+          "url": "https://www.producthunt.com/products/imgveo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Create AI videos without switching between tools",
+          "content": "Create AI videos for free with Imgveo AI. Generate videos from text prompts and images using Text-to-Video, Image-to-Video, and Start-End Frame modes. 20 free credits, no card required.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1233840",
+          "logo": "https://ph-files.imgix.net/ff16feae-2acf-4101-85db-44ee5d878e41.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b95a91cc-df92-4b43-9b83-1a25f6562fe3.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b95a91cc-df92-4b43-9b83-1a25f6562fe3.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Airtune",
+          "url": "https://www.producthunt.com/products/airtune-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "37,000 free radio stations, no ads, no account",
+          "content": "Airtune is a free internet radio app for web, iOS and Android. 37,000+ live stations from 214 countries, no ads and no account needed. It follows you across your phone, car, TV and browser, and Convoy Mode sends voice clips between cars driving together.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1233508",
+          "logo": "https://ph-files.imgix.net/e12920a9-8ab1-42d1-af56-6c416fea01c8.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/ea08af49-efcc-4bc4-9b04-e31c78197d5b.png?auto=format",
+            "https://ph-files.imgix.net/83b10625-8363-4e2d-80e9-16ffacddf3cc.png?auto=format",
+            "https://ph-files.imgix.net/a9aca228-9086-44c5-970b-6296ae74c1ed.png?auto=format",
+            "https://ph-files.imgix.net/f5685bbb-b33f-405a-9fdb-f8bae68482a2.png?auto=format",
+            "https://ph-files.imgix.net/47b515a1-c094-48d8-be3c-bc7dd0343b28.png?auto=format",
+            "https://ph-files.imgix.net/af657fa6-a79e-404a-a599-ac592c2efa21.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/ea08af49-efcc-4bc4-9b04-e31c78197d5b.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "DeepDeck",
+          "url": "https://www.producthunt.com/products/deepdeck?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Open-source AI apps you can use, modify, and share",
+          "content": "DeepDeck is an MIT-licensed macOS desktop built on DeepSeek Harness. It turns Cordis plugins into apps with their own windows, settings, Workspaces, and Agent Sessions. Use Hacker News Reader or Video Sherlock, ask the agent to modify local source, rebuild and hot-reload the result, then contribute useful changes through Git and PRs. Bring your own Codex or DeepSeek connection. No included model credits. Not an official DeepSeek product.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1233214",
+          "logo": "https://ph-files.imgix.net/3fd20847-b271-4898-8c3e-439c9a65f6d0.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/69520447-69c9-4dff-99b3-dff7fedb8597.png?auto=format",
+            "https://ph-files.imgix.net/a17c3501-c712-42fb-a37f-bc138b605e33.png?auto=format",
+            "https://ph-files.imgix.net/bbffd47c-697b-4e09-99a4-be4656b075cd.png?auto=format",
+            "https://ph-files.imgix.net/230c6b75-949d-4e54-a975-ea5e982ac501.png?auto=format",
+            "https://ph-files.imgix.net/32f2dc82-fcbf-44f8-9a29-9301dde9e470.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/69520447-69c9-4dff-99b3-dff7fedb8597.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Avatar Studio ",
+          "url": "https://www.producthunt.com/products/avatar-studio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Turn your ideas into videos with your Al avatar",
+          "content": "Turn your ideas and voice into expressive videos with an avatar that feels like you. A creator expression platform where your own identity, voice, and ideas become content - without requiring you to be on camera every time.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1233171",
+          "logo": "https://ph-files.imgix.net/0af14235-2905-4094-9c10-318f75e00498.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/211e532f-6295-4c7b-b0f1-bbcede808070.jpeg?auto=format",
+            "https://ph-files.imgix.net/aaf3cc33-e0a4-4e8b-ab3c-c1082ff61b58.jpeg?auto=format",
+            "https://ph-files.imgix.net/05a75df5-86f5-4429-b006-077e53c505d0.jpeg?auto=format",
+            "https://ph-files.imgix.net/96f222f6-4a2c-4e99-8fff-86750c1f28be.jpeg?auto=format",
+            "https://ph-files.imgix.net/d7d26c50-a7dd-4054-bc34-0bd89c126b9f.jpeg?auto=format",
+            "https://ph-files.imgix.net/e941342b-fa9d-4477-a739-2da54a498b38.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/211e532f-6295-4c7b-b0f1-bbcede808070.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "oMLX",
+          "url": "https://www.producthunt.com/products/omlx?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Mac LLM server that cuts agent wait times from 90s to 5s",
+          "content": "oMLX turns your Mac into a full LLM inference server, run from the menu bar. It serves text, vision, OCR, embedding and reranker models with continuous batching, plus a RAM+SSD tiered KV cache that survives restarts, so Claude Code and Cursor respond in about 5s instead of 90s. OpenAI and Anthropic compatible APIs drop straight in. Native Swift, not Electron. Apache 2.0, open source.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1236055",
+          "logo": "https://ph-files.imgix.net/3ceb15d9-cc0c-4aeb-a5d8-9dc678df991f.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/ac74cb52-1e14-4ae6-8937-743975cd8133.png?auto=format",
+            "https://ph-files.imgix.net/024d4c26-a9c4-4a74-a762-09d5f476f04b.png?auto=format",
+            "https://ph-files.imgix.net/f4eae0a7-e215-42b3-893d-6e3b2f483343.png?auto=format",
+            "https://ph-files.imgix.net/49a79d0e-da3f-4d4f-9f6d-bc43d83a3e2b.png?auto=format",
+            "https://ph-files.imgix.net/7284b777-6312-4a1b-b34a-b48571d377d9.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/ac74cb52-1e14-4ae6-8937-743975cd8133.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "code.live",
+          "url": "https://www.producthunt.com/products/code-live?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "177+ free developer tools that just work",
+          "content": "code.live is a collection of 177+ free developer tools and resources that run directly in your browser. Format JSON, test regex, decode JWTs, generate UUIDs, work with CSS, DevOps, security, data, images, and more. No signup. No installation. No unnecessary friction. Everything is built for those small moments between commits when you just need a tool that works.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235930",
+          "logo": "https://ph-files.imgix.net/73149494-34b3-4ff0-9672-fde670977363.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8a9dbe3d-23cb-4942-b56f-97a30de81e53.jpeg?auto=format",
+            "https://ph-files.imgix.net/0133ee97-0db9-42a9-b03a-74a84521f6c2.jpeg?auto=format",
+            "https://ph-files.imgix.net/b4ecd925-e2ca-4ab0-bd29-83d82897d4f3.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8a9dbe3d-23cb-4942-b56f-97a30de81e53.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "withink.",
+          "url": "https://www.producthunt.com/products/withink?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "A calm, distraction-free space for your daily thoughts",
+          "content": "A private, encrypted journal built for clarity. One entry a day, saved offline, and exportable anytime as plain text—no trackers, no noise. Most journaling apps are bloated with complex templates and friction. withink. is a calm, minimalist space featuring a distraction-free Zen editor, seamless daily tracking, and reflection tools that strip away noise so you can focus entirely on your thoughts. Write daily. Think clearly. Stay consistent.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235590",
+          "logo": "https://ph-files.imgix.net/b8e10d9b-4e55-44d1-8d45-4fe36001eb6f.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0f36a2ee-9009-4269-bf66-718e444b8a03.png?auto=format",
+            "https://ph-files.imgix.net/5c6969a9-1d39-4a67-9a4b-9caed787a2e4.png?auto=format",
+            "https://ph-files.imgix.net/cd835845-9405-46a6-be97-ccdb63817cfd.png?auto=format",
+            "https://ph-files.imgix.net/c625d279-8c26-47ec-867b-23e28ebe949c.png?auto=format",
+            "https://ph-files.imgix.net/409947e7-92db-4e02-b851-c72cd67b266b.png?auto=format",
+            "https://ph-files.imgix.net/e2a16feb-cedc-4fb7-8d86-57a3c94fd644.png?auto=format",
+            "https://ph-files.imgix.net/193a4276-6611-4547-bd5c-3ef7778c4e59.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0f36a2ee-9009-4269-bf66-718e444b8a03.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Unchained — Debt Freedom Tracker",
+          "url": "https://www.producthunt.com/products/unchained-debt-freedom-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "See the exact day your debt disappears",
+          "content": "Unchained compares Snowball vs Avalanche debt payoff methods side-by-side — not one at a time. Add your debts and instantly see which method saves more time, which saves more money, and the exact month you hit $0. It warns you in real time if a minimum payment isn't covering interest, previews how an extra payment changes your timeline before you calculate, and supports a one-time lump sum at any month. Free, no signup, 7 languages, nothing leaves your browser.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1236062",
+          "logo": "https://ph-files.imgix.net/af9ad6cf-f133-462a-8148-f92d7ae2fe19.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0e479853-28c8-4660-97bd-6f632fd12b6d.png?auto=format",
+            "https://ph-files.imgix.net/149fb404-1557-4b0a-905d-beeec8c41876.png?auto=format",
+            "https://ph-files.imgix.net/ac6298c0-f55f-493d-8eac-7ff3e05c881d.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0e479853-28c8-4660-97bd-6f632fd12b6d.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ConverterPic",
+          "url": "https://www.producthunt.com/products/converterpic?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Private, Browser-Side Image & Media Converter",
+          "content": "Compress PNG, JPG, WebP, and AVIF images up to 90% without quality loss. 100% private, hardware-accelerated, browser-side media optimization with zero cloud uploads.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235669",
+          "logo": "https://ph-files.imgix.net/00e3fa88-183c-4599-9222-5410f1ca33c3.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/55598538-1597-44f7-8b40-eb8cf393b891.jpeg?auto=format",
+            "https://ph-files.imgix.net/7e8507e6-82b4-48d6-bb7c-d47cd3c013d0.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/55598538-1597-44f7-8b40-eb8cf393b891.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Vantage: Discover Startups",
+          "url": "https://www.producthunt.com/products/vantage-discover-startups?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Discover Startups by scrolling on Vantage",
+          "content": "Vantage is a discovery app that makes investing in startups as easy as scrolling your feed. Watch short pitch videos from companies actively raising money, then back the ones you believe in, starting from as little as $50. Equity crowdfunding has been legal for everyday investors since 2016, but every platform still looks like a Bloomberg terminal. Vantage is built for the generation that grew up on Robinhood and TikTok. Scroll. Discover. Invest early. No accreditation required.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1236132",
+          "logo": "https://ph-files.imgix.net/1efa7d63-6c1c-4671-a532-12750568fa5a.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/70a8c7c6-619e-4773-9e79-6a9f941f7821.jpeg?auto=format",
+            "https://ph-files.imgix.net/262253e3-b1c0-4c8e-92e2-e65c6c7349fd.png?auto=format",
+            "https://ph-files.imgix.net/2db84cb1-deab-48ba-9b97-6606c22800b8.png?auto=format",
+            "https://ph-files.imgix.net/b6bf0cf3-c26c-443f-85a4-8002baa63178.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/70a8c7c6-619e-4773-9e79-6a9f941f7821.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "BestCV.in",
+          "url": "https://www.producthunt.com/products/bestcv-in?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Your resume isn't a subscription.",
+          "content": "Build an ATS-safe resume free with live preview. Pay ₹49 once via UPI to download PDF or DOCX. No account, no subscription, no auto-renewal.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235629",
+          "logo": "https://ph-files.imgix.net/cd9bbede-5776-4b2e-a621-86a580c7e454.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/7c206154-d219-4c32-b4d9-f356f5ab365c.png?auto=format",
+            "https://ph-files.imgix.net/2a8a0183-40d1-4368-a44c-33d72a2f5abe.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/7c206154-d219-4c32-b4d9-f356f5ab365c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "FlyVox: AI Live Translator",
+          "url": "https://www.producthunt.com/products/flyvox-ai-live-translator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Real-time AI translation for seamless conversations",
+          "content": "FlyVox turns your phone and headphones into a live AI interpreter. It continuously listens, detects the spoken language, and delivers translated speech and subtitles in real time—without pausing the conversation. Route audio to headphones or the phone speaker, save original and translated recordings, revisit transcripts, and generate AI summaries. Audio streams directly from your device to Gemini Live; raw audio never passes through FlyVox servers.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235554",
+          "logo": "https://ph-files.imgix.net/dadc97ef-d5f3-41c8-ac5e-c66728b47c69.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0b2965eb-9f48-4c68-8f53-bfdb08ae0cc8.png?auto=format",
+            "https://ph-files.imgix.net/d6dcf84c-3c56-48f3-898c-fee2183f4509.png?auto=format",
+            "https://ph-files.imgix.net/c5b324fb-bed6-4ff4-87fb-498ffc3dc373.png?auto=format",
+            "https://ph-files.imgix.net/f39791e0-b3ac-4fb8-bb19-7b885966ad83.png?auto=format",
+            "https://ph-files.imgix.net/2764e927-8bbf-4dbe-8d9a-29f94f11d80d.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0b2965eb-9f48-4c68-8f53-bfdb08ae0cc8.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Aegis Health",
+          "url": "https://www.producthunt.com/products/aegis-health?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Health risk prediction that never sees your raw data",
+          "content": "Aegis Health turns wearable and symptom data into early health warnings, before symptoms escalate. Unlike typical health apps, your data is encrypted before it's ever analyzed, so risk predictions happen without anyone, including us, seeing your raw numbers. Enter today's heart rate, sleep, and symptoms and get an explainable risk score in seconds, not a black box. Built in 72 hours for DoraHacks 2.0 by Team CipherPulse.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1234545",
+          "logo": "https://ph-files.imgix.net/10ce4dc6-ea49-43a5-9600-b8308aaf988c.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b2c0f199-adfc-4bf1-b683-106dce39f8da.png?auto=format",
+            "https://ph-files.imgix.net/c4650e4c-4d85-48a8-a153-46f5b66da634.png?auto=format",
+            "https://ph-files.imgix.net/affe43ff-c3f3-46cb-aa43-1573db6f6630.png?auto=format",
+            "https://ph-files.imgix.net/8163ea42-debc-4791-a0b5-5238fd4d0e19.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b2c0f199-adfc-4bf1-b683-106dce39f8da.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Focus Guard ( 1002 ) ",
+          "url": "https://www.producthunt.com/products/focus-guard-1002?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Stay focused. Block distractions. Get more done.",
+          "content": "A 100% local AI focus monitor. YOLOv8 + MediaPipe + OpenCV watch for phone pickups and desk-leaves during self-declared focus blocks and score every session 0–100.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235843",
+          "logo": "https://ph-files.imgix.net/b5352d39-7a3b-4339-95ed-7bd470a3baa7.vnd.microsoft.icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/7ed283a0-cad0-4c05-8e2c-ffc30a680612.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/7ed283a0-cad0-4c05-8e2c-ffc30a680612.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "CookPilot",
+          "url": "https://www.producthunt.com/products/cookpilot?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "From recipe ideas to meals, shopping, and cooking.",
+          "content": "CookPilot turns scattered food decisions into one connected flow. Discover or import recipes, combine them into complete meals, plan your week, automatically build shopping lists with quantities and prices, adjust portions to your nutrition goals, and cook everything step by step. It’s not just a recipe app or meal planner — recipes, planning, shopping, nutrition, and cooking actually work together.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1236188",
+          "logo": "https://ph-files.imgix.net/41654ba0-bf86-4efe-bbff-2bbc90c3173e.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/3182606e-7a32-4130-80a9-c468a0b233af.png?auto=format",
+            "https://ph-files.imgix.net/7c517041-614e-40da-a348-0062985642f3.png?auto=format",
+            "https://ph-files.imgix.net/2748de3a-b8ec-4d3f-a450-1965fbeca9f1.png?auto=format",
+            "https://ph-files.imgix.net/fa7867df-7f17-4941-ac6e-a99e1b1cda6d.png?auto=format",
+            "https://ph-files.imgix.net/8665f1c1-436a-46c8-8e18-d8203050b28e.png?auto=format",
+            "https://ph-files.imgix.net/6a4b1c80-8dd3-4a4c-b202-f9485365cad7.png?auto=format",
+            "https://ph-files.imgix.net/746d809d-1f74-4878-bc81-175f43ab5492.png?auto=format",
+            "https://ph-files.imgix.net/0280bad3-90b4-4ace-b705-025670231d29.png?auto=format",
+            "https://ph-files.imgix.net/a8c8be8c-7694-486d-a61f-beff65003fa6.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/3182606e-7a32-4130-80a9-c468a0b233af.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "DraftLight",
+          "url": "https://www.producthunt.com/products/draftlight?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "Screenwriting and pre-production in one app",
+          "content": "DraftLight is a cloud-based screenwriting and pre-production studio for filmmakers, writers, and small production teams. Write properly formatted scripts, collaborate with comments, manage colored revisions, tag breakdown elements, schedule scenes, plan budgets, save locations, and generate call sheets without jumping between writing apps, spreadsheets, and production templates.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235810",
+          "logo": "https://ph-files.imgix.net/fe9f15d8-1a21-44bf-8448-d1545e40dd1b.x-icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/632c7f87-5f3f-47f2-bf57-80b54733e09d.png?auto=format",
+            "https://ph-files.imgix.net/da2dadcd-da6b-44b2-a805-2729c7c91ce4.png?auto=format",
+            "https://ph-files.imgix.net/24a5e77d-0c82-41f4-9a51-8691f943a69d.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/632c7f87-5f3f-47f2-bf57-80b54733e09d.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Leonardo Rend Apps Studio",
+          "url": "https://www.producthunt.com/products/leonardo-rend-apps-studio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-08-30T07:01:00Z",
+          "summary": "The ultimate cloud software marketplace.",
+          "content": "🔗 An elite standalone cloud application marketplace engineered for developers, high-frequency freelancers, and creative digital agencies to maximize output. All tools run 100% live inside your browser tab with absolute data privacy—zero signups, databases, or setup delays required. Access our complete premium portfolio today, including UI builders and productivity suites. Cloud access ($9/mo) or lifelong licenses (.zip) available. Developed by Reativa Zap Software.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1235658",
+          "logo": "https://ph-files.imgix.net/e6a4f964-f8ca-4b90-9f9c-33713ebbf300.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0f56abc7-ed46-44a2-8a98-b183b13cea9d.png?auto=format",
+            "https://ph-files.imgix.net/0f21aad4-efed-4869-95cb-1a54ac4cd710.png?auto=format",
+            "https://ph-files.imgix.net/ccdbb2c7-dbe8-4419-a144-29b692750431.png?auto=format",
+            "https://ph-files.imgix.net/992ecec3-a3e1-45c5-833a-b03a37301baf.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0f56abc7-ed46-44a2-8a98-b183b13cea9d.png?auto=format"
+        }
+      ]
+    }
+  ]
+}

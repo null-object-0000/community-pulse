@@ -1,1 +1,696 @@
-{"fetchedAt":"2026-09-07T09:34:35.521Z","date":"2026-02-19","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"粵語拼音網","url":"https://cantonesepinyin.com/","author":"BC","authorUrl":"","publishedAt":"2026-02-19T00:00:00+08:00","summary":"專業粵語拼音轉換工具，即時將中文轉換為標準粵拼","content":"專業粵語拼音轉換工具，即時將中文轉換為標準粵拼","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-02-19-粵語拼音網-https://cantonesepinyin.com/"},{"sourceId":"chinese-indie-dev","title":"MotionSeed","url":"https://seedance-2.video","author":"BC","authorUrl":"","publishedAt":"2026-02-19T00:00:00+08:00","summary":"AI 视频生成平台，聚合 Sora 2、Veo 3.1、Seedance 2.0 等多个主流 AI 视频模型，支持文字生成视频、图片生成视频，无需分别注册各平台账号，注册即送免费额度。","content":"AI 视频生成平台，聚合 Sora 2、Veo 3.1、Seedance 2.0 等多个主流 AI 视频模型，支持文字生成视频、图片生成视频，无需分别注册各平台账号，注册即送免费额度。","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-02-19-MotionSeed-https://seedance-2.video"},{"sourceId":"chinese-indie-dev","title":"Graffiti Generator","url":"https://graffitigenerator.io","author":"BC","authorUrl":"","publishedAt":"2026-02-19T00:00:00+08:00","summary":"生成涂鸦艺术，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。","content":"生成涂鸦艺术，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-02-19-Graffiti Generator-https://graffitigenerator.io"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"OpenAPI -> Skills 转化器，让 Agent 按需精准读取 API 文档","url":"https://neutree.ai/projects/openapi-to-skills","author":"Yuyz0112","authorUrl":"https://github.com/Yuyz0112","publishedAt":"2026-02-19T02:12:38Z","summary":"之前尝试过各种方法让 Agent 可以更可靠地读取 API 文档，不论是基于它开发客户端代码、做集成测试还是自动化。但复杂一些的 API 文档就会遇到超出上下文大小，即使不超出，也非常浪费上下文空间、多轮对话之后模型就又幻觉了。 最近又想做个公司产品 API 的 code helper ，但是产品的 API 文档的 OpenAPI JSON 接近 10MB ，又遇到上面的问题。陆续尝试过几种切分的方法，部分奏效，但是复杂度挺高，维护成本也高。 前几天突然想到 Skills 最擅长按需加载，就做了一个 CLI ，把 OpenAPI 文档转为 Skills 结构，核心是按 API 语义的拆分 + link ，实现按需加载，实际使用效果惊人，顺便加了点模版定制功能，更好用了。 原本单个 10MB API 文档，拆完之后是 2000+ 小的 md 文件，但是对于具体的 API 任务请求（比如写个 xx 场景运维脚本），Agent 都可以精准地读取所需的片段，探索性特别好，对单个资源的操作需求一般读 5 个片段就能准确写出了，最关键是没幻觉。","content":"https://neutree.ai/projects/openapi-to-skills\n\n之前尝试过各种方法让 Agent 可以更可靠地读取 API 文档，不论是基于它开发客户端代码、做集成测试还是自动化。但复杂一些的 API 文档就会遇到超出上下文大小，即使不超出，也非常浪费上下文空间、多轮对话之后模型就又幻觉了。\n\n最近又想做个公司产品 API 的 code helper ，但是产品的 API 文档的 OpenAPI JSON 接近 10MB ，又遇到上面的问题。陆续尝试过几种切分的方法，部分奏效，但是复杂度挺高，维护成本也高。\n\n前几天突然想到 Skills 最擅长按需加载，就做了一个 CLI ，把 OpenAPI 文档转为 Skills 结构，核心是按 API 语义的拆分 + link ，实现按需加载，实际使用效果惊人，顺便加了点模版定制功能，更好用了。\n\n原本单个 10MB API 文档，拆完之后是 2000+ 小的 md 文件，但是对于具体的 API 任务请求（比如写个 xx 场景运维脚本），Agent 都可以精准地读取所需的片段，探索性特别好，对单个资源的操作需求一般读 5 个片段就能准确写出了，最关键是没幻觉。\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9036","issueUrl":"https://github.com/ruanyf/weekly/issues/9036"},{"sourceId":"weekly-issues","title":"【网站自荐】Graffiti Generator - 免费在线 AI 涂鸦与字体生成器","url":"https://graffitigenerator.io","author":"iamouyang21","authorUrl":"https://github.com/iamouyang21","publishedAt":"2026-02-19T02:17:23Z","summary":"Graffiti Generator Graffiti Generator 是一个专注于涂鸦艺术的在线生成工具，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。 主要特点： 双重 AI 创作模式： 预设工坊 (Preset Workshop)：内置赛博朋克、经典街头、泡泡字等多种流行风格，新手一键即可生成炫酷效果。 自由创作 (Free Creation)：支持高度自定义的 Prompt 输入，精准控制画面的光影、纹理和细节，满足专业需求。 专业字体生成器：提供 50+ 款精选涂鸦字体，支持实时在线编辑。用户可以自由调整填充色、轮廓、阴影、模糊度等参数，并直接下载 PNG 格式。 完全商用授权：用户对生成的图片拥有完整的商业使用权，可放心地用于品牌 Logo、周边产品或宣传海报。 零门槛易用：无需安装任何软件，浏览器打开即用，智能语义分析引擎能较好地理解简短的描述。 适合人群： 设计师、街头艺术爱好者、游戏开发者、品牌运营人员。 官网：","content":"[Graffiti Generator](https://graffitigenerator.io)\n\n**Graffiti Generator** 是一个专注于涂鸦艺术的在线生成工具，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。\n\n主要特点：\n\n- **双重 AI 创作模式**：\n  - **预设工坊 (Preset Workshop)**：内置赛博朋克、经典街头、泡泡字等多种流行风格，新手一键即可生成炫酷效果。\n  - **自由创作 (Free Creation)**：支持高度自定义的 Prompt 输入，精准控制画面的光影、纹理和细节，满足专业需求。\n- **专业字体生成器**：提供 50+ 款精选涂鸦字体，支持实时在线编辑。用户可以自由调整填充色、轮廓、阴影、模糊度等参数，并直接下载 PNG 格式。\n- **完全商用授权**：用户对生成的图片拥有完整的商业使用权，可放心地用于品牌 Logo、周边产品或宣传海报。\n- **零门槛易用**：无需安装任何软件，浏览器打开即用，智能语义分析引擎能较好地理解简短的描述。\n\n适合人群：\n设计师、街头艺术爱好者、游戏开发者、品牌运营人员。\n\n官网：[https://graffitigenerator.io](https://graffitigenerator.io)\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9037","issueUrl":"https://github.com/ruanyf/weekly/issues/9037"},{"sourceId":"weekly-issues","title":"【开源自荐】SplitDot — AI 小票识别 + 链上透明记账，Polkadot Hackathon 参赛作品","url":"https://github.com/calderbuild/splitdot","author":"calderbuild","authorUrl":"https://github.com/calderbuild","publishedAt":"2026-02-19T07:54:36Z","summary":"项目信息 项目名称：SplitDot 项目地址： 在线演示： 一句话介绍：拍照扫描小票，AI 自动识别金额和明细，链上透明记账 —— 基于 Polkadot Hub EVM 的去中心化 AA 记账工具。 推荐理由 和朋友聚餐、合租、旅行，最头疼的就是记账和算账。现有工具（如 Splitwise）都是中心化的，余额只是数据库里的一个数字，谁改了什么、算没算对，完全是黑盒。 SplitDot 用智能合约做账本，用 AI 做录入： 1. AI 小票识别：手机拍照或上传小票图片，GPT4omini Vision 自动提取金额、商家、分类和明细行，一秒填好表单，不用手动输入 2. 链上透明账本：群组、账单、每笔拆分全部记录在智能合约上，任何人可验证，不可篡改 3. 智能净额计算：贪心匹配算法将 N 人之间的债务关系压缩到最少转账笔数（最多 N1 次），不用两两互转 4. 均分 / 自定义拆分：支持平均分摊和自定义金额，覆盖聚餐、合租、旅行等场景 5. 余额可视化：每个成员的净收支一目了然，绿色代表别人欠你，红色代表你欠别人 这是一个 Polkadot Hackathon 参赛作品，主要探索 AI + 智能合约在日常生活场景中的应用。 截图 AI 小票识别（核心功能） 拍照上传小票后，AI 自动识别金额 $15.14、商家 Starbucks、3 个明细行，表单一键填充： !AI Receipt Scanner 添加账单 支持金额输入、描述、分类选择、均分/自定义拆分模式： !Add Expense 创建群组 输入成员地址，链上创建透明账本群组： !Create Group 结算总览 净额算法优化后的结算方案，最少转账次数清账： !Settlement 技术栈 智能合约：Solidity 0.8.28 + Hardhat + OpenZeppelin 前端：React 19 + TypeScript + Vite 7 + Tailwind CSS v4 链交互：Wagmi v3 + viem AI：OpenAI Vision API（gpt4omini） 部署链：Polkadot Hub Testnet 补充信息： 开源协议：MIT 在线体验： （需安装 MetaMask 并添加 Polkadot Hub Testnet） 安装方式：npm install && npm run dev 适合人群：对 AI + 区块链技术结合感兴趣的开发者","content":"## 项目信息\n\n**项目名称**：SplitDot\n\n**项目地址**：https://github.com/calderbuild/splitdot\n\n**在线演示**：https://splitdot.vercel.app\n\n**一句话介绍**：拍照扫描小票，AI 自动识别金额和明细，链上透明记账 —— 基于 Polkadot Hub EVM 的去中心化 AA 记账工具。\n\n## 推荐理由\n\n和朋友聚餐、合租、旅行，最头疼的就是记账和算账。现有工具（如 Splitwise）都是中心化的，余额只是数据库里的一个数字，谁改了什么、算没算对，完全是黑盒。\n\nSplitDot 用智能合约做账本，用 AI 做录入：\n\n1. **AI 小票识别**：手机拍照或上传小票图片，GPT-4o-mini Vision 自动提取金额、商家、分类和明细行，一秒填好表单，不用手动输入\n2. **链上透明账本**：群组、账单、每笔拆分全部记录在智能合约上，任何人可验证，不可篡改\n3. **智能净额计算**：贪心匹配算法将 N 人之间的债务关系压缩到最少转账笔数（最多 N-1 次），不用两两互转\n4. **均分 / 自定义拆分**：支持平均分摊和自定义金额，覆盖聚餐、合租、旅行等场景\n5. **余额可视化**：每个成员的净收支一目了然，绿色代表别人欠你，红色代表你欠别人\n\n这是一个 Polkadot Hackathon 参赛作品，主要探索 AI + 智能合约在日常生活场景中的应用。\n\n## 截图\n\n### AI 小票识别（核心功能）\n\n拍照上传小票后，AI 自动识别金额 $15.14、商家 Starbucks、3 个明细行，表单一键填充：\n\n![AI Receipt Scanner](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/03-ai-scanner.png)\n\n### 添加账单\n\n支持金额输入、描述、分类选择、均分/自定义拆分模式：\n\n![Add Expense](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/05-add-expense.png)\n\n### 创建群组\n\n输入成员地址，链上创建透明账本群组：\n\n![Create Group](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/02-create-group.png)\n\n### 结算总览\n\n净额算法优化后的结算方案，最少转账次数清账：\n\n![Settlement](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/04-settlement.png)\n\n## 技术栈\n\n- 智能合约：Solidity 0.8.28 + Hardhat + OpenZeppelin\n- 前端：React 19 + TypeScript + Vite 7 + Tailwind CSS v4\n- 链交互：Wagmi v3 + viem\n- AI：OpenAI Vision API（gpt-4o-mini）\n- 部署链：Polkadot Hub Testnet\n\n**补充信息**：\n- 开源协议：MIT\n- 在线体验：https://splitdot.vercel.app （需安装 MetaMask 并添加 Polkadot Hub Testnet）\n- 安装方式：`npm install && npm run dev`\n- 适合人群：对 AI + 区块链技术结合感兴趣的开发者","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9038","issueUrl":"https://github.com/ruanyf/weekly/issues/9038"},{"sourceId":"weekly-issues","title":"【开源自荐】博弈圆桌 -- AI Agent 三轮自动谈判，SecondMe 分身替你博弈达成共识","url":"https://negotiation-table.vercel.app","author":"calderbuild","authorUrl":"https://github.com/calderbuild","publishedAt":"2026-02-19T08:00:07Z","summary":"博弈圆桌 (Negotiation Arena) 两个 AI Agent 代表各自立场，围绕一个议题进行三轮谈判，自动达成共识或明确分歧。 甲方：你的 SecondMe 分身（通过 OAuth 登录后调用 SecondMe Chat API 代你发言） 乙方：LLM 驱动的 AI 对手 用户只需两步操作：登录 + 设定议题，其余 100% 由 AI 自动完成。 在线体验： 源码仓库： 首页 !首页 谈判设置（内置 5 个预设场景，也可自定义） !谈判设置 三轮谈判 + 结构化共识报告 !谈判完成 核心特性 SecondMe OAuth 登录：一键授权，你的 AI 分身即刻上线 三轮渐进式谈判：基于 NeurIPS 2024 LLMDeliberation 论文的策略框架，逐轮推进共识 实时 SSE 流式对话：思考状态、轮次切换、消息逐条呈现 结构化共识报告：收敛度评分、协议条款、双方让步、未解决分歧、谈判风格分析 5 个预设场景：年终奖分配、周末聚餐、项目排期、办公室温度、远程办公 为什么谈判是 A2A 的关键场景 多数 A2A demo 是信息传递型 Agent A 传话给 Agent B。博弈圆桌展示的是 利益博弈型 A2A：两个 Agent 有各自立场和底线，需要理解对方、策略性让步、在约束条件下寻找最优解。 未来当每个人都有自己的 AI 分身，Agent 代理谈判将成为常态。 技术栈 Next.js 16 + React 19 + TypeScript + Tailwind CSS v4 + SecondMe OAuth/Chat/Act API + DeepSeek LLM，部署在 Vercel。","content":"## 博弈圆桌 (Negotiation Arena)\n\n两个 AI Agent 代表各自立场，围绕一个议题进行三轮谈判，自动达成共识或明确分歧。\n\n- **甲方**：你的 SecondMe 分身（通过 OAuth 登录后调用 SecondMe Chat API 代你发言）\n- **乙方**：LLM 驱动的 AI 对手\n\n用户只需两步操作：**登录** + **设定议题**，其余 100% 由 AI 自动完成。\n\n**在线体验：** https://negotiation-table.vercel.app\n**源码仓库：** https://github.com/calderbuild/negotiation-arena\n\n---\n\n### 首页\n\n![首页](https://raw.githubusercontent.com/calderbuild/negotiation-arena/main/docs/screenshots/homepage.png)\n\n### 谈判设置（内置 5 个预设场景，也可自定义）\n\n![谈判设置](https://raw.githubusercontent.com/calderbuild/negotiation-arena/main/docs/screenshots/setup.png)\n\n### 三轮谈判 + 结构化共识报告\n\n![谈判完成](https://raw.githubusercontent.com/calderbuild/negotiation-arena/main/docs/screenshots/negotiation-complete.png)\n\n---\n\n### 核心特性\n\n- **SecondMe OAuth 登录**：一键授权，你的 AI 分身即刻上线\n- **三轮渐进式谈判**：基于 NeurIPS 2024 LLM-Deliberation 论文的策略框架，逐轮推进共识\n- **实时 SSE 流式对话**：思考状态、轮次切换、消息逐条呈现\n- **结构化共识报告**：收敛度评分、协议条款、双方让步、未解决分歧、谈判风格分析\n- **5 个预设场景**：年终奖分配、周末聚餐、项目排期、办公室温度、远程办公\n\n### 为什么谈判是 A2A 的关键场景\n\n多数 A2A demo 是信息传递型 -- Agent A 传话给 Agent B。博弈圆桌展示的是 **利益博弈型 A2A**：两个 Agent 有各自立场和底线，需要理解对方、策略性让步、在约束条件下寻找最优解。\n\n未来当每个人都有自己的 AI 分身，Agent 代理谈判将成为常态。\n\n### 技术栈\n\nNext.js 16 + React 19 + TypeScript + Tailwind CSS v4 + SecondMe OAuth/Chat/Act API + DeepSeek LLM，部署在 Vercel。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9039","issueUrl":"https://github.com/ruanyf/weekly/issues/9039"},{"sourceId":"weekly-issues","title":"【开源自荐】SafeReceipt -- AI Agent 问责协议，链上收据证明 AI 到底做了什么","url":"https://safereceipt.vercel.app","author":"calderbuild","authorUrl":"https://github.com/calderbuild","publishedAt":"2026-02-19T08:16:26Z","summary":"SafeReceipt — Agent Accountability Protocol 当 AI Agent 替你操作链上交易时，你怎么知道它有没有偷偷改金额、换收款地址？ SafeReceipt 解决这个问题：在 AI 执行交易之前，先把用户的真实意图做成密码学收据上链；执行之后，对比收据和实际交易，自动判定是否一致。 一句话：When AI fails, receipts prove who's responsible. 在线体验： 源码仓库： 链上合约（已验证）： 首页 !首页 Agent 验证 Demo（3 个场景：安全授权 / 高危授权 / 恶意篡改） !Agent Demo 6 条自动风险评估规则 !Risk Rules 推荐理由 随着 AI Agent 越来越多地代替用户执行链上操作（授权、转账、DeFi 交互），一个关键问题浮现：Agent 说它做了 X，但实际做的是 Y，用户怎么办？ 现有方案要么依赖事后人工审查，要么信任 Agent 的自我报告。SafeReceipt 提出一个不同的思路： 1. 执行前锁定意图：用户声明 \"授权 100 USDC 给 Uniswap\"，系统将意图规范化后做 keccak256 哈希，连同风险评分一起写入智能合约 2. 执行后自动验证：将实际交易的 calldata 解码，与链上收据逐字段对比（token、spender、amount） 3. 不可篡改的证据链：如果 Agent 篡改了交易（比如把 100 改成 10000），收据状态变为 MISMATCH，任何人都可以验证 这不是又一个钱包插件，而是一个协议层的问责机制 —— 适用于任何 AI Agent 框架。 核心功能 6 条自动风险规则：无限授权检测、未知合约识别、重复授权模式、异常金额等，每笔交易自动评分 0100 确定性哈希：固定字段顺序 + 字母序排列的规范化 JSON，确保同一意图永远产生同一哈希 链上收据生命周期：CREATED → VERIFIED / MISMATCH，不可逆转 一键 Demo：连接钱包后选择场景（安全授权 / 高危授权 / 恶意篡改），全流程自动演示 证据导出：一键下载包含哈希证明、验证步骤的 JSON 文件，可用于争议仲裁 技术栈 React 19 + TypeScript + Vite + ethers.js v6 + Solidity 0.8.19 + Tailwind CSS v4，部署在 Monad Testnet（合约已在 MonadScan 开源验证）。 项目背景 为 Monad Blitz Pro Series Hackathon（Rebel in Paradise AI Hackathon）开发，关注 AI Agent 安全这一新兴领域。","content":"## SafeReceipt — Agent Accountability Protocol\n\n当 AI Agent 替你操作链上交易时，你怎么知道它有没有偷偷改金额、换收款地址？\n\nSafeReceipt 解决这个问题：**在 AI 执行交易之前，先把用户的真实意图做成密码学收据上链；执行之后，对比收据和实际交易，自动判定是否一致。**\n\n一句话：**When AI fails, receipts prove who's responsible.**\n\n**在线体验：** https://safereceipt.vercel.app\n**源码仓库：** https://github.com/calderbuild/SafeReceipt\n**链上合约（已验证）：** https://testnet.monadscan.com/address/0x7761871A017c1C703C06B0021bF341d707c6226A#code\n\n---\n\n### 首页\n\n![首页](https://raw.githubusercontent.com/calderbuild/SafeReceipt/base-version/docs/screenshots/hero.png)\n\n### Agent 验证 Demo（3 个场景：安全授权 / 高危授权 / 恶意篡改）\n\n![Agent Demo](https://raw.githubusercontent.com/calderbuild/SafeReceipt/base-version/docs/screenshots/agent-demo.png)\n\n### 6 条自动风险评估规则\n\n![Risk Rules](https://raw.githubusercontent.com/calderbuild/SafeReceipt/base-version/docs/screenshots/risk-rules.png)\n\n---\n\n### 推荐理由\n\n随着 AI Agent 越来越多地代替用户执行链上操作（授权、转账、DeFi 交互），一个关键问题浮现：**Agent 说它做了 X，但实际做的是 Y，用户怎么办？**\n\n现有方案要么依赖事后人工审查，要么信任 Agent 的自我报告。SafeReceipt 提出一个不同的思路：\n\n1. **执行前锁定意图**：用户声明 \"授权 100 USDC 给 Uniswap\"，系统将意图规范化后做 keccak256 哈希，连同风险评分一起写入智能合约\n2. **执行后自动验证**：将实际交易的 calldata 解码，与链上收据逐字段对比（token、spender、amount）\n3. **不可篡改的证据链**：如果 Agent 篡改了交易（比如把 100 改成 10000），收据状态变为 MISMATCH，任何人都可以验证\n\n这不是又一个钱包插件，而是一个**协议层的问责机制** —— 适用于任何 AI Agent 框架。\n\n---\n\n### 核心功能\n\n- **6 条自动风险规则**：无限授权检测、未知合约识别、重复授权模式、异常金额等，每笔交易自动评分 0-100\n- **确定性哈希**：固定字段顺序 + 字母序排列的规范化 JSON，确保同一意图永远产生同一哈希\n- **链上收据生命周期**：`CREATED → VERIFIED / MISMATCH`，不可逆转\n- **一键 Demo**：连接钱包后选择场景（安全授权 / 高危授权 / 恶意篡改），全流程自动演示\n- **证据导出**：一键下载包含哈希证明、验证步骤的 JSON 文件，可用于争议仲裁\n\n### 技术栈\n\nReact 19 + TypeScript + Vite + ethers.js v6 + Solidity 0.8.19 + Tailwind CSS v4，部署在 Monad Testnet（合约已在 MonadScan 开源验证）。\n\n---\n\n### 项目背景\n\n为 Monad Blitz Pro Series Hackathon（Rebel in Paradise AI Hackathon）开发，关注 AI Agent 安全这一新兴领域。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9040","issueUrl":"https://github.com/ruanyf/weekly/issues/9040"}],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A430:F563C:37F788:B7D08B:6A9E852B and timestamp 2026-09-07 09:34:35 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A431:27C59E:372C38:B4638D:6A9E852B and timestamp 2026-09-07 09:34:35 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Lookdrop","url":"https://www.producthunt.com/products/lookdrop/launches/lookdrop?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Real-time LUT color grading for iPhone photography","content":"Most camera apps make you shoot first, edit later. Lookdrop flips that — applying professional LUT color grading in real-time through your viewfinder so you see your final look before you press the shutter. Features 48MP ProRAW capture, full manual controls, cinematic film-style filters — all live in the camera. Plus Inspire, a visual-only social feed for creators. No comments, no DMs. Just images. Built by a professional photographer. Free to download on iPhone.","metrics":{},"tags":["producthunt","new"],"externalId":"1081318","logo":"https://ph-files.imgix.net/8b8e3795-fcf7-43ff-ab6c-a52c10b112b3.png?auto=format","images":["https://ph-files.imgix.net/68d92830-bd4b-42e8-8e65-323ba13e580d.png?auto=format","https://ph-files.imgix.net/01d0b5b5-929e-4701-9ece-3d12ad94af0d.png?auto=format","https://ph-files.imgix.net/f8d15a15-c9ed-4e83-ae47-1087453b4dd8.png?auto=format","https://ph-files.imgix.net/a7cd60d2-7284-424d-8830-e55ad4e8962c.png?auto=format","https://ph-files.imgix.net/0c71acb5-ea67-4133-be4f-5bbf328da21e.png?auto=format","https://ph-files.imgix.net/c445bf23-e131-4eec-bf33-ccb7e0fadac6.png?auto=format","https://ph-files.imgix.net/d26a7788-9de2-40f9-b251-aa9149540cbb.png?auto=format"],"image":"https://ph-files.imgix.net/68d92830-bd4b-42e8-8e65-323ba13e580d.png?auto=format"},{"sourceId":"producthunt","title":"HttpStatus","url":"https://www.producthunt.com/products/httpstatus-2/launches/httpstatus-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"AI-powered testing for your API and website","content":"AI-powered platform to test APIs and websites, generate mock servers, monitor uptime, and collaborate in workspaces. No signup required. Instant results.","metrics":{},"tags":["producthunt","new"],"externalId":"1081975","logo":"https://ph-files.imgix.net/90a5e19d-4964-41b3-9957-81c212e95c27.png?auto=format","images":["https://ph-files.imgix.net/5dec325f-3ad0-4b52-b183-cb912d288b98.jpeg?auto=format","https://ph-files.imgix.net/ab22e5a9-c830-4ed4-9ef3-3a3040ca9a20.jpeg?auto=format","https://ph-files.imgix.net/872fd066-bbe5-4538-b5aa-4e0d863a02d3.jpeg?auto=format"],"image":"https://ph-files.imgix.net/5dec325f-3ad0-4b52-b183-cb912d288b98.jpeg?auto=format"},{"sourceId":"producthunt","title":"Thasagoal.com","url":"https://www.producthunt.com/products/thasagoal-com/launches/thasagoal-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"A free to use betting tool for offers andpromotions.","content":"Expert football & horse racing tips plus UK's best free bets. Daily accumulator picks, Cheltenham predictions & £1,000+ in bookmaker sign-up offers. Compare all the latest betting sign-up offers and use them on free betting tips.","metrics":{},"tags":["producthunt","new"],"externalId":"1081792","logo":"https://ph-files.imgix.net/b83b0e78-0ba5-41d8-9ddd-7eab76475acb.png?auto=format","images":["https://ph-files.imgix.net/c1c0d1a9-c6b9-474d-a64c-ff6e07292dcb.png?auto=format","https://ph-files.imgix.net/5e06ab1c-d356-4f5a-92d3-0c98aba9433a.png?auto=format","https://ph-files.imgix.net/e625a29b-c675-42e6-a9f5-3b733f1f4767.png?auto=format"],"image":"https://ph-files.imgix.net/c1c0d1a9-c6b9-474d-a64c-ff6e07292dcb.png?auto=format"},{"sourceId":"producthunt","title":"Power Apps templates","url":"https://www.producthunt.com/products/power-apps-templates/launches/power-apps-templates?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Ready-made Microsoft Power Apps templates for businesses","content":"Powerapps-template.com offers a growing library of professional, ready-to-deploy Microsoft Power Apps templates. Whether you need HR tools, project trackers, inventory systems, or approval workflows — download, customize, and launch in minutes. Built for business users and IT teams who want to move fast without building from scratch.","metrics":{},"tags":["producthunt","new"],"externalId":"1081887","logo":"https://ph-files.imgix.net/fec008ce-7238-4cb1-ba8a-33e88ce789c5.png?auto=format","images":["https://ph-files.imgix.net/3c54646a-2a79-4011-8d1c-b9b14e2be63c.jpeg?auto=format","https://ph-files.imgix.net/1bf2b061-2b37-4eea-9ee9-5788d448729e.png?auto=format","https://ph-files.imgix.net/0ae22d96-3196-4f1b-b7d0-2d087aa78f04.png?auto=format","https://ph-files.imgix.net/2766d8fc-eac2-409f-bf82-e8600cb30984.png?auto=format","https://ph-files.imgix.net/c0f9c2bd-8247-4c44-a1c1-ef248043e623.png?auto=format","https://ph-files.imgix.net/5acd1da5-b845-4e4d-aff0-338635c9e469.png?auto=format","https://ph-files.imgix.net/4f85dd9d-0d64-49ee-8420-ba3739dc6aa9.png?auto=format","https://ph-files.imgix.net/04ee56ff-b58f-444a-b652-4609c48ac004.png?auto=format","https://ph-files.imgix.net/1581c184-2563-4b5d-aecb-0add08ca8e01.png?auto=format","https://ph-files.imgix.net/2ce516c6-35a0-49f1-809c-68f28b50d5e6.png?auto=format","https://ph-files.imgix.net/be619f98-bd47-4cbf-89a6-4edac4d7b3b0.png?auto=format","https://ph-files.imgix.net/cf050421-a5a3-4f99-a509-f4dec4349a83.png?auto=format","https://ph-files.imgix.net/9e2bd32c-fc00-476e-be51-665c20dcc4be.png?auto=format","https://ph-files.imgix.net/88557438-d29b-4f37-95ee-d67a272ed9a2.png?auto=format","https://ph-files.imgix.net/a4ef130f-9774-4233-9687-25c93da4e76c.png?auto=format","https://ph-files.imgix.net/4b622315-85fd-4d60-af0f-abf0fe8e6cd9.png?auto=format"],"image":"https://ph-files.imgix.net/3c54646a-2a79-4011-8d1c-b9b14e2be63c.jpeg?auto=format"},{"sourceId":"producthunt","title":"Connect","url":"https://www.producthunt.com/products/connect-7/launches/connect-1645?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"College decisions, made transparent","content":"Connect is a transparency-driven platform helping students who just completed 12th grade make smarter college decisions. Instead of relying on brochures, rankings, or outdated forums, students get real insights directly from current college seniors and get paid. Users can read honest posts, share anonymous blogs, and book paid 1-on-1 live sessions with seniors to understand placements, academics, branch options, and campus life turning expectations into real experiences before enrollment.","metrics":{},"tags":["producthunt","new"],"externalId":"1081686","logo":"https://ph-files.imgix.net/a9bfd952-9285-4400-b574-32d9aaff291c.png?auto=format","images":["https://ph-files.imgix.net/78d79772-a003-4eff-85c8-c712788072c2.jpeg?auto=format"],"image":"https://ph-files.imgix.net/78d79772-a003-4eff-85c8-c712788072c2.jpeg?auto=format"},{"sourceId":"producthunt","title":"PZip.net Compression","url":"https://www.producthunt.com/products/pzip-net-compression/launches/pzip-net-compression?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"The most powerful compression on Earth","content":"Silicon Valley was one of my favorite shows and I used to think Pied Piper and their compression algorithm was cool but unrealistic. It turns out I was wrong. I just invented the REAL PIED PIPER and launched PZip.net It turns out the solution was USA + Russia -> Shannon + Kolmogorov. These are the two greatest minds in math history but because of the cold war, they didn't really interact. If they did, they would have worked together and discovered PZip. PZip is FREE for public use!","metrics":{},"tags":["producthunt","new"],"externalId":"1081554","logo":"https://ph-files.imgix.net/faefb7d3-f69b-4d3d-9e1a-a7f16f377801.png?auto=format","images":["https://ph-files.imgix.net/cedacfa9-62e8-47a3-8b62-f9921afc5a00.png?auto=format","https://ph-files.imgix.net/298b6847-720f-4578-8082-c86570e1b279.png?auto=format","https://ph-files.imgix.net/212b7d54-95c2-4399-b7de-a5e25a3b5f29.png?auto=format"],"image":"https://ph-files.imgix.net/cedacfa9-62e8-47a3-8b62-f9921afc5a00.png?auto=format"},{"sourceId":"producthunt","title":"Glimmer","url":"https://www.producthunt.com/products/google-design/launches/glimmer-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Google’s new design language for AI glasses","content":"A design system built from scratch for transparent displays. It redefines UI physics and prioritizes glanceability, arm's-length focus, and ambient motion. Includes Jetpack Compose Glimmer and a Figma kit.","metrics":{},"tags":["producthunt","new"],"externalId":"1081584","logo":"https://ph-files.imgix.net/19cf2f4f-7027-461f-8214-f30006f77edd.svg?auto=format","images":["https://ph-files.imgix.net/d2a5021e-68c3-456d-943f-76e0c90acc7c.jpeg?auto=format","https://ph-files.imgix.net/87992841-5141-4303-936a-8ab10d7ee89f.png?auto=format","https://ph-files.imgix.net/0e9c3390-f88e-45a6-ae6b-0201398408a1.png?auto=format","https://ph-files.imgix.net/c714d733-6ccd-4428-8fdf-51be4e4b5805.png?auto=format","https://ph-files.imgix.net/a3822c6b-45b0-418e-9ecd-d2e467323ce4.png?auto=format","https://ph-files.imgix.net/f98eb3a7-2796-4f2f-962f-2f7c635c97a0.png?auto=format","https://ph-files.imgix.net/81e078d1-edf4-487f-bc68-e0a956c7e373.png?auto=format","https://ph-files.imgix.net/f4ffef13-eafd-44f6-a50c-fdb50ef0e760.png?auto=format","https://ph-files.imgix.net/ea9e276a-f21f-48d1-81ca-b4cfe449a904.png?auto=format","https://ph-files.imgix.net/6e6850d1-966d-48e2-91b3-f5b3f9d6051b.png?auto=format","https://ph-files.imgix.net/3fa7bc19-d921-4d97-b084-ffa838f132e0.png?auto=format","https://ph-files.imgix.net/9a7a037e-a5d5-460e-a265-cbc8757c44bc.png?auto=format","https://ph-files.imgix.net/e17ade10-ec4f-4f6b-b096-4fd7c58f40a8.png?auto=format"],"image":"https://ph-files.imgix.net/d2a5021e-68c3-456d-943f-76e0c90acc7c.jpeg?auto=format"},{"sourceId":"producthunt","title":"Ragnar","url":"https://www.producthunt.com/products/ragnar/launches/ragnar?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Text + Image to CAD. World's best VibeCAD!","content":"Ragnar is an AI-powered CAD platform that lets anyone turn ideas, text, and images into professional 3D CAD models — no design or CAD tool experience required. Simply describe what you want, upload a sketch, and iterate on your design through a chat interface. Export your models in industry-standard formats for 3D printing or manufacturing workflows.","metrics":{},"tags":["producthunt","new"],"externalId":"1081553","logo":"https://ph-files.imgix.net/d4f189ce-f2c3-450a-8c42-1709edd93feb.jpeg?auto=format","images":["https://ph-files.imgix.net/89b5cd3f-4454-4f32-95d6-c15ec651e5e8.png?auto=format","https://ph-files.imgix.net/fca48a77-193e-4f49-9a84-07c95e7bad94.png?auto=format","https://ph-files.imgix.net/b0f14021-47fc-42bb-a1c1-c73ee6f31eb1.png?auto=format","https://ph-files.imgix.net/ccaa63a0-75ef-455a-935b-f8dd75c3d393.png?auto=format","https://ph-files.imgix.net/35605023-5ff2-4552-bcf5-c812abe403e2.png?auto=format","https://ph-files.imgix.net/3160ba09-60e9-483e-a5e8-20cc945d429a.jpeg?auto=format"],"image":"https://ph-files.imgix.net/89b5cd3f-4454-4f32-95d6-c15ec651e5e8.png?auto=format"},{"sourceId":"producthunt","title":"GMKR","url":"https://www.producthunt.com/products/gmkr/launches/gmkr?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"GMKR is an easy-to-use, no-code RPG creator for Android.","content":"GMKR is easy to use. It includes a map editor, characters, collectibles, weapons, keys and doors to unlock, AI-controlled enemies and allies, varied weather conditions, music, and much more.","metrics":{},"tags":["producthunt","new"],"externalId":"1081452","logo":"https://ph-files.imgix.net/8a7765ea-34d4-4bf2-a3f2-1e35b7997bf0.png?auto=format","images":["https://ph-files.imgix.net/e7a4f941-afb9-4d36-9854-bb797fac3aba.jpeg?auto=format","https://ph-files.imgix.net/c56cf52e-e81c-4420-834e-9c90ff98dd6b.webp?auto=format","https://ph-files.imgix.net/8d6f1518-da22-470a-bfa9-75328fa13c85.webp?auto=format","https://ph-files.imgix.net/966be84d-4a24-4609-8712-2dbe77595ef5.webp?auto=format","https://ph-files.imgix.net/02e081f6-83ec-4650-8e92-01b9dfc148bd.webp?auto=format","https://ph-files.imgix.net/72a8815c-88f8-4f3d-9533-b169640e791a.webp?auto=format","https://ph-files.imgix.net/4a992087-e799-488e-b302-c3ee3d95096a.webp?auto=format"],"image":"https://ph-files.imgix.net/e7a4f941-afb9-4d36-9854-bb797fac3aba.jpeg?auto=format"},{"sourceId":"producthunt","title":"Tempo","url":"https://www.producthunt.com/products/tempo-offline-music-player/launches/tempo-17?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"A lightweight offline music player for your local music.","content":"A lightweight offline music player designed for your local music collection. Play your MP3s, sing along in karaoke mode to the lyrics, get daily song recommendations, create playlists, and enjoy music your way. No internet required!","metrics":{},"tags":["producthunt","new"],"externalId":"1081874","logo":"https://ph-files.imgix.net/22a5317c-c8a2-4a55-936f-df65428ba97f.jpeg?auto=format","images":["https://ph-files.imgix.net/a4f22ce6-e3a2-42ff-85b0-a6b87a257361.jpeg?auto=format","https://ph-files.imgix.net/22a0090e-dd3f-4a70-a82f-a8d6e908e5ad.jpeg?auto=format","https://ph-files.imgix.net/80aa7ca6-e970-4b7e-9259-d31d98cdf2c8.jpeg?auto=format","https://ph-files.imgix.net/db395a28-ee38-47d5-b991-a7091e31032d.jpeg?auto=format"],"image":"https://ph-files.imgix.net/a4f22ce6-e3a2-42ff-85b0-a6b87a257361.jpeg?auto=format"},{"sourceId":"producthunt","title":"ClosedOpenAI","url":"https://www.producthunt.com/products/closedopenai/launches/closedopenai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"See how OpenAI's mission statement has changed over time","content":"See how OpenAI's mission statement has changed over time to be less open","metrics":{},"tags":["producthunt","new"],"externalId":"1081769","logo":"https://ph-files.imgix.net/2d5c9fe9-4e02-4bba-ac7f-5b5aebbc5bdb.png?auto=format","images":["https://ph-files.imgix.net/af79db29-f171-4d9f-a142-66aad952c957.png?auto=format"],"image":"https://ph-files.imgix.net/af79db29-f171-4d9f-a142-66aad952c957.png?auto=format"},{"sourceId":"producthunt","title":"Feedix","url":"https://www.producthunt.com/products/feedix/launches/feedix?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Your YouTube subscriptions, summarized and delivered by AI","content":"Too many YouTube subscriptions, too little time. Feedix is built for knowledge-driven channels — tech, business, investment. Subscribe to channels, set your schedule (daily or weekly), and get AI summaries delivered to your inbox. Cut through the noise. Get only what matters. - AI extracts key insights from informational videos. - Daily or weekly delivery, on your schedule. - 9 languages supported. - Free tier available. Stop watching everything. Start knowing what matters.","metrics":{},"tags":["producthunt","new"],"externalId":"1081371","logo":"https://ph-files.imgix.net/49aaa348-d89d-4955-9ccf-e06348c599d1.png?auto=format","images":["https://ph-files.imgix.net/0154f6b3-d2c5-4383-9e1d-34a691f59ff4.jpeg?auto=format","https://ph-files.imgix.net/b881b208-2ad3-4bd6-aedd-21a8645e1a00.png?auto=format","https://ph-files.imgix.net/81131030-e5f7-4e62-ab57-0782658742b9.png?auto=format","https://ph-files.imgix.net/6a658481-9660-4502-b259-0b2d6647b385.png?auto=format","https://ph-files.imgix.net/e5a72b21-e317-4d25-9076-f0856ea591a2.png?auto=format","https://ph-files.imgix.net/b25f13d2-9b29-4aa2-9e4a-47ceacb049e7.png?auto=format","https://ph-files.imgix.net/1ba226f4-2184-4d52-974b-ee1f2c092b47.gif?auto=format","https://ph-files.imgix.net/54c6ae7f-b2d8-49a9-849c-1d4e2e34c01a.gif?auto=format"],"image":"https://ph-files.imgix.net/0154f6b3-d2c5-4383-9e1d-34a691f59ff4.jpeg?auto=format"},{"sourceId":"producthunt","title":"Kollect Voice Agent","url":"https://www.producthunt.com/products/kollect-voice-agent/launches/kollect-voice-agent?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"AI that feels human","content":"Kollect turns boring forms into real-time AI conversations. Users speak naturally, AI listens and dynamically guides the survey. You can even create forms by simply describing them.","metrics":{},"tags":["producthunt","new"],"externalId":"1081381","logo":"https://ph-files.imgix.net/b730e1f6-48eb-464c-aeda-1cf520847863.png?auto=format","images":["https://ph-files.imgix.net/a5b71afb-e271-452b-8d69-f19ea4e43f27.png?auto=format","https://ph-files.imgix.net/1a8f8906-f115-4c3b-9e19-006631eeb882.png?auto=format","https://ph-files.imgix.net/d77cd44a-54db-4099-8921-8ea0cefc6343.jpeg?auto=format"],"image":"https://ph-files.imgix.net/a5b71afb-e271-452b-8d69-f19ea4e43f27.png?auto=format"},{"sourceId":"producthunt","title":"Forge","url":"https://www.producthunt.com/products/forge-13/launches/forge-18?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Stop fighting App Store Connect. Start using Forge.","content":"Forge is a native macOS app that replaces Apple's App Store Connect web interface. Managing screenshots, metadata, TestFlight, subscriptions, and IAP pricing across 175+ territories all without the browser lag, session timeouts, and endless clicks. Drag-and-drop media uploads. Edit localizations for all regions in one view. Manage IAP pricing in seconds, not hours. Everything you do on ASC, but in 2 clicks instead of 10.","metrics":{},"tags":["producthunt","new"],"externalId":"1081669","logo":"https://ph-files.imgix.net/0eeae057-c8d0-46ef-a423-c0dee5e19460.png?auto=format","images":["https://ph-files.imgix.net/aca371a2-265d-4a94-9509-785cd7632bb1.png?auto=format","https://ph-files.imgix.net/d4367fc8-92bc-4e76-a899-e60a9b1825e5.png?auto=format","https://ph-files.imgix.net/d41fbac6-931e-4eae-8646-f5638603c1b2.png?auto=format","https://ph-files.imgix.net/7df9fc1c-885f-4661-9813-b776ac54173d.png?auto=format","https://ph-files.imgix.net/28c93a67-7d94-4d8d-adb4-b4644cce41e1.png?auto=format","https://ph-files.imgix.net/6f263a9a-667d-468c-8dc2-bf2a2c5be0d3.png?auto=format","https://ph-files.imgix.net/0d11cce0-a529-4783-a1ba-7a6dab9fb624.png?auto=format","https://ph-files.imgix.net/a08292a7-161f-4b1a-995f-f464d1dd6527.png?auto=format"],"image":"https://ph-files.imgix.net/aca371a2-265d-4a94-9509-785cd7632bb1.png?auto=format"},{"sourceId":"producthunt","title":"LyteNyte Grid 2.0","url":"https://www.producthunt.com/products/lytenyte-grid-2-0/launches/lytenyte-grid-2-0?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"100% Stateless & Fully Prop-Driven React Data Grid. ","content":"Say bye-bye to useEffect hell and data grid synchronization headaches. 👋LyteNyte Grid 2.0 is officially live. 100% stateless and fully prop-driven. Configure the data grid declaratively from your state, whether it's URL params, server state, Redux, or whatever else you can imagine. Our 2.0 release also brings a smaller ~30kb gzipped bundle size, Hybrid Headless mode for faster setup, and native object-based Tree Data. In addition, our new API offers virtually unlimited extensibility.","metrics":{},"tags":["producthunt","new"],"externalId":"1081732","logo":"https://ph-files.imgix.net/c336aa28-55c2-4840-9d35-3abc646333d6.jpeg?auto=format","images":["https://ph-files.imgix.net/8e3d1c56-c800-47c3-8ccc-868017f804ad.png?auto=format","https://ph-files.imgix.net/9213bbea-cf84-4aaf-8ebd-8c19f643e8e7.png?auto=format","https://ph-files.imgix.net/eb2afc6f-390f-45e2-affb-d1463516afbf.png?auto=format","https://ph-files.imgix.net/fa07c438-48ee-4be9-8b88-185f8a6ff125.png?auto=format","https://ph-files.imgix.net/3e8c1543-ffa8-4dc7-9299-d0a1bb2d8237.jpeg?auto=format"],"image":"https://ph-files.imgix.net/8e3d1c56-c800-47c3-8ccc-868017f804ad.png?auto=format"},{"sourceId":"producthunt","title":"Clawi.ai","url":"https://www.producthunt.com/products/clawi-ai/launches/clawi-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"OpenClaw in the Cloud with Zero Setup and on 24/7","content":"Stop wrestling with servers. Get your private OpenClaw assistant running in 5 minutes. Works on WhatsApp, Telegram, and Discord while you sleep.","metrics":{},"tags":["producthunt","new"],"externalId":"1080597","logo":"https://ph-files.imgix.net/cd47d50f-6ba2-4ce1-8013-3685906efc98.png?auto=format","images":["https://ph-files.imgix.net/b4287993-4307-4b8a-a109-88bc71742ed5.png?auto=format","https://ph-files.imgix.net/4d47cf19-e155-41b4-a4bb-d7af95b1dc3f.png?auto=format","https://ph-files.imgix.net/fe3cde12-4698-4c4e-a608-04e22e73e03d.png?auto=format","https://ph-files.imgix.net/b08bff23-f6f6-49c1-ba68-d9f32462dc5c.png?auto=format"],"image":"https://ph-files.imgix.net/b4287993-4307-4b8a-a109-88bc71742ed5.png?auto=format"},{"sourceId":"producthunt","title":"isFake.ai","url":"https://www.producthunt.com/products/isfake-ai-2/launches/isfake-ai-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Detect AI-generated content in video, images, audio, texts","content":"Detect AI content across all formats with visual proof. See highlighted suspicious details, get probability scores, and understand why something was flagged. Built by cybersecurity researchers to help you know what's real without bias or regret. For creators, researchers, journalists and brands","metrics":{},"tags":["producthunt","new"],"externalId":"1012908","logo":"https://ph-files.imgix.net/43d128ea-c5e2-4be4-bda7-999f4cbc4680.png?auto=format","images":["https://ph-files.imgix.net/08c86c1b-f772-4a9c-a268-ef31c6dc9481.png?auto=format","https://ph-files.imgix.net/7b23b812-3fae-409e-bef7-3a89f6b8992a.png?auto=format","https://ph-files.imgix.net/261198c3-9f5e-42b1-b854-b05eda147aa6.png?auto=format","https://ph-files.imgix.net/ccd0aa25-920f-4833-91b3-42d101ffb423.jpeg?auto=format"],"image":"https://ph-files.imgix.net/08c86c1b-f772-4a9c-a268-ef31c6dc9481.png?auto=format"},{"sourceId":"producthunt","title":"Go Fractional Job Board","url":"https://www.producthunt.com/products/go-fractional/launches/go-fractional-job-board?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Where fractional leaders and companies connect.","content":"We just launched the Go Fractional Job Board, expanding our mission since 2023 to connect vetted fractional leaders with companies that need on-demand expertise. Only curated roles and verified talent make the cut. We've placed C-level executives for 3 years. Now we're expanding to include VP, Director, and Head of roles.. Roles across Eng, Finance, Ops & Marketing Curated roles for fractional leaders Verified, experienced professionals only Longer-term, strategic engagements","metrics":{},"tags":["producthunt","new"],"externalId":"1081629","logo":"https://ph-files.imgix.net/70b25585-a837-434f-8ece-6dd46245b099.png?auto=format","images":["https://ph-files.imgix.net/8387a03d-18b5-4262-ba8b-a34654e168d0.jpeg?auto=format","https://ph-files.imgix.net/b8798384-1054-4128-8f76-57b84adb25f2.png?auto=format","https://ph-files.imgix.net/4268f23a-bdd9-4787-b621-9c497e86d600.png?auto=format","https://ph-files.imgix.net/37519f05-9b11-418c-9b1f-bcee6cf4fa23.png?auto=format"],"image":"https://ph-files.imgix.net/8387a03d-18b5-4262-ba8b-a34654e168d0.jpeg?auto=format"},{"sourceId":"producthunt","title":"Origami.chat","url":"https://www.producthunt.com/products/origami-chat/launches/origami-chat?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Find your perfect leads with one prompt","content":"Provide a prompt and get your perfect leads. origami.chat has 100+ data sources - use it to find more of your perfect customers, enrich a CSV, or get decision makers. Try it out and get a lead list in seconds!","metrics":{},"tags":["producthunt","new"],"externalId":"1074235","logo":"https://ph-files.imgix.net/c53837e5-b945-4371-bbb3-a69f8546ffaf.png?auto=format","images":["https://ph-files.imgix.net/074cdb40-3b50-4d7e-b418-c76c931af053.gif?auto=format","https://ph-files.imgix.net/a6b44b45-14bc-4d85-a7b6-869b347dfaaa.png?auto=format","https://ph-files.imgix.net/af46ab5c-beaa-4a84-847e-727161db9aea.png?auto=format","https://ph-files.imgix.net/f9b63e2a-8eaf-4579-8717-fbee6d50ddba.png?auto=format"],"image":"https://ph-files.imgix.net/074cdb40-3b50-4d7e-b418-c76c931af053.gif?auto=format"},{"sourceId":"producthunt","title":"Just Flow It","url":"https://www.producthunt.com/products/just-flow-it/launches/just-flow-it?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-19T08:01:00Z","summary":"Create diagrams with AI","content":"AI-powered BPMN 2.0 diagram generator. Describe your business process in natural language and get a professional BPMN diagram in seconds. Supports pools, lanes, gateways, and complex processes. Free to start.","metrics":{},"tags":["producthunt","new"],"externalId":"1081667","logo":"https://ph-files.imgix.net/5b73a281-19e5-4833-8a55-1ff5cde39df2.png?auto=format","images":["https://ph-files.imgix.net/f1e4f6d3-1eb2-42f5-8d2e-fe36e28d65c1.png?auto=format","https://ph-files.imgix.net/969e9527-423e-4d40-8aad-655e3686cd7d.png?auto=format","https://ph-files.imgix.net/4c20b411-9bf4-4642-aa24-ff1cfadb0107.png?auto=format"],"image":"https://ph-files.imgix.net/f1e4f6d3-1eb2-42f5-8d2e-fe36e28d65c1.png?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T09:34:35.521Z",
+  "date": "2026-02-19",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "粵語拼音網",
+          "url": "https://cantonesepinyin.com/",
+          "author": "BC",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T00:00:00+08:00",
+          "summary": "專業粵語拼音轉換工具，即時將中文轉換為標準粵拼",
+          "content": "專業粵語拼音轉換工具，即時將中文轉換為標準粵拼",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-02-19-粵語拼音網-https://cantonesepinyin.com/",
+          "siteLogo": "https://cantonesepinyin.com/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "MotionSeed",
+          "url": "https://seedance-2.video",
+          "author": "BC",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T00:00:00+08:00",
+          "summary": "AI 视频生成平台，聚合 Sora 2、Veo 3.1、Seedance 2.0 等多个主流 AI 视频模型，支持文字生成视频、图片生成视频，无需分别注册各平台账号，注册即送免费额度。",
+          "content": "AI 视频生成平台，聚合 Sora 2、Veo 3.1、Seedance 2.0 等多个主流 AI 视频模型，支持文字生成视频、图片生成视频，无需分别注册各平台账号，注册即送免费额度。",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-02-19-MotionSeed-https://seedance-2.video",
+          "siteLogo": "https://seedance-2.video/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Graffiti Generator",
+          "url": "https://graffitigenerator.io",
+          "author": "BC",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T00:00:00+08:00",
+          "summary": "生成涂鸦艺术，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。",
+          "content": "生成涂鸦艺术，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-02-19-Graffiti Generator-https://graffitigenerator.io",
+          "siteLogo": "https://graffitigenerator.io/favicon.svg"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "OpenAPI -> Skills 转化器，让 Agent 按需精准读取 API 文档",
+          "url": "https://neutree.ai/projects/openapi-to-skills",
+          "author": "Yuyz0112",
+          "authorUrl": "https://github.com/Yuyz0112",
+          "publishedAt": "2026-02-19T02:12:38Z",
+          "summary": "之前尝试过各种方法让 Agent 可以更可靠地读取 API 文档，不论是基于它开发客户端代码、做集成测试还是自动化。但复杂一些的 API 文档就会遇到超出上下文大小，即使不超出，也非常浪费上下文空间、多轮对话之后模型就又幻觉了。 最近又想做个公司产品 API 的 code helper ，但是产品的 API 文档的 OpenAPI JSON 接近 10MB ，又遇到上面的问题。陆续尝试过几种切分的方法，部分奏效，但是复杂度挺高，维护成本也高。 前几天突然想到 Skills 最擅长按需加载，就做了一个 CLI ，把 OpenAPI 文档转为 Skills 结构，核心是按 API 语义的拆分 + link ，实现按需加载，实际使用效果惊人，顺便加了点模版定制功能，更好用了。 原本单个 10MB API 文档，拆完之后是 2000+ 小的 md 文件，但是对于具体的 API 任务请求（比如写个 xx 场景运维脚本），Agent 都可以精准地读取所需的片段，探索性特别好，对单个资源的操作需求一般读 5 个片段就能准确写出了，最关键是没幻觉。",
+          "content": "https://neutree.ai/projects/openapi-to-skills\n\n之前尝试过各种方法让 Agent 可以更可靠地读取 API 文档，不论是基于它开发客户端代码、做集成测试还是自动化。但复杂一些的 API 文档就会遇到超出上下文大小，即使不超出，也非常浪费上下文空间、多轮对话之后模型就又幻觉了。\n\n最近又想做个公司产品 API 的 code helper ，但是产品的 API 文档的 OpenAPI JSON 接近 10MB ，又遇到上面的问题。陆续尝试过几种切分的方法，部分奏效，但是复杂度挺高，维护成本也高。\n\n前几天突然想到 Skills 最擅长按需加载，就做了一个 CLI ，把 OpenAPI 文档转为 Skills 结构，核心是按 API 语义的拆分 + link ，实现按需加载，实际使用效果惊人，顺便加了点模版定制功能，更好用了。\n\n原本单个 10MB API 文档，拆完之后是 2000+ 小的 md 文件，但是对于具体的 API 任务请求（比如写个 xx 场景运维脚本），Agent 都可以精准地读取所需的片段，探索性特别好，对单个资源的操作需求一般读 5 个片段就能准确写出了，最关键是没幻觉。\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9036",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9036",
+          "siteLogo": "https://neutree.ai/favicon.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【网站自荐】Graffiti Generator - 免费在线 AI 涂鸦与字体生成器",
+          "url": "https://graffitigenerator.io",
+          "author": "iamouyang21",
+          "authorUrl": "https://github.com/iamouyang21",
+          "publishedAt": "2026-02-19T02:17:23Z",
+          "summary": "Graffiti Generator Graffiti Generator 是一个专注于涂鸦艺术的在线生成工具，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。 主要特点： 双重 AI 创作模式： 预设工坊 (Preset Workshop)：内置赛博朋克、经典街头、泡泡字等多种流行风格，新手一键即可生成炫酷效果。 自由创作 (Free Creation)：支持高度自定义的 Prompt 输入，精准控制画面的光影、纹理和细节，满足专业需求。 专业字体生成器：提供 50+ 款精选涂鸦字体，支持实时在线编辑。用户可以自由调整填充色、轮廓、阴影、模糊度等参数，并直接下载 PNG 格式。 完全商用授权：用户对生成的图片拥有完整的商业使用权，可放心地用于品牌 Logo、周边产品或宣传海报。 零门槛易用：无需安装任何软件，浏览器打开即用，智能语义分析引擎能较好地理解简短的描述。 适合人群： 设计师、街头艺术爱好者、游戏开发者、品牌运营人员。 官网：",
+          "content": "[Graffiti Generator](https://graffitigenerator.io)\n\n**Graffiti Generator** 是一个专注于涂鸦艺术的在线生成工具，旨在降低涂鸦创作的门槛。它结合了 AI 绘画生成与传统的字体设计功能，让用户无需任何绘画基础，也能在几秒钟内创造出专业级的涂鸦作品。\n\n主要特点：\n\n- **双重 AI 创作模式**：\n  - **预设工坊 (Preset Workshop)**：内置赛博朋克、经典街头、泡泡字等多种流行风格，新手一键即可生成炫酷效果。\n  - **自由创作 (Free Creation)**：支持高度自定义的 Prompt 输入，精准控制画面的光影、纹理和细节，满足专业需求。\n- **专业字体生成器**：提供 50+ 款精选涂鸦字体，支持实时在线编辑。用户可以自由调整填充色、轮廓、阴影、模糊度等参数，并直接下载 PNG 格式。\n- **完全商用授权**：用户对生成的图片拥有完整的商业使用权，可放心地用于品牌 Logo、周边产品或宣传海报。\n- **零门槛易用**：无需安装任何软件，浏览器打开即用，智能语义分析引擎能较好地理解简短的描述。\n\n适合人群：\n设计师、街头艺术爱好者、游戏开发者、品牌运营人员。\n\n官网：[https://graffitigenerator.io](https://graffitigenerator.io)\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9037",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9037",
+          "siteLogo": "https://graffitigenerator.io/favicon.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】SplitDot — AI 小票识别 + 链上透明记账，Polkadot Hackathon 参赛作品",
+          "url": "https://github.com/calderbuild/splitdot",
+          "author": "calderbuild",
+          "authorUrl": "https://github.com/calderbuild",
+          "publishedAt": "2026-02-19T07:54:36Z",
+          "summary": "项目信息 项目名称：SplitDot 项目地址： 在线演示： 一句话介绍：拍照扫描小票，AI 自动识别金额和明细，链上透明记账 —— 基于 Polkadot Hub EVM 的去中心化 AA 记账工具。 推荐理由 和朋友聚餐、合租、旅行，最头疼的就是记账和算账。现有工具（如 Splitwise）都是中心化的，余额只是数据库里的一个数字，谁改了什么、算没算对，完全是黑盒。 SplitDot 用智能合约做账本，用 AI 做录入： 1. AI 小票识别：手机拍照或上传小票图片，GPT4omini Vision 自动提取金额、商家、分类和明细行，一秒填好表单，不用手动输入 2. 链上透明账本：群组、账单、每笔拆分全部记录在智能合约上，任何人可验证，不可篡改 3. 智能净额计算：贪心匹配算法将 N 人之间的债务关系压缩到最少转账笔数（最多 N1 次），不用两两互转 4. 均分 / 自定义拆分：支持平均分摊和自定义金额，覆盖聚餐、合租、旅行等场景 5. 余额可视化：每个成员的净收支一目了然，绿色代表别人欠你，红色代表你欠别人 这是一个 Polkadot Hackathon 参赛作品，主要探索 AI + 智能合约在日常生活场景中的应用。 截图 AI 小票识别（核心功能） 拍照上传小票后，AI 自动识别金额 $15.14、商家 Starbucks、3 个明细行，表单一键填充： !AI Receipt Scanner 添加账单 支持金额输入、描述、分类选择、均分/自定义拆分模式： !Add Expense 创建群组 输入成员地址，链上创建透明账本群组： !Create Group 结算总览 净额算法优化后的结算方案，最少转账次数清账： !Settlement 技术栈 智能合约：Solidity 0.8.28 + Hardhat + OpenZeppelin 前端：React 19 + TypeScript + Vite 7 + Tailwind CSS v4 链交互：Wagmi v3 + viem AI：OpenAI Vision API（gpt4omini） 部署链：Polkadot Hub Testnet 补充信息： 开源协议：MIT 在线体验： （需安装 MetaMask 并添加 Polkadot Hub Testnet） 安装方式：npm install && npm run dev 适合人群：对 AI + 区块链技术结合感兴趣的开发者",
+          "content": "## 项目信息\n\n**项目名称**：SplitDot\n\n**项目地址**：https://github.com/calderbuild/splitdot\n\n**在线演示**：https://splitdot.vercel.app\n\n**一句话介绍**：拍照扫描小票，AI 自动识别金额和明细，链上透明记账 —— 基于 Polkadot Hub EVM 的去中心化 AA 记账工具。\n\n## 推荐理由\n\n和朋友聚餐、合租、旅行，最头疼的就是记账和算账。现有工具（如 Splitwise）都是中心化的，余额只是数据库里的一个数字，谁改了什么、算没算对，完全是黑盒。\n\nSplitDot 用智能合约做账本，用 AI 做录入：\n\n1. **AI 小票识别**：手机拍照或上传小票图片，GPT-4o-mini Vision 自动提取金额、商家、分类和明细行，一秒填好表单，不用手动输入\n2. **链上透明账本**：群组、账单、每笔拆分全部记录在智能合约上，任何人可验证，不可篡改\n3. **智能净额计算**：贪心匹配算法将 N 人之间的债务关系压缩到最少转账笔数（最多 N-1 次），不用两两互转\n4. **均分 / 自定义拆分**：支持平均分摊和自定义金额，覆盖聚餐、合租、旅行等场景\n5. **余额可视化**：每个成员的净收支一目了然，绿色代表别人欠你，红色代表你欠别人\n\n这是一个 Polkadot Hackathon 参赛作品，主要探索 AI + 智能合约在日常生活场景中的应用。\n\n## 截图\n\n### AI 小票识别（核心功能）\n\n拍照上传小票后，AI 自动识别金额 $15.14、商家 Starbucks、3 个明细行，表单一键填充：\n\n![AI Receipt Scanner](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/03-ai-scanner.png)\n\n### 添加账单\n\n支持金额输入、描述、分类选择、均分/自定义拆分模式：\n\n![Add Expense](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/05-add-expense.png)\n\n### 创建群组\n\n输入成员地址，链上创建透明账本群组：\n\n![Create Group](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/02-create-group.png)\n\n### 结算总览\n\n净额算法优化后的结算方案，最少转账次数清账：\n\n![Settlement](https://raw.githubusercontent.com/calderbuild/splitdot/main/docs/screenshots/04-settlement.png)\n\n## 技术栈\n\n- 智能合约：Solidity 0.8.28 + Hardhat + OpenZeppelin\n- 前端：React 19 + TypeScript + Vite 7 + Tailwind CSS v4\n- 链交互：Wagmi v3 + viem\n- AI：OpenAI Vision API（gpt-4o-mini）\n- 部署链：Polkadot Hub Testnet\n\n**补充信息**：\n- 开源协议：MIT\n- 在线体验：https://splitdot.vercel.app （需安装 MetaMask 并添加 Polkadot Hub Testnet）\n- 安装方式：`npm install && npm run dev`\n- 适合人群：对 AI + 区块链技术结合感兴趣的开发者",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9038",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9038"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】博弈圆桌 -- AI Agent 三轮自动谈判，SecondMe 分身替你博弈达成共识",
+          "url": "https://negotiation-table.vercel.app",
+          "author": "calderbuild",
+          "authorUrl": "https://github.com/calderbuild",
+          "publishedAt": "2026-02-19T08:00:07Z",
+          "summary": "博弈圆桌 (Negotiation Arena) 两个 AI Agent 代表各自立场，围绕一个议题进行三轮谈判，自动达成共识或明确分歧。 甲方：你的 SecondMe 分身（通过 OAuth 登录后调用 SecondMe Chat API 代你发言） 乙方：LLM 驱动的 AI 对手 用户只需两步操作：登录 + 设定议题，其余 100% 由 AI 自动完成。 在线体验： 源码仓库： 首页 !首页 谈判设置（内置 5 个预设场景，也可自定义） !谈判设置 三轮谈判 + 结构化共识报告 !谈判完成 核心特性 SecondMe OAuth 登录：一键授权，你的 AI 分身即刻上线 三轮渐进式谈判：基于 NeurIPS 2024 LLMDeliberation 论文的策略框架，逐轮推进共识 实时 SSE 流式对话：思考状态、轮次切换、消息逐条呈现 结构化共识报告：收敛度评分、协议条款、双方让步、未解决分歧、谈判风格分析 5 个预设场景：年终奖分配、周末聚餐、项目排期、办公室温度、远程办公 为什么谈判是 A2A 的关键场景 多数 A2A demo 是信息传递型 Agent A 传话给 Agent B。博弈圆桌展示的是 利益博弈型 A2A：两个 Agent 有各自立场和底线，需要理解对方、策略性让步、在约束条件下寻找最优解。 未来当每个人都有自己的 AI 分身，Agent 代理谈判将成为常态。 技术栈 Next.js 16 + React 19 + TypeScript + Tailwind CSS v4 + SecondMe OAuth/Chat/Act API + DeepSeek LLM，部署在 Vercel。",
+          "content": "## 博弈圆桌 (Negotiation Arena)\n\n两个 AI Agent 代表各自立场，围绕一个议题进行三轮谈判，自动达成共识或明确分歧。\n\n- **甲方**：你的 SecondMe 分身（通过 OAuth 登录后调用 SecondMe Chat API 代你发言）\n- **乙方**：LLM 驱动的 AI 对手\n\n用户只需两步操作：**登录** + **设定议题**，其余 100% 由 AI 自动完成。\n\n**在线体验：** https://negotiation-table.vercel.app\n**源码仓库：** https://github.com/calderbuild/negotiation-arena\n\n---\n\n### 首页\n\n![首页](https://raw.githubusercontent.com/calderbuild/negotiation-arena/main/docs/screenshots/homepage.png)\n\n### 谈判设置（内置 5 个预设场景，也可自定义）\n\n![谈判设置](https://raw.githubusercontent.com/calderbuild/negotiation-arena/main/docs/screenshots/setup.png)\n\n### 三轮谈判 + 结构化共识报告\n\n![谈判完成](https://raw.githubusercontent.com/calderbuild/negotiation-arena/main/docs/screenshots/negotiation-complete.png)\n\n---\n\n### 核心特性\n\n- **SecondMe OAuth 登录**：一键授权，你的 AI 分身即刻上线\n- **三轮渐进式谈判**：基于 NeurIPS 2024 LLM-Deliberation 论文的策略框架，逐轮推进共识\n- **实时 SSE 流式对话**：思考状态、轮次切换、消息逐条呈现\n- **结构化共识报告**：收敛度评分、协议条款、双方让步、未解决分歧、谈判风格分析\n- **5 个预设场景**：年终奖分配、周末聚餐、项目排期、办公室温度、远程办公\n\n### 为什么谈判是 A2A 的关键场景\n\n多数 A2A demo 是信息传递型 -- Agent A 传话给 Agent B。博弈圆桌展示的是 **利益博弈型 A2A**：两个 Agent 有各自立场和底线，需要理解对方、策略性让步、在约束条件下寻找最优解。\n\n未来当每个人都有自己的 AI 分身，Agent 代理谈判将成为常态。\n\n### 技术栈\n\nNext.js 16 + React 19 + TypeScript + Tailwind CSS v4 + SecondMe OAuth/Chat/Act API + DeepSeek LLM，部署在 Vercel。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9039",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9039"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】SafeReceipt -- AI Agent 问责协议，链上收据证明 AI 到底做了什么",
+          "url": "https://safereceipt.vercel.app",
+          "author": "calderbuild",
+          "authorUrl": "https://github.com/calderbuild",
+          "publishedAt": "2026-02-19T08:16:26Z",
+          "summary": "SafeReceipt — Agent Accountability Protocol 当 AI Agent 替你操作链上交易时，你怎么知道它有没有偷偷改金额、换收款地址？ SafeReceipt 解决这个问题：在 AI 执行交易之前，先把用户的真实意图做成密码学收据上链；执行之后，对比收据和实际交易，自动判定是否一致。 一句话：When AI fails, receipts prove who's responsible. 在线体验： 源码仓库： 链上合约（已验证）： 首页 !首页 Agent 验证 Demo（3 个场景：安全授权 / 高危授权 / 恶意篡改） !Agent Demo 6 条自动风险评估规则 !Risk Rules 推荐理由 随着 AI Agent 越来越多地代替用户执行链上操作（授权、转账、DeFi 交互），一个关键问题浮现：Agent 说它做了 X，但实际做的是 Y，用户怎么办？ 现有方案要么依赖事后人工审查，要么信任 Agent 的自我报告。SafeReceipt 提出一个不同的思路： 1. 执行前锁定意图：用户声明 \"授权 100 USDC 给 Uniswap\"，系统将意图规范化后做 keccak256 哈希，连同风险评分一起写入智能合约 2. 执行后自动验证：将实际交易的 calldata 解码，与链上收据逐字段对比（token、spender、amount） 3. 不可篡改的证据链：如果 Agent 篡改了交易（比如把 100 改成 10000），收据状态变为 MISMATCH，任何人都可以验证 这不是又一个钱包插件，而是一个协议层的问责机制 —— 适用于任何 AI Agent 框架。 核心功能 6 条自动风险规则：无限授权检测、未知合约识别、重复授权模式、异常金额等，每笔交易自动评分 0100 确定性哈希：固定字段顺序 + 字母序排列的规范化 JSON，确保同一意图永远产生同一哈希 链上收据生命周期：CREATED → VERIFIED / MISMATCH，不可逆转 一键 Demo：连接钱包后选择场景（安全授权 / 高危授权 / 恶意篡改），全流程自动演示 证据导出：一键下载包含哈希证明、验证步骤的 JSON 文件，可用于争议仲裁 技术栈 React 19 + TypeScript + Vite + ethers.js v6 + Solidity 0.8.19 + Tailwind CSS v4，部署在 Monad Testnet（合约已在 MonadScan 开源验证）。 项目背景 为 Monad Blitz Pro Series Hackathon（Rebel in Paradise AI Hackathon）开发，关注 AI Agent 安全这一新兴领域。",
+          "content": "## SafeReceipt — Agent Accountability Protocol\n\n当 AI Agent 替你操作链上交易时，你怎么知道它有没有偷偷改金额、换收款地址？\n\nSafeReceipt 解决这个问题：**在 AI 执行交易之前，先把用户的真实意图做成密码学收据上链；执行之后，对比收据和实际交易，自动判定是否一致。**\n\n一句话：**When AI fails, receipts prove who's responsible.**\n\n**在线体验：** https://safereceipt.vercel.app\n**源码仓库：** https://github.com/calderbuild/SafeReceipt\n**链上合约（已验证）：** https://testnet.monadscan.com/address/0x7761871A017c1C703C06B0021bF341d707c6226A#code\n\n---\n\n### 首页\n\n![首页](https://raw.githubusercontent.com/calderbuild/SafeReceipt/base-version/docs/screenshots/hero.png)\n\n### Agent 验证 Demo（3 个场景：安全授权 / 高危授权 / 恶意篡改）\n\n![Agent Demo](https://raw.githubusercontent.com/calderbuild/SafeReceipt/base-version/docs/screenshots/agent-demo.png)\n\n### 6 条自动风险评估规则\n\n![Risk Rules](https://raw.githubusercontent.com/calderbuild/SafeReceipt/base-version/docs/screenshots/risk-rules.png)\n\n---\n\n### 推荐理由\n\n随着 AI Agent 越来越多地代替用户执行链上操作（授权、转账、DeFi 交互），一个关键问题浮现：**Agent 说它做了 X，但实际做的是 Y，用户怎么办？**\n\n现有方案要么依赖事后人工审查，要么信任 Agent 的自我报告。SafeReceipt 提出一个不同的思路：\n\n1. **执行前锁定意图**：用户声明 \"授权 100 USDC 给 Uniswap\"，系统将意图规范化后做 keccak256 哈希，连同风险评分一起写入智能合约\n2. **执行后自动验证**：将实际交易的 calldata 解码，与链上收据逐字段对比（token、spender、amount）\n3. **不可篡改的证据链**：如果 Agent 篡改了交易（比如把 100 改成 10000），收据状态变为 MISMATCH，任何人都可以验证\n\n这不是又一个钱包插件，而是一个**协议层的问责机制** —— 适用于任何 AI Agent 框架。\n\n---\n\n### 核心功能\n\n- **6 条自动风险规则**：无限授权检测、未知合约识别、重复授权模式、异常金额等，每笔交易自动评分 0-100\n- **确定性哈希**：固定字段顺序 + 字母序排列的规范化 JSON，确保同一意图永远产生同一哈希\n- **链上收据生命周期**：`CREATED → VERIFIED / MISMATCH`，不可逆转\n- **一键 Demo**：连接钱包后选择场景（安全授权 / 高危授权 / 恶意篡改），全流程自动演示\n- **证据导出**：一键下载包含哈希证明、验证步骤的 JSON 文件，可用于争议仲裁\n\n### 技术栈\n\nReact 19 + TypeScript + Vite + ethers.js v6 + Solidity 0.8.19 + Tailwind CSS v4，部署在 Monad Testnet（合约已在 MonadScan 开源验证）。\n\n---\n\n### 项目背景\n\n为 Monad Blitz Pro Series Hackathon（Rebel in Paradise AI Hackathon）开发，关注 AI Agent 安全这一新兴领域。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9040",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9040"
+        }
+      ],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A430:F563C:37F788:B7D08B:6A9E852B and timestamp 2026-09-07 09:34:35 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A431:27C59E:372C38:B4638D:6A9E852B and timestamp 2026-09-07 09:34:35 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Lookdrop",
+          "url": "https://www.producthunt.com/products/lookdrop/launches/lookdrop?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Real-time LUT color grading for iPhone photography",
+          "content": "Most camera apps make you shoot first, edit later. Lookdrop flips that — applying professional LUT color grading in real-time through your viewfinder so you see your final look before you press the shutter. Features 48MP ProRAW capture, full manual controls, cinematic film-style filters — all live in the camera. Plus Inspire, a visual-only social feed for creators. No comments, no DMs. Just images. Built by a professional photographer. Free to download on iPhone.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081318",
+          "logo": "https://ph-files.imgix.net/8b8e3795-fcf7-43ff-ab6c-a52c10b112b3.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/68d92830-bd4b-42e8-8e65-323ba13e580d.png?auto=format",
+            "https://ph-files.imgix.net/01d0b5b5-929e-4701-9ece-3d12ad94af0d.png?auto=format",
+            "https://ph-files.imgix.net/f8d15a15-c9ed-4e83-ae47-1087453b4dd8.png?auto=format",
+            "https://ph-files.imgix.net/a7cd60d2-7284-424d-8830-e55ad4e8962c.png?auto=format",
+            "https://ph-files.imgix.net/0c71acb5-ea67-4133-be4f-5bbf328da21e.png?auto=format",
+            "https://ph-files.imgix.net/c445bf23-e131-4eec-bf33-ccb7e0fadac6.png?auto=format",
+            "https://ph-files.imgix.net/d26a7788-9de2-40f9-b251-aa9149540cbb.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/68d92830-bd4b-42e8-8e65-323ba13e580d.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "HttpStatus",
+          "url": "https://www.producthunt.com/products/httpstatus-2/launches/httpstatus-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "AI-powered testing for your API and website",
+          "content": "AI-powered platform to test APIs and websites, generate mock servers, monitor uptime, and collaborate in workspaces. No signup required. Instant results.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081975",
+          "logo": "https://ph-files.imgix.net/90a5e19d-4964-41b3-9957-81c212e95c27.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/5dec325f-3ad0-4b52-b183-cb912d288b98.jpeg?auto=format",
+            "https://ph-files.imgix.net/ab22e5a9-c830-4ed4-9ef3-3a3040ca9a20.jpeg?auto=format",
+            "https://ph-files.imgix.net/872fd066-bbe5-4538-b5aa-4e0d863a02d3.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/5dec325f-3ad0-4b52-b183-cb912d288b98.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Thasagoal.com",
+          "url": "https://www.producthunt.com/products/thasagoal-com/launches/thasagoal-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "A free to use betting tool for offers andpromotions.",
+          "content": "Expert football & horse racing tips plus UK's best free bets. Daily accumulator picks, Cheltenham predictions & £1,000+ in bookmaker sign-up offers. Compare all the latest betting sign-up offers and use them on free betting tips.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081792",
+          "logo": "https://ph-files.imgix.net/b83b0e78-0ba5-41d8-9ddd-7eab76475acb.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c1c0d1a9-c6b9-474d-a64c-ff6e07292dcb.png?auto=format",
+            "https://ph-files.imgix.net/5e06ab1c-d356-4f5a-92d3-0c98aba9433a.png?auto=format",
+            "https://ph-files.imgix.net/e625a29b-c675-42e6-a9f5-3b733f1f4767.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c1c0d1a9-c6b9-474d-a64c-ff6e07292dcb.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Power Apps templates",
+          "url": "https://www.producthunt.com/products/power-apps-templates/launches/power-apps-templates?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Ready-made Microsoft Power Apps templates for businesses",
+          "content": "Powerapps-template.com offers a growing library of professional, ready-to-deploy Microsoft Power Apps templates. Whether you need HR tools, project trackers, inventory systems, or approval workflows — download, customize, and launch in minutes. Built for business users and IT teams who want to move fast without building from scratch.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081887",
+          "logo": "https://ph-files.imgix.net/fec008ce-7238-4cb1-ba8a-33e88ce789c5.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/3c54646a-2a79-4011-8d1c-b9b14e2be63c.jpeg?auto=format",
+            "https://ph-files.imgix.net/1bf2b061-2b37-4eea-9ee9-5788d448729e.png?auto=format",
+            "https://ph-files.imgix.net/0ae22d96-3196-4f1b-b7d0-2d087aa78f04.png?auto=format",
+            "https://ph-files.imgix.net/2766d8fc-eac2-409f-bf82-e8600cb30984.png?auto=format",
+            "https://ph-files.imgix.net/c0f9c2bd-8247-4c44-a1c1-ef248043e623.png?auto=format",
+            "https://ph-files.imgix.net/5acd1da5-b845-4e4d-aff0-338635c9e469.png?auto=format",
+            "https://ph-files.imgix.net/4f85dd9d-0d64-49ee-8420-ba3739dc6aa9.png?auto=format",
+            "https://ph-files.imgix.net/04ee56ff-b58f-444a-b652-4609c48ac004.png?auto=format",
+            "https://ph-files.imgix.net/1581c184-2563-4b5d-aecb-0add08ca8e01.png?auto=format",
+            "https://ph-files.imgix.net/2ce516c6-35a0-49f1-809c-68f28b50d5e6.png?auto=format",
+            "https://ph-files.imgix.net/be619f98-bd47-4cbf-89a6-4edac4d7b3b0.png?auto=format",
+            "https://ph-files.imgix.net/cf050421-a5a3-4f99-a509-f4dec4349a83.png?auto=format",
+            "https://ph-files.imgix.net/9e2bd32c-fc00-476e-be51-665c20dcc4be.png?auto=format",
+            "https://ph-files.imgix.net/88557438-d29b-4f37-95ee-d67a272ed9a2.png?auto=format",
+            "https://ph-files.imgix.net/a4ef130f-9774-4233-9687-25c93da4e76c.png?auto=format",
+            "https://ph-files.imgix.net/4b622315-85fd-4d60-af0f-abf0fe8e6cd9.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/3c54646a-2a79-4011-8d1c-b9b14e2be63c.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Connect",
+          "url": "https://www.producthunt.com/products/connect-7/launches/connect-1645?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "College decisions, made transparent",
+          "content": "Connect is a transparency-driven platform helping students who just completed 12th grade make smarter college decisions. Instead of relying on brochures, rankings, or outdated forums, students get real insights directly from current college seniors and get paid. Users can read honest posts, share anonymous blogs, and book paid 1-on-1 live sessions with seniors to understand placements, academics, branch options, and campus life turning expectations into real experiences before enrollment.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081686",
+          "logo": "https://ph-files.imgix.net/a9bfd952-9285-4400-b574-32d9aaff291c.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/78d79772-a003-4eff-85c8-c712788072c2.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/78d79772-a003-4eff-85c8-c712788072c2.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "PZip.net Compression",
+          "url": "https://www.producthunt.com/products/pzip-net-compression/launches/pzip-net-compression?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "The most powerful compression on Earth",
+          "content": "Silicon Valley was one of my favorite shows and I used to think Pied Piper and their compression algorithm was cool but unrealistic. It turns out I was wrong. I just invented the REAL PIED PIPER and launched PZip.net It turns out the solution was USA + Russia -> Shannon + Kolmogorov. These are the two greatest minds in math history but because of the cold war, they didn't really interact. If they did, they would have worked together and discovered PZip. PZip is FREE for public use!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081554",
+          "logo": "https://ph-files.imgix.net/faefb7d3-f69b-4d3d-9e1a-a7f16f377801.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/cedacfa9-62e8-47a3-8b62-f9921afc5a00.png?auto=format",
+            "https://ph-files.imgix.net/298b6847-720f-4578-8082-c86570e1b279.png?auto=format",
+            "https://ph-files.imgix.net/212b7d54-95c2-4399-b7de-a5e25a3b5f29.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/cedacfa9-62e8-47a3-8b62-f9921afc5a00.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Glimmer",
+          "url": "https://www.producthunt.com/products/google-design/launches/glimmer-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Google’s new design language for AI glasses",
+          "content": "A design system built from scratch for transparent displays. It redefines UI physics and prioritizes glanceability, arm's-length focus, and ambient motion. Includes Jetpack Compose Glimmer and a Figma kit.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081584",
+          "logo": "https://ph-files.imgix.net/19cf2f4f-7027-461f-8214-f30006f77edd.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/d2a5021e-68c3-456d-943f-76e0c90acc7c.jpeg?auto=format",
+            "https://ph-files.imgix.net/87992841-5141-4303-936a-8ab10d7ee89f.png?auto=format",
+            "https://ph-files.imgix.net/0e9c3390-f88e-45a6-ae6b-0201398408a1.png?auto=format",
+            "https://ph-files.imgix.net/c714d733-6ccd-4428-8fdf-51be4e4b5805.png?auto=format",
+            "https://ph-files.imgix.net/a3822c6b-45b0-418e-9ecd-d2e467323ce4.png?auto=format",
+            "https://ph-files.imgix.net/f98eb3a7-2796-4f2f-962f-2f7c635c97a0.png?auto=format",
+            "https://ph-files.imgix.net/81e078d1-edf4-487f-bc68-e0a956c7e373.png?auto=format",
+            "https://ph-files.imgix.net/f4ffef13-eafd-44f6-a50c-fdb50ef0e760.png?auto=format",
+            "https://ph-files.imgix.net/ea9e276a-f21f-48d1-81ca-b4cfe449a904.png?auto=format",
+            "https://ph-files.imgix.net/6e6850d1-966d-48e2-91b3-f5b3f9d6051b.png?auto=format",
+            "https://ph-files.imgix.net/3fa7bc19-d921-4d97-b084-ffa838f132e0.png?auto=format",
+            "https://ph-files.imgix.net/9a7a037e-a5d5-460e-a265-cbc8757c44bc.png?auto=format",
+            "https://ph-files.imgix.net/e17ade10-ec4f-4f6b-b096-4fd7c58f40a8.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/d2a5021e-68c3-456d-943f-76e0c90acc7c.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Ragnar",
+          "url": "https://www.producthunt.com/products/ragnar/launches/ragnar?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Text + Image to CAD. World's best VibeCAD!",
+          "content": "Ragnar is an AI-powered CAD platform that lets anyone turn ideas, text, and images into professional 3D CAD models — no design or CAD tool experience required. Simply describe what you want, upload a sketch, and iterate on your design through a chat interface. Export your models in industry-standard formats for 3D printing or manufacturing workflows.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081553",
+          "logo": "https://ph-files.imgix.net/d4f189ce-f2c3-450a-8c42-1709edd93feb.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/89b5cd3f-4454-4f32-95d6-c15ec651e5e8.png?auto=format",
+            "https://ph-files.imgix.net/fca48a77-193e-4f49-9a84-07c95e7bad94.png?auto=format",
+            "https://ph-files.imgix.net/b0f14021-47fc-42bb-a1c1-c73ee6f31eb1.png?auto=format",
+            "https://ph-files.imgix.net/ccaa63a0-75ef-455a-935b-f8dd75c3d393.png?auto=format",
+            "https://ph-files.imgix.net/35605023-5ff2-4552-bcf5-c812abe403e2.png?auto=format",
+            "https://ph-files.imgix.net/3160ba09-60e9-483e-a5e8-20cc945d429a.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/89b5cd3f-4454-4f32-95d6-c15ec651e5e8.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "GMKR",
+          "url": "https://www.producthunt.com/products/gmkr/launches/gmkr?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "GMKR is an easy-to-use, no-code RPG creator for Android.",
+          "content": "GMKR is easy to use. It includes a map editor, characters, collectibles, weapons, keys and doors to unlock, AI-controlled enemies and allies, varied weather conditions, music, and much more.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081452",
+          "logo": "https://ph-files.imgix.net/8a7765ea-34d4-4bf2-a3f2-1e35b7997bf0.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e7a4f941-afb9-4d36-9854-bb797fac3aba.jpeg?auto=format",
+            "https://ph-files.imgix.net/c56cf52e-e81c-4420-834e-9c90ff98dd6b.webp?auto=format",
+            "https://ph-files.imgix.net/8d6f1518-da22-470a-bfa9-75328fa13c85.webp?auto=format",
+            "https://ph-files.imgix.net/966be84d-4a24-4609-8712-2dbe77595ef5.webp?auto=format",
+            "https://ph-files.imgix.net/02e081f6-83ec-4650-8e92-01b9dfc148bd.webp?auto=format",
+            "https://ph-files.imgix.net/72a8815c-88f8-4f3d-9533-b169640e791a.webp?auto=format",
+            "https://ph-files.imgix.net/4a992087-e799-488e-b302-c3ee3d95096a.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e7a4f941-afb9-4d36-9854-bb797fac3aba.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Tempo",
+          "url": "https://www.producthunt.com/products/tempo-offline-music-player/launches/tempo-17?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "A lightweight offline music player for your local music.",
+          "content": "A lightweight offline music player designed for your local music collection. Play your MP3s, sing along in karaoke mode to the lyrics, get daily song recommendations, create playlists, and enjoy music your way. No internet required!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081874",
+          "logo": "https://ph-files.imgix.net/22a5317c-c8a2-4a55-936f-df65428ba97f.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a4f22ce6-e3a2-42ff-85b0-a6b87a257361.jpeg?auto=format",
+            "https://ph-files.imgix.net/22a0090e-dd3f-4a70-a82f-a8d6e908e5ad.jpeg?auto=format",
+            "https://ph-files.imgix.net/80aa7ca6-e970-4b7e-9259-d31d98cdf2c8.jpeg?auto=format",
+            "https://ph-files.imgix.net/db395a28-ee38-47d5-b991-a7091e31032d.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a4f22ce6-e3a2-42ff-85b0-a6b87a257361.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ClosedOpenAI",
+          "url": "https://www.producthunt.com/products/closedopenai/launches/closedopenai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "See how OpenAI's mission statement has changed over time",
+          "content": "See how OpenAI's mission statement has changed over time to be less open",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081769",
+          "logo": "https://ph-files.imgix.net/2d5c9fe9-4e02-4bba-ac7f-5b5aebbc5bdb.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/af79db29-f171-4d9f-a142-66aad952c957.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/af79db29-f171-4d9f-a142-66aad952c957.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Feedix",
+          "url": "https://www.producthunt.com/products/feedix/launches/feedix?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Your YouTube subscriptions, summarized and delivered by AI",
+          "content": "Too many YouTube subscriptions, too little time. Feedix is built for knowledge-driven channels — tech, business, investment. Subscribe to channels, set your schedule (daily or weekly), and get AI summaries delivered to your inbox. Cut through the noise. Get only what matters. - AI extracts key insights from informational videos. - Daily or weekly delivery, on your schedule. - 9 languages supported. - Free tier available. Stop watching everything. Start knowing what matters.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081371",
+          "logo": "https://ph-files.imgix.net/49aaa348-d89d-4955-9ccf-e06348c599d1.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0154f6b3-d2c5-4383-9e1d-34a691f59ff4.jpeg?auto=format",
+            "https://ph-files.imgix.net/b881b208-2ad3-4bd6-aedd-21a8645e1a00.png?auto=format",
+            "https://ph-files.imgix.net/81131030-e5f7-4e62-ab57-0782658742b9.png?auto=format",
+            "https://ph-files.imgix.net/6a658481-9660-4502-b259-0b2d6647b385.png?auto=format",
+            "https://ph-files.imgix.net/e5a72b21-e317-4d25-9076-f0856ea591a2.png?auto=format",
+            "https://ph-files.imgix.net/b25f13d2-9b29-4aa2-9e4a-47ceacb049e7.png?auto=format",
+            "https://ph-files.imgix.net/1ba226f4-2184-4d52-974b-ee1f2c092b47.gif?auto=format",
+            "https://ph-files.imgix.net/54c6ae7f-b2d8-49a9-849c-1d4e2e34c01a.gif?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0154f6b3-d2c5-4383-9e1d-34a691f59ff4.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Kollect Voice Agent",
+          "url": "https://www.producthunt.com/products/kollect-voice-agent/launches/kollect-voice-agent?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "AI that feels human",
+          "content": "Kollect turns boring forms into real-time AI conversations. Users speak naturally, AI listens and dynamically guides the survey. You can even create forms by simply describing them.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081381",
+          "logo": "https://ph-files.imgix.net/b730e1f6-48eb-464c-aeda-1cf520847863.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a5b71afb-e271-452b-8d69-f19ea4e43f27.png?auto=format",
+            "https://ph-files.imgix.net/1a8f8906-f115-4c3b-9e19-006631eeb882.png?auto=format",
+            "https://ph-files.imgix.net/d77cd44a-54db-4099-8921-8ea0cefc6343.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a5b71afb-e271-452b-8d69-f19ea4e43f27.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Forge",
+          "url": "https://www.producthunt.com/products/forge-13/launches/forge-18?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Stop fighting App Store Connect. Start using Forge.",
+          "content": "Forge is a native macOS app that replaces Apple's App Store Connect web interface. Managing screenshots, metadata, TestFlight, subscriptions, and IAP pricing across 175+ territories all without the browser lag, session timeouts, and endless clicks. Drag-and-drop media uploads. Edit localizations for all regions in one view. Manage IAP pricing in seconds, not hours. Everything you do on ASC, but in 2 clicks instead of 10.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081669",
+          "logo": "https://ph-files.imgix.net/0eeae057-c8d0-46ef-a423-c0dee5e19460.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/aca371a2-265d-4a94-9509-785cd7632bb1.png?auto=format",
+            "https://ph-files.imgix.net/d4367fc8-92bc-4e76-a899-e60a9b1825e5.png?auto=format",
+            "https://ph-files.imgix.net/d41fbac6-931e-4eae-8646-f5638603c1b2.png?auto=format",
+            "https://ph-files.imgix.net/7df9fc1c-885f-4661-9813-b776ac54173d.png?auto=format",
+            "https://ph-files.imgix.net/28c93a67-7d94-4d8d-adb4-b4644cce41e1.png?auto=format",
+            "https://ph-files.imgix.net/6f263a9a-667d-468c-8dc2-bf2a2c5be0d3.png?auto=format",
+            "https://ph-files.imgix.net/0d11cce0-a529-4783-a1ba-7a6dab9fb624.png?auto=format",
+            "https://ph-files.imgix.net/a08292a7-161f-4b1a-995f-f464d1dd6527.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/aca371a2-265d-4a94-9509-785cd7632bb1.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "LyteNyte Grid 2.0",
+          "url": "https://www.producthunt.com/products/lytenyte-grid-2-0/launches/lytenyte-grid-2-0?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "100% Stateless & Fully Prop-Driven React Data Grid. ",
+          "content": "Say bye-bye to useEffect hell and data grid synchronization headaches. 👋LyteNyte Grid 2.0 is officially live. 100% stateless and fully prop-driven. Configure the data grid declaratively from your state, whether it's URL params, server state, Redux, or whatever else you can imagine. Our 2.0 release also brings a smaller ~30kb gzipped bundle size, Hybrid Headless mode for faster setup, and native object-based Tree Data. In addition, our new API offers virtually unlimited extensibility.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081732",
+          "logo": "https://ph-files.imgix.net/c336aa28-55c2-4840-9d35-3abc646333d6.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8e3d1c56-c800-47c3-8ccc-868017f804ad.png?auto=format",
+            "https://ph-files.imgix.net/9213bbea-cf84-4aaf-8ebd-8c19f643e8e7.png?auto=format",
+            "https://ph-files.imgix.net/eb2afc6f-390f-45e2-affb-d1463516afbf.png?auto=format",
+            "https://ph-files.imgix.net/fa07c438-48ee-4be9-8b88-185f8a6ff125.png?auto=format",
+            "https://ph-files.imgix.net/3e8c1543-ffa8-4dc7-9299-d0a1bb2d8237.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8e3d1c56-c800-47c3-8ccc-868017f804ad.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Clawi.ai",
+          "url": "https://www.producthunt.com/products/clawi-ai/launches/clawi-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "OpenClaw in the Cloud with Zero Setup and on 24/7",
+          "content": "Stop wrestling with servers. Get your private OpenClaw assistant running in 5 minutes. Works on WhatsApp, Telegram, and Discord while you sleep.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1080597",
+          "logo": "https://ph-files.imgix.net/cd47d50f-6ba2-4ce1-8013-3685906efc98.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b4287993-4307-4b8a-a109-88bc71742ed5.png?auto=format",
+            "https://ph-files.imgix.net/4d47cf19-e155-41b4-a4bb-d7af95b1dc3f.png?auto=format",
+            "https://ph-files.imgix.net/fe3cde12-4698-4c4e-a608-04e22e73e03d.png?auto=format",
+            "https://ph-files.imgix.net/b08bff23-f6f6-49c1-ba68-d9f32462dc5c.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b4287993-4307-4b8a-a109-88bc71742ed5.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "isFake.ai",
+          "url": "https://www.producthunt.com/products/isfake-ai-2/launches/isfake-ai-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Detect AI-generated content in video, images, audio, texts",
+          "content": "Detect AI content across all formats with visual proof. See highlighted suspicious details, get probability scores, and understand why something was flagged. Built by cybersecurity researchers to help you know what's real without bias or regret. For creators, researchers, journalists and brands",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1012908",
+          "logo": "https://ph-files.imgix.net/43d128ea-c5e2-4be4-bda7-999f4cbc4680.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/08c86c1b-f772-4a9c-a268-ef31c6dc9481.png?auto=format",
+            "https://ph-files.imgix.net/7b23b812-3fae-409e-bef7-3a89f6b8992a.png?auto=format",
+            "https://ph-files.imgix.net/261198c3-9f5e-42b1-b854-b05eda147aa6.png?auto=format",
+            "https://ph-files.imgix.net/ccd0aa25-920f-4833-91b3-42d101ffb423.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/08c86c1b-f772-4a9c-a268-ef31c6dc9481.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Go Fractional Job Board",
+          "url": "https://www.producthunt.com/products/go-fractional/launches/go-fractional-job-board?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Where fractional leaders and companies connect.",
+          "content": "We just launched the Go Fractional Job Board, expanding our mission since 2023 to connect vetted fractional leaders with companies that need on-demand expertise. Only curated roles and verified talent make the cut. We've placed C-level executives for 3 years. Now we're expanding to include VP, Director, and Head of roles.. Roles across Eng, Finance, Ops & Marketing Curated roles for fractional leaders Verified, experienced professionals only Longer-term, strategic engagements",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081629",
+          "logo": "https://ph-files.imgix.net/70b25585-a837-434f-8ece-6dd46245b099.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8387a03d-18b5-4262-ba8b-a34654e168d0.jpeg?auto=format",
+            "https://ph-files.imgix.net/b8798384-1054-4128-8f76-57b84adb25f2.png?auto=format",
+            "https://ph-files.imgix.net/4268f23a-bdd9-4787-b621-9c497e86d600.png?auto=format",
+            "https://ph-files.imgix.net/37519f05-9b11-418c-9b1f-bcee6cf4fa23.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8387a03d-18b5-4262-ba8b-a34654e168d0.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Origami.chat",
+          "url": "https://www.producthunt.com/products/origami-chat/launches/origami-chat?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Find your perfect leads with one prompt",
+          "content": "Provide a prompt and get your perfect leads. origami.chat has 100+ data sources - use it to find more of your perfect customers, enrich a CSV, or get decision makers. Try it out and get a lead list in seconds!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1074235",
+          "logo": "https://ph-files.imgix.net/c53837e5-b945-4371-bbb3-a69f8546ffaf.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/074cdb40-3b50-4d7e-b418-c76c931af053.gif?auto=format",
+            "https://ph-files.imgix.net/a6b44b45-14bc-4d85-a7b6-869b347dfaaa.png?auto=format",
+            "https://ph-files.imgix.net/af46ab5c-beaa-4a84-847e-727161db9aea.png?auto=format",
+            "https://ph-files.imgix.net/f9b63e2a-8eaf-4579-8717-fbee6d50ddba.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/074cdb40-3b50-4d7e-b418-c76c931af053.gif?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Just Flow It",
+          "url": "https://www.producthunt.com/products/just-flow-it/launches/just-flow-it?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-19T08:01:00Z",
+          "summary": "Create diagrams with AI",
+          "content": "AI-powered BPMN 2.0 diagram generator. Describe your business process in natural language and get a professional BPMN diagram in seconds. Supports pools, lanes, gateways, and complex processes. Free to start.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1081667",
+          "logo": "https://ph-files.imgix.net/5b73a281-19e5-4833-8a55-1ff5cde39df2.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/f1e4f6d3-1eb2-42f5-8d2e-fe36e28d65c1.png?auto=format",
+            "https://ph-files.imgix.net/969e9527-423e-4d40-8aad-655e3686cd7d.png?auto=format",
+            "https://ph-files.imgix.net/4c20b411-9bf4-4642-aa24-ff1cfadb0107.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/f1e4f6d3-1eb2-42f5-8d2e-fe36e28d65c1.png?auto=format"
+        }
+      ]
+    }
+  ]
+}

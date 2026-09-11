@@ -1,1 +1,897 @@
-{"fetchedAt":"2026-09-07T08:44:41.658Z","date":"2026-06-11","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源推荐】声绘：基于 Flutter 的 AI 语音生成、音色设计与声音克隆应用，支持 TTS、Voice Clone、文本优化和远程配置","url":"https://github.com/FuKun0113/shenghui-ai-voice-studio","author":"Hao4Wang","authorUrl":"https://github.com/Hao4Wang","publishedAt":"2026-06-10T17:14:19Z","summary":"项目地址： 官网： 界面： <table <tr <td align=\"center\"<img src=\" width=\"220\" alt=\"生成语音页面\"<br生成语音</td <td align=\"center\"<img src=\" width=\"220\" alt=\"音色库页面\"<br音色库</td <td align=\"center\"<img src=\" width=\"220\" alt=\"音色设计页面\"<br音色设计</td </tr <tr <td align=\"center\"<img src=\" width=\"220\" alt=\"声音克隆页面\"<br声音克隆</td <td align=\"center\"<img src=\" width=\"220\" alt=\"高级案例页面\"<br高级案例</td <td align=\"center\"<img src=\" width=\"220\" alt=\"案例详情页面\"<br案例详情</td </tr </table 核心能力： AI 语音生成：输入文本后生成语音，支持即时播放、历史记录、重生成、下载、分享和删除。 音色库：管理官方音色、自定义音色、收藏音色和最近使用音色，支持分类筛选。 音色设计：通过专业化音色描述生成试听，保存后作为可复用音色。 声音克隆：支持即时录音或上传参考音频，用于创建自定义声音。 表演指令：在生成前描述语气、节奏、角色状态和表达方式，让语音更有表现力。 高级标签：支持风格标签、音频标签、方言标签，并在输入框、历史详情和案例详情中高亮显示。 文档导入：支持 TXT、Word、PDF 文档文本提取，用于较长内容的分段生成。 文本优化：支持 OpenAI 兼容接口，用于生成表演指令、优化文本、插入语音标签。 本地优先：API URL、API Key、音色和历史数据保存在用户设备本地。 支持下载 .apk .aab","content":"项目地址：https://github.com/FuKun0113/shenghui-ai-voice-studio\n官网：https://shenghui.cloudlark.net/\n界面：\n<table>\n  <tr>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/generate.png\" width=\"220\" alt=\"生成语音页面\"><br>生成语音</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/voice-library.png\" width=\"220\" alt=\"音色库页面\"><br>音色库</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/create-voice-design.png\" width=\"220\" alt=\"音色设计页面\"><br>音色设计</td>\n  </tr>\n  <tr>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/create-voice-clone.png\" width=\"220\" alt=\"声音克隆页面\"><br>声音克隆</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/advanced-cases.png\" width=\"220\" alt=\"高级案例页面\"><br>高级案例</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/case-detail.png\" width=\"220\" alt=\"案例详情页面\"><br>案例详情</td>\n  </tr>\n</table>\n\n核心能力：\n\n- AI 语音生成：输入文本后生成语音，支持即时播放、历史记录、重生成、下载、分享和删除。\n- 音色库：管理官方音色、自定义音色、收藏音色和最近使用音色，支持分类筛选。\n- 音色设计：通过专业化音色描述生成试听，保存后作为可复用音色。\n- 声音克隆：支持即时录音或上传参考音频，用于创建自定义声音。\n- 表演指令：在生成前描述语气、节奏、角色状态和表达方式，让语音更有表现力。\n- 高级标签：支持风格标签、音频标签、方言标签，并在输入框、历史详情和案例详情中高亮显示。\n- 文档导入：支持 TXT、Word、PDF 文档文本提取，用于较长内容的分段生成。\n- 文本优化：支持 OpenAI 兼容接口，用于生成表演指令、优化文本、插入语音标签。\n- 本地优先：API URL、API Key、音色和历史数据保存在用户设备本地。\n\n\n支持下载 [.apk .aab](https://github.com/FuKun0113/shenghui-ai-voice-studio/releases)","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"10283","issueUrl":"https://github.com/ruanyf/weekly/issues/10283"},{"sourceId":"weekly-issues","title":"【开源自荐】PTP 时间同步技术书——从思想实验到动手实现","url":"https://github.com/Lularible/ptp-book","author":"Lularible","authorUrl":"https://github.com/Lularible","publishedAt":"2026-06-11T03:41:24Z","summary":"【开源自荐】PTP 时间同步技术书——从思想实验到动手实现 开源地址： 项目简介： 一本开源技术书，从思想实验讲起，深入 PTP/IEEE 1588 协议机制和 LinuxPTP 源码分析，附带一套可运行的 ptplite 教学实现（约 1000 行 C），可在两台 Linux 机器上实际做主从时钟同步。 为什么这很重要？ 自动驾驶需要多传感器（激光雷达、摄像头、IMU）在微秒级对齐时间戳——时间不同步等于传感器白装。PTP/gPTP（IEEE 1588 / 802.1AS）是实现车载时钟同步的核心标准，已广泛应用于主流自动驾驶平台。然而，系统性、从零讲起的中文 PTP 技术资料几乎空白。 运行效果： <img width=\"1946\" height=\"1165\" alt=\"Image\" src=\" / 核心特性： 📖 41 节 —— 4 个章节覆盖思想实验、协议机制、源码分析、动手实现 🔬 逐机制拆解 —— BMCA 选举、4 个时间戳的数学、透明时钟、PI 伺服控制器 ⚙️ ptplite —— 一个完整的主从时钟实现，可在真实网卡上运行做时间同步 📊 市场验证 —— CSDN 3 周 3 万阅读、1000+ 点赞收藏 开源协议：CC BYNCND 4.0（内容） · MIT（代码）","content":"### 【开源自荐】PTP 时间同步技术书——从思想实验到动手实现\n\n**开源地址：**\nhttps://github.com/Lularible/ptp-book\n\n**项目简介：**\n\n一本开源技术书，从思想实验讲起，深入 PTP/IEEE 1588 协议机制和 LinuxPTP 源码分析，附带一套可运行的 ptp-lite 教学实现（约 1000 行 C），可在两台 Linux 机器上实际做主从时钟同步。\n\n**为什么这很重要？** \n自动驾驶需要多传感器（激光雷达、摄像头、IMU）在微秒级对齐时间戳——时间不同步等于传感器白装。PTP/gPTP（IEEE 1588 / 802.1AS）是实现车载时钟同步的核心标准，已广泛应用于主流自动驾驶平台。然而，**系统性、从零讲起的中文 PTP 技术资料几乎空白**。\n\n**运行效果：**\n\n<img width=\"1946\" height=\"1165\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/853dd7f6-21e3-44c5-a4f4-d55715b6b14f\" />\n\n**核心特性：**\n\n📖 **41 节** —— 4 个章节覆盖思想实验、协议机制、源码分析、动手实现\n🔬 **逐机制拆解** —— BMCA 选举、4 个时间戳的数学、透明时钟、PI 伺服控制器\n⚙️ **ptp-lite** —— 一个完整的主从时钟实现，可在真实网卡上运行做时间同步\n📊 **市场验证** —— CSDN **3 周 3 万阅读、1000+ 点赞收藏**\n\n开源协议：CC BY-NC-ND 4.0（内容） · MIT（代码）","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10284","issueUrl":"https://github.com/ruanyf/weekly/issues/10284"},{"sourceId":"weekly-issues","title":"〖工具自荐〗SkillDock —— AI Coding 工具的 Skills、MCP 与插件管理台","url":"https://github.com/wanghuan9/skill-manager","author":"wanghuan9","authorUrl":"https://github.com/wanghuan9","publishedAt":"2026-06-11T04:48:08Z","summary":"〖工具自荐〗SkillDock —— AI Coding 工具的 Skills、MCP 与插件管理台 介绍 SkillDock 是一个面向 AI Coding 工具的 macOS 桌面管理工具，用来统一管理本地的 Skills、MCP Servers 和插件包。 它可以把 Claude Code、Codex、Cursor、Windsurf、Gemini CLI、GitHub Copilot 等工具里分散的配置能力集中起来，支持安装、查看、编辑、同步和更新，减少手动复制文件、修改配置和检查路径的成本。 项目地址： !SkillDock skills list 特点 统一管理 Skills：集中查看、安装、编辑、删除和同步本地 skills。 统一管理 MCP Servers：支持扫描导入、编辑配置、探测 tools，并按工具启用或停用。 支持插件包管理：插件可以包含 skills、commands、agents、MCP 集成和宿主工具能力。 Gitaware 工作流：Git 来源的 skills 和插件保留真实仓库结构，可检测远端更新、本地修改和待推送状态。 多工具一键同步：同一套 skills、MCP 和插件可以同步到多个 AI Coding 工具。 面向团队协作：发布者可以本地修改后一键推送，使用者可以查看更新内容后一键更新。 核心能力 Skills 管理 SkillDock 会按来源展示已安装的 skills，并保留每个 skill 的来源信息、Git 状态和工具启用状态。 适合团队维护一组公共 skills，然后让不同成员按需同步到 Claude Code、Codex、Cursor、Windsurf 等工具中。 MCP 管理 MCP Servers 和 skills 放在同一个工作台中管理。SkillDock 可以扫描本机已有配置，也可以从市场安装 MCP server。 它不仅保存配置，还会尝试探测 MCP server 是否可用，以及暴露了哪些 tools。 !SkillDock MCP detail 插件管理 SkillDock 也支持更高层级的插件包管理。一个插件可以包含 skills、commands、agents、MCP 集成和不同宿主工具的扩展能力。 这适合把一组 AI Coding 能力打包分发，而不是只管理单个 skill 或单个 MCP server。 !SkillDock plugin detail Git 协作状态 对于从 Git 仓库安装的 skills 和插件，SkillDock 会保留真实仓库结构，而不是简单复制文件。 这样可以继续检测： 是否有远端更新 本地是否修改过 是否有待推送内容 更新或推送前具体会变更什么 这对团队维护内部 skills 比较有用，因为 skills 不再只是一次性复制到本地的文件，而是可以持续更新和协作的资产。 支持的工具 目前支持或计划支持的工具包括： Claude Code、Codex、Cursor、Windsurf、IntelliJ IDEA、OpenCode、Gemini、GitHub Copilot、Continue、Qwen Code、Trae、Cline、Roo Code、Kilo Code、Kiro、Goose、Augment、CodeBuddy 等。 适用场景 同时使用多个 AI Coding 工具 想集中管理 Claude Code、Codex、Cursor 等工具的 skills 想减少 MCP server 手动配置成本 团队内部有一批自维护 skills，需要分发、更新和回推 希望把 AI Coding 配置从个人零散目录整理成可维护资产 总结 SkillDock 不是一个新的 AI 编程助手，而是一个 AI Coding 能力管理工具。 它关注的是 AI Coding 工具进入日常使用以后，skills、MCP servers 和插件越来越多、越来越分散、越来越难维护的问题。通过统一安装、同步、探测和 Git 状态管理，希望让这些能力更容易复用，也更适合团队长期维护。 当前 SkillDock 已支持 macOS，Windows 计划后续支持。源码目前还没有正式开放，仓库先作为公开预览和下载入口，后续功能、文档和发布流程稳定后会考虑开源。","content":"# 〖工具自荐〗SkillDock —— AI Coding 工具的 Skills、MCP 与插件管理台\n\n## 介绍\n\nSkillDock 是一个面向 AI Coding 工具的 macOS 桌面管理工具，用来统一管理本地的 Skills、MCP Servers 和插件包。\n\n它可以把 Claude Code、Codex、Cursor、Windsurf、Gemini CLI、GitHub Copilot 等工具里分散的配置能力集中起来，支持安装、查看、编辑、同步和更新，减少手动复制文件、修改配置和检查路径的成本。\n\n项目地址：https://github.com/wanghuan9/skill-manager\n\n![SkillDock skills list](https://github.com/wanghuan9/skill-manager/raw/main/docs/images/skill_list.png)\n\n## 特点\n\n- **统一管理 Skills**：集中查看、安装、编辑、删除和同步本地 skills。\n- **统一管理 MCP Servers**：支持扫描导入、编辑配置、探测 tools，并按工具启用或停用。\n- **支持插件包管理**：插件可以包含 skills、commands、agents、MCP 集成和宿主工具能力。\n- **Git-aware 工作流**：Git 来源的 skills 和插件保留真实仓库结构，可检测远端更新、本地修改和待推送状态。\n- **多工具一键同步**：同一套 skills、MCP 和插件可以同步到多个 AI Coding 工具。\n- **面向团队协作**：发布者可以本地修改后一键推送，使用者可以查看更新内容后一键更新。\n\n## 核心能力\n\n### Skills 管理\n\nSkillDock 会按来源展示已安装的 skills，并保留每个 skill 的来源信息、Git 状态和工具启用状态。\n\n适合团队维护一组公共 skills，然后让不同成员按需同步到 Claude Code、Codex、Cursor、Windsurf 等工具中。\n\n### MCP 管理\n\nMCP Servers 和 skills 放在同一个工作台中管理。SkillDock 可以扫描本机已有配置，也可以从市场安装 MCP server。\n\n它不仅保存配置，还会尝试探测 MCP server 是否可用，以及暴露了哪些 tools。\n\n![SkillDock MCP detail](https://github.com/wanghuan9/skill-manager/raw/main/docs/images/mcp_detail.png)\n\n### 插件管理\n\nSkillDock 也支持更高层级的插件包管理。一个插件可以包含 skills、commands、agents、MCP 集成和不同宿主工具的扩展能力。\n\n这适合把一组 AI Coding 能力打包分发，而不是只管理单个 skill 或单个 MCP server。\n\n![SkillDock plugin detail](https://github.com/wanghuan9/skill-manager/raw/main/docs/images/plugin_detail.png)\n\n### Git 协作状态\n\n对于从 Git 仓库安装的 skills 和插件，SkillDock 会保留真实仓库结构，而不是简单复制文件。\n\n这样可以继续检测：\n\n- 是否有远端更新\n- 本地是否修改过\n- 是否有待推送内容\n- 更新或推送前具体会变更什么\n\n这对团队维护内部 skills 比较有用，因为 skills 不再只是一次性复制到本地的文件，而是可以持续更新和协作的资产。\n\n## 支持的工具\n\n目前支持或计划支持的工具包括：\n\nClaude Code、Codex、Cursor、Windsurf、IntelliJ IDEA、OpenCode、Gemini、GitHub Copilot、Continue、Qwen Code、Trae、Cline、Roo Code、Kilo Code、Kiro、Goose、Augment、CodeBuddy 等。\n\n## 适用场景\n\n- 同时使用多个 AI Coding 工具\n- 想集中管理 Claude Code、Codex、Cursor 等工具的 skills\n- 想减少 MCP server 手动配置成本\n- 团队内部有一批自维护 skills，需要分发、更新和回推\n- 希望把 AI Coding 配置从个人零散目录整理成可维护资产\n\n## 总结\n\nSkillDock 不是一个新的 AI 编程助手，而是一个 AI Coding 能力管理工具。\n\n它关注的是 AI Coding 工具进入日常使用以后，skills、MCP servers 和插件越来越多、越来越分散、越来越难维护的问题。通过统一安装、同步、探测和 Git 状态管理，希望让这些能力更容易复用，也更适合团队长期维护。\n\n当前 SkillDock 已支持 macOS，Windows 计划后续支持。源码目前还没有正式开放，仓库先作为公开预览和下载入口，后续功能、文档和发布流程稳定后会考虑开源。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10285","issueUrl":"https://github.com/ruanyf/weekly/issues/10285"},{"sourceId":"weekly-issues","title":"【开源自荐】纯开源家庭账房(Family Ledger), 自托管家庭资产管理 · 每月10分钟,全家资产全局图 + 真实年化(XIRR/TWR)+ AI 资产体检 · 数据自托管, 不泄密","url":"https://github.com/LuoDi-Nate/financial-management","author":"LuoDi-Nate","authorUrl":"https://github.com/LuoDi-Nate","publishedAt":"2026-06-11T09:14:46Z","summary":"家庭账房(Family Ledger) 家庭资产散在银行、支付宝、券商、房产和房贷里,很难回答\"我们家到底有多少钱、 今年变富还是变穷了\"。这是一个为此而做的自托管 Web 应用:不记每日流水, 每月全家花 10 分钟填一次各账户余额即可,数据只保存在自己的服务器上。 !仪表盘 · 净资产趋势(CPI 购买力线 + M2 社会财富线)+ 资产配置 核心能力: 真实收益率:靠恒等式「投资损益 = 期末 − 期初 − 净外部流入」,自动算 账户级 / 家庭级 XIRR 与 TWR,把「工资攒的」和「投资赚的」分开 财富水位:净资产趋势叠加 CPI 购买力线和 M2 社会财富线,看扣完通胀 后是否真的变富 「戴着镣铐」的 AI 资产体检:集中度 / 资产负债表 / 再平衡 / 低利率四个 视角。所有数字由程序预先算好,LLM 只负责解读;输出经合规校验——出现 \"保证收益\"、具体产品代码、\"会涨会跌\" 一类词直接拒绝;喂模型前家庭成员 真名自动脱敏 股票录 ticker 自动估值(A/美/港)、多币种自动汇率、退休 FIRE 三情景 预测、iOS PWA 装到主屏 !AI 资产体检 · 数字工程算,LLM 只解读,不荐产品不预测涨跌 技术栈:Spring Boot 3 + MySQL + Thymeleaf + HTMX,无 SPA、无构建管线, 最低配 VPS 一键部署(deploy.sh)。Apache 2.0。 在线体验(合成数据): 账号 wangergou / 密码 demo1234 更多截图 <table <tr <td width=\"50%\"<img src=\" alt=\"账户簿\"<br<sub<b账户簿</b · 6 类账户 · 按成员归集 划转 / 体检 / 一键导出</sub</td <td width=\"50%\"<img src=\" alt=\"管理页\"<br<sub<b可运营管理页</b · 品牌 / 周期 / 提 / 汇率 / 阈值 共 14 项热改</sub</td </tr </table <table <tr <td width=\"20%\"<img src=\" alt=\"移动端仪表盘\"</td <td width=\"20%\"<img src=\" alt=\"移动端填报\"</td <td width=\"20%\"<img src=\" alt=\"移动端体检\"</td <td width=\"20%\"<img src=\" alt=\"移动端 AI 调仓\"</td <td width=\"20%\"<img src=\" alt=\"iOS PWA\"</td </tr <tr <td align=\"center\"<sub仪表盘</sub</td <td align=\"center\"<sub每月填报</sub</td <td align=\"center\"<sub资产体检</sub</td <td align=\"center\"<subAI 调仓</sub</td <td align=\"center\"<sub装为 App</sub</td </tr </table","content":"## 家庭账房(Family Ledger)\n\nhttps://github.com/LuoDi-Nate/financial-management\n\n家庭资产散在银行、支付宝、券商、房产和房贷里,很难回答\"我们家到底有多少钱、\n今年变富还是变穷了\"。这是一个为此而做的自托管 Web 应用:不记每日流水,\n每月全家花 10 分钟填一次各账户余额即可,数据只保存在自己的服务器上。\n\n![仪表盘 · 净资产趋势(CPI 购买力线 + M2 社会财富线)+ 资产配置](https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_dashboard.jpg)\n\n核心能力:\n\n- **真实收益率**:靠恒等式「投资损益 = 期末 − 期初 − 净外部流入」,自动算\n  账户级 / 家庭级 XIRR 与 TWR,把「工资攒的」和「投资赚的」分开\n- **财富水位**:净资产趋势叠加 CPI 购买力线和 M2 社会财富线,看扣完通胀\n  后是否真的变富\n- **「戴着镣铐」的 AI 资产体检**:集中度 / 资产负债表 / 再平衡 / 低利率四个\n  视角。所有数字由程序预先算好,LLM 只负责解读;输出经合规校验——出现\n  \"保证收益\"、具体产品代码、\"会涨会跌\" 一类词直接拒绝;喂模型前家庭成员\n  真名自动脱敏\n- 股票录 ticker 自动估值(A/美/港)、多币种自动汇率、退休 FIRE 三情景\n  预测、iOS PWA 装到主屏\n\n![AI 资产体检 · 数字工程算,LLM 只解读,不荐产品不预测涨跌](https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_ai_analysis.jpg)\n\n技术栈:Spring Boot 3 + MySQL + Thymeleaf + HTMX,无 SPA、无构建管线,\n最低配 VPS 一键部署(deploy.sh)。Apache 2.0。\n\n在线体验(合成数据):https://beta.dixi-token.top\n账号 `wangergou` / 密码 `demo1234`\n\n### 更多截图\n\n<table>\n  <tr>\n    <td width=\"50%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_account.jpg\" alt=\"账户簿\"><br><sub><b>账户簿</b> · 6 类账户 · 按成员归集\n  划转 / 体检 / 一键导出</sub></td>\n    <td width=\"50%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_setting.jpg\" alt=\"管理页\"><br><sub><b>可运营管理页</b> · 品牌 / 周期 / 提\n   / 汇率 / 阈值 共 14 项热改</sub></td>\n  </tr>\n</table>\n\n<table>\n  <tr>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobilez_dashboard.jpg\" alt=\"移动端仪表盘\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_account.jpg\" alt=\"移动端填报\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_analysis.jpg\" alt=\"移动端体检\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_ai_analysis.jpg\" alt=\"移动端 AI 调仓\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_ios_deck.jpg\" alt=\"iOS PWA\"></td>\n  </tr>\n  <tr>\n    <td align=\"center\"><sub>仪表盘</sub></td>\n    <td align=\"center\"><sub>每月填报</sub></td>\n    <td align=\"center\"><sub>资产体检</sub></td>\n    <td align=\"center\"><sub>AI 调仓</sub></td>\n    <td align=\"center\"><sub>装为 App</sub></td>\n  </tr>\n</table>","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10286","issueUrl":"https://github.com/ruanyf/weekly/issues/10286"},{"sourceId":"weekly-issues","title":"[投稿] Turn your notes into a practice test: a faster way to study than re-reading","url":"https://quiz-maker.net","author":"send2terry","authorUrl":"https://github.com/send2terry","publishedAt":"2026-06-11T10:07:17Z","summary":"Most of us study by rereading. You go over the notes, highlight a few lines, feel like it's sinking in, and then blank on half of it during the exam. The uncomfortable truth from decades of memory research is that rereading is one of the least effective things you can do with your time. It feels productive because the material gets familiar — but familiarity isn't the same as being able to recall it when no one's showing you the answer. The technique that consistently beats rereading is active recall: instead of putting information back into your head, you practice pulling it out. Close the notes and try to answer a question. The moment of effortful retrieval — even when you get it wrong — is what actually strengthens the memory. Selftesting reliably outperforms rereading and highlighting in study after study, and it has a useful side effect: it tells you exactly what you don't know yet, instead of letting you fool yourself. The catch has always been the friction. Writing your own practice questions is tedious, and by the time you've written them you've halfmemorized the answers anyway. Flashcards help but take forever to make. So most people skip the testing and go back to the comfortable, ineffective reread. Here's the workflow I've settled on that removes the friction: 1. Dump your material in. Paste your lecture notes, a chapter of text, or even a PDF of the slides. You don't need to clean it up first. 2. Generate a quiz from it. I use Quiz Maker for this — paste a topic, your notes, or a PDF and it writes a set of questions with an answer key. Multiple choice, true/false, or mixed. It's free and doesn't make you create an account just to try it, which is the whole reason I started using it instead of the tools that gate everything behind a signup. 3. Take the quiz cold. No notes open. The point is to fail a few — that's the signal of where to focus. 4. Restudy only what you missed, then regenerate or retake. This is the loop that actually moves the needle. A few honest caveats. Autogenerated questions are a starting point, not gospel — skim them and delete or edit any that are ambiguous or test trivia instead of understanding (you can edit every question before you use it). For conceptual subjects like math proofs or essaybased humanities, question generation works less well than it does for factdense material like biology, history, or vocabulary. And the goal isn't to generate a thousand questions; it's to test yourself, find the gaps, and close them. The metapoint is simple: the best study method is the one you'll actually do, and \"rereading\" wins by default only because making practice questions used to be a chore. Take the chore out and active recall becomes the path of least resistance. That's the entire trick. (If you want to try the workflow: paste a topic or your notes at — no signup to generate.)","content":"Most of us study by re-reading. You go over the notes, highlight a few lines, feel like it's sinking in, and then blank on half of it during the exam. The uncomfortable truth from decades of memory research is that re-reading is one of the least effective things you can do with your time. It feels productive because the material gets *familiar* — but familiarity isn't the same as being able to recall it when no one's showing you the answer.\n\nThe technique that consistently beats re-reading is **active recall**: instead of putting information back into your head, you practice pulling it out. Close the notes and try to answer a question. The moment of effortful retrieval — even when you get it wrong — is what actually strengthens the memory. Self-testing reliably outperforms re-reading and highlighting in study after study, and it has a useful side effect: it tells you exactly what you don't know yet, instead of letting you fool yourself.\n\nThe catch has always been the friction. Writing your own practice questions is tedious, and by the time you've written them you've half-memorized the answers anyway. Flashcards help but take forever to make. So most people skip the testing and go back to the comfortable, ineffective re-read.\n\nHere's the workflow I've settled on that removes the friction:\n\n1. **Dump your material in.** Paste your lecture notes, a chapter of text, or even a PDF of the slides. You don't need to clean it up first.\n2. **Generate a quiz from it.** I use [Quiz Maker](https://quiz-maker.net) for this — paste a topic, your notes, or a PDF and it writes a set of questions with an answer key. Multiple choice, true/false, or mixed. It's free and doesn't make you create an account just to try it, which is the whole reason I started using it instead of the tools that gate everything behind a signup.\n3. **Take the quiz cold.** No notes open. The point is to fail a few — that's the signal of where to focus.\n4. **Re-study only what you missed,** then regenerate or retake. This is the loop that actually moves the needle.\n\nA few honest caveats. Auto-generated questions are a starting point, not gospel — skim them and delete or edit any that are ambiguous or test trivia instead of understanding (you can edit every question before you use it). For conceptual subjects like math proofs or essay-based humanities, question generation works less well than it does for fact-dense material like biology, history, or vocabulary. And the goal isn't to generate a thousand questions; it's to test yourself, find the gaps, and close them.\n\nThe meta-point is simple: the best study method is the one you'll actually do, and \"re-reading\" wins by default only because making practice questions used to be a chore. Take the chore out and active recall becomes the path of least resistance. That's the entire trick.\n\n*(If you want to try the workflow: paste a topic or your notes at https://quiz-maker.net — no signup to generate.)*","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10288","issueUrl":"https://github.com/ruanyf/weekly/issues/10288"},{"sourceId":"weekly-issues","title":"推荐:wcelo —— 把世界杯当成一次预注册实验","url":"https://wcelo.com","author":"Chaoticyeung","authorUrl":"https://github.com/Chaoticyeung","publishedAt":"2026-06-11T10:09:47Z","summary":"推荐项目：wcelo · 2026 世界杯概率预测 一个每天更新的世界杯夺冠/晋级/逐场胜平负概率站，但我真正想做的是背后的一次 「预注册实验」：开赛前把三个可证伪的假设写死、用一个 git commit 冻结、锁定赛后 评分口径，之后只许按这套规则结算，不许事后改口径。 三个假设里我最好奇第三个——让大模型（Claude）在每个比赛日前联网去读伤病、停赛、 预计首发、死亡之组放水这类「软信息」，折算成一个有界的实力修正，看它到底能不能 赢过一个纯统计模型（Elo + DixonColes 双泊松 + 10 万次蒙特卡洛）。另两个是 「每日更新到底有没有增量」和「概率校不校准」。 模型本身很常规、刻意不炫技；好玩的是这套不能反悔的实验设计。方法、假设、预注册 全部公开在站内 /method 页。我的先验其实是「大模型多半只加噪声」，但我把它按最强 形态实现，免得验证变成自我实现。","content":"推荐项目：wcelo · 2026 世界杯概率预测  https://wcelo.com\n\n一个每天更新的世界杯夺冠/晋级/逐场胜平负概率站，但我真正想做的是背后的一次\n「预注册实验」：开赛前把三个可证伪的假设写死、用一个 git commit 冻结、锁定赛后\n评分口径，之后只许按这套规则结算，不许事后改口径。\n\n三个假设里我最好奇第三个——让大模型（Claude）在每个比赛日前联网去读伤病、停赛、\n预计首发、死亡之组放水这类「软信息」，折算成一个有界的实力修正，看它到底能不能\n赢过一个纯统计模型（Elo + Dixon-Coles 双泊松 + 10 万次蒙特卡洛）。另两个是\n「每日更新到底有没有增量」和「概率校不校准」。\n\n模型本身很常规、刻意不炫技；好玩的是这套不能反悔的实验设计。方法、假设、预注册\n全部公开在站内 /method 页。我的先验其实是「大模型多半只加噪声」，但我把它按最强\n形态实现，免得验证变成自我实现。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10289","issueUrl":"https://github.com/ruanyf/weekly/issues/10289"},{"sourceId":"weekly-issues","title":"【开源自荐】Awesome AI Gateway —— 按痛点分类的 AI 网关选型清单","url":"https://github.com/cuihuan/awesome-ai-gateway","author":"cuihuan","authorUrl":"https://github.com/cuihuan","publishedAt":"2026-06-11T13:05:43Z","summary":"向周刊推荐我整理的一份开源资源：Awesome AI Gateway。 AI 网关是位于应用和大模型厂商之间的中间层（LiteLLM、oneapi、OpenRouter 这一类），负责统一接入、路由、计费和限流。现有的同类清单基本按厂商罗列，这份清单改为按使用者的真实诉求组织：性价比、企业合规、自托管开源、国产模型生态、智能路由、MCP/Agent 网关等，开头有一棵「我该用哪个网关」的决策树。 项目地址： 特点： 中英双语，收录 50+ 项目，附 15 个主流网关的特性对比表 所有项目的 star 数与最新版本由 GitHub Actions 每日自动刷新，数据不过期 明确标注已停止维护的项目，并排除灰产逆向类「freeapi」中转 附选型安全清单（防偷偷降智的 canary 测试、零数据保留、开源协议坑） !预览","content":"向周刊推荐我整理的一份开源资源：Awesome AI Gateway。\n\nAI 网关是位于应用和大模型厂商之间的中间层（LiteLLM、one-api、OpenRouter 这一类），负责统一接入、路由、计费和限流。现有的同类清单基本按厂商罗列，这份清单改为按使用者的真实诉求组织：性价比、企业合规、自托管开源、国产模型生态、智能路由、MCP/Agent 网关等，开头有一棵「我该用哪个网关」的决策树。\n\n项目地址：https://github.com/cuihuan/awesome-ai-gateway\n\n特点：\n\n- 中英双语，收录 50+ 项目，附 15 个主流网关的特性对比表\n- 所有项目的 star 数与最新版本由 GitHub Actions 每日自动刷新，数据不过期\n- 明确标注已停止维护的项目，并排除灰产逆向类「free-api」中转\n- 附选型安全清单（防偷偷降智的 canary 测试、零数据保留、开源协议坑）\n\n![预览](https://raw.githubusercontent.com/cuihuan/awesome-ai-gateway/main/assets/social-preview.png)","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"10290","issueUrl":"https://github.com/ruanyf/weekly/issues/10290"},{"sourceId":"weekly-issues","title":"【开源自荐】spring-nacos-mcp —— 让 AI 直接回答\"这个配置 dev 和 test 一致吗\"","url":"https://github.com/kestiny18/spring-nacos-mcp","author":"kestiny18","authorUrl":"https://github.com/kestiny18","publishedAt":"2026-06-11T13:21:43Z","summary":"项目地址： 一句话介绍：面向 Spring Cloud 项目的零配置、只读 Nacos MCP server——把它指向你的项目仓库，自动从 application / bootstrap 文件发现所有环境（dev/test/pre/prod），AI 编程工具（Cursor / Claude Code 等）就能直接查询、搜索、跨环境对比 Nacos 配置。 解决的痛点：维护微服务的同学每周都要回答\"这个配置在 dev 和 test 一致吗\"——开两个 Nacos 控制台、来回登录、肉眼 diff。现在直接问 AI 一句话，它会自动调工具完成跨环境 key 级对比并给出结论。 特点： 零配置：不需要配任何 host/port/namespace/token，连接信息直接从项目自己的配置文件解析（支持 yml/yaml/properties、多文档 YAML、${} 占位符） 跨环境 diff：内置 nacosdiffconfig 工具，一次调用返回两个环境的结构化差异 只读设计：代码里只有 GET 和登录请求，不存在写操作路径；可选敏感值脱敏 单文件零依赖：纯 Python 标准库实现，内网机器拷一个文件就能用 AI 安装友好：自带 llmsinstall.md，对 Cursor 说一句\"帮我装这个 MCP\"即可自动完成安装和验证 和官方 nacosmcpserver（单集群、手动配置）是互补关系：官方连集群，这个懂项目。 Apache2.0，带完整测试和 CI，已在真实生产项目（6 模块、4 环境）上验证。","content":"**项目地址**：https://github.com/kestiny18/spring-nacos-mcp\n\n**一句话介绍**：面向 Spring Cloud 项目的零配置、只读 Nacos MCP server——把它指向你的项目仓库，自动从 `application-*` / `bootstrap-*` 文件发现所有环境（dev/test/pre/prod），AI 编程工具（Cursor / Claude Code 等）就能直接查询、搜索、跨环境对比 Nacos 配置。\n\n**解决的痛点**：维护微服务的同学每周都要回答\"这个配置在 dev 和 test 一致吗\"——开两个 Nacos 控制台、来回登录、肉眼 diff。现在直接问 AI 一句话，它会自动调工具完成跨环境 key 级对比并给出结论。\n\n**特点**：\n\n- **零配置**：不需要配任何 host/port/namespace/token，连接信息直接从项目自己的配置文件解析（支持 yml/yaml/properties、多文档 YAML、${} 占位符）\n- **跨环境 diff**：内置 `nacos_diff_config` 工具，一次调用返回两个环境的结构化差异\n- **只读设计**：代码里只有 GET 和登录请求，不存在写操作路径；可选敏感值脱敏\n- **单文件零依赖**：纯 Python 标准库实现，内网机器拷一个文件就能用\n- **AI 安装友好**：自带 llms-install.md，对 Cursor 说一句\"帮我装这个 MCP\"即可自动完成安装和验证\n\n和官方 nacos-mcp-server（单集群、手动配置）是互补关系：官方连集群，这个懂项目。\n\nApache-2.0，带完整测试和 CI，已在真实生产项目（6 模块、4 环境）上验证。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10291","issueUrl":"https://github.com/ruanyf/weekly/issues/10291"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[开源推荐] Awesome AI Gateway","url":"https://github.com/cuihuan/awesome-ai-gateway","author":"cuihuan","authorUrl":"https://github.com/cuihuan","publishedAt":"2026-06-11T13:06:00Z","summary":"项目地址 类别 人工智能 项目标题 按痛点分类的 AI 网关选型清单 项目描述 整理了 50 多个 AI 网关/LLM 代理项目（LiteLLM、oneapi、OpenRouter 这一类统一接入多家大模型的中间层）。不按厂商罗列，而是按真实诉求分类：追求性价比、企业合规、自托管开源、国产模型生态、MCP/Agent 网关等，开头是一棵「我该用哪个网关」的决策树。中英双语，star 数和各项目最新版本由 CI 每日自动刷新，停更项目明确标注。 亮点 选型决策树 + 15 个主流网关的特性对比大表，五分钟完成选型 数据每日由 GitHub Actions 自动更新（star 数、最新 release），不是一次性的 markdown 排除灰产逆向「freeapi」中转，停止维护的项目明确打标 附安全选型清单：防降智 canary 测试、零数据保留、AGPL 协议坑 示例代码 No response 截图或视频 !socialpreview","content":"### 项目地址\n\nhttps://github.com/cuihuan/awesome-ai-gateway\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n按痛点分类的 AI 网关选型清单\n\n### 项目描述\n\n整理了 50 多个 AI 网关/LLM 代理项目（LiteLLM、one-api、OpenRouter 这一类统一接入多家大模型的中间层）。不按厂商罗列，而是按真实诉求分类：追求性价比、企业合规、自托管开源、国产模型生态、MCP/Agent 网关等，开头是一棵「我该用哪个网关」的决策树。中英双语，star 数和各项目最新版本由 CI 每日自动刷新，停更项目明确标注。\n\n### 亮点\n\n- 选型决策树 + 15 个主流网关的特性对比大表，五分钟完成选型\n- 数据每日由 GitHub Actions 自动更新（star 数、最新 release），不是一次性的 markdown\n- 排除灰产逆向「free-api」中转，停止维护的项目明确打标\n- 附安全选型清单：防降智 canary 测试、零数据保留、AGPL 协议坑\n\n### 示例代码\n\n_No response_\n\n### 截图或视频\n\n![social-preview](https://raw.githubusercontent.com/cuihuan/awesome-ai-gateway/main/assets/social-preview.png)","metrics":{"comments":1},"tags":["hellogithub","submission"],"externalId":"3345","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3345"},{"sourceId":"hellogithub-issues","title":"[开源推荐] ScreenDrop: 一个运行在浏览器中的二维码文件传输工具。","url":"https://github.com/guofei9987/ScreenDrop","author":"guofei9987","authorUrl":"https://github.com/guofei9987","publishedAt":"2026-06-11T14:35:19Z","summary":"项目地址 类别 JS 项目标题 ScreenDrop: 一个运行在浏览器中的二维码文件传输工具 项目描述 无需网络、无需蓝牙、无需安装应用， 只要发送端有屏幕，接收端有摄像头，就可以完成文件传输。 适用场景： • 无网络、无蓝牙环境下的小文件分享 • 跨设备传递少量数据 工作方式： 1. 将文件切分为多个分片 2. 将每个分片编码为二维码，并循环播放 3. 接收端自动扫描并重组文件 特点： • 纯前端实现，数据不经过服务器 • 支持离线使用，适用于隔离网络环境 • 支持任意文件类型 在线使用： 开源地址： 下载使用： 亮点 技术特点： • 设计了一套适用于二维码循环播放场景的文件传输协议 • 接收端可在任意时刻加入传输，无需建立连接 • 分片级 CRC 校验，文件级 SHA256 完整性验证 • 支持多档分片容量，兼顾传输效率与扫码稳定性 示例代码 markdown 截图或演示视频 No response","content":"### 项目地址\n\nhttps://github.com/guofei9987/ScreenDrop\n\n### 类别\n\nJS\n\n### 项目标题\n\nScreenDrop: 一个运行在浏览器中的二维码文件传输工具\n\n### 项目描述\n\n无需网络、无需蓝牙、无需安装应用，\n只要发送端有屏幕，接收端有摄像头，就可以完成文件传输。\n\n适用场景：\n• 无网络、无蓝牙环境下的小文件分享\n• 跨设备传递少量数据\n\n工作方式：\n\n1. 将文件切分为多个分片\n2. 将每个分片编码为二维码，并循环播放\n3. 接收端自动扫描并重组文件\n\n特点：\n• 纯前端实现，数据不经过服务器\n• 支持离线使用，适用于隔离网络环境\n• 支持任意文件类型\n\n\n在线使用：\nhttps://www.guofei.site/ScreenDrop/sender.html\n\n开源地址：\nhttps://github.com/guofei9987/ScreenDrop\n\n下载使用：\nhttps://github.com/guofei9987/ScreenDrop/releases\n\n### 亮点\n\n\n技术特点：\n• 设计了一套适用于二维码循环播放场景的文件传输协议\n• 接收端可在任意时刻加入传输，无需建立连接\n• 分片级 CRC 校验，文件级 SHA-256 完整性验证\n• 支持多档分片容量，兼顾传输效率与扫码稳定性\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n_No response_","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3346","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3346"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"vibecafe","sourceName":"VibeCafé 作品","items":[{"sourceId":"vibecafe","title":"Capybanana · 随心陪伴养成","url":"https://vibecafe.ai/products/cmq9ieppv00000bki6xu35y1q","author":"彭博","authorUrl":"https://vibecafe.ai/u/marsornage","publishedAt":"2026-06-11T13:04:26.036Z","summary":"Agent版本的旅行青蛙，每天一分钟，来小岛上陪我长大一点。","content":"Agent版本的旅行青蛙，每天一分钟，来小岛上陪我长大一点。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq9ieppv00000bki6xu35y1q","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182829966-9qnzkm.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182692040-7mqrnq.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182829966-9qnzkm.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182794833-oyof5w.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182794596-w3ucmk.png"]},{"sourceId":"vibecafe","title":"pura |  本地优先的 Android 真机镜像","url":"https://vibecafe.ai/products/cmq9gxsid00000bkiw0ay31ju","author":"灵山","authorUrl":"https://vibecafe.ai/u/nickname4th","publishedAt":"2026-06-11T12:23:16.886Z","summary":"pura 将研发手上的 USB 真机汇成局域网设备墙。ADB 留在本机，视频流与点击会话通过 Hub 路由。","content":"pura 将研发手上的 USB 真机汇成局域网设备墙。ADB 留在本机，视频流与点击会话通过 Hub 路由。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq9gxsid00000bkiw0ay31ju","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpqmpxs3000204i5hdalng88/mq9gwds3utro-NlRwOVXvu7y5QYQVzjC224E0KVmWWm.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpqmpxs3000204i5hdalng88/mq9gwdsanma2-5CfHGFsZLDGR0sLoOCd2MIUoInTqaZ.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpqmpxs3000204i5hdalng88/mq9gwds3utro-NlRwOVXvu7y5QYQVzjC224E0KVmWWm.png"]},{"sourceId":"vibecafe","title":"DeepChat","url":"https://vibecafe.ai/products/cmq9bz3zi00000bku8fy73l7c","author":"夕阳针(写Dim的怪叔叔)","authorUrl":"https://vibecafe.ai/u/zerob13","publishedAt":"2026-06-11T10:04:20.334Z","summary":"🐬DeepChat - A smart assistant that connects powerful AI to your personal world - ThinkInAIXYZ/deepc","content":"🐬DeepChat - A smart assistant that connects powerful AI to your personal world - ThinkInAIXYZ/deepc","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq9bz3zi00000bku8fy73l7c","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172218556-i77mez.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172054988-lobjiw.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172218556-i77mez.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172218523-j3x3n0.png"]},{"sourceId":"vibecafe","title":"LangCapture","url":"https://vibecafe.ai/products/cmq94keok00010aj9ovw6o29i","author":"Felix","authorUrl":"https://vibecafe.ai/u/felixp","publishedAt":"2026-06-11T06:36:57.044Z","summary":"Capture useful PR reviews, Jira updates, Slack replies, and email phrases. Build a reusable workplac","content":"Capture useful PR reviews, Jira updates, Slack replies, and email phrases. Build a reusable workplac","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq94keok00010aj9ovw6o29i","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmoxny68b000004l5w2imz0sr/1781159623676-60bui4.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmoxny68b000004l5w2imz0sr/mq94eq0pja0w-Kq2FxbdSh9AqbnK0CxpSjPbz8cTKjS.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmoxny68b000004l5w2imz0sr/1781159623676-60bui4.png"]},{"sourceId":"vibecafe","title":"First-Tree — Shared Context for Engineering Teams Running AI Agents | Open Source","url":"https://vibecafe.ai/products/cmq93ioed00000bi2o6gj1ejd","author":"Chao","authorUrl":"https://vibecafe.ai/u/liuchao001","publishedAt":"2026-06-11T06:07:36.710Z","summary":"first-tree routes work to the right agent, gives it the same context your engineering team has, and","content":"first-tree routes work to the right agent, gives it the same context your engineering team has, and","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq93ioed00000bi2o6gj1ejd","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq93fj1m00000bi2o07g6y1o/mq93ho11h4k5-A1ma8wBu9XiTYmtkm9n6Ag2e0uaWeV.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq93fj1m00000bi2o07g6y1o/mq93ho13fj0c-WuP408ddwOixmBXPgczBeR0UDwHADj.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq93fj1m00000bi2o07g6y1o/mq93ho11h4k5-A1ma8wBu9XiTYmtkm9n6Ag2e0uaWeV.png"]},{"sourceId":"vibecafe","title":"智能元素选择器","url":"https://vibecafe.ai/products/cmq91kq1900000bkqqjatkgu2","author":"Jaksay","authorUrl":"https://vibecafe.ai/u/jaksay","publishedAt":"2026-06-11T05:13:12.909Z","summary":"这是一个辅助 AI 调试网页的 Chrome 插件，可以快速选中你想修改的页面元素或位置，并把准确信息提供给 AI，帮助它更快定位和修改问题","content":"这是一个辅助 AI 调试网页的 Chrome 插件，可以快速选中你想修改的页面元素或位置，并把准确信息提供给 AI，帮助它更快定位和修改问题","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq91kq1900000bkqqjatkgu2","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154749782-p46vlk.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154585473-ecsxad.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154749782-p46vlk.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154776829-ec9roo.png"]},{"sourceId":"vibecafe","title":"Yoo.domains","url":"https://vibecafe.ai/products/cmq9162g600000bjbkp33bctn","author":"Jaksay","authorUrl":"https://vibecafe.ai/u/jaksay","publishedAt":"2026-06-11T05:01:49.159Z","summary":"批量查询与遍历可注册域名，支持特定 TLD 域名组合查询、多 TLD 遍历、批量域名检测和 Domain Hack 生成","content":"批量查询与遍历可注册域名，支持特定 TLD 域名组合查询、多 TLD 遍历、批量域名检测和 Domain Hack 生成","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq9162g600000bjbkp33bctn","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153979826-78w2gl.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/mq90s2kxmj9c-RNl6FhsPQBzD8moIoi3a4t9ORRaaAG.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153979826-78w2gl.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153988908-wwyllo.jpeg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154061669-tr4wuq.jpeg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154002924-8sjfrd.jpeg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154009619-ijjx01.jpeg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154017606-qqp3qb.jpeg"]},{"sourceId":"vibecafe","title":"RSSPod","url":"https://vibecafe.ai/products/cmq90cnop00000bhy4zcc2c3v","author":"Jaksay","authorUrl":"https://vibecafe.ai/u/jaksay","publishedAt":"2026-06-11T04:38:57.003Z","summary":"RSSPod 是一个基于 Web 的泛用型播客客户端，让你可以随时随地搜索、订阅并收听喜爱的节目。","content":"RSSPod 是一个基于 Web 的泛用型播客客户端，让你可以随时随地搜索、订阅并收听喜爱的节目。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmq90cnop00000bhy4zcc2c3v","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153238486-lybwio.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/mq8ztxtbbmyy-ySWzEmTbUFL3AhZSjSaM8BpH9i7PS4.x-icon","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153238486-lybwio.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781152660227-nnw4c0.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781152660990-2dkqbn.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781152661072-rswoxi.png"]}]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"LiveApply-Smarter way to hire and apply","url":"https://www.producthunt.com/products/liveapply-smarter-way-to-hire-and-apply/launches/liveapply-smarter-way-to-hire-and-apply?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Your job application stays live until a recruiter reviews it","content":"LiveApply lets candidates strengthen their application after they hit submit, while recruiters and admins get a live, premium view of the whole process.","metrics":{},"tags":["producthunt","new"],"externalId":"1168444","logo":"https://ph-files.imgix.net/efdf34cc-b547-4312-91c1-692bbce09aa9.png?auto=format","images":["https://ph-files.imgix.net/6903acea-2b48-437b-92c8-99412de4828b.png?auto=format"],"image":"https://ph-files.imgix.net/6903acea-2b48-437b-92c8-99412de4828b.png?auto=format"},{"sourceId":"producthunt","title":"Spidra","url":"https://www.producthunt.com/products/spidra/launches/spidra?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Scrape, crawl, and monitor any website with a simple prompt","content":"Spidra is an AI-powered web scraping platform that turns any website into clean, structured data using a simple prompt. Spidra automatically handles proxy setup and CAPTCHAs. Just describe what you want, and you will get JSON, CSV, or direct integrations with Slack, Webhook, Email, Discord and more. Built for developers and non-technical teams alike.","metrics":{},"tags":["producthunt","new"],"externalId":"1168834","logo":"https://ph-files.imgix.net/ee8eee2c-b32a-465f-be59-331c6edb8f15.vnd.microsoft.icon?auto=format","images":["https://ph-files.imgix.net/bce5a1f8-2790-424d-9c62-d09e3f226238.jpeg?auto=format","https://ph-files.imgix.net/088cc825-fc71-48f3-ba67-a429294e706f.png?auto=format","https://ph-files.imgix.net/3a687591-bc23-42a2-95ed-eee9b015ce88.png?auto=format","https://ph-files.imgix.net/b26b177d-11a3-4752-b669-3a198c03fa9f.png?auto=format","https://ph-files.imgix.net/efca9534-47d3-48bd-aecd-ab162df53949.png?auto=format","https://ph-files.imgix.net/d3882748-e917-4747-b1c1-4be834ce05a4.png?auto=format","https://ph-files.imgix.net/a91485f1-5730-4f0a-9f69-8ef6b4229a38.png?auto=format"],"image":"https://ph-files.imgix.net/bce5a1f8-2790-424d-9c62-d09e3f226238.jpeg?auto=format"},{"sourceId":"producthunt","title":"JobsTracker","url":"https://www.producthunt.com/products/jobstracker/launches/jobstracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"An AI-powered job applications tracker.","content":"An intelligent job application tracker that scrapes job postings, extracts key details with AI, and streamlines your path to your next role.","metrics":{},"tags":["producthunt","new"],"externalId":"1168320","logo":"https://ph-files.imgix.net/edb07112-d15c-4ca8-8603-fb5f7d1c2ab6.png?auto=format","images":["https://ph-files.imgix.net/cf4cfa9a-eb6e-4356-b505-21a8fef6d703.png?auto=format","https://ph-files.imgix.net/beff7556-49e4-430f-ac6e-789113564cfe.png?auto=format","https://ph-files.imgix.net/2256ec8d-665c-419f-b2a7-84a214b4bafc.png?auto=format","https://ph-files.imgix.net/c5243488-dab7-4e2d-a99c-73a467dd5c3b.png?auto=format","https://ph-files.imgix.net/20730ab9-f184-42d3-a746-334f3e080a0d.png?auto=format"],"image":"https://ph-files.imgix.net/cf4cfa9a-eb6e-4356-b505-21a8fef6d703.png?auto=format"},{"sourceId":"producthunt","title":"StoreSnap ","url":"https://www.producthunt.com/products/storesnap/launches/storesnap?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Your Business, Online in Seconds","content":"The easiest way to launch your store and accept payments. No forced logins, privacy-friendly, and ultra-fast.","metrics":{},"tags":["producthunt","new"],"externalId":"1168585","logo":"https://ph-files.imgix.net/8093636d-f801-4e93-8e34-fc0d391768a7.png?auto=format","images":["https://ph-files.imgix.net/24b23cc0-e499-4166-9011-5489ddf20ac7.jpeg?auto=format","https://ph-files.imgix.net/ddacb385-07d8-46a4-b667-acb6c715e9dc.jpeg?auto=format","https://ph-files.imgix.net/917cafd1-ce9f-4d1b-9e8a-ff742d6657ce.jpeg?auto=format"],"image":"https://ph-files.imgix.net/24b23cc0-e499-4166-9011-5489ddf20ac7.jpeg?auto=format"},{"sourceId":"producthunt","title":"ColdCallTracker","url":"https://www.producthunt.com/products/coldcalltracker/launches/coldcalltracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Track cold calls instantly — no spreadsheet","content":"ColdCallTracker is a dead-simple call tracking app for sales reps. Open it, hit a button after each call (Picked Up / Ignored / Interested), and see your stats build in real time, answer rates, interest rates, 7-day trends. The free tier gets you tracking in under a minute. Pro ($4.99/mo) adds unlimited history across devices, analytics, a contact queue with callback reminders, CSV export, and a pop-out mini tracker window.","metrics":{},"tags":["producthunt","new"],"externalId":"1168735","logo":"https://ph-files.imgix.net/7d4f6072-c12d-4828-8b2e-f6edd77fd3a5.png?auto=format","images":["https://ph-files.imgix.net/d3897df8-e6d1-4c6f-99ce-a1486fe1716f.png?auto=format","https://ph-files.imgix.net/07d2890a-f835-4fae-85ca-a29f87156a37.png?auto=format","https://ph-files.imgix.net/8389c81a-409f-4032-9c37-8414a6e38ab8.png?auto=format","https://ph-files.imgix.net/fc371026-dec7-48eb-bc6b-735158c96c41.png?auto=format"],"image":"https://ph-files.imgix.net/d3897df8-e6d1-4c6f-99ce-a1486fe1716f.png?auto=format"},{"sourceId":"producthunt","title":"Near card","url":"https://www.producthunt.com/products/near-card/launches/near-card?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Smarter customer retention for local businesses","content":"NearCard combines digital loyalty cards with smart customer engagement tools. It lets local businesses stay inside their customers’ phones via Apple and Google Wallet, sending loyalty rewards, offers, and push notifications to drive repeat visits and long-term customer retention.","metrics":{},"tags":["producthunt","new"],"externalId":"1168407","logo":"https://ph-files.imgix.net/f1cc83f3-0125-4597-84c5-91372101a887.png?auto=format","images":["https://ph-files.imgix.net/bdea1998-ad23-4ecc-a770-6af9851aa223.png?auto=format","https://ph-files.imgix.net/8cf559b9-c02f-4437-9271-b1fbbce329eb.png?auto=format","https://ph-files.imgix.net/8916fa2b-ee3d-4b98-b0de-cef6f51054a5.jpeg?auto=format"],"image":"https://ph-files.imgix.net/bdea1998-ad23-4ecc-a770-6af9851aa223.png?auto=format"},{"sourceId":"producthunt","title":"VirtUp","url":"https://www.producthunt.com/products/virtup-3/launches/virtup-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"1:1 Platform for Consulting and Freelancing","content":"VirtUp is a consultation-first expert monetization platform that helps consultants, coaches, and specialists sell paid 1:1 advice, monetize expertise, manage bookings, and convert consultations into long-term client engagements. The goal of VirtUp is to help professionals monetize their expertise while giving clients an easier way to find trusted professionals for advice, short-term support, and specialized work.","metrics":{},"tags":["producthunt","new"],"externalId":"1168055","logo":"https://ph-files.imgix.net/f77bf074-dfdc-4cd1-ba6b-030f676a1a46.png?auto=format","images":["https://ph-files.imgix.net/e96f2ca8-9dac-4a4e-a188-58b3ec8bb491.png?auto=format","https://ph-files.imgix.net/ac7f866f-e94a-4557-91a1-a68d403d2a7c.png?auto=format","https://ph-files.imgix.net/28dfb96e-2eaa-4eb5-a14e-d2abce820112.png?auto=format"],"image":"https://ph-files.imgix.net/e96f2ca8-9dac-4a4e-a188-58b3ec8bb491.png?auto=format"},{"sourceId":"producthunt","title":"TimeTableGen","url":"https://www.producthunt.com/products/timetablegen/launches/timetablegen?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Free timetable maker for schools, students & teams.","content":"TimetableGen is a free online timetable maker for schools, colleges, teachers, students, offices, and gyms. Build weekly schedules in minutes with drag-and-drop editing, color-coding, and conflict detection. Export as PDF or PNG instantly. No account required.","metrics":{},"tags":["producthunt","new"],"externalId":"1169063","logo":"https://ph-files.imgix.net/575402ab-391d-4a7b-9925-bfedb71f2c18.png?auto=format","images":["https://ph-files.imgix.net/c43d2b36-c4fd-4afd-a2ee-0c50a422fb57.png?auto=format","https://ph-files.imgix.net/38494ce5-bcf2-4b50-970c-eb0ac1beee52.jpeg?auto=format","https://ph-files.imgix.net/4b2311e1-552d-4654-9cbc-2d34985ea242.png?auto=format","https://ph-files.imgix.net/f7e8b1fe-e82e-4e84-a9c3-2d3a000abee0.png?auto=format"],"image":"https://ph-files.imgix.net/c43d2b36-c4fd-4afd-a2ee-0c50a422fb57.png?auto=format"},{"sourceId":"producthunt","title":"Inkfox AI","url":"https://www.producthunt.com/products/inkfox-ai/launches/inkfox-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Free unlimited AI image generator with no sign-up required.","content":"Inkfox AI is a free unlimited AI image generator with no login required, featuring Nano Banana 2.0, GPT Image 2.0, Flux, Seedream and more.","metrics":{},"tags":["producthunt","new"],"externalId":"1167218","logo":"https://ph-files.imgix.net/e87c88fe-a625-4670-857c-4a23ef22b457.png?auto=format","images":["https://ph-files.imgix.net/1658934c-82dc-4aa2-a49c-df6d39fdadea.png?auto=format"],"image":"https://ph-files.imgix.net/1658934c-82dc-4aa2-a49c-df6d39fdadea.png?auto=format"},{"sourceId":"producthunt","title":"Syndicate.","url":"https://www.producthunt.com/products/syndicate-3/launches/syndicate-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Track shared investments and split profits accurately","content":"Syndicate is a shared investment bookkeeping tool for friends, partners, and small investment groups. Track contributions, stock transactions, ownership ratios, withdrawals, and settled profits in one dashboard. It automatically calculates each partner's allocation, saves project data by account, and exports clear A4 P&L reports. Replace confusing spreadsheets and manual profit-split calculations with a simpler workflow.","metrics":{},"tags":["producthunt","new"],"externalId":"1168190","logo":"https://ph-files.imgix.net/e0aac76c-ea2e-4543-a58e-73210b162637.png?auto=format","images":["https://ph-files.imgix.net/88644b60-0bb3-4e3d-b5a1-5fea6072635c.jpeg?auto=format","https://ph-files.imgix.net/787f2f2c-df8b-445d-978d-27c2c66a38db.jpeg?auto=format","https://ph-files.imgix.net/de1be3ac-d61b-4e75-a9c5-9ff39c3ff802.jpeg?auto=format","https://ph-files.imgix.net/33224245-3a7a-436c-a8db-cb7ed1709a0b.jpeg?auto=format","https://ph-files.imgix.net/7a017262-f8bb-4467-904e-d2866ce229e9.jpeg?auto=format","https://ph-files.imgix.net/e3101554-dc10-461f-97f9-83c7ad280500.jpeg?auto=format","https://ph-files.imgix.net/e3fcea9e-c7b2-4503-b1a5-a3ce366251ba.jpeg?auto=format"],"image":"https://ph-files.imgix.net/88644b60-0bb3-4e3d-b5a1-5fea6072635c.jpeg?auto=format"},{"sourceId":"producthunt","title":"VidTranscriber","url":"https://www.producthunt.com/products/vidtranscriber/launches/vidtranscriber?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Editable transcripts from any video — free, no account","content":"Paste a YouTube URL or drop a file and get an editable, time-stamped transcript in 100+ languages. Speaker labels, AI chapters, and SRT/VTT/DOCX export. First 60 minutes free, no signup.","metrics":{},"tags":["producthunt","new"],"externalId":"1168317","logo":"https://ph-files.imgix.net/c1adc31f-85f1-4d96-ae2c-86421e99f0c8.png?auto=format","images":["https://ph-files.imgix.net/1c139ec4-b954-48e9-a8f2-bf7c305e6265.png?auto=format"],"image":"https://ph-files.imgix.net/1c139ec4-b954-48e9-a8f2-bf7c305e6265.png?auto=format"},{"sourceId":"producthunt","title":"FastTab","url":"https://www.producthunt.com/products/fasttab/launches/fasttab?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Browser tab search for people with too many tabs","content":"FastTab is a privacy-first browser tab search app for macOS. Search open tabs, bookmarks, and history across Safari, Chrome, and Edge with 100% local processing, no data collection, and no analytics.","metrics":{},"tags":["producthunt","new"],"externalId":"1164772","logo":"https://ph-files.imgix.net/4e00ca22-487d-4152-befd-f9786b4b471b.jpeg?auto=format","images":["https://ph-files.imgix.net/c8989fa9-9e96-4f0d-91b4-3f0b258fc6ce.png?auto=format","https://ph-files.imgix.net/5c33d4d3-fe43-4070-b704-f2eec77f65a3.jpeg?auto=format"],"image":"https://ph-files.imgix.net/c8989fa9-9e96-4f0d-91b4-3f0b258fc6ce.png?auto=format"},{"sourceId":"producthunt","title":"WritingPad-Quick Notes, Powerful Results","url":"https://www.producthunt.com/products/google/launches/writingpad-quick-notes-powerful-results?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"The fastest way to capture notes, posts, and ideas.","content":"Just open a new tab and throw in your tasks, notes, links, and images Features: 1. Effortlessly Drag & Drop Text and Images 2. Seamlessly Capture Notes, Tasks, and Images from the Web 3. Organize with Precision: Filter by Categories 4. Sort Your Data for Optimal Efficiency 5. Customize Your UI Theme 6. Decorate Text to Highlight Key Information 7. Paste and Store Images Directly 8. Effortless Content Capture: Right-Click to Add Images and Text","metrics":{},"tags":["producthunt","new"],"externalId":"1168649","logo":"https://ph-files.imgix.net/001df4aa-fdc2-443e-a91f-75572acc6ea5.png?auto=format","images":["https://ph-files.imgix.net/91642e60-167d-4048-a530-a0e94da308e1.png?auto=format","https://ph-files.imgix.net/1e9c1806-de75-4305-93a5-339aca1f0b91.png?auto=format","https://ph-files.imgix.net/ae3e5d77-61c1-46ac-88f6-910935cce7e3.png?auto=format"],"image":"https://ph-files.imgix.net/91642e60-167d-4048-a530-a0e94da308e1.png?auto=format"},{"sourceId":"producthunt","title":"Klimaxa","url":"https://www.producthunt.com/products/klimaxa/launches/klimaxa?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Climate-Conscious Commerce Platform","content":"Klimaxa helps businesses turn everyday operational data into carbon insights. Upload receipts, invoices, and supply chain documents to generate emissions estimates, analytics, and downloadable reports in minutes. Unlike traditional carbon accounting platforms, Klimaxa combines AI-powered document processing, supply chain visibility, transparent methodologies, APIs, and SDKs to make sustainability tracking more accessible and actionable.","metrics":{},"tags":["producthunt","new"],"externalId":"1168434","logo":"https://ph-files.imgix.net/c89a77c9-d41d-4367-bf75-07f2d79b85cf.png?auto=format","images":["https://ph-files.imgix.net/ffd21b0a-4cd2-4b69-8f94-d32c89b21eee.jpeg?auto=format","https://ph-files.imgix.net/4bb8b590-ab5e-482f-b662-6940fb37d9d8.jpeg?auto=format","https://ph-files.imgix.net/012d1d9a-e34f-4769-ae92-756cb8b42ae5.jpeg?auto=format","https://ph-files.imgix.net/2a7511de-94dd-49c6-b45e-5aca9673ab63.jpeg?auto=format","https://ph-files.imgix.net/cc612c43-fccd-445c-8bdb-d2ac87a16a34.jpeg?auto=format","https://ph-files.imgix.net/d81c24cc-31f8-4fa0-9100-c5b3dabe915e.jpeg?auto=format"],"image":"https://ph-files.imgix.net/ffd21b0a-4cd2-4b69-8f94-d32c89b21eee.jpeg?auto=format"},{"sourceId":"producthunt","title":"Squig","url":"https://www.producthunt.com/products/squig/launches/squig?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Compiled Agents for Mission-Critical Work","content":"Build agents that are reliable, cheap and fast!","metrics":{},"tags":["producthunt","new"],"externalId":"1168893","logo":"https://ph-files.imgix.net/291446b1-4a4c-440d-a70b-58702d09d4af.png?auto=format","images":["https://ph-files.imgix.net/7c90e5c6-c0d8-4339-903f-4c72e73cd782.jpeg?auto=format","https://ph-files.imgix.net/653aab22-de21-49c8-86d1-954fbce0f86d.png?auto=format","https://ph-files.imgix.net/d18dfc72-5983-4150-a78b-74fed6800835.png?auto=format","https://ph-files.imgix.net/1855540a-028b-4bd4-8d39-513a6d567fdc.png?auto=format"],"image":"https://ph-files.imgix.net/7c90e5c6-c0d8-4339-903f-4c72e73cd782.jpeg?auto=format"},{"sourceId":"producthunt","title":"SmokePic","url":"https://www.producthunt.com/products/smokepic/launches/smokepic?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"AI photo studio","content":"Smokepic turns your ordinary mobile pictures or selfies into studio-grade, pro-level shots. Your face and body stay yours; everything around them goes creative and professional. No photographer, no gear, no editing. Upload a quick selfie and SmokePic makes it look professionally shot, while keeping it unmistakably you.","metrics":{},"tags":["producthunt","new"],"externalId":"1168448","logo":"https://ph-files.imgix.net/0cf95076-c835-4bb6-b332-f278f6a3374c.png?auto=format","images":["https://ph-files.imgix.net/7f7459ab-8388-44ed-b24a-1add2e1a26e1.jpeg?auto=format","https://ph-files.imgix.net/a547b071-b40a-46df-8930-417c28783dc6.jpeg?auto=format","https://ph-files.imgix.net/0075fab1-a067-48d8-b4fa-6ab0ac3974cd.jpeg?auto=format","https://ph-files.imgix.net/9b1f7967-6a62-47c1-b2e4-3959cf99f340.jpeg?auto=format","https://ph-files.imgix.net/5032e05b-5eb8-4b1b-9a3a-0f954210d16f.png?auto=format","https://ph-files.imgix.net/5e222b68-c559-4f91-ada0-6dac85fbe92f.png?auto=format","https://ph-files.imgix.net/aa462e33-66bc-4bb7-b9b6-dc1b213eec6c.png?auto=format","https://ph-files.imgix.net/246422bf-a858-4a44-8fc5-81afb8435af8.png?auto=format","https://ph-files.imgix.net/7d785f1a-7cef-4052-8e4e-ff241b34659b.jpeg?auto=format","https://ph-files.imgix.net/9d22c9a6-bbf9-4b8f-b1cf-9d4e237e3348.png?auto=format","https://ph-files.imgix.net/476d1387-0742-445d-9d83-484c19039e8b.png?auto=format","https://ph-files.imgix.net/3c8949b5-ffa5-447b-976c-846bf4d8c276.png?auto=format","https://ph-files.imgix.net/f527bddf-ad5f-44a1-9365-66fdae8bee6b.png?auto=format"],"image":"https://ph-files.imgix.net/7f7459ab-8388-44ed-b24a-1add2e1a26e1.jpeg?auto=format"},{"sourceId":"producthunt","title":"Truthlens AI Image analyzer","url":"https://www.producthunt.com/products/truthlens-ai-image-analyzer/launches/truthlens-ai-image-analyzer?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"One click to know if an image is AI-generated or real","content":"AI-generated images now look indistinguishable from real photographs — and they're spreading faster than fact-checkers can catch them. TruthLens is a Chrome extension that analyses any image in your browser and tells you in seconds whether it's AI-generated or real. No login. No technical skill. One click. What's live today: → AI image detection at 80%+ accuracy → Works on any image → Works on mobile via your browser — no app download needed → 5 free analyses per day, no account required","metrics":{},"tags":["producthunt","new"],"externalId":"1169077","logo":"https://ph-files.imgix.net/da95759c-705f-4878-9b6e-16644917bd26.png?auto=format","images":["https://ph-files.imgix.net/e72bf369-46c1-42e3-9b82-267e26929f3a.jpeg?auto=format","https://ph-files.imgix.net/07a7b68f-5d1c-4725-a02d-173934fc6a31.jpeg?auto=format","https://ph-files.imgix.net/75632e5d-8713-4eb5-a606-5954f6e8d02e.jpeg?auto=format"],"image":"https://ph-files.imgix.net/e72bf369-46c1-42e3-9b82-267e26929f3a.jpeg?auto=format"},{"sourceId":"producthunt","title":"Trackply","url":"https://www.producthunt.com/products/trackply/launches/trackply?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Stop applying blindly. Let AI do the work.","content":"Trackply is an AI-powered Job Search Operating System and personal application database. It automatically tracks and organizes every job you apply to. Key Features: • AI Job Hunter - searches multiple boards + target companies • Auto-tailors resumes & writes personalized cover letters • New: Job Hunt Meta Agent – batch process up to 10 jobs • Smart pipeline tracker with notes & interview tracking • Chrome extension for auto-add to dashbard.","metrics":{},"tags":["producthunt","new"],"externalId":"1168873","logo":"https://ph-files.imgix.net/b71e320f-73c4-4bf9-8d63-dae5c62fd14a.jpeg?auto=format","images":["https://ph-files.imgix.net/50cecea4-8452-40e8-a177-6ca8d02956cb.jpeg?auto=format","https://ph-files.imgix.net/10c63891-47e7-4072-a2e5-6ffe721632b7.jpeg?auto=format","https://ph-files.imgix.net/c672e82b-cdae-4fa8-af45-33a97de29670.jpeg?auto=format","https://ph-files.imgix.net/96b69c0a-1767-43c1-a476-76b4d6f598fb.jpeg?auto=format"],"image":"https://ph-files.imgix.net/50cecea4-8452-40e8-a177-6ca8d02956cb.jpeg?auto=format"},{"sourceId":"producthunt","title":"PJQ","url":"https://www.producthunt.com/products/pjq/launches/pjq?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"See how an audience really received any YouTube video","content":"PJQ reads the comments under any YouTube video and shows how the audience truly received it: sentiment, support vs disagreement, and bot & spam filtering. Public Judgment Quotient.","metrics":{},"tags":["producthunt","new"],"externalId":"1167666","logo":"https://ph-files.imgix.net/639297d6-f87c-425a-be1a-6934c74b0ad9.svg?auto=format","images":["https://ph-files.imgix.net/3c683b3c-1b94-4ad9-9372-f302e74f731b.png?auto=format","https://ph-files.imgix.net/80c7db0c-499d-4c35-87ac-76a4f359d884.png?auto=format"],"image":"https://ph-files.imgix.net/3c683b3c-1b94-4ad9-9372-f302e74f731b.png?auto=format"},{"sourceId":"producthunt","title":"takenorfree.com","url":"https://www.producthunt.com/products/takenorfree-com/launches/takenorfree-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-11T07:01:00Z","summary":"Domain availability checks for humans and AI agents.","content":"Is your domain taken or free? Instantly check registration status and DNS records via RDAP—the modern, authoritative protocol behind today's WHOIS. Run single lookups, bulk-check hundreds of domains, or upload a CSV for batch validation. Built for founders, marketers, and developers who need fast answers before they commit. Includes an MCP server so AI agents and assistants can check availability, registration data, and DNS records in your workflow. No guessing—just clear taken-or-free results.","metrics":{},"tags":["producthunt","new"],"externalId":"1168841","logo":"https://ph-files.imgix.net/7cfa8bf0-3d07-452c-8e0e-4fedf6ab8e7e.png?auto=format","images":["https://ph-files.imgix.net/a6070cc3-9e9e-4911-ae47-885d8b628ded.jpeg?auto=format","https://ph-files.imgix.net/6a665cd9-ba64-405a-b3f8-0973c3289409.png?auto=format","https://ph-files.imgix.net/dc748b76-96f8-4818-bd03-6b795f33d430.png?auto=format","https://ph-files.imgix.net/1c5d3a0e-9520-4551-be9d-838ddf17e11a.png?auto=format"],"image":"https://ph-files.imgix.net/a6070cc3-9e9e-4911-ae47-885d8b628ded.jpeg?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T08:44:41.658Z",
+  "date": "2026-06-11",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": []
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源推荐】声绘：基于 Flutter 的 AI 语音生成、音色设计与声音克隆应用，支持 TTS、Voice Clone、文本优化和远程配置",
+          "url": "https://github.com/FuKun0113/shenghui-ai-voice-studio",
+          "author": "Hao4Wang",
+          "authorUrl": "https://github.com/Hao4Wang",
+          "publishedAt": "2026-06-10T17:14:19Z",
+          "summary": "项目地址： 官网： 界面： <table <tr <td align=\"center\"<img src=\" width=\"220\" alt=\"生成语音页面\"<br生成语音</td <td align=\"center\"<img src=\" width=\"220\" alt=\"音色库页面\"<br音色库</td <td align=\"center\"<img src=\" width=\"220\" alt=\"音色设计页面\"<br音色设计</td </tr <tr <td align=\"center\"<img src=\" width=\"220\" alt=\"声音克隆页面\"<br声音克隆</td <td align=\"center\"<img src=\" width=\"220\" alt=\"高级案例页面\"<br高级案例</td <td align=\"center\"<img src=\" width=\"220\" alt=\"案例详情页面\"<br案例详情</td </tr </table 核心能力： AI 语音生成：输入文本后生成语音，支持即时播放、历史记录、重生成、下载、分享和删除。 音色库：管理官方音色、自定义音色、收藏音色和最近使用音色，支持分类筛选。 音色设计：通过专业化音色描述生成试听，保存后作为可复用音色。 声音克隆：支持即时录音或上传参考音频，用于创建自定义声音。 表演指令：在生成前描述语气、节奏、角色状态和表达方式，让语音更有表现力。 高级标签：支持风格标签、音频标签、方言标签，并在输入框、历史详情和案例详情中高亮显示。 文档导入：支持 TXT、Word、PDF 文档文本提取，用于较长内容的分段生成。 文本优化：支持 OpenAI 兼容接口，用于生成表演指令、优化文本、插入语音标签。 本地优先：API URL、API Key、音色和历史数据保存在用户设备本地。 支持下载 .apk .aab",
+          "content": "项目地址：https://github.com/FuKun0113/shenghui-ai-voice-studio\n官网：https://shenghui.cloudlark.net/\n界面：\n<table>\n  <tr>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/generate.png\" width=\"220\" alt=\"生成语音页面\"><br>生成语音</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/voice-library.png\" width=\"220\" alt=\"音色库页面\"><br>音色库</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/create-voice-design.png\" width=\"220\" alt=\"音色设计页面\"><br>音色设计</td>\n  </tr>\n  <tr>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/create-voice-clone.png\" width=\"220\" alt=\"声音克隆页面\"><br>声音克隆</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/advanced-cases.png\" width=\"220\" alt=\"高级案例页面\"><br>高级案例</td>\n    <td align=\"center\"><img src=\"https://github.com/FuKun0113/shenghui-ai-voice-studio/raw/main/docs/images/screenshots/case-detail.png\" width=\"220\" alt=\"案例详情页面\"><br>案例详情</td>\n  </tr>\n</table>\n\n核心能力：\n\n- AI 语音生成：输入文本后生成语音，支持即时播放、历史记录、重生成、下载、分享和删除。\n- 音色库：管理官方音色、自定义音色、收藏音色和最近使用音色，支持分类筛选。\n- 音色设计：通过专业化音色描述生成试听，保存后作为可复用音色。\n- 声音克隆：支持即时录音或上传参考音频，用于创建自定义声音。\n- 表演指令：在生成前描述语气、节奏、角色状态和表达方式，让语音更有表现力。\n- 高级标签：支持风格标签、音频标签、方言标签，并在输入框、历史详情和案例详情中高亮显示。\n- 文档导入：支持 TXT、Word、PDF 文档文本提取，用于较长内容的分段生成。\n- 文本优化：支持 OpenAI 兼容接口，用于生成表演指令、优化文本、插入语音标签。\n- 本地优先：API URL、API Key、音色和历史数据保存在用户设备本地。\n\n\n支持下载 [.apk .aab](https://github.com/FuKun0113/shenghui-ai-voice-studio/releases)",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10283",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10283"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】PTP 时间同步技术书——从思想实验到动手实现",
+          "url": "https://github.com/Lularible/ptp-book",
+          "author": "Lularible",
+          "authorUrl": "https://github.com/Lularible",
+          "publishedAt": "2026-06-11T03:41:24Z",
+          "summary": "【开源自荐】PTP 时间同步技术书——从思想实验到动手实现 开源地址： 项目简介： 一本开源技术书，从思想实验讲起，深入 PTP/IEEE 1588 协议机制和 LinuxPTP 源码分析，附带一套可运行的 ptplite 教学实现（约 1000 行 C），可在两台 Linux 机器上实际做主从时钟同步。 为什么这很重要？ 自动驾驶需要多传感器（激光雷达、摄像头、IMU）在微秒级对齐时间戳——时间不同步等于传感器白装。PTP/gPTP（IEEE 1588 / 802.1AS）是实现车载时钟同步的核心标准，已广泛应用于主流自动驾驶平台。然而，系统性、从零讲起的中文 PTP 技术资料几乎空白。 运行效果： <img width=\"1946\" height=\"1165\" alt=\"Image\" src=\" / 核心特性： 📖 41 节 —— 4 个章节覆盖思想实验、协议机制、源码分析、动手实现 🔬 逐机制拆解 —— BMCA 选举、4 个时间戳的数学、透明时钟、PI 伺服控制器 ⚙️ ptplite —— 一个完整的主从时钟实现，可在真实网卡上运行做时间同步 📊 市场验证 —— CSDN 3 周 3 万阅读、1000+ 点赞收藏 开源协议：CC BYNCND 4.0（内容） · MIT（代码）",
+          "content": "### 【开源自荐】PTP 时间同步技术书——从思想实验到动手实现\n\n**开源地址：**\nhttps://github.com/Lularible/ptp-book\n\n**项目简介：**\n\n一本开源技术书，从思想实验讲起，深入 PTP/IEEE 1588 协议机制和 LinuxPTP 源码分析，附带一套可运行的 ptp-lite 教学实现（约 1000 行 C），可在两台 Linux 机器上实际做主从时钟同步。\n\n**为什么这很重要？** \n自动驾驶需要多传感器（激光雷达、摄像头、IMU）在微秒级对齐时间戳——时间不同步等于传感器白装。PTP/gPTP（IEEE 1588 / 802.1AS）是实现车载时钟同步的核心标准，已广泛应用于主流自动驾驶平台。然而，**系统性、从零讲起的中文 PTP 技术资料几乎空白**。\n\n**运行效果：**\n\n<img width=\"1946\" height=\"1165\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/853dd7f6-21e3-44c5-a4f4-d55715b6b14f\" />\n\n**核心特性：**\n\n📖 **41 节** —— 4 个章节覆盖思想实验、协议机制、源码分析、动手实现\n🔬 **逐机制拆解** —— BMCA 选举、4 个时间戳的数学、透明时钟、PI 伺服控制器\n⚙️ **ptp-lite** —— 一个完整的主从时钟实现，可在真实网卡上运行做时间同步\n📊 **市场验证** —— CSDN **3 周 3 万阅读、1000+ 点赞收藏**\n\n开源协议：CC BY-NC-ND 4.0（内容） · MIT（代码）",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10284",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10284"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "〖工具自荐〗SkillDock —— AI Coding 工具的 Skills、MCP 与插件管理台",
+          "url": "https://github.com/wanghuan9/skill-manager",
+          "author": "wanghuan9",
+          "authorUrl": "https://github.com/wanghuan9",
+          "publishedAt": "2026-06-11T04:48:08Z",
+          "summary": "〖工具自荐〗SkillDock —— AI Coding 工具的 Skills、MCP 与插件管理台 介绍 SkillDock 是一个面向 AI Coding 工具的 macOS 桌面管理工具，用来统一管理本地的 Skills、MCP Servers 和插件包。 它可以把 Claude Code、Codex、Cursor、Windsurf、Gemini CLI、GitHub Copilot 等工具里分散的配置能力集中起来，支持安装、查看、编辑、同步和更新，减少手动复制文件、修改配置和检查路径的成本。 项目地址： !SkillDock skills list 特点 统一管理 Skills：集中查看、安装、编辑、删除和同步本地 skills。 统一管理 MCP Servers：支持扫描导入、编辑配置、探测 tools，并按工具启用或停用。 支持插件包管理：插件可以包含 skills、commands、agents、MCP 集成和宿主工具能力。 Gitaware 工作流：Git 来源的 skills 和插件保留真实仓库结构，可检测远端更新、本地修改和待推送状态。 多工具一键同步：同一套 skills、MCP 和插件可以同步到多个 AI Coding 工具。 面向团队协作：发布者可以本地修改后一键推送，使用者可以查看更新内容后一键更新。 核心能力 Skills 管理 SkillDock 会按来源展示已安装的 skills，并保留每个 skill 的来源信息、Git 状态和工具启用状态。 适合团队维护一组公共 skills，然后让不同成员按需同步到 Claude Code、Codex、Cursor、Windsurf 等工具中。 MCP 管理 MCP Servers 和 skills 放在同一个工作台中管理。SkillDock 可以扫描本机已有配置，也可以从市场安装 MCP server。 它不仅保存配置，还会尝试探测 MCP server 是否可用，以及暴露了哪些 tools。 !SkillDock MCP detail 插件管理 SkillDock 也支持更高层级的插件包管理。一个插件可以包含 skills、commands、agents、MCP 集成和不同宿主工具的扩展能力。 这适合把一组 AI Coding 能力打包分发，而不是只管理单个 skill 或单个 MCP server。 !SkillDock plugin detail Git 协作状态 对于从 Git 仓库安装的 skills 和插件，SkillDock 会保留真实仓库结构，而不是简单复制文件。 这样可以继续检测： 是否有远端更新 本地是否修改过 是否有待推送内容 更新或推送前具体会变更什么 这对团队维护内部 skills 比较有用，因为 skills 不再只是一次性复制到本地的文件，而是可以持续更新和协作的资产。 支持的工具 目前支持或计划支持的工具包括： Claude Code、Codex、Cursor、Windsurf、IntelliJ IDEA、OpenCode、Gemini、GitHub Copilot、Continue、Qwen Code、Trae、Cline、Roo Code、Kilo Code、Kiro、Goose、Augment、CodeBuddy 等。 适用场景 同时使用多个 AI Coding 工具 想集中管理 Claude Code、Codex、Cursor 等工具的 skills 想减少 MCP server 手动配置成本 团队内部有一批自维护 skills，需要分发、更新和回推 希望把 AI Coding 配置从个人零散目录整理成可维护资产 总结 SkillDock 不是一个新的 AI 编程助手，而是一个 AI Coding 能力管理工具。 它关注的是 AI Coding 工具进入日常使用以后，skills、MCP servers 和插件越来越多、越来越分散、越来越难维护的问题。通过统一安装、同步、探测和 Git 状态管理，希望让这些能力更容易复用，也更适合团队长期维护。 当前 SkillDock 已支持 macOS，Windows 计划后续支持。源码目前还没有正式开放，仓库先作为公开预览和下载入口，后续功能、文档和发布流程稳定后会考虑开源。",
+          "content": "# 〖工具自荐〗SkillDock —— AI Coding 工具的 Skills、MCP 与插件管理台\n\n## 介绍\n\nSkillDock 是一个面向 AI Coding 工具的 macOS 桌面管理工具，用来统一管理本地的 Skills、MCP Servers 和插件包。\n\n它可以把 Claude Code、Codex、Cursor、Windsurf、Gemini CLI、GitHub Copilot 等工具里分散的配置能力集中起来，支持安装、查看、编辑、同步和更新，减少手动复制文件、修改配置和检查路径的成本。\n\n项目地址：https://github.com/wanghuan9/skill-manager\n\n![SkillDock skills list](https://github.com/wanghuan9/skill-manager/raw/main/docs/images/skill_list.png)\n\n## 特点\n\n- **统一管理 Skills**：集中查看、安装、编辑、删除和同步本地 skills。\n- **统一管理 MCP Servers**：支持扫描导入、编辑配置、探测 tools，并按工具启用或停用。\n- **支持插件包管理**：插件可以包含 skills、commands、agents、MCP 集成和宿主工具能力。\n- **Git-aware 工作流**：Git 来源的 skills 和插件保留真实仓库结构，可检测远端更新、本地修改和待推送状态。\n- **多工具一键同步**：同一套 skills、MCP 和插件可以同步到多个 AI Coding 工具。\n- **面向团队协作**：发布者可以本地修改后一键推送，使用者可以查看更新内容后一键更新。\n\n## 核心能力\n\n### Skills 管理\n\nSkillDock 会按来源展示已安装的 skills，并保留每个 skill 的来源信息、Git 状态和工具启用状态。\n\n适合团队维护一组公共 skills，然后让不同成员按需同步到 Claude Code、Codex、Cursor、Windsurf 等工具中。\n\n### MCP 管理\n\nMCP Servers 和 skills 放在同一个工作台中管理。SkillDock 可以扫描本机已有配置，也可以从市场安装 MCP server。\n\n它不仅保存配置，还会尝试探测 MCP server 是否可用，以及暴露了哪些 tools。\n\n![SkillDock MCP detail](https://github.com/wanghuan9/skill-manager/raw/main/docs/images/mcp_detail.png)\n\n### 插件管理\n\nSkillDock 也支持更高层级的插件包管理。一个插件可以包含 skills、commands、agents、MCP 集成和不同宿主工具的扩展能力。\n\n这适合把一组 AI Coding 能力打包分发，而不是只管理单个 skill 或单个 MCP server。\n\n![SkillDock plugin detail](https://github.com/wanghuan9/skill-manager/raw/main/docs/images/plugin_detail.png)\n\n### Git 协作状态\n\n对于从 Git 仓库安装的 skills 和插件，SkillDock 会保留真实仓库结构，而不是简单复制文件。\n\n这样可以继续检测：\n\n- 是否有远端更新\n- 本地是否修改过\n- 是否有待推送内容\n- 更新或推送前具体会变更什么\n\n这对团队维护内部 skills 比较有用，因为 skills 不再只是一次性复制到本地的文件，而是可以持续更新和协作的资产。\n\n## 支持的工具\n\n目前支持或计划支持的工具包括：\n\nClaude Code、Codex、Cursor、Windsurf、IntelliJ IDEA、OpenCode、Gemini、GitHub Copilot、Continue、Qwen Code、Trae、Cline、Roo Code、Kilo Code、Kiro、Goose、Augment、CodeBuddy 等。\n\n## 适用场景\n\n- 同时使用多个 AI Coding 工具\n- 想集中管理 Claude Code、Codex、Cursor 等工具的 skills\n- 想减少 MCP server 手动配置成本\n- 团队内部有一批自维护 skills，需要分发、更新和回推\n- 希望把 AI Coding 配置从个人零散目录整理成可维护资产\n\n## 总结\n\nSkillDock 不是一个新的 AI 编程助手，而是一个 AI Coding 能力管理工具。\n\n它关注的是 AI Coding 工具进入日常使用以后，skills、MCP servers 和插件越来越多、越来越分散、越来越难维护的问题。通过统一安装、同步、探测和 Git 状态管理，希望让这些能力更容易复用，也更适合团队长期维护。\n\n当前 SkillDock 已支持 macOS，Windows 计划后续支持。源码目前还没有正式开放，仓库先作为公开预览和下载入口，后续功能、文档和发布流程稳定后会考虑开源。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10285",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10285"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】纯开源家庭账房(Family Ledger), 自托管家庭资产管理 · 每月10分钟,全家资产全局图 + 真实年化(XIRR/TWR)+ AI 资产体检 · 数据自托管, 不泄密",
+          "url": "https://github.com/LuoDi-Nate/financial-management",
+          "author": "LuoDi-Nate",
+          "authorUrl": "https://github.com/LuoDi-Nate",
+          "publishedAt": "2026-06-11T09:14:46Z",
+          "summary": "家庭账房(Family Ledger) 家庭资产散在银行、支付宝、券商、房产和房贷里,很难回答\"我们家到底有多少钱、 今年变富还是变穷了\"。这是一个为此而做的自托管 Web 应用:不记每日流水, 每月全家花 10 分钟填一次各账户余额即可,数据只保存在自己的服务器上。 !仪表盘 · 净资产趋势(CPI 购买力线 + M2 社会财富线)+ 资产配置 核心能力: 真实收益率:靠恒等式「投资损益 = 期末 − 期初 − 净外部流入」,自动算 账户级 / 家庭级 XIRR 与 TWR,把「工资攒的」和「投资赚的」分开 财富水位:净资产趋势叠加 CPI 购买力线和 M2 社会财富线,看扣完通胀 后是否真的变富 「戴着镣铐」的 AI 资产体检:集中度 / 资产负债表 / 再平衡 / 低利率四个 视角。所有数字由程序预先算好,LLM 只负责解读;输出经合规校验——出现 \"保证收益\"、具体产品代码、\"会涨会跌\" 一类词直接拒绝;喂模型前家庭成员 真名自动脱敏 股票录 ticker 自动估值(A/美/港)、多币种自动汇率、退休 FIRE 三情景 预测、iOS PWA 装到主屏 !AI 资产体检 · 数字工程算,LLM 只解读,不荐产品不预测涨跌 技术栈:Spring Boot 3 + MySQL + Thymeleaf + HTMX,无 SPA、无构建管线, 最低配 VPS 一键部署(deploy.sh)。Apache 2.0。 在线体验(合成数据): 账号 wangergou / 密码 demo1234 更多截图 <table <tr <td width=\"50%\"<img src=\" alt=\"账户簿\"<br<sub<b账户簿</b · 6 类账户 · 按成员归集 划转 / 体检 / 一键导出</sub</td <td width=\"50%\"<img src=\" alt=\"管理页\"<br<sub<b可运营管理页</b · 品牌 / 周期 / 提 / 汇率 / 阈值 共 14 项热改</sub</td </tr </table <table <tr <td width=\"20%\"<img src=\" alt=\"移动端仪表盘\"</td <td width=\"20%\"<img src=\" alt=\"移动端填报\"</td <td width=\"20%\"<img src=\" alt=\"移动端体检\"</td <td width=\"20%\"<img src=\" alt=\"移动端 AI 调仓\"</td <td width=\"20%\"<img src=\" alt=\"iOS PWA\"</td </tr <tr <td align=\"center\"<sub仪表盘</sub</td <td align=\"center\"<sub每月填报</sub</td <td align=\"center\"<sub资产体检</sub</td <td align=\"center\"<subAI 调仓</sub</td <td align=\"center\"<sub装为 App</sub</td </tr </table",
+          "content": "## 家庭账房(Family Ledger)\n\nhttps://github.com/LuoDi-Nate/financial-management\n\n家庭资产散在银行、支付宝、券商、房产和房贷里,很难回答\"我们家到底有多少钱、\n今年变富还是变穷了\"。这是一个为此而做的自托管 Web 应用:不记每日流水,\n每月全家花 10 分钟填一次各账户余额即可,数据只保存在自己的服务器上。\n\n![仪表盘 · 净资产趋势(CPI 购买力线 + M2 社会财富线)+ 资产配置](https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_dashboard.jpg)\n\n核心能力:\n\n- **真实收益率**:靠恒等式「投资损益 = 期末 − 期初 − 净外部流入」,自动算\n  账户级 / 家庭级 XIRR 与 TWR,把「工资攒的」和「投资赚的」分开\n- **财富水位**:净资产趋势叠加 CPI 购买力线和 M2 社会财富线,看扣完通胀\n  后是否真的变富\n- **「戴着镣铐」的 AI 资产体检**:集中度 / 资产负债表 / 再平衡 / 低利率四个\n  视角。所有数字由程序预先算好,LLM 只负责解读;输出经合规校验——出现\n  \"保证收益\"、具体产品代码、\"会涨会跌\" 一类词直接拒绝;喂模型前家庭成员\n  真名自动脱敏\n- 股票录 ticker 自动估值(A/美/港)、多币种自动汇率、退休 FIRE 三情景\n  预测、iOS PWA 装到主屏\n\n![AI 资产体检 · 数字工程算,LLM 只解读,不荐产品不预测涨跌](https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_ai_analysis.jpg)\n\n技术栈:Spring Boot 3 + MySQL + Thymeleaf + HTMX,无 SPA、无构建管线,\n最低配 VPS 一键部署(deploy.sh)。Apache 2.0。\n\n在线体验(合成数据):https://beta.dixi-token.top\n账号 `wangergou` / 密码 `demo1234`\n\n### 更多截图\n\n<table>\n  <tr>\n    <td width=\"50%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_account.jpg\" alt=\"账户簿\"><br><sub><b>账户簿</b> · 6 类账户 · 按成员归集\n  划转 / 体检 / 一键导出</sub></td>\n    <td width=\"50%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/pc_setting.jpg\" alt=\"管理页\"><br><sub><b>可运营管理页</b> · 品牌 / 周期 / 提\n   / 汇率 / 阈值 共 14 项热改</sub></td>\n  </tr>\n</table>\n\n<table>\n  <tr>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobilez_dashboard.jpg\" alt=\"移动端仪表盘\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_account.jpg\" alt=\"移动端填报\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_analysis.jpg\" alt=\"移动端体检\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_ai_analysis.jpg\" alt=\"移动端 AI 调仓\"></td>\n    <td width=\"20%\"><img src=\"https://cdn.jsdelivr.net/gh/LuoDi-Nate/financial-management@master/docs/screenshots/mobile_ios_deck.jpg\" alt=\"iOS PWA\"></td>\n  </tr>\n  <tr>\n    <td align=\"center\"><sub>仪表盘</sub></td>\n    <td align=\"center\"><sub>每月填报</sub></td>\n    <td align=\"center\"><sub>资产体检</sub></td>\n    <td align=\"center\"><sub>AI 调仓</sub></td>\n    <td align=\"center\"><sub>装为 App</sub></td>\n  </tr>\n</table>",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10286",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10286"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "[投稿] Turn your notes into a practice test: a faster way to study than re-reading",
+          "url": "https://quiz-maker.net",
+          "author": "send2terry",
+          "authorUrl": "https://github.com/send2terry",
+          "publishedAt": "2026-06-11T10:07:17Z",
+          "summary": "Most of us study by rereading. You go over the notes, highlight a few lines, feel like it's sinking in, and then blank on half of it during the exam. The uncomfortable truth from decades of memory research is that rereading is one of the least effective things you can do with your time. It feels productive because the material gets familiar — but familiarity isn't the same as being able to recall it when no one's showing you the answer. The technique that consistently beats rereading is active recall: instead of putting information back into your head, you practice pulling it out. Close the notes and try to answer a question. The moment of effortful retrieval — even when you get it wrong — is what actually strengthens the memory. Selftesting reliably outperforms rereading and highlighting in study after study, and it has a useful side effect: it tells you exactly what you don't know yet, instead of letting you fool yourself. The catch has always been the friction. Writing your own practice questions is tedious, and by the time you've written them you've halfmemorized the answers anyway. Flashcards help but take forever to make. So most people skip the testing and go back to the comfortable, ineffective reread. Here's the workflow I've settled on that removes the friction: 1. Dump your material in. Paste your lecture notes, a chapter of text, or even a PDF of the slides. You don't need to clean it up first. 2. Generate a quiz from it. I use Quiz Maker for this — paste a topic, your notes, or a PDF and it writes a set of questions with an answer key. Multiple choice, true/false, or mixed. It's free and doesn't make you create an account just to try it, which is the whole reason I started using it instead of the tools that gate everything behind a signup. 3. Take the quiz cold. No notes open. The point is to fail a few — that's the signal of where to focus. 4. Restudy only what you missed, then regenerate or retake. This is the loop that actually moves the needle. A few honest caveats. Autogenerated questions are a starting point, not gospel — skim them and delete or edit any that are ambiguous or test trivia instead of understanding (you can edit every question before you use it). For conceptual subjects like math proofs or essaybased humanities, question generation works less well than it does for factdense material like biology, history, or vocabulary. And the goal isn't to generate a thousand questions; it's to test yourself, find the gaps, and close them. The metapoint is simple: the best study method is the one you'll actually do, and \"rereading\" wins by default only because making practice questions used to be a chore. Take the chore out and active recall becomes the path of least resistance. That's the entire trick. (If you want to try the workflow: paste a topic or your notes at — no signup to generate.)",
+          "content": "Most of us study by re-reading. You go over the notes, highlight a few lines, feel like it's sinking in, and then blank on half of it during the exam. The uncomfortable truth from decades of memory research is that re-reading is one of the least effective things you can do with your time. It feels productive because the material gets *familiar* — but familiarity isn't the same as being able to recall it when no one's showing you the answer.\n\nThe technique that consistently beats re-reading is **active recall**: instead of putting information back into your head, you practice pulling it out. Close the notes and try to answer a question. The moment of effortful retrieval — even when you get it wrong — is what actually strengthens the memory. Self-testing reliably outperforms re-reading and highlighting in study after study, and it has a useful side effect: it tells you exactly what you don't know yet, instead of letting you fool yourself.\n\nThe catch has always been the friction. Writing your own practice questions is tedious, and by the time you've written them you've half-memorized the answers anyway. Flashcards help but take forever to make. So most people skip the testing and go back to the comfortable, ineffective re-read.\n\nHere's the workflow I've settled on that removes the friction:\n\n1. **Dump your material in.** Paste your lecture notes, a chapter of text, or even a PDF of the slides. You don't need to clean it up first.\n2. **Generate a quiz from it.** I use [Quiz Maker](https://quiz-maker.net) for this — paste a topic, your notes, or a PDF and it writes a set of questions with an answer key. Multiple choice, true/false, or mixed. It's free and doesn't make you create an account just to try it, which is the whole reason I started using it instead of the tools that gate everything behind a signup.\n3. **Take the quiz cold.** No notes open. The point is to fail a few — that's the signal of where to focus.\n4. **Re-study only what you missed,** then regenerate or retake. This is the loop that actually moves the needle.\n\nA few honest caveats. Auto-generated questions are a starting point, not gospel — skim them and delete or edit any that are ambiguous or test trivia instead of understanding (you can edit every question before you use it). For conceptual subjects like math proofs or essay-based humanities, question generation works less well than it does for fact-dense material like biology, history, or vocabulary. And the goal isn't to generate a thousand questions; it's to test yourself, find the gaps, and close them.\n\nThe meta-point is simple: the best study method is the one you'll actually do, and \"re-reading\" wins by default only because making practice questions used to be a chore. Take the chore out and active recall becomes the path of least resistance. That's the entire trick.\n\n*(If you want to try the workflow: paste a topic or your notes at https://quiz-maker.net — no signup to generate.)*",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10288",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10288",
+          "siteLogo": "https://quiz-maker.net/favicon.ico?favicon.0x3dzn~oxb6tn.ico"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "推荐:wcelo —— 把世界杯当成一次预注册实验",
+          "url": "https://wcelo.com",
+          "author": "Chaoticyeung",
+          "authorUrl": "https://github.com/Chaoticyeung",
+          "publishedAt": "2026-06-11T10:09:47Z",
+          "summary": "推荐项目：wcelo · 2026 世界杯概率预测 一个每天更新的世界杯夺冠/晋级/逐场胜平负概率站，但我真正想做的是背后的一次 「预注册实验」：开赛前把三个可证伪的假设写死、用一个 git commit 冻结、锁定赛后 评分口径，之后只许按这套规则结算，不许事后改口径。 三个假设里我最好奇第三个——让大模型（Claude）在每个比赛日前联网去读伤病、停赛、 预计首发、死亡之组放水这类「软信息」，折算成一个有界的实力修正，看它到底能不能 赢过一个纯统计模型（Elo + DixonColes 双泊松 + 10 万次蒙特卡洛）。另两个是 「每日更新到底有没有增量」和「概率校不校准」。 模型本身很常规、刻意不炫技；好玩的是这套不能反悔的实验设计。方法、假设、预注册 全部公开在站内 /method 页。我的先验其实是「大模型多半只加噪声」，但我把它按最强 形态实现，免得验证变成自我实现。",
+          "content": "推荐项目：wcelo · 2026 世界杯概率预测  https://wcelo.com\n\n一个每天更新的世界杯夺冠/晋级/逐场胜平负概率站，但我真正想做的是背后的一次\n「预注册实验」：开赛前把三个可证伪的假设写死、用一个 git commit 冻结、锁定赛后\n评分口径，之后只许按这套规则结算，不许事后改口径。\n\n三个假设里我最好奇第三个——让大模型（Claude）在每个比赛日前联网去读伤病、停赛、\n预计首发、死亡之组放水这类「软信息」，折算成一个有界的实力修正，看它到底能不能\n赢过一个纯统计模型（Elo + Dixon-Coles 双泊松 + 10 万次蒙特卡洛）。另两个是\n「每日更新到底有没有增量」和「概率校不校准」。\n\n模型本身很常规、刻意不炫技；好玩的是这套不能反悔的实验设计。方法、假设、预注册\n全部公开在站内 /method 页。我的先验其实是「大模型多半只加噪声」，但我把它按最强\n形态实现，免得验证变成自我实现。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10289",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10289",
+          "siteLogo": "https://wcelo.com/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Awesome AI Gateway —— 按痛点分类的 AI 网关选型清单",
+          "url": "https://github.com/cuihuan/awesome-ai-gateway",
+          "author": "cuihuan",
+          "authorUrl": "https://github.com/cuihuan",
+          "publishedAt": "2026-06-11T13:05:43Z",
+          "summary": "向周刊推荐我整理的一份开源资源：Awesome AI Gateway。 AI 网关是位于应用和大模型厂商之间的中间层（LiteLLM、oneapi、OpenRouter 这一类），负责统一接入、路由、计费和限流。现有的同类清单基本按厂商罗列，这份清单改为按使用者的真实诉求组织：性价比、企业合规、自托管开源、国产模型生态、智能路由、MCP/Agent 网关等，开头有一棵「我该用哪个网关」的决策树。 项目地址： 特点： 中英双语，收录 50+ 项目，附 15 个主流网关的特性对比表 所有项目的 star 数与最新版本由 GitHub Actions 每日自动刷新，数据不过期 明确标注已停止维护的项目，并排除灰产逆向类「freeapi」中转 附选型安全清单（防偷偷降智的 canary 测试、零数据保留、开源协议坑） !预览",
+          "content": "向周刊推荐我整理的一份开源资源：Awesome AI Gateway。\n\nAI 网关是位于应用和大模型厂商之间的中间层（LiteLLM、one-api、OpenRouter 这一类），负责统一接入、路由、计费和限流。现有的同类清单基本按厂商罗列，这份清单改为按使用者的真实诉求组织：性价比、企业合规、自托管开源、国产模型生态、智能路由、MCP/Agent 网关等，开头有一棵「我该用哪个网关」的决策树。\n\n项目地址：https://github.com/cuihuan/awesome-ai-gateway\n\n特点：\n\n- 中英双语，收录 50+ 项目，附 15 个主流网关的特性对比表\n- 所有项目的 star 数与最新版本由 GitHub Actions 每日自动刷新，数据不过期\n- 明确标注已停止维护的项目，并排除灰产逆向类「free-api」中转\n- 附选型安全清单（防偷偷降智的 canary 测试、零数据保留、开源协议坑）\n\n![预览](https://raw.githubusercontent.com/cuihuan/awesome-ai-gateway/main/assets/social-preview.png)",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10290",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10290"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】spring-nacos-mcp —— 让 AI 直接回答\"这个配置 dev 和 test 一致吗\"",
+          "url": "https://github.com/kestiny18/spring-nacos-mcp",
+          "author": "kestiny18",
+          "authorUrl": "https://github.com/kestiny18",
+          "publishedAt": "2026-06-11T13:21:43Z",
+          "summary": "项目地址： 一句话介绍：面向 Spring Cloud 项目的零配置、只读 Nacos MCP server——把它指向你的项目仓库，自动从 application / bootstrap 文件发现所有环境（dev/test/pre/prod），AI 编程工具（Cursor / Claude Code 等）就能直接查询、搜索、跨环境对比 Nacos 配置。 解决的痛点：维护微服务的同学每周都要回答\"这个配置在 dev 和 test 一致吗\"——开两个 Nacos 控制台、来回登录、肉眼 diff。现在直接问 AI 一句话，它会自动调工具完成跨环境 key 级对比并给出结论。 特点： 零配置：不需要配任何 host/port/namespace/token，连接信息直接从项目自己的配置文件解析（支持 yml/yaml/properties、多文档 YAML、${} 占位符） 跨环境 diff：内置 nacosdiffconfig 工具，一次调用返回两个环境的结构化差异 只读设计：代码里只有 GET 和登录请求，不存在写操作路径；可选敏感值脱敏 单文件零依赖：纯 Python 标准库实现，内网机器拷一个文件就能用 AI 安装友好：自带 llmsinstall.md，对 Cursor 说一句\"帮我装这个 MCP\"即可自动完成安装和验证 和官方 nacosmcpserver（单集群、手动配置）是互补关系：官方连集群，这个懂项目。 Apache2.0，带完整测试和 CI，已在真实生产项目（6 模块、4 环境）上验证。",
+          "content": "**项目地址**：https://github.com/kestiny18/spring-nacos-mcp\n\n**一句话介绍**：面向 Spring Cloud 项目的零配置、只读 Nacos MCP server——把它指向你的项目仓库，自动从 `application-*` / `bootstrap-*` 文件发现所有环境（dev/test/pre/prod），AI 编程工具（Cursor / Claude Code 等）就能直接查询、搜索、跨环境对比 Nacos 配置。\n\n**解决的痛点**：维护微服务的同学每周都要回答\"这个配置在 dev 和 test 一致吗\"——开两个 Nacos 控制台、来回登录、肉眼 diff。现在直接问 AI 一句话，它会自动调工具完成跨环境 key 级对比并给出结论。\n\n**特点**：\n\n- **零配置**：不需要配任何 host/port/namespace/token，连接信息直接从项目自己的配置文件解析（支持 yml/yaml/properties、多文档 YAML、${} 占位符）\n- **跨环境 diff**：内置 `nacos_diff_config` 工具，一次调用返回两个环境的结构化差异\n- **只读设计**：代码里只有 GET 和登录请求，不存在写操作路径；可选敏感值脱敏\n- **单文件零依赖**：纯 Python 标准库实现，内网机器拷一个文件就能用\n- **AI 安装友好**：自带 llms-install.md，对 Cursor 说一句\"帮我装这个 MCP\"即可自动完成安装和验证\n\n和官方 nacos-mcp-server（单集群、手动配置）是互补关系：官方连集群，这个懂项目。\n\nApache-2.0，带完整测试和 CI，已在真实生产项目（6 模块、4 环境）上验证。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10291",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10291"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] Awesome AI Gateway",
+          "url": "https://github.com/cuihuan/awesome-ai-gateway",
+          "author": "cuihuan",
+          "authorUrl": "https://github.com/cuihuan",
+          "publishedAt": "2026-06-11T13:06:00Z",
+          "summary": "项目地址 类别 人工智能 项目标题 按痛点分类的 AI 网关选型清单 项目描述 整理了 50 多个 AI 网关/LLM 代理项目（LiteLLM、oneapi、OpenRouter 这一类统一接入多家大模型的中间层）。不按厂商罗列，而是按真实诉求分类：追求性价比、企业合规、自托管开源、国产模型生态、MCP/Agent 网关等，开头是一棵「我该用哪个网关」的决策树。中英双语，star 数和各项目最新版本由 CI 每日自动刷新，停更项目明确标注。 亮点 选型决策树 + 15 个主流网关的特性对比大表，五分钟完成选型 数据每日由 GitHub Actions 自动更新（star 数、最新 release），不是一次性的 markdown 排除灰产逆向「freeapi」中转，停止维护的项目明确打标 附安全选型清单：防降智 canary 测试、零数据保留、AGPL 协议坑 示例代码 No response 截图或视频 !socialpreview",
+          "content": "### 项目地址\n\nhttps://github.com/cuihuan/awesome-ai-gateway\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n按痛点分类的 AI 网关选型清单\n\n### 项目描述\n\n整理了 50 多个 AI 网关/LLM 代理项目（LiteLLM、one-api、OpenRouter 这一类统一接入多家大模型的中间层）。不按厂商罗列，而是按真实诉求分类：追求性价比、企业合规、自托管开源、国产模型生态、MCP/Agent 网关等，开头是一棵「我该用哪个网关」的决策树。中英双语，star 数和各项目最新版本由 CI 每日自动刷新，停更项目明确标注。\n\n### 亮点\n\n- 选型决策树 + 15 个主流网关的特性对比大表，五分钟完成选型\n- 数据每日由 GitHub Actions 自动更新（star 数、最新 release），不是一次性的 markdown\n- 排除灰产逆向「free-api」中转，停止维护的项目明确打标\n- 附安全选型清单：防降智 canary 测试、零数据保留、AGPL 协议坑\n\n### 示例代码\n\n_No response_\n\n### 截图或视频\n\n![social-preview](https://raw.githubusercontent.com/cuihuan/awesome-ai-gateway/main/assets/social-preview.png)",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3345",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3345"
+        },
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] ScreenDrop: 一个运行在浏览器中的二维码文件传输工具。",
+          "url": "https://github.com/guofei9987/ScreenDrop",
+          "author": "guofei9987",
+          "authorUrl": "https://github.com/guofei9987",
+          "publishedAt": "2026-06-11T14:35:19Z",
+          "summary": "项目地址 类别 JS 项目标题 ScreenDrop: 一个运行在浏览器中的二维码文件传输工具 项目描述 无需网络、无需蓝牙、无需安装应用， 只要发送端有屏幕，接收端有摄像头，就可以完成文件传输。 适用场景： • 无网络、无蓝牙环境下的小文件分享 • 跨设备传递少量数据 工作方式： 1. 将文件切分为多个分片 2. 将每个分片编码为二维码，并循环播放 3. 接收端自动扫描并重组文件 特点： • 纯前端实现，数据不经过服务器 • 支持离线使用，适用于隔离网络环境 • 支持任意文件类型 在线使用： 开源地址： 下载使用： 亮点 技术特点： • 设计了一套适用于二维码循环播放场景的文件传输协议 • 接收端可在任意时刻加入传输，无需建立连接 • 分片级 CRC 校验，文件级 SHA256 完整性验证 • 支持多档分片容量，兼顾传输效率与扫码稳定性 示例代码 markdown 截图或演示视频 No response",
+          "content": "### 项目地址\n\nhttps://github.com/guofei9987/ScreenDrop\n\n### 类别\n\nJS\n\n### 项目标题\n\nScreenDrop: 一个运行在浏览器中的二维码文件传输工具\n\n### 项目描述\n\n无需网络、无需蓝牙、无需安装应用，\n只要发送端有屏幕，接收端有摄像头，就可以完成文件传输。\n\n适用场景：\n• 无网络、无蓝牙环境下的小文件分享\n• 跨设备传递少量数据\n\n工作方式：\n\n1. 将文件切分为多个分片\n2. 将每个分片编码为二维码，并循环播放\n3. 接收端自动扫描并重组文件\n\n特点：\n• 纯前端实现，数据不经过服务器\n• 支持离线使用，适用于隔离网络环境\n• 支持任意文件类型\n\n\n在线使用：\nhttps://www.guofei.site/ScreenDrop/sender.html\n\n开源地址：\nhttps://github.com/guofei9987/ScreenDrop\n\n下载使用：\nhttps://github.com/guofei9987/ScreenDrop/releases\n\n### 亮点\n\n\n技术特点：\n• 设计了一套适用于二维码循环播放场景的文件传输协议\n• 接收端可在任意时刻加入传输，无需建立连接\n• 分片级 CRC 校验，文件级 SHA-256 完整性验证\n• 支持多档分片容量，兼顾传输效率与扫码稳定性\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n_No response_",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3346",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3346"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "vibecafe",
+      "sourceName": "VibeCafé 作品",
+      "items": [
+        {
+          "sourceId": "vibecafe",
+          "title": "Capybanana · 随心陪伴养成",
+          "url": "https://vibecafe.ai/products/cmq9ieppv00000bki6xu35y1q",
+          "author": "彭博",
+          "authorUrl": "https://vibecafe.ai/u/marsornage",
+          "publishedAt": "2026-06-11T13:04:26.036Z",
+          "summary": "Agent版本的旅行青蛙，每天一分钟，来小岛上陪我长大一点。",
+          "content": "Agent版本的旅行青蛙，每天一分钟，来小岛上陪我长大一点。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq9ieppv00000bki6xu35y1q",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182829966-9qnzkm.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182692040-7mqrnq.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182829966-9qnzkm.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182794833-oyof5w.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmnsbmt7j000304l7gosai8z4/1781182794596-w3ucmk.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "pura |  本地优先的 Android 真机镜像",
+          "url": "https://vibecafe.ai/products/cmq9gxsid00000bkiw0ay31ju",
+          "author": "灵山",
+          "authorUrl": "https://vibecafe.ai/u/nickname4th",
+          "publishedAt": "2026-06-11T12:23:16.886Z",
+          "summary": "pura 将研发手上的 USB 真机汇成局域网设备墙。ADB 留在本机，视频流与点击会话通过 Hub 路由。",
+          "content": "pura 将研发手上的 USB 真机汇成局域网设备墙。ADB 留在本机，视频流与点击会话通过 Hub 路由。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq9gxsid00000bkiw0ay31ju",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpqmpxs3000204i5hdalng88/mq9gwds3utro-NlRwOVXvu7y5QYQVzjC224E0KVmWWm.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpqmpxs3000204i5hdalng88/mq9gwdsanma2-5CfHGFsZLDGR0sLoOCd2MIUoInTqaZ.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpqmpxs3000204i5hdalng88/mq9gwds3utro-NlRwOVXvu7y5QYQVzjC224E0KVmWWm.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "DeepChat",
+          "url": "https://vibecafe.ai/products/cmq9bz3zi00000bku8fy73l7c",
+          "author": "夕阳针(写Dim的怪叔叔)",
+          "authorUrl": "https://vibecafe.ai/u/zerob13",
+          "publishedAt": "2026-06-11T10:04:20.334Z",
+          "summary": "🐬DeepChat - A smart assistant that connects powerful AI to your personal world - ThinkInAIXYZ/deepc",
+          "content": "🐬DeepChat - A smart assistant that connects powerful AI to your personal world - ThinkInAIXYZ/deepc",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq9bz3zi00000bku8fy73l7c",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172218556-i77mez.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172054988-lobjiw.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172218556-i77mez.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmm92agjf0000la0437c7zr9n/1781172218523-j3x3n0.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "LangCapture",
+          "url": "https://vibecafe.ai/products/cmq94keok00010aj9ovw6o29i",
+          "author": "Felix",
+          "authorUrl": "https://vibecafe.ai/u/felixp",
+          "publishedAt": "2026-06-11T06:36:57.044Z",
+          "summary": "Capture useful PR reviews, Jira updates, Slack replies, and email phrases. Build a reusable workplac",
+          "content": "Capture useful PR reviews, Jira updates, Slack replies, and email phrases. Build a reusable workplac",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq94keok00010aj9ovw6o29i",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmoxny68b000004l5w2imz0sr/1781159623676-60bui4.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmoxny68b000004l5w2imz0sr/mq94eq0pja0w-Kq2FxbdSh9AqbnK0CxpSjPbz8cTKjS.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmoxny68b000004l5w2imz0sr/1781159623676-60bui4.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "First-Tree — Shared Context for Engineering Teams Running AI Agents | Open Source",
+          "url": "https://vibecafe.ai/products/cmq93ioed00000bi2o6gj1ejd",
+          "author": "Chao",
+          "authorUrl": "https://vibecafe.ai/u/liuchao001",
+          "publishedAt": "2026-06-11T06:07:36.710Z",
+          "summary": "first-tree routes work to the right agent, gives it the same context your engineering team has, and",
+          "content": "first-tree routes work to the right agent, gives it the same context your engineering team has, and",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq93ioed00000bi2o6gj1ejd",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq93fj1m00000bi2o07g6y1o/mq93ho11h4k5-A1ma8wBu9XiTYmtkm9n6Ag2e0uaWeV.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq93fj1m00000bi2o07g6y1o/mq93ho13fj0c-WuP408ddwOixmBXPgczBeR0UDwHADj.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq93fj1m00000bi2o07g6y1o/mq93ho11h4k5-A1ma8wBu9XiTYmtkm9n6Ag2e0uaWeV.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "智能元素选择器",
+          "url": "https://vibecafe.ai/products/cmq91kq1900000bkqqjatkgu2",
+          "author": "Jaksay",
+          "authorUrl": "https://vibecafe.ai/u/jaksay",
+          "publishedAt": "2026-06-11T05:13:12.909Z",
+          "summary": "这是一个辅助 AI 调试网页的 Chrome 插件，可以快速选中你想修改的页面元素或位置，并把准确信息提供给 AI，帮助它更快定位和修改问题",
+          "content": "这是一个辅助 AI 调试网页的 Chrome 插件，可以快速选中你想修改的页面元素或位置，并把准确信息提供给 AI，帮助它更快定位和修改问题",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq91kq1900000bkqqjatkgu2",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154749782-p46vlk.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154585473-ecsxad.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154749782-p46vlk.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154776829-ec9roo.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Yoo.domains",
+          "url": "https://vibecafe.ai/products/cmq9162g600000bjbkp33bctn",
+          "author": "Jaksay",
+          "authorUrl": "https://vibecafe.ai/u/jaksay",
+          "publishedAt": "2026-06-11T05:01:49.159Z",
+          "summary": "批量查询与遍历可注册域名，支持特定 TLD 域名组合查询、多 TLD 遍历、批量域名检测和 Domain Hack 生成",
+          "content": "批量查询与遍历可注册域名，支持特定 TLD 域名组合查询、多 TLD 遍历、批量域名检测和 Domain Hack 生成",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq9162g600000bjbkp33bctn",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153979826-78w2gl.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/mq90s2kxmj9c-RNl6FhsPQBzD8moIoi3a4t9ORRaaAG.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153979826-78w2gl.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153988908-wwyllo.jpeg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154061669-tr4wuq.jpeg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154002924-8sjfrd.jpeg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154009619-ijjx01.jpeg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781154017606-qqp3qb.jpeg"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "RSSPod",
+          "url": "https://vibecafe.ai/products/cmq90cnop00000bhy4zcc2c3v",
+          "author": "Jaksay",
+          "authorUrl": "https://vibecafe.ai/u/jaksay",
+          "publishedAt": "2026-06-11T04:38:57.003Z",
+          "summary": "RSSPod 是一个基于 Web 的泛用型播客客户端，让你可以随时随地搜索、订阅并收听喜爱的节目。",
+          "content": "RSSPod 是一个基于 Web 的泛用型播客客户端，让你可以随时随地搜索、订阅并收听喜爱的节目。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmq90cnop00000bhy4zcc2c3v",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153238486-lybwio.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/mq8ztxtbbmyy-ySWzEmTbUFL3AhZSjSaM8BpH9i7PS4.x-icon",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781153238486-lybwio.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781152660227-nnw4c0.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781152660990-2dkqbn.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml8wo2wm0000jr04w9opjxc6/1781152661072-rswoxi.png"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "LiveApply-Smarter way to hire and apply",
+          "url": "https://www.producthunt.com/products/liveapply-smarter-way-to-hire-and-apply/launches/liveapply-smarter-way-to-hire-and-apply?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Your job application stays live until a recruiter reviews it",
+          "content": "LiveApply lets candidates strengthen their application after they hit submit, while recruiters and admins get a live, premium view of the whole process.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168444",
+          "logo": "https://ph-files.imgix.net/efdf34cc-b547-4312-91c1-692bbce09aa9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/6903acea-2b48-437b-92c8-99412de4828b.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/6903acea-2b48-437b-92c8-99412de4828b.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Spidra",
+          "url": "https://www.producthunt.com/products/spidra/launches/spidra?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Scrape, crawl, and monitor any website with a simple prompt",
+          "content": "Spidra is an AI-powered web scraping platform that turns any website into clean, structured data using a simple prompt. Spidra automatically handles proxy setup and CAPTCHAs. Just describe what you want, and you will get JSON, CSV, or direct integrations with Slack, Webhook, Email, Discord and more. Built for developers and non-technical teams alike.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168834",
+          "logo": "https://ph-files.imgix.net/ee8eee2c-b32a-465f-be59-331c6edb8f15.vnd.microsoft.icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bce5a1f8-2790-424d-9c62-d09e3f226238.jpeg?auto=format",
+            "https://ph-files.imgix.net/088cc825-fc71-48f3-ba67-a429294e706f.png?auto=format",
+            "https://ph-files.imgix.net/3a687591-bc23-42a2-95ed-eee9b015ce88.png?auto=format",
+            "https://ph-files.imgix.net/b26b177d-11a3-4752-b669-3a198c03fa9f.png?auto=format",
+            "https://ph-files.imgix.net/efca9534-47d3-48bd-aecd-ab162df53949.png?auto=format",
+            "https://ph-files.imgix.net/d3882748-e917-4747-b1c1-4be834ce05a4.png?auto=format",
+            "https://ph-files.imgix.net/a91485f1-5730-4f0a-9f69-8ef6b4229a38.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bce5a1f8-2790-424d-9c62-d09e3f226238.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "JobsTracker",
+          "url": "https://www.producthunt.com/products/jobstracker/launches/jobstracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "An AI-powered job applications tracker.",
+          "content": "An intelligent job application tracker that scrapes job postings, extracts key details with AI, and streamlines your path to your next role.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168320",
+          "logo": "https://ph-files.imgix.net/edb07112-d15c-4ca8-8603-fb5f7d1c2ab6.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/cf4cfa9a-eb6e-4356-b505-21a8fef6d703.png?auto=format",
+            "https://ph-files.imgix.net/beff7556-49e4-430f-ac6e-789113564cfe.png?auto=format",
+            "https://ph-files.imgix.net/2256ec8d-665c-419f-b2a7-84a214b4bafc.png?auto=format",
+            "https://ph-files.imgix.net/c5243488-dab7-4e2d-a99c-73a467dd5c3b.png?auto=format",
+            "https://ph-files.imgix.net/20730ab9-f184-42d3-a746-334f3e080a0d.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/cf4cfa9a-eb6e-4356-b505-21a8fef6d703.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "StoreSnap ",
+          "url": "https://www.producthunt.com/products/storesnap/launches/storesnap?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Your Business, Online in Seconds",
+          "content": "The easiest way to launch your store and accept payments. No forced logins, privacy-friendly, and ultra-fast.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168585",
+          "logo": "https://ph-files.imgix.net/8093636d-f801-4e93-8e34-fc0d391768a7.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/24b23cc0-e499-4166-9011-5489ddf20ac7.jpeg?auto=format",
+            "https://ph-files.imgix.net/ddacb385-07d8-46a4-b667-acb6c715e9dc.jpeg?auto=format",
+            "https://ph-files.imgix.net/917cafd1-ce9f-4d1b-9e8a-ff742d6657ce.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/24b23cc0-e499-4166-9011-5489ddf20ac7.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ColdCallTracker",
+          "url": "https://www.producthunt.com/products/coldcalltracker/launches/coldcalltracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Track cold calls instantly — no spreadsheet",
+          "content": "ColdCallTracker is a dead-simple call tracking app for sales reps. Open it, hit a button after each call (Picked Up / Ignored / Interested), and see your stats build in real time, answer rates, interest rates, 7-day trends. The free tier gets you tracking in under a minute. Pro ($4.99/mo) adds unlimited history across devices, analytics, a contact queue with callback reminders, CSV export, and a pop-out mini tracker window.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168735",
+          "logo": "https://ph-files.imgix.net/7d4f6072-c12d-4828-8b2e-f6edd77fd3a5.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/d3897df8-e6d1-4c6f-99ce-a1486fe1716f.png?auto=format",
+            "https://ph-files.imgix.net/07d2890a-f835-4fae-85ca-a29f87156a37.png?auto=format",
+            "https://ph-files.imgix.net/8389c81a-409f-4032-9c37-8414a6e38ab8.png?auto=format",
+            "https://ph-files.imgix.net/fc371026-dec7-48eb-bc6b-735158c96c41.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/d3897df8-e6d1-4c6f-99ce-a1486fe1716f.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Near card",
+          "url": "https://www.producthunt.com/products/near-card/launches/near-card?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Smarter customer retention for local businesses",
+          "content": "NearCard combines digital loyalty cards with smart customer engagement tools. It lets local businesses stay inside their customers’ phones via Apple and Google Wallet, sending loyalty rewards, offers, and push notifications to drive repeat visits and long-term customer retention.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168407",
+          "logo": "https://ph-files.imgix.net/f1cc83f3-0125-4597-84c5-91372101a887.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bdea1998-ad23-4ecc-a770-6af9851aa223.png?auto=format",
+            "https://ph-files.imgix.net/8cf559b9-c02f-4437-9271-b1fbbce329eb.png?auto=format",
+            "https://ph-files.imgix.net/8916fa2b-ee3d-4b98-b0de-cef6f51054a5.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bdea1998-ad23-4ecc-a770-6af9851aa223.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "VirtUp",
+          "url": "https://www.producthunt.com/products/virtup-3/launches/virtup-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "1:1 Platform for Consulting and Freelancing",
+          "content": "VirtUp is a consultation-first expert monetization platform that helps consultants, coaches, and specialists sell paid 1:1 advice, monetize expertise, manage bookings, and convert consultations into long-term client engagements. The goal of VirtUp is to help professionals monetize their expertise while giving clients an easier way to find trusted professionals for advice, short-term support, and specialized work.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168055",
+          "logo": "https://ph-files.imgix.net/f77bf074-dfdc-4cd1-ba6b-030f676a1a46.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e96f2ca8-9dac-4a4e-a188-58b3ec8bb491.png?auto=format",
+            "https://ph-files.imgix.net/ac7f866f-e94a-4557-91a1-a68d403d2a7c.png?auto=format",
+            "https://ph-files.imgix.net/28dfb96e-2eaa-4eb5-a14e-d2abce820112.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e96f2ca8-9dac-4a4e-a188-58b3ec8bb491.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "TimeTableGen",
+          "url": "https://www.producthunt.com/products/timetablegen/launches/timetablegen?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Free timetable maker for schools, students & teams.",
+          "content": "TimetableGen is a free online timetable maker for schools, colleges, teachers, students, offices, and gyms. Build weekly schedules in minutes with drag-and-drop editing, color-coding, and conflict detection. Export as PDF or PNG instantly. No account required.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1169063",
+          "logo": "https://ph-files.imgix.net/575402ab-391d-4a7b-9925-bfedb71f2c18.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c43d2b36-c4fd-4afd-a2ee-0c50a422fb57.png?auto=format",
+            "https://ph-files.imgix.net/38494ce5-bcf2-4b50-970c-eb0ac1beee52.jpeg?auto=format",
+            "https://ph-files.imgix.net/4b2311e1-552d-4654-9cbc-2d34985ea242.png?auto=format",
+            "https://ph-files.imgix.net/f7e8b1fe-e82e-4e84-a9c3-2d3a000abee0.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c43d2b36-c4fd-4afd-a2ee-0c50a422fb57.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Inkfox AI",
+          "url": "https://www.producthunt.com/products/inkfox-ai/launches/inkfox-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Free unlimited AI image generator with no sign-up required.",
+          "content": "Inkfox AI is a free unlimited AI image generator with no login required, featuring Nano Banana 2.0, GPT Image 2.0, Flux, Seedream and more.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1167218",
+          "logo": "https://ph-files.imgix.net/e87c88fe-a625-4670-857c-4a23ef22b457.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1658934c-82dc-4aa2-a49c-df6d39fdadea.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1658934c-82dc-4aa2-a49c-df6d39fdadea.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Syndicate.",
+          "url": "https://www.producthunt.com/products/syndicate-3/launches/syndicate-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Track shared investments and split profits accurately",
+          "content": "Syndicate is a shared investment bookkeeping tool for friends, partners, and small investment groups. Track contributions, stock transactions, ownership ratios, withdrawals, and settled profits in one dashboard. It automatically calculates each partner's allocation, saves project data by account, and exports clear A4 P&L reports. Replace confusing spreadsheets and manual profit-split calculations with a simpler workflow.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168190",
+          "logo": "https://ph-files.imgix.net/e0aac76c-ea2e-4543-a58e-73210b162637.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/88644b60-0bb3-4e3d-b5a1-5fea6072635c.jpeg?auto=format",
+            "https://ph-files.imgix.net/787f2f2c-df8b-445d-978d-27c2c66a38db.jpeg?auto=format",
+            "https://ph-files.imgix.net/de1be3ac-d61b-4e75-a9c5-9ff39c3ff802.jpeg?auto=format",
+            "https://ph-files.imgix.net/33224245-3a7a-436c-a8db-cb7ed1709a0b.jpeg?auto=format",
+            "https://ph-files.imgix.net/7a017262-f8bb-4467-904e-d2866ce229e9.jpeg?auto=format",
+            "https://ph-files.imgix.net/e3101554-dc10-461f-97f9-83c7ad280500.jpeg?auto=format",
+            "https://ph-files.imgix.net/e3fcea9e-c7b2-4503-b1a5-a3ce366251ba.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/88644b60-0bb3-4e3d-b5a1-5fea6072635c.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "VidTranscriber",
+          "url": "https://www.producthunt.com/products/vidtranscriber/launches/vidtranscriber?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Editable transcripts from any video — free, no account",
+          "content": "Paste a YouTube URL or drop a file and get an editable, time-stamped transcript in 100+ languages. Speaker labels, AI chapters, and SRT/VTT/DOCX export. First 60 minutes free, no signup.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168317",
+          "logo": "https://ph-files.imgix.net/c1adc31f-85f1-4d96-ae2c-86421e99f0c8.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1c139ec4-b954-48e9-a8f2-bf7c305e6265.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1c139ec4-b954-48e9-a8f2-bf7c305e6265.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "FastTab",
+          "url": "https://www.producthunt.com/products/fasttab/launches/fasttab?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Browser tab search for people with too many tabs",
+          "content": "FastTab is a privacy-first browser tab search app for macOS. Search open tabs, bookmarks, and history across Safari, Chrome, and Edge with 100% local processing, no data collection, and no analytics.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1164772",
+          "logo": "https://ph-files.imgix.net/4e00ca22-487d-4152-befd-f9786b4b471b.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c8989fa9-9e96-4f0d-91b4-3f0b258fc6ce.png?auto=format",
+            "https://ph-files.imgix.net/5c33d4d3-fe43-4070-b704-f2eec77f65a3.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c8989fa9-9e96-4f0d-91b4-3f0b258fc6ce.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "WritingPad-Quick Notes, Powerful Results",
+          "url": "https://www.producthunt.com/products/google/launches/writingpad-quick-notes-powerful-results?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "The fastest way to capture notes, posts, and ideas.",
+          "content": "Just open a new tab and throw in your tasks, notes, links, and images Features: 1. Effortlessly Drag & Drop Text and Images 2. Seamlessly Capture Notes, Tasks, and Images from the Web 3. Organize with Precision: Filter by Categories 4. Sort Your Data for Optimal Efficiency 5. Customize Your UI Theme 6. Decorate Text to Highlight Key Information 7. Paste and Store Images Directly 8. Effortless Content Capture: Right-Click to Add Images and Text",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168649",
+          "logo": "https://ph-files.imgix.net/001df4aa-fdc2-443e-a91f-75572acc6ea5.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/91642e60-167d-4048-a530-a0e94da308e1.png?auto=format",
+            "https://ph-files.imgix.net/1e9c1806-de75-4305-93a5-339aca1f0b91.png?auto=format",
+            "https://ph-files.imgix.net/ae3e5d77-61c1-46ac-88f6-910935cce7e3.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/91642e60-167d-4048-a530-a0e94da308e1.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Klimaxa",
+          "url": "https://www.producthunt.com/products/klimaxa/launches/klimaxa?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Climate-Conscious Commerce Platform",
+          "content": "Klimaxa helps businesses turn everyday operational data into carbon insights. Upload receipts, invoices, and supply chain documents to generate emissions estimates, analytics, and downloadable reports in minutes. Unlike traditional carbon accounting platforms, Klimaxa combines AI-powered document processing, supply chain visibility, transparent methodologies, APIs, and SDKs to make sustainability tracking more accessible and actionable.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168434",
+          "logo": "https://ph-files.imgix.net/c89a77c9-d41d-4367-bf75-07f2d79b85cf.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/ffd21b0a-4cd2-4b69-8f94-d32c89b21eee.jpeg?auto=format",
+            "https://ph-files.imgix.net/4bb8b590-ab5e-482f-b662-6940fb37d9d8.jpeg?auto=format",
+            "https://ph-files.imgix.net/012d1d9a-e34f-4769-ae92-756cb8b42ae5.jpeg?auto=format",
+            "https://ph-files.imgix.net/2a7511de-94dd-49c6-b45e-5aca9673ab63.jpeg?auto=format",
+            "https://ph-files.imgix.net/cc612c43-fccd-445c-8bdb-d2ac87a16a34.jpeg?auto=format",
+            "https://ph-files.imgix.net/d81c24cc-31f8-4fa0-9100-c5b3dabe915e.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/ffd21b0a-4cd2-4b69-8f94-d32c89b21eee.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Squig",
+          "url": "https://www.producthunt.com/products/squig/launches/squig?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Compiled Agents for Mission-Critical Work",
+          "content": "Build agents that are reliable, cheap and fast!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168893",
+          "logo": "https://ph-files.imgix.net/291446b1-4a4c-440d-a70b-58702d09d4af.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/7c90e5c6-c0d8-4339-903f-4c72e73cd782.jpeg?auto=format",
+            "https://ph-files.imgix.net/653aab22-de21-49c8-86d1-954fbce0f86d.png?auto=format",
+            "https://ph-files.imgix.net/d18dfc72-5983-4150-a78b-74fed6800835.png?auto=format",
+            "https://ph-files.imgix.net/1855540a-028b-4bd4-8d39-513a6d567fdc.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/7c90e5c6-c0d8-4339-903f-4c72e73cd782.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "SmokePic",
+          "url": "https://www.producthunt.com/products/smokepic/launches/smokepic?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "AI photo studio",
+          "content": "Smokepic turns your ordinary mobile pictures or selfies into studio-grade, pro-level shots. Your face and body stay yours; everything around them goes creative and professional. No photographer, no gear, no editing. Upload a quick selfie and SmokePic makes it look professionally shot, while keeping it unmistakably you.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168448",
+          "logo": "https://ph-files.imgix.net/0cf95076-c835-4bb6-b332-f278f6a3374c.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/7f7459ab-8388-44ed-b24a-1add2e1a26e1.jpeg?auto=format",
+            "https://ph-files.imgix.net/a547b071-b40a-46df-8930-417c28783dc6.jpeg?auto=format",
+            "https://ph-files.imgix.net/0075fab1-a067-48d8-b4fa-6ab0ac3974cd.jpeg?auto=format",
+            "https://ph-files.imgix.net/9b1f7967-6a62-47c1-b2e4-3959cf99f340.jpeg?auto=format",
+            "https://ph-files.imgix.net/5032e05b-5eb8-4b1b-9a3a-0f954210d16f.png?auto=format",
+            "https://ph-files.imgix.net/5e222b68-c559-4f91-ada0-6dac85fbe92f.png?auto=format",
+            "https://ph-files.imgix.net/aa462e33-66bc-4bb7-b9b6-dc1b213eec6c.png?auto=format",
+            "https://ph-files.imgix.net/246422bf-a858-4a44-8fc5-81afb8435af8.png?auto=format",
+            "https://ph-files.imgix.net/7d785f1a-7cef-4052-8e4e-ff241b34659b.jpeg?auto=format",
+            "https://ph-files.imgix.net/9d22c9a6-bbf9-4b8f-b1cf-9d4e237e3348.png?auto=format",
+            "https://ph-files.imgix.net/476d1387-0742-445d-9d83-484c19039e8b.png?auto=format",
+            "https://ph-files.imgix.net/3c8949b5-ffa5-447b-976c-846bf4d8c276.png?auto=format",
+            "https://ph-files.imgix.net/f527bddf-ad5f-44a1-9365-66fdae8bee6b.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/7f7459ab-8388-44ed-b24a-1add2e1a26e1.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Truthlens AI Image analyzer",
+          "url": "https://www.producthunt.com/products/truthlens-ai-image-analyzer/launches/truthlens-ai-image-analyzer?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "One click to know if an image is AI-generated or real",
+          "content": "AI-generated images now look indistinguishable from real photographs — and they're spreading faster than fact-checkers can catch them. TruthLens is a Chrome extension that analyses any image in your browser and tells you in seconds whether it's AI-generated or real. No login. No technical skill. One click. What's live today: → AI image detection at 80%+ accuracy → Works on any image → Works on mobile via your browser — no app download needed → 5 free analyses per day, no account required",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1169077",
+          "logo": "https://ph-files.imgix.net/da95759c-705f-4878-9b6e-16644917bd26.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e72bf369-46c1-42e3-9b82-267e26929f3a.jpeg?auto=format",
+            "https://ph-files.imgix.net/07a7b68f-5d1c-4725-a02d-173934fc6a31.jpeg?auto=format",
+            "https://ph-files.imgix.net/75632e5d-8713-4eb5-a606-5954f6e8d02e.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e72bf369-46c1-42e3-9b82-267e26929f3a.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Trackply",
+          "url": "https://www.producthunt.com/products/trackply/launches/trackply?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Stop applying blindly. Let AI do the work.",
+          "content": "Trackply is an AI-powered Job Search Operating System and personal application database. It automatically tracks and organizes every job you apply to. Key Features: • AI Job Hunter - searches multiple boards + target companies • Auto-tailors resumes & writes personalized cover letters • New: Job Hunt Meta Agent – batch process up to 10 jobs • Smart pipeline tracker with notes & interview tracking • Chrome extension for auto-add to dashbard.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168873",
+          "logo": "https://ph-files.imgix.net/b71e320f-73c4-4bf9-8d63-dae5c62fd14a.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/50cecea4-8452-40e8-a177-6ca8d02956cb.jpeg?auto=format",
+            "https://ph-files.imgix.net/10c63891-47e7-4072-a2e5-6ffe721632b7.jpeg?auto=format",
+            "https://ph-files.imgix.net/c672e82b-cdae-4fa8-af45-33a97de29670.jpeg?auto=format",
+            "https://ph-files.imgix.net/96b69c0a-1767-43c1-a476-76b4d6f598fb.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/50cecea4-8452-40e8-a177-6ca8d02956cb.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "PJQ",
+          "url": "https://www.producthunt.com/products/pjq/launches/pjq?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "See how an audience really received any YouTube video",
+          "content": "PJQ reads the comments under any YouTube video and shows how the audience truly received it: sentiment, support vs disagreement, and bot & spam filtering. Public Judgment Quotient.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1167666",
+          "logo": "https://ph-files.imgix.net/639297d6-f87c-425a-be1a-6934c74b0ad9.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/3c683b3c-1b94-4ad9-9372-f302e74f731b.png?auto=format",
+            "https://ph-files.imgix.net/80c7db0c-499d-4c35-87ac-76a4f359d884.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/3c683b3c-1b94-4ad9-9372-f302e74f731b.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "takenorfree.com",
+          "url": "https://www.producthunt.com/products/takenorfree-com/launches/takenorfree-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-11T07:01:00Z",
+          "summary": "Domain availability checks for humans and AI agents.",
+          "content": "Is your domain taken or free? Instantly check registration status and DNS records via RDAP—the modern, authoritative protocol behind today's WHOIS. Run single lookups, bulk-check hundreds of domains, or upload a CSV for batch validation. Built for founders, marketers, and developers who need fast answers before they commit. Includes an MCP server so AI agents and assistants can check availability, registration data, and DNS records in your workflow. No guessing—just clear taken-or-free results.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1168841",
+          "logo": "https://ph-files.imgix.net/7cfa8bf0-3d07-452c-8e0e-4fedf6ab8e7e.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a6070cc3-9e9e-4911-ae47-885d8b628ded.jpeg?auto=format",
+            "https://ph-files.imgix.net/6a665cd9-ba64-405a-b3f8-0973c3289409.png?auto=format",
+            "https://ph-files.imgix.net/dc748b76-96f8-4818-bd03-6b795f33d430.png?auto=format",
+            "https://ph-files.imgix.net/1c5d3a0e-9520-4551-be9d-838ddf17e11a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a6070cc3-9e9e-4911-ae47-885d8b628ded.jpeg?auto=format"
+        }
+      ]
+    }
+  ]
+}

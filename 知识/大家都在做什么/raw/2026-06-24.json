@@ -1,1 +1,1014 @@
-{"fetchedAt":"2026-09-07T08:44:11.998Z","date":"2026-06-24","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"Markclip","url":"https://chromewebstore.google.com/detail/markclip-copy-any-part-of/hibnhmfncpddjendfainhipkbnblpdee","author":"刀刀","authorUrl":"","publishedAt":"2026-06-24T00:00:00+08:00","summary":"一键复制 Claude 回复的任意片段为干净 Markdown，表格/代码/公式/mermaid 全保留","content":"一键复制 Claude 回复的任意片段为干净 Markdown，表格/代码/公式/mermaid 全保留","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-06-24-Markclip-https://chromewebstore.google.com/detail/markclip-copy-any-part-of/hibnhmfncpddjendfainhipkbnblpdee"},{"sourceId":"chinese-indie-dev","title":"Kepo","url":"https://kepo.ai","author":"Levine","authorUrl":"","publishedAt":"2026-06-24T00:00:00+08:00","summary":"AI Mac 桌面组件工具，把网页、RSS 和社交媒体更新变成可一键唤起的桌面组件","content":"AI Mac 桌面组件工具，把网页、RSS 和社交媒体更新变成可一键唤起的桌面组件","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-06-24-Kepo-https://kepo.ai"},{"sourceId":"chinese-indie-dev","title":"X 评论护盾","url":"https://www.cloxapps.com/x-comment-shield","author":"biboom(广州)","authorUrl":"","publishedAt":"2026-06-24T00:00:00+08:00","summary":"本地采集 X 帖子评论及识别风险评论并支持单条批量屏蔽、举报等","content":"本地采集 X 帖子评论及识别风险评论并支持单条批量屏蔽、举报等","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-06-24-X 评论护盾-https://www.cloxapps.com/x-comment-shield"},{"sourceId":"chinese-indie-dev","title":"Before After Photo Maker","url":"https://beforeafterphotomaker.com/","author":"jankarong","authorUrl":"","publishedAt":"2026-06-24T00:00:00+08:00","summary":"免费在线制作前后对比照片，支持并排、滑块、分割等多种布局，适合健身、装修、美妆等场景","content":"免费在线制作前后对比照片，支持并排、滑块、分割等多种布局，适合健身、装修、美妆等场景","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-06-24-Before After Photo Maker-https://beforeafterphotomaker.com/"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源推荐】 agilePool：Go 协程池的\"控制论\"方案——goroutine 不再干等，性能反超 ants 31%","url":"https://github.com/Yiming1997/agilePool","author":"a3141294854","authorUrl":"https://github.com/a3141294854","publishedAt":"2026-06-23T16:43:09Z","summary":"🚀 agilePool — 思路不一样的 Go 高性能协程池 项目地址: 测试地址: 市面上大多数协程池（如 ants）采用常驻 goroutine 模式——无论有没有任务，goroutine 都阻塞在 channel 上等待，以空间换时间。 agilePool 走了一条不同的路：goroutine 空闲即退，按需启动。 每个 goroutine 执行完任务就结束自己，只把轻量的 worker 结构体放回空闲池；需要时再从池中取出来启动新 goroutine。无任务时系统里不残留任何多余 goroutine 栈内存。 ⚡ 性能表现（1000 万任务 / 20K 容量） | 库 | 耗时 | 内存 | 分配次数 | ||||| | agilePool | 5.63s | 502 MB | 20,189K | | ants | 8.20s | 569 MB | 20,117K | | Pond | 10.10s | 681 MB | 20,542K | 比 ants 快 31%，内存低 12%。 原因很简单：省下的空闲 goroutine 栈内存大幅减少了 GC 压力，抵消了创建开销还有盈余。 🎯 自适应调度器（核心亮点） 不像传统池子固定容量，agilePool 内置自适应调度器： 每 10ms 采样提交速率和消费速率 通过滑动窗口中位数计算所需并发数 突发流量自动扩容，低谷自然缩容 类似 PID 控制器，无需用户预判负载 ✨ 特性一览 ♻️ goroutine 空闲即退：无任务时零 goroutine 栈占用 📈 自适应 Scaler：自动感知负载，动态伸缩 📦 四种可插拔空闲容器：LinkedList / MinHeap(LRU) / Slice / RingQueue 🔓 无界任务队列 + 背压支持 🚦 Block / NonBlock 提交，支持 Context 取消 & 超时 🔁 指数退避重试（TaskWithRetry） 🛡️ Panic 保护 + Graceful Shutdown 🪵 可接入自定义 Logger ⭐ 如果对你有帮助，欢迎 Star / Fork / 提 Issue！","content":"# 🚀 agilePool — 思路不一样的 Go 高性能协程池\n\n> 项目地址: https://github.com/Yiming1997/agilePool  \n> 测试地址: https://github.com/Yiming1997/agilePool-benchmark\n\n市面上大多数协程池（如 [ants](https://github.com/panjf2000/ants)）采用**常驻 goroutine 模式**——无论有没有任务，goroutine 都阻塞在 channel 上等待，以空间换时间。\n\n**agilePool 走了一条不同的路：goroutine 空闲即退，按需启动。**\n\n每个 goroutine 执行完任务就结束自己，只把轻量的 `worker` 结构体放回空闲池；需要时再从池中取出来启动新 goroutine。**无任务时系统里不残留任何多余 goroutine 栈内存。**\n\n---\n\n## ⚡ 性能表现（1000 万任务 / 20K 容量）\n\n| 库 | 耗时 | 内存 | 分配次数 |\n|---|---|---|---|\n| **agilePool** | **5.63s** | **502 MB** | 20,189K |\n| ants | 8.20s | 569 MB | 20,117K |\n| Pond | 10.10s | 681 MB | 20,542K |\n\n**比 ants 快 31%，内存低 12%。**\n\n> 原因很简单：省下的空闲 goroutine 栈内存大幅减少了 GC 压力，抵消了创建开销还有盈余。\n\n---\n\n## 🎯 自适应调度器（核心亮点）\n\n不像传统池子固定容量，agilePool 内置**自适应调度器**：\n\n- 每 10ms 采样提交速率和消费速率\n- 通过滑动窗口中位数计算所需并发数\n- 突发流量自动扩容，低谷自然缩容\n- 类似 PID 控制器，**无需用户预判负载**\n\n---\n\n## ✨ 特性一览\n\n- ♻️ **goroutine 空闲即退**：无任务时零 goroutine 栈占用\n- 📈 **自适应 Scaler**：自动感知负载，动态伸缩\n- 📦 **四种可插拔空闲容器**：LinkedList / MinHeap(LRU) / Slice / RingQueue\n- 🔓 **无界任务队列** + 背压支持\n- 🚦 **Block / NonBlock 提交**，支持 `Context` 取消 & 超时\n- 🔁 **指数退避重试**（`TaskWithRetry`）\n- 🛡️ **Panic 保护** + Graceful Shutdown\n- 🪵 可接入自定义 Logger\n\n---\n\n⭐ 如果对你有帮助，欢迎 Star / Fork / 提 Issue！\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10427","issueUrl":"https://github.com/ruanyf/weekly/issues/10427"},{"sourceId":"weekly-issues","title":"【工具自荐】Coday：用日均/次均成本看清每件物品的真实成本","url":"https://coday.cc","author":"saviourdog","authorUrl":"https://github.com/saviourdog","publishedAt":"2026-06-24T00:48:00Z","summary":"项目名称：Coday 官网： 平台：iOS / Android / HarmonyOS 下载： iOS： Android APK： HarmonyOS： Coday 是一款多平台物品真实成本追踪工具。它不记录每一笔流水，而是围绕「物品」本身记录购买价格、购买日期、使用次数、分类、状态与售出信息，自动计算日均成本 / 次均成本，帮助用户判断一件东西是否真的被用起来、是否值得。 如果你经常购买数码、家居、穿搭、运动、露营等长期使用物品，Coday 更像是一个「买完之后的成本仪表盘」：东西用了多久、平均每天多少钱、每次使用多少钱、离目标还差多少，都能持续看见。 多彩桌面小组件：信息一目了然 可以把日均成本、目标进度、总金额等信息放到桌面上，不用打开 App 也能看到物品的真实使用成本。Coday 也支持目标日均、目标日期、使用次数目标和定时提醒，适合提醒自己持续使用已经买下的物品。 <img width=\"760\" height=\"1382\" alt=\"多彩桌面小组件 / 信息一目了然\" src=\" / AI 智能配色卡片：每件物品都独一无二 物品卡片会根据内容生成更直观的视觉呈现，浏览列表时能快速区分不同物品，也比单纯的表格记录更有持续维护的动力。 <img width=\"760\" height=\"1382\" alt=\"AI 智能配色卡片 / 每件物品都独一无二\" src=\" / 8000+ 3D 图标：涵盖生活中的所有物品 内置 8000+ 3D 图标，覆盖数码、家居、穿搭、日常用品等常见物品。物品数量、8000+ 3D 图标、基础记录、成本计算、分类筛选都不限制；只有云同步和极少数高级小组件配置需要会员。 <img width=\"760\" height=\"1382\" alt=\"8000+ 3D 图标 / 涵盖生活中的所有物品\" src=\" / 其他特点： 日均成本 / 次均成本自动计算，把买完之后的真实成本可视化； 支持 iOS / Android / HarmonyOS 三端互通，开启云同步后多设备数据保持一致； 支持购买时间、使用次数、售出状态、分类筛选等维度，适合长期追踪一件物品是否真的「买得值」。","content":"项目名称：Coday\n\n官网：https://coday.cc\n\n平台：iOS / Android / HarmonyOS\n\n下载：\n- iOS：https://apps.apple.com/cn/app/id6740018271\n- Android APK：https://r2.coday.cc/coday.apk\n- HarmonyOS：https://appgallery.huawei.com/app/detail?id=com.cxm.codayapp\n\nCoday 是一款多平台物品真实成本追踪工具。它不记录每一笔流水，而是围绕「物品」本身记录购买价格、购买日期、使用次数、分类、状态与售出信息，自动计算日均成本 / 次均成本，帮助用户判断一件东西是否真的被用起来、是否值得。\n\n如果你经常购买数码、家居、穿搭、运动、露营等长期使用物品，Coday 更像是一个「买完之后的成本仪表盘」：东西用了多久、平均每天多少钱、每次使用多少钱、离目标还差多少，都能持续看见。\n\n### 多彩桌面小组件：信息一目了然\n\n可以把日均成本、目标进度、总金额等信息放到桌面上，不用打开 App 也能看到物品的真实使用成本。Coday 也支持目标日均、目标日期、使用次数目标和定时提醒，适合提醒自己持续使用已经买下的物品。\n\n<img width=\"760\" height=\"1382\" alt=\"多彩桌面小组件 / 信息一目了然\" src=\"https://github.com/user-attachments/assets/dee7728c-33fa-419a-8017-43b7420e17d6\" />\n\n### AI 智能配色卡片：每件物品都独一无二\n\n物品卡片会根据内容生成更直观的视觉呈现，浏览列表时能快速区分不同物品，也比单纯的表格记录更有持续维护的动力。\n\n<img width=\"760\" height=\"1382\" alt=\"AI 智能配色卡片 / 每件物品都独一无二\" src=\"https://github.com/user-attachments/assets/ecc2ac06-6842-48b0-8386-a2c22feb7b0a\" />\n\n### 8000+ 3D 图标：涵盖生活中的所有物品\n\n内置 8000+ 3D 图标，覆盖数码、家居、穿搭、日常用品等常见物品。物品数量、8000+ 3D 图标、基础记录、成本计算、分类筛选都不限制；只有云同步和极少数高级小组件配置需要会员。\n\n<img width=\"760\" height=\"1382\" alt=\"8000+ 3D 图标 / 涵盖生活中的所有物品\" src=\"https://github.com/user-attachments/assets/63fa1cd6-f0ac-4f9d-84b4-134b9f069fb8\" />\n\n其他特点：\n\n- 日均成本 / 次均成本自动计算，把买完之后的真实成本可视化；\n- 支持 iOS / Android / HarmonyOS 三端互通，开启云同步后多设备数据保持一致；\n- 支持购买时间、使用次数、售出状态、分类筛选等维度，适合长期追踪一件物品是否真的「买得值」。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10428","issueUrl":"https://github.com/ruanyf/weekly/issues/10428"},{"sourceId":"weekly-issues","title":"【开源自荐】File Preview Web","url":"https://github.com/extrastu/file-preview-web","author":"extrastu","authorUrl":"https://github.com/extrastu","publishedAt":"2026-06-24T01:54:12Z","summary":"File Preview Web A fast, privacyfirst online file previewer that runs entirely in your browser. Drag a file into the window and instantly preview mind maps, documents, spreadsheets, slides, code, images, audio, and video — no upload, no signup, no server. All parsing happens locally on your device. Your files never leave the browser. 🔗 Repository: github.com/extrastu/filepreviewweb 🔗 URL: Preview <img width=\"3706\" height=\"2154\" alt=\"Image\" src=\" / <img width=\"3706\" height=\"2154\" alt=\"Image\" src=\" / <img width=\"3706\" height=\"2154\" alt=\"Image\" src=\" / Features Drag & drop preview — drop one or more files and parse them in parallel 60+ formats across many categories 100% clientside — files are never uploaded; parsing runs fully offline PWA — installable to your home screen / desktop with offline support Internationalized — English (default) and Chinese, switchable at runtime Builtin examples — try the app instantly with sample documents Supported formats | Category | Formats | | | | | Mind maps | xmind · mm · opml | | Documents | pdf · doc/docx · md · txt · rtf| | Slides | ppt · pptx | | Spreadsheets| xls/xlsx · csv · tsv · ods | | Code | js/ts · py · json · yaml · sql …| | Media | png · svg · webp · mp3 · mp4 … | Legacy binary .doc and .ppt are not parsable inbrowser — convert to .docx / .pptx first. Tech stack Next.js (App Router) + React + TypeScript Tailwind CSS + shadcn/ui for styling and components pdfjsdist (PDF), mammoth (Word), xlsx (spreadsheets), jszip (pptx/xmind) Custom parsers for FreeMind / XMind / OPML mind maps Getting Started Install dependencies and run the development server: bash pnpm install pnpm dev Open to see the app. Other scripts bash pnpm build production build pnpm start run the production server pnpm lint lint the project How it works Files are read with the browser File API and dispatched to a formatspecific parser in lib/parsefile.ts. Each parser returns a normalized result that the matching viewer renders. Because everything runs clientside, there is no backend and no network transfer of file contents. Contributing Issues and pull requests are welcome on GitHub. To add a new format, extend EXTMAP in lib/previewtypes.ts, add a parser branch in lib/parsefile.ts, and create a viewer component.","content":"# File Preview Web\n\nA fast, privacy-first online file previewer that runs **entirely in your browser**. Drag a file into the window and instantly preview mind maps, documents, spreadsheets, slides, code, images, audio, and video — no upload, no sign-up, no server.\n\n> All parsing happens locally on your device. Your files never leave the browser.\n\n🔗 **Repository:** [github.com/extrastu/file-preview-web](https://github.com/extrastu/file-preview-web)\n🔗 **URL:** [https://fileline.vercel.app/](https://fileline.vercel.app/)\n\n## Preview\n\n<img width=\"3706\" height=\"2154\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dfeb7df1-97e2-4a99-84ba-74908b6e9e98\" />\n\n<img width=\"3706\" height=\"2154\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/42bef0e8-a4b3-4a73-aaf8-635a9048170d\" />\n\n<img width=\"3706\" height=\"2154\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a31afe57-462a-4fea-ba57-f5e596044767\" />\n\n## Features\n\n- **Drag & drop preview** — drop one or more files and parse them in parallel\n- **60+ formats** across many categories\n- **100% client-side** — files are never uploaded; parsing runs fully offline\n- **PWA** — installable to your home screen / desktop with offline support\n- **Internationalized** — English (default) and Chinese, switchable at runtime\n- **Built-in examples** — try the app instantly with sample documents\n\n## Supported formats\n\n| Category    | Formats                                    |\n| ----------- | ------------------------------------------ |\n| Mind maps   | `xmind` · `mm` · `opml`                    |\n| Documents   | `pdf` · `doc`/`docx` · `md` · `txt` · `rtf`|\n| Slides      | `ppt` · `pptx`                             |\n| Spreadsheets| `xls`/`xlsx` · `csv` · `tsv` · `ods`       |\n| Code        | `js`/`ts` · `py` · `json` · `yaml` · `sql` …|\n| Media       | `png` · `svg` · `webp` · `mp3` · `mp4` …   |\n\n> Legacy binary `.doc` and `.ppt` are not parsable in-browser — convert to `.docx` / `.pptx` first.\n\n## Tech stack\n\n- **Next.js (App Router)** + **React** + **TypeScript**\n- **Tailwind CSS** + **shadcn/ui** for styling and components\n- **pdfjs-dist** (PDF), **mammoth** (Word), **xlsx** (spreadsheets), **jszip** (pptx/xmind)\n- Custom parsers for FreeMind / XMind / OPML mind maps\n\n## Getting Started\n\nInstall dependencies and run the development server:\n\n```bash\npnpm install\npnpm dev\n```\n\nOpen [http://localhost:3000](http://localhost:3000) to see the app.\n\n### Other scripts\n\n```bash\npnpm build   # production build\npnpm start   # run the production server\npnpm lint    # lint the project\n```\n\n## How it works\n\nFiles are read with the browser `File` API and dispatched to a format-specific parser in `lib/parse-file.ts`. Each parser returns a normalized result that the matching viewer renders. Because everything runs client-side, there is no backend and no network transfer of file contents.\n\n## Contributing\n\nIssues and pull requests are welcome on [GitHub](https://github.com/extrastu/file-preview-web). To add a new format, extend `EXT_MAP` in `lib/preview-types.ts`, add a parser branch in `lib/parse-file.ts`, and create a viewer component.\n\n\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10429","issueUrl":"https://github.com/ruanyf/weekly/issues/10429"},{"sourceId":"weekly-issues","title":"【开源自荐】知返：AI 写完代码你真的懂了吗？","url":"https://github.com/AGI-is-going-to-arrive/ahadiff","author":"AGI-is-going-to-arrive","authorUrl":"https://github.com/AGI-is-going-to-arrive","publishedAt":"2026-06-24T02:06:57Z","summary":"项目地址： PyPI： 项目主页： 协议 / 版本：MIT / v1.3.7 它解决了什么问题 AI 写代码虽然快，一次性帮你更新修改了很多文件，代码能正常运行，你随便看了几眼就继续了。 但是这样真的对吗？隔两天回头看，说不清每处改动的逻辑，其中AI的改动为什么这样改，你一问三不知。 尤其是对于实习生、刚毕业的应届生，技术能力一般，想学习进步的，真正学到其中的知识点。一步步的构建自己的基础，而不只是无脑依赖AI。 知返读你的一次代码改动，生成一份学习笔记。学习笔记中每条结论对应到到具体文件的具体行号，AI 产生的幻觉会被标成 contradicted，和有据可查的结论区分开。按需选择精简/提示/完整版学习（主要是详细程度的区分） 这三种学习笔记之后，使用提供的选择题测验和 FSRS 间隔复习卡片，进一步巩固此次改动对应知识点，同时复习之前不牢固的知识点。 bash pip install ahadiff ahadiff learn HEAD~1..HEAD 学最近一次提交的改动 ahadiff serve 打开本地 WebUI 核心特点 笔记带证据：每条结论对应到 file:line，五种验证状态区分事实与幻觉，避免AI幻觉问题 学习闭环：每次改动生成课程 → 选择题测验 → FSRS 间隔复习（避免改动的知识点遗忘），可导出 Anki 卡片接入自己的知识软件 BYOK：自带 API key，支持 OpenAI / Claude / Gemini / DeepSeek / Azure 等 8 种格式 10 种来源：支持 git commit，暂存区、补丁文件、目录对比等十种来源 概念图谱：多次学习后，重复出现的概念自动连成知识网络 还可扩展玩法，不一定局限于写的代码改动，能够进行各种知识点学习测验复习一条龙等 界面截图 !课程页：每条结论绑定具体代码行 <img width=\"3288\" height=\"1924\" alt=\"Image\" src=\" / <img width=\"2512\" height=\"1928\" alt=\"Image\" src=\" / <img width=\"2388\" height=\"1876\" alt=\"Image\" src=\" / <img width=\"2674\" height=\"1904\" alt=\"Image\" src=\" /","content":"**项目地址**：https://github.com/AGI-is-going-to-arrive/ahadiff\n**PyPI**：https://pypi.org/project/ahadiff/\n**项目主页**：https://agi-is-going-to-arrive.github.io/ahadiff/\n**协议 / 版本**：MIT / v1.3.7\n\n### 它解决了什么问题\n\nAI 写代码虽然快，一次性帮你更新修改了很多文件，代码能正常运行，你随便看了几眼就继续了。\n但是这样真的对吗？隔两天回头看，说不清每处改动的逻辑，其中AI的改动为什么这样改，你一问三不知。\n**尤其是对于实习生、刚毕业的应届生，技术能力一般，想学习进步的，真正学到其中的知识点。一步步的构建自己的基础，而不只是无脑依赖AI。**\n\n知返读你的一次代码改动，生成一份学习笔记。学习笔记中每条结论对应到到具体文件的具体行号，AI 产生的幻觉会被标成 `contradicted`，和有据可查的结论区分开。按需选择精简/提示/完整版学习（**主要是详细程度的区分**） 这三种学习笔记之后，使用提供的**选择题测验和 FSRS 间隔复习卡片，进一步巩固此次改动对应知识点，同时复习之前不牢固的知识点。**\n\n```bash\npip install ahadiff\nahadiff learn HEAD~1..HEAD   # 学最近一次提交的改动\nahadiff serve                # 打开本地 WebUI\n```\n\n### 核心特点\n\n- **笔记带证据**：每条结论对应到 file:line，五种验证状态区分事实与幻觉，避免AI幻觉问题\n- **学习闭环**：每次改动生成课程 → 选择题测验 → FSRS 间隔复习（**避免改动的知识点遗忘**），可导出 Anki 卡片接入自己的知识软件\n- **BYOK**：自带 API key，支持 OpenAI / Claude / Gemini / DeepSeek / Azure 等 8 种格式\n- **10 种来源**：支持 git commit，暂存区、补丁文件、目录对比等十种来源\n- **概念图谱**：多次学习后，**重复出现的概念自动连成知识网络**\n- 还可扩展玩法，不一定局限于写的代码改动，能够进行各种知识点学习测验复习一条龙等\n\n### 界面截图\n\n![课程页：每条结论绑定具体代码行](https://agi-is-going-to-arrive.github.io/ahadiff/video/public/screenshots/zh/zh-lesson.png)\n\n<img width=\"3288\" height=\"1924\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cce07650-df2c-460a-bb24-8599ff208a5c\" />\n\n<img width=\"2512\" height=\"1928\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2694b589-e9a3-4a2a-87c4-43fb1c932d6c\" />\n\n<img width=\"2388\" height=\"1876\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/508d1b75-e213-4cc4-aa72-ed7d15805362\" />\n\n<img width=\"2674\" height=\"1904\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/82c661df-080d-44e4-87db-148a0a3388a0\" />","metrics":{"comments":2},"tags":["ruanyf-weekly","submission"],"externalId":"10430","issueUrl":"https://github.com/ruanyf/weekly/issues/10430"},{"sourceId":"weekly-issues","title":"【工具自荐】Inkfox AI：免注册无限生成的一站式 AI 图像 / 视频创作台","url":"https://inkfox.app/","author":"Ninglz","authorUrl":"https://github.com/Ninglz","publishedAt":"2026-06-24T02:44:49Z","summary":"项目网址：Inkfox AI 看了刘小排大佬那篇 Raphael 的帖子， \"完全免费、无限制、无需注册\" 又是卖给老外赚美金，那套打法看得我手痒。正好我也想验证一件事： 一个独立开发者，认认真真做个 AI 产品，到底能不能赚到钱？ 与其空想，不如下场。于是有了 Inkfox AI 它是什么 Inkfox AI 是一个免注册、进去就能用的 AI 图像/视频创作台，主要功能： 文生图，可切换多个模型：Nano Banana 2.0、GPT Image 2.0、Flux、Seedream，按需要的画风换引擎； 参考图改图 / 局部重绘：上传一张图，只改其中一部分，其余保持不变； 照片转视频、文生视频：把静图动起来，或直接用提示词生成短视频； 一键虚拟试戴：墨镜、帽子、眼镜、项链、耳饰、手表、美瞳、衣服，传一张正脸照就能预览，不用写提示词； 生成结果按 prompt 归到一条时间线，不再满文件夹乱翻。 送免费额度、不登录也能生成；登录后去掉导出水印、放开更高额度。 <img width=\"1200\" height=\"630\" alt=\"Image\" src=\" / <img width=\"1470\" height=\"686\" alt=\"Image\" src=\" /","content":"项目网址：[Inkfox AI](https://inkfox.app/)\n\n看了刘小排大佬那篇 Raphael 的帖子， \"完全免费、无限制、无需注册\" 又是卖给老外赚美金，那套打法看得我手痒。正好我也想验证一件事：\n\n一个独立开发者，认认真真做个 AI 产品，到底能不能赚到钱？\n\n与其空想，不如下场。于是有了 Inkfox AI\n\n它是什么\nInkfox AI 是一个免注册、进去就能用的 AI 图像/视频创作台，主要功能：\n\n文生图，可切换多个模型：Nano Banana 2.0、GPT Image 2.0、Flux、Seedream，按需要的画风换引擎；\n参考图改图 / 局部重绘：上传一张图，只改其中一部分，其余保持不变；\n照片转视频、文生视频：把静图动起来，或直接用提示词生成短视频；\n一键虚拟试戴：墨镜、帽子、眼镜、项链、耳饰、手表、美瞳、衣服，传一张正脸照就能预览，不用写提示词；\n生成结果按 prompt 归到一条时间线，不再满文件夹乱翻。\n送免费额度、不登录也能生成；登录后去掉导出水印、放开更高额度。\n\n<img width=\"1200\" height=\"630\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/51df0e49-d3ad-4531-a44b-a556bf50f819\" />\n\n<img width=\"1470\" height=\"686\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ad178258-aed1-4842-8e30-18ebf9cbb51c\" />\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10431","issueUrl":"https://github.com/ruanyf/weekly/issues/10431"},{"sourceId":"weekly-issues","title":"【工具自荐】ImageToVideoAI：聚合 14 个视频模型的图生视频平台","url":"https://imagetovideoai.net/","author":"Ninglz","authorUrl":"https://github.com/Ninglz","publishedAt":"2026-06-24T02:52:58Z","summary":"项目网址：imagetovideoai.net 现在好用的视频生成模型很多，但散在各家平台，来回切换很麻烦。ImageToVideoAI 把它们收进一个工作室，专注「图片 → 视频」这件事。 主要功能： 图生视频 / 文生视频 / 视频改视频三条链路； 聚合 14 个主流视频模型：Seedance 2.0、Kling 3.0、Veo 3.1、Wan 2.7 等，同一个界面里挑选多个模型一键批量生成； 附带图片编辑、放大、抠图（去背景）等配套工具； 批量处理 + 多任务并发，适合一次跑多条； 每月赠送免费积分，适合需要把产品图、人像、素材快速变成短视频的场景。同样是我在做的独立项目，欢迎反馈哪个模型/功能还缺。 <img width=\"1200\" height=\"630\" alt=\"Image\" src=\" / <img width=\"1465\" height=\"708\" alt=\"Image\" src=\" /","content":"项目网址：[imagetovideoai.net](https://imagetovideoai.net/)\n\n现在好用的视频生成模型很多，但散在各家平台，来回切换很麻烦。[ImageToVideoAI](https://imagetovideoai.net/) 把它们收进一个工作室，专注「图片 → 视频」这件事。\n\n主要功能：\n\n图生视频 / 文生视频 / 视频改视频三条链路；\n聚合 14 个主流视频模型：Seedance 2.0、Kling 3.0、Veo 3.1、Wan 2.7 等，同一个界面里挑选多个模型一键批量生成；\n附带**图片编辑、放大、抠图（去背景）**等配套工具；\n批量处理 + 多任务并发，适合一次跑多条；\n每月赠送免费积分，适合需要把产品图、人像、素材快速变成短视频的场景。同样是我在做的独立项目，欢迎反馈哪个模型/功能还缺。\n\n<img width=\"1200\" height=\"630\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f03d1e43-cf2e-459a-84c4-aef758c755b1\" />\n\n<img width=\"1465\" height=\"708\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/72650fbe-41e2-4004-8b41-c5d126148f01\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10432","issueUrl":"https://github.com/ruanyf/weekly/issues/10432"},{"sourceId":"weekly-issues","title":"〖工具自荐〗Detector de IA：西班牙语文本和文档 AI 检测工具","url":"https://detector-de-ia.net/","author":"ethanjamescolez","authorUrl":"https://github.com/ethanjamescolez","publishedAt":"2026-06-24T03:54:31Z","summary":"名称 Detector de IA 链接 一句话简介 一个西语优先的网页工具，可以粘贴文本或上传文档，查看 AI 生成可能性、证据强度和逐句高亮信号。 详细介绍 Detector de IA 面向需要复核西语文本的学生、教师、编辑和内容团队。它不是只给一个百分比，而是把整体判断、风险、证据强度、分析说明和逐句高亮放在同一份报告里，方便使用者回到原文继续检查。 当前支持两种输入方式： 粘贴 300 到 100,000 个字符的文本。 上传小于 12 MB 的 PDF、DOCX、TXT、MD、Markdown 或纯文本文件。 PDF 和 DOCX 会先在浏览器中提取文字，TXT/MD 则按文本读取。检测完成后，可以复制摘要，也可以导出适合打印的报告。 我觉得它对周刊读者可能有用的点在于：它把“AI 检测”做成了一个可复核的文档工作流，而不是一个自动裁决按钮。对于需要处理西语材料、课程文本、编辑稿件或跨语言内容审核的人，逐句信号比单一分数更容易进入后续讨论。 使用前说明 AI 文本检测属于概率信号，可能误判，也可能漏判。这个工具适合做第一轮定位和复核辅助，不适合单独作为学术、招聘、法律、纪律处分等高影响决定的依据。","content":"## 名称\n\nDetector de IA\n\n## 链接\n\nhttps://detector-de-ia.net/\n\n## 一句话简介\n\n一个西语优先的网页工具，可以粘贴文本或上传文档，查看 AI 生成可能性、证据强度和逐句高亮信号。\n\n## 详细介绍\n\nDetector de IA 面向需要复核西语文本的学生、教师、编辑和内容团队。它不是只给一个百分比，而是把整体判断、风险、证据强度、分析说明和逐句高亮放在同一份报告里，方便使用者回到原文继续检查。\n\n当前支持两种输入方式：\n\n- 粘贴 300 到 100,000 个字符的文本。\n- 上传小于 12 MB 的 PDF、DOCX、TXT、MD、Markdown 或纯文本文件。\n\nPDF 和 DOCX 会先在浏览器中提取文字，TXT/MD 则按文本读取。检测完成后，可以复制摘要，也可以导出适合打印的报告。\n\n我觉得它对周刊读者可能有用的点在于：它把“AI 检测”做成了一个可复核的文档工作流，而不是一个自动裁决按钮。对于需要处理西语材料、课程文本、编辑稿件或跨语言内容审核的人，逐句信号比单一分数更容易进入后续讨论。\n\n## 使用前说明\n\nAI 文本检测属于概率信号，可能误判，也可能漏判。这个工具适合做第一轮定位和复核辅助，不适合单独作为学术、招聘、法律、纪律处分等高影响决定的依据。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10433","issueUrl":"https://github.com/ruanyf/weekly/issues/10433"},{"sourceId":"weekly-issues","title":"【开源自荐】KidoX：macOS Launchpad 的替代 App","url":"https://github.com/user-attachments/assets/974186fb-d873-48cf-ab83-27399fe3a4ba\"","author":"defcc","authorUrl":"https://github.com/defcc","publishedAt":"2026-06-24T04:35:51Z","summary":"KidoX，帮你找回旧版 Launchpad 的使用感觉。 macOS 26 之后，Launchpad 被新的 Apps 入口取代了，它不可拖动、窗口大小也不能调整，也不支持 folder 整理应用。所以我做了 KidoX。 KidoX 以全屏应用网格作为主要界面，而不是一个固定大小的小窗口；它支持文件夹，让应用可以按自己的习惯整理；它尽量保持轻量，不去抢 Spotlight、Raycast 或 Alfred 的位置；它更关注视觉浏览和空间记忆，而不是命令输入。 特点：占用资源少，动画流畅。 <img width=\"3024\" height=\"1964\" alt=\"Image\" src=\" / 目前第一个版本已经基本可用。 网站： 源码： 源码是公开的，你可以自己 build 使用，完全免费。 如果不想自己构建，也可以直接从网站下载已经打包好的安装包。 欢迎大家试用，也欢迎提 issue / PR 。","content":"**KidoX，帮你找回旧版 Launchpad 的使用感觉。**\n\nmacOS 26 之后，Launchpad 被新的 Apps 入口取代了，它不可拖动、窗口大小也不能调整，也不支持 folder 整理应用。所以我做了 KidoX。\n\nKidoX 以全屏应用网格作为主要界面，而不是一个固定大小的小窗口；它支持文件夹，让应用可以按自己的习惯整理；它尽量保持轻量，不去抢 Spotlight、Raycast 或 Alfred 的位置；它更关注视觉浏览和空间记忆，而不是命令输入。\n\n特点：占用资源少，动画流畅。\n\n<img width=\"3024\" height=\"1964\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/974186fb-d873-48cf-ab83-27399fe3a4ba\" />\n\n目前第一个版本已经基本可用。\n\n网站： https://kidox.app/\n\n源码： https://github.com/defcc/kidox.app\n\n源码是公开的，你可以自己 build 使用，完全免费。 如果不想自己构建，也可以直接从网站下载已经打包好的安装包。\n\n欢迎大家试用，也欢迎提 issue / PR 。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10434","issueUrl":"https://github.com/ruanyf/weekly/issues/10434"},{"sourceId":"weekly-issues","title":"【开源自荐】Awesome AI Gateway:100+ AI 网关的可复现成本基准 + 评分卡","url":"https://cuihuan.github.io/awesome-ai-gateway/","author":"cuihuan","authorUrl":"https://github.com/cuihuan","publishedAt":"2026-06-24T09:17:22Z","summary":"我做这个项目,是因为有一天在 AI 写代码上烧了 $788——一个旗舰模型吃掉了 78%,只因为我把所有请求都默认打给了最贵的那个。同一份 10 万 token 的报告,DeepSeek 上 $0.03,GPT5.5 上 $3.01,差 106 倍;而你用哪个网关,决定了你能多容易地吃到这个价差。 于是我把整个 AI 网关 / 中转生态摸了一遍(100+ 个,分 9 类),做成一个尽量\"反厂商软文\"的清单: 每个成本数字都由一个带单测的脚本从公开定价算出来——可复现,而不是嘴说。 一张 4 维评分卡(合规 / 价格 / 安全 / 稳定),如实披露 CVE。 一个基于证据的\"避雷观察名单\":点名被抓到偷换 / 降智模型的灰产中转,并附可运行的 canary 对比脚本,不靠传闻。 刚加了个交互式成本计算器:输入你的 token 组合,实时看 16 个模型的成本和价差。 CC0 协议、无返利链接、中英双语、star 数每天 CI 自动刷新。 在线站点: 成本计算器: 仓库:","content":"我做这个项目,是因为有一天在 AI 写代码上烧了 $788——一个旗舰模型吃掉了 78%,只因为我把所有请求都默认打给了最贵的那个。同一份 10 万 token 的报告,DeepSeek 上 $0.03,GPT-5.5 上 $3.01,差 106 倍;而你用哪个网关,决定了你能多容易地吃到这个价差。\n\n于是我把整个 AI 网关 / 中转生态摸了一遍(100+ 个,分 9 类),做成一个尽量\"反厂商软文\"的清单:\n\n- 每个成本数字都由一个**带单测的脚本从公开定价算出来**——可复现,而不是嘴说。\n- 一张 **4 维评分卡**(合规 / 价格 / 安全 / 稳定),如实披露 CVE。\n- 一个**基于证据的\"避雷观察名单\"**:点名被抓到偷换 / 降智模型的灰产中转,并附**可运行的 canary 对比脚本**,不靠传闻。\n- 刚加了个**交互式成本计算器**:输入你的 token 组合,实时看 16 个模型的成本和价差。\n- CC0 协议、无返利链接、中英双语、star 数每天 CI 自动刷新。\n\n在线站点:https://cuihuan.github.io/awesome-ai-gateway/\n成本计算器:https://cuihuan.github.io/awesome-ai-gateway/cost-calculator.html\n仓库:https://github.com/cuihuan/awesome-ai-gateway\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10435","issueUrl":"https://github.com/ruanyf/weekly/issues/10435"},{"sourceId":"weekly-issues","title":"【开源自荐】Skills Manager：统一管理 AI 编程助手 Skills 的桌面应用","url":"https://github.com/user-attachments/assets/cff44570-6af1-4960-9ccd-10834aa26923\"","author":"jiweiyeah","authorUrl":"https://github.com/jiweiyeah","publishedAt":"2026-06-24T11:23:32Z","summary":"现在 AI 编程助手越来越多,Claude Code、Codex、Opencode、Cursor、Windsurf……每个工具都有自己的 Skills/Prompts 配置目录和格式。开发者要在不同工具间重复维护同一份技能,改一处就要同步好几处,既容易遗漏,又难做版本管理。 于是我做了 Skills Manager,想把这些碎片收拢到一个中心化的枢纽里。 <img width=\"2808\" height=\"1784\" alt=\"Image\" src=\" / 核心思路 通过软链接同步机制,Skills 只存一份在统一目录,再通过 symlink 分发给各个 AI 工具。改一处,所有工具即时生效,零文件复制。不用删除源文件,也能针对单个工具启用/禁用某个 Skill。 主要特点 🎯 统一管理:集中管理所有 AI Skills,一处编写、多处生效 🔄 智能同步:自动 symlink 管理,工具始终使用最新版本,无需手动复制 🎛️ 细粒度控制:针对特定工具启用/禁用 Skill,不动源文件 🔌 多工具支持:开箱即用支持 Claude Code、Codex、Opencode,也支持自定义工具路径与图标 ⚡ 轻量快速:Rust + Tauri 2.0 内核,启动秒开,资源占用低 🛡️ 跨平台:macOS / Windows / Linux 原生支持 🧩 内置市场:一键安装社区贡献的 Skills ✏️ Monaco 编辑器:应用内直接编辑 Skill 内容,无需切换 IDE 技术栈 Tauri 2.0(Rust)+ React 19 + TypeScript + Tailwind CSS v4 + Radix UI,最新版本 2.1.2 采用了 Raycast 风格的 UI 设计语言。 下载 前往 Releases 页面 下载对应平台的安装包: | 系统 | 安装包 | ||| | macOS | .dmg(通用架构) | | Windows | .msi / .exe | | Linux | .deb / .AppImage / .rpm | 项目地址: 适合经常同时使用多个 AI 编程助手、或者积累了一批自定义 Skills/Prompts 想统一管理的开发者。欢迎大家试用、提 issue 和 Star。","content":"现在 AI 编程助手越来越多,Claude Code、Codex、Opencode、Cursor、Windsurf……每个工具都有自己的 Skills/Prompts 配置目录和格式。开发者要在不同工具间重复维护同一份技能,改一处就要同步好几处,既容易遗漏,又难做版本管理。\n\n于是我做了 **Skills Manager**,想把这些碎片收拢到一个中心化的枢纽里。\n\n<img width=\"2808\" height=\"1784\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cff44570-6af1-4960-9ccd-10834aa26923\" />\n\n## 核心思路\n\n通过**软链接同步机制**,Skills 只存一份在统一目录,再通过 symlink 分发给各个 AI 工具。改一处,所有工具即时生效,零文件复制。不用删除源文件,也能针对单个工具启用/禁用某个 Skill。\n\n## 主要特点\n\n- **🎯 统一管理**:集中管理所有 AI Skills,一处编写、多处生效\n- **🔄 智能同步**:自动 symlink 管理,工具始终使用最新版本,无需手动复制\n- **🎛️ 细粒度控制**:针对特定工具启用/禁用 Skill,不动源文件\n- **🔌 多工具支持**:开箱即用支持 Claude Code、Codex、Opencode,也支持自定义工具路径与图标\n- **⚡ 轻量快速**:Rust + Tauri 2.0 内核,启动秒开,资源占用低\n- **🛡️ 跨平台**:macOS / Windows / Linux 原生支持\n- **🧩 内置市场**:一键安装社区贡献的 Skills\n- **✏️ Monaco 编辑器**:应用内直接编辑 Skill 内容,无需切换 IDE\n\n## 技术栈\n\nTauri 2.0(Rust)+ React 19 + TypeScript + Tailwind CSS v4 + Radix UI,最新版本 2.1.2 采用了 Raycast 风格的 UI 设计语言。\n\n## 下载\n\n前往 [Releases 页面](https://github.com/jiweiyeah/Skills-Manager/releases) 下载对应平台的安装包:\n\n| 系统 | 安装包 |\n|---|---|\n| macOS | `.dmg`(通用架构) |\n| Windows | `.msi` / `.exe` |\n| Linux | `.deb` / `.AppImage` / `.rpm` |\n\n项目地址:https://github.com/jiweiyeah/Skills-Manager\n\n适合经常同时使用多个 AI 编程助手、或者积累了一批自定义 Skills/Prompts 想统一管理的开发者。欢迎大家试用、提 issue 和 Star。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"10436","issueUrl":"https://github.com/ruanyf/weekly/issues/10436"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"vibecafe","sourceName":"VibeCafé 作品","items":[{"sourceId":"vibecafe","title":"Omia · Open Anything — AI 时代的万能阅览器","url":"https://vibecafe.ai/products/cmqryug7x00020ckvr24l3wfr","author":"小耳","authorUrl":"https://vibecafe.ai/u/xiaoer_zhan","publishedAt":"2026-06-24T11:04:25.245Z","summary":"Omia——AI 时代的万能阅览器。一个窗口，看 155+ 种格式、就地编辑、顺手转换。纯本地运行，文件不出本机。By 小耳。","content":"Omia——AI 时代的万能阅览器。一个窗口，看 155+ 种格式、就地编辑、顺手转换。纯本地运行，文件不出本机。By 小耳。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqryug7x00020ckvr24l3wfr","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298885674-86lbsm.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298631477-w2eqmd.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298885674-86lbsm.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897665-riluli.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897675-wcik42.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897317-u32k8t.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897688-n4z400.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897929-h6yf0r.png"]},{"sourceId":"vibecafe","title":"Tutti — One sound, every speaker.","url":"https://vibecafe.ai/products/cmqrwg1nn000o0bj917v3qbf4","author":"BarryBarrywu","authorUrl":"https://vibecafe.ai/u/barrybarrywu","publishedAt":"2026-06-24T09:57:13.955Z","summary":"A macOS menu bar utility that plays the same sound through all your speakers at once.","content":"A macOS menu bar utility that plays the same sound through all your speakers at once.","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqrwg1nn000o0bj917v3qbf4","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/1782296101033-0s8myg.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/mqrwcw9ne5q3-zz3jmW17LVza7qxLf6D5J7kwekCXOf.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/1782296101033-0s8myg.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/1782296128068-lz1kwt.webp"]},{"sourceId":"vibecafe","title":"BRAIN.md — The Open Project Brain Standard","url":"https://vibecafe.ai/products/cmqrw2jqv00000bktcn6u1gpx","author":"Sunny","authorUrl":"https://vibecafe.ai/u/sunny","publishedAt":"2026-06-24T09:46:44.217Z","summary":"A persistent memory layer for your projects. An open, agent-agnostic standard for capturing a projec","content":"A persistent memory layer for your projects. An open, agent-agnostic standard for capturing a projec","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqrw2jqv00000bktcn6u1gpx","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrvnpevxria-hgy46m89w0MGuJ8MZgwUUMCTB5EbSd.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293959628-ah4oxn.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrvnpevxria-hgy46m89w0MGuJ8MZgwUUMCTB5EbSd.png"]},{"sourceId":"vibecafe","title":"MindMux.ai — The project brain for builders and agents","url":"https://vibecafe.ai/products/cmqrvf4u600000bksl953i4de","author":"Sunny","authorUrl":"https://vibecafe.ai/u/sunny","publishedAt":"2026-06-24T09:28:31.809Z","summary":"MindMux is a local-first AI workbench with persistent project context.","content":"MindMux is a local-first AI workbench with persistent project context.","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqrvf4u600000bksl953i4de","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrv6otlsclp-jhXyctMIscpttEwNaGe028XNAG3cAq.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782292942336-5bcazx.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrv6otlsclp-jhXyctMIscpttEwNaGe028XNAG3cAq.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029457-wty0b3.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029438-lblx4b.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029487-gtrek3.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029435-e6l7rj.png"]},{"sourceId":"vibecafe","title":"映像 YingXiang","url":"https://vibecafe.ai/products/cmqrtnjcj00000bje21efgila","author":"Jesn","authorUrl":"https://vibecafe.ai/u/jesn","publishedAt":"2026-06-24T08:39:04.629Z","summary":"一个面向创作者的 AI 图片生成与改图工作台，把文字生图、参考图改图、作品管理和下载收藏放在同一个产品里。","content":"一个面向创作者的 AI 图片生成与改图工作台，把文字生图、参考图改图、作品管理和下载收藏放在同一个产品里。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqrtnjcj00000bje21efgila","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrtd2ht00030bkqutt9movr/mqrtkov2ero9-SLZ4qjC7ALLyizOzjEShjSWaQG3v2K.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrtd2ht00030bkqutt9movr/mqrtkov4rxc5-uFI5qvZlSrLJ3peNxuftW0EmdIgyr6.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrtd2ht00030bkqutt9movr/mqrtkov2ero9-SLZ4qjC7ALLyizOzjEShjSWaQG3v2K.png"]},{"sourceId":"vibecafe","title":"WordHub - Comprehensive English Language Learning Platform","url":"https://vibecafe.ai/products/cmqrsw3t600000bgkt4u6h5jy","author":"perry","authorUrl":"https://vibecafe.ai/u/leiping","publishedAt":"2026-06-24T08:17:44.779Z","summary":"Save words as you read, remember them with context-rich review, and explore trusted dictionary, Word","content":"Save words as you read, remember them with context-rich review, and explore trusted dictionary, Word","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqrsw3t600000bgkt4u6h5jy","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/1782288809795-ef59mu.jpg","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/mqrsostmlmg3-4IfwCh1kjz8ngum1ogbO9zR1UZqiGI.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/1782288809795-ef59mu.jpg","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/1782288905960-8nu425.jpg"]},{"sourceId":"vibecafe","title":"ShellDesk","url":"https://vibecafe.ai/products/cmqrquvk2000004jx0pnwja0v","author":"刘白菜","authorUrl":"https://vibecafe.ai/u/liubaicai","publishedAt":"2026-06-24T07:20:48.194Z","summary":"无侵入的服务器管理面板，Visual SSH host workspace and remote operations toolkit.","content":"无侵入的服务器管理面板，Visual SSH host workspace and remote operations toolkit.","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqrquvk2000004jx0pnwja0v","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/mqrqq9r84kxg-mHuireoma1j9nW8door6RvUq5JGigF.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/mqrqq9rbyts2-YpkDhSyzD91haToqwAdcjJIISfsB7A.png","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/mqrqq9r84kxg-mHuireoma1j9nW8door6RvUq5JGigF.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/1782285564277-17empv.png"]},{"sourceId":"vibecafe","title":"AnyPiece","url":"https://vibecafe.ai/products/cmqrh1jds00000bja2kmogykj","author":"chichi","authorUrl":"https://vibecafe.ai/u/chichi","publishedAt":"2026-06-24T02:46:02.852Z","summary":"通过自由剪裁来收藏网页信息的剪藏工具","content":"通过自由剪裁来收藏网页信息的剪藏工具","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqrh1jds00000bja2kmogykj","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269035106-hy9rzh.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782268901665-texzam.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269035106-hy9rzh.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269034603-whzz32.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269034958-rnjcb3.png","https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269034899-cromlv.png"]},{"sourceId":"vibecafe","title":"Every Noise Genre Sphere","url":"https://vibecafe.ai/products/cmqr2f87b00000bknbqte8180","author":"elizaaa","authorUrl":"https://vibecafe.ai/u/elizaaa","publishedAt":"2026-06-23T19:56:47.304Z","summary":"集合了6000多种不同的音乐流派形成的一个音乐图书馆，可以根据流派搜索音乐采样以及会显示不同音乐流派之间的关联。","content":"集合了6000多种不同的音乐流派形成的一个音乐图书馆，可以根据流派搜索音乐采样以及会显示不同音乐流派之间的关联。","metrics":{},"tags":["vibecafe","product"],"externalId":"cmqr2f87b00000bknbqte8180","image":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq26x9o000000bkj7inrsnrb/1782244567413-g4qz8m.png","logo":"https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq26x9o000000bkj7inrsnrb/1782244310532-gp329q.webp","images":["https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq26x9o000000bkj7inrsnrb/1782244567413-g4qz8m.png"]}]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Well - Business Context Graph","url":"https://www.producthunt.com/products/well-embed/launches/well-business-context-graph?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"One Legible Business Context Graph for You and Your Agents","content":"What if your whole business ran on one MCP? Well identify and sync with your SaaS, CRM, Emails, Productivity tools, Accounting and Banks get all that into one shell. Manage all your MCPs in one line of command, get your data consolidated into one context graph. Make your business legible, to you and your agents.","metrics":{},"tags":["producthunt","new"],"externalId":"1178086","logo":"https://ph-files.imgix.net/1d741f05-32c0-4ffe-8a2a-6648acf0d143.png?auto=format","images":["https://ph-files.imgix.net/21400fb0-5079-4386-b874-1f58cd1fe0a9.png?auto=format","https://ph-files.imgix.net/69025204-1749-4f01-877c-c152b39e81e5.png?auto=format","https://ph-files.imgix.net/d8101581-aa2d-4948-80d9-1a2b61b3bd2b.png?auto=format","https://ph-files.imgix.net/f8543456-d867-40b9-adf6-c9393a8faf53.png?auto=format","https://ph-files.imgix.net/88dbc209-da50-4d4c-b4b1-180eece74d10.png?auto=format","https://ph-files.imgix.net/782fcc26-5d3a-4a23-b1b1-dd12d5b74ea6.jpeg?auto=format"],"image":"https://ph-files.imgix.net/21400fb0-5079-4386-b874-1f58cd1fe0a9.png?auto=format"},{"sourceId":"producthunt","title":"StelaxAI","url":"https://www.producthunt.com/products/stelaxai/launches/stelaxai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Stop wasting time on routine.","content":"StelaxAI replies to customers, qualifies leads and books appointments 24/7. The AI platform for salons, med spas, clinics and service businesses.","metrics":{},"tags":["producthunt","new"],"externalId":"1178939","logo":"https://ph-files.imgix.net/ca23a938-4c39-4fd0-aada-09b5a22270d8.jpeg?auto=format","images":["https://ph-files.imgix.net/1dcd18c2-6124-453b-a6b1-3e24e0e46e12.jpeg?auto=format"],"image":"https://ph-files.imgix.net/1dcd18c2-6124-453b-a6b1-3e24e0e46e12.jpeg?auto=format"},{"sourceId":"producthunt","title":"PasswordGen","url":"https://www.producthunt.com/products/passwordgen-2/launches/passwordgen-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"14-language password generator — truly free, zero tracking","content":"PasswordGen — free, browser-based password generator. 14 languages, 22 tools (6-char to 64-char, PINs, hex, memorable). Uses Web Crypto API, zero data collection. 15 security guides (NIST/OWASP cited). Open DevTools: no network requests. 100% client-side. Next tool: QRfree.","metrics":{},"tags":["producthunt","new"],"externalId":"1177319","logo":"https://ph-files.imgix.net/089cba09-001f-49dd-810a-dcbc634ba031.png?auto=format","images":["https://ph-files.imgix.net/1750139f-a7f2-4054-91b1-fc93b012397c.png?auto=format","https://ph-files.imgix.net/91b5135d-7872-4091-946e-67b8e00da13f.png?auto=format","https://ph-files.imgix.net/c8c82d0e-c01b-4f11-98d0-874c635a2624.png?auto=format"],"image":"https://ph-files.imgix.net/1750139f-a7f2-4054-91b1-fc93b012397c.png?auto=format"},{"sourceId":"producthunt","title":"Augur","url":"https://www.producthunt.com/products/augur-3/launches/augur-4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"You think you predict well. Prove it.","content":"AI gives everyone predictions now. Augur answers the harder question — are YOUR predictions actually good? Log any call, set a deadline, score Hit or Miss. Build your real accuracy record. For analysts, investors, and independent thinkers. $29, no subscription.","metrics":{},"tags":["producthunt","new"],"externalId":"1164159","logo":"https://ph-files.imgix.net/443fa4e7-ae22-462f-8d02-9b8dc126e77d.png?auto=format","images":["https://ph-files.imgix.net/e8901dfe-743e-480a-891a-233e00bd532c.jpeg?auto=format","https://ph-files.imgix.net/de4cfb9e-675f-45e0-a5a1-8539c38d8d2e.jpeg?auto=format","https://ph-files.imgix.net/9b26d869-4329-4b87-ae10-1305e05eb576.jpeg?auto=format","https://ph-files.imgix.net/c853c4cb-8f62-4db4-af72-8158ec769611.jpeg?auto=format","https://ph-files.imgix.net/3ece8a97-07fd-4dbd-8904-91b9de994a0d.jpeg?auto=format"],"image":"https://ph-files.imgix.net/e8901dfe-743e-480a-891a-233e00bd532c.jpeg?auto=format"},{"sourceId":"producthunt","title":"DataMadEasy","url":"https://www.producthunt.com/products/datamadeasy/launches/datamadeasy?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Animated charts, maps, data tools & more — code-free.","content":"DataMadEasy is a free, code-free data tool for people who work with data but don't code. Create animated charts (Bar Race, Bubble, Choropleth maps, and more) and 10+ static chart types in seconds. Simulate investments — compare stocks, ETFs, and crypto with real data. Run mortgage affordability scenarios. Opens massive files (3GB+) Excel crashes on, converts Long↔Wide format, compares databases, and cleans data. No Python, no R. Runs in your browser — your data never leaves your computer.&nbsp;","metrics":{},"tags":["producthunt","new"],"externalId":"1162811","logo":"https://ph-files.imgix.net/61c98a71-c385-44b4-87d5-5af33b44365f.png?auto=format","images":["https://ph-files.imgix.net/22ddc86b-777b-450d-bd9c-f3a960810d8a.gif?auto=format","https://ph-files.imgix.net/ce7a108b-ffe9-4726-afab-18c3cfdc1b5d.gif?auto=format","https://ph-files.imgix.net/42712433-1603-4cc9-b575-05b67b050bfe.png?auto=format","https://ph-files.imgix.net/4f1603ef-a581-4a88-99bc-d36ed0fc539e.png?auto=format","https://ph-files.imgix.net/63d86f3b-7072-4be2-93f0-b7e3f24d9081.png?auto=format","https://ph-files.imgix.net/9b7e318c-73f5-45de-ac7b-81da6cc4d179.png?auto=format"],"image":"https://ph-files.imgix.net/22ddc86b-777b-450d-bd9c-f3a960810d8a.gif?auto=format"},{"sourceId":"producthunt","title":"InstaShare","url":"https://www.producthunt.com/products/instashare-2/launches/instashare-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Securely Share Claude Code chat sessions as public link","content":"Share or export a Claude Code chat session as a public link in one /instashare command. Anonymous-first, with API keys and secrets auto-redacted before upload. Free skill for Claude Code.","metrics":{},"tags":["producthunt","new"],"externalId":"1179320","logo":"https://ph-files.imgix.net/29e83e80-0bdc-4cb1-bbbe-b5c3b7e62b22.png?auto=format","images":["https://ph-files.imgix.net/9deda1a8-9267-45b7-b868-05a88a2137a8.png?auto=format"],"image":"https://ph-files.imgix.net/9deda1a8-9267-45b7-b868-05a88a2137a8.png?auto=format"},{"sourceId":"producthunt","title":"Nightlamp","url":"https://www.producthunt.com/products/nightlamp/launches/nightlamp?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"App care: monitoring plus engineer diagnosis","content":"Nightlamp is managed app care for no-code, AI-built, and custom web apps. It monitors business-critical flows like login, checkout, webhooks, scheduled jobs, and email delivery, then sends a plain-English diagnosis and recommended fix when something breaks. Built for founders and agencies who do not want to decode logs at 3 AM. Start with a 14-day no-card trial and keep one free flow monitor after.","metrics":{},"tags":["producthunt","new"],"externalId":"1175660","logo":"https://ph-files.imgix.net/6cd364b0-b6ea-44cb-a5c0-773a05cfbd9b.svg?auto=format","images":["https://ph-files.imgix.net/c38aa1cf-9a45-4848-836c-7c82058322ee.png?auto=format","https://ph-files.imgix.net/628f40e0-aa92-4304-9e78-befeeabbd41b.png?auto=format","https://ph-files.imgix.net/dc03a13b-d7d9-4620-b531-557d507d3d6c.png?auto=format","https://ph-files.imgix.net/41ea9d3d-063d-4651-a7ba-214d350790e8.png?auto=format","https://ph-files.imgix.net/954b5227-1910-47fe-91cc-50671f1efb19.png?auto=format"],"image":"https://ph-files.imgix.net/c38aa1cf-9a45-4848-836c-7c82058322ee.png?auto=format"},{"sourceId":"producthunt","title":"ARI Software","url":"https://www.producthunt.com/products/ari-software/launches/ari-software?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Your Open Source, Self-Hosted AI-Native Personal Workspace","content":"The open source, self-hosted, AI-native productivity platform you self-host. Dozens of built-In modules and build your own In minutes - no coding needed. Full data control. Fully extendable. Completely yours.","metrics":{},"tags":["producthunt","new"],"externalId":"1179289","logo":"https://ph-files.imgix.net/d8275cd7-03e5-4afe-aa4f-47f12a84bd22.jpeg?auto=format","images":["https://ph-files.imgix.net/b0bb0c72-3e41-499b-aeb4-0563f1e3e4f7.jpeg?auto=format","https://ph-files.imgix.net/fa87c5ff-7d4f-4bfb-b7b6-276d04757162.png?auto=format","https://ph-files.imgix.net/117b2c04-15d0-48a7-b226-ba8afe09f5b6.png?auto=format"],"image":"https://ph-files.imgix.net/b0bb0c72-3e41-499b-aeb4-0563f1e3e4f7.jpeg?auto=format"},{"sourceId":"producthunt","title":"Utilsly","url":"https://www.producthunt.com/products/utilsly/launches/utilsly?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"25+ free online tools. No signup. No clutter. Just tools.","content":"Hey Product Hunt! 👋 I built Utilsly because I was tired of jumping between 10 different websites just to format JSON, generate a password, or calculate BMI. Utilsly puts 25+ free tools in one clean place — no signup, works offline, fully mobile friendly. Would love your feedback — what tool should I add next? Drop it below! 🙏","metrics":{},"tags":["producthunt","new"],"externalId":"1177262","logo":"https://ph-files.imgix.net/5733b6a8-8337-4272-9abd-f73c295bd1f1.png?auto=format","images":["https://ph-files.imgix.net/38f58bc5-06ff-4459-af1e-4f39fb4c4bc3.png?auto=format","https://ph-files.imgix.net/c0ec8a05-962c-4e5b-a8e6-b9ea2af00136.png?auto=format","https://ph-files.imgix.net/d0da3ac8-bf03-4449-8e49-547f84fe8b9b.png?auto=format","https://ph-files.imgix.net/d3a1da40-d6c2-4d74-8b68-fa2ded551b57.png?auto=format"],"image":"https://ph-files.imgix.net/38f58bc5-06ff-4459-af1e-4f39fb4c4bc3.png?auto=format"},{"sourceId":"producthunt","title":"Framer Forge","url":"https://www.producthunt.com/products/framer-forge/launches/framer-forge?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Turn plain English into custom Framer code overrides","content":"Describe a Framer interaction in plain English — hover effects, scroll animations, state changes — and get production-ready code overrides in seconds. Unlike a generic AI chat, the Forge is tuned for Framer's real patterns, so the code pastes straight into your project. Plus a growing marketplace of ready-made overrides & components to drop in or remix.","metrics":{},"tags":["producthunt","new"],"externalId":"1179576","logo":"https://ph-files.imgix.net/90c926de-5ed4-4047-92f2-a4b0a749f40e.png?auto=format","images":["https://ph-files.imgix.net/d809baad-e35d-4a95-9dc9-3eb2f4e8349c.jpeg?auto=format","https://ph-files.imgix.net/cbe2a2ad-e2fe-4dbf-9aaf-3fb61923c491.png?auto=format","https://ph-files.imgix.net/cccd0700-305d-40f2-b480-9dc973bcb518.png?auto=format","https://ph-files.imgix.net/ab16215b-a521-4ebc-98b1-2e0c9b086010.png?auto=format","https://ph-files.imgix.net/a1efcaec-5429-4342-a700-ed5fc0b81a00.png?auto=format","https://ph-files.imgix.net/dc8f09bf-2dd7-4796-be1b-0fa495ac3d69.png?auto=format","https://ph-files.imgix.net/b4365cce-9857-49a4-bad5-e111400b08d1.png?auto=format","https://ph-files.imgix.net/30c53b03-08ec-4a7c-a7a4-381787e5e3b4.png?auto=format","https://ph-files.imgix.net/b882620a-ffe4-46ff-9ccb-ccc2faf3b2ba.png?auto=format","https://ph-files.imgix.net/867f3f39-f85b-4d27-95ea-106e8a1c7473.png?auto=format","https://ph-files.imgix.net/9cb29a3b-d948-47a1-8d8a-aadd0aaabd90.png?auto=format","https://ph-files.imgix.net/a1ba23f5-ecb8-49dd-b520-3b92e761241e.png?auto=format","https://ph-files.imgix.net/be1176ab-d771-49bd-82ec-716e4269d44c.png?auto=format","https://ph-files.imgix.net/9d4ca9f4-d779-4044-be01-e5c0d7b372d2.png?auto=format","https://ph-files.imgix.net/79223c32-2760-426a-9f5b-08b691cbaf02.png?auto=format"],"image":"https://ph-files.imgix.net/d809baad-e35d-4a95-9dc9-3eb2f4e8349c.jpeg?auto=format"},{"sourceId":"producthunt","title":"GoodBarber - AI Extension Builder","url":"https://www.producthunt.com/products/goodbarber/launches/goodbarber-ai-extension-builder?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Describe a feature, AI creates it in your app. ","content":"GoodBarber's AI Extension Builder lets you create custom app sections by describing them in plain language — no code, no developer. Add a \"Create with AI\" section, describe what you want, and the agent writes it, plugs it into GoodBarber's public APIs (geolocation, native maps, offline storage, membership, system alerts) and renders it live. Refine by chatting or edit the code. It inherits your design system and compiles native iOS & Android. Free, in Beta.","metrics":{},"tags":["producthunt","new"],"externalId":"1175327","logo":"https://ph-files.imgix.net/565ee623-7093-4d1d-8076-15d62bf4f432.png?auto=format","images":["https://ph-files.imgix.net/7b49771d-2ba0-4c01-98c2-2aed4dc8c935.webp?auto=format","https://ph-files.imgix.net/bc4896d6-3641-4f02-8c2a-3419f6bcc191.webp?auto=format","https://ph-files.imgix.net/d5c038f0-4b7f-4e0b-819e-607b27e41fd8.webp?auto=format"],"image":"https://ph-files.imgix.net/7b49771d-2ba0-4c01-98c2-2aed4dc8c935.webp?auto=format"},{"sourceId":"producthunt","title":"Noemra","url":"https://www.producthunt.com/products/noemra/launches/noemra?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Found a company in one sentence.","content":"Noemra is an AI company operator. Give it an idea it builds the product, ships the website, wires up payments, posts on social, and emails customers. All on its own. You are the owner. You just talk to your CEO. • Builds & deploys a production-ready product • Takes payments from day one via Stripe • Posts to the company's social accounts • Researches and emails real prospects • Reports every action in a live feed • Keeps improving continuously Free to start · live in minutes.","metrics":{},"tags":["producthunt","new"],"externalId":"1179232","logo":"https://ph-files.imgix.net/4166032f-a130-495d-a38c-26268e53d4e1.png?auto=format","images":["https://ph-files.imgix.net/bea6b406-c468-4e39-8d3a-4dc605e4e541.png?auto=format","https://ph-files.imgix.net/324cd511-befc-405e-93fc-b955ab540e6f.png?auto=format","https://ph-files.imgix.net/283142f6-6ce5-4cdb-9845-f408b147c25d.png?auto=format"],"image":"https://ph-files.imgix.net/bea6b406-c468-4e39-8d3a-4dc605e4e541.png?auto=format"},{"sourceId":"producthunt","title":"Soulver 4","url":"https://www.producthunt.com/products/soulver/launches/soulver-4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Notepad, meet calculator","content":"Soulver is a notepad calculator you can think through problems involving math in. Mix calculations with comments, and a live \"answer column\" calculates for you: currency & unit conversions, dates & times, percentages, time zones, variables, and more. All in a sheet you come back to. We pioneered this live-answer-column idea back in 2005 and have been refining it with more features & intelligence for 20 years. Native on Mac, iPad & iPhone — and a one-time purchase, not a subscription.","metrics":{},"tags":["producthunt","new"],"externalId":"1178148","logo":"https://ph-files.imgix.net/189c0caf-c8db-43fe-b95e-9ff4e4e7e6d9.png?auto=format","images":["https://ph-files.imgix.net/1a2063af-115e-400a-bf6b-b98d955ebcea.jpeg?auto=format","https://ph-files.imgix.net/f1e4d7b2-01d8-46b6-9704-560fb9c4912a.png?auto=format","https://ph-files.imgix.net/771480c9-d1e0-4789-b90f-0a95a6975355.png?auto=format","https://ph-files.imgix.net/a771b97b-6944-4778-85fa-ebe724abaf45.png?auto=format","https://ph-files.imgix.net/4a5f4af3-449e-4306-b084-d72ce9edecc9.png?auto=format","https://ph-files.imgix.net/6374ed67-53b8-4fa1-be03-b2cfb4843976.png?auto=format","https://ph-files.imgix.net/64bdf0ef-bc1a-4d9a-a097-9b06f8d23ca8.png?auto=format"],"image":"https://ph-files.imgix.net/1a2063af-115e-400a-bf6b-b98d955ebcea.jpeg?auto=format"},{"sourceId":"producthunt","title":"Retext","url":"https://www.producthunt.com/products/retext/launches/retext?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Snippets that expand anywhere you type on macOS","content":"Retext expands short triggers into full text as you type — addresses, email signatures, code blocks, canned replies. Typeaddr and it instantly becomes your full address. Works system-wide in any Mac app. Free to try, no account needed.","metrics":{},"tags":["producthunt","new"],"externalId":"1178398","logo":"https://ph-files.imgix.net/85366e8f-730d-41d6-aace-f3ef25812fcc.svg?auto=format","images":["https://ph-files.imgix.net/45d79ae5-ad4a-4232-806c-4fa062cef12d.jpeg?auto=format","https://ph-files.imgix.net/398b4e31-0f9a-44c3-94c8-4f0aea539574.png?auto=format","https://ph-files.imgix.net/8d8fb437-05ce-4ef4-b7da-f1f89c75515d.png?auto=format","https://ph-files.imgix.net/c5bbf235-dfcc-4e33-9bac-3a2648d89d01.png?auto=format","https://ph-files.imgix.net/2a0d5e57-2594-4346-9d83-3a9419682313.png?auto=format","https://ph-files.imgix.net/91ec00b3-0fbf-45ef-8f4f-0051c11de145.png?auto=format","https://ph-files.imgix.net/c321c3a2-ff2a-42a4-bc8a-0d02b5addd1a.png?auto=format","https://ph-files.imgix.net/27e49576-53e4-4dd2-b3f9-a056a9600d70.gif?auto=format"],"image":"https://ph-files.imgix.net/45d79ae5-ad4a-4232-806c-4fa062cef12d.jpeg?auto=format"},{"sourceId":"producthunt","title":"TextPolisher.app","url":"https://www.producthunt.com/products/textpolisher-app/launches/textpolisher-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Instant text polish on your Mac. Any app. Zero internet.","content":"TextPolisher lives in your menu bar and rewrites any selected text - Slack, Teams, Mail, Notes, your browser - in one keystroke. Fix grammar or shift tone (professional, friendly, concise) using Apple's on-device AI model. No account, no API key, no cloud. Free.","metrics":{},"tags":["producthunt","new"],"externalId":"1179434","logo":"https://ph-files.imgix.net/01f79a54-0bfa-48e2-84a3-f972fe20450b.png?auto=format","images":["https://ph-files.imgix.net/307cd840-44ac-4e73-933d-fa7e1e9669f2.gif?auto=format","https://ph-files.imgix.net/a05b0e11-7af2-41b2-8690-2a7674317cf7.png?auto=format","https://ph-files.imgix.net/5d30ab69-cb08-4789-83f5-40516b5bd69d.png?auto=format","https://ph-files.imgix.net/cb2cde6f-5407-481f-b01c-2507ff4e3ece.png?auto=format"],"image":"https://ph-files.imgix.net/307cd840-44ac-4e73-933d-fa7e1e9669f2.gif?auto=format"},{"sourceId":"producthunt","title":"ValueLens","url":"https://www.producthunt.com/products/workers-dev/launches/valuelens-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"A Buffett-style stock analysis terminal for your Mac","content":"ValueLens turns raw SEC filings into a full value-investing workflow on macOS: 10-year financials from EDGAR, a two-stage Owner-Earnings DCF with scenarios, Morningstar-style AI research reports, S&P 500 value screening, and buy-zone alerts. Free data sources; bring your own Claude key. One-time $39, no subscription.","metrics":{},"tags":["producthunt","new"],"externalId":"1179407","logo":"https://ph-files.imgix.net/16e06745-0efe-49d0-bb98-aa69ff3c7908.png?auto=format","images":["https://ph-files.imgix.net/312bdd85-c9df-4fe6-a51f-d7763adc3356.png?auto=format","https://ph-files.imgix.net/c6e9b9e4-6b1c-4b53-a65c-71c33193a265.png?auto=format","https://ph-files.imgix.net/9380f4e1-0272-497e-9508-8d15964b87c7.png?auto=format","https://ph-files.imgix.net/8b75bdf1-c6fe-4437-bc3e-4ab86d5fc18c.png?auto=format","https://ph-files.imgix.net/d544d725-4fd4-4e74-8f84-464332731166.png?auto=format"],"image":"https://ph-files.imgix.net/312bdd85-c9df-4fe6-a51f-d7763adc3356.png?auto=format"},{"sourceId":"producthunt","title":"Farewell","url":"https://www.producthunt.com/products/farewell-2/launches/farewell-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Offline encrypted vault for Apple Silicon Mac.","content":"Farewell is an offline encrypted vault for macOS designed for sensitive files. It combines 256-bit authenticated encryption, ML-DSA post-quantum integrity protection, Argon2id key hardening and optional hardware security keys. No cloud, no accounts, no telemetry and no servers. Files stay on your Mac and remain protected by an architecture built for long-term security.","metrics":{},"tags":["producthunt","new"],"externalId":"1179218","logo":"https://ph-files.imgix.net/cf7d3413-fa25-40af-a421-fed4bbb37166.png?auto=format","images":["https://ph-files.imgix.net/07005692-9fce-4985-8bbb-e07039927877.jpeg?auto=format","https://ph-files.imgix.net/59c0bb2e-f06d-4b2d-b2cb-f90c3350be28.png?auto=format","https://ph-files.imgix.net/494e5846-2a7e-448d-a4c5-5102a3c1f0a5.png?auto=format","https://ph-files.imgix.net/74ad0d05-2556-4d0e-9b7d-3b48d76030be.jpeg?auto=format"],"image":"https://ph-files.imgix.net/07005692-9fce-4985-8bbb-e07039927877.jpeg?auto=format"},{"sourceId":"producthunt","title":"Agents At Work","url":"https://www.producthunt.com/products/agents-at-work-you-can-go/launches/agents-at-work-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"Monitor and control AI agents from your phone","content":"Monitor and control Claude Code, Codex, Gemini CLI, and Grok AI agents from your iPhone or Android. Push notifications, one-tap approvals, live conversation feed, from anywhere.","metrics":{},"tags":["producthunt","new"],"externalId":"1177422","logo":"https://ph-files.imgix.net/de92a3ce-f535-416a-871a-617896c97852.png?auto=format","images":["https://ph-files.imgix.net/2caaf205-7ce5-4987-8ec3-4a2505ab758b.png?auto=format","https://ph-files.imgix.net/4ba4d82b-df83-4054-a914-9c18c78a0968.png?auto=format","https://ph-files.imgix.net/cc8f2f68-b298-4bb9-9e95-7e9ae91b351e.png?auto=format","https://ph-files.imgix.net/fba2996b-ca1e-4b85-a47b-d1233f6f7c90.png?auto=format","https://ph-files.imgix.net/a25caf4c-574a-4ec9-b9c3-1984bf46a326.png?auto=format","https://ph-files.imgix.net/6b9da1ec-852c-48f2-ba26-7947befa858c.png?auto=format"],"image":"https://ph-files.imgix.net/2caaf205-7ce5-4987-8ec3-4a2505ab758b.png?auto=format"},{"sourceId":"producthunt","title":"OmniSwitch","url":"https://www.producthunt.com/products/omniswitch/launches/omniswitch?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"AltTab + Paste + Alfred, in one hotkey","content":"Switch to any window from the keyboard — no Enter key. App grid → window grid in two keystrokes, with stable numbers that become muscle memory. Clipboard history, snippets, and quick links live in the same hotkey. Native, GPL-3.0, one-time purchase.","metrics":{},"tags":["producthunt","new"],"externalId":"1177164","logo":"https://ph-files.imgix.net/8717841d-b092-4a5b-bf98-81fae63936bd.png?auto=format","images":["https://ph-files.imgix.net/104d82b8-e137-46de-a361-dc3344668b55.jpeg?auto=format","https://ph-files.imgix.net/0ecd0195-7d6f-4035-863d-02a49b547be2.png?auto=format","https://ph-files.imgix.net/5ef72ea9-04be-47c8-a154-b6e1d5237aca.png?auto=format","https://ph-files.imgix.net/33b2a9bf-1e90-421f-9445-257907cac8c0.png?auto=format","https://ph-files.imgix.net/309e9a94-e2d9-49c0-907d-6816edca2174.png?auto=format"],"image":"https://ph-files.imgix.net/104d82b8-e137-46de-a361-dc3344668b55.jpeg?auto=format"},{"sourceId":"producthunt","title":"FilenQ","url":"https://www.producthunt.com/products/filenq-file-management-system/launches/filenq?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-06-24T07:01:00Z","summary":"A native macOS file manager for power users","content":"FilenQ is a native macOS file manager for people who want more than Finder. It combines dual-pane browsing, tabs, previews, quick file operations, search, metadata tools, checksums, PDF/image utilities, terminal workflows and local-only processing in one clean AppKit interface. Early macOS build, free while feedback shapes the product.","metrics":{},"tags":["producthunt","new"],"externalId":"1179076","logo":"https://ph-files.imgix.net/5fb57303-f3a2-4422-96d0-619262ed3c95.png?auto=format","images":["https://ph-files.imgix.net/77228b1f-d4e1-4db1-bdec-277e61ba3ae2.png?auto=format","https://ph-files.imgix.net/f7d007c0-14d5-49ac-973a-be48e6968b33.png?auto=format","https://ph-files.imgix.net/5ec8d7ba-3083-4e7d-98c5-8976f64d2a5d.png?auto=format","https://ph-files.imgix.net/814bd9cb-5862-4dbd-9198-baad788fe01a.png?auto=format","https://ph-files.imgix.net/581563e9-ff2c-4edb-bd9a-9b6c5df4f79e.png?auto=format","https://ph-files.imgix.net/ad58fd7d-c4e2-4594-982d-92c8c9325253.png?auto=format","https://ph-files.imgix.net/afa7b02c-ad7f-47e0-b293-40d50e2e54ff.png?auto=format","https://ph-files.imgix.net/65241de7-8246-4d0c-9c4c-049929f8ab5c.png?auto=format","https://ph-files.imgix.net/1fd02ff2-f48b-497d-9a1f-80bc97989d8c.png?auto=format","https://ph-files.imgix.net/6680760b-668f-4bb2-95cf-c241c78a3e8e.png?auto=format"],"image":"https://ph-files.imgix.net/77228b1f-d4e1-4db1-bdec-277e61ba3ae2.png?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T08:44:11.998Z",
+  "date": "2026-06-24",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Markclip",
+          "url": "https://chromewebstore.google.com/detail/markclip-copy-any-part-of/hibnhmfncpddjendfainhipkbnblpdee",
+          "author": "刀刀",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T00:00:00+08:00",
+          "summary": "一键复制 Claude 回复的任意片段为干净 Markdown，表格/代码/公式/mermaid 全保留",
+          "content": "一键复制 Claude 回复的任意片段为干净 Markdown，表格/代码/公式/mermaid 全保留",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-06-24-Markclip-https://chromewebstore.google.com/detail/markclip-copy-any-part-of/hibnhmfncpddjendfainhipkbnblpdee"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Kepo",
+          "url": "https://kepo.ai",
+          "author": "Levine",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T00:00:00+08:00",
+          "summary": "AI Mac 桌面组件工具，把网页、RSS 和社交媒体更新变成可一键唤起的桌面组件",
+          "content": "AI Mac 桌面组件工具，把网页、RSS 和社交媒体更新变成可一键唤起的桌面组件",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-06-24-Kepo-https://kepo.ai",
+          "siteLogo": "https://kepo.ai/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "X 评论护盾",
+          "url": "https://www.cloxapps.com/x-comment-shield",
+          "author": "biboom(广州)",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T00:00:00+08:00",
+          "summary": "本地采集 X 帖子评论及识别风险评论并支持单条批量屏蔽、举报等",
+          "content": "本地采集 X 帖子评论及识别风险评论并支持单条批量屏蔽、举报等",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-06-24-X 评论护盾-https://www.cloxapps.com/x-comment-shield",
+          "siteLogo": "https://www.cloxapps.com/favicon.ico?favicon.0civaaozx7_gd.ico"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Before After Photo Maker",
+          "url": "https://beforeafterphotomaker.com/",
+          "author": "jankarong",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T00:00:00+08:00",
+          "summary": "免费在线制作前后对比照片，支持并排、滑块、分割等多种布局，适合健身、装修、美妆等场景",
+          "content": "免费在线制作前后对比照片，支持并排、滑块、分割等多种布局，适合健身、装修、美妆等场景",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-06-24-Before After Photo Maker-https://beforeafterphotomaker.com/",
+          "siteLogo": "https://beforeafterphotomaker.com/favicon.webp"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源推荐】 agilePool：Go 协程池的\"控制论\"方案——goroutine 不再干等，性能反超 ants 31%",
+          "url": "https://github.com/Yiming1997/agilePool",
+          "author": "a3141294854",
+          "authorUrl": "https://github.com/a3141294854",
+          "publishedAt": "2026-06-23T16:43:09Z",
+          "summary": "🚀 agilePool — 思路不一样的 Go 高性能协程池 项目地址: 测试地址: 市面上大多数协程池（如 ants）采用常驻 goroutine 模式——无论有没有任务，goroutine 都阻塞在 channel 上等待，以空间换时间。 agilePool 走了一条不同的路：goroutine 空闲即退，按需启动。 每个 goroutine 执行完任务就结束自己，只把轻量的 worker 结构体放回空闲池；需要时再从池中取出来启动新 goroutine。无任务时系统里不残留任何多余 goroutine 栈内存。 ⚡ 性能表现（1000 万任务 / 20K 容量） | 库 | 耗时 | 内存 | 分配次数 | ||||| | agilePool | 5.63s | 502 MB | 20,189K | | ants | 8.20s | 569 MB | 20,117K | | Pond | 10.10s | 681 MB | 20,542K | 比 ants 快 31%，内存低 12%。 原因很简单：省下的空闲 goroutine 栈内存大幅减少了 GC 压力，抵消了创建开销还有盈余。 🎯 自适应调度器（核心亮点） 不像传统池子固定容量，agilePool 内置自适应调度器： 每 10ms 采样提交速率和消费速率 通过滑动窗口中位数计算所需并发数 突发流量自动扩容，低谷自然缩容 类似 PID 控制器，无需用户预判负载 ✨ 特性一览 ♻️ goroutine 空闲即退：无任务时零 goroutine 栈占用 📈 自适应 Scaler：自动感知负载，动态伸缩 📦 四种可插拔空闲容器：LinkedList / MinHeap(LRU) / Slice / RingQueue 🔓 无界任务队列 + 背压支持 🚦 Block / NonBlock 提交，支持 Context 取消 & 超时 🔁 指数退避重试（TaskWithRetry） 🛡️ Panic 保护 + Graceful Shutdown 🪵 可接入自定义 Logger ⭐ 如果对你有帮助，欢迎 Star / Fork / 提 Issue！",
+          "content": "# 🚀 agilePool — 思路不一样的 Go 高性能协程池\n\n> 项目地址: https://github.com/Yiming1997/agilePool  \n> 测试地址: https://github.com/Yiming1997/agilePool-benchmark\n\n市面上大多数协程池（如 [ants](https://github.com/panjf2000/ants)）采用**常驻 goroutine 模式**——无论有没有任务，goroutine 都阻塞在 channel 上等待，以空间换时间。\n\n**agilePool 走了一条不同的路：goroutine 空闲即退，按需启动。**\n\n每个 goroutine 执行完任务就结束自己，只把轻量的 `worker` 结构体放回空闲池；需要时再从池中取出来启动新 goroutine。**无任务时系统里不残留任何多余 goroutine 栈内存。**\n\n---\n\n## ⚡ 性能表现（1000 万任务 / 20K 容量）\n\n| 库 | 耗时 | 内存 | 分配次数 |\n|---|---|---|---|\n| **agilePool** | **5.63s** | **502 MB** | 20,189K |\n| ants | 8.20s | 569 MB | 20,117K |\n| Pond | 10.10s | 681 MB | 20,542K |\n\n**比 ants 快 31%，内存低 12%。**\n\n> 原因很简单：省下的空闲 goroutine 栈内存大幅减少了 GC 压力，抵消了创建开销还有盈余。\n\n---\n\n## 🎯 自适应调度器（核心亮点）\n\n不像传统池子固定容量，agilePool 内置**自适应调度器**：\n\n- 每 10ms 采样提交速率和消费速率\n- 通过滑动窗口中位数计算所需并发数\n- 突发流量自动扩容，低谷自然缩容\n- 类似 PID 控制器，**无需用户预判负载**\n\n---\n\n## ✨ 特性一览\n\n- ♻️ **goroutine 空闲即退**：无任务时零 goroutine 栈占用\n- 📈 **自适应 Scaler**：自动感知负载，动态伸缩\n- 📦 **四种可插拔空闲容器**：LinkedList / MinHeap(LRU) / Slice / RingQueue\n- 🔓 **无界任务队列** + 背压支持\n- 🚦 **Block / NonBlock 提交**，支持 `Context` 取消 & 超时\n- 🔁 **指数退避重试**（`TaskWithRetry`）\n- 🛡️ **Panic 保护** + Graceful Shutdown\n- 🪵 可接入自定义 Logger\n\n---\n\n⭐ 如果对你有帮助，欢迎 Star / Fork / 提 Issue！\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10427",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10427"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】Coday：用日均/次均成本看清每件物品的真实成本",
+          "url": "https://coday.cc",
+          "author": "saviourdog",
+          "authorUrl": "https://github.com/saviourdog",
+          "publishedAt": "2026-06-24T00:48:00Z",
+          "summary": "项目名称：Coday 官网： 平台：iOS / Android / HarmonyOS 下载： iOS： Android APK： HarmonyOS： Coday 是一款多平台物品真实成本追踪工具。它不记录每一笔流水，而是围绕「物品」本身记录购买价格、购买日期、使用次数、分类、状态与售出信息，自动计算日均成本 / 次均成本，帮助用户判断一件东西是否真的被用起来、是否值得。 如果你经常购买数码、家居、穿搭、运动、露营等长期使用物品，Coday 更像是一个「买完之后的成本仪表盘」：东西用了多久、平均每天多少钱、每次使用多少钱、离目标还差多少，都能持续看见。 多彩桌面小组件：信息一目了然 可以把日均成本、目标进度、总金额等信息放到桌面上，不用打开 App 也能看到物品的真实使用成本。Coday 也支持目标日均、目标日期、使用次数目标和定时提醒，适合提醒自己持续使用已经买下的物品。 <img width=\"760\" height=\"1382\" alt=\"多彩桌面小组件 / 信息一目了然\" src=\" / AI 智能配色卡片：每件物品都独一无二 物品卡片会根据内容生成更直观的视觉呈现，浏览列表时能快速区分不同物品，也比单纯的表格记录更有持续维护的动力。 <img width=\"760\" height=\"1382\" alt=\"AI 智能配色卡片 / 每件物品都独一无二\" src=\" / 8000+ 3D 图标：涵盖生活中的所有物品 内置 8000+ 3D 图标，覆盖数码、家居、穿搭、日常用品等常见物品。物品数量、8000+ 3D 图标、基础记录、成本计算、分类筛选都不限制；只有云同步和极少数高级小组件配置需要会员。 <img width=\"760\" height=\"1382\" alt=\"8000+ 3D 图标 / 涵盖生活中的所有物品\" src=\" / 其他特点： 日均成本 / 次均成本自动计算，把买完之后的真实成本可视化； 支持 iOS / Android / HarmonyOS 三端互通，开启云同步后多设备数据保持一致； 支持购买时间、使用次数、售出状态、分类筛选等维度，适合长期追踪一件物品是否真的「买得值」。",
+          "content": "项目名称：Coday\n\n官网：https://coday.cc\n\n平台：iOS / Android / HarmonyOS\n\n下载：\n- iOS：https://apps.apple.com/cn/app/id6740018271\n- Android APK：https://r2.coday.cc/coday.apk\n- HarmonyOS：https://appgallery.huawei.com/app/detail?id=com.cxm.codayapp\n\nCoday 是一款多平台物品真实成本追踪工具。它不记录每一笔流水，而是围绕「物品」本身记录购买价格、购买日期、使用次数、分类、状态与售出信息，自动计算日均成本 / 次均成本，帮助用户判断一件东西是否真的被用起来、是否值得。\n\n如果你经常购买数码、家居、穿搭、运动、露营等长期使用物品，Coday 更像是一个「买完之后的成本仪表盘」：东西用了多久、平均每天多少钱、每次使用多少钱、离目标还差多少，都能持续看见。\n\n### 多彩桌面小组件：信息一目了然\n\n可以把日均成本、目标进度、总金额等信息放到桌面上，不用打开 App 也能看到物品的真实使用成本。Coday 也支持目标日均、目标日期、使用次数目标和定时提醒，适合提醒自己持续使用已经买下的物品。\n\n<img width=\"760\" height=\"1382\" alt=\"多彩桌面小组件 / 信息一目了然\" src=\"https://github.com/user-attachments/assets/dee7728c-33fa-419a-8017-43b7420e17d6\" />\n\n### AI 智能配色卡片：每件物品都独一无二\n\n物品卡片会根据内容生成更直观的视觉呈现，浏览列表时能快速区分不同物品，也比单纯的表格记录更有持续维护的动力。\n\n<img width=\"760\" height=\"1382\" alt=\"AI 智能配色卡片 / 每件物品都独一无二\" src=\"https://github.com/user-attachments/assets/ecc2ac06-6842-48b0-8386-a2c22feb7b0a\" />\n\n### 8000+ 3D 图标：涵盖生活中的所有物品\n\n内置 8000+ 3D 图标，覆盖数码、家居、穿搭、日常用品等常见物品。物品数量、8000+ 3D 图标、基础记录、成本计算、分类筛选都不限制；只有云同步和极少数高级小组件配置需要会员。\n\n<img width=\"760\" height=\"1382\" alt=\"8000+ 3D 图标 / 涵盖生活中的所有物品\" src=\"https://github.com/user-attachments/assets/63fa1cd6-f0ac-4f9d-84b4-134b9f069fb8\" />\n\n其他特点：\n\n- 日均成本 / 次均成本自动计算，把买完之后的真实成本可视化；\n- 支持 iOS / Android / HarmonyOS 三端互通，开启云同步后多设备数据保持一致；\n- 支持购买时间、使用次数、售出状态、分类筛选等维度，适合长期追踪一件物品是否真的「买得值」。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10428",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10428",
+          "siteLogo": "https://coday.cc/favicon.ico"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】File Preview Web",
+          "url": "https://github.com/extrastu/file-preview-web",
+          "author": "extrastu",
+          "authorUrl": "https://github.com/extrastu",
+          "publishedAt": "2026-06-24T01:54:12Z",
+          "summary": "File Preview Web A fast, privacyfirst online file previewer that runs entirely in your browser. Drag a file into the window and instantly preview mind maps, documents, spreadsheets, slides, code, images, audio, and video — no upload, no signup, no server. All parsing happens locally on your device. Your files never leave the browser. 🔗 Repository: github.com/extrastu/filepreviewweb 🔗 URL: Preview <img width=\"3706\" height=\"2154\" alt=\"Image\" src=\" / <img width=\"3706\" height=\"2154\" alt=\"Image\" src=\" / <img width=\"3706\" height=\"2154\" alt=\"Image\" src=\" / Features Drag & drop preview — drop one or more files and parse them in parallel 60+ formats across many categories 100% clientside — files are never uploaded; parsing runs fully offline PWA — installable to your home screen / desktop with offline support Internationalized — English (default) and Chinese, switchable at runtime Builtin examples — try the app instantly with sample documents Supported formats | Category | Formats | | | | | Mind maps | xmind · mm · opml | | Documents | pdf · doc/docx · md · txt · rtf| | Slides | ppt · pptx | | Spreadsheets| xls/xlsx · csv · tsv · ods | | Code | js/ts · py · json · yaml · sql …| | Media | png · svg · webp · mp3 · mp4 … | Legacy binary .doc and .ppt are not parsable inbrowser — convert to .docx / .pptx first. Tech stack Next.js (App Router) + React + TypeScript Tailwind CSS + shadcn/ui for styling and components pdfjsdist (PDF), mammoth (Word), xlsx (spreadsheets), jszip (pptx/xmind) Custom parsers for FreeMind / XMind / OPML mind maps Getting Started Install dependencies and run the development server: bash pnpm install pnpm dev Open to see the app. Other scripts bash pnpm build production build pnpm start run the production server pnpm lint lint the project How it works Files are read with the browser File API and dispatched to a formatspecific parser in lib/parsefile.ts. Each parser returns a normalized result that the matching viewer renders. Because everything runs clientside, there is no backend and no network transfer of file contents. Contributing Issues and pull requests are welcome on GitHub. To add a new format, extend EXTMAP in lib/previewtypes.ts, add a parser branch in lib/parsefile.ts, and create a viewer component.",
+          "content": "# File Preview Web\n\nA fast, privacy-first online file previewer that runs **entirely in your browser**. Drag a file into the window and instantly preview mind maps, documents, spreadsheets, slides, code, images, audio, and video — no upload, no sign-up, no server.\n\n> All parsing happens locally on your device. Your files never leave the browser.\n\n🔗 **Repository:** [github.com/extrastu/file-preview-web](https://github.com/extrastu/file-preview-web)\n🔗 **URL:** [https://fileline.vercel.app/](https://fileline.vercel.app/)\n\n## Preview\n\n<img width=\"3706\" height=\"2154\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dfeb7df1-97e2-4a99-84ba-74908b6e9e98\" />\n\n<img width=\"3706\" height=\"2154\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/42bef0e8-a4b3-4a73-aaf8-635a9048170d\" />\n\n<img width=\"3706\" height=\"2154\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a31afe57-462a-4fea-ba57-f5e596044767\" />\n\n## Features\n\n- **Drag & drop preview** — drop one or more files and parse them in parallel\n- **60+ formats** across many categories\n- **100% client-side** — files are never uploaded; parsing runs fully offline\n- **PWA** — installable to your home screen / desktop with offline support\n- **Internationalized** — English (default) and Chinese, switchable at runtime\n- **Built-in examples** — try the app instantly with sample documents\n\n## Supported formats\n\n| Category    | Formats                                    |\n| ----------- | ------------------------------------------ |\n| Mind maps   | `xmind` · `mm` · `opml`                    |\n| Documents   | `pdf` · `doc`/`docx` · `md` · `txt` · `rtf`|\n| Slides      | `ppt` · `pptx`                             |\n| Spreadsheets| `xls`/`xlsx` · `csv` · `tsv` · `ods`       |\n| Code        | `js`/`ts` · `py` · `json` · `yaml` · `sql` …|\n| Media       | `png` · `svg` · `webp` · `mp3` · `mp4` …   |\n\n> Legacy binary `.doc` and `.ppt` are not parsable in-browser — convert to `.docx` / `.pptx` first.\n\n## Tech stack\n\n- **Next.js (App Router)** + **React** + **TypeScript**\n- **Tailwind CSS** + **shadcn/ui** for styling and components\n- **pdfjs-dist** (PDF), **mammoth** (Word), **xlsx** (spreadsheets), **jszip** (pptx/xmind)\n- Custom parsers for FreeMind / XMind / OPML mind maps\n\n## Getting Started\n\nInstall dependencies and run the development server:\n\n```bash\npnpm install\npnpm dev\n```\n\nOpen [http://localhost:3000](http://localhost:3000) to see the app.\n\n### Other scripts\n\n```bash\npnpm build   # production build\npnpm start   # run the production server\npnpm lint    # lint the project\n```\n\n## How it works\n\nFiles are read with the browser `File` API and dispatched to a format-specific parser in `lib/parse-file.ts`. Each parser returns a normalized result that the matching viewer renders. Because everything runs client-side, there is no backend and no network transfer of file contents.\n\n## Contributing\n\nIssues and pull requests are welcome on [GitHub](https://github.com/extrastu/file-preview-web). To add a new format, extend `EXT_MAP` in `lib/preview-types.ts`, add a parser branch in `lib/parse-file.ts`, and create a viewer component.\n\n\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10429",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10429"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】知返：AI 写完代码你真的懂了吗？",
+          "url": "https://github.com/AGI-is-going-to-arrive/ahadiff",
+          "author": "AGI-is-going-to-arrive",
+          "authorUrl": "https://github.com/AGI-is-going-to-arrive",
+          "publishedAt": "2026-06-24T02:06:57Z",
+          "summary": "项目地址： PyPI： 项目主页： 协议 / 版本：MIT / v1.3.7 它解决了什么问题 AI 写代码虽然快，一次性帮你更新修改了很多文件，代码能正常运行，你随便看了几眼就继续了。 但是这样真的对吗？隔两天回头看，说不清每处改动的逻辑，其中AI的改动为什么这样改，你一问三不知。 尤其是对于实习生、刚毕业的应届生，技术能力一般，想学习进步的，真正学到其中的知识点。一步步的构建自己的基础，而不只是无脑依赖AI。 知返读你的一次代码改动，生成一份学习笔记。学习笔记中每条结论对应到到具体文件的具体行号，AI 产生的幻觉会被标成 contradicted，和有据可查的结论区分开。按需选择精简/提示/完整版学习（主要是详细程度的区分） 这三种学习笔记之后，使用提供的选择题测验和 FSRS 间隔复习卡片，进一步巩固此次改动对应知识点，同时复习之前不牢固的知识点。 bash pip install ahadiff ahadiff learn HEAD~1..HEAD 学最近一次提交的改动 ahadiff serve 打开本地 WebUI 核心特点 笔记带证据：每条结论对应到 file:line，五种验证状态区分事实与幻觉，避免AI幻觉问题 学习闭环：每次改动生成课程 → 选择题测验 → FSRS 间隔复习（避免改动的知识点遗忘），可导出 Anki 卡片接入自己的知识软件 BYOK：自带 API key，支持 OpenAI / Claude / Gemini / DeepSeek / Azure 等 8 种格式 10 种来源：支持 git commit，暂存区、补丁文件、目录对比等十种来源 概念图谱：多次学习后，重复出现的概念自动连成知识网络 还可扩展玩法，不一定局限于写的代码改动，能够进行各种知识点学习测验复习一条龙等 界面截图 !课程页：每条结论绑定具体代码行 <img width=\"3288\" height=\"1924\" alt=\"Image\" src=\" / <img width=\"2512\" height=\"1928\" alt=\"Image\" src=\" / <img width=\"2388\" height=\"1876\" alt=\"Image\" src=\" / <img width=\"2674\" height=\"1904\" alt=\"Image\" src=\" /",
+          "content": "**项目地址**：https://github.com/AGI-is-going-to-arrive/ahadiff\n**PyPI**：https://pypi.org/project/ahadiff/\n**项目主页**：https://agi-is-going-to-arrive.github.io/ahadiff/\n**协议 / 版本**：MIT / v1.3.7\n\n### 它解决了什么问题\n\nAI 写代码虽然快，一次性帮你更新修改了很多文件，代码能正常运行，你随便看了几眼就继续了。\n但是这样真的对吗？隔两天回头看，说不清每处改动的逻辑，其中AI的改动为什么这样改，你一问三不知。\n**尤其是对于实习生、刚毕业的应届生，技术能力一般，想学习进步的，真正学到其中的知识点。一步步的构建自己的基础，而不只是无脑依赖AI。**\n\n知返读你的一次代码改动，生成一份学习笔记。学习笔记中每条结论对应到到具体文件的具体行号，AI 产生的幻觉会被标成 `contradicted`，和有据可查的结论区分开。按需选择精简/提示/完整版学习（**主要是详细程度的区分**） 这三种学习笔记之后，使用提供的**选择题测验和 FSRS 间隔复习卡片，进一步巩固此次改动对应知识点，同时复习之前不牢固的知识点。**\n\n```bash\npip install ahadiff\nahadiff learn HEAD~1..HEAD   # 学最近一次提交的改动\nahadiff serve                # 打开本地 WebUI\n```\n\n### 核心特点\n\n- **笔记带证据**：每条结论对应到 file:line，五种验证状态区分事实与幻觉，避免AI幻觉问题\n- **学习闭环**：每次改动生成课程 → 选择题测验 → FSRS 间隔复习（**避免改动的知识点遗忘**），可导出 Anki 卡片接入自己的知识软件\n- **BYOK**：自带 API key，支持 OpenAI / Claude / Gemini / DeepSeek / Azure 等 8 种格式\n- **10 种来源**：支持 git commit，暂存区、补丁文件、目录对比等十种来源\n- **概念图谱**：多次学习后，**重复出现的概念自动连成知识网络**\n- 还可扩展玩法，不一定局限于写的代码改动，能够进行各种知识点学习测验复习一条龙等\n\n### 界面截图\n\n![课程页：每条结论绑定具体代码行](https://agi-is-going-to-arrive.github.io/ahadiff/video/public/screenshots/zh/zh-lesson.png)\n\n<img width=\"3288\" height=\"1924\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cce07650-df2c-460a-bb24-8599ff208a5c\" />\n\n<img width=\"2512\" height=\"1928\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2694b589-e9a3-4a2a-87c4-43fb1c932d6c\" />\n\n<img width=\"2388\" height=\"1876\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/508d1b75-e213-4cc4-aa72-ed7d15805362\" />\n\n<img width=\"2674\" height=\"1904\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/82c661df-080d-44e4-87db-148a0a3388a0\" />",
+          "metrics": {
+            "comments": 2
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10430",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10430"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】Inkfox AI：免注册无限生成的一站式 AI 图像 / 视频创作台",
+          "url": "https://inkfox.app/",
+          "author": "Ninglz",
+          "authorUrl": "https://github.com/Ninglz",
+          "publishedAt": "2026-06-24T02:44:49Z",
+          "summary": "项目网址：Inkfox AI 看了刘小排大佬那篇 Raphael 的帖子， \"完全免费、无限制、无需注册\" 又是卖给老外赚美金，那套打法看得我手痒。正好我也想验证一件事： 一个独立开发者，认认真真做个 AI 产品，到底能不能赚到钱？ 与其空想，不如下场。于是有了 Inkfox AI 它是什么 Inkfox AI 是一个免注册、进去就能用的 AI 图像/视频创作台，主要功能： 文生图，可切换多个模型：Nano Banana 2.0、GPT Image 2.0、Flux、Seedream，按需要的画风换引擎； 参考图改图 / 局部重绘：上传一张图，只改其中一部分，其余保持不变； 照片转视频、文生视频：把静图动起来，或直接用提示词生成短视频； 一键虚拟试戴：墨镜、帽子、眼镜、项链、耳饰、手表、美瞳、衣服，传一张正脸照就能预览，不用写提示词； 生成结果按 prompt 归到一条时间线，不再满文件夹乱翻。 送免费额度、不登录也能生成；登录后去掉导出水印、放开更高额度。 <img width=\"1200\" height=\"630\" alt=\"Image\" src=\" / <img width=\"1470\" height=\"686\" alt=\"Image\" src=\" /",
+          "content": "项目网址：[Inkfox AI](https://inkfox.app/)\n\n看了刘小排大佬那篇 Raphael 的帖子， \"完全免费、无限制、无需注册\" 又是卖给老外赚美金，那套打法看得我手痒。正好我也想验证一件事：\n\n一个独立开发者，认认真真做个 AI 产品，到底能不能赚到钱？\n\n与其空想，不如下场。于是有了 Inkfox AI\n\n它是什么\nInkfox AI 是一个免注册、进去就能用的 AI 图像/视频创作台，主要功能：\n\n文生图，可切换多个模型：Nano Banana 2.0、GPT Image 2.0、Flux、Seedream，按需要的画风换引擎；\n参考图改图 / 局部重绘：上传一张图，只改其中一部分，其余保持不变；\n照片转视频、文生视频：把静图动起来，或直接用提示词生成短视频；\n一键虚拟试戴：墨镜、帽子、眼镜、项链、耳饰、手表、美瞳、衣服，传一张正脸照就能预览，不用写提示词；\n生成结果按 prompt 归到一条时间线，不再满文件夹乱翻。\n送免费额度、不登录也能生成；登录后去掉导出水印、放开更高额度。\n\n<img width=\"1200\" height=\"630\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/51df0e49-d3ad-4531-a44b-a556bf50f819\" />\n\n<img width=\"1470\" height=\"686\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ad178258-aed1-4842-8e30-18ebf9cbb51c\" />\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10431",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10431",
+          "siteLogo": "https://inkfox.app/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】ImageToVideoAI：聚合 14 个视频模型的图生视频平台",
+          "url": "https://imagetovideoai.net/",
+          "author": "Ninglz",
+          "authorUrl": "https://github.com/Ninglz",
+          "publishedAt": "2026-06-24T02:52:58Z",
+          "summary": "项目网址：imagetovideoai.net 现在好用的视频生成模型很多，但散在各家平台，来回切换很麻烦。ImageToVideoAI 把它们收进一个工作室，专注「图片 → 视频」这件事。 主要功能： 图生视频 / 文生视频 / 视频改视频三条链路； 聚合 14 个主流视频模型：Seedance 2.0、Kling 3.0、Veo 3.1、Wan 2.7 等，同一个界面里挑选多个模型一键批量生成； 附带图片编辑、放大、抠图（去背景）等配套工具； 批量处理 + 多任务并发，适合一次跑多条； 每月赠送免费积分，适合需要把产品图、人像、素材快速变成短视频的场景。同样是我在做的独立项目，欢迎反馈哪个模型/功能还缺。 <img width=\"1200\" height=\"630\" alt=\"Image\" src=\" / <img width=\"1465\" height=\"708\" alt=\"Image\" src=\" /",
+          "content": "项目网址：[imagetovideoai.net](https://imagetovideoai.net/)\n\n现在好用的视频生成模型很多，但散在各家平台，来回切换很麻烦。[ImageToVideoAI](https://imagetovideoai.net/) 把它们收进一个工作室，专注「图片 → 视频」这件事。\n\n主要功能：\n\n图生视频 / 文生视频 / 视频改视频三条链路；\n聚合 14 个主流视频模型：Seedance 2.0、Kling 3.0、Veo 3.1、Wan 2.7 等，同一个界面里挑选多个模型一键批量生成；\n附带**图片编辑、放大、抠图（去背景）**等配套工具；\n批量处理 + 多任务并发，适合一次跑多条；\n每月赠送免费积分，适合需要把产品图、人像、素材快速变成短视频的场景。同样是我在做的独立项目，欢迎反馈哪个模型/功能还缺。\n\n<img width=\"1200\" height=\"630\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f03d1e43-cf2e-459a-84c4-aef758c755b1\" />\n\n<img width=\"1465\" height=\"708\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/72650fbe-41e2-4004-8b41-c5d126148f01\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10432",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10432",
+          "siteLogo": "https://imagetovideoai.net/logo.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "〖工具自荐〗Detector de IA：西班牙语文本和文档 AI 检测工具",
+          "url": "https://detector-de-ia.net/",
+          "author": "ethanjamescolez",
+          "authorUrl": "https://github.com/ethanjamescolez",
+          "publishedAt": "2026-06-24T03:54:31Z",
+          "summary": "名称 Detector de IA 链接 一句话简介 一个西语优先的网页工具，可以粘贴文本或上传文档，查看 AI 生成可能性、证据强度和逐句高亮信号。 详细介绍 Detector de IA 面向需要复核西语文本的学生、教师、编辑和内容团队。它不是只给一个百分比，而是把整体判断、风险、证据强度、分析说明和逐句高亮放在同一份报告里，方便使用者回到原文继续检查。 当前支持两种输入方式： 粘贴 300 到 100,000 个字符的文本。 上传小于 12 MB 的 PDF、DOCX、TXT、MD、Markdown 或纯文本文件。 PDF 和 DOCX 会先在浏览器中提取文字，TXT/MD 则按文本读取。检测完成后，可以复制摘要，也可以导出适合打印的报告。 我觉得它对周刊读者可能有用的点在于：它把“AI 检测”做成了一个可复核的文档工作流，而不是一个自动裁决按钮。对于需要处理西语材料、课程文本、编辑稿件或跨语言内容审核的人，逐句信号比单一分数更容易进入后续讨论。 使用前说明 AI 文本检测属于概率信号，可能误判，也可能漏判。这个工具适合做第一轮定位和复核辅助，不适合单独作为学术、招聘、法律、纪律处分等高影响决定的依据。",
+          "content": "## 名称\n\nDetector de IA\n\n## 链接\n\nhttps://detector-de-ia.net/\n\n## 一句话简介\n\n一个西语优先的网页工具，可以粘贴文本或上传文档，查看 AI 生成可能性、证据强度和逐句高亮信号。\n\n## 详细介绍\n\nDetector de IA 面向需要复核西语文本的学生、教师、编辑和内容团队。它不是只给一个百分比，而是把整体判断、风险、证据强度、分析说明和逐句高亮放在同一份报告里，方便使用者回到原文继续检查。\n\n当前支持两种输入方式：\n\n- 粘贴 300 到 100,000 个字符的文本。\n- 上传小于 12 MB 的 PDF、DOCX、TXT、MD、Markdown 或纯文本文件。\n\nPDF 和 DOCX 会先在浏览器中提取文字，TXT/MD 则按文本读取。检测完成后，可以复制摘要，也可以导出适合打印的报告。\n\n我觉得它对周刊读者可能有用的点在于：它把“AI 检测”做成了一个可复核的文档工作流，而不是一个自动裁决按钮。对于需要处理西语材料、课程文本、编辑稿件或跨语言内容审核的人，逐句信号比单一分数更容易进入后续讨论。\n\n## 使用前说明\n\nAI 文本检测属于概率信号，可能误判，也可能漏判。这个工具适合做第一轮定位和复核辅助，不适合单独作为学术、招聘、法律、纪律处分等高影响决定的依据。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10433",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10433",
+          "siteLogo": "https://detector-de-ia.net/apple-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】KidoX：macOS Launchpad 的替代 App",
+          "url": "https://github.com/user-attachments/assets/974186fb-d873-48cf-ab83-27399fe3a4ba\"",
+          "author": "defcc",
+          "authorUrl": "https://github.com/defcc",
+          "publishedAt": "2026-06-24T04:35:51Z",
+          "summary": "KidoX，帮你找回旧版 Launchpad 的使用感觉。 macOS 26 之后，Launchpad 被新的 Apps 入口取代了，它不可拖动、窗口大小也不能调整，也不支持 folder 整理应用。所以我做了 KidoX。 KidoX 以全屏应用网格作为主要界面，而不是一个固定大小的小窗口；它支持文件夹，让应用可以按自己的习惯整理；它尽量保持轻量，不去抢 Spotlight、Raycast 或 Alfred 的位置；它更关注视觉浏览和空间记忆，而不是命令输入。 特点：占用资源少，动画流畅。 <img width=\"3024\" height=\"1964\" alt=\"Image\" src=\" / 目前第一个版本已经基本可用。 网站： 源码： 源码是公开的，你可以自己 build 使用，完全免费。 如果不想自己构建，也可以直接从网站下载已经打包好的安装包。 欢迎大家试用，也欢迎提 issue / PR 。",
+          "content": "**KidoX，帮你找回旧版 Launchpad 的使用感觉。**\n\nmacOS 26 之后，Launchpad 被新的 Apps 入口取代了，它不可拖动、窗口大小也不能调整，也不支持 folder 整理应用。所以我做了 KidoX。\n\nKidoX 以全屏应用网格作为主要界面，而不是一个固定大小的小窗口；它支持文件夹，让应用可以按自己的习惯整理；它尽量保持轻量，不去抢 Spotlight、Raycast 或 Alfred 的位置；它更关注视觉浏览和空间记忆，而不是命令输入。\n\n特点：占用资源少，动画流畅。\n\n<img width=\"3024\" height=\"1964\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/974186fb-d873-48cf-ab83-27399fe3a4ba\" />\n\n目前第一个版本已经基本可用。\n\n网站： https://kidox.app/\n\n源码： https://github.com/defcc/kidox.app\n\n源码是公开的，你可以自己 build 使用，完全免费。 如果不想自己构建，也可以直接从网站下载已经打包好的安装包。\n\n欢迎大家试用，也欢迎提 issue / PR 。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10434",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10434"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Awesome AI Gateway:100+ AI 网关的可复现成本基准 + 评分卡",
+          "url": "https://cuihuan.github.io/awesome-ai-gateway/",
+          "author": "cuihuan",
+          "authorUrl": "https://github.com/cuihuan",
+          "publishedAt": "2026-06-24T09:17:22Z",
+          "summary": "我做这个项目,是因为有一天在 AI 写代码上烧了 $788——一个旗舰模型吃掉了 78%,只因为我把所有请求都默认打给了最贵的那个。同一份 10 万 token 的报告,DeepSeek 上 $0.03,GPT5.5 上 $3.01,差 106 倍;而你用哪个网关,决定了你能多容易地吃到这个价差。 于是我把整个 AI 网关 / 中转生态摸了一遍(100+ 个,分 9 类),做成一个尽量\"反厂商软文\"的清单: 每个成本数字都由一个带单测的脚本从公开定价算出来——可复现,而不是嘴说。 一张 4 维评分卡(合规 / 价格 / 安全 / 稳定),如实披露 CVE。 一个基于证据的\"避雷观察名单\":点名被抓到偷换 / 降智模型的灰产中转,并附可运行的 canary 对比脚本,不靠传闻。 刚加了个交互式成本计算器:输入你的 token 组合,实时看 16 个模型的成本和价差。 CC0 协议、无返利链接、中英双语、star 数每天 CI 自动刷新。 在线站点: 成本计算器: 仓库:",
+          "content": "我做这个项目,是因为有一天在 AI 写代码上烧了 $788——一个旗舰模型吃掉了 78%,只因为我把所有请求都默认打给了最贵的那个。同一份 10 万 token 的报告,DeepSeek 上 $0.03,GPT-5.5 上 $3.01,差 106 倍;而你用哪个网关,决定了你能多容易地吃到这个价差。\n\n于是我把整个 AI 网关 / 中转生态摸了一遍(100+ 个,分 9 类),做成一个尽量\"反厂商软文\"的清单:\n\n- 每个成本数字都由一个**带单测的脚本从公开定价算出来**——可复现,而不是嘴说。\n- 一张 **4 维评分卡**(合规 / 价格 / 安全 / 稳定),如实披露 CVE。\n- 一个**基于证据的\"避雷观察名单\"**:点名被抓到偷换 / 降智模型的灰产中转,并附**可运行的 canary 对比脚本**,不靠传闻。\n- 刚加了个**交互式成本计算器**:输入你的 token 组合,实时看 16 个模型的成本和价差。\n- CC0 协议、无返利链接、中英双语、star 数每天 CI 自动刷新。\n\n在线站点:https://cuihuan.github.io/awesome-ai-gateway/\n成本计算器:https://cuihuan.github.io/awesome-ai-gateway/cost-calculator.html\n仓库:https://github.com/cuihuan/awesome-ai-gateway\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10435",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10435"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】Skills Manager：统一管理 AI 编程助手 Skills 的桌面应用",
+          "url": "https://github.com/user-attachments/assets/cff44570-6af1-4960-9ccd-10834aa26923\"",
+          "author": "jiweiyeah",
+          "authorUrl": "https://github.com/jiweiyeah",
+          "publishedAt": "2026-06-24T11:23:32Z",
+          "summary": "现在 AI 编程助手越来越多,Claude Code、Codex、Opencode、Cursor、Windsurf……每个工具都有自己的 Skills/Prompts 配置目录和格式。开发者要在不同工具间重复维护同一份技能,改一处就要同步好几处,既容易遗漏,又难做版本管理。 于是我做了 Skills Manager,想把这些碎片收拢到一个中心化的枢纽里。 <img width=\"2808\" height=\"1784\" alt=\"Image\" src=\" / 核心思路 通过软链接同步机制,Skills 只存一份在统一目录,再通过 symlink 分发给各个 AI 工具。改一处,所有工具即时生效,零文件复制。不用删除源文件,也能针对单个工具启用/禁用某个 Skill。 主要特点 🎯 统一管理:集中管理所有 AI Skills,一处编写、多处生效 🔄 智能同步:自动 symlink 管理,工具始终使用最新版本,无需手动复制 🎛️ 细粒度控制:针对特定工具启用/禁用 Skill,不动源文件 🔌 多工具支持:开箱即用支持 Claude Code、Codex、Opencode,也支持自定义工具路径与图标 ⚡ 轻量快速:Rust + Tauri 2.0 内核,启动秒开,资源占用低 🛡️ 跨平台:macOS / Windows / Linux 原生支持 🧩 内置市场:一键安装社区贡献的 Skills ✏️ Monaco 编辑器:应用内直接编辑 Skill 内容,无需切换 IDE 技术栈 Tauri 2.0(Rust)+ React 19 + TypeScript + Tailwind CSS v4 + Radix UI,最新版本 2.1.2 采用了 Raycast 风格的 UI 设计语言。 下载 前往 Releases 页面 下载对应平台的安装包: | 系统 | 安装包 | ||| | macOS | .dmg(通用架构) | | Windows | .msi / .exe | | Linux | .deb / .AppImage / .rpm | 项目地址: 适合经常同时使用多个 AI 编程助手、或者积累了一批自定义 Skills/Prompts 想统一管理的开发者。欢迎大家试用、提 issue 和 Star。",
+          "content": "现在 AI 编程助手越来越多,Claude Code、Codex、Opencode、Cursor、Windsurf……每个工具都有自己的 Skills/Prompts 配置目录和格式。开发者要在不同工具间重复维护同一份技能,改一处就要同步好几处,既容易遗漏,又难做版本管理。\n\n于是我做了 **Skills Manager**,想把这些碎片收拢到一个中心化的枢纽里。\n\n<img width=\"2808\" height=\"1784\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cff44570-6af1-4960-9ccd-10834aa26923\" />\n\n## 核心思路\n\n通过**软链接同步机制**,Skills 只存一份在统一目录,再通过 symlink 分发给各个 AI 工具。改一处,所有工具即时生效,零文件复制。不用删除源文件,也能针对单个工具启用/禁用某个 Skill。\n\n## 主要特点\n\n- **🎯 统一管理**:集中管理所有 AI Skills,一处编写、多处生效\n- **🔄 智能同步**:自动 symlink 管理,工具始终使用最新版本,无需手动复制\n- **🎛️ 细粒度控制**:针对特定工具启用/禁用 Skill,不动源文件\n- **🔌 多工具支持**:开箱即用支持 Claude Code、Codex、Opencode,也支持自定义工具路径与图标\n- **⚡ 轻量快速**:Rust + Tauri 2.0 内核,启动秒开,资源占用低\n- **🛡️ 跨平台**:macOS / Windows / Linux 原生支持\n- **🧩 内置市场**:一键安装社区贡献的 Skills\n- **✏️ Monaco 编辑器**:应用内直接编辑 Skill 内容,无需切换 IDE\n\n## 技术栈\n\nTauri 2.0(Rust)+ React 19 + TypeScript + Tailwind CSS v4 + Radix UI,最新版本 2.1.2 采用了 Raycast 风格的 UI 设计语言。\n\n## 下载\n\n前往 [Releases 页面](https://github.com/jiweiyeah/Skills-Manager/releases) 下载对应平台的安装包:\n\n| 系统 | 安装包 |\n|---|---|\n| macOS | `.dmg`(通用架构) |\n| Windows | `.msi` / `.exe` |\n| Linux | `.deb` / `.AppImage` / `.rpm` |\n\n项目地址:https://github.com/jiweiyeah/Skills-Manager\n\n适合经常同时使用多个 AI 编程助手、或者积累了一批自定义 Skills/Prompts 想统一管理的开发者。欢迎大家试用、提 issue 和 Star。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "10436",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10436"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "vibecafe",
+      "sourceName": "VibeCafé 作品",
+      "items": [
+        {
+          "sourceId": "vibecafe",
+          "title": "Omia · Open Anything — AI 时代的万能阅览器",
+          "url": "https://vibecafe.ai/products/cmqryug7x00020ckvr24l3wfr",
+          "author": "小耳",
+          "authorUrl": "https://vibecafe.ai/u/xiaoer_zhan",
+          "publishedAt": "2026-06-24T11:04:25.245Z",
+          "summary": "Omia——AI 时代的万能阅览器。一个窗口，看 155+ 种格式、就地编辑、顺手转换。纯本地运行，文件不出本机。By 小耳。",
+          "content": "Omia——AI 时代的万能阅览器。一个窗口，看 155+ 种格式、就地编辑、顺手转换。纯本地运行，文件不出本机。By 小耳。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqryug7x00020ckvr24l3wfr",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298885674-86lbsm.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298631477-w2eqmd.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298885674-86lbsm.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897665-riluli.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897675-wcik42.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897317-u32k8t.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897688-n4z400.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrycvoe00000bkmsh738av9/1782298897929-h6yf0r.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Tutti — One sound, every speaker.",
+          "url": "https://vibecafe.ai/products/cmqrwg1nn000o0bj917v3qbf4",
+          "author": "BarryBarrywu",
+          "authorUrl": "https://vibecafe.ai/u/barrybarrywu",
+          "publishedAt": "2026-06-24T09:57:13.955Z",
+          "summary": "A macOS menu bar utility that plays the same sound through all your speakers at once.",
+          "content": "A macOS menu bar utility that plays the same sound through all your speakers at once.",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqrwg1nn000o0bj917v3qbf4",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/1782296101033-0s8myg.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/mqrwcw9ne5q3-zz3jmW17LVza7qxLf6D5J7kwekCXOf.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/1782296101033-0s8myg.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrw4gb200000bhro86ep6ax/1782296128068-lz1kwt.webp"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "BRAIN.md — The Open Project Brain Standard",
+          "url": "https://vibecafe.ai/products/cmqrw2jqv00000bktcn6u1gpx",
+          "author": "Sunny",
+          "authorUrl": "https://vibecafe.ai/u/sunny",
+          "publishedAt": "2026-06-24T09:46:44.217Z",
+          "summary": "A persistent memory layer for your projects. An open, agent-agnostic standard for capturing a projec",
+          "content": "A persistent memory layer for your projects. An open, agent-agnostic standard for capturing a projec",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqrw2jqv00000bktcn6u1gpx",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrvnpevxria-hgy46m89w0MGuJ8MZgwUUMCTB5EbSd.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293959628-ah4oxn.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrvnpevxria-hgy46m89w0MGuJ8MZgwUUMCTB5EbSd.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "MindMux.ai — The project brain for builders and agents",
+          "url": "https://vibecafe.ai/products/cmqrvf4u600000bksl953i4de",
+          "author": "Sunny",
+          "authorUrl": "https://vibecafe.ai/u/sunny",
+          "publishedAt": "2026-06-24T09:28:31.809Z",
+          "summary": "MindMux is a local-first AI workbench with persistent project context.",
+          "content": "MindMux is a local-first AI workbench with persistent project context.",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqrvf4u600000bksl953i4de",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrv6otlsclp-jhXyctMIscpttEwNaGe028XNAG3cAq.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782292942336-5bcazx.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/mqrv6otlsclp-jhXyctMIscpttEwNaGe028XNAG3cAq.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029457-wty0b3.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029438-lblx4b.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029487-gtrek3.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cml81pypf0000l804si9nfjk5/1782293029435-e6l7rj.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "映像 YingXiang",
+          "url": "https://vibecafe.ai/products/cmqrtnjcj00000bje21efgila",
+          "author": "Jesn",
+          "authorUrl": "https://vibecafe.ai/u/jesn",
+          "publishedAt": "2026-06-24T08:39:04.629Z",
+          "summary": "一个面向创作者的 AI 图片生成与改图工作台，把文字生图、参考图改图、作品管理和下载收藏放在同一个产品里。",
+          "content": "一个面向创作者的 AI 图片生成与改图工作台，把文字生图、参考图改图、作品管理和下载收藏放在同一个产品里。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqrtnjcj00000bje21efgila",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrtd2ht00030bkqutt9movr/mqrtkov2ero9-SLZ4qjC7ALLyizOzjEShjSWaQG3v2K.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrtd2ht00030bkqutt9movr/mqrtkov4rxc5-uFI5qvZlSrLJ3peNxuftW0EmdIgyr6.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrtd2ht00030bkqutt9movr/mqrtkov2ero9-SLZ4qjC7ALLyizOzjEShjSWaQG3v2K.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "WordHub - Comprehensive English Language Learning Platform",
+          "url": "https://vibecafe.ai/products/cmqrsw3t600000bgkt4u6h5jy",
+          "author": "perry",
+          "authorUrl": "https://vibecafe.ai/u/leiping",
+          "publishedAt": "2026-06-24T08:17:44.779Z",
+          "summary": "Save words as you read, remember them with context-rich review, and explore trusted dictionary, Word",
+          "content": "Save words as you read, remember them with context-rich review, and explore trusted dictionary, Word",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqrsw3t600000bgkt4u6h5jy",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/1782288809795-ef59mu.jpg",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/mqrsostmlmg3-4IfwCh1kjz8ngum1ogbO9zR1UZqiGI.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/1782288809795-ef59mu.jpg",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrsia6l00000bgiltqg9whv/1782288905960-8nu425.jpg"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "ShellDesk",
+          "url": "https://vibecafe.ai/products/cmqrquvk2000004jx0pnwja0v",
+          "author": "刘白菜",
+          "authorUrl": "https://vibecafe.ai/u/liubaicai",
+          "publishedAt": "2026-06-24T07:20:48.194Z",
+          "summary": "无侵入的服务器管理面板，Visual SSH host workspace and remote operations toolkit.",
+          "content": "无侵入的服务器管理面板，Visual SSH host workspace and remote operations toolkit.",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqrquvk2000004jx0pnwja0v",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/mqrqq9r84kxg-mHuireoma1j9nW8door6RvUq5JGigF.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/mqrqq9rbyts2-YpkDhSyzD91haToqwAdcjJIISfsB7A.png",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/mqrqq9r84kxg-mHuireoma1j9nW8door6RvUq5JGigF.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmpz8zggy00010bjgb0r2kl8t/1782285564277-17empv.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "AnyPiece",
+          "url": "https://vibecafe.ai/products/cmqrh1jds00000bja2kmogykj",
+          "author": "chichi",
+          "authorUrl": "https://vibecafe.ai/u/chichi",
+          "publishedAt": "2026-06-24T02:46:02.852Z",
+          "summary": "通过自由剪裁来收藏网页信息的剪藏工具",
+          "content": "通过自由剪裁来收藏网页信息的剪藏工具",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqrh1jds00000bja2kmogykj",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269035106-hy9rzh.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782268901665-texzam.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269035106-hy9rzh.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269034603-whzz32.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269034958-rnjcb3.png",
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmqrgu12100000bhyi4mg55pk/1782269034899-cromlv.png"
+          ]
+        },
+        {
+          "sourceId": "vibecafe",
+          "title": "Every Noise Genre Sphere",
+          "url": "https://vibecafe.ai/products/cmqr2f87b00000bknbqte8180",
+          "author": "elizaaa",
+          "authorUrl": "https://vibecafe.ai/u/elizaaa",
+          "publishedAt": "2026-06-23T19:56:47.304Z",
+          "summary": "集合了6000多种不同的音乐流派形成的一个音乐图书馆，可以根据流派搜索音乐采样以及会显示不同音乐流派之间的关联。",
+          "content": "集合了6000多种不同的音乐流派形成的一个音乐图书馆，可以根据流派搜索音乐采样以及会显示不同音乐流派之间的关联。",
+          "metrics": {},
+          "tags": [
+            "vibecafe",
+            "product"
+          ],
+          "externalId": "cmqr2f87b00000bknbqte8180",
+          "image": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq26x9o000000bkj7inrsnrb/1782244567413-g4qz8m.png",
+          "logo": "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq26x9o000000bkj7inrsnrb/1782244310532-gp329q.webp",
+          "images": [
+            "https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/cmq26x9o000000bkj7inrsnrb/1782244567413-g4qz8m.png"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Well - Business Context Graph",
+          "url": "https://www.producthunt.com/products/well-embed/launches/well-business-context-graph?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "One Legible Business Context Graph for You and Your Agents",
+          "content": "What if your whole business ran on one MCP? Well identify and sync with your SaaS, CRM, Emails, Productivity tools, Accounting and Banks get all that into one shell. Manage all your MCPs in one line of command, get your data consolidated into one context graph. Make your business legible, to you and your agents.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1178086",
+          "logo": "https://ph-files.imgix.net/1d741f05-32c0-4ffe-8a2a-6648acf0d143.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/21400fb0-5079-4386-b874-1f58cd1fe0a9.png?auto=format",
+            "https://ph-files.imgix.net/69025204-1749-4f01-877c-c152b39e81e5.png?auto=format",
+            "https://ph-files.imgix.net/d8101581-aa2d-4948-80d9-1a2b61b3bd2b.png?auto=format",
+            "https://ph-files.imgix.net/f8543456-d867-40b9-adf6-c9393a8faf53.png?auto=format",
+            "https://ph-files.imgix.net/88dbc209-da50-4d4c-b4b1-180eece74d10.png?auto=format",
+            "https://ph-files.imgix.net/782fcc26-5d3a-4a23-b1b1-dd12d5b74ea6.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/21400fb0-5079-4386-b874-1f58cd1fe0a9.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "StelaxAI",
+          "url": "https://www.producthunt.com/products/stelaxai/launches/stelaxai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Stop wasting time on routine.",
+          "content": "StelaxAI replies to customers, qualifies leads and books appointments 24/7. The AI platform for salons, med spas, clinics and service businesses.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1178939",
+          "logo": "https://ph-files.imgix.net/ca23a938-4c39-4fd0-aada-09b5a22270d8.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1dcd18c2-6124-453b-a6b1-3e24e0e46e12.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1dcd18c2-6124-453b-a6b1-3e24e0e46e12.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "PasswordGen",
+          "url": "https://www.producthunt.com/products/passwordgen-2/launches/passwordgen-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "14-language password generator — truly free, zero tracking",
+          "content": "PasswordGen — free, browser-based password generator. 14 languages, 22 tools (6-char to 64-char, PINs, hex, memorable). Uses Web Crypto API, zero data collection. 15 security guides (NIST/OWASP cited). Open DevTools: no network requests. 100% client-side. Next tool: QRfree.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1177319",
+          "logo": "https://ph-files.imgix.net/089cba09-001f-49dd-810a-dcbc634ba031.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1750139f-a7f2-4054-91b1-fc93b012397c.png?auto=format",
+            "https://ph-files.imgix.net/91b5135d-7872-4091-946e-67b8e00da13f.png?auto=format",
+            "https://ph-files.imgix.net/c8c82d0e-c01b-4f11-98d0-874c635a2624.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1750139f-a7f2-4054-91b1-fc93b012397c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Augur",
+          "url": "https://www.producthunt.com/products/augur-3/launches/augur-4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "You think you predict well. Prove it.",
+          "content": "AI gives everyone predictions now. Augur answers the harder question — are YOUR predictions actually good? Log any call, set a deadline, score Hit or Miss. Build your real accuracy record. For analysts, investors, and independent thinkers. $29, no subscription.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1164159",
+          "logo": "https://ph-files.imgix.net/443fa4e7-ae22-462f-8d02-9b8dc126e77d.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e8901dfe-743e-480a-891a-233e00bd532c.jpeg?auto=format",
+            "https://ph-files.imgix.net/de4cfb9e-675f-45e0-a5a1-8539c38d8d2e.jpeg?auto=format",
+            "https://ph-files.imgix.net/9b26d869-4329-4b87-ae10-1305e05eb576.jpeg?auto=format",
+            "https://ph-files.imgix.net/c853c4cb-8f62-4db4-af72-8158ec769611.jpeg?auto=format",
+            "https://ph-files.imgix.net/3ece8a97-07fd-4dbd-8904-91b9de994a0d.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e8901dfe-743e-480a-891a-233e00bd532c.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "DataMadEasy",
+          "url": "https://www.producthunt.com/products/datamadeasy/launches/datamadeasy?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Animated charts, maps, data tools & more — code-free.",
+          "content": "DataMadEasy is a free, code-free data tool for people who work with data but don't code. Create animated charts (Bar Race, Bubble, Choropleth maps, and more) and 10+ static chart types in seconds. Simulate investments — compare stocks, ETFs, and crypto with real data. Run mortgage affordability scenarios. Opens massive files (3GB+) Excel crashes on, converts Long↔Wide format, compares databases, and cleans data. No Python, no R. Runs in your browser — your data never leaves your computer.&nbsp;",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1162811",
+          "logo": "https://ph-files.imgix.net/61c98a71-c385-44b4-87d5-5af33b44365f.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/22ddc86b-777b-450d-bd9c-f3a960810d8a.gif?auto=format",
+            "https://ph-files.imgix.net/ce7a108b-ffe9-4726-afab-18c3cfdc1b5d.gif?auto=format",
+            "https://ph-files.imgix.net/42712433-1603-4cc9-b575-05b67b050bfe.png?auto=format",
+            "https://ph-files.imgix.net/4f1603ef-a581-4a88-99bc-d36ed0fc539e.png?auto=format",
+            "https://ph-files.imgix.net/63d86f3b-7072-4be2-93f0-b7e3f24d9081.png?auto=format",
+            "https://ph-files.imgix.net/9b7e318c-73f5-45de-ac7b-81da6cc4d179.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/22ddc86b-777b-450d-bd9c-f3a960810d8a.gif?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "InstaShare",
+          "url": "https://www.producthunt.com/products/instashare-2/launches/instashare-3?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Securely Share Claude Code chat sessions as public link",
+          "content": "Share or export a Claude Code chat session as a public link in one /instashare command. Anonymous-first, with API keys and secrets auto-redacted before upload. Free skill for Claude Code.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179320",
+          "logo": "https://ph-files.imgix.net/29e83e80-0bdc-4cb1-bbbe-b5c3b7e62b22.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/9deda1a8-9267-45b7-b868-05a88a2137a8.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/9deda1a8-9267-45b7-b868-05a88a2137a8.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Nightlamp",
+          "url": "https://www.producthunt.com/products/nightlamp/launches/nightlamp?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "App care: monitoring plus engineer diagnosis",
+          "content": "Nightlamp is managed app care for no-code, AI-built, and custom web apps. It monitors business-critical flows like login, checkout, webhooks, scheduled jobs, and email delivery, then sends a plain-English diagnosis and recommended fix when something breaks. Built for founders and agencies who do not want to decode logs at 3 AM. Start with a 14-day no-card trial and keep one free flow monitor after.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1175660",
+          "logo": "https://ph-files.imgix.net/6cd364b0-b6ea-44cb-a5c0-773a05cfbd9b.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c38aa1cf-9a45-4848-836c-7c82058322ee.png?auto=format",
+            "https://ph-files.imgix.net/628f40e0-aa92-4304-9e78-befeeabbd41b.png?auto=format",
+            "https://ph-files.imgix.net/dc03a13b-d7d9-4620-b531-557d507d3d6c.png?auto=format",
+            "https://ph-files.imgix.net/41ea9d3d-063d-4651-a7ba-214d350790e8.png?auto=format",
+            "https://ph-files.imgix.net/954b5227-1910-47fe-91cc-50671f1efb19.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c38aa1cf-9a45-4848-836c-7c82058322ee.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ARI Software",
+          "url": "https://www.producthunt.com/products/ari-software/launches/ari-software?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Your Open Source, Self-Hosted AI-Native Personal Workspace",
+          "content": "The open source, self-hosted, AI-native productivity platform you self-host. Dozens of built-In modules and build your own In minutes - no coding needed. Full data control. Fully extendable. Completely yours.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179289",
+          "logo": "https://ph-files.imgix.net/d8275cd7-03e5-4afe-aa4f-47f12a84bd22.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b0bb0c72-3e41-499b-aeb4-0563f1e3e4f7.jpeg?auto=format",
+            "https://ph-files.imgix.net/fa87c5ff-7d4f-4bfb-b7b6-276d04757162.png?auto=format",
+            "https://ph-files.imgix.net/117b2c04-15d0-48a7-b226-ba8afe09f5b6.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b0bb0c72-3e41-499b-aeb4-0563f1e3e4f7.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Utilsly",
+          "url": "https://www.producthunt.com/products/utilsly/launches/utilsly?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "25+ free online tools. No signup. No clutter. Just tools.",
+          "content": "Hey Product Hunt! 👋 I built Utilsly because I was tired of jumping between 10 different websites just to format JSON, generate a password, or calculate BMI. Utilsly puts 25+ free tools in one clean place — no signup, works offline, fully mobile friendly. Would love your feedback — what tool should I add next? Drop it below! 🙏",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1177262",
+          "logo": "https://ph-files.imgix.net/5733b6a8-8337-4272-9abd-f73c295bd1f1.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/38f58bc5-06ff-4459-af1e-4f39fb4c4bc3.png?auto=format",
+            "https://ph-files.imgix.net/c0ec8a05-962c-4e5b-a8e6-b9ea2af00136.png?auto=format",
+            "https://ph-files.imgix.net/d0da3ac8-bf03-4449-8e49-547f84fe8b9b.png?auto=format",
+            "https://ph-files.imgix.net/d3a1da40-d6c2-4d74-8b68-fa2ded551b57.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/38f58bc5-06ff-4459-af1e-4f39fb4c4bc3.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Framer Forge",
+          "url": "https://www.producthunt.com/products/framer-forge/launches/framer-forge?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Turn plain English into custom Framer code overrides",
+          "content": "Describe a Framer interaction in plain English — hover effects, scroll animations, state changes — and get production-ready code overrides in seconds. Unlike a generic AI chat, the Forge is tuned for Framer's real patterns, so the code pastes straight into your project. Plus a growing marketplace of ready-made overrides & components to drop in or remix.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179576",
+          "logo": "https://ph-files.imgix.net/90c926de-5ed4-4047-92f2-a4b0a749f40e.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/d809baad-e35d-4a95-9dc9-3eb2f4e8349c.jpeg?auto=format",
+            "https://ph-files.imgix.net/cbe2a2ad-e2fe-4dbf-9aaf-3fb61923c491.png?auto=format",
+            "https://ph-files.imgix.net/cccd0700-305d-40f2-b480-9dc973bcb518.png?auto=format",
+            "https://ph-files.imgix.net/ab16215b-a521-4ebc-98b1-2e0c9b086010.png?auto=format",
+            "https://ph-files.imgix.net/a1efcaec-5429-4342-a700-ed5fc0b81a00.png?auto=format",
+            "https://ph-files.imgix.net/dc8f09bf-2dd7-4796-be1b-0fa495ac3d69.png?auto=format",
+            "https://ph-files.imgix.net/b4365cce-9857-49a4-bad5-e111400b08d1.png?auto=format",
+            "https://ph-files.imgix.net/30c53b03-08ec-4a7c-a7a4-381787e5e3b4.png?auto=format",
+            "https://ph-files.imgix.net/b882620a-ffe4-46ff-9ccb-ccc2faf3b2ba.png?auto=format",
+            "https://ph-files.imgix.net/867f3f39-f85b-4d27-95ea-106e8a1c7473.png?auto=format",
+            "https://ph-files.imgix.net/9cb29a3b-d948-47a1-8d8a-aadd0aaabd90.png?auto=format",
+            "https://ph-files.imgix.net/a1ba23f5-ecb8-49dd-b520-3b92e761241e.png?auto=format",
+            "https://ph-files.imgix.net/be1176ab-d771-49bd-82ec-716e4269d44c.png?auto=format",
+            "https://ph-files.imgix.net/9d4ca9f4-d779-4044-be01-e5c0d7b372d2.png?auto=format",
+            "https://ph-files.imgix.net/79223c32-2760-426a-9f5b-08b691cbaf02.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/d809baad-e35d-4a95-9dc9-3eb2f4e8349c.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "GoodBarber - AI Extension Builder",
+          "url": "https://www.producthunt.com/products/goodbarber/launches/goodbarber-ai-extension-builder?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Describe a feature, AI creates it in your app. ",
+          "content": "GoodBarber's AI Extension Builder lets you create custom app sections by describing them in plain language — no code, no developer. Add a \"Create with AI\" section, describe what you want, and the agent writes it, plugs it into GoodBarber's public APIs (geolocation, native maps, offline storage, membership, system alerts) and renders it live. Refine by chatting or edit the code. It inherits your design system and compiles native iOS & Android. Free, in Beta.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1175327",
+          "logo": "https://ph-files.imgix.net/565ee623-7093-4d1d-8076-15d62bf4f432.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/7b49771d-2ba0-4c01-98c2-2aed4dc8c935.webp?auto=format",
+            "https://ph-files.imgix.net/bc4896d6-3641-4f02-8c2a-3419f6bcc191.webp?auto=format",
+            "https://ph-files.imgix.net/d5c038f0-4b7f-4e0b-819e-607b27e41fd8.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/7b49771d-2ba0-4c01-98c2-2aed4dc8c935.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Noemra",
+          "url": "https://www.producthunt.com/products/noemra/launches/noemra?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Found a company in one sentence.",
+          "content": "Noemra is an AI company operator. Give it an idea it builds the product, ships the website, wires up payments, posts on social, and emails customers. All on its own. You are the owner. You just talk to your CEO. • Builds & deploys a production-ready product • Takes payments from day one via Stripe • Posts to the company's social accounts • Researches and emails real prospects • Reports every action in a live feed • Keeps improving continuously Free to start · live in minutes.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179232",
+          "logo": "https://ph-files.imgix.net/4166032f-a130-495d-a38c-26268e53d4e1.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bea6b406-c468-4e39-8d3a-4dc605e4e541.png?auto=format",
+            "https://ph-files.imgix.net/324cd511-befc-405e-93fc-b955ab540e6f.png?auto=format",
+            "https://ph-files.imgix.net/283142f6-6ce5-4cdb-9845-f408b147c25d.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bea6b406-c468-4e39-8d3a-4dc605e4e541.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Soulver 4",
+          "url": "https://www.producthunt.com/products/soulver/launches/soulver-4?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Notepad, meet calculator",
+          "content": "Soulver is a notepad calculator you can think through problems involving math in. Mix calculations with comments, and a live \"answer column\" calculates for you: currency & unit conversions, dates & times, percentages, time zones, variables, and more. All in a sheet you come back to. We pioneered this live-answer-column idea back in 2005 and have been refining it with more features & intelligence for 20 years. Native on Mac, iPad & iPhone — and a one-time purchase, not a subscription.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1178148",
+          "logo": "https://ph-files.imgix.net/189c0caf-c8db-43fe-b95e-9ff4e4e7e6d9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1a2063af-115e-400a-bf6b-b98d955ebcea.jpeg?auto=format",
+            "https://ph-files.imgix.net/f1e4d7b2-01d8-46b6-9704-560fb9c4912a.png?auto=format",
+            "https://ph-files.imgix.net/771480c9-d1e0-4789-b90f-0a95a6975355.png?auto=format",
+            "https://ph-files.imgix.net/a771b97b-6944-4778-85fa-ebe724abaf45.png?auto=format",
+            "https://ph-files.imgix.net/4a5f4af3-449e-4306-b084-d72ce9edecc9.png?auto=format",
+            "https://ph-files.imgix.net/6374ed67-53b8-4fa1-be03-b2cfb4843976.png?auto=format",
+            "https://ph-files.imgix.net/64bdf0ef-bc1a-4d9a-a097-9b06f8d23ca8.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1a2063af-115e-400a-bf6b-b98d955ebcea.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Retext",
+          "url": "https://www.producthunt.com/products/retext/launches/retext?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Snippets that expand anywhere you type on macOS",
+          "content": "Retext expands short triggers into full text as you type — addresses, email signatures, code blocks, canned replies. Typeaddr and it instantly becomes your full address. Works system-wide in any Mac app. Free to try, no account needed.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1178398",
+          "logo": "https://ph-files.imgix.net/85366e8f-730d-41d6-aace-f3ef25812fcc.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/45d79ae5-ad4a-4232-806c-4fa062cef12d.jpeg?auto=format",
+            "https://ph-files.imgix.net/398b4e31-0f9a-44c3-94c8-4f0aea539574.png?auto=format",
+            "https://ph-files.imgix.net/8d8fb437-05ce-4ef4-b7da-f1f89c75515d.png?auto=format",
+            "https://ph-files.imgix.net/c5bbf235-dfcc-4e33-9bac-3a2648d89d01.png?auto=format",
+            "https://ph-files.imgix.net/2a0d5e57-2594-4346-9d83-3a9419682313.png?auto=format",
+            "https://ph-files.imgix.net/91ec00b3-0fbf-45ef-8f4f-0051c11de145.png?auto=format",
+            "https://ph-files.imgix.net/c321c3a2-ff2a-42a4-bc8a-0d02b5addd1a.png?auto=format",
+            "https://ph-files.imgix.net/27e49576-53e4-4dd2-b3f9-a056a9600d70.gif?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/45d79ae5-ad4a-4232-806c-4fa062cef12d.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "TextPolisher.app",
+          "url": "https://www.producthunt.com/products/textpolisher-app/launches/textpolisher-app?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Instant text polish on your Mac. Any app. Zero internet.",
+          "content": "TextPolisher lives in your menu bar and rewrites any selected text - Slack, Teams, Mail, Notes, your browser - in one keystroke. Fix grammar or shift tone (professional, friendly, concise) using Apple's on-device AI model. No account, no API key, no cloud. Free.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179434",
+          "logo": "https://ph-files.imgix.net/01f79a54-0bfa-48e2-84a3-f972fe20450b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/307cd840-44ac-4e73-933d-fa7e1e9669f2.gif?auto=format",
+            "https://ph-files.imgix.net/a05b0e11-7af2-41b2-8690-2a7674317cf7.png?auto=format",
+            "https://ph-files.imgix.net/5d30ab69-cb08-4789-83f5-40516b5bd69d.png?auto=format",
+            "https://ph-files.imgix.net/cb2cde6f-5407-481f-b01c-2507ff4e3ece.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/307cd840-44ac-4e73-933d-fa7e1e9669f2.gif?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ValueLens",
+          "url": "https://www.producthunt.com/products/workers-dev/launches/valuelens-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "A Buffett-style stock analysis terminal for your Mac",
+          "content": "ValueLens turns raw SEC filings into a full value-investing workflow on macOS: 10-year financials from EDGAR, a two-stage Owner-Earnings DCF with scenarios, Morningstar-style AI research reports, S&P 500 value screening, and buy-zone alerts. Free data sources; bring your own Claude key. One-time $39, no subscription.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179407",
+          "logo": "https://ph-files.imgix.net/16e06745-0efe-49d0-bb98-aa69ff3c7908.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/312bdd85-c9df-4fe6-a51f-d7763adc3356.png?auto=format",
+            "https://ph-files.imgix.net/c6e9b9e4-6b1c-4b53-a65c-71c33193a265.png?auto=format",
+            "https://ph-files.imgix.net/9380f4e1-0272-497e-9508-8d15964b87c7.png?auto=format",
+            "https://ph-files.imgix.net/8b75bdf1-c6fe-4437-bc3e-4ab86d5fc18c.png?auto=format",
+            "https://ph-files.imgix.net/d544d725-4fd4-4e74-8f84-464332731166.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/312bdd85-c9df-4fe6-a51f-d7763adc3356.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Farewell",
+          "url": "https://www.producthunt.com/products/farewell-2/launches/farewell-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Offline encrypted vault for Apple Silicon Mac.",
+          "content": "Farewell is an offline encrypted vault for macOS designed for sensitive files. It combines 256-bit authenticated encryption, ML-DSA post-quantum integrity protection, Argon2id key hardening and optional hardware security keys. No cloud, no accounts, no telemetry and no servers. Files stay on your Mac and remain protected by an architecture built for long-term security.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179218",
+          "logo": "https://ph-files.imgix.net/cf7d3413-fa25-40af-a421-fed4bbb37166.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/07005692-9fce-4985-8bbb-e07039927877.jpeg?auto=format",
+            "https://ph-files.imgix.net/59c0bb2e-f06d-4b2d-b2cb-f90c3350be28.png?auto=format",
+            "https://ph-files.imgix.net/494e5846-2a7e-448d-a4c5-5102a3c1f0a5.png?auto=format",
+            "https://ph-files.imgix.net/74ad0d05-2556-4d0e-9b7d-3b48d76030be.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/07005692-9fce-4985-8bbb-e07039927877.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Agents At Work",
+          "url": "https://www.producthunt.com/products/agents-at-work-you-can-go/launches/agents-at-work-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "Monitor and control AI agents from your phone",
+          "content": "Monitor and control Claude Code, Codex, Gemini CLI, and Grok AI agents from your iPhone or Android. Push notifications, one-tap approvals, live conversation feed, from anywhere.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1177422",
+          "logo": "https://ph-files.imgix.net/de92a3ce-f535-416a-871a-617896c97852.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2caaf205-7ce5-4987-8ec3-4a2505ab758b.png?auto=format",
+            "https://ph-files.imgix.net/4ba4d82b-df83-4054-a914-9c18c78a0968.png?auto=format",
+            "https://ph-files.imgix.net/cc8f2f68-b298-4bb9-9e95-7e9ae91b351e.png?auto=format",
+            "https://ph-files.imgix.net/fba2996b-ca1e-4b85-a47b-d1233f6f7c90.png?auto=format",
+            "https://ph-files.imgix.net/a25caf4c-574a-4ec9-b9c3-1984bf46a326.png?auto=format",
+            "https://ph-files.imgix.net/6b9da1ec-852c-48f2-ba26-7947befa858c.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2caaf205-7ce5-4987-8ec3-4a2505ab758b.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "OmniSwitch",
+          "url": "https://www.producthunt.com/products/omniswitch/launches/omniswitch?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "AltTab + Paste + Alfred, in one hotkey",
+          "content": "Switch to any window from the keyboard — no Enter key. App grid → window grid in two keystrokes, with stable numbers that become muscle memory. Clipboard history, snippets, and quick links live in the same hotkey. Native, GPL-3.0, one-time purchase.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1177164",
+          "logo": "https://ph-files.imgix.net/8717841d-b092-4a5b-bf98-81fae63936bd.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/104d82b8-e137-46de-a361-dc3344668b55.jpeg?auto=format",
+            "https://ph-files.imgix.net/0ecd0195-7d6f-4035-863d-02a49b547be2.png?auto=format",
+            "https://ph-files.imgix.net/5ef72ea9-04be-47c8-a154-b6e1d5237aca.png?auto=format",
+            "https://ph-files.imgix.net/33b2a9bf-1e90-421f-9445-257907cac8c0.png?auto=format",
+            "https://ph-files.imgix.net/309e9a94-e2d9-49c0-907d-6816edca2174.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/104d82b8-e137-46de-a361-dc3344668b55.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "FilenQ",
+          "url": "https://www.producthunt.com/products/filenq-file-management-system/launches/filenq?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-06-24T07:01:00Z",
+          "summary": "A native macOS file manager for power users",
+          "content": "FilenQ is a native macOS file manager for people who want more than Finder. It combines dual-pane browsing, tabs, previews, quick file operations, search, metadata tools, checksums, PDF/image utilities, terminal workflows and local-only processing in one clean AppKit interface. Early macOS build, free while feedback shapes the product.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1179076",
+          "logo": "https://ph-files.imgix.net/5fb57303-f3a2-4422-96d0-619262ed3c95.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/77228b1f-d4e1-4db1-bdec-277e61ba3ae2.png?auto=format",
+            "https://ph-files.imgix.net/f7d007c0-14d5-49ac-973a-be48e6968b33.png?auto=format",
+            "https://ph-files.imgix.net/5ec8d7ba-3083-4e7d-98c5-8976f64d2a5d.png?auto=format",
+            "https://ph-files.imgix.net/814bd9cb-5862-4dbd-9198-baad788fe01a.png?auto=format",
+            "https://ph-files.imgix.net/581563e9-ff2c-4edb-bd9a-9b6c5df4f79e.png?auto=format",
+            "https://ph-files.imgix.net/ad58fd7d-c4e2-4594-982d-92c8c9325253.png?auto=format",
+            "https://ph-files.imgix.net/afa7b02c-ad7f-47e0-b293-40d50e2e54ff.png?auto=format",
+            "https://ph-files.imgix.net/65241de7-8246-4d0c-9c4c-049929f8ab5c.png?auto=format",
+            "https://ph-files.imgix.net/1fd02ff2-f48b-497d-9a1f-80bc97989d8c.png?auto=format",
+            "https://ph-files.imgix.net/6680760b-668f-4bb2-95cf-c241c78a3e8e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/77228b1f-d4e1-4db1-bdec-277e61ba3ae2.png?auto=format"
+        }
+      ]
+    }
+  ]
+}

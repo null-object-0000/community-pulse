@@ -1,1 +1,723 @@
-{"fetchedAt":"2026-09-07T09:34:42.581Z","date":"2026-02-27","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"打字鸭","url":"https://www.daziya.com","author":"","authorUrl":"","publishedAt":"2026-02-27T00:00:00+08:00","summary":"免费中文打字练习在线平台，提供3000+的盲打课程，科学的打字课程设计，拼音输入法、汉语拼音、诗词歌赋、经典名著、背英文单词、知识百科，练习打字同时收获更多，结合趣味化教学体验。","content":"免费中文打字练习在线平台，提供3000+的盲打课程，科学的打字课程设计，拼音输入法、汉语拼音、诗词歌赋、经典名著、背英文单词、知识百科，练习打字同时收获更多，结合趣味化教学体验。","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-02-27-打字鸭-https://www.daziya.com"},{"sourceId":"chinese-indie-dev","title":"MemoTune","url":"https://memotune.com","author":"","authorUrl":"","publishedAt":"2026-02-27T00:00:00+08:00","summary":"AI 音乐生成工具，支持文字转歌曲、歌词转歌曲，并提供 AI 人声生成、声音模型训练、AI Cover 等功能。 用 AI 把你的文字或歌词变成完整的歌曲，免费开始，无需信用卡。支持 10+ 音乐风格（流行、说唱、R&B、民谣、摇滚、电子等）。支持中文、英文、日语、韩语等 10+ 语言。可训练专属 AI 声音模型。","content":"AI 音乐生成工具，支持文字转歌曲、歌词转歌曲，并提供 AI 人声生成、声音模型训练、AI Cover 等功能。 用 AI 把你的文字或歌词变成完整的歌曲，免费开始，无需信用卡。支持 10+ 音乐风格（流行、说唱、R&B、民谣、摇滚、电子等）。支持中文、英文、日语、韩语等 10+ 语言。可训练专属 AI 声音模型。","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-02-27-MemoTune-https://memotune.com"},{"sourceId":"chinese-indie-dev","title":"Sonicker","url":"https://www.sonicker.com","author":"","authorUrl":"","publishedAt":"2026-02-27T00:00:00+08:00","summary":"AI 语音克隆平台，3 秒克隆任何声音，完美保留情感和口音。支持中英日韩等 10 种语言的语音合成，提供 50+ 预设声音库和 AI 声音设计功能，免费开始使用。","content":"AI 语音克隆平台，3 秒克隆任何声音，完美保留情感和口音。支持中英日韩等 10 种语言的语音合成，提供 50+ 预设声音库和 AI 声音设计功能，免费开始使用。","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-02-27-Sonicker-https://www.sonicker.com"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【开源自荐】多人聚餐地点与餐厅推荐SKILL —— 基于参与者位置与偏好，自动计算最优见面点并推荐周边餐厅","url":"https://github.com/shaozhengmao/where-to-eat","author":"shaozhengmao","authorUrl":"https://github.com/shaozhengmao","publishedAt":"2026-02-26T17:08:38Z","summary":"在北京、上海这种超大城市，多人约饭时，「在哪见、吃什么」 总要来回商量。wheretoeat 是一个给 AI 用的技能（Skill）：根据每个人的出发地，算出一个对大家时间相对公平的见面点，再按偏好饮食推荐周边餐厅。 做什么 输入：几个人的出发地（如地铁站、小区）+ 想吃啥（如烤肉、铁锅炖） 输出：一个推荐见面区域 + 到该区域的驾车/地铁/公交时间对比 + 周边 TOP 5 餐厅，并可导出为 Markdown 方便转发给朋友 算法上：用多地的地理重心做基准，用高德地图 API 算各人到该点的驾车/公交/地铁时间，按「大家花的时间是否接近」做对比，再在重心附近按偏好搜餐厅、按评分排序推荐。 给谁用 在 Cursor / Claude 等环境里用「技能」或 MCP 的人：把本仓库当 Skill 读入，配合高德地图 MCP，让 AI 帮你算聚餐地点和餐厅 想参考「多人地点 + 时间公平性 + 餐厅推荐」流程的开发者：SKILL.md 和 references/ 里有步骤、算法说明和高德 API 用法 技术要点 依赖：高德地图 Web 服务 API（地理编码、路径规划、POI 搜索）+ 支持高德 MCP 的 AI 环境 文档即规则：SKILL.md 定义完整流程，AI 按步骤调用高德 API 并生成推荐与 Markdown 仓库 github.com/shaozhengmao/wheretoeat · MIT License","content":"在北京、上海这种超大城市，多人约饭时，**「在哪见、吃什么」** 总要来回商量。where-to-eat 是一个给 **AI 用的技能（Skill）**：根据每个人的出发地，算出一个对大家时间相对公平的见面点，再按偏好饮食推荐周边餐厅。\n\n---\n\n## 做什么\n\n- **输入**：几个人的出发地（如地铁站、小区）+ 想吃啥（如烤肉、铁锅炖）\n- **输出**：一个**推荐见面区域** + 到该区域的**驾车/地铁/公交时间对比** + 周边 **TOP 5 餐厅**，并可导出为 Markdown 方便转发给朋友\n\n算法上：用多地的**地理重心**做基准，用高德地图 API 算各人到该点的驾车/公交/地铁时间，按「大家花的时间是否接近」做对比，再在重心附近按偏好搜餐厅、按评分排序推荐。\n\n---\n\n## 给谁用\n\n- 在 **Cursor / Claude** 等环境里用「技能」或 **MCP** 的人：把本仓库当 Skill 读入，配合高德地图 MCP，让 AI 帮你算聚餐地点和餐厅\n- 想参考「多人地点 + 时间公平性 + 餐厅推荐」流程的开发者：SKILL.md 和 `references/` 里有步骤、算法说明和高德 API 用法\n\n---\n\n## 技术要点\n\n- 依赖：**高德地图 Web 服务 API**（地理编码、路径规划、POI 搜索）+ 支持高德 MCP 的 AI 环境\n- 文档即规则：**SKILL.md** 定义完整流程，AI 按步骤调用高德 API 并生成推荐与 Markdown\n\n---\n\n## 仓库\n\n**[github.com/shaozhengmao/where-to-eat](https://github.com/shaozhengmao/where-to-eat)** · MIT License\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9075","issueUrl":"https://github.com/ruanyf/weekly/issues/9075"},{"sourceId":"weekly-issues","title":"【开源自荐】个人投资管理系统","url":"https://financial.5udou.cn","author":"linxiaowu66","authorUrl":"https://github.com/linxiaowu66","publishedAt":"2026-02-27T01:16:52Z","summary":"访问地址： 写了一篇文章介绍：两天时间撸了个投资管理系统","content":"访问地址：https://financial.5udou.cn\n\n写了一篇文章介绍：[两天时间撸了个投资管理系统](https://mp.weixin.qq.com/s/FErP5OH4qZMSEyoAG5nyZg)","metrics":{"comments":2},"tags":["ruanyf-weekly","submission"],"externalId":"9076","issueUrl":"https://github.com/ruanyf/weekly/issues/9076"},{"sourceId":"weekly-issues","title":"【工具自荐】简谱Do Re Mi对应关系记忆小游戏","url":"https://happy-numbered-notation.app","author":"Jamesun921","authorUrl":"https://github.com/Jamesun921","publishedAt":"2026-02-27T02:45:10Z","summary":"你也和我一样吗？看着简谱里的 1 2 3，脑子却反应不过来是 Do Re Mi？😩 哪怕死记硬背了好久，真到用的时候还是卡壳。 为了解决这个小痛点，我做了一个快乐学唱名的小工具： 不用下载，手机/电脑打开就能玩 边听边点，慢慢就形成肌肉记忆 适合自己练，也适合给小朋友当音乐小游戏 完全免费，轻量，开箱即用","content":"你也和我一样吗？看着简谱里的 1 2 3，脑子却反应不过来是 Do Re Mi？😩 哪怕死记硬背了好久，真到用的时候还是卡壳。 为了解决这个小痛点，我做了一个快乐学唱名的小工具：\n\t\n> 不用下载，手机/电脑打开就能玩\n> 边听边点，慢慢就形成肌肉记忆\n> 适合自己练，也适合给小朋友当音乐小游戏\n\n完全免费，轻量，开箱即用\n\nhttps://happy-numbered-notation.app","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9077","issueUrl":"https://github.com/ruanyf/weekly/issues/9077"},{"sourceId":"weekly-issues","title":"【开源推荐】antdv-next 是 Ant Design 设计体系的 vue 实现","url":"https://github.com/antfu/skills","author":"selicens","authorUrl":"https://github.com/selicens","publishedAt":"2026-02-27T03:07:42Z","summary":"项目背景与定位 Vue 生态中原有的 antdesignvue 维护工作已实质性停滞（最后更新停留在 2024 年 11 月的 v4.2.6 版本）。在此背景下，antdvnext 希望延续在 vue 生态中使用 Ant Design 设计体系。 它并非对 antdesignvue 的简单修补或续写，而是基于 Ant Design 6.x 设计体系的全面重构。 架构升级：完整迁移了 Ant Design 6.x 的 Design Token 体系与语义化 DOM 结构。 底层重构：对标 React 生态的 rc 无头组件方案，底层采用 vc 无头组件。这种架构实现了样式与逻辑的解耦，不仅能完美复刻 Ant Design 的交互体验，更为有定制化需求的开发者提供了底层支撑，便于二次封装或构建私有组件库。 组件完成度 项目目前具备极高的完成度，已实现 Ant Design 规范中的绝大多数组件。 未实现组件：仅 List 组件未纳入开发。 原因说明：Ant Design 官方目前对 List 组件已有重构规划并标记为废弃 (Deprecated)，为保持代码库的前瞻性与一致性，antdvnext 选择与其保持同步，暂未实现该组件。 AI 支持 llm.txt 集成，默认集成了 llm.txt 支持，方便用户通过本地或远程 LLM 模型进行离线问答。 skills 支持，目前比较流行的本地的技能库，配合 Antfu Skills 集合 一起使用，可以减少 AI 幻觉导致的一些问题。 Nuxt 支持 提供了 @antdvnext/nuxt 模块 js export default defineNuxtConfig({ modules: ['@antdvnext/nuxt'], antd: { icon: true, }, css: ['antdvnext/dist/reset.css'], }) 相关链接 官方文档： 组件库仓库： 底层基础设施 (vc 组件)： <img width=\"2550\" height=\"1233\" alt=\"Image\" src=\" /","content":"## 项目背景与定位\nVue 生态中原有的 ant-design-vue 维护工作已实质性停滞（最后更新停留在 2024 年 11 月的 v4.2.6 版本）。在此背景下，antdv-next 希望延续在 vue 生态中使用 Ant Design 设计体系。\n\n它并非对 ant-design-vue 的简单修补或续写，而是基于 Ant Design 6.x 设计体系的全面重构。\n\n架构升级：完整迁移了 Ant Design 6.x 的 Design Token 体系与语义化 DOM 结构。\n底层重构：对标 React 生态的 rc-* 无头组件方案，底层采用 vc-*  无头组件。这种架构实现了样式与逻辑的解耦，不仅能完美复刻 Ant Design 的交互体验，更为有定制化需求的开发者提供了底层支撑，便于二次封装或构建私有组件库。\n\n## 组件完成度\n项目目前具备极高的完成度，已实现 Ant Design 规范中的绝大多数组件。\n\n未实现组件：仅 List 组件未纳入开发。\n原因说明：Ant Design 官方目前对 List 组件已有重构规划并标记为废弃 (Deprecated)，为保持代码库的前瞻性与一致性，antdv-next 选择与其保持同步，暂未实现该组件。\n\n## AI 支持\n- llm.txt 集成，默认集成了 llm.txt 支持，方便用户通过本地或远程 LLM 模型进行离线问答。\n- skills 支持，目前比较流行的本地的技能库，配合 [Antfu Skills 集合](https://github.com/antfu/skills) 一起使用，可以减少 AI 幻觉导致的一些问题。\n\n## Nuxt 支持\n提供了 @antdv-next/nuxt 模块\n```js\nexport default defineNuxtConfig({\n  modules: ['@antdv-next/nuxt'],\n  antd: {\n    icon: true,\n  },\n  css: ['antdv-next/dist/reset.css'],\n})\n```\n\n## 相关链接\n官方文档：https://www.antdv-next.com/\n组件库仓库：https://github.com/antdv-next/antdv-next\n底层基础设施 (vc-* 组件)：https://github.com/antdv-next/vue-components\n\n<img width=\"2550\" height=\"1233\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c808df4b-2d86-4f68-a73f-ef61a43d7586\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9078","issueUrl":"https://github.com/ruanyf/weekly/issues/9078"},{"sourceId":"weekly-issues","title":"【工具自荐】nano banana 2","url":"https://yesnanobanana2.com","author":"lvjin521","authorUrl":"https://github.com/lvjin521","publishedAt":"2026-02-27T07:01:05Z","summary":"工具名称：nano banana 2 工具站 网址链接： 工具简介：nano banana 2是Google新发布的图片生成模型，为nano banana的最新V2版本 详细介绍：nano banana 2 是突破性 AI 绘图模型 Gemini 3.1 Flash Image 的社区版名称。完美平衡了极速响应与工作室级出图质量，相比初代 Nano Banana (Gemini 2.5 Flash Image) 实现了跨越式升级。 工具页面截图： <img width=\"1248\" height=\"832\" alt=\"Image\" src=\" /","content":"工具名称：nano banana 2 工具站\n网址链接：https://yesnanobanana2.com\n工具简介：nano banana 2是Google新发布的图片生成模型，为nano banana的最新V2版本\n详细介绍：nano banana 2 是突破性 AI 绘图模型 Gemini 3.1 Flash Image 的社区版名称。完美平衡了极速响应与工作室级出图质量，相比初代 Nano Banana (Gemini 2.5 Flash Image) 实现了跨越式升级。\n工具页面截图：\n\n<img width=\"1248\" height=\"832\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/267915d4-8038-434a-a0c0-dc97f7bc9a9a\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9079","issueUrl":"https://github.com/ruanyf/weekly/issues/9079"},{"sourceId":"weekly-issues","title":"【产品自荐】视频分区追踪工具｜精准人脸打码 & 动态遮罩","url":"https://pcai.nero.com/motion-tracker","author":"himia0802","authorUrl":"https://github.com/himia0802","publishedAt":"2026-02-27T07:35:14Z","summary":"【产品名称】Nero Motion Tracker 【支持平台】Windows 【产品页】 【功能简介】 !Image 我们最近更新了 Nero Motion Tracker，新增 Segment Tracking（分区追踪） 功能。 相比传统矩形框选追踪，新版本可以更精准地识别并跟随视频中的人物或物体轮廓运动，生成动态遮罩。适用于人脸打码、隐私保护、车牌模糊、局部特效添加等场景，在复杂运动画面中稳定性更高。 主要特点： 像素级不规则对象追踪 支持多目标独立追踪 支持 Blur / Mosaic / 颜色覆盖等效果 同时保留 Face Tracking 与 Zone Tracking 模式 适合内容创作者、新闻编辑、隐私处理等视频场景使用。 如有相关需求，欢迎体验交流。","content":"【产品名称】Nero Motion Tracker\n【支持平台】Windows\n【产品页】[https://pcai.nero.com/motion-tracker](https://pcai.nero.com/motion-tracker)\n\n【功能简介】\n\n![Image](https://github.com/user-attachments/assets/afac25ca-8520-404e-b284-91ca9d3530ef)\n\nhttps://github.com/user-attachments/assets/4a1d8a40-5796-4bf8-9b0c-087c9e0e3986\n\n我们最近更新了 Nero Motion Tracker，新增 Segment Tracking（分区追踪） 功能。\n\n相比传统矩形框选追踪，新版本可以更精准地识别并跟随视频中的人物或物体轮廓运动，生成动态遮罩。适用于人脸打码、隐私保护、车牌模糊、局部特效添加等场景，在复杂运动画面中稳定性更高。\n\n主要特点：\n\n- 像素级不规则对象追踪\n- 支持多目标独立追踪\n- 支持 Blur / Mosaic / 颜色覆盖等效果\n- 同时保留 Face Tracking 与 Zone Tracking 模式\n- 适合内容创作者、新闻编辑、隐私处理等视频场景使用。\n\n如有相关需求，欢迎体验交流。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9080","issueUrl":"https://github.com/ruanyf/weekly/issues/9080"},{"sourceId":"weekly-issues","title":"【开源自荐】R2 Web: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。","url":"https://github.com/vikiboss/r2-web","author":"vikiboss","authorUrl":"https://github.com/vikiboss","publishedAt":"2026-02-27T08:45:42Z","summary":"项目信息 名称: R2 Web 源码: vikiboss/r2web 地址: r2.viki.moe 简介: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。 自荐说明 官方控制台功能基础，登录、操作麻烦；第三方客户端要下载安装，跨平台麻烦；命令行工具上手门槛高，不适合临时操作；其他 Web 项目不专注 R2，功能不完善，体验欠佳。 R2 Web 专注于简单和用户体验，基于原生 HTML5/CSS3/ES6+ 开发，打开浏览器就能用，跨平台零成本，也能当图床使用，支持拖拽、粘贴上传 + 图片压缩，省流量省时间。 一直用的 sm.ms 图床彻底改版，感觉有点臃肿，没合适图床就开始用 Cloudflare R2 做自建，找了一圈没合适 Web 端管理应用，要么审美不在线要么功能不到位。所以搓了个 R2 web 来管理，能充当图床角色，支持私有部署，尤其注重轻量、用户体验，后期不再迭代过多功能，保持精简。 核心总结：H5 纯前端/跨平台 + 目录/文件管理和预览 + 自动图片压缩 项目截图 !93c1205d.png !9392ee.png !ea7dd6.png","content":"## 项目信息\n \n- 名称: R2 Web\n- 源码: [vikiboss/r2-web](https://github.com/vikiboss/r2-web)\n- 地址: [r2.viki.moe](https://r2.viki.moe)\n- 简介: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。\n\n## 自荐说明\n\n官方控制台功能基础，登录、操作麻烦；第三方客户端要下载安装，跨平台麻烦；命令行工具上手门槛高，不适合临时操作；其他 Web 项目不专注 R2，功能不完善，体验欠佳。\n\nR2 Web 专注于简单和用户体验，基于原生 HTML5/CSS3/ES6+ 开发，打开浏览器就能用，跨平台零成本，也能当图床使用，支持拖拽、粘贴上传 + 图片压缩，省流量省时间。\n\n> 一直用的 sm.ms 图床彻底改版，感觉有点臃肿，没合适图床就开始用 Cloudflare R2 做自建，找了一圈没合适 Web 端管理应用，要么审美不在线要么功能不到位。所以搓了个 R2 web 来管理，能充当图床角色，支持私有部署，尤其注重轻量、用户体验，后期不再迭代过多功能，保持精简。\n\n> 核心总结：H5 纯前端/跨平台 + 目录/文件管理和预览 + 自动图片压缩\n\n**项目截图**\n\n![93c1205d.png](https://image.viki.moe/github/93c1205d.png)\n\n![9392ee.png](https://image.viki.moe/github/9392ee.png)\n\n![ea7dd6.png](https://image.viki.moe/github/ea7dd6.png)\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9081","issueUrl":"https://github.com/ruanyf/weekly/issues/9081"},{"sourceId":"weekly-issues","title":"【工具自荐】比谷歌官方还便宜的Nano Banana 2","url":"https://cyberbara.com/nanobanana2","author":"ZeroLu","authorUrl":"https://github.com/ZeroLu","publishedAt":"2026-02-27T09:13:51Z","summary":"网站链接： Nano Banana 2 Image Generator Free 亮点： 1. 可以开关谷歌搜索 2. 很便宜，比谷歌官方便宜40%，邀请还有超多免费积分（用我的邀请码IFE2F752CC可以获得50积分），大家可以畅玩起来 3. 页面上放了一些提示词，大家可以直接测试 截图： <img width=\"2292\" height=\"1562\" alt=\"Image\" src=\" / 测试case： <img width=\"1376\" height=\"768\" alt=\"Image\" src=\" /","content":"## 网站链接：https://cyberbara.com/nanobanana2\n\n## Nano Banana 2 Image Generator Free\n\n### 亮点：\n1. 可以开关谷歌搜索\n2. 很便宜，比谷歌官方便宜40%，邀请还有超多免费积分（用我的邀请码IFE2F752CC可以获得50积分），大家可以畅玩起来\n3. 页面上放了一些提示词，大家可以直接测试\n\n### 截图：\n<img width=\"2292\" height=\"1562\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/20d9978b-cb78-40dd-bb33-470a42b30dd6\" />\n\n### 测试case：\n<img width=\"1376\" height=\"768\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dddcbc45-0e7d-421f-ac7a-bc272952e8c2\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9082","issueUrl":"https://github.com/ruanyf/weekly/issues/9082"}],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A436:21687B:374DE0:B66015:6A9E8532 and timestamp 2026-09-07 09:34:42 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A428:2B082F:379839:B73EF1:6A9E8532 and timestamp 2026-09-07 09:34:42 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[开源推荐] Horizon 全自动 AI 新闻聚合器，让 LLM 帮你过滤与总结新闻","url":"https://github.com/Thysrael/Horizon","author":"Thysrael","authorUrl":"https://github.com/Thysrael","publishedAt":"2026-02-27T15:41:12Z","summary":"项目地址 类别 人工智能 项目标题 Horizon 从多个可自定义的信息源中收集新闻，利用 AI 对新闻进行打分与过滤，最终生成一份包含摘要、社区讨论和背景知识的中英双语日报。 项目描述 是什么？ Horizon 是一个基于 Python 和 大语言模型 (LLM) 构建的 全自动化科技资讯聚合与摘要生成系统。 它本质上是一个“AI 驱动的主编”，不是通过简单的关键词过滤，而是利用 LLM 的理解能力来筛选、评估并重写自定义的新闻源的热点新闻，最终生成一份高质量的中英双语日报。 痛点： 对于开发者来说，及时了解科技动态是一个重要需求。但现实情况是： 信息分散 — 有价值的新闻散落在 Hacker News、Reddit、Telegram、RSS 等不同平台 噪声太大 — RSS 订阅一旦增多，大量低质量内容淹没真正重要的信息 阅读门槛高 — 英文新闻涉及的背景知识不够了解，读完也不知道社区怎么看 耗费精力 — 每天手动浏览多个平台花费大量时间 Horizon 通过 AI 自动打分过滤 + 背景知识补充 + 社区评论汇总 + 中英双语输出，将每日信息获取从\"大海捞针\"变为\"开箱即读\"。 场景： 个人开发者： 想要利用碎片时间高效获取全球技术动态，不想错过重要的开源项目发布或技术讨论。 技术团队/公司内网： 自动生成行业动态简报，推送到网页，作为团队的每日“早报”。 初学者： Agent 开发： 学习如何通过 API 调用 GPT4/Claude/DeepSeek，如何设计 Prompts 来让 AI 执行复杂的任务（如评分、摘要、翻译）。 自动化工作流： 结合 GitHub Actions 实现 Cron 定时任务，体验“代码写完后，系统自己每天在云端跑”的 DevOps 流程。 现代 Python 项目架构：模块化管理，uv 包管理器等。 亮点 📡 多源聚合 — 从 Hacker News、RSS、Reddit、Telegram 频道和 GitHub（Release 与用户动态）收集内容 🤖 AI 智能打分 — 支持 Claude、GPT4、Gemini、DeepSeek、豆包（Doubao）及任何 OpenAI 兼容 API，对每条内容评分 010，过滤噪声 🌐 中英双语日报 — 同时生成英文和中文版本的每日摘要 🔍 背景知识补充 — 自动搜索网络，为新闻中的陌生概念提供解释，降低阅读门槛 💬 社区声音 — 收集并汇总来自 HackerNews、Reddit 等评论区的社区讨论 🔗 跨源去重 — 自动合并来自不同平台的重复内容 📰 静态站点生成 — 通过 GitHub Actions 部署为 GitHub Pages 站点，定时自动更新 ⚙️ 高度可定制 — 单个 JSON 配置文件，轻松自定义信息源、过滤阈值和 AI 模型 示例代码 使用如下命令即可体验： shell git clone cd horizon 使用 uv 安装 uv sync 配置 cp .env.example .env 添加 API 密钥 cp data/config.example.json data/config.json 自定义信息源 运行 uv run horizon 使用默认 24 小时窗口 配置文件示例： json { \"ai\": { \"provider\": \"doubao\", // 支持 \"openai\", \"anthropic\", \"gemini\", \"doubao\" \"model\": \"doubao15pro256k\", \"apikeyenv\": \"DOUBAOAPIKEY\", \"languages\": [\"en\", \"zh\"] // 中英双语输出 }, \"sources\": { \"hackernews\": { \"enabled\": true, \"fetchtopstories\": 20, \"minscore\": 100 }, \"rss\": [ { \"name\": \"Simon Willison\", \"url\": \" } ], \"reddit\": { \"subreddits\": [{ \"subreddit\": \"MachineLearning\", \"sort\": \"hot\" }], \"fetchcomments\": 5 }, \"telegram\": { \"channels\": [{ \"channel\": \"zaihuapd\", \"fetchlimit\": 20 }] } }, \"filtering\": { \"aiscorethreshold\": 6.0, \"timewindowhours\": 24 } } 截图或演示视频 📖 在线演示 <table <tr <td width=\"50%\" <p align=\"center\"<strong日报总览</strong</p <img src=\" alt=\"日报总览\" / </td <td width=\"50%\" <p align=\"center\"<strong新闻详情</strong</p <img src=\" alt=\"新闻详情\" / </td </tr </table <details <summary<strong终端输出</strong</summary <br <p align=\"center\" <img src=\" alt=\"终端输出\" width=\"400\" / </p </details","content":"### 项目地址\n\nhttps://github.com/Thysrael/Horizon\n\n### 类别\n\n人工智能\n\n### 项目标题\n\nHorizon 从多个可自定义的信息源中收集新闻，利用 AI 对新闻进行打分与过滤，最终生成一份包含摘要、社区讨论和背景知识的中英双语日报。\n\n### 项目描述\n\n**是什么？**\n\nHorizon 是一个基于 Python 和 大语言模型 (LLM) 构建的 全自动化科技资讯聚合与摘要生成系统。\n\n它本质上是一个“AI 驱动的主编”，不是通过简单的关键词过滤，而是利用 LLM 的理解能力来筛选、评估并重写自定义的新闻源的热点新闻，最终生成一份高质量的中英双语日报。\n\n**痛点：**\n\n对于开发者来说，及时了解科技动态是一个重要需求。但现实情况是：\n\n- **信息分散** — 有价值的新闻散落在 Hacker News、Reddit、Telegram、RSS 等不同平台\n- **噪声太大** — RSS 订阅一旦增多，大量低质量内容淹没真正重要的信息\n- **阅读门槛高** — 英文新闻涉及的背景知识不够了解，读完也不知道社区怎么看\n- **耗费精力** — 每天手动浏览多个平台花费大量时间\n\nHorizon 通过 **AI 自动打分过滤** + **背景知识补充** + **社区评论汇总** + **中英双语输出**，将每日信息获取从\"大海捞针\"变为\"开箱即读\"。\n\n**场景：**\n\n- 个人开发者： 想要利用碎片时间高效获取全球技术动态，不想错过重要的开源项目发布或技术讨论。\n- 技术团队/公司内网： 自动生成行业动态简报，推送到网页，作为团队的每日“早报”。\n\n**初学者：**\n\n- Agent 开发： 学习如何通过 API 调用 GPT-4/Claude/DeepSeek，如何设计 Prompts 来让 AI 执行复杂的任务（如评分、摘要、翻译）。\n- 自动化工作流： 结合 GitHub Actions 实现 Cron 定时任务，体验“代码写完后，系统自己每天在云端跑”的 DevOps 流程。\n- 现代 Python 项目架构：模块化管理，`uv` 包管理器等。\n\n### 亮点\n\n- **📡 多源聚合** — 从 Hacker News、RSS、Reddit、Telegram 频道和 GitHub（Release 与用户动态）收集内容\n- **🤖 AI 智能打分** — 支持 Claude、GPT-4、Gemini、DeepSeek、豆包（Doubao）及任何 OpenAI 兼容 API，对每条内容评分 0-10，过滤噪声\n- **🌐 中英双语日报** — 同时生成英文和中文版本的每日摘要\n- **🔍 背景知识补充** — 自动搜索网络，为新闻中的陌生概念提供解释，降低阅读门槛\n- **💬 社区声音** — 收集并汇总来自 HackerNews、Reddit 等评论区的社区讨论\n- **🔗 跨源去重** — 自动合并来自不同平台的重复内容\n- **📰 静态站点生成** — 通过 GitHub Actions 部署为 GitHub Pages 站点，定时自动更新\n- **⚙️ 高度可定制** — 单个 JSON 配置文件，轻松自定义信息源、过滤阈值和 AI 模型\n\n### 示例代码\n\n使用如下命令即可体验：\n\n```shell\ngit clone https://github.com/Thysrael/Horizon.git\ncd horizon\n\n# 使用 uv 安装\nuv sync\n\n# 配置\ncp .env.example .env          # 添加 API 密钥\ncp data/config.example.json data/config.json  # 自定义信息源\n\n# 运行\nuv run horizon              # 使用默认 24 小时窗口\n```\n\n配置文件示例：\n\n```json\n{\n  \"ai\": {\n    \"provider\": \"doubao\",       // 支持 \"openai\", \"anthropic\", \"gemini\", \"doubao\"\n    \"model\": \"doubao-1-5-pro-256k\",\n    \"api_key_env\": \"DOUBAO_API_KEY\",\n    \"languages\": [\"en\", \"zh\"]   // 中英双语输出\n  },\n  \"sources\": {\n    \"hackernews\": { \"enabled\": true, \"fetch_top_stories\": 20, \"min_score\": 100 },\n    \"rss\": [\n      { \"name\": \"Simon Willison\", \"url\": \"https://simonwillison.net/atom/everything/\" }\n    ],\n    \"reddit\": {\n      \"subreddits\": [{ \"subreddit\": \"MachineLearning\", \"sort\": \"hot\" }],\n      \"fetch_comments\": 5\n    },\n    \"telegram\": {\n      \"channels\": [{ \"channel\": \"zaihuapd\", \"fetch_limit\": 20 }]\n    }\n  },\n  \"filtering\": {\n    \"ai_score_threshold\": 6.0,\n    \"time_window_hours\": 24\n  }\n}\n```\n\n### 截图或演示视频\n\n[📖 在线演示](https://thysrael.github.io/Horizon/)\n\n<table>\n<tr>\n<td width=\"50%\">\n<p align=\"center\"><strong>日报总览</strong></p>\n<img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/overview_zh.png\" alt=\"日报总览\" />\n</td>\n<td width=\"50%\">\n<p align=\"center\"><strong>新闻详情</strong></p>\n<img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/one_news_zh.png\" alt=\"新闻详情\" />\n</td>\n</tr>\n</table>\n\n<details>\n<summary><strong>终端输出</strong></summary>\n<br>\n<p align=\"center\">\n  <img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/terminal_log.png\" alt=\"终端输出\" width=\"400\" />\n</p>\n</details>","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3154","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3154"}],"error":"gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A42C:F563C:38226D:B85CE1:6A9E8532 and timestamp 2026-09-07 09:34:42 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Mizo","url":"https://www.producthunt.com/products/mizo/launches/mizo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Social Media Handled","content":"Most marketing platforms focus on managing content - Mizo focuses on creating it. By analysing your website, Mizo generates brand-aligned posts, campaigns, and schedules automatically, removing the need for manual input, design skills, or copywriting. It’s built to help busy businesses stay active online with minimal time and effort.","metrics":{},"tags":["producthunt","new"],"externalId":"1086215","logo":"https://ph-files.imgix.net/6d771c37-1365-4079-b6e2-f47831fcc9f0.png?auto=format","images":["https://ph-files.imgix.net/576e7626-6f5e-4503-9978-f2cc7cb20b28.jpeg?auto=format","https://ph-files.imgix.net/4dc31088-17bf-4463-ba4e-33507d721e34.png?auto=format","https://ph-files.imgix.net/84e528b2-ddcb-4ef6-897d-afc028010e30.png?auto=format","https://ph-files.imgix.net/606d6778-6ff0-410f-a23b-60dcd85bb394.png?auto=format"],"image":"https://ph-files.imgix.net/576e7626-6f5e-4503-9978-f2cc7cb20b28.jpeg?auto=format"},{"sourceId":"producthunt","title":"BILNOW Medical Billing","url":"https://www.producthunt.com/products/bilnow-medical-billing/launches/bilnow-medical-billing?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Medical Billing and Coding solutions for US Healthcare","content":"BILNOW is a leading medical billing company in the United States, committed to providing accurate and efficient billing and coding solutions for healthcare providers. We specialize in comprehensive Revenue Cycle Management (RCM), offering tailored medical billing and coding services that ensure precise coding, prompt claim submissions, and minimized denials.","metrics":{},"tags":["producthunt","new"],"externalId":"1086556","logo":"https://ph-files.imgix.net/54f75396-4cc5-4d71-b163-fab640ca757d.svg?auto=format","images":["https://ph-files.imgix.net/e11d5e94-69bc-4fc2-85fc-c6b9e8c2f81c.jpeg?auto=format","https://ph-files.imgix.net/e7fc7b14-a9c2-40c3-802b-fb08d393573d.jpeg?auto=format","https://ph-files.imgix.net/f2284f31-c99f-49b4-8b3f-c2a3a83072c3.jpeg?auto=format"],"image":"https://ph-files.imgix.net/e11d5e94-69bc-4fc2-85fc-c6b9e8c2f81c.jpeg?auto=format"},{"sourceId":"producthunt","title":"Toggl Lockscreen Widget","url":"https://www.producthunt.com/products/toggl-lockscreen-widget/launches/toggl-lockscreen-widget?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"View and stop Toggl Track timers from lockscreen","content":"The only Toggl widget that updates on your lock screen in real time. Start a timer on web, desktop, or app, and it appears on your iPhone lock screen without needing to open the app. Stop your timers with one tap.","metrics":{},"tags":["producthunt","new"],"externalId":"1086689","logo":"https://ph-files.imgix.net/72b7c41d-375d-45ae-a019-913663fbaff7.png?auto=format","images":["https://ph-files.imgix.net/bba1175a-4fc7-4f6b-a907-f317b8e74092.png?auto=format","https://ph-files.imgix.net/688279ac-bf85-4af0-bab4-6403ccf3afa5.png?auto=format","https://ph-files.imgix.net/6765d571-1e2b-4fbf-9e7d-5cf1b0d7ac3b.png?auto=format"],"image":"https://ph-files.imgix.net/bba1175a-4fc7-4f6b-a907-f317b8e74092.png?auto=format"},{"sourceId":"producthunt","title":"Browser Function","url":"https://www.producthunt.com/products/askyura-2/launches/browser-function?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Let your chatbot navigate pages and trigger UI actions","content":"Browser Function allows the AI agent to go beyond replies by interacting directly with your website like opening pages, navigating sections, or triggering forms in real time. Instead of telling users where to click, the AI guides them იქthere instantly. It turns chat into action, reduces friction, speeds up tasks, and improves conversion flow. How it works? The AI detects user intent and responds by navigating or triggering the right UI elements.","metrics":{},"tags":["producthunt","new"],"externalId":"1086437","logo":"https://ph-files.imgix.net/cd2464c1-91b7-4000-97dc-c81dc3ec2d06.png?auto=format","images":["https://ph-files.imgix.net/a24cb195-79d3-4539-a0ef-c95ae5df4cbe.png?auto=format","https://ph-files.imgix.net/2c2ede2d-501d-49b7-be8d-392d2f127ff7.png?auto=format","https://ph-files.imgix.net/4d7201c2-3281-40a2-b45a-4ccc96acd6c1.gif?auto=format","https://ph-files.imgix.net/75038c32-97b1-46a3-ba71-a8bc2c6fe30a.png?auto=format"],"image":"https://ph-files.imgix.net/a24cb195-79d3-4539-a0ef-c95ae5df4cbe.png?auto=format"},{"sourceId":"producthunt","title":"ClawHost.chat","url":"https://www.producthunt.com/products/clawhost-chat/launches/clawhost-chat?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Launch your own OpenClaw in 1 minute with 1 click","content":"Managed cloud hosting for OpenClaw AI agents. Run your autonomous AI 24/7 — no hussle, no server management. Supports Claude, GPT-5, Gemini, Kimi K2.5, and any OpenAI-compatible model. Comes with Kimi K2.5 already included inside for free.","metrics":{},"tags":["producthunt","new"],"externalId":"1085358","logo":"https://ph-files.imgix.net/cc984b5b-c94e-4a1c-b489-c564c026ecd9.png?auto=format","images":["https://ph-files.imgix.net/c06f281a-65be-469a-a722-2771d98ac465.gif?auto=format","https://ph-files.imgix.net/664f48b5-c204-4a9b-a5b1-fc8ea7e2208e.png?auto=format","https://ph-files.imgix.net/aa24e8bf-d120-4131-b86a-3d243ce63227.png?auto=format","https://ph-files.imgix.net/cf40dd3b-4d85-4756-8d5f-1de5cbbb92ca.png?auto=format"],"image":"https://ph-files.imgix.net/c06f281a-65be-469a-a722-2771d98ac465.gif?auto=format"},{"sourceId":"producthunt","title":"Claude Code Remote Control","url":"https://www.producthunt.com/products/claude-code-remote-access/launches/claude-code-remote-control?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Continue local sessions from any device with Remote Control","content":"Continue a local Claude Code session from your phone, tablet, or any browser using Remote Control. Works with claude.ai/code and the Claude mobile app.","metrics":{},"tags":["producthunt","new"],"externalId":"1085498","logo":"https://ph-files.imgix.net/8002e20f-4049-4a86-b8a6-36b762acbdd0.svg?auto=format","images":["https://ph-files.imgix.net/45387e26-03bf-4d37-b79f-f24715b10684.png?auto=format","https://ph-files.imgix.net/b159077e-684f-493a-b0aa-619f585e0d76.png?auto=format","https://ph-files.imgix.net/238ee8d2-4625-4bf2-81c7-48073396f272.gif?auto=format","https://ph-files.imgix.net/2b2fd7d2-7878-432b-ba2e-f79d51a0f047.png?auto=format","https://ph-files.imgix.net/91e2def8-748a-4e80-b649-5f64da73ceeb.jpeg?auto=format"],"image":"https://ph-files.imgix.net/45387e26-03bf-4d37-b79f-f24715b10684.png?auto=format"},{"sourceId":"producthunt","title":"MaxClaw by MiniMax","url":"https://www.producthunt.com/products/minimax/launches/maxclaw-by-minimax?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Always-on managed agent based on OpenClaw powered by MiniMax","content":"OpenClaw × MiniMax Agent × M2.5, now fully unlocked. No deployment. No extra API fees. 7×24 across Telegram / WhatsApp / Slack / Discord. Ready-made MiniMax Expert ecosystem. Upgraded built-in tools for real work.","metrics":{},"tags":["producthunt","new"],"externalId":"1085790","logo":"https://ph-files.imgix.net/ad54dafa-a784-4fb3-b57d-53d990e512f3.jpeg?auto=format","images":["https://ph-files.imgix.net/347b6074-4be9-4ec1-ac90-3c2fea2f6384.jpeg?auto=format","https://ph-files.imgix.net/365a6173-b430-438e-9f39-3c6d8fd2b21d.jpeg?auto=format"],"image":"https://ph-files.imgix.net/347b6074-4be9-4ec1-ac90-3c2fea2f6384.jpeg?auto=format"},{"sourceId":"producthunt","title":"Comparateur e-Facturation","url":"https://www.producthunt.com/products/comparateur-e-facturation/launches/comparateur-e-facturation?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Compare 23 certified e-invoicing platforms in France","content":"Comparatif indépendant des 23 plateformes agréées (PA) de facturation électronique. Tarifs, avis clients, notes détaillées. Pennylane, Qonto, Tiime, Axonaut, Sellsy et +18 solutions comparées. Trouvez la meilleure plateforme agréée gratuite ou payante pour septembre 2026.","metrics":{},"tags":["producthunt","new"],"externalId":"1086596","logo":"https://ph-files.imgix.net/a7b44100-3c86-4731-97cb-3f579a147233.png?auto=format","images":["https://ph-files.imgix.net/8c4fc2d0-9a94-4d36-b99b-edd104d9024c.png?auto=format"],"image":"https://ph-files.imgix.net/8c4fc2d0-9a94-4d36-b99b-edd104d9024c.png?auto=format"},{"sourceId":"producthunt","title":"Prompt GPT : Ai Prompt Generator","url":"https://www.producthunt.com/products/prompt-gpt-ai-prompt-generator/launches/prompt-gpt-ai-prompt-generator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Write Smarter Prompts. Get Smarter Results.","content":"Prompt GPT is an all-in-one AI assistant for students, freshers, and job seekers, aiding in online tests, coding rounds, and campus placements. It provides instant MCQ solving, AI coding assistance, and a smart AI chat. Just scan The photo and get best prompt for the best result from your favourite ad tool also It allow you to recreate images and Solve and explain error to AI with best prompt","metrics":{},"tags":["producthunt","new"],"externalId":"1086511","logo":"https://ph-files.imgix.net/fdc1cbf4-e7f8-4f7b-a1ee-46b3e0648921.jpeg?auto=format","images":["https://ph-files.imgix.net/4680def4-9da5-4926-85f4-9acf425c469f.png?auto=format","https://ph-files.imgix.net/b1538a98-66b7-4b3a-8f69-6cdbe129e220.png?auto=format","https://ph-files.imgix.net/2d49ff3f-81b5-47ac-9e4d-e7cb3fdd5867.png?auto=format","https://ph-files.imgix.net/be8095f8-98cf-4bc8-be2c-bc10e5841a85.jpeg?auto=format"],"image":"https://ph-files.imgix.net/4680def4-9da5-4926-85f4-9acf425c469f.png?auto=format"},{"sourceId":"producthunt","title":"Flow Eazy","url":"https://www.producthunt.com/products/flow-eazy/launches/flow-eazy?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Odoo Consulting Services","content":"Helping businesses everywhere install, personalize, and enhance Odoo ERP for greater productivity. As your global consulting partner, we go beyond implementation to design a strategy that fits your business and fuels your success every day. Inefficient ERP setups can block workflows, fragment data, and delay important decisions. Tackling these challenges is vital for smoother operations and better growth.","metrics":{},"tags":["producthunt","new"],"externalId":"1086721","logo":"https://ph-files.imgix.net/559b94bb-e1c3-4471-9426-7ce64568eb21.png?auto=format","images":["https://ph-files.imgix.net/caff6f15-cc37-453d-8b04-d17fbdfdd83b.jpeg?auto=format"],"image":"https://ph-files.imgix.net/caff6f15-cc37-453d-8b04-d17fbdfdd83b.jpeg?auto=format"},{"sourceId":"producthunt","title":"AI Therapy, by Therapy-Chats.com","url":"https://www.producthunt.com/products/therapy-chats-com/launches/ai-therapy-by-therapy-chats-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Specific AI for Relationship Advice & Emotional Well-being","content":"Specialized AI Therapy for Emotions & Relationship Advice For providing higher accuracy and more relevant guidance, Therapy-Chats.com offers AI Therapy for specific domains of \"Emotional Resilience\", \"Relationships Advice\", \"Mastering Psychology of Attraction\", \"Personal Growth, Self-Actualization\". Deeper Psychological Work We have trained our AI blending ancient wisdom practices with proven psychological strategies, like ACT, CBT, MBCT, Neuroplasticity, Attachment Theory, Carl Jung, etc.","metrics":{},"tags":["producthunt","new"],"externalId":"1086697","logo":"https://ph-files.imgix.net/b2f58dc4-62c9-43a3-aea4-bac829205058.jpeg?auto=format","images":["https://ph-files.imgix.net/59635481-8be9-48c8-9116-e0391f575e8d.jpeg?auto=format","https://ph-files.imgix.net/10165822-1ff8-46c5-b268-31dd9336d0c4.jpeg?auto=format"],"image":"https://ph-files.imgix.net/59635481-8be9-48c8-9116-e0391f575e8d.jpeg?auto=format"},{"sourceId":"producthunt","title":"Pure Musk. ","url":"https://www.producthunt.com/products/pure-musk/launches/pure-musk?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Wrap Yourself in Soft Luxury Musk.","content":"Musk Silk Supreme 50 ml is a luxurious fragrance by Ajmal that blends the richness of pure musk with a soft, silky smoothness to deliver an unforgettable olfactory experience. The scent opens with a delicate touch of Lily of the Valley, followed by a refined and elegant musky heart, while the base offers a warm fusion","metrics":{},"tags":["producthunt","new"],"externalId":"1086513","logo":"https://ph-files.imgix.net/c15c62c3-c196-437f-8a3a-4c2c503b2a9c.webp?auto=format","images":["https://ph-files.imgix.net/33cfa2c1-2a19-4b33-a4b6-93a14ffebfca.png?auto=format"],"image":"https://ph-files.imgix.net/33cfa2c1-2a19-4b33-a4b6-93a14ffebfca.png?auto=format"},{"sourceId":"producthunt","title":"Venda+ CRM de Consórcio","url":"https://www.producthunt.com/products/venda-crm-de-consorcio/launches/venda-crm-de-consorcio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"CRM for Consortium Sales: Simulator & WhatsApp","content":"Venda+ is the #1 CRM built exclusively for consortim sales professionals in Brazil. Unlike generic CRMs Venda+ is purpose-built with: Advanced multi-brand simulators (15s per simulation), ntegrated WhatsApp messaging with templates, Intellient lead pipeline management, Sales automation and fllow-up flows, Commission and contract tracking. Reslts: +340% in sales, 2,847+ active agents, 4.9 starsrating.","metrics":{},"tags":["producthunt","new"],"externalId":"1086318","logo":"https://ph-files.imgix.net/a30eca81-5b70-44aa-a9a2-902f8c2ebaf2.png?auto=format","images":["https://ph-files.imgix.net/14fb73e7-6e47-4ffc-90b7-07af74679850.png?auto=format","https://ph-files.imgix.net/bffdcbaa-9234-406b-9f42-1872523346cf.png?auto=format"],"image":"https://ph-files.imgix.net/14fb73e7-6e47-4ffc-90b7-07af74679850.png?auto=format"},{"sourceId":"producthunt","title":"Thoracic Drainage Catheter With Trocar","url":"https://www.producthunt.com/products/thoracic-drainage-catheter-with-trocar/launches/thoracic-drainage-catheter-with-trocar?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Thoracic Drainage Catheter: GSTC | Global Manufacturers","content":"Thoracic Drainage Catheter is used to improve patient outcomes by draining air, blood, and fluids effectively, by offering vital support to professionals.","metrics":{},"tags":["producthunt","new"],"externalId":"1086122","logo":"https://ph-files.imgix.net/a1362613-dd5c-43b2-bc68-7eb0f702636b.png?auto=format","images":["https://ph-files.imgix.net/8ff98d15-3648-4022-9ee7-83f99be65077.jpeg?auto=format","https://ph-files.imgix.net/05bb7ae9-57c4-4013-b13b-7bd766386067.webp?auto=format"],"image":"https://ph-files.imgix.net/8ff98d15-3648-4022-9ee7-83f99be65077.jpeg?auto=format"},{"sourceId":"producthunt","title":"Free Image Tools by kortexa.ai","url":"https://www.producthunt.com/products/image-tools-by-kortexa-ai/launches/free-image-tools-by-kortexa-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Resize, crop, compress, convert in your browser.","content":"Free image tools - resize, compress, crop, convert. No signup, no ads, no subscriptions.","metrics":{},"tags":["producthunt","new"],"externalId":"1085891","logo":"https://ph-files.imgix.net/eea3ab6d-7fb2-4c1b-b6a4-325433fa9f81.png?auto=format","images":["https://ph-files.imgix.net/d12ee413-eaf5-407a-b01d-0614cefb6e20.png?auto=format","https://ph-files.imgix.net/7bf7da44-e2fa-4a93-bf53-b2db79f7f1ef.png?auto=format","https://ph-files.imgix.net/19929889-5fbd-450c-9c52-def77e230809.png?auto=format"],"image":"https://ph-files.imgix.net/d12ee413-eaf5-407a-b01d-0614cefb6e20.png?auto=format"},{"sourceId":"producthunt","title":"P3 Healthcare Solutions","url":"https://www.producthunt.com/products/p3-healthcare-solutions/launches/p3-healthcare-solutions-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Optimizing Provider Performance","content":"P3 Healthcare Solutions Inc. provides comprehensive Revenue Cycle Management and MIPS Consulting tailored for hospitals, physicians, and private practices. We specialize in end-to-end Medical Billing and Coding, Eligibility Verification, and Payment Posting to ensure seamless financial operations. Our expert team drives profitability through aggressive Denial Management, Accounts Receivable recovery, and rigorous Medical Billing Audits.","metrics":{},"tags":["producthunt","new"],"externalId":"1086773","logo":"https://ph-files.imgix.net/e3b9cfda-ef5d-41f6-8da0-600d46c676a9.jpeg?auto=format","images":["https://ph-files.imgix.net/e5425317-6b78-485b-b0b9-5288c74b2941.jpeg?auto=format","https://ph-files.imgix.net/6bba4041-ff54-4d82-950d-6b1023cf84d7.jpeg?auto=format"],"image":"https://ph-files.imgix.net/e5425317-6b78-485b-b0b9-5288c74b2941.jpeg?auto=format"},{"sourceId":"producthunt","title":" Freight Management with 1X Freight","url":"https://www.producthunt.com/products/freight-management-with-1x-freight/launches/freight-management-with-1x-freight?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Streamline Freight Management with 1X Freight","content":"Transform your freight procurement with 1xFreight, a cost-effective and efficient platform for managing freight across all modes. Achieve a 90% time reduction, save over 15 hours weekly, and reduce freight costs by up to 30%. Onboard your team and partners in 10 minutes and gain centralized control of shipments, rates, and insights. Book a demo today and join over 2,000 trusted clients.","metrics":{},"tags":["producthunt","new"],"externalId":"1086396","logo":"https://ph-files.imgix.net/1d039db0-a6ee-4a64-a394-d74cfc558369.svg?auto=format","images":["https://ph-files.imgix.net/50d1f7e5-692a-41c5-8de7-0f7106840597.png?auto=format"],"image":"https://ph-files.imgix.net/50d1f7e5-692a-41c5-8de7-0f7106840597.png?auto=format"},{"sourceId":"producthunt","title":"webly","url":"https://www.producthunt.com/products/webly/launches/webly-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Make the web fun again ✨","content":"discover, remix, and share personal apps. make the web fun again ✨","metrics":{},"tags":["producthunt","new"],"externalId":"1069221","logo":"https://ph-files.imgix.net/759becfc-23d2-490f-b40f-4329509a988b.png?auto=format","images":["https://ph-files.imgix.net/5a4e1d33-ba2b-4e48-9fa4-c783f9236bc5.png?auto=format"],"image":"https://ph-files.imgix.net/5a4e1d33-ba2b-4e48-9fa4-c783f9236bc5.png?auto=format"},{"sourceId":"producthunt","title":"PitchRobin","url":"https://www.producthunt.com/products/pitchrobin/launches/pitchrobin?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Your AI twin takes pitches. You get Talking Points.","content":"Clone your investment bar into an AI twin. Founders pitch it interactively via your link, no mismatched calls. It probes in your style, maps conviction visually (Belief Maps: Held evidence vs. Gaps/Collapsed assumptions), and delivers one-click Meet/Refer/Pass. Unlike deck analyzers, this is active simulation + structured visuals for true triage. Saves 15+ hrs/week on low-signal reviews. $99/mo, free setup. VC-first: specialist, stateful, private. Try a demo pitch?","metrics":{},"tags":["producthunt","new"],"externalId":"1086220","logo":"https://ph-files.imgix.net/edb750cd-a68f-4bbb-8aa5-c277077e70f2.png?auto=format","images":["https://ph-files.imgix.net/2e5fad32-06ec-426a-a943-83357ec6801c.png?auto=format","https://ph-files.imgix.net/df714693-20f0-424c-a209-e04cd432015c.png?auto=format","https://ph-files.imgix.net/0d601e84-3988-4de2-803e-e94331033643.png?auto=format"],"image":"https://ph-files.imgix.net/2e5fad32-06ec-426a-a943-83357ec6801c.png?auto=format"},{"sourceId":"producthunt","title":"Hydrofy Smart Plant Tracker","url":"https://www.producthunt.com/products/hydrofy-hydroponic-garden-tracker/launches/hydrofy-smart-plant-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-02-27T08:01:00Z","summary":"Hydroponic System Management Tool","content":"Hydrofy is now more than a tracker. With Ask Hydrofy AI, growers get personalized guidance for any plant or system, turning pH and nutrient data into clear next steps. We also added beginner friendly guides inside the app and refined the UI for smoother system, plant, and log tracking. Built specifically for home hydroponics, Hydrofy combines monitoring, education, and AI support in one simple experience.","metrics":{},"tags":["producthunt","new"],"externalId":"1086009","logo":"https://ph-files.imgix.net/23b6300e-22b0-4051-9739-623e21563538.jpeg?auto=format","images":["https://ph-files.imgix.net/8867c140-feb1-4829-b7f9-afb145795a04.jpeg?auto=format","https://ph-files.imgix.net/bf07969b-5a6f-4c5b-af40-9275761e9d0b.jpeg?auto=format","https://ph-files.imgix.net/965f220c-66b4-4702-8eb2-fc55f354854a.jpeg?auto=format","https://ph-files.imgix.net/88666a06-aedb-4c9d-b326-7b9d4c42b342.jpeg?auto=format","https://ph-files.imgix.net/348c409e-1f3d-41df-8ddd-e4fcc2f7440d.jpeg?auto=format"],"image":"https://ph-files.imgix.net/8867c140-feb1-4829-b7f9-afb145795a04.jpeg?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T09:34:42.581Z",
+  "date": "2026-02-27",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "打字鸭",
+          "url": "https://www.daziya.com",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T00:00:00+08:00",
+          "summary": "免费中文打字练习在线平台，提供3000+的盲打课程，科学的打字课程设计，拼音输入法、汉语拼音、诗词歌赋、经典名著、背英文单词、知识百科，练习打字同时收获更多，结合趣味化教学体验。",
+          "content": "免费中文打字练习在线平台，提供3000+的盲打课程，科学的打字课程设计，拼音输入法、汉语拼音、诗词歌赋、经典名著、背英文单词、知识百科，练习打字同时收获更多，结合趣味化教学体验。",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-02-27-打字鸭-https://www.daziya.com",
+          "siteLogo": "https://www.daziya.com/favicon.svg"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "MemoTune",
+          "url": "https://memotune.com",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T00:00:00+08:00",
+          "summary": "AI 音乐生成工具，支持文字转歌曲、歌词转歌曲，并提供 AI 人声生成、声音模型训练、AI Cover 等功能。 用 AI 把你的文字或歌词变成完整的歌曲，免费开始，无需信用卡。支持 10+ 音乐风格（流行、说唱、R&B、民谣、摇滚、电子等）。支持中文、英文、日语、韩语等 10+ 语言。可训练专属 AI 声音模型。",
+          "content": "AI 音乐生成工具，支持文字转歌曲、歌词转歌曲，并提供 AI 人声生成、声音模型训练、AI Cover 等功能。 用 AI 把你的文字或歌词变成完整的歌曲，免费开始，无需信用卡。支持 10+ 音乐风格（流行、说唱、R&B、民谣、摇滚、电子等）。支持中文、英文、日语、韩语等 10+ 语言。可训练专属 AI 声音模型。",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-02-27-MemoTune-https://memotune.com",
+          "siteLogo": "https://memotune.com/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Sonicker",
+          "url": "https://www.sonicker.com",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T00:00:00+08:00",
+          "summary": "AI 语音克隆平台，3 秒克隆任何声音，完美保留情感和口音。支持中英日韩等 10 种语言的语音合成，提供 50+ 预设声音库和 AI 声音设计功能，免费开始使用。",
+          "content": "AI 语音克隆平台，3 秒克隆任何声音，完美保留情感和口音。支持中英日韩等 10 种语言的语音合成，提供 50+ 预设声音库和 AI 声音设计功能，免费开始使用。",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-02-27-Sonicker-https://www.sonicker.com",
+          "siteLogo": "https://www.sonicker.com/apple-touch-icon.png"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】多人聚餐地点与餐厅推荐SKILL —— 基于参与者位置与偏好，自动计算最优见面点并推荐周边餐厅",
+          "url": "https://github.com/shaozhengmao/where-to-eat",
+          "author": "shaozhengmao",
+          "authorUrl": "https://github.com/shaozhengmao",
+          "publishedAt": "2026-02-26T17:08:38Z",
+          "summary": "在北京、上海这种超大城市，多人约饭时，「在哪见、吃什么」 总要来回商量。wheretoeat 是一个给 AI 用的技能（Skill）：根据每个人的出发地，算出一个对大家时间相对公平的见面点，再按偏好饮食推荐周边餐厅。 做什么 输入：几个人的出发地（如地铁站、小区）+ 想吃啥（如烤肉、铁锅炖） 输出：一个推荐见面区域 + 到该区域的驾车/地铁/公交时间对比 + 周边 TOP 5 餐厅，并可导出为 Markdown 方便转发给朋友 算法上：用多地的地理重心做基准，用高德地图 API 算各人到该点的驾车/公交/地铁时间，按「大家花的时间是否接近」做对比，再在重心附近按偏好搜餐厅、按评分排序推荐。 给谁用 在 Cursor / Claude 等环境里用「技能」或 MCP 的人：把本仓库当 Skill 读入，配合高德地图 MCP，让 AI 帮你算聚餐地点和餐厅 想参考「多人地点 + 时间公平性 + 餐厅推荐」流程的开发者：SKILL.md 和 references/ 里有步骤、算法说明和高德 API 用法 技术要点 依赖：高德地图 Web 服务 API（地理编码、路径规划、POI 搜索）+ 支持高德 MCP 的 AI 环境 文档即规则：SKILL.md 定义完整流程，AI 按步骤调用高德 API 并生成推荐与 Markdown 仓库 github.com/shaozhengmao/wheretoeat · MIT License",
+          "content": "在北京、上海这种超大城市，多人约饭时，**「在哪见、吃什么」** 总要来回商量。where-to-eat 是一个给 **AI 用的技能（Skill）**：根据每个人的出发地，算出一个对大家时间相对公平的见面点，再按偏好饮食推荐周边餐厅。\n\n---\n\n## 做什么\n\n- **输入**：几个人的出发地（如地铁站、小区）+ 想吃啥（如烤肉、铁锅炖）\n- **输出**：一个**推荐见面区域** + 到该区域的**驾车/地铁/公交时间对比** + 周边 **TOP 5 餐厅**，并可导出为 Markdown 方便转发给朋友\n\n算法上：用多地的**地理重心**做基准，用高德地图 API 算各人到该点的驾车/公交/地铁时间，按「大家花的时间是否接近」做对比，再在重心附近按偏好搜餐厅、按评分排序推荐。\n\n---\n\n## 给谁用\n\n- 在 **Cursor / Claude** 等环境里用「技能」或 **MCP** 的人：把本仓库当 Skill 读入，配合高德地图 MCP，让 AI 帮你算聚餐地点和餐厅\n- 想参考「多人地点 + 时间公平性 + 餐厅推荐」流程的开发者：SKILL.md 和 `references/` 里有步骤、算法说明和高德 API 用法\n\n---\n\n## 技术要点\n\n- 依赖：**高德地图 Web 服务 API**（地理编码、路径规划、POI 搜索）+ 支持高德 MCP 的 AI 环境\n- 文档即规则：**SKILL.md** 定义完整流程，AI 按步骤调用高德 API 并生成推荐与 Markdown\n\n---\n\n## 仓库\n\n**[github.com/shaozhengmao/where-to-eat](https://github.com/shaozhengmao/where-to-eat)** · MIT License\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9075",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9075"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】个人投资管理系统",
+          "url": "https://financial.5udou.cn",
+          "author": "linxiaowu66",
+          "authorUrl": "https://github.com/linxiaowu66",
+          "publishedAt": "2026-02-27T01:16:52Z",
+          "summary": "访问地址： 写了一篇文章介绍：两天时间撸了个投资管理系统",
+          "content": "访问地址：https://financial.5udou.cn\n\n写了一篇文章介绍：[两天时间撸了个投资管理系统](https://mp.weixin.qq.com/s/FErP5OH4qZMSEyoAG5nyZg)",
+          "metrics": {
+            "comments": 2
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9076",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9076",
+          "siteLogo": "https://financial.5udou.cn/favicon.ico?favicon.0b3bf435.ico"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】简谱Do Re Mi对应关系记忆小游戏",
+          "url": "https://happy-numbered-notation.app",
+          "author": "Jamesun921",
+          "authorUrl": "https://github.com/Jamesun921",
+          "publishedAt": "2026-02-27T02:45:10Z",
+          "summary": "你也和我一样吗？看着简谱里的 1 2 3，脑子却反应不过来是 Do Re Mi？😩 哪怕死记硬背了好久，真到用的时候还是卡壳。 为了解决这个小痛点，我做了一个快乐学唱名的小工具： 不用下载，手机/电脑打开就能玩 边听边点，慢慢就形成肌肉记忆 适合自己练，也适合给小朋友当音乐小游戏 完全免费，轻量，开箱即用",
+          "content": "你也和我一样吗？看着简谱里的 1 2 3，脑子却反应不过来是 Do Re Mi？😩 哪怕死记硬背了好久，真到用的时候还是卡壳。 为了解决这个小痛点，我做了一个快乐学唱名的小工具：\n\t\n> 不用下载，手机/电脑打开就能玩\n> 边听边点，慢慢就形成肌肉记忆\n> 适合自己练，也适合给小朋友当音乐小游戏\n\n完全免费，轻量，开箱即用\n\nhttps://happy-numbered-notation.app",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9077",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9077",
+          "siteLogo": "https://happy-numbered-notation.app/favicon.svg"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源推荐】antdv-next 是 Ant Design 设计体系的 vue 实现",
+          "url": "https://github.com/antfu/skills",
+          "author": "selicens",
+          "authorUrl": "https://github.com/selicens",
+          "publishedAt": "2026-02-27T03:07:42Z",
+          "summary": "项目背景与定位 Vue 生态中原有的 antdesignvue 维护工作已实质性停滞（最后更新停留在 2024 年 11 月的 v4.2.6 版本）。在此背景下，antdvnext 希望延续在 vue 生态中使用 Ant Design 设计体系。 它并非对 antdesignvue 的简单修补或续写，而是基于 Ant Design 6.x 设计体系的全面重构。 架构升级：完整迁移了 Ant Design 6.x 的 Design Token 体系与语义化 DOM 结构。 底层重构：对标 React 生态的 rc 无头组件方案，底层采用 vc 无头组件。这种架构实现了样式与逻辑的解耦，不仅能完美复刻 Ant Design 的交互体验，更为有定制化需求的开发者提供了底层支撑，便于二次封装或构建私有组件库。 组件完成度 项目目前具备极高的完成度，已实现 Ant Design 规范中的绝大多数组件。 未实现组件：仅 List 组件未纳入开发。 原因说明：Ant Design 官方目前对 List 组件已有重构规划并标记为废弃 (Deprecated)，为保持代码库的前瞻性与一致性，antdvnext 选择与其保持同步，暂未实现该组件。 AI 支持 llm.txt 集成，默认集成了 llm.txt 支持，方便用户通过本地或远程 LLM 模型进行离线问答。 skills 支持，目前比较流行的本地的技能库，配合 Antfu Skills 集合 一起使用，可以减少 AI 幻觉导致的一些问题。 Nuxt 支持 提供了 @antdvnext/nuxt 模块 js export default defineNuxtConfig({ modules: ['@antdvnext/nuxt'], antd: { icon: true, }, css: ['antdvnext/dist/reset.css'], }) 相关链接 官方文档： 组件库仓库： 底层基础设施 (vc 组件)： <img width=\"2550\" height=\"1233\" alt=\"Image\" src=\" /",
+          "content": "## 项目背景与定位\nVue 生态中原有的 ant-design-vue 维护工作已实质性停滞（最后更新停留在 2024 年 11 月的 v4.2.6 版本）。在此背景下，antdv-next 希望延续在 vue 生态中使用 Ant Design 设计体系。\n\n它并非对 ant-design-vue 的简单修补或续写，而是基于 Ant Design 6.x 设计体系的全面重构。\n\n架构升级：完整迁移了 Ant Design 6.x 的 Design Token 体系与语义化 DOM 结构。\n底层重构：对标 React 生态的 rc-* 无头组件方案，底层采用 vc-*  无头组件。这种架构实现了样式与逻辑的解耦，不仅能完美复刻 Ant Design 的交互体验，更为有定制化需求的开发者提供了底层支撑，便于二次封装或构建私有组件库。\n\n## 组件完成度\n项目目前具备极高的完成度，已实现 Ant Design 规范中的绝大多数组件。\n\n未实现组件：仅 List 组件未纳入开发。\n原因说明：Ant Design 官方目前对 List 组件已有重构规划并标记为废弃 (Deprecated)，为保持代码库的前瞻性与一致性，antdv-next 选择与其保持同步，暂未实现该组件。\n\n## AI 支持\n- llm.txt 集成，默认集成了 llm.txt 支持，方便用户通过本地或远程 LLM 模型进行离线问答。\n- skills 支持，目前比较流行的本地的技能库，配合 [Antfu Skills 集合](https://github.com/antfu/skills) 一起使用，可以减少 AI 幻觉导致的一些问题。\n\n## Nuxt 支持\n提供了 @antdv-next/nuxt 模块\n```js\nexport default defineNuxtConfig({\n  modules: ['@antdv-next/nuxt'],\n  antd: {\n    icon: true,\n  },\n  css: ['antdv-next/dist/reset.css'],\n})\n```\n\n## 相关链接\n官方文档：https://www.antdv-next.com/\n组件库仓库：https://github.com/antdv-next/antdv-next\n底层基础设施 (vc-* 组件)：https://github.com/antdv-next/vue-components\n\n<img width=\"2550\" height=\"1233\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c808df4b-2d86-4f68-a73f-ef61a43d7586\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9078",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9078"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】nano banana 2",
+          "url": "https://yesnanobanana2.com",
+          "author": "lvjin521",
+          "authorUrl": "https://github.com/lvjin521",
+          "publishedAt": "2026-02-27T07:01:05Z",
+          "summary": "工具名称：nano banana 2 工具站 网址链接： 工具简介：nano banana 2是Google新发布的图片生成模型，为nano banana的最新V2版本 详细介绍：nano banana 2 是突破性 AI 绘图模型 Gemini 3.1 Flash Image 的社区版名称。完美平衡了极速响应与工作室级出图质量，相比初代 Nano Banana (Gemini 2.5 Flash Image) 实现了跨越式升级。 工具页面截图： <img width=\"1248\" height=\"832\" alt=\"Image\" src=\" /",
+          "content": "工具名称：nano banana 2 工具站\n网址链接：https://yesnanobanana2.com\n工具简介：nano banana 2是Google新发布的图片生成模型，为nano banana的最新V2版本\n详细介绍：nano banana 2 是突破性 AI 绘图模型 Gemini 3.1 Flash Image 的社区版名称。完美平衡了极速响应与工作室级出图质量，相比初代 Nano Banana (Gemini 2.5 Flash Image) 实现了跨越式升级。\n工具页面截图：\n\n<img width=\"1248\" height=\"832\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/267915d4-8038-434a-a0c0-dc97f7bc9a9a\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9079",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9079",
+          "siteLogo": "https://yesnanobanana2.com/favicon.ico"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【产品自荐】视频分区追踪工具｜精准人脸打码 & 动态遮罩",
+          "url": "https://pcai.nero.com/motion-tracker",
+          "author": "himia0802",
+          "authorUrl": "https://github.com/himia0802",
+          "publishedAt": "2026-02-27T07:35:14Z",
+          "summary": "【产品名称】Nero Motion Tracker 【支持平台】Windows 【产品页】 【功能简介】 !Image 我们最近更新了 Nero Motion Tracker，新增 Segment Tracking（分区追踪） 功能。 相比传统矩形框选追踪，新版本可以更精准地识别并跟随视频中的人物或物体轮廓运动，生成动态遮罩。适用于人脸打码、隐私保护、车牌模糊、局部特效添加等场景，在复杂运动画面中稳定性更高。 主要特点： 像素级不规则对象追踪 支持多目标独立追踪 支持 Blur / Mosaic / 颜色覆盖等效果 同时保留 Face Tracking 与 Zone Tracking 模式 适合内容创作者、新闻编辑、隐私处理等视频场景使用。 如有相关需求，欢迎体验交流。",
+          "content": "【产品名称】Nero Motion Tracker\n【支持平台】Windows\n【产品页】[https://pcai.nero.com/motion-tracker](https://pcai.nero.com/motion-tracker)\n\n【功能简介】\n\n![Image](https://github.com/user-attachments/assets/afac25ca-8520-404e-b284-91ca9d3530ef)\n\nhttps://github.com/user-attachments/assets/4a1d8a40-5796-4bf8-9b0c-087c9e0e3986\n\n我们最近更新了 Nero Motion Tracker，新增 Segment Tracking（分区追踪） 功能。\n\n相比传统矩形框选追踪，新版本可以更精准地识别并跟随视频中的人物或物体轮廓运动，生成动态遮罩。适用于人脸打码、隐私保护、车牌模糊、局部特效添加等场景，在复杂运动画面中稳定性更高。\n\n主要特点：\n\n- 像素级不规则对象追踪\n- 支持多目标独立追踪\n- 支持 Blur / Mosaic / 颜色覆盖等效果\n- 同时保留 Face Tracking 与 Zone Tracking 模式\n- 适合内容创作者、新闻编辑、隐私处理等视频场景使用。\n\n如有相关需求，欢迎体验交流。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9080",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9080",
+          "siteLogo": "https://framerusercontent.com/images/nxMSqIS8Rgd37p7TZjoUTFoBuXs.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】R2 Web: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。",
+          "url": "https://github.com/vikiboss/r2-web",
+          "author": "vikiboss",
+          "authorUrl": "https://github.com/vikiboss",
+          "publishedAt": "2026-02-27T08:45:42Z",
+          "summary": "项目信息 名称: R2 Web 源码: vikiboss/r2web 地址: r2.viki.moe 简介: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。 自荐说明 官方控制台功能基础，登录、操作麻烦；第三方客户端要下载安装，跨平台麻烦；命令行工具上手门槛高，不适合临时操作；其他 Web 项目不专注 R2，功能不完善，体验欠佳。 R2 Web 专注于简单和用户体验，基于原生 HTML5/CSS3/ES6+ 开发，打开浏览器就能用，跨平台零成本，也能当图床使用，支持拖拽、粘贴上传 + 图片压缩，省流量省时间。 一直用的 sm.ms 图床彻底改版，感觉有点臃肿，没合适图床就开始用 Cloudflare R2 做自建，找了一圈没合适 Web 端管理应用，要么审美不在线要么功能不到位。所以搓了个 R2 web 来管理，能充当图床角色，支持私有部署，尤其注重轻量、用户体验，后期不再迭代过多功能，保持精简。 核心总结：H5 纯前端/跨平台 + 目录/文件管理和预览 + 自动图片压缩 项目截图 !93c1205d.png !9392ee.png !ea7dd6.png",
+          "content": "## 项目信息\n \n- 名称: R2 Web\n- 源码: [vikiboss/r2-web](https://github.com/vikiboss/r2-web)\n- 地址: [r2.viki.moe](https://r2.viki.moe)\n- 简介: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。\n\n## 自荐说明\n\n官方控制台功能基础，登录、操作麻烦；第三方客户端要下载安装，跨平台麻烦；命令行工具上手门槛高，不适合临时操作；其他 Web 项目不专注 R2，功能不完善，体验欠佳。\n\nR2 Web 专注于简单和用户体验，基于原生 HTML5/CSS3/ES6+ 开发，打开浏览器就能用，跨平台零成本，也能当图床使用，支持拖拽、粘贴上传 + 图片压缩，省流量省时间。\n\n> 一直用的 sm.ms 图床彻底改版，感觉有点臃肿，没合适图床就开始用 Cloudflare R2 做自建，找了一圈没合适 Web 端管理应用，要么审美不在线要么功能不到位。所以搓了个 R2 web 来管理，能充当图床角色，支持私有部署，尤其注重轻量、用户体验，后期不再迭代过多功能，保持精简。\n\n> 核心总结：H5 纯前端/跨平台 + 目录/文件管理和预览 + 自动图片压缩\n\n**项目截图**\n\n![93c1205d.png](https://image.viki.moe/github/93c1205d.png)\n\n![9392ee.png](https://image.viki.moe/github/9392ee.png)\n\n![ea7dd6.png](https://image.viki.moe/github/ea7dd6.png)\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9081",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9081"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】比谷歌官方还便宜的Nano Banana 2",
+          "url": "https://cyberbara.com/nanobanana2",
+          "author": "ZeroLu",
+          "authorUrl": "https://github.com/ZeroLu",
+          "publishedAt": "2026-02-27T09:13:51Z",
+          "summary": "网站链接： Nano Banana 2 Image Generator Free 亮点： 1. 可以开关谷歌搜索 2. 很便宜，比谷歌官方便宜40%，邀请还有超多免费积分（用我的邀请码IFE2F752CC可以获得50积分），大家可以畅玩起来 3. 页面上放了一些提示词，大家可以直接测试 截图： <img width=\"2292\" height=\"1562\" alt=\"Image\" src=\" / 测试case： <img width=\"1376\" height=\"768\" alt=\"Image\" src=\" /",
+          "content": "## 网站链接：https://cyberbara.com/nanobanana2\n\n## Nano Banana 2 Image Generator Free\n\n### 亮点：\n1. 可以开关谷歌搜索\n2. 很便宜，比谷歌官方便宜40%，邀请还有超多免费积分（用我的邀请码IFE2F752CC可以获得50积分），大家可以畅玩起来\n3. 页面上放了一些提示词，大家可以直接测试\n\n### 截图：\n<img width=\"2292\" height=\"1562\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/20d9978b-cb78-40dd-bb33-470a42b30dd6\" />\n\n### 测试case：\n<img width=\"1376\" height=\"768\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dddcbc45-0e7d-421f-ac7a-bc272952e8c2\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9082",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9082",
+          "siteLogo": "https://cyberbara.com/favicon.ico"
+        }
+      ],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A436:21687B:374DE0:B66015:6A9E8532 and timestamp 2026-09-07 09:34:42 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": [],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A428:2B082F:379839:B73EF1:6A9E8532 and timestamp 2026-09-07 09:34:42 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源推荐] Horizon 全自动 AI 新闻聚合器，让 LLM 帮你过滤与总结新闻",
+          "url": "https://github.com/Thysrael/Horizon",
+          "author": "Thysrael",
+          "authorUrl": "https://github.com/Thysrael",
+          "publishedAt": "2026-02-27T15:41:12Z",
+          "summary": "项目地址 类别 人工智能 项目标题 Horizon 从多个可自定义的信息源中收集新闻，利用 AI 对新闻进行打分与过滤，最终生成一份包含摘要、社区讨论和背景知识的中英双语日报。 项目描述 是什么？ Horizon 是一个基于 Python 和 大语言模型 (LLM) 构建的 全自动化科技资讯聚合与摘要生成系统。 它本质上是一个“AI 驱动的主编”，不是通过简单的关键词过滤，而是利用 LLM 的理解能力来筛选、评估并重写自定义的新闻源的热点新闻，最终生成一份高质量的中英双语日报。 痛点： 对于开发者来说，及时了解科技动态是一个重要需求。但现实情况是： 信息分散 — 有价值的新闻散落在 Hacker News、Reddit、Telegram、RSS 等不同平台 噪声太大 — RSS 订阅一旦增多，大量低质量内容淹没真正重要的信息 阅读门槛高 — 英文新闻涉及的背景知识不够了解，读完也不知道社区怎么看 耗费精力 — 每天手动浏览多个平台花费大量时间 Horizon 通过 AI 自动打分过滤 + 背景知识补充 + 社区评论汇总 + 中英双语输出，将每日信息获取从\"大海捞针\"变为\"开箱即读\"。 场景： 个人开发者： 想要利用碎片时间高效获取全球技术动态，不想错过重要的开源项目发布或技术讨论。 技术团队/公司内网： 自动生成行业动态简报，推送到网页，作为团队的每日“早报”。 初学者： Agent 开发： 学习如何通过 API 调用 GPT4/Claude/DeepSeek，如何设计 Prompts 来让 AI 执行复杂的任务（如评分、摘要、翻译）。 自动化工作流： 结合 GitHub Actions 实现 Cron 定时任务，体验“代码写完后，系统自己每天在云端跑”的 DevOps 流程。 现代 Python 项目架构：模块化管理，uv 包管理器等。 亮点 📡 多源聚合 — 从 Hacker News、RSS、Reddit、Telegram 频道和 GitHub（Release 与用户动态）收集内容 🤖 AI 智能打分 — 支持 Claude、GPT4、Gemini、DeepSeek、豆包（Doubao）及任何 OpenAI 兼容 API，对每条内容评分 010，过滤噪声 🌐 中英双语日报 — 同时生成英文和中文版本的每日摘要 🔍 背景知识补充 — 自动搜索网络，为新闻中的陌生概念提供解释，降低阅读门槛 💬 社区声音 — 收集并汇总来自 HackerNews、Reddit 等评论区的社区讨论 🔗 跨源去重 — 自动合并来自不同平台的重复内容 📰 静态站点生成 — 通过 GitHub Actions 部署为 GitHub Pages 站点，定时自动更新 ⚙️ 高度可定制 — 单个 JSON 配置文件，轻松自定义信息源、过滤阈值和 AI 模型 示例代码 使用如下命令即可体验： shell git clone cd horizon 使用 uv 安装 uv sync 配置 cp .env.example .env 添加 API 密钥 cp data/config.example.json data/config.json 自定义信息源 运行 uv run horizon 使用默认 24 小时窗口 配置文件示例： json { \"ai\": { \"provider\": \"doubao\", // 支持 \"openai\", \"anthropic\", \"gemini\", \"doubao\" \"model\": \"doubao15pro256k\", \"apikeyenv\": \"DOUBAOAPIKEY\", \"languages\": [\"en\", \"zh\"] // 中英双语输出 }, \"sources\": { \"hackernews\": { \"enabled\": true, \"fetchtopstories\": 20, \"minscore\": 100 }, \"rss\": [ { \"name\": \"Simon Willison\", \"url\": \" } ], \"reddit\": { \"subreddits\": [{ \"subreddit\": \"MachineLearning\", \"sort\": \"hot\" }], \"fetchcomments\": 5 }, \"telegram\": { \"channels\": [{ \"channel\": \"zaihuapd\", \"fetchlimit\": 20 }] } }, \"filtering\": { \"aiscorethreshold\": 6.0, \"timewindowhours\": 24 } } 截图或演示视频 📖 在线演示 <table <tr <td width=\"50%\" <p align=\"center\"<strong日报总览</strong</p <img src=\" alt=\"日报总览\" / </td <td width=\"50%\" <p align=\"center\"<strong新闻详情</strong</p <img src=\" alt=\"新闻详情\" / </td </tr </table <details <summary<strong终端输出</strong</summary <br <p align=\"center\" <img src=\" alt=\"终端输出\" width=\"400\" / </p </details",
+          "content": "### 项目地址\n\nhttps://github.com/Thysrael/Horizon\n\n### 类别\n\n人工智能\n\n### 项目标题\n\nHorizon 从多个可自定义的信息源中收集新闻，利用 AI 对新闻进行打分与过滤，最终生成一份包含摘要、社区讨论和背景知识的中英双语日报。\n\n### 项目描述\n\n**是什么？**\n\nHorizon 是一个基于 Python 和 大语言模型 (LLM) 构建的 全自动化科技资讯聚合与摘要生成系统。\n\n它本质上是一个“AI 驱动的主编”，不是通过简单的关键词过滤，而是利用 LLM 的理解能力来筛选、评估并重写自定义的新闻源的热点新闻，最终生成一份高质量的中英双语日报。\n\n**痛点：**\n\n对于开发者来说，及时了解科技动态是一个重要需求。但现实情况是：\n\n- **信息分散** — 有价值的新闻散落在 Hacker News、Reddit、Telegram、RSS 等不同平台\n- **噪声太大** — RSS 订阅一旦增多，大量低质量内容淹没真正重要的信息\n- **阅读门槛高** — 英文新闻涉及的背景知识不够了解，读完也不知道社区怎么看\n- **耗费精力** — 每天手动浏览多个平台花费大量时间\n\nHorizon 通过 **AI 自动打分过滤** + **背景知识补充** + **社区评论汇总** + **中英双语输出**，将每日信息获取从\"大海捞针\"变为\"开箱即读\"。\n\n**场景：**\n\n- 个人开发者： 想要利用碎片时间高效获取全球技术动态，不想错过重要的开源项目发布或技术讨论。\n- 技术团队/公司内网： 自动生成行业动态简报，推送到网页，作为团队的每日“早报”。\n\n**初学者：**\n\n- Agent 开发： 学习如何通过 API 调用 GPT-4/Claude/DeepSeek，如何设计 Prompts 来让 AI 执行复杂的任务（如评分、摘要、翻译）。\n- 自动化工作流： 结合 GitHub Actions 实现 Cron 定时任务，体验“代码写完后，系统自己每天在云端跑”的 DevOps 流程。\n- 现代 Python 项目架构：模块化管理，`uv` 包管理器等。\n\n### 亮点\n\n- **📡 多源聚合** — 从 Hacker News、RSS、Reddit、Telegram 频道和 GitHub（Release 与用户动态）收集内容\n- **🤖 AI 智能打分** — 支持 Claude、GPT-4、Gemini、DeepSeek、豆包（Doubao）及任何 OpenAI 兼容 API，对每条内容评分 0-10，过滤噪声\n- **🌐 中英双语日报** — 同时生成英文和中文版本的每日摘要\n- **🔍 背景知识补充** — 自动搜索网络，为新闻中的陌生概念提供解释，降低阅读门槛\n- **💬 社区声音** — 收集并汇总来自 HackerNews、Reddit 等评论区的社区讨论\n- **🔗 跨源去重** — 自动合并来自不同平台的重复内容\n- **📰 静态站点生成** — 通过 GitHub Actions 部署为 GitHub Pages 站点，定时自动更新\n- **⚙️ 高度可定制** — 单个 JSON 配置文件，轻松自定义信息源、过滤阈值和 AI 模型\n\n### 示例代码\n\n使用如下命令即可体验：\n\n```shell\ngit clone https://github.com/Thysrael/Horizon.git\ncd horizon\n\n# 使用 uv 安装\nuv sync\n\n# 配置\ncp .env.example .env          # 添加 API 密钥\ncp data/config.example.json data/config.json  # 自定义信息源\n\n# 运行\nuv run horizon              # 使用默认 24 小时窗口\n```\n\n配置文件示例：\n\n```json\n{\n  \"ai\": {\n    \"provider\": \"doubao\",       // 支持 \"openai\", \"anthropic\", \"gemini\", \"doubao\"\n    \"model\": \"doubao-1-5-pro-256k\",\n    \"api_key_env\": \"DOUBAO_API_KEY\",\n    \"languages\": [\"en\", \"zh\"]   // 中英双语输出\n  },\n  \"sources\": {\n    \"hackernews\": { \"enabled\": true, \"fetch_top_stories\": 20, \"min_score\": 100 },\n    \"rss\": [\n      { \"name\": \"Simon Willison\", \"url\": \"https://simonwillison.net/atom/everything/\" }\n    ],\n    \"reddit\": {\n      \"subreddits\": [{ \"subreddit\": \"MachineLearning\", \"sort\": \"hot\" }],\n      \"fetch_comments\": 5\n    },\n    \"telegram\": {\n      \"channels\": [{ \"channel\": \"zaihuapd\", \"fetch_limit\": 20 }]\n    }\n  },\n  \"filtering\": {\n    \"ai_score_threshold\": 6.0,\n    \"time_window_hours\": 24\n  }\n}\n```\n\n### 截图或演示视频\n\n[📖 在线演示](https://thysrael.github.io/Horizon/)\n\n<table>\n<tr>\n<td width=\"50%\">\n<p align=\"center\"><strong>日报总览</strong></p>\n<img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/overview_zh.png\" alt=\"日报总览\" />\n</td>\n<td width=\"50%\">\n<p align=\"center\"><strong>新闻详情</strong></p>\n<img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/one_news_zh.png\" alt=\"新闻详情\" />\n</td>\n</tr>\n</table>\n\n<details>\n<summary><strong>终端输出</strong></summary>\n<br>\n<p align=\"center\">\n  <img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/terminal_log.png\" alt=\"终端输出\" width=\"400\" />\n</p>\n</details>",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3154",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3154"
+        }
+      ],
+      "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A42C:F563C:38226D:B85CE1:6A9E8532 and timestamp 2026-09-07 09:34:42 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Mizo",
+          "url": "https://www.producthunt.com/products/mizo/launches/mizo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Social Media Handled",
+          "content": "Most marketing platforms focus on managing content - Mizo focuses on creating it. By analysing your website, Mizo generates brand-aligned posts, campaigns, and schedules automatically, removing the need for manual input, design skills, or copywriting. It’s built to help busy businesses stay active online with minimal time and effort.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086215",
+          "logo": "https://ph-files.imgix.net/6d771c37-1365-4079-b6e2-f47831fcc9f0.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/576e7626-6f5e-4503-9978-f2cc7cb20b28.jpeg?auto=format",
+            "https://ph-files.imgix.net/4dc31088-17bf-4463-ba4e-33507d721e34.png?auto=format",
+            "https://ph-files.imgix.net/84e528b2-ddcb-4ef6-897d-afc028010e30.png?auto=format",
+            "https://ph-files.imgix.net/606d6778-6ff0-410f-a23b-60dcd85bb394.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/576e7626-6f5e-4503-9978-f2cc7cb20b28.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "BILNOW Medical Billing",
+          "url": "https://www.producthunt.com/products/bilnow-medical-billing/launches/bilnow-medical-billing?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Medical Billing and Coding solutions for US Healthcare",
+          "content": "BILNOW is a leading medical billing company in the United States, committed to providing accurate and efficient billing and coding solutions for healthcare providers. We specialize in comprehensive Revenue Cycle Management (RCM), offering tailored medical billing and coding services that ensure precise coding, prompt claim submissions, and minimized denials.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086556",
+          "logo": "https://ph-files.imgix.net/54f75396-4cc5-4d71-b163-fab640ca757d.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e11d5e94-69bc-4fc2-85fc-c6b9e8c2f81c.jpeg?auto=format",
+            "https://ph-files.imgix.net/e7fc7b14-a9c2-40c3-802b-fb08d393573d.jpeg?auto=format",
+            "https://ph-files.imgix.net/f2284f31-c99f-49b4-8b3f-c2a3a83072c3.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e11d5e94-69bc-4fc2-85fc-c6b9e8c2f81c.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Toggl Lockscreen Widget",
+          "url": "https://www.producthunt.com/products/toggl-lockscreen-widget/launches/toggl-lockscreen-widget?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "View and stop Toggl Track timers from lockscreen",
+          "content": "The only Toggl widget that updates on your lock screen in real time. Start a timer on web, desktop, or app, and it appears on your iPhone lock screen without needing to open the app. Stop your timers with one tap.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086689",
+          "logo": "https://ph-files.imgix.net/72b7c41d-375d-45ae-a019-913663fbaff7.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bba1175a-4fc7-4f6b-a907-f317b8e74092.png?auto=format",
+            "https://ph-files.imgix.net/688279ac-bf85-4af0-bab4-6403ccf3afa5.png?auto=format",
+            "https://ph-files.imgix.net/6765d571-1e2b-4fbf-9e7d-5cf1b0d7ac3b.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bba1175a-4fc7-4f6b-a907-f317b8e74092.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Browser Function",
+          "url": "https://www.producthunt.com/products/askyura-2/launches/browser-function?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Let your chatbot navigate pages and trigger UI actions",
+          "content": "Browser Function allows the AI agent to go beyond replies by interacting directly with your website like opening pages, navigating sections, or triggering forms in real time. Instead of telling users where to click, the AI guides them იქthere instantly. It turns chat into action, reduces friction, speeds up tasks, and improves conversion flow. How it works? The AI detects user intent and responds by navigating or triggering the right UI elements.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086437",
+          "logo": "https://ph-files.imgix.net/cd2464c1-91b7-4000-97dc-c81dc3ec2d06.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a24cb195-79d3-4539-a0ef-c95ae5df4cbe.png?auto=format",
+            "https://ph-files.imgix.net/2c2ede2d-501d-49b7-be8d-392d2f127ff7.png?auto=format",
+            "https://ph-files.imgix.net/4d7201c2-3281-40a2-b45a-4ccc96acd6c1.gif?auto=format",
+            "https://ph-files.imgix.net/75038c32-97b1-46a3-ba71-a8bc2c6fe30a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a24cb195-79d3-4539-a0ef-c95ae5df4cbe.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "ClawHost.chat",
+          "url": "https://www.producthunt.com/products/clawhost-chat/launches/clawhost-chat?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Launch your own OpenClaw in 1 minute with 1 click",
+          "content": "Managed cloud hosting for OpenClaw AI agents. Run your autonomous AI 24/7 — no hussle, no server management. Supports Claude, GPT-5, Gemini, Kimi K2.5, and any OpenAI-compatible model. Comes with Kimi K2.5 already included inside for free.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1085358",
+          "logo": "https://ph-files.imgix.net/cc984b5b-c94e-4a1c-b489-c564c026ecd9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c06f281a-65be-469a-a722-2771d98ac465.gif?auto=format",
+            "https://ph-files.imgix.net/664f48b5-c204-4a9b-a5b1-fc8ea7e2208e.png?auto=format",
+            "https://ph-files.imgix.net/aa24e8bf-d120-4131-b86a-3d243ce63227.png?auto=format",
+            "https://ph-files.imgix.net/cf40dd3b-4d85-4756-8d5f-1de5cbbb92ca.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c06f281a-65be-469a-a722-2771d98ac465.gif?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Claude Code Remote Control",
+          "url": "https://www.producthunt.com/products/claude-code-remote-access/launches/claude-code-remote-control?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Continue local sessions from any device with Remote Control",
+          "content": "Continue a local Claude Code session from your phone, tablet, or any browser using Remote Control. Works with claude.ai/code and the Claude mobile app.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1085498",
+          "logo": "https://ph-files.imgix.net/8002e20f-4049-4a86-b8a6-36b762acbdd0.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/45387e26-03bf-4d37-b79f-f24715b10684.png?auto=format",
+            "https://ph-files.imgix.net/b159077e-684f-493a-b0aa-619f585e0d76.png?auto=format",
+            "https://ph-files.imgix.net/238ee8d2-4625-4bf2-81c7-48073396f272.gif?auto=format",
+            "https://ph-files.imgix.net/2b2fd7d2-7878-432b-ba2e-f79d51a0f047.png?auto=format",
+            "https://ph-files.imgix.net/91e2def8-748a-4e80-b649-5f64da73ceeb.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/45387e26-03bf-4d37-b79f-f24715b10684.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "MaxClaw by MiniMax",
+          "url": "https://www.producthunt.com/products/minimax/launches/maxclaw-by-minimax?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Always-on managed agent based on OpenClaw powered by MiniMax",
+          "content": "OpenClaw × MiniMax Agent × M2.5, now fully unlocked. No deployment. No extra API fees. 7×24 across Telegram / WhatsApp / Slack / Discord. Ready-made MiniMax Expert ecosystem. Upgraded built-in tools for real work.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1085790",
+          "logo": "https://ph-files.imgix.net/ad54dafa-a784-4fb3-b57d-53d990e512f3.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/347b6074-4be9-4ec1-ac90-3c2fea2f6384.jpeg?auto=format",
+            "https://ph-files.imgix.net/365a6173-b430-438e-9f39-3c6d8fd2b21d.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/347b6074-4be9-4ec1-ac90-3c2fea2f6384.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Comparateur e-Facturation",
+          "url": "https://www.producthunt.com/products/comparateur-e-facturation/launches/comparateur-e-facturation?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Compare 23 certified e-invoicing platforms in France",
+          "content": "Comparatif indépendant des 23 plateformes agréées (PA) de facturation électronique. Tarifs, avis clients, notes détaillées. Pennylane, Qonto, Tiime, Axonaut, Sellsy et +18 solutions comparées. Trouvez la meilleure plateforme agréée gratuite ou payante pour septembre 2026.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086596",
+          "logo": "https://ph-files.imgix.net/a7b44100-3c86-4731-97cb-3f579a147233.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8c4fc2d0-9a94-4d36-b99b-edd104d9024c.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8c4fc2d0-9a94-4d36-b99b-edd104d9024c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Prompt GPT : Ai Prompt Generator",
+          "url": "https://www.producthunt.com/products/prompt-gpt-ai-prompt-generator/launches/prompt-gpt-ai-prompt-generator?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Write Smarter Prompts. Get Smarter Results.",
+          "content": "Prompt GPT is an all-in-one AI assistant for students, freshers, and job seekers, aiding in online tests, coding rounds, and campus placements. It provides instant MCQ solving, AI coding assistance, and a smart AI chat. Just scan The photo and get best prompt for the best result from your favourite ad tool also It allow you to recreate images and Solve and explain error to AI with best prompt",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086511",
+          "logo": "https://ph-files.imgix.net/fdc1cbf4-e7f8-4f7b-a1ee-46b3e0648921.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4680def4-9da5-4926-85f4-9acf425c469f.png?auto=format",
+            "https://ph-files.imgix.net/b1538a98-66b7-4b3a-8f69-6cdbe129e220.png?auto=format",
+            "https://ph-files.imgix.net/2d49ff3f-81b5-47ac-9e4d-e7cb3fdd5867.png?auto=format",
+            "https://ph-files.imgix.net/be8095f8-98cf-4bc8-be2c-bc10e5841a85.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4680def4-9da5-4926-85f4-9acf425c469f.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Flow Eazy",
+          "url": "https://www.producthunt.com/products/flow-eazy/launches/flow-eazy?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Odoo Consulting Services",
+          "content": "Helping businesses everywhere install, personalize, and enhance Odoo ERP for greater productivity. As your global consulting partner, we go beyond implementation to design a strategy that fits your business and fuels your success every day. Inefficient ERP setups can block workflows, fragment data, and delay important decisions. Tackling these challenges is vital for smoother operations and better growth.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086721",
+          "logo": "https://ph-files.imgix.net/559b94bb-e1c3-4471-9426-7ce64568eb21.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/caff6f15-cc37-453d-8b04-d17fbdfdd83b.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/caff6f15-cc37-453d-8b04-d17fbdfdd83b.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "AI Therapy, by Therapy-Chats.com",
+          "url": "https://www.producthunt.com/products/therapy-chats-com/launches/ai-therapy-by-therapy-chats-com?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Specific AI for Relationship Advice & Emotional Well-being",
+          "content": "Specialized AI Therapy for Emotions & Relationship Advice For providing higher accuracy and more relevant guidance, Therapy-Chats.com offers AI Therapy for specific domains of \"Emotional Resilience\", \"Relationships Advice\", \"Mastering Psychology of Attraction\", \"Personal Growth, Self-Actualization\". Deeper Psychological Work We have trained our AI blending ancient wisdom practices with proven psychological strategies, like ACT, CBT, MBCT, Neuroplasticity, Attachment Theory, Carl Jung, etc.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086697",
+          "logo": "https://ph-files.imgix.net/b2f58dc4-62c9-43a3-aea4-bac829205058.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/59635481-8be9-48c8-9116-e0391f575e8d.jpeg?auto=format",
+            "https://ph-files.imgix.net/10165822-1ff8-46c5-b268-31dd9336d0c4.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/59635481-8be9-48c8-9116-e0391f575e8d.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Pure Musk. ",
+          "url": "https://www.producthunt.com/products/pure-musk/launches/pure-musk?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Wrap Yourself in Soft Luxury Musk.",
+          "content": "Musk Silk Supreme 50 ml is a luxurious fragrance by Ajmal that blends the richness of pure musk with a soft, silky smoothness to deliver an unforgettable olfactory experience. The scent opens with a delicate touch of Lily of the Valley, followed by a refined and elegant musky heart, while the base offers a warm fusion",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086513",
+          "logo": "https://ph-files.imgix.net/c15c62c3-c196-437f-8a3a-4c2c503b2a9c.webp?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/33cfa2c1-2a19-4b33-a4b6-93a14ffebfca.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/33cfa2c1-2a19-4b33-a4b6-93a14ffebfca.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Venda+ CRM de Consórcio",
+          "url": "https://www.producthunt.com/products/venda-crm-de-consorcio/launches/venda-crm-de-consorcio?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "CRM for Consortium Sales: Simulator & WhatsApp",
+          "content": "Venda+ is the #1 CRM built exclusively for consortim sales professionals in Brazil. Unlike generic CRMs Venda+ is purpose-built with: Advanced multi-brand simulators (15s per simulation), ntegrated WhatsApp messaging with templates, Intellient lead pipeline management, Sales automation and fllow-up flows, Commission and contract tracking. Reslts: +340% in sales, 2,847+ active agents, 4.9 starsrating.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086318",
+          "logo": "https://ph-files.imgix.net/a30eca81-5b70-44aa-a9a2-902f8c2ebaf2.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/14fb73e7-6e47-4ffc-90b7-07af74679850.png?auto=format",
+            "https://ph-files.imgix.net/bffdcbaa-9234-406b-9f42-1872523346cf.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/14fb73e7-6e47-4ffc-90b7-07af74679850.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Thoracic Drainage Catheter With Trocar",
+          "url": "https://www.producthunt.com/products/thoracic-drainage-catheter-with-trocar/launches/thoracic-drainage-catheter-with-trocar?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Thoracic Drainage Catheter: GSTC | Global Manufacturers",
+          "content": "Thoracic Drainage Catheter is used to improve patient outcomes by draining air, blood, and fluids effectively, by offering vital support to professionals.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086122",
+          "logo": "https://ph-files.imgix.net/a1362613-dd5c-43b2-bc68-7eb0f702636b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8ff98d15-3648-4022-9ee7-83f99be65077.jpeg?auto=format",
+            "https://ph-files.imgix.net/05bb7ae9-57c4-4013-b13b-7bd766386067.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8ff98d15-3648-4022-9ee7-83f99be65077.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Free Image Tools by kortexa.ai",
+          "url": "https://www.producthunt.com/products/image-tools-by-kortexa-ai/launches/free-image-tools-by-kortexa-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Resize, crop, compress, convert in your browser.",
+          "content": "Free image tools - resize, compress, crop, convert. No signup, no ads, no subscriptions.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1085891",
+          "logo": "https://ph-files.imgix.net/eea3ab6d-7fb2-4c1b-b6a4-325433fa9f81.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/d12ee413-eaf5-407a-b01d-0614cefb6e20.png?auto=format",
+            "https://ph-files.imgix.net/7bf7da44-e2fa-4a93-bf53-b2db79f7f1ef.png?auto=format",
+            "https://ph-files.imgix.net/19929889-5fbd-450c-9c52-def77e230809.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/d12ee413-eaf5-407a-b01d-0614cefb6e20.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "P3 Healthcare Solutions",
+          "url": "https://www.producthunt.com/products/p3-healthcare-solutions/launches/p3-healthcare-solutions-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Optimizing Provider Performance",
+          "content": "P3 Healthcare Solutions Inc. provides comprehensive Revenue Cycle Management and MIPS Consulting tailored for hospitals, physicians, and private practices. We specialize in end-to-end Medical Billing and Coding, Eligibility Verification, and Payment Posting to ensure seamless financial operations. Our expert team drives profitability through aggressive Denial Management, Accounts Receivable recovery, and rigorous Medical Billing Audits.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086773",
+          "logo": "https://ph-files.imgix.net/e3b9cfda-ef5d-41f6-8da0-600d46c676a9.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e5425317-6b78-485b-b0b9-5288c74b2941.jpeg?auto=format",
+            "https://ph-files.imgix.net/6bba4041-ff54-4d82-950d-6b1023cf84d7.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e5425317-6b78-485b-b0b9-5288c74b2941.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": " Freight Management with 1X Freight",
+          "url": "https://www.producthunt.com/products/freight-management-with-1x-freight/launches/freight-management-with-1x-freight?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Streamline Freight Management with 1X Freight",
+          "content": "Transform your freight procurement with 1xFreight, a cost-effective and efficient platform for managing freight across all modes. Achieve a 90% time reduction, save over 15 hours weekly, and reduce freight costs by up to 30%. Onboard your team and partners in 10 minutes and gain centralized control of shipments, rates, and insights. Book a demo today and join over 2,000 trusted clients.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086396",
+          "logo": "https://ph-files.imgix.net/1d039db0-a6ee-4a64-a394-d74cfc558369.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/50d1f7e5-692a-41c5-8de7-0f7106840597.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/50d1f7e5-692a-41c5-8de7-0f7106840597.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "webly",
+          "url": "https://www.producthunt.com/products/webly/launches/webly-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Make the web fun again ✨",
+          "content": "discover, remix, and share personal apps. make the web fun again ✨",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1069221",
+          "logo": "https://ph-files.imgix.net/759becfc-23d2-490f-b40f-4329509a988b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/5a4e1d33-ba2b-4e48-9fa4-c783f9236bc5.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/5a4e1d33-ba2b-4e48-9fa4-c783f9236bc5.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "PitchRobin",
+          "url": "https://www.producthunt.com/products/pitchrobin/launches/pitchrobin?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Your AI twin takes pitches. You get Talking Points.",
+          "content": "Clone your investment bar into an AI twin. Founders pitch it interactively via your link, no mismatched calls. It probes in your style, maps conviction visually (Belief Maps: Held evidence vs. Gaps/Collapsed assumptions), and delivers one-click Meet/Refer/Pass. Unlike deck analyzers, this is active simulation + structured visuals for true triage. Saves 15+ hrs/week on low-signal reviews. $99/mo, free setup. VC-first: specialist, stateful, private. Try a demo pitch?",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086220",
+          "logo": "https://ph-files.imgix.net/edb750cd-a68f-4bbb-8aa5-c277077e70f2.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2e5fad32-06ec-426a-a943-83357ec6801c.png?auto=format",
+            "https://ph-files.imgix.net/df714693-20f0-424c-a209-e04cd432015c.png?auto=format",
+            "https://ph-files.imgix.net/0d601e84-3988-4de2-803e-e94331033643.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2e5fad32-06ec-426a-a943-83357ec6801c.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Hydrofy Smart Plant Tracker",
+          "url": "https://www.producthunt.com/products/hydrofy-hydroponic-garden-tracker/launches/hydrofy-smart-plant-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-02-27T08:01:00Z",
+          "summary": "Hydroponic System Management Tool",
+          "content": "Hydrofy is now more than a tracker. With Ask Hydrofy AI, growers get personalized guidance for any plant or system, turning pH and nutrient data into clear next steps. We also added beginner friendly guides inside the app and refined the UI for smoother system, plant, and log tracking. Built specifically for home hydroponics, Hydrofy combines monitoring, education, and AI support in one simple experience.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1086009",
+          "logo": "https://ph-files.imgix.net/23b6300e-22b0-4051-9739-623e21563538.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8867c140-feb1-4829-b7f9-afb145795a04.jpeg?auto=format",
+            "https://ph-files.imgix.net/bf07969b-5a6f-4c5b-af40-9275761e9d0b.jpeg?auto=format",
+            "https://ph-files.imgix.net/965f220c-66b4-4702-8eb2-fc55f354854a.jpeg?auto=format",
+            "https://ph-files.imgix.net/88666a06-aedb-4c9d-b326-7b9d4c42b342.jpeg?auto=format",
+            "https://ph-files.imgix.net/348c409e-1f3d-41df-8ddd-e4fcc2f7440d.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8867c140-feb1-4829-b7f9-afb145795a04.jpeg?auto=format"
+        }
+      ]
+    }
+  ]
+}

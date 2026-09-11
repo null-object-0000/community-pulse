@@ -1,1 +1,672 @@
-{"fetchedAt":"2026-09-07T10:18:56.414Z","date":"2026-01-03","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[{"sourceId":"chinese-indie-dev","title":"Sheas Frameg","url":"https://frameg.spacetimee.xyz","author":"Space Time","authorUrl":"","publishedAt":"2026-01-03T00:00:00+08:00","summary":"开源光流法在线视频插帧工具 - [更多介绍](https://github.com/SpaceTimee/Sheas-Frameg)","content":"开源光流法在线视频插帧工具 - [更多介绍](https://github.com/SpaceTimee/Sheas-Frameg)","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-01-03-Sheas Frameg-https://frameg.spacetimee.xyz"},{"sourceId":"chinese-indie-dev","title":"WordMoment","url":"https://wordmoment.xujingyichang.top/","author":"Space Time","authorUrl":"","publishedAt":"2026-01-03T00:00:00+08:00","summary":"专注于背单词的纯前端 Web 应用 - [开源地址](https://github.com/WtecHtec/WordMoment)","content":"专注于背单词的纯前端 Web 应用 - [开源地址](https://github.com/WtecHtec/WordMoment)","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-01-03-WordMoment-https://wordmoment.xujingyichang.top/"},{"sourceId":"chinese-indie-dev","title":"软著 Pro","url":"https://ruanzhu.pro","author":"hackun666","authorUrl":"","publishedAt":"2026-01-03T00:00:00+08:00","summary":"AI 软著生成器，帮助用户生成软件著作权申请文档","content":"AI 软著生成器，帮助用户生成软件著作权申请文档","metrics":{},"tags":["indie-dev","已上线"],"externalId":"2026-01-03-软著 Pro-https://ruanzhu.pro"}]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【工具自荐】CV DebugMate C++: 一款适合计算机视觉/SLAM C++开发者的 1D/2D/3D数据可视化VS Code 调试插件","url":"https://github.com/dull-bird/cv_debug_mate_cpp","author":"dull-bird","authorUrl":"https://github.com/dull-bird","publishedAt":"2026-01-03T05:24:01Z","summary":"项目名称 CV DebugMate C++ 项目地址 一句话介绍 一款为 VS Code 补齐“视觉”短板的 C++ 调试可视化扩展，让计算机视觉与算法调试告别枯燥的内存数值。 详细介绍 在进行计算机视觉或机器人相关开发时，VS Code 开发者常因无法直观查看内存中的数据而陷入“盲调”。CV DebugMate C++ 灵感来源于 Visual Studio 著名的 Image Watch 插件，旨在打破 C++ 调试器与图形化展示之间的隔阂。它无需开发者在代码中临时插入任何绘图指令（如 cv::imshow），即可在断点停下的瞬间，将复杂的内存变量自动转化为直观的 1D 曲线、2D 图像或 3D 点云。 核心特点 多维全能可视化 (MultiDimensional Support)： 业内领先的同时支持 1D 数值序列（曲线/直方图）、2D 图像（OpenCV Mat/矩阵）及 3D 点云（Three.js 渲染）的 C++ 调试扩展。 <img width=\"1582\" height=\"974\" alt=\"Image\" src=\" / <img width=\"1582\" height=\"974\" alt=\"Image\" src=\" / <img width=\"1582\" height=\"974\" alt=\"Image\" src=\" / 零配置自动检测 (AutoDetection)： 深度集成 VS Code 调试协议，自动扫描当前作用域内的可视化类型，无需手动输入变量名，实现“即停即看”。 极高性能的交互体验 (HighPerformance Interaction)： 支持 100 倍像素级缩放观察、多视图同步联动（Sync View）、按轴着色渲染等，完美处理高分辨率图像与海量点云数据。 <img width=\"299\" height=\"530\" alt=\"Image\" src=\" / 广泛的调试器兼容性 (Broad Compatibility)： 完美适配 GDB、LLDB 及 MSVC，无论是 Windows 上的 MSVC 还是 macOS/Linux 环境均可无缝使用。 非侵入式调试 (NonIntrusive)： 纯 Webview 实现，不污染用户源代码，单步调试时自动刷新视图，极大提升算法复现与 Bug 定位效率。 技术栈 VS Code Extension API, TypeScript, Webview (HTML5/CSS3), Three.js (3D Rendering). 适用场景 非常适合从事 Open CV 图像处理、自动驾驶感知算法、机器人运动控制及计算几何的开发者。它是从 Visual Studio 迁移至 VS Code 的 C++ 算法工程师必备的效率利器。","content":"**项目名称**\nCV DebugMate C++\n\n**项目地址**\n[https://github.com/dull-bird/cv_debug_mate_cpp](https://github.com/dull-bird/cv_debug_mate_cpp)\n\n**一句话介绍**\n一款为 VS Code 补齐“视觉”短板的 C++ 调试可视化扩展，让计算机视觉与算法调试告别枯燥的内存数值。\n\n**详细介绍**\n在进行计算机视觉或机器人相关开发时，VS Code 开发者常因无法直观查看内存中的数据而陷入“盲调”。**CV DebugMate C++** 灵感来源于 Visual Studio 著名的 Image Watch 插件，旨在打破 C++ 调试器与图形化展示之间的隔阂。它无需开发者在代码中临时插入任何绘图指令（如 `cv::imshow`），即可在断点停下的瞬间，将复杂的内存变量自动转化为直观的 1D 曲线、2D 图像或 3D 点云。\n\n**核心特点**\n*   **多维全能可视化 (Multi-Dimensional Support)：** 业内领先的同时支持 1D 数值序列（曲线/直方图）、2D 图像（OpenCV Mat/矩阵）及 3D 点云（Three.js 渲染）的 C++ 调试扩展。\n\n<img width=\"1582\" height=\"974\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c1c55829-ddeb-47a9-aabb-511b309da47e\" />\n\n<img width=\"1582\" height=\"974\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5ad76fd4-c76c-48f4-93ed-636315104a68\" />\n\n<img width=\"1582\" height=\"974\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1b12e9ed-e8c0-40ae-a13f-55694d453a28\" />\n\n*   **零配置自动检测 (Auto-Detection)：** 深度集成 VS Code 调试协议，自动扫描当前作用域内的可视化类型，无需手动输入变量名，实现“即停即看”。\n*   **极高性能的交互体验 (High-Performance Interaction)：** 支持 100 倍像素级缩放观察、多视图同步联动（Sync View）、按轴着色渲染等，完美处理高分辨率图像与海量点云数据。\n\n<img width=\"299\" height=\"530\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f9a003d5-3127-4137-8180-61739cf8a149\" />\n\n*   **广泛的调试器兼容性 (Broad Compatibility)：** 完美适配 GDB、LLDB 及 MSVC，无论是 Windows 上的 MSVC 还是 macOS/Linux 环境均可无缝使用。\n*   **非侵入式调试 (Non-Intrusive)：** 纯 Webview 实现，不污染用户源代码，单步调试时自动刷新视图，极大提升算法复现与 Bug 定位效率。\n\n**技术栈**\nVS Code Extension API, TypeScript, Webview (HTML5/CSS3), Three.js (3D Rendering).\n\n**适用场景**\n非常适合从事 Open CV 图像处理、自动驾驶感知算法、机器人运动控制及计算几何的开发者。它是从 Visual Studio 迁移至 VS Code 的 C++ 算法工程师必备的效率利器。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8598","issueUrl":"https://github.com/ruanyf/weekly/issues/8598"},{"sourceId":"weekly-issues","title":"【工具自荐】nopin：让你输入密码又记不住密码的小工具","url":"https://nopin.org","author":"wongerpi","authorUrl":"https://github.com/wongerpi","publishedAt":"2026-01-03T07:00:12Z","summary":"免费自用、辅助减少手机使用时间的小工具/玩具 我习惯使用 iOS 的「屏幕使用时间 → App 限额」来帮助我减少手机的使用时间，但每当达到限额时，我可以轻松的输入 4 位密码来绕过限制（因为 4 位密码是我自己设置的），所以弄了个小工具，提高输入 4 位密码的成本，这样我就不会随意的绕过限制了 ✌️ 👉 我是如何减少分心的 <img width=\"996\" height=\"978\" alt=\"Image\" src=\" /","content":"\n**免费自用、辅助减少手机使用时间的小工具/玩具**\n\n我习惯使用 iOS 的「屏幕使用时间 → App 限额」来帮助我减少手机的使用时间，但每当达到限额时，我可以轻松的输入 4 位密码来绕过限制（因为 4 位密码是我自己设置的），所以弄了个小工具，提高输入 4 位密码的成本，这样我就不会随意的绕过限制了 ✌️\n\n👉 https://nopin.org\n\n[我是如何减少分心的](https://2pi.run/blog/01-how-to-reduce-distraction/)\n\n<img width=\"996\" height=\"978\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7de2720a-2940-44be-99a7-279c6bd374ee\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8599","issueUrl":"https://github.com/ruanyf/weekly/issues/8599"},{"sourceId":"weekly-issues","title":"【工具自荐】LeetSolv：一个用于算法题复习的本地 CLI 工具","url":"https://github.com/eannchen/leetsolv","author":"eannchen","authorUrl":"https://github.com/eannchen","publishedAt":"2026-01-03T13:15:50Z","summary":"项目名称：LeetSolv 项目地址： 简介： LeetSolv 是一个本地运行的 CLI 工具，用「间隔重复」的方式管理算法 / LeetCode 题目的复习。 我在 2025 年中前后做了约 190 道 LeetCode，发现一个问题：题目一直在往前做，但旧的解题思路会慢慢遗忘。只靠收藏题目或笔记，很难形成稳定的复习节奏。 LeetSolv 的思路不是背解法，而是定期重新做题。它会根据题目的重要性、熟悉度和思考深度，计算复习优先级，帮助决定「今天应该复习哪些题」。 特点： • 计分强调推理，而不是闪卡记忆 • 针对到期题目计算复习优先顺序 • 零依赖、本地运行","content":"**项目名称**：LeetSolv\n**项目地址**：https://github.com/eannchen/leetsolv\n\n**简介**：\nLeetSolv 是一个本地运行的 CLI 工具，用「间隔重复」的方式管理算法 / LeetCode 题目的复习。\n\n我在 2025 年中前后做了约 190 道 LeetCode，发现一个问题：题目一直在往前做，但旧的解题思路会慢慢遗忘。只靠收藏题目或笔记，很难形成稳定的复习节奏。\n\nLeetSolv 的思路不是背解法，而是定期重新做题。它会根据题目的重要性、熟悉度和思考深度，计算复习优先级，帮助决定「今天应该复习哪些题」。\n\n**特点**：\n• 计分强调推理，而不是闪卡记忆\n• 针对到期题目计算复习优先顺序\n• 零依赖、本地运行","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8600","issueUrl":"https://github.com/ruanyf/weekly/issues/8600"},{"sourceId":"weekly-issues","title":"【免费工具自荐】winutil最新2026汉化版，不到1mb的windows优化神器","url":"https://github.com/constansino/WinUtil_CN/tree/main","author":"constansino","authorUrl":"https://github.com/constansino","publishedAt":"2026-01-03T13:28:13Z","summary":"仓库地址： WinUtil 中文汉化版（非官方）— 20260103/Release 25.12.18同步版本 <img width=\"2000\" height=\"1583\" alt=\"PixPin20260103120832\" src=\" / 首先非常感谢 Chris Titus Tech 以及所有贡献者开发并维护 WinUtil。这个工具把“安装软件 / 系统优化 / 修复 / 更新策略 / MicroWin”等常用功能整合得非常清晰，对普通用户也很友好。 为方便中文用户理解每个选项的意义，我基于 20260103 我同步到的 WinUtil 版本制作了一个 中文汉化 + 功能说明版本，并开放给社区使用与共同维护。 免责声明： 本汉化版为个人维护的非官方版本，与上游无隶属关系。 我尽量只翻译 UI 文本与说明，不改动功能逻辑；但系统优化类工具仍存在风险，请自行评估并做好备份。 如你更信任上游，请以官方版本为准。 使用方法（建议） 一。傻瓜式 powershell管理员执行 powershell irm \" | iex 二。更推荐的方式：下载到本地后运行（更安全、可审计） 1. 下载汉化版脚本到本地（winutil.zhCN...ps1） 2. 打开 PowerShell（建议管理员权限） 3. 解除“来自互联网文件”的锁定（避免无法运行/闪退）： powershell UnblockFile Path \"\"你的目录\\winutil.zhCN.commented.20260103.ps1\"\" SetExecutionPolicy Scope Process ExecutionPolicy Bypass Force .\\winutil.zhCN.commented.20260103.ps1 为什么要 UnblockFile： Windows 会对从浏览器下载的脚本打上“Mark of the Web”，导致执行被限制或出现各种异常。解除锁定后更稳定。 汉化范围（已完成） 1) UI 顶部导航与通用按钮 Install / Tweaks / Config / Updates / MicroWin 等导航标签 常用按钮、提示文本、部分弹窗提示 2) Tweaks 页面（重点） 功能项标题：中文化 功能项解释：补充中文说明（帮助理解“这个开关到底改了什么，会影响什么”） 分组标题与注意事项（例如 Advanced Tweaks CAUTION） 说明：WinUtil 的很多条目不是写死在 XAML 里，而是来自脚本内部的配置（例如 tweaks 配置集合）。因此单纯汉化 XAML 会“看起来只翻了少量文字”。本汉化版把“配置层的条目标题/说明”也一起做了中文化。 3) 其他页面（逐步完善中） Install / Config / Updates / MicroWin：已汉化常用区域的标题与说明 软件条目名称（例如 7Zip、VS Code）通常保留产品英文名，避免用户对照困难 后续维护汉化的方法（给贡献者） 为了尽量降低与上游合并冲突，本汉化遵循以下原则： 1. 不改动功能逻辑 不改注册表路径、命令、参数、键名、逻辑分支；只处理用户可见文本（标题/描述/提示）。 2. 优先在“配置层”维护翻译 WinUtil 很多 UI 文本来自配置集合（例如 tweaks 项的 Title/Description）。 因此维护时建议只更新对应配置项的显示字段，而不是改内部 key/逻辑判断字段。 3. 建议用 patch / diff 方式维护 上游更新后先同步原版脚本 再应用汉化 patch 对照冲突位置补齐新增条目的翻译 如果你希望参与维护： 提交 PR 增补新条目的中文解释 或提交 issue 标注“哪一项翻译/解释不准确、需要更好的中文描述” 再次感谢上游开发者与社区贡献者！","content":"仓库地址：https://github.com/constansino/WinUtil_CN/tree/main\n# WinUtil 中文汉化版（非官方）— 2026-01-03/Release 25.12.18同步版本\n<img width=\"2000\" height=\"1583\" alt=\"PixPin_2026-01-03_12-08-32\" src=\"https://github.com/user-attachments/assets/fa871cb1-4d96-4f2e-9a9d-99730a720812\" />\n\n\n首先非常感谢 Chris Titus Tech 以及所有贡献者开发并维护 WinUtil。这个工具把“安装软件 / 系统优化 / 修复 / 更新策略 / MicroWin”等常用功能整合得非常清晰，对普通用户也很友好。\n\n为方便中文用户理解每个选项的意义，我基于 **2026-01-03 我同步到的 WinUtil 版本**制作了一个 **中文汉化 + 功能说明**版本，并开放给社区使用与共同维护。\n\n> 免责声明：  \n> - 本汉化版为个人维护的**非官方**版本，与上游无隶属关系。  \n> - 我尽量只翻译 UI 文本与说明，不改动功能逻辑；但系统优化类工具仍存在风险，请自行评估并做好备份。  \n> - 如你更信任上游，请以官方版本为准。\n\n---\n\n\n\n## 使用方法（建议）\n\n###  一。傻瓜式\npowershell管理员执行\n\n```powershell\nirm \"https://raw.githubusercontent.com/constansino/WinUtil_CN/refs/heads/main/winutil.zh_CN.commented.20260103.ps1\" | iex\n````\n### 二。更推荐的方式：下载到本地后运行（更安全、可审计）\n1. 下载汉化版脚本到本地（`winutil.zh_CN...ps1`）\n2. 打开 PowerShell（建议管理员权限）\n3. 解除“来自互联网文件”的锁定（避免无法运行/闪退）：\n\n```powershell\nUnblock-File -Path \"\"你的目录\\winutil.zh_CN.commented.20260103.ps1\"\"\nSet-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n.\\winutil.zh_CN.commented.20260103.ps1\n````\n\n> 为什么要 Unblock-File：\n> Windows 会对从浏览器下载的脚本打上“Mark of the Web”，导致执行被限制或出现各种异常。解除锁定后更稳定。\n\n---\n\n## 汉化范围（已完成）\n\n### 1) UI 顶部导航与通用按钮\n- Install / Tweaks / Config / Updates / MicroWin 等导航标签\n- 常用按钮、提示文本、部分弹窗提示\n\n### 2) Tweaks 页面（重点）\n- **功能项标题：中文化**\n- **功能项解释：补充中文说明**（帮助理解“这个开关到底改了什么，会影响什么”）\n- 分组标题与注意事项（例如 Advanced Tweaks - CAUTION）\n\n> 说明：WinUtil 的很多条目不是写死在 XAML 里，而是来自脚本内部的配置（例如 tweaks 配置集合）。因此单纯汉化 XAML 会“看起来只翻了少量文字”。本汉化版把“配置层的条目标题/说明”也一起做了中文化。\n\n### 3) 其他页面（逐步完善中）\n- Install / Config / Updates / MicroWin：已汉化常用区域的标题与说明\n- 软件条目名称（例如 7-Zip、VS Code）通常保留产品英文名，避免用户对照困难\n\n---\n\n\n## 后续维护汉化的方法（给贡献者）\n\n为了尽量降低与上游合并冲突，本汉化遵循以下原则：\n\n1. **不改动功能逻辑**\n   不改注册表路径、命令、参数、键名、逻辑分支；只处理用户可见文本（标题/描述/提示）。\n\n2. **优先在“配置层”维护翻译**\n   WinUtil 很多 UI 文本来自配置集合（例如 tweaks 项的 Title/Description）。\n   因此维护时建议只更新对应配置项的显示字段，而不是改内部 key/逻辑判断字段。\n\n3. **建议用 patch / diff 方式维护**\n\n   * 上游更新后先同步原版脚本\n   * 再应用汉化 patch\n   * 对照冲突位置补齐新增条目的翻译\n\n如果你希望参与维护：\n\n* 提交 PR 增补新条目的中文解释\n* 或提交 issue 标注“哪一项翻译/解释不准确、需要更好的中文描述”\n\n---\n\n再次感谢上游开发者与社区贡献者！\n","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"8601","issueUrl":"https://github.com/ruanyf/weekly/issues/8601"},{"sourceId":"weekly-issues","title":"【开源自荐】ChatTutor: 可视化AI Tutor","url":"https://github.com/HugeCatLab/ChatTutor","author":"sheepbox8646","authorUrl":"https://github.com/sheepbox8646","publishedAt":"2026-01-03T13:53:49Z","summary":"项目地址: ChatTutor 是拥有电子白板功能的 AI 教师，相比于Chatbot主要通过文字与用户交互,在真实课堂中，教师拥有许多教学工具——粉笔、电脑、黑板等——这些都能帮助学生更好地理解知识。但对于Chatbot来说，仅靠文字传递信息是非常有限的，尤其是在 STEM 学科中 ChatTutor使用Geogebra, Mermaid等工具实现了更好的与学习者的交互 <img width=\"2606\" height=\"1584\" alt=\"Image\" src=\" / <img width=\"2606\" height=\"1584\" alt=\"Image\" src=\" / <img width=\"2606\" height=\"1584\" alt=\"Image\" src=\" /","content":"项目地址: https://github.com/HugeCatLab/ChatTutor\n\nChatTutor 是拥有电子白板功能的 AI 教师，相比于Chatbot主要通过文字与用户交互,在真实课堂中，教师拥有许多教学工具——粉笔、电脑、黑板等——这些都能帮助学生更好地理解知识。但对于Chatbot来说，仅靠文字传递信息是非常有限的，尤其是在 STEM 学科中\n\nChatTutor使用Geogebra, Mermaid等工具实现了更好的与学习者的交互\n\n<img width=\"2606\" height=\"1584\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e5f78b34-65fb-4487-8903-42c649b857c6\" />\n\n<img width=\"2606\" height=\"1584\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8521e8bd-1c5d-4128-b7ca-0254ff682954\" />\n\n<img width=\"2606\" height=\"1584\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/aa17216f-1152-4f34-8305-cc64d1829feb\" />","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"8602","issueUrl":"https://github.com/ruanyf/weekly/issues/8602"}],"error":"gh api 失败: spawnSync gh ETIMEDOUT"},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"SprintFlint","url":"https://www.producthunt.com/products/sprintflint/launches/sprintflint?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Fast, powerful sprint planning & agile management","content":"SprintFlint is a modern agile project management tool designed for teams that move fast. Built with developers and product managers in mind, it streamlines sprint planning, task tracking, and team collaboration. Featuring real-time updates, intuitive dashboards, and seamless integrations with your favorite tools, SprintFlint helps teams ship faster and stay aligned.","metrics":{},"tags":["producthunt","new"],"externalId":"1057393","logo":"https://ph-files.imgix.net/4753f115-5832-4755-9e98-9b25f384048f.jpeg?auto=format","images":["https://ph-files.imgix.net/f2214d11-91da-468b-9805-77e24b6dc897.png?auto=format","https://ph-files.imgix.net/20108f1e-54ed-4ba2-929b-ceb390ffa21c.png?auto=format","https://ph-files.imgix.net/0d51a420-a2b5-4bfb-a61e-4a85f9a10e87.png?auto=format","https://ph-files.imgix.net/4748c87e-1631-44a9-b0d3-1e9f422acf78.png?auto=format","https://ph-files.imgix.net/33764cd5-aa21-4735-94c7-3cf3d1603767.png?auto=format","https://ph-files.imgix.net/e04f2202-6f9d-4204-bef1-4320b8cd5c37.png?auto=format","https://ph-files.imgix.net/a5ac0ce2-247a-4a10-a6fd-b380f7f21cf2.png?auto=format","https://ph-files.imgix.net/848e7e61-3bb0-4732-a4f6-fb5fa4137638.png?auto=format","https://ph-files.imgix.net/37a275a3-996a-47bb-a3ba-6cf141cf74cb.png?auto=format","https://ph-files.imgix.net/3d45a3cb-626f-41b4-913e-4501cdc2803b.png?auto=format","https://ph-files.imgix.net/84654344-b3c5-4fd4-a2de-e97c708afe4a.png?auto=format","https://ph-files.imgix.net/2cf0a0d0-d9e7-49c0-8c68-7cf7d94e42aa.png?auto=format","https://ph-files.imgix.net/c815eb23-86ed-4371-ae38-b5c9ffa97a9a.png?auto=format"],"image":"https://ph-files.imgix.net/f2214d11-91da-468b-9805-77e24b6dc897.png?auto=format"},{"sourceId":"producthunt","title":"YouReadFast","url":"https://www.producthunt.com/products/youreadfast/launches/youreadfast?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Read 3x faster with enhanced comprehension","content":"Read 3x faster with YouReadFast, a free RSVP speed reading web app. Supports PDF, EPUB, and pasted text with Optimal Recognition Point (ORP) technology to eliminate subvocalization. No install required.","metrics":{},"tags":["producthunt","new"],"externalId":"1057414","logo":"https://ph-files.imgix.net/8684f350-0727-4436-8e94-af77a6c783ff.png?auto=format","images":["https://ph-files.imgix.net/2ab0426c-e011-4c07-a2e0-0f508535b3a3.webp?auto=format"],"image":"https://ph-files.imgix.net/2ab0426c-e011-4c07-a2e0-0f508535b3a3.webp?auto=format"},{"sourceId":"producthunt","title":"Better Keep Notes","url":"https://www.producthunt.com/products/better-keep-notes/launches/better-keep-notes?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Your thoughts should stay yours","content":"Better Keep Notes - A beautiful, private note-taking app with rich text, better organization, and offline-friendly notes.","metrics":{},"tags":["producthunt","new"],"externalId":"1057346","logo":"https://ph-files.imgix.net/66d88dc9-8997-4173-b828-644675d4f380.png?auto=format","images":["https://ph-files.imgix.net/bda85546-ced4-41e4-9078-f28ff5f265a0.png?auto=format","https://ph-files.imgix.net/e8aae1db-1ed7-4587-a00c-063139a97744.png?auto=format","https://ph-files.imgix.net/ab11a237-7070-4867-9b7e-f9e412a97b56.png?auto=format","https://ph-files.imgix.net/4363b28b-fd38-4aec-b2dc-26bce5b71ef5.png?auto=format","https://ph-files.imgix.net/ce722d98-b487-4ae9-9fab-794d8591b69d.png?auto=format","https://ph-files.imgix.net/3e3770e7-1485-49c7-8d0d-02b143a6368f.png?auto=format","https://ph-files.imgix.net/8b9dd956-e4c5-453d-98b6-c5fbb9112ba5.png?auto=format"],"image":"https://ph-files.imgix.net/bda85546-ced4-41e4-9078-f28ff5f265a0.png?auto=format"},{"sourceId":"producthunt","title":"MacroTracker","url":"https://www.producthunt.com/products/macrotracker/launches/macrotracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"the best calorie tracker ever created for FREE","content":"Track your calories, macros, and nutrients with precision. Build meals, customize foods, and stay on top of your goals—whether it’s muscle gain, fat loss, or maintenance.","metrics":{},"tags":["producthunt","new"],"externalId":"1057514","logo":"https://ph-files.imgix.net/b19ea82f-a67c-44ce-be9d-8e49a728e6b8.jpeg?auto=format","images":["https://ph-files.imgix.net/b07e3553-fb00-4995-b8a1-f6a9ee82cab4.png?auto=format"],"image":"https://ph-files.imgix.net/b07e3553-fb00-4995-b8a1-f6a9ee82cab4.png?auto=format"},{"sourceId":"producthunt","title":"BlindTruth","url":"https://www.producthunt.com/products/blindtruth/launches/blindtruth?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Anonymous Reviews, Discussions & Stories","content":"Expose Toxic Workplaces Before They Destroy You BlindTruth lets employees anonymously share and explore reviews, stories, and discussions about their workplaces. Unlike other platforms, it combines honest company insights, real employee experiences, salary transparency, and open discussions—all in one safe, anonymous space. Learn, share, and make informed decisions while enjoying a community that values honesty and privacy.","metrics":{},"tags":["producthunt","new"],"externalId":"1057355","logo":"https://ph-files.imgix.net/2f4ae069-bd1a-48ff-92c0-ffbf5d17a62e.png?auto=format","images":["https://ph-files.imgix.net/088c0d87-ed6b-41cc-9005-675fea29aaf2.png?auto=format","https://ph-files.imgix.net/48179d1c-45cc-4e65-8904-90571d8dcfe7.jpeg?auto=format"],"image":"https://ph-files.imgix.net/088c0d87-ed6b-41cc-9005-675fea29aaf2.png?auto=format"},{"sourceId":"producthunt","title":"Tymflow","url":"https://www.producthunt.com/products/tymflow/launches/tymflow?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"The time tracker that makes you want to track your time","content":"TTymFlow transforms boring time tracking into a rewarding experience for solopreneurs. WHY TYMFLOW EXISTS: Time trackers fail due to psychological factors, not technical features. Nobody enjoys using them. TymFlow addresses this by making tracking enjoyable. THE DIFFERENCE: Toggl, Clockify, and Harvest are great tools. But they're boring. TymFlow makes tracking actually enjoyable. That's why people stick with it. Built by an indie maker who got tired of boring tools.","metrics":{},"tags":["producthunt","new"],"externalId":"1057484","logo":"https://ph-files.imgix.net/45416c5e-e142-42db-b785-e7f44db56f90.png?auto=format","images":["https://ph-files.imgix.net/1f608ebc-a03d-4ef4-813d-72ddd0c6b17f.png?auto=format","https://ph-files.imgix.net/4b17594d-be72-470c-8290-672e34c9ef70.png?auto=format","https://ph-files.imgix.net/d78139df-d974-4921-9a39-51be03847fae.png?auto=format"],"image":"https://ph-files.imgix.net/1f608ebc-a03d-4ef4-813d-72ddd0c6b17f.png?auto=format"},{"sourceId":"producthunt","title":"Elixa","url":"https://www.producthunt.com/products/elixa/launches/elixa?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"AI Agent Talent Pool + Workspace (Free | Early Access)","content":"Elixa is an AI agent marketplace and workspace where founders install ready-made AI employees to run their entire company. Every function lives in one shared workspace, where AI employees collaborate like a real team to operate the business as a whole. No setup, no workflows, no tools to learn. Elixa isn’t software you use - it’s the company that runs!","metrics":{},"tags":["producthunt","new"],"externalId":"1052356","logo":"https://ph-files.imgix.net/a4b92920-6f48-43ea-8d10-201ab6ee4765.png?auto=format","images":["https://ph-files.imgix.net/e8be6945-68bb-439f-af84-d9c724e1b995.png?auto=format","https://ph-files.imgix.net/5fcf8007-ab19-4c91-b1ab-4ad32866be2b.png?auto=format","https://ph-files.imgix.net/3445ca1e-c07b-4b4f-bf9d-67c99acf5fa6.png?auto=format","https://ph-files.imgix.net/2d50fafa-1030-47a6-946f-f151ab2ca430.png?auto=format"],"image":"https://ph-files.imgix.net/e8be6945-68bb-439f-af84-d9c724e1b995.png?auto=format"},{"sourceId":"producthunt","title":"FAOS AI","url":"https://www.producthunt.com/products/faos-ai/launches/faos-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"AI-powered fashion photography service for e-commerce.","content":"Transform product photos into professional fashion images with AI models. No photoshoots needed. Start free.","metrics":{},"tags":["producthunt","new"],"externalId":"1057358","logo":"https://ph-files.imgix.net/98c09f67-5195-44bc-b352-690d02d19733.svg?auto=format","images":["https://ph-files.imgix.net/0facb331-b78a-4f77-92ea-a556bf7958e4.png?auto=format"],"image":"https://ph-files.imgix.net/0facb331-b78a-4f77-92ea-a556bf7958e4.png?auto=format"},{"sourceId":"producthunt","title":"QueckSilver","url":"https://www.producthunt.com/products/quecksilver/launches/quecksilver?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Self-Made Mail Provider","content":"Get your free @quecksilver.ch email address. Lightning-fast, secure, and protected in Switzerland. It doenst have features that make it stand out yet. My first Goal was to just build a mail provider.","metrics":{},"tags":["producthunt","new"],"externalId":"1057513","logo":"https://ph-files.imgix.net/4a5cd273-9c94-4bb4-a73b-273d0b8d58a1.png?auto=format","images":["https://ph-files.imgix.net/4e6ae8aa-7abf-44e8-a788-443b01acacdb.png?auto=format","https://ph-files.imgix.net/44e49318-ed5f-4a4f-a8be-9751b81e9135.png?auto=format","https://ph-files.imgix.net/ac93e60c-d709-48c1-bd4e-99fd14fa9ebc.png?auto=format"],"image":"https://ph-files.imgix.net/4e6ae8aa-7abf-44e8-a788-443b01acacdb.png?auto=format"},{"sourceId":"producthunt","title":"RealBrand Filter","url":"https://www.producthunt.com/products/realbrand-filter/launches/realbrand-filter?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Clean up Amazon search results, remove ads & unknown brands.","content":"RealBrand Filter automatically identifies and filters out suspicious Amazon brands, so you only see products from brands you know and trust. Remove sponsored ads, irrelevant items, suspicious/unknown brands, customize your brand list, highlight trusted brands, and more. Easy to use, free browser extension. Supports all Chromium-based browsers.","metrics":{},"tags":["producthunt","new"],"externalId":"1057449","logo":"https://ph-files.imgix.net/a253c4c7-7f80-4390-b480-618b66c7f514.png?auto=format","images":["https://ph-files.imgix.net/005fd769-b602-457b-a280-fcf90bec3be8.png?auto=format","https://ph-files.imgix.net/2c1eddd0-74cc-4c30-a6b0-18d1fe093f54.jpeg?auto=format","https://ph-files.imgix.net/f849d110-3c3d-47d7-8ad9-13ba731d1b00.jpeg?auto=format","https://ph-files.imgix.net/c60b58e8-242f-4d4a-9b29-2bfe2405ddeb.jpeg?auto=format","https://ph-files.imgix.net/2bd070ca-4508-49dd-97a3-127604f828c2.jpeg?auto=format","https://ph-files.imgix.net/1b2fc387-ed63-4423-afc4-5e2860a01a29.jpeg?auto=format","https://ph-files.imgix.net/3e88aa3f-6325-424b-8063-5b96e844d983.jpeg?auto=format"],"image":"https://ph-files.imgix.net/005fd769-b602-457b-a280-fcf90bec3be8.png?auto=format"},{"sourceId":"producthunt","title":"Project Yoked","url":"https://www.producthunt.com/products/project-yoked/launches/project-yoked?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"All in One Fitness App","content":"Project Yoked is the all-in-one fitness social platform that replaces your workout logger, video editor, and social feed. Track your strength gains, create professional TikTok-style fitness reels with our native \"Stitched Stack\" editor, and earn money from your views. Stop paying for 5 different apps—get everything you need to build muscle and community in one place. Founded by a dev & creator duo to revolutionize fitness tech.","metrics":{},"tags":["producthunt","new"],"externalId":"1057519","logo":"https://ph-files.imgix.net/b85c0cd2-7e41-46ff-9531-43e9f1addbf2.png?auto=format","images":["https://ph-files.imgix.net/35244e81-d526-4288-9516-d9ac4526afe2.jpeg?auto=format","https://ph-files.imgix.net/db010321-cb75-4588-b5d6-16b7423baeb2.png?auto=format","https://ph-files.imgix.net/e5ec0a5d-cb0f-47b1-8412-dcc21515b6f1.png?auto=format","https://ph-files.imgix.net/aa8774e5-6359-4861-a3fa-9641390431a4.png?auto=format","https://ph-files.imgix.net/6120fa75-8563-4c16-abf8-458f9e8026cb.png?auto=format","https://ph-files.imgix.net/1e28b954-70e2-4a96-ad65-8119f08bc16c.png?auto=format","https://ph-files.imgix.net/c584e1c0-4941-4ac2-b2f7-c0f157a6eefc.png?auto=format","https://ph-files.imgix.net/2ba0300a-64e3-4b84-b0a5-f68dbe283d9f.png?auto=format","https://ph-files.imgix.net/21aed756-fe3a-494d-b670-051990aab131.png?auto=format","https://ph-files.imgix.net/4819c79d-ca1e-4963-b74e-2a48b4325fca.jpeg?auto=format"],"image":"https://ph-files.imgix.net/35244e81-d526-4288-9516-d9ac4526afe2.jpeg?auto=format"},{"sourceId":"producthunt","title":"StudyLens","url":"https://www.producthunt.com/products/studylens/launches/studylens?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Turn notes into study guides","content":"Upload your notes and get AI-generated study guides with practice questions in minutes. 100% free, no signup. Study smarter and faster today!","metrics":{},"tags":["producthunt","new"],"externalId":"1050666","logo":"https://ph-files.imgix.net/2f23892c-3204-4831-ac64-314aa4699110.jpeg?auto=format","images":["https://ph-files.imgix.net/f8a6d31a-d678-4226-b386-b244ac79faaa.png?auto=format","https://ph-files.imgix.net/8b9d5930-8d92-482c-bceb-0ed6924565f7.png?auto=format","https://ph-files.imgix.net/706a8059-ddd1-4482-95f7-384b30fb635d.png?auto=format"],"image":"https://ph-files.imgix.net/f8a6d31a-d678-4226-b386-b244ac79faaa.png?auto=format"},{"sourceId":"producthunt","title":"Convertica","url":"https://www.producthunt.com/products/convertica/launches/convertica?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Convertica Your trusted partner for all PDF document needs.","content":"Convertica: The Next Level of Online PDF Tools Introducing Convertica, the first fully free online PDF platform that combines essential tools like convert and merge with unique, professional-grade features typically found in paid software: edit text directly in PDF, batch processing, and intelligent table recognition. Convertica ensures your files are never uploaded. Experience maximum processing speed and 100% data privacy with every operation. Fast, secure, and no registration required.","metrics":{},"tags":["producthunt","new"],"externalId":"1057467","logo":"https://ph-files.imgix.net/482a52b4-0742-42c5-95c4-e2dc4352c767.png?auto=format","images":["https://ph-files.imgix.net/28c5eece-27f8-4c70-b645-ed598ad0c9df.jpeg?auto=format","https://ph-files.imgix.net/64348b35-8ab5-44f1-b407-7a21ed03b814.png?auto=format","https://ph-files.imgix.net/4b2e86f8-493b-481e-8e28-677204bf96ed.png?auto=format"],"image":"https://ph-files.imgix.net/28c5eece-27f8-4c70-b645-ed598ad0c9df.jpeg?auto=format"},{"sourceId":"producthunt","title":"Captions Pal","url":"https://www.producthunt.com/products/captions-pal/launches/captions-pal?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"1-click captions for short form videos","content":"Create scroll-stopping captions for TikTok, Reels, and Shorts in seconds with ready-made styles and smooth timing.","metrics":{},"tags":["producthunt","new"],"externalId":"1057603","logo":"https://ph-files.imgix.net/78edf705-096a-4c55-b6b8-14fc9f546ab9.png?auto=format","images":["https://ph-files.imgix.net/727bc840-6063-45ac-a8e0-660d558282cd.png?auto=format","https://ph-files.imgix.net/4dff1173-7c6d-41ad-87d3-7196ea20b1e5.png?auto=format"],"image":"https://ph-files.imgix.net/727bc840-6063-45ac-a8e0-660d558282cd.png?auto=format"},{"sourceId":"producthunt","title":"Gradienite","url":"https://www.producthunt.com/products/gradienite/launches/gradienite?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Turn image into masterpiece with stunning gradient overlays","content":"A gradient overlay tool that turns any image into a vibrant background for websites, social posts, and branding.","metrics":{},"tags":["producthunt","new"],"externalId":"1057196","logo":"https://ph-files.imgix.net/6c6a37d1-d1ab-4c9e-a7bb-4a7ea79e0266.jpeg?auto=format","images":["https://ph-files.imgix.net/1e90deb3-6581-476b-aacc-3671a59df22b.jpeg?auto=format","https://ph-files.imgix.net/36f3c472-7929-44fc-a03d-224d81cf72df.jpeg?auto=format","https://ph-files.imgix.net/ac59435e-0d51-42c1-8406-3f89bced27c1.jpeg?auto=format"],"image":"https://ph-files.imgix.net/1e90deb3-6581-476b-aacc-3671a59df22b.jpeg?auto=format"},{"sourceId":"producthunt","title":"Scanner App For Docs","url":"https://www.producthunt.com/products/scanner-app-for-docs/launches/scanner-app-for-docs?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Your all in one scanner","content":"Introducing Scanner App For Docs - Your Ultimate Document Scanner, designed to make scanning, organizing, and managing your documents faster, easier, and smarter than ever before. Whether you're capturing receipts, IDs, contracts, business cards, or multi-page documents, Scanner App For Docs delivers clean, high-quality results with powerful editing tools and an elegant, intuitive interface.","metrics":{},"tags":["producthunt","new"],"externalId":"1057340","logo":"https://ph-files.imgix.net/1925e437-41df-43a6-ac72-d2bdf74583d8.png?auto=format","images":["https://ph-files.imgix.net/0323792b-c0c8-4184-8014-a134484af977.png?auto=format","https://ph-files.imgix.net/af3f5a2a-60fd-4677-9861-4dbc88ed9c1b.png?auto=format","https://ph-files.imgix.net/1845f630-c2bc-4616-8c0e-a8678a9f2886.png?auto=format","https://ph-files.imgix.net/397c92cf-441d-4758-89c2-c7a895341574.png?auto=format","https://ph-files.imgix.net/b29914fd-e2be-4c73-bc51-fea296e116d3.png?auto=format","https://ph-files.imgix.net/93ad0130-c864-4268-834a-0d68fee10521.png?auto=format"],"image":"https://ph-files.imgix.net/0323792b-c0c8-4184-8014-a134484af977.png?auto=format"},{"sourceId":"producthunt","title":"I Hate PDF","url":"https://www.producthunt.com/products/i-hate-pdf/launches/i-hate-pdf?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Fast, simple tools for messy PDFs","content":"The ultimate free online PDF toolkit. Merge, split, compress, edit, convert to Word/Excel, and OCR PDFs instantly. No registration required. Fast, secure, and 100% free.","metrics":{},"tags":["producthunt","new"],"externalId":"1057420","logo":"https://ph-files.imgix.net/b7b03d32-1129-40ab-97a8-d896c305ba53.x-icon?auto=format","images":["https://ph-files.imgix.net/618671f3-d15c-43c2-9973-a3e5e067473f.png?auto=format","https://ph-files.imgix.net/69c71fc9-687c-4c99-b3ae-972e2230229f.png?auto=format","https://ph-files.imgix.net/55373795-20c6-411a-953b-694dd1cc8d89.png?auto=format"],"image":"https://ph-files.imgix.net/618671f3-d15c-43c2-9973-a3e5e067473f.png?auto=format"},{"sourceId":"producthunt","title":"Telegram","url":"https://www.producthunt.com/products/telegram-43/launches/telegram-1e4b5bf4-cbb1-473a-990c-a9e949792dc7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Telegram bot with a TikTok-like random channel feed","content":"Randbot is a Telegram bot that turns channel discovery into a TikTok-style random feed. Users DM the bot, tap /random, and get a surprise post from mapped channels with quick “Subscribe” or “Next” buttons. Channel admins just add the bot as admin; it scans existing media and drops the channel into the shared feed.","metrics":{},"tags":["producthunt","new"],"externalId":"1057261","logo":"https://ph-files.imgix.net/790db7dd-2081-4768-8170-536804d24a5a.jpeg?auto=format","images":["https://ph-files.imgix.net/c755123e-4eaa-4f4c-8a65-364a11875189.jpeg?auto=format","https://ph-files.imgix.net/2e9bea30-a0f8-4ad2-852a-9e901f9ff3d0.png?auto=format","https://ph-files.imgix.net/752c1d62-1db1-41c4-9928-ffbd627ed696.png?auto=format"],"image":"https://ph-files.imgix.net/c755123e-4eaa-4f4c-8a65-364a11875189.jpeg?auto=format"},{"sourceId":"producthunt","title":"Zaloo","url":"https://www.producthunt.com/products/zaloo/launches/zaloo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"Real-world social network powered by proximity & Bluetooth","content":"Connect with people nearby using Bluetooth - no internet needed. Zaloo uses BLE to detect everyone within 100m for local chat without data. Perfect for coffee shops, events, or campus. Features: offline proximity chat, radar to see who's around, send invitations for 1-on-1 connections, and private sessions lasting 3 hours. Unlike traditional social apps connecting distant people, Zaloo brings real-world spontaneous connections with those next to you. Available now on Android via Google Play!","metrics":{},"tags":["producthunt","new"],"externalId":"1050691","logo":"https://ph-files.imgix.net/221a4713-624b-4a61-b638-cca6fc05f09d.png?auto=format","images":["https://ph-files.imgix.net/970e0363-8f64-49b6-8ea3-d2a702791135.png?auto=format","https://ph-files.imgix.net/49d25d3f-b468-44e0-8ffc-7d63c8a8f1ca.png?auto=format","https://ph-files.imgix.net/8947764c-7205-43ff-a62b-e8196c569b79.png?auto=format","https://ph-files.imgix.net/d0852a1a-b619-4d69-9743-0d40d712a7a0.png?auto=format","https://ph-files.imgix.net/0ca9cb68-014d-4dff-8560-0ca851314e13.png?auto=format","https://ph-files.imgix.net/2cc6f302-b142-467b-8324-91fc2449b8a2.png?auto=format","https://ph-files.imgix.net/be422daa-2690-4c49-a967-245c06361262.jpeg?auto=format"],"image":"https://ph-files.imgix.net/970e0363-8f64-49b6-8ea3-d2a702791135.png?auto=format"},{"sourceId":"producthunt","title":"XBooster","url":"https://www.producthunt.com/products/xbooster/launches/xbooster?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-01-03T08:01:00Z","summary":"x_client","content":"Supercharge your social media presence with AI. Generate engaging content, schedule posts, and grow your brand on X effortlessly.","metrics":{},"tags":["producthunt","new"],"externalId":"1057271","logo":"https://ph-files.imgix.net/fec96b58-68ef-4a88-874a-50f60b4a5536.jpeg?auto=format","images":["https://ph-files.imgix.net/f006d395-20eb-4c87-81b3-1b65fad68dda.jpeg?auto=format","https://ph-files.imgix.net/5c771375-7aed-4634-9e08-2e411f5cf8de.jpeg?auto=format","https://ph-files.imgix.net/ffe21353-884f-4ca4-985f-3c4d3eb3f9a4.jpeg?auto=format"],"image":"https://ph-files.imgix.net/f006d395-20eb-4c87-81b3-1b65fad68dda.jpeg?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T10:18:56.414Z",
+  "date": "2026-01-03",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": [
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "Sheas Frameg",
+          "url": "https://frameg.spacetimee.xyz",
+          "author": "Space Time",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T00:00:00+08:00",
+          "summary": "开源光流法在线视频插帧工具 - [更多介绍](https://github.com/SpaceTimee/Sheas-Frameg)",
+          "content": "开源光流法在线视频插帧工具 - [更多介绍](https://github.com/SpaceTimee/Sheas-Frameg)",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-01-03-Sheas Frameg-https://frameg.spacetimee.xyz",
+          "siteLogo": "https://frameg.spacetimee.xyz/icon.png?add2bb1059248c4d"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "WordMoment",
+          "url": "https://wordmoment.xujingyichang.top/",
+          "author": "Space Time",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T00:00:00+08:00",
+          "summary": "专注于背单词的纯前端 Web 应用 - [开源地址](https://github.com/WtecHtec/WordMoment)",
+          "content": "专注于背单词的纯前端 Web 应用 - [开源地址](https://github.com/WtecHtec/WordMoment)",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-01-03-WordMoment-https://wordmoment.xujingyichang.top/",
+          "siteLogo": "https://wordmoment.xujingyichang.top/vite.svg"
+        },
+        {
+          "sourceId": "chinese-indie-dev",
+          "title": "软著 Pro",
+          "url": "https://ruanzhu.pro",
+          "author": "hackun666",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T00:00:00+08:00",
+          "summary": "AI 软著生成器，帮助用户生成软件著作权申请文档",
+          "content": "AI 软著生成器，帮助用户生成软件著作权申请文档",
+          "metrics": {},
+          "tags": [
+            "indie-dev",
+            "已上线"
+          ],
+          "externalId": "2026-01-03-软著 Pro-https://ruanzhu.pro",
+          "siteLogo": "https://ruanzhu.pro/apple-touch-icon.png"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】CV DebugMate C++: 一款适合计算机视觉/SLAM C++开发者的 1D/2D/3D数据可视化VS Code 调试插件",
+          "url": "https://github.com/dull-bird/cv_debug_mate_cpp",
+          "author": "dull-bird",
+          "authorUrl": "https://github.com/dull-bird",
+          "publishedAt": "2026-01-03T05:24:01Z",
+          "summary": "项目名称 CV DebugMate C++ 项目地址 一句话介绍 一款为 VS Code 补齐“视觉”短板的 C++ 调试可视化扩展，让计算机视觉与算法调试告别枯燥的内存数值。 详细介绍 在进行计算机视觉或机器人相关开发时，VS Code 开发者常因无法直观查看内存中的数据而陷入“盲调”。CV DebugMate C++ 灵感来源于 Visual Studio 著名的 Image Watch 插件，旨在打破 C++ 调试器与图形化展示之间的隔阂。它无需开发者在代码中临时插入任何绘图指令（如 cv::imshow），即可在断点停下的瞬间，将复杂的内存变量自动转化为直观的 1D 曲线、2D 图像或 3D 点云。 核心特点 多维全能可视化 (MultiDimensional Support)： 业内领先的同时支持 1D 数值序列（曲线/直方图）、2D 图像（OpenCV Mat/矩阵）及 3D 点云（Three.js 渲染）的 C++ 调试扩展。 <img width=\"1582\" height=\"974\" alt=\"Image\" src=\" / <img width=\"1582\" height=\"974\" alt=\"Image\" src=\" / <img width=\"1582\" height=\"974\" alt=\"Image\" src=\" / 零配置自动检测 (AutoDetection)： 深度集成 VS Code 调试协议，自动扫描当前作用域内的可视化类型，无需手动输入变量名，实现“即停即看”。 极高性能的交互体验 (HighPerformance Interaction)： 支持 100 倍像素级缩放观察、多视图同步联动（Sync View）、按轴着色渲染等，完美处理高分辨率图像与海量点云数据。 <img width=\"299\" height=\"530\" alt=\"Image\" src=\" / 广泛的调试器兼容性 (Broad Compatibility)： 完美适配 GDB、LLDB 及 MSVC，无论是 Windows 上的 MSVC 还是 macOS/Linux 环境均可无缝使用。 非侵入式调试 (NonIntrusive)： 纯 Webview 实现，不污染用户源代码，单步调试时自动刷新视图，极大提升算法复现与 Bug 定位效率。 技术栈 VS Code Extension API, TypeScript, Webview (HTML5/CSS3), Three.js (3D Rendering). 适用场景 非常适合从事 Open CV 图像处理、自动驾驶感知算法、机器人运动控制及计算几何的开发者。它是从 Visual Studio 迁移至 VS Code 的 C++ 算法工程师必备的效率利器。",
+          "content": "**项目名称**\nCV DebugMate C++\n\n**项目地址**\n[https://github.com/dull-bird/cv_debug_mate_cpp](https://github.com/dull-bird/cv_debug_mate_cpp)\n\n**一句话介绍**\n一款为 VS Code 补齐“视觉”短板的 C++ 调试可视化扩展，让计算机视觉与算法调试告别枯燥的内存数值。\n\n**详细介绍**\n在进行计算机视觉或机器人相关开发时，VS Code 开发者常因无法直观查看内存中的数据而陷入“盲调”。**CV DebugMate C++** 灵感来源于 Visual Studio 著名的 Image Watch 插件，旨在打破 C++ 调试器与图形化展示之间的隔阂。它无需开发者在代码中临时插入任何绘图指令（如 `cv::imshow`），即可在断点停下的瞬间，将复杂的内存变量自动转化为直观的 1D 曲线、2D 图像或 3D 点云。\n\n**核心特点**\n*   **多维全能可视化 (Multi-Dimensional Support)：** 业内领先的同时支持 1D 数值序列（曲线/直方图）、2D 图像（OpenCV Mat/矩阵）及 3D 点云（Three.js 渲染）的 C++ 调试扩展。\n\n<img width=\"1582\" height=\"974\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c1c55829-ddeb-47a9-aabb-511b309da47e\" />\n\n<img width=\"1582\" height=\"974\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5ad76fd4-c76c-48f4-93ed-636315104a68\" />\n\n<img width=\"1582\" height=\"974\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1b12e9ed-e8c0-40ae-a13f-55694d453a28\" />\n\n*   **零配置自动检测 (Auto-Detection)：** 深度集成 VS Code 调试协议，自动扫描当前作用域内的可视化类型，无需手动输入变量名，实现“即停即看”。\n*   **极高性能的交互体验 (High-Performance Interaction)：** 支持 100 倍像素级缩放观察、多视图同步联动（Sync View）、按轴着色渲染等，完美处理高分辨率图像与海量点云数据。\n\n<img width=\"299\" height=\"530\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f9a003d5-3127-4137-8180-61739cf8a149\" />\n\n*   **广泛的调试器兼容性 (Broad Compatibility)：** 完美适配 GDB、LLDB 及 MSVC，无论是 Windows 上的 MSVC 还是 macOS/Linux 环境均可无缝使用。\n*   **非侵入式调试 (Non-Intrusive)：** 纯 Webview 实现，不污染用户源代码，单步调试时自动刷新视图，极大提升算法复现与 Bug 定位效率。\n\n**技术栈**\nVS Code Extension API, TypeScript, Webview (HTML5/CSS3), Three.js (3D Rendering).\n\n**适用场景**\n非常适合从事 Open CV 图像处理、自动驾驶感知算法、机器人运动控制及计算几何的开发者。它是从 Visual Studio 迁移至 VS Code 的 C++ 算法工程师必备的效率利器。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8598",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8598"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】nopin：让你输入密码又记不住密码的小工具",
+          "url": "https://nopin.org",
+          "author": "wongerpi",
+          "authorUrl": "https://github.com/wongerpi",
+          "publishedAt": "2026-01-03T07:00:12Z",
+          "summary": "免费自用、辅助减少手机使用时间的小工具/玩具 我习惯使用 iOS 的「屏幕使用时间 → App 限额」来帮助我减少手机的使用时间，但每当达到限额时，我可以轻松的输入 4 位密码来绕过限制（因为 4 位密码是我自己设置的），所以弄了个小工具，提高输入 4 位密码的成本，这样我就不会随意的绕过限制了 ✌️ 👉 我是如何减少分心的 <img width=\"996\" height=\"978\" alt=\"Image\" src=\" /",
+          "content": "\n**免费自用、辅助减少手机使用时间的小工具/玩具**\n\n我习惯使用 iOS 的「屏幕使用时间 → App 限额」来帮助我减少手机的使用时间，但每当达到限额时，我可以轻松的输入 4 位密码来绕过限制（因为 4 位密码是我自己设置的），所以弄了个小工具，提高输入 4 位密码的成本，这样我就不会随意的绕过限制了 ✌️\n\n👉 https://nopin.org\n\n[我是如何减少分心的](https://2pi.run/blog/01-how-to-reduce-distraction/)\n\n<img width=\"996\" height=\"978\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7de2720a-2940-44be-99a7-279c6bd374ee\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8599",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8599",
+          "siteLogo": "https://nopin.org/apple-touch-icon.png"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】LeetSolv：一个用于算法题复习的本地 CLI 工具",
+          "url": "https://github.com/eannchen/leetsolv",
+          "author": "eannchen",
+          "authorUrl": "https://github.com/eannchen",
+          "publishedAt": "2026-01-03T13:15:50Z",
+          "summary": "项目名称：LeetSolv 项目地址： 简介： LeetSolv 是一个本地运行的 CLI 工具，用「间隔重复」的方式管理算法 / LeetCode 题目的复习。 我在 2025 年中前后做了约 190 道 LeetCode，发现一个问题：题目一直在往前做，但旧的解题思路会慢慢遗忘。只靠收藏题目或笔记，很难形成稳定的复习节奏。 LeetSolv 的思路不是背解法，而是定期重新做题。它会根据题目的重要性、熟悉度和思考深度，计算复习优先级，帮助决定「今天应该复习哪些题」。 特点： • 计分强调推理，而不是闪卡记忆 • 针对到期题目计算复习优先顺序 • 零依赖、本地运行",
+          "content": "**项目名称**：LeetSolv\n**项目地址**：https://github.com/eannchen/leetsolv\n\n**简介**：\nLeetSolv 是一个本地运行的 CLI 工具，用「间隔重复」的方式管理算法 / LeetCode 题目的复习。\n\n我在 2025 年中前后做了约 190 道 LeetCode，发现一个问题：题目一直在往前做，但旧的解题思路会慢慢遗忘。只靠收藏题目或笔记，很难形成稳定的复习节奏。\n\nLeetSolv 的思路不是背解法，而是定期重新做题。它会根据题目的重要性、熟悉度和思考深度，计算复习优先级，帮助决定「今天应该复习哪些题」。\n\n**特点**：\n• 计分强调推理，而不是闪卡记忆\n• 针对到期题目计算复习优先顺序\n• 零依赖、本地运行",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8600",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8600"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【免费工具自荐】winutil最新2026汉化版，不到1mb的windows优化神器",
+          "url": "https://github.com/constansino/WinUtil_CN/tree/main",
+          "author": "constansino",
+          "authorUrl": "https://github.com/constansino",
+          "publishedAt": "2026-01-03T13:28:13Z",
+          "summary": "仓库地址： WinUtil 中文汉化版（非官方）— 20260103/Release 25.12.18同步版本 <img width=\"2000\" height=\"1583\" alt=\"PixPin20260103120832\" src=\" / 首先非常感谢 Chris Titus Tech 以及所有贡献者开发并维护 WinUtil。这个工具把“安装软件 / 系统优化 / 修复 / 更新策略 / MicroWin”等常用功能整合得非常清晰，对普通用户也很友好。 为方便中文用户理解每个选项的意义，我基于 20260103 我同步到的 WinUtil 版本制作了一个 中文汉化 + 功能说明版本，并开放给社区使用与共同维护。 免责声明： 本汉化版为个人维护的非官方版本，与上游无隶属关系。 我尽量只翻译 UI 文本与说明，不改动功能逻辑；但系统优化类工具仍存在风险，请自行评估并做好备份。 如你更信任上游，请以官方版本为准。 使用方法（建议） 一。傻瓜式 powershell管理员执行 powershell irm \" | iex 二。更推荐的方式：下载到本地后运行（更安全、可审计） 1. 下载汉化版脚本到本地（winutil.zhCN...ps1） 2. 打开 PowerShell（建议管理员权限） 3. 解除“来自互联网文件”的锁定（避免无法运行/闪退）： powershell UnblockFile Path \"\"你的目录\\winutil.zhCN.commented.20260103.ps1\"\" SetExecutionPolicy Scope Process ExecutionPolicy Bypass Force .\\winutil.zhCN.commented.20260103.ps1 为什么要 UnblockFile： Windows 会对从浏览器下载的脚本打上“Mark of the Web”，导致执行被限制或出现各种异常。解除锁定后更稳定。 汉化范围（已完成） 1) UI 顶部导航与通用按钮 Install / Tweaks / Config / Updates / MicroWin 等导航标签 常用按钮、提示文本、部分弹窗提示 2) Tweaks 页面（重点） 功能项标题：中文化 功能项解释：补充中文说明（帮助理解“这个开关到底改了什么，会影响什么”） 分组标题与注意事项（例如 Advanced Tweaks CAUTION） 说明：WinUtil 的很多条目不是写死在 XAML 里，而是来自脚本内部的配置（例如 tweaks 配置集合）。因此单纯汉化 XAML 会“看起来只翻了少量文字”。本汉化版把“配置层的条目标题/说明”也一起做了中文化。 3) 其他页面（逐步完善中） Install / Config / Updates / MicroWin：已汉化常用区域的标题与说明 软件条目名称（例如 7Zip、VS Code）通常保留产品英文名，避免用户对照困难 后续维护汉化的方法（给贡献者） 为了尽量降低与上游合并冲突，本汉化遵循以下原则： 1. 不改动功能逻辑 不改注册表路径、命令、参数、键名、逻辑分支；只处理用户可见文本（标题/描述/提示）。 2. 优先在“配置层”维护翻译 WinUtil 很多 UI 文本来自配置集合（例如 tweaks 项的 Title/Description）。 因此维护时建议只更新对应配置项的显示字段，而不是改内部 key/逻辑判断字段。 3. 建议用 patch / diff 方式维护 上游更新后先同步原版脚本 再应用汉化 patch 对照冲突位置补齐新增条目的翻译 如果你希望参与维护： 提交 PR 增补新条目的中文解释 或提交 issue 标注“哪一项翻译/解释不准确、需要更好的中文描述” 再次感谢上游开发者与社区贡献者！",
+          "content": "仓库地址：https://github.com/constansino/WinUtil_CN/tree/main\n# WinUtil 中文汉化版（非官方）— 2026-01-03/Release 25.12.18同步版本\n<img width=\"2000\" height=\"1583\" alt=\"PixPin_2026-01-03_12-08-32\" src=\"https://github.com/user-attachments/assets/fa871cb1-4d96-4f2e-9a9d-99730a720812\" />\n\n\n首先非常感谢 Chris Titus Tech 以及所有贡献者开发并维护 WinUtil。这个工具把“安装软件 / 系统优化 / 修复 / 更新策略 / MicroWin”等常用功能整合得非常清晰，对普通用户也很友好。\n\n为方便中文用户理解每个选项的意义，我基于 **2026-01-03 我同步到的 WinUtil 版本**制作了一个 **中文汉化 + 功能说明**版本，并开放给社区使用与共同维护。\n\n> 免责声明：  \n> - 本汉化版为个人维护的**非官方**版本，与上游无隶属关系。  \n> - 我尽量只翻译 UI 文本与说明，不改动功能逻辑；但系统优化类工具仍存在风险，请自行评估并做好备份。  \n> - 如你更信任上游，请以官方版本为准。\n\n---\n\n\n\n## 使用方法（建议）\n\n###  一。傻瓜式\npowershell管理员执行\n\n```powershell\nirm \"https://raw.githubusercontent.com/constansino/WinUtil_CN/refs/heads/main/winutil.zh_CN.commented.20260103.ps1\" | iex\n````\n### 二。更推荐的方式：下载到本地后运行（更安全、可审计）\n1. 下载汉化版脚本到本地（`winutil.zh_CN...ps1`）\n2. 打开 PowerShell（建议管理员权限）\n3. 解除“来自互联网文件”的锁定（避免无法运行/闪退）：\n\n```powershell\nUnblock-File -Path \"\"你的目录\\winutil.zh_CN.commented.20260103.ps1\"\"\nSet-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force\n.\\winutil.zh_CN.commented.20260103.ps1\n````\n\n> 为什么要 Unblock-File：\n> Windows 会对从浏览器下载的脚本打上“Mark of the Web”，导致执行被限制或出现各种异常。解除锁定后更稳定。\n\n---\n\n## 汉化范围（已完成）\n\n### 1) UI 顶部导航与通用按钮\n- Install / Tweaks / Config / Updates / MicroWin 等导航标签\n- 常用按钮、提示文本、部分弹窗提示\n\n### 2) Tweaks 页面（重点）\n- **功能项标题：中文化**\n- **功能项解释：补充中文说明**（帮助理解“这个开关到底改了什么，会影响什么”）\n- 分组标题与注意事项（例如 Advanced Tweaks - CAUTION）\n\n> 说明：WinUtil 的很多条目不是写死在 XAML 里，而是来自脚本内部的配置（例如 tweaks 配置集合）。因此单纯汉化 XAML 会“看起来只翻了少量文字”。本汉化版把“配置层的条目标题/说明”也一起做了中文化。\n\n### 3) 其他页面（逐步完善中）\n- Install / Config / Updates / MicroWin：已汉化常用区域的标题与说明\n- 软件条目名称（例如 7-Zip、VS Code）通常保留产品英文名，避免用户对照困难\n\n---\n\n\n## 后续维护汉化的方法（给贡献者）\n\n为了尽量降低与上游合并冲突，本汉化遵循以下原则：\n\n1. **不改动功能逻辑**\n   不改注册表路径、命令、参数、键名、逻辑分支；只处理用户可见文本（标题/描述/提示）。\n\n2. **优先在“配置层”维护翻译**\n   WinUtil 很多 UI 文本来自配置集合（例如 tweaks 项的 Title/Description）。\n   因此维护时建议只更新对应配置项的显示字段，而不是改内部 key/逻辑判断字段。\n\n3. **建议用 patch / diff 方式维护**\n\n   * 上游更新后先同步原版脚本\n   * 再应用汉化 patch\n   * 对照冲突位置补齐新增条目的翻译\n\n如果你希望参与维护：\n\n* 提交 PR 增补新条目的中文解释\n* 或提交 issue 标注“哪一项翻译/解释不准确、需要更好的中文描述”\n\n---\n\n再次感谢上游开发者与社区贡献者！\n",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8601",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8601"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】ChatTutor: 可视化AI Tutor",
+          "url": "https://github.com/HugeCatLab/ChatTutor",
+          "author": "sheepbox8646",
+          "authorUrl": "https://github.com/sheepbox8646",
+          "publishedAt": "2026-01-03T13:53:49Z",
+          "summary": "项目地址: ChatTutor 是拥有电子白板功能的 AI 教师，相比于Chatbot主要通过文字与用户交互,在真实课堂中，教师拥有许多教学工具——粉笔、电脑、黑板等——这些都能帮助学生更好地理解知识。但对于Chatbot来说，仅靠文字传递信息是非常有限的，尤其是在 STEM 学科中 ChatTutor使用Geogebra, Mermaid等工具实现了更好的与学习者的交互 <img width=\"2606\" height=\"1584\" alt=\"Image\" src=\" / <img width=\"2606\" height=\"1584\" alt=\"Image\" src=\" / <img width=\"2606\" height=\"1584\" alt=\"Image\" src=\" /",
+          "content": "项目地址: https://github.com/HugeCatLab/ChatTutor\n\nChatTutor 是拥有电子白板功能的 AI 教师，相比于Chatbot主要通过文字与用户交互,在真实课堂中，教师拥有许多教学工具——粉笔、电脑、黑板等——这些都能帮助学生更好地理解知识。但对于Chatbot来说，仅靠文字传递信息是非常有限的，尤其是在 STEM 学科中\n\nChatTutor使用Geogebra, Mermaid等工具实现了更好的与学习者的交互\n\n<img width=\"2606\" height=\"1584\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e5f78b34-65fb-4487-8903-42c649b857c6\" />\n\n<img width=\"2606\" height=\"1584\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8521e8bd-1c5d-4128-b7ca-0254ff682954\" />\n\n<img width=\"2606\" height=\"1584\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/aa17216f-1152-4f34-8305-cc64d1829feb\" />",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "8602",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8602"
+        }
+      ],
+      "error": "gh api 失败: spawnSync gh ETIMEDOUT"
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "SprintFlint",
+          "url": "https://www.producthunt.com/products/sprintflint/launches/sprintflint?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Fast, powerful sprint planning & agile management",
+          "content": "SprintFlint is a modern agile project management tool designed for teams that move fast. Built with developers and product managers in mind, it streamlines sprint planning, task tracking, and team collaboration. Featuring real-time updates, intuitive dashboards, and seamless integrations with your favorite tools, SprintFlint helps teams ship faster and stay aligned.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057393",
+          "logo": "https://ph-files.imgix.net/4753f115-5832-4755-9e98-9b25f384048f.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/f2214d11-91da-468b-9805-77e24b6dc897.png?auto=format",
+            "https://ph-files.imgix.net/20108f1e-54ed-4ba2-929b-ceb390ffa21c.png?auto=format",
+            "https://ph-files.imgix.net/0d51a420-a2b5-4bfb-a61e-4a85f9a10e87.png?auto=format",
+            "https://ph-files.imgix.net/4748c87e-1631-44a9-b0d3-1e9f422acf78.png?auto=format",
+            "https://ph-files.imgix.net/33764cd5-aa21-4735-94c7-3cf3d1603767.png?auto=format",
+            "https://ph-files.imgix.net/e04f2202-6f9d-4204-bef1-4320b8cd5c37.png?auto=format",
+            "https://ph-files.imgix.net/a5ac0ce2-247a-4a10-a6fd-b380f7f21cf2.png?auto=format",
+            "https://ph-files.imgix.net/848e7e61-3bb0-4732-a4f6-fb5fa4137638.png?auto=format",
+            "https://ph-files.imgix.net/37a275a3-996a-47bb-a3ba-6cf141cf74cb.png?auto=format",
+            "https://ph-files.imgix.net/3d45a3cb-626f-41b4-913e-4501cdc2803b.png?auto=format",
+            "https://ph-files.imgix.net/84654344-b3c5-4fd4-a2de-e97c708afe4a.png?auto=format",
+            "https://ph-files.imgix.net/2cf0a0d0-d9e7-49c0-8c68-7cf7d94e42aa.png?auto=format",
+            "https://ph-files.imgix.net/c815eb23-86ed-4371-ae38-b5c9ffa97a9a.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/f2214d11-91da-468b-9805-77e24b6dc897.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "YouReadFast",
+          "url": "https://www.producthunt.com/products/youreadfast/launches/youreadfast?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Read 3x faster with enhanced comprehension",
+          "content": "Read 3x faster with YouReadFast, a free RSVP speed reading web app. Supports PDF, EPUB, and pasted text with Optimal Recognition Point (ORP) technology to eliminate subvocalization. No install required.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057414",
+          "logo": "https://ph-files.imgix.net/8684f350-0727-4436-8e94-af77a6c783ff.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2ab0426c-e011-4c07-a2e0-0f508535b3a3.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2ab0426c-e011-4c07-a2e0-0f508535b3a3.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Better Keep Notes",
+          "url": "https://www.producthunt.com/products/better-keep-notes/launches/better-keep-notes?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Your thoughts should stay yours",
+          "content": "Better Keep Notes - A beautiful, private note-taking app with rich text, better organization, and offline-friendly notes.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057346",
+          "logo": "https://ph-files.imgix.net/66d88dc9-8997-4173-b828-644675d4f380.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bda85546-ced4-41e4-9078-f28ff5f265a0.png?auto=format",
+            "https://ph-files.imgix.net/e8aae1db-1ed7-4587-a00c-063139a97744.png?auto=format",
+            "https://ph-files.imgix.net/ab11a237-7070-4867-9b7e-f9e412a97b56.png?auto=format",
+            "https://ph-files.imgix.net/4363b28b-fd38-4aec-b2dc-26bce5b71ef5.png?auto=format",
+            "https://ph-files.imgix.net/ce722d98-b487-4ae9-9fab-794d8591b69d.png?auto=format",
+            "https://ph-files.imgix.net/3e3770e7-1485-49c7-8d0d-02b143a6368f.png?auto=format",
+            "https://ph-files.imgix.net/8b9dd956-e4c5-453d-98b6-c5fbb9112ba5.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bda85546-ced4-41e4-9078-f28ff5f265a0.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "MacroTracker",
+          "url": "https://www.producthunt.com/products/macrotracker/launches/macrotracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "the best calorie tracker ever created for FREE",
+          "content": "Track your calories, macros, and nutrients with precision. Build meals, customize foods, and stay on top of your goals—whether it’s muscle gain, fat loss, or maintenance.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057514",
+          "logo": "https://ph-files.imgix.net/b19ea82f-a67c-44ce-be9d-8e49a728e6b8.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b07e3553-fb00-4995-b8a1-f6a9ee82cab4.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b07e3553-fb00-4995-b8a1-f6a9ee82cab4.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "BlindTruth",
+          "url": "https://www.producthunt.com/products/blindtruth/launches/blindtruth?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Anonymous Reviews, Discussions & Stories",
+          "content": "Expose Toxic Workplaces Before They Destroy You BlindTruth lets employees anonymously share and explore reviews, stories, and discussions about their workplaces. Unlike other platforms, it combines honest company insights, real employee experiences, salary transparency, and open discussions—all in one safe, anonymous space. Learn, share, and make informed decisions while enjoying a community that values honesty and privacy.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057355",
+          "logo": "https://ph-files.imgix.net/2f4ae069-bd1a-48ff-92c0-ffbf5d17a62e.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/088c0d87-ed6b-41cc-9005-675fea29aaf2.png?auto=format",
+            "https://ph-files.imgix.net/48179d1c-45cc-4e65-8904-90571d8dcfe7.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/088c0d87-ed6b-41cc-9005-675fea29aaf2.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Tymflow",
+          "url": "https://www.producthunt.com/products/tymflow/launches/tymflow?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "The time tracker that makes you want to track your time",
+          "content": "TTymFlow transforms boring time tracking into a rewarding experience for solopreneurs. WHY TYMFLOW EXISTS: Time trackers fail due to psychological factors, not technical features. Nobody enjoys using them. TymFlow addresses this by making tracking enjoyable. THE DIFFERENCE: Toggl, Clockify, and Harvest are great tools. But they're boring. TymFlow makes tracking actually enjoyable. That's why people stick with it. Built by an indie maker who got tired of boring tools.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057484",
+          "logo": "https://ph-files.imgix.net/45416c5e-e142-42db-b785-e7f44db56f90.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1f608ebc-a03d-4ef4-813d-72ddd0c6b17f.png?auto=format",
+            "https://ph-files.imgix.net/4b17594d-be72-470c-8290-672e34c9ef70.png?auto=format",
+            "https://ph-files.imgix.net/d78139df-d974-4921-9a39-51be03847fae.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1f608ebc-a03d-4ef4-813d-72ddd0c6b17f.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Elixa",
+          "url": "https://www.producthunt.com/products/elixa/launches/elixa?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "AI Agent Talent Pool + Workspace (Free | Early Access)",
+          "content": "Elixa is an AI agent marketplace and workspace where founders install ready-made AI employees to run their entire company. Every function lives in one shared workspace, where AI employees collaborate like a real team to operate the business as a whole. No setup, no workflows, no tools to learn. Elixa isn’t software you use - it’s the company that runs!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1052356",
+          "logo": "https://ph-files.imgix.net/a4b92920-6f48-43ea-8d10-201ab6ee4765.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/e8be6945-68bb-439f-af84-d9c724e1b995.png?auto=format",
+            "https://ph-files.imgix.net/5fcf8007-ab19-4c91-b1ab-4ad32866be2b.png?auto=format",
+            "https://ph-files.imgix.net/3445ca1e-c07b-4b4f-bf9d-67c99acf5fa6.png?auto=format",
+            "https://ph-files.imgix.net/2d50fafa-1030-47a6-946f-f151ab2ca430.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/e8be6945-68bb-439f-af84-d9c724e1b995.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "FAOS AI",
+          "url": "https://www.producthunt.com/products/faos-ai/launches/faos-ai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "AI-powered fashion photography service for e-commerce.",
+          "content": "Transform product photos into professional fashion images with AI models. No photoshoots needed. Start free.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057358",
+          "logo": "https://ph-files.imgix.net/98c09f67-5195-44bc-b352-690d02d19733.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0facb331-b78a-4f77-92ea-a556bf7958e4.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0facb331-b78a-4f77-92ea-a556bf7958e4.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "QueckSilver",
+          "url": "https://www.producthunt.com/products/quecksilver/launches/quecksilver?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Self-Made Mail Provider",
+          "content": "Get your free @quecksilver.ch email address. Lightning-fast, secure, and protected in Switzerland. It doenst have features that make it stand out yet. My first Goal was to just build a mail provider.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057513",
+          "logo": "https://ph-files.imgix.net/4a5cd273-9c94-4bb4-a73b-273d0b8d58a1.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/4e6ae8aa-7abf-44e8-a788-443b01acacdb.png?auto=format",
+            "https://ph-files.imgix.net/44e49318-ed5f-4a4f-a8be-9751b81e9135.png?auto=format",
+            "https://ph-files.imgix.net/ac93e60c-d709-48c1-bd4e-99fd14fa9ebc.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/4e6ae8aa-7abf-44e8-a788-443b01acacdb.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "RealBrand Filter",
+          "url": "https://www.producthunt.com/products/realbrand-filter/launches/realbrand-filter?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Clean up Amazon search results, remove ads & unknown brands.",
+          "content": "RealBrand Filter automatically identifies and filters out suspicious Amazon brands, so you only see products from brands you know and trust. Remove sponsored ads, irrelevant items, suspicious/unknown brands, customize your brand list, highlight trusted brands, and more. Easy to use, free browser extension. Supports all Chromium-based browsers.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057449",
+          "logo": "https://ph-files.imgix.net/a253c4c7-7f80-4390-b480-618b66c7f514.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/005fd769-b602-457b-a280-fcf90bec3be8.png?auto=format",
+            "https://ph-files.imgix.net/2c1eddd0-74cc-4c30-a6b0-18d1fe093f54.jpeg?auto=format",
+            "https://ph-files.imgix.net/f849d110-3c3d-47d7-8ad9-13ba731d1b00.jpeg?auto=format",
+            "https://ph-files.imgix.net/c60b58e8-242f-4d4a-9b29-2bfe2405ddeb.jpeg?auto=format",
+            "https://ph-files.imgix.net/2bd070ca-4508-49dd-97a3-127604f828c2.jpeg?auto=format",
+            "https://ph-files.imgix.net/1b2fc387-ed63-4423-afc4-5e2860a01a29.jpeg?auto=format",
+            "https://ph-files.imgix.net/3e88aa3f-6325-424b-8063-5b96e844d983.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/005fd769-b602-457b-a280-fcf90bec3be8.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Project Yoked",
+          "url": "https://www.producthunt.com/products/project-yoked/launches/project-yoked?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "All in One Fitness App",
+          "content": "Project Yoked is the all-in-one fitness social platform that replaces your workout logger, video editor, and social feed. Track your strength gains, create professional TikTok-style fitness reels with our native \"Stitched Stack\" editor, and earn money from your views. Stop paying for 5 different apps—get everything you need to build muscle and community in one place. Founded by a dev & creator duo to revolutionize fitness tech.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057519",
+          "logo": "https://ph-files.imgix.net/b85c0cd2-7e41-46ff-9531-43e9f1addbf2.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/35244e81-d526-4288-9516-d9ac4526afe2.jpeg?auto=format",
+            "https://ph-files.imgix.net/db010321-cb75-4588-b5d6-16b7423baeb2.png?auto=format",
+            "https://ph-files.imgix.net/e5ec0a5d-cb0f-47b1-8412-dcc21515b6f1.png?auto=format",
+            "https://ph-files.imgix.net/aa8774e5-6359-4861-a3fa-9641390431a4.png?auto=format",
+            "https://ph-files.imgix.net/6120fa75-8563-4c16-abf8-458f9e8026cb.png?auto=format",
+            "https://ph-files.imgix.net/1e28b954-70e2-4a96-ad65-8119f08bc16c.png?auto=format",
+            "https://ph-files.imgix.net/c584e1c0-4941-4ac2-b2f7-c0f157a6eefc.png?auto=format",
+            "https://ph-files.imgix.net/2ba0300a-64e3-4b84-b0a5-f68dbe283d9f.png?auto=format",
+            "https://ph-files.imgix.net/21aed756-fe3a-494d-b670-051990aab131.png?auto=format",
+            "https://ph-files.imgix.net/4819c79d-ca1e-4963-b74e-2a48b4325fca.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/35244e81-d526-4288-9516-d9ac4526afe2.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "StudyLens",
+          "url": "https://www.producthunt.com/products/studylens/launches/studylens?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Turn notes into study guides",
+          "content": "Upload your notes and get AI-generated study guides with practice questions in minutes. 100% free, no signup. Study smarter and faster today!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1050666",
+          "logo": "https://ph-files.imgix.net/2f23892c-3204-4831-ac64-314aa4699110.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/f8a6d31a-d678-4226-b386-b244ac79faaa.png?auto=format",
+            "https://ph-files.imgix.net/8b9d5930-8d92-482c-bceb-0ed6924565f7.png?auto=format",
+            "https://ph-files.imgix.net/706a8059-ddd1-4482-95f7-384b30fb635d.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/f8a6d31a-d678-4226-b386-b244ac79faaa.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Convertica",
+          "url": "https://www.producthunt.com/products/convertica/launches/convertica?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Convertica Your trusted partner for all PDF document needs.",
+          "content": "Convertica: The Next Level of Online PDF Tools Introducing Convertica, the first fully free online PDF platform that combines essential tools like convert and merge with unique, professional-grade features typically found in paid software: edit text directly in PDF, batch processing, and intelligent table recognition. Convertica ensures your files are never uploaded. Experience maximum processing speed and 100% data privacy with every operation. Fast, secure, and no registration required.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057467",
+          "logo": "https://ph-files.imgix.net/482a52b4-0742-42c5-95c4-e2dc4352c767.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/28c5eece-27f8-4c70-b645-ed598ad0c9df.jpeg?auto=format",
+            "https://ph-files.imgix.net/64348b35-8ab5-44f1-b407-7a21ed03b814.png?auto=format",
+            "https://ph-files.imgix.net/4b2e86f8-493b-481e-8e28-677204bf96ed.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/28c5eece-27f8-4c70-b645-ed598ad0c9df.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Captions Pal",
+          "url": "https://www.producthunt.com/products/captions-pal/launches/captions-pal?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "1-click captions for short form videos",
+          "content": "Create scroll-stopping captions for TikTok, Reels, and Shorts in seconds with ready-made styles and smooth timing.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057603",
+          "logo": "https://ph-files.imgix.net/78edf705-096a-4c55-b6b8-14fc9f546ab9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/727bc840-6063-45ac-a8e0-660d558282cd.png?auto=format",
+            "https://ph-files.imgix.net/4dff1173-7c6d-41ad-87d3-7196ea20b1e5.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/727bc840-6063-45ac-a8e0-660d558282cd.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Gradienite",
+          "url": "https://www.producthunt.com/products/gradienite/launches/gradienite?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Turn image into masterpiece with stunning gradient overlays",
+          "content": "A gradient overlay tool that turns any image into a vibrant background for websites, social posts, and branding.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057196",
+          "logo": "https://ph-files.imgix.net/6c6a37d1-d1ab-4c9e-a7bb-4a7ea79e0266.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/1e90deb3-6581-476b-aacc-3671a59df22b.jpeg?auto=format",
+            "https://ph-files.imgix.net/36f3c472-7929-44fc-a03d-224d81cf72df.jpeg?auto=format",
+            "https://ph-files.imgix.net/ac59435e-0d51-42c1-8406-3f89bced27c1.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/1e90deb3-6581-476b-aacc-3671a59df22b.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Scanner App For Docs",
+          "url": "https://www.producthunt.com/products/scanner-app-for-docs/launches/scanner-app-for-docs?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Your all in one scanner",
+          "content": "Introducing Scanner App For Docs - Your Ultimate Document Scanner, designed to make scanning, organizing, and managing your documents faster, easier, and smarter than ever before. Whether you're capturing receipts, IDs, contracts, business cards, or multi-page documents, Scanner App For Docs delivers clean, high-quality results with powerful editing tools and an elegant, intuitive interface.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057340",
+          "logo": "https://ph-files.imgix.net/1925e437-41df-43a6-ac72-d2bdf74583d8.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/0323792b-c0c8-4184-8014-a134484af977.png?auto=format",
+            "https://ph-files.imgix.net/af3f5a2a-60fd-4677-9861-4dbc88ed9c1b.png?auto=format",
+            "https://ph-files.imgix.net/1845f630-c2bc-4616-8c0e-a8678a9f2886.png?auto=format",
+            "https://ph-files.imgix.net/397c92cf-441d-4758-89c2-c7a895341574.png?auto=format",
+            "https://ph-files.imgix.net/b29914fd-e2be-4c73-bc51-fea296e116d3.png?auto=format",
+            "https://ph-files.imgix.net/93ad0130-c864-4268-834a-0d68fee10521.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/0323792b-c0c8-4184-8014-a134484af977.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "I Hate PDF",
+          "url": "https://www.producthunt.com/products/i-hate-pdf/launches/i-hate-pdf?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Fast, simple tools for messy PDFs",
+          "content": "The ultimate free online PDF toolkit. Merge, split, compress, edit, convert to Word/Excel, and OCR PDFs instantly. No registration required. Fast, secure, and 100% free.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057420",
+          "logo": "https://ph-files.imgix.net/b7b03d32-1129-40ab-97a8-d896c305ba53.x-icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/618671f3-d15c-43c2-9973-a3e5e067473f.png?auto=format",
+            "https://ph-files.imgix.net/69c71fc9-687c-4c99-b3ae-972e2230229f.png?auto=format",
+            "https://ph-files.imgix.net/55373795-20c6-411a-953b-694dd1cc8d89.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/618671f3-d15c-43c2-9973-a3e5e067473f.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Telegram",
+          "url": "https://www.producthunt.com/products/telegram-43/launches/telegram-1e4b5bf4-cbb1-473a-990c-a9e949792dc7?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Telegram bot with a TikTok-like random channel feed",
+          "content": "Randbot is a Telegram bot that turns channel discovery into a TikTok-style random feed. Users DM the bot, tap /random, and get a surprise post from mapped channels with quick “Subscribe” or “Next” buttons. Channel admins just add the bot as admin; it scans existing media and drops the channel into the shared feed.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057261",
+          "logo": "https://ph-files.imgix.net/790db7dd-2081-4768-8170-536804d24a5a.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/c755123e-4eaa-4f4c-8a65-364a11875189.jpeg?auto=format",
+            "https://ph-files.imgix.net/2e9bea30-a0f8-4ad2-852a-9e901f9ff3d0.png?auto=format",
+            "https://ph-files.imgix.net/752c1d62-1db1-41c4-9928-ffbd627ed696.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/c755123e-4eaa-4f4c-8a65-364a11875189.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Zaloo",
+          "url": "https://www.producthunt.com/products/zaloo/launches/zaloo?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "Real-world social network powered by proximity & Bluetooth",
+          "content": "Connect with people nearby using Bluetooth - no internet needed. Zaloo uses BLE to detect everyone within 100m for local chat without data. Perfect for coffee shops, events, or campus. Features: offline proximity chat, radar to see who's around, send invitations for 1-on-1 connections, and private sessions lasting 3 hours. Unlike traditional social apps connecting distant people, Zaloo brings real-world spontaneous connections with those next to you. Available now on Android via Google Play!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1050691",
+          "logo": "https://ph-files.imgix.net/221a4713-624b-4a61-b638-cca6fc05f09d.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/970e0363-8f64-49b6-8ea3-d2a702791135.png?auto=format",
+            "https://ph-files.imgix.net/49d25d3f-b468-44e0-8ffc-7d63c8a8f1ca.png?auto=format",
+            "https://ph-files.imgix.net/8947764c-7205-43ff-a62b-e8196c569b79.png?auto=format",
+            "https://ph-files.imgix.net/d0852a1a-b619-4d69-9743-0d40d712a7a0.png?auto=format",
+            "https://ph-files.imgix.net/0ca9cb68-014d-4dff-8560-0ca851314e13.png?auto=format",
+            "https://ph-files.imgix.net/2cc6f302-b142-467b-8324-91fc2449b8a2.png?auto=format",
+            "https://ph-files.imgix.net/be422daa-2690-4c49-a967-245c06361262.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/970e0363-8f64-49b6-8ea3-d2a702791135.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "XBooster",
+          "url": "https://www.producthunt.com/products/xbooster/launches/xbooster?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-01-03T08:01:00Z",
+          "summary": "x_client",
+          "content": "Supercharge your social media presence with AI. Generate engaging content, schedule posts, and grow your brand on X effortlessly.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1057271",
+          "logo": "https://ph-files.imgix.net/fec96b58-68ef-4a88-874a-50f60b4a5536.jpeg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/f006d395-20eb-4c87-81b3-1b65fad68dda.jpeg?auto=format",
+            "https://ph-files.imgix.net/5c771375-7aed-4634-9e08-2e411f5cf8de.jpeg?auto=format",
+            "https://ph-files.imgix.net/ffe21353-884f-4ca4-985f-3c4d3eb3f9a4.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/f006d395-20eb-4c87-81b3-1b65fad68dda.jpeg?auto=format"
+        }
+      ]
+    }
+  ]
+}

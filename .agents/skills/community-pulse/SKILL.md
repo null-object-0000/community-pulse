@@ -217,6 +217,8 @@ cd ../../.. && npm run images:sync && npm run check
   `--replace` 重抓本次运行负责的全部行。同一次运行内按页面和图标 URL 去重，回填多天时重复站点只抓一次；
   命中缓存的页面/图标在记录里标 `cached: true`。
 
+**校验器的两条宽松规则**（否则回填历史时会误报）：① 一整天没有任何候选行时**不要求日文件存在**——2026-03-08 / 03-09 / 05-02 这类日期本身就没有日报；② 服务器没返回 `image/*` 的 `content-type` **只记告警**，因为图标是靠字节嗅探（`iconKind`）确认的，有些站点的 apple-touch-icon 就回 `application/octet-stream` 或干脆没有该头。
+
 **下游**：`source_raw_items.js` 的 `loadItems` 离线把 `siteLogo` 挂到「无 `logo`/`icon`」的行上
 （按 sourceId+externalId 匹配，退化时按页面 URL），`collect.js` 不联网；站点把 `siteLogo` 与 `logo`/`icon`
 一起镜像（`npm run images:sync`）并按 `logo → icon → siteLogo → 文字` 渲染 48px 头像。图标下载失败时
