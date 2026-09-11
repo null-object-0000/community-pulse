@@ -12,6 +12,12 @@
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
   let items = D.reportItems(page.report);
+  const narrowScreen = window.matchMedia('(max-width: 600px)');
+  let swipeItems = [];
+  let swipeIndex = 0;
+  let swipeStage = null;
+  let pointerStart = null;
+  let cancelCardClick = false;
   // ---- screenshot viewer: every gallery thumbnail (feed rows and project pages) opens one dialog ----
   const lightbox = document.createElement('div');
   lightbox.className = 'lightbox';
@@ -171,12 +177,47 @@
     const q = query.trim().toLocaleLowerCase(locale);
     const filtered = items.filter(item => (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
     if (sort === 'popular') filtered.sort((a, b) => Number(D.metric(b, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0) - Number(D.metric(a, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0));
-    feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index })).join('');
+    swipeItems = filtered;
+    if (narrowScreen.matches && filtered.length) {
+      swipeIndex = 0;
+      feed.classList.add('swipe-feed');
+      feed.innerHTML = `<div class="swipe-stage" tabindex="0" aria-label="${D.escapeHtml(t('swipeHint'))}"></div><div class="swipe-controls"><button type="button" class="swipe-previous" aria-label="${D.escapeHtml(t('previousItem'))}"><span aria-hidden="true">←</span><span>${D.escapeHtml(t('previousItem'))}</span></button><output class="swipe-position" aria-live="polite"></output><button type="button" class="swipe-next" aria-label="${D.escapeHtml(t('nextItem'))}"><span>${D.escapeHtml(t('nextItem'))}</span><span aria-hidden="true">→</span></button></div>`;
+      swipeStage = feed.querySelector('.swipe-stage');
+      paintSwipeItem(0);
+    } else {
+      feed.classList.remove('swipe-feed');
+      swipeStage = null;
+      feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index })).join('');
+    }
     feed.hidden = !filtered.length;
     document.getElementById('empty').hidden = Boolean(filtered.length);
     document.getElementById('empty-title').textContent = t('empty');
     document.getElementById('empty-hint').textContent = t('emptyHint');
     document.getElementById('clear-filters').hidden = !query && category === 'all';
+  }
+  function paintSwipeItem(direction = 0) {
+    if (!swipeStage || !swipeItems.length) return;
+    swipeStage.innerHTML = D.renderSwipeItem(swipeItems[swipeIndex], locale, { date: page.date, index: swipeIndex });
+    swipeStage.dataset.motion = direction > 0 ? 'next' : direction < 0 ? 'previous' : '';
+    feed.querySelector('.swipe-position').textContent = `${swipeIndex + 1} / ${swipeItems.length}`;
+    feed.querySelector('.swipe-previous').disabled = swipeIndex === 0;
+    feed.querySelector('.swipe-next').disabled = swipeIndex === swipeItems.length - 1;
+  }
+  function moveSwipeItem(delta) {
+    if (!swipeStage) return;
+    const next = D.boundedIndex(swipeIndex, delta, swipeItems.length);
+    if (next === swipeIndex) {
+      swipeStage.style.removeProperty('--swipe-offset');
+      return;
+    }
+    swipeIndex = next;
+    paintSwipeItem(delta);
+  }
+  function resetSwipeDrag() {
+    if (!swipeStage) return;
+    swipeStage.classList.remove('is-dragging');
+    swipeStage.style.removeProperty('--swipe-offset');
+    pointerStart = null;
   }
   const themePicker = document.getElementById('theme-picker');
   function syncThemePicker() {
@@ -268,6 +309,41 @@
     syncFilterState();
     updateFilterUrl(); renderFeed(); search.focus();
   });
+  feed?.addEventListener('click', event => {
+    if (!feed.classList.contains('swipe-feed')) return;
+    if (cancelCardClick) { event.preventDefault(); cancelCardClick = false; return; }
+    if (event.target.closest('.swipe-previous')) moveSwipeItem(-1);
+    else if (event.target.closest('.swipe-next')) moveSwipeItem(1);
+  });
+  feed?.addEventListener('keydown', event => {
+    if (!feed.classList.contains('swipe-feed') || event.target.closest('a, button, input, select, textarea')) return;
+    if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') { event.preventDefault(); moveSwipeItem(-1); }
+    else if (event.key === 'ArrowDown' || event.key === 'ArrowRight') { event.preventDefault(); moveSwipeItem(1); }
+  });
+  feed?.addEventListener('pointerdown', event => {
+    if (!swipeStage || !event.isPrimary || !['touch', 'pen'].includes(event.pointerType)) return;
+    pointerStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    swipeStage.setPointerCapture?.(event.pointerId);
+  });
+  feed?.addEventListener('pointermove', event => {
+    if (!pointerStart || event.pointerId !== pointerStart.id || !swipeStage) return;
+    const dx = event.clientX - pointerStart.x, dy = event.clientY - pointerStart.y;
+    if (Math.abs(dy) < 8 || Math.abs(dy) <= Math.abs(dx) * 1.15) return;
+    event.preventDefault();
+    cancelCardClick = true;
+    swipeStage.classList.add('is-dragging');
+    swipeStage.style.setProperty('--swipe-offset', `${Math.max(-120, Math.min(120, dy * .42))}px`);
+  });
+  const finishSwipePointer = event => {
+    if (!pointerStart || event.pointerId !== pointerStart.id) return;
+    const step = event.type === 'pointerup' ? D.swipeStep(event.clientY - pointerStart.y, event.clientX - pointerStart.x) : 0;
+    const dragged = cancelCardClick;
+    resetSwipeDrag();
+    if (step) moveSwipeItem(step);
+    if (dragged) setTimeout(() => { cancelCardClick = false; }, 0);
+  };
+  feed?.addEventListener('pointerup', finishSwipePointer);
+  feed?.addEventListener('pointercancel', finishSwipePointer);
   document.addEventListener('click', event => {
     const link = event.target.closest('a[href]');
     if (link && typeof window.gtag === 'function') {
@@ -298,6 +374,7 @@
   const relayoutFilters = () => filterContainers.forEach(layoutFilter);
   if (filterContainers.length && window.ResizeObserver) { const observer = new ResizeObserver(relayoutFilters); filterContainers.forEach(node => observer.observe(node)); }
   window.addEventListener('resize', relayoutFilters);
+  narrowScreen.addEventListener?.('change', renderFeed);
   if (document.fonts?.ready) document.fonts.ready.then(relayoutFilters).catch(() => {});
   // Preserve legacy date links; legacy style preferences have no effect on the unified theme.
   // Report pages no longer carry a date picker, so the date is validated by shape alone.

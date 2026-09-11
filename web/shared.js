@@ -27,6 +27,7 @@
       unknownSource: '开发者社区', reportTitle: '{date} 开发者趋势日报', reportHeading: '{date}大家都在做什么',
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
+      previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', swipeHint: '上滑下一条，下滑上一条',
     },
     en: {
       discover: 'Discover', archive: 'Archive', slogan: 'What developers are building',
@@ -49,6 +50,7 @@
       unknownSource: 'Developer community', reportTitle: '{date} Developer Trends Report', reportHeading: '{date} · What developers are building',
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
+      previousItem: 'Previous', nextItem: 'Next', openItem: 'Open project', swipeHint: 'Swipe up for next, down for previous',
     },
   };
   const sourceLabels = {
@@ -391,5 +393,39 @@
       <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem };
+  function renderSwipeItem(item, locale, { date = '', index = 0 } = {}) {
+    const repo = repository(item), projectPath = item.projectPath;
+    const primary = safeUrl(item.websiteUrl || item.url) || repo?.url;
+    const titleUrl = projectPath ? localPath(projectPath, locale) : trackedUrl(repo?.url || primary, item, date);
+    const titleTarget = titleUrl && !projectPath ? ' target="_blank" rel="noopener noreferrer"' : '';
+    const s = summary(item, locale), title = displayTitle(item, locale), source = sourceInfo(item);
+    const language = metric(item, ['language', 'lang']);
+    const stars = metric(item, ['stars', 'stargazers_count', 'totalStars']);
+    const votes = metric(item, ['votes', 'votesCount']);
+    const score = stars !== null ? stars : votes;
+    const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
+    const tags = visibleTags(item).slice(0, 2);
+    const markUrl = localImage(item.logo) || localImage(item.icon) || localImage(item.siteLogo);
+    const screenshots = localImages([...(Array.isArray(item.images) ? item.images : []), item.image]);
+    const initials = escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
+    const sourceBadge = source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item);
+    const visual = screenshots.length
+      ? `<div class="swipe-visual has-image"><img src="${escapeHtml(screenshots[0])}" alt="" /></div>`
+      : `<div class="swipe-visual is-typographic" aria-hidden="true"><span class="swipe-mark avatar-${index % 5}${markUrl ? ' has-logo' : ''}">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="" />` : initials}</span><span class="swipe-wordmark">${escapeHtml(title)}</span></div>`;
+    const metadata = [language ? `<span class="tag">${escapeHtml(language)}</span>` : '', ...tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`), score !== null ? `<span class="swipe-score">${scoreIcon}<span>${compact(score, locale)}</span></span>` : ''].join('');
+    return `<article class="swipe-item${screenshots.length ? ' has-image' : ' is-typographic'}" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
+      <header class="swipe-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${sourceBadge}</span><span>${escapeHtml(sourceName(item, locale))}</span></header>
+      ${visual}
+      <div class="swipe-copy"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${titleTarget}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="swipe-original">${t(locale, 'original')}</span>` : ''}</div>
+      <div class="swipe-meta">${metadata}</div>
+      ${titleUrl ? `<a class="swipe-open" href="${escapeHtml(titleUrl)}"${titleTarget}>${escapeHtml(t(locale, 'openItem'))}<span aria-hidden="true">↗</span></a>` : ''}
+    </article>`;
+  }
+  function boundedIndex(index, delta, length) {
+    return Math.min(Math.max(index + delta, 0), Math.max(length - 1, 0));
+  }
+  function swipeStep(deltaY, deltaX, threshold = 54) {
+    return Math.abs(deltaY) >= threshold && Math.abs(deltaY) > Math.abs(deltaX) * 1.15 ? (deltaY < 0 ? 1 : -1) : 0;
+  }
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep };
 });
