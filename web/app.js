@@ -286,13 +286,13 @@
       } catch {}
     }
   });
-  // A description clipped by CSS (one line in the list, three in the grid) stays readable through the
-  // native tooltip, but only while the rendered row actually hides text — a short one gets no title.
+  // A title or description clipped by CSS (one line in the list, three in the grid) stays readable through
+  // the native tooltip, but only while the rendered row actually hides text — short ones get no title.
   document.addEventListener('pointerover', event => {
-    const summary = event.target.closest?.('.item-primary .summary');
-    if (!summary) return;
-    if (D.isClipped(summary)) summary.title = summary.textContent;
-    else summary.removeAttribute('title');
+    const clipped = event.target.closest?.('.item-primary h2, .item-primary .summary');
+    if (!clipped) return;
+    if (D.isClipped(clipped)) clipped.title = clipped.textContent;
+    else clipped.removeAttribute('title');
   });
   window.addEventListener('storage', event => {
     if (event.key === 'devtrends-theme-v1' || event.key === null) { window.DevTrendsTheme.set(event.newValue); syncThemePicker(); }
