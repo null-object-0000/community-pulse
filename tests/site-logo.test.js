@@ -285,6 +285,8 @@ test('the avatar falls back from the product mark to the website logo, then to i
   const local = (char) => `/images/${char.repeat(64)}.png`;
   const [logo, icon, site] = [local('a'), local('b'), local('c')];
   const avatar = (item) => D.renderItem(item, 'en').match(/<span class="item-avatar[^>]*>(.*?)<\/span>/s)[1];
+  assert.match(D.renderItem({ title: 'Logo', logo }, 'en'), /class="item-avatar avatar-0 has-logo"/);
+  assert.doesNotMatch(D.renderItem({ title: 'Fallback' }, 'en'), /class="item-avatar avatar-0 has-logo"/);
   assert.equal(avatar({ title: 'Both', logo, siteLogo: site }), `<img src="${logo}" class="is-logo" alt="" loading="lazy" />`);
   assert.equal(avatar({ title: 'Icon', icon, siteLogo: site }), `<img src="${icon}" class="is-logo" alt="" loading="lazy" />`);
   assert.equal(avatar({ title: 'Site', siteLogo: site }), `<img src="${site}" class="is-logo" alt="" loading="lazy" />`);

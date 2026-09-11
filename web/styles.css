@@ -320,6 +320,7 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 /* Product marks carry their own background and corner radius, so the avatar must not add a second plate:
    any padding here shows the mark's own square nested inside ours, and a barely-off-white mark (#f6f6f6)
    exposes a seam. Filling the tile leaves one clean rounded square, and transparent marks keep the white. */
+.item-avatar.has-logo { background: #fff; box-shadow: none; }
 .item-avatar img.is-logo { padding: 0; background: #fff; object-fit: contain; }
 .panel .item-gallery { margin-top: 0; }
 .panel .gallery-thumb { width: 92px; height: 58px; }
