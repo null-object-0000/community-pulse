@@ -3,7 +3,7 @@ const path = require('node:path');
 const D = require('../web/shared.js');
 const { t, escapeHtml: e, localPath: lp } = D;
 const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
-function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false }) {
+function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const active = view === 'report' ? (route === '/' ? 'discover' : 'archive') : view;
   const navigation = [['discover', '/'], ['archive', '/reports/']].map(([key, url]) =>
@@ -16,6 +16,7 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     zhSelected: locale === 'zh-CN' ? 'selected' : '', enSelected: locale === 'en' ? 'selected' : '',
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
     pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}" defer></script>`,
+    bodyAttrs: bodyAttrs ? ` ${bodyAttrs}` : '',
     ...Object.fromEntries(['skip', 'brandLabel', 'system', 'light', 'dark', 'footer'].map(key => [key, t(locale, key)])),
     languageLabel: t(locale, 'language'), themeLabel: t(locale, 'theme'),
   };
@@ -71,7 +72,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
   const canonical = D.origin + lp(route, locale);
   const structured = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical, inLanguage: locale,
     ...(date ? { datePublished: date } : {}), mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 100).map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || D.origin })) } };
-  return shell({ locale, view: 'report', route, title, description, content, data: { date, report }, structured });
+  return shell({ locale, view: 'report', route, title, description, content, data: { date, report }, structured, bodyAttrs: entry ? 'data-cards-available="1"' : '' });
 }
 function cardsPage(report, date, locale) {
   const items = D.reportItems(report), title = `${t(locale, 'cardsTitle')} | DevTrends`;

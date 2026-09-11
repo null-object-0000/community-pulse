@@ -106,3 +106,19 @@ test('styles keep the entry mobile-only, preserve vertical scrolling, and remove
   assert.ok(css.lastIndexOf('@media (prefers-reduced-motion: reduce)') > css.indexOf('.swipe-stage { --swipe-offset'));
   assert.doesNotMatch(css, /card-view/);
 });
+
+test('mobile hides the feed and its filters on the report that has a card page', () => {
+  const css = fs.readFileSync(path.join(root, 'web', 'styles.css'), 'utf8');
+  const media = css.match(/@media \(max-width: 600px\) \{\n  \.cards-entry \{ display: grid[\s\S]*?\n\}/)[0];
+  // The feed, its search box and the filter row are hidden only where a card page exists.
+  assert.match(media, /body\[data-cards-available="1"\] \.header-search,\n  body\[data-cards-available="1"\] \.discovery-results \{ display: none; \}/);
+  // An archived report has no card page, so it must keep the list on mobile.
+  assert.doesNotMatch(media, /^\s*\.header-search, \.discovery-results \{ display: none/m);
+  // Desktop keeps the list: the rule lives inside the narrow-screen media query only.
+  assert.ok(css.indexOf('body[data-cards-available="1"] .header-search') > css.indexOf('@media (max-width: 600px) {\n  .cards-entry'));
+
+  const template = fs.readFileSync(path.join(root, 'web', 'index.html'), 'utf8');
+  assert.match(template, /<body data-view="\{\{view\}\}"\{\{bodyAttrs\}\}>/);
+  const render = fs.readFileSync(path.join(root, 'scripts', 'render-site.js'), 'utf8');
+  assert.match(render, /bodyAttrs: entry \? 'data-cards-available="1"' : ''/);
+});
