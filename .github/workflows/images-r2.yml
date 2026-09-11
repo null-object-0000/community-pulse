@@ -1,0 +1,39 @@
+name: 图片镜像 → R2
+
+# 手动补传与校验。用于两种情况：
+#   1. 日报 workflow 里的「上传新图片到 R2」失败（比如临时限流），需要补传；
+#   2. 本地改完 images:sync 的结果后，想立刻把缺的对象推到 CDN 并确认全部可达。
+# 幂等：已能从 IMAGE_BASE 取到的对象会跳过，可以反复运行。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  IMAGE_BASE: ${{ vars.IMAGE_BASE || 'https://img.devtrends.site' }}
+  R2_BUCKET: ${{ vars.R2_BUCKET || 'community-pulse-images' }}
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 下载清单里缺失的镜像文件
+        run: npm run images:sync
+
+      - name: 上传缺失对象到 R2
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npm run images:upload
+
+      - name: 校验全部镜像可达
+        run: npm run images:verify

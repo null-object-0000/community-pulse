@@ -3,14 +3,22 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const D = require('../web/shared.js');
-const { downloadImage, localizeReport, pruneManifest, itemUrls } = require('../scripts/image-store.js');
+const { downloadImage, localizeReport, pruneManifest, itemUrls, readManifest } = require('../scripts/image-store.js');
 const local = '/images/' + 'a'.repeat(64) + '.png';
 const local2 = '/images/' + 'b'.repeat(64) + '.png';
 const remote = 'https://example.org/logo.png';
 const vibe = 'https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/x/y.png';
 const site = 'https://kiri.test/apple-touch-icon.png';
 
-test('managed image policy blocks external requests, unsafe paths and legacy favorite hotlinks', () => {
+// Most cases pin the default bundled mode. `IMAGE_BASE` is a build-time switch, so a suite that
+// happens to run inside a CDN build (IMAGE_BASE exported) must still exercise the bundled default.
+function bundledMode(body) {
+  const saved = process.env.IMAGE_BASE;
+  delete process.env.IMAGE_BASE;
+  try { return body(); } finally { if (saved !== undefined) process.env.IMAGE_BASE = saved; }
+}
+
+test('managed image policy blocks external requests and unsafe paths', () => {
   assert.equal(D.localImage(remote, { [remote]: local }), local);
   assert.equal(D.localImage(local), local);
   for (const value of [remote, '//example.org/x', '/images/../x', 'data:image/png;base64,x', local + '?redirect=x']) {
@@ -67,7 +75,7 @@ test('Product Hunt marks are hotlinked instead of mirrored', () => {
   assert.deepEqual([...new Set(itemUrls({ logo: phMark, images: [phShot] }, { screenshots: true }))], [phMark, phShot]);
 });
 
-test('report images are localized across all fields and failures get a placeholder', () => {
+test('report images are localized across all fields and failures get a placeholder', () => bundledMode(() => {
   const report = { results: [{ items: [{ image: remote, logo: 'https://example.org/missing', icon: local, siteLogo: remote }] }] };
   localizeReport(report, { [remote]: local, 'https://example.org/missing': null });
   assert.deepEqual(report.results[0].items[0], { image: local, logo: '', icon: local, siteLogo: local });
@@ -78,15 +86,15 @@ test('report images are localized across all fields and failures get a placehold
   const archived = { results: [{ items: [{ logo: vibe, images: [vibe] }] }] };
   localizeReport(archived, {});
   assert.deepEqual(archived.results[0].items[0], { logo: vibe, images: [vibe] });
-});
+}));
 
-test('screenshot galleries localize every entry and refuse unsynced URLs', () => {
+test('screenshot galleries localize every entry and refuse unsynced URLs', () => bundledMode(() => {
   const missing = 'https://example.org/gone.png';
   const report = { results: [{ items: [{ images: [remote, missing, local] }] }] };
   localizeReport(report, { [remote]: local, [missing]: null });
   assert.deepEqual(report.results[0].items[0].images, [local, local]);
   assert.throws(() => localizeReport({ results: [{ items: [{ images: [remote] }] }] }, {}), /images:sync/);
-});
+}));
 
 test('the product logo wins the avatar and screenshots render as a managed gallery', () => {
   const html = D.renderItem({ title: 'Example', logo: local, image: local2, images: [local2, remote, local] }, 'en');
@@ -130,6 +138,21 @@ test('download rejects error pages, oversized responses and HTTP failures', asyn
   await assert.rejects(downloadImage(remote, async () => new Response(Buffer.alloc(10 * 1024 * 1024 + 1))), /exceeds/);
 });
 
+test('the uploader maps every mirrored mark to a content-addressed CDN key', () => {
+  const { uploadEntries } = require('../scripts/image-upload.js');
+  const entries = uploadEntries(readManifest());
+  assert.ok(entries.length > 0);
+  for (const entry of entries) {
+    assert.match(entry.key, /^images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/);
+    assert.ok(entry.type.startsWith('image/'), entry.type);
+    assert.ok(fs.existsSync(entry.file), entry.file);
+  }
+  // One upload per file: the key is the content hash, so duplicates collapse.
+  assert.equal(new Set(entries.map(entry => entry.key)).size, entries.length);
+  assert.throws(() => uploadEntries({ x: '/images/' + 'a'.repeat(64) + '.bmp' }), /Unsupported image extension/);
+  assert.throws(() => uploadEntries({ x: '/images/' + 'b'.repeat(64) + '.png' }), /Missing mirror file/);
+});
+
 test('built reports expose either a deployed managed file or a trusted origin', () => {
   const directory = path.resolve(__dirname, '../dist');
   let managed = 0;
@@ -144,6 +167,11 @@ test('built reports expose either a deployed managed file or a trusted origin', 
         if (value.startsWith('/images/')) {
           assert.ok(fs.existsSync(path.join(directory, value)), `${file}: ${value}`);
           managed++;
+        } else if (D.managedImage(value)) {
+          // IMAGE_BASE build: the same content-addressed path is served by the image CDN, so the
+          // bundle must not carry the bytes and no local file may be referenced.
+          assert.ok(!fs.existsSync(path.join(directory, new URL(value).pathname)), `${file}: ${value}`);
+          managed++;
         } else {
           assert.ok(D.hotlinkable(value), `${file}: ${value}`);
           hotlinked++;
@@ -154,5 +182,51 @@ test('built reports expose either a deployed managed file or a trusted origin', 
   // Retention mirrors the newest report; the archive is expected to hotlink instead.
   assert.ok(managed > 0);
   assert.ok(hotlinked > 0);
-  assert.match(fs.readFileSync(path.join(directory, '_headers'), 'utf8'), /Content-Security-Policy: sandbox; default-src 'none'/);
+  const headers = path.join(directory, '_headers');
+  if (fs.existsSync(headers)) {
+    assert.match(fs.readFileSync(headers, 'utf8'), /Content-Security-Policy: sandbox; default-src 'none'/);
+  } else {
+    // An external IMAGE_BASE means this site serves no image bytes, so the rule would be dead config.
+    assert.ok(!fs.existsSync(path.join(directory, 'images')), 'no image bundle in CDN mode');
+  }
+});
+
+test('mirrors may also be served from the configured image CDN origin', () => {
+  const mirrored = 'https://img.devtrends.site' + local;
+  assert.equal(D.managedImage(mirrored), mirrored);
+  assert.equal(D.localImage(mirrored), mirrored);
+  assert.ok(D.renderItem({ title: 'Example', siteLogo: mirrored }, 'en').includes(`src="${mirrored}"`));
+  // The same path shape on any other host is not a managed mirror.
+  for (const value of [
+    'https://evil.test' + local,
+    mirrored + '?v=2',
+    mirrored + '#frag',
+    'https://img.devtrends.site/other/' + 'a'.repeat(64) + '.png',
+    'https://img.devtrends.site.evil.test' + local,
+  ]) {
+    assert.equal(D.managedImage(value), '', value);
+    assert.equal(D.localImage(value), '', value);
+    assert.ok(!D.renderItem({ title: 'Example', siteLogo: value }, 'en').includes('<img'));
+  }
+});
+
+test('IMAGE_BASE rewrites localized mirrors onto the CDN origin', () => {
+  const report = { results: [{ items: [{ logo: remote, icon: local, siteLogo: remote, images: [remote] }] }] };
+  process.env.IMAGE_BASE = 'https://img.devtrends.site/';
+  try {
+    localizeReport(report, { [remote]: local });
+    const mirrored = 'https://img.devtrends.site' + local;
+    assert.deepEqual(report.results[0].items[0], { logo: mirrored, icon: mirrored, siteLogo: mirrored, images: [mirrored] });
+    // The rewritten value must survive the very same validation the browser applies.
+    assert.equal(D.localImage(mirrored), mirrored);
+    assert.equal(D.localImage(mirrored, { [remote]: local }), mirrored);
+  } finally {
+    delete process.env.IMAGE_BASE;
+  }
+  // Without IMAGE_BASE nothing changes: mirrors stay inside the bundle.
+  bundledMode(() => {
+    const bundled = { results: [{ items: [{ logo: remote }] }] };
+    localizeReport(bundled, { [remote]: local });
+    assert.deepEqual(bundled.results[0].items[0], { logo: local });
+  });
 });

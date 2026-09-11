@@ -30,7 +30,8 @@ const reports = dates.map(date => {
   return report;
 });
 images.copyImages(outputDir, imageManifest);
-write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
+// The sandboxing header rule only matters while this site serves the mirrored files itself.
+if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
 // Project catalog is built before rendering so report links point only to generated pages.
 const projects = require('./projects.js').buildProjects(reports);
 for (const report of reports) {

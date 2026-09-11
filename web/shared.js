@@ -141,17 +141,30 @@
     'ph-files.imgix.net', // Product Hunt launch media
   ]);
   const localImagePath = /^\/images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/;
+  // Mirrors can also be served from the CDN origin that `IMAGE_BASE` selects at build time
+  // (see scripts/image-store.js). Only these hosts may appear in markup, so a foreign origin
+  // cannot smuggle in an image even when it copies our path shape.
+  const imageOrigins = new Set(['img.devtrends.site']);
   function hotlinkable(value) {
     const url = safeUrl(value);
     return url && hotlinkOrigins.has(new URL(url).hostname.toLowerCase()) ? url : '';
   }
-  // Only managed, content-addressed images may reach the browser, including old favorites;
-  // a URL whose mirror was pruned falls back to its source CDN when that host is trusted.
+  // A managed mirror is either a same-site path or the same content-addressed path on the
+  // configured image CDN. Anything else is not a managed image.
+  function managedImage(value) {
+    if (typeof value !== 'string') return '';
+    if (localImagePath.test(value)) return value;
+    const url = safeUrl(value);
+    if (!url) return '';
+    const parsed = new URL(url);
+    return imageOrigins.has(parsed.hostname.toLowerCase()) && !parsed.search && !parsed.hash && localImagePath.test(parsed.pathname) ? url : '';
+  }
+  // Only managed, content-addressed images may reach the browser; a URL whose mirror was pruned
+  // falls back to its source CDN when that host is trusted.
   function localImage(value, manifest = {}) {
     const mapped = manifest[value];
     const candidate = typeof mapped === 'string' && mapped ? mapped : value;
-    if (typeof candidate !== 'string') return '';
-    return localImagePath.test(candidate) ? candidate : hotlinkable(candidate);
+    return managedImage(candidate) || hotlinkable(candidate);
   }
   // Screenshot lists (`images`) are managed exactly like single images; anything unsafe is dropped.
   function localImages(value, manifest = {}) {
@@ -348,5 +361,5 @@
       <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem };
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem };
 });

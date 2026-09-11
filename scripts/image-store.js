@@ -26,6 +26,15 @@ const storeDir = path.resolve(__dirname, '../assets/images');
 const rawDir = path.resolve(__dirname, '../知识/大家都在做什么/raw');
 const manifestPath = path.join(storeDir, 'manifest.json');
 const readManifest = () => fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
+// Mirrors live either in this site's bundle (`/images/<sha256>.<ext>`, the default) or on an
+// external CDN origin selected with IMAGE_BASE=https://img.devtrends.site. The manifest stays
+// relative either way, so one checkout builds both modes and `npm run images:upload` can put the
+// same files on the origin without rewriting 900 mappings.
+const imageOrigin = () => (process.env.IMAGE_BASE || '').trim().replace(/\/+$/, '');
+const mirrorUrl = value => {
+  const origin = imageOrigin();
+  return origin && typeof value === 'string' && value.startsWith('/images/') ? origin + value : value;
+};
 const isReportFile = name => /^\d{4}-\d{2}-\d{2}\.json$/.test(name);
 const retentionDays = () => {
   const raw = process.env.IMAGES_RETENTION_DAYS;
@@ -101,7 +110,7 @@ function localizeUrl(value, manifest) {
   if (D.safeUrl(value) && !Object.hasOwn(manifest, value) && !D.hotlinkable(value)) {
     throw new Error('Image has not been synced; run npm run images:sync before building');
   }
-  return D.localImage(value, manifest);
+  return mirrorUrl(D.localImage(value, manifest));
 }
 
 function localizeReport(report, manifest) {
@@ -118,12 +127,20 @@ function localizeReport(report, manifest) {
 }
 
 function copyImages(outputDir, manifest) {
+  // With an external IMAGE_BASE the bundle carries no image bytes: the CDN serves the very same
+  // content-addressed paths, so `/images/<name>` in the markup is resolved by the origin instead.
+  const external = Boolean(imageOrigin());
   const targetDir = path.join(outputDir, 'images');
-  fs.mkdirSync(targetDir, { recursive: true });
+  if (!external) fs.mkdirSync(targetDir, { recursive: true });
   for (const local of new Set(Object.values(manifest))) {
     if (!local) continue;
     if (!D.localImage(local)) throw new Error(`Invalid image manifest path: ${local}`);
-    fs.copyFileSync(path.join(storeDir, path.basename(local)), path.join(targetDir, path.basename(local)));
+    if (external) continue;
+    const source = path.join(storeDir, path.basename(local));
+    // After the mirrors leave Git a build without IMAGE_BASE cannot produce a working page, so fail
+    // loudly instead of shipping markup that points at files nobody serves.
+    if (!fs.existsSync(source)) throw new Error(`Missing mirror ${path.basename(local)}: set IMAGE_BASE to a deployed origin or run npm run images:sync`);
+    fs.copyFileSync(source, path.join(targetDir, path.basename(local)));
   }
 }
 
@@ -172,5 +189,5 @@ async function syncImages() {
   console.log(`Images: ${retained.size} mirrored URLs (marks from ${dates.length} reports, screenshots from ${window.length}), ${done} downloaded, ${failed} unavailable, ${removed.length} manifest entries and ${pruned} files pruned.`);
 }
 
-module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays };
+module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays };
 if (require.main === module) syncImages().catch(error => { console.error(error); process.exitCode = 1; });
