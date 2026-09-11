@@ -130,10 +130,14 @@ function retryableFailuresByDay(start, end) {
   return retry;
 }
 
+// `thumbnail` and `media` are Media objects, so both need selections — asking for
+// the bare field names makes PH reject the query with selectionMismatch.
 function postMediaQuery(id) {
   return `{
     post(id: ${JSON.stringify(id)}) {
-      ${MEDIA_FIELDS.join('\n      ')}
+      id
+      thumbnail { type url }
+      media { type url videoUrl }
     }
   }`;
 }
@@ -167,6 +171,11 @@ function fetchOne(id, options) {
         throw rateError;
       }
       if (attempt === 4) return { ...mediaRecord(id), error: String(error.message || error).slice(0, 300) };
+      // A GraphQL error is a query/schema problem, not a transient network blip:
+      // record it once instead of burning retries on every remaining ID.
+      if (/PH_API_ERROR/.test(String(error.message || error))) {
+        return { ...mediaRecord(id), error: String(error.message || error).slice(0, 300) };
+      }
       execSleep(attempt);
     }
   }

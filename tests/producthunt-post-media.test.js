@@ -7,7 +7,7 @@ const os = require('node:os');
 const path = require('node:path');
 
 const SKILL = path.join(__dirname, '..', '.agents', 'skills', 'community-pulse', 'scripts');
-const { neededIdsByDay } = require(path.join(SKILL, 'capture_producthunt_post_media.js'));
+const { neededIdsByDay, postMediaQuery } = require(path.join(SKILL, 'capture_producthunt_post_media.js'));
 const { mediaByPost } = require(path.join(SKILL, 'backfill_producthunt_media.js'));
 
 const DATE = '2026-02-02';
@@ -190,6 +190,17 @@ test('neededIdsByDay only plans rows outside the featured subset, attributable t
   assert.deepEqual(plan.needed.get(DATE), ['101']);
   assert.deepEqual(plan.unattributable, [{ date: DATE, id: '999' }]);
   assert.equal(plan.referenced, 3);
+});
+
+test('the by-ID query selects thumbnail and media subfields, never bare fields', () => {
+  const query = postMediaQuery('101');
+  // Product Hunt rejects a Media field without selections (selectionMismatch),
+  // which is exactly how the first production run failed.
+  assert.match(query, /post\(id: "101"\)/);
+  assert.match(query, /thumbnail \{ type url \}/);
+  assert.match(query, /media \{ type url videoUrl \}/);
+  assert.doesNotMatch(query, /^\s*thumbnail\s*$/m);
+  assert.doesNotMatch(query, /^\s*media\s*$/m);
 });
 
 test('backfill prefers the featured projection and falls back to recordMedia', () => {

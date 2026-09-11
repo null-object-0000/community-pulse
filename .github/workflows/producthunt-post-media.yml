@@ -96,7 +96,8 @@ jobs:
             set +e
             node "$SKILL_DIR/scripts/capture_producthunt_post_media.js" \
               --start "$START_DATE" \
-              --end "$END_DATE"
+              --end "$END_DATE" \
+              --refresh-failures
             code=$?
             set -e
 
