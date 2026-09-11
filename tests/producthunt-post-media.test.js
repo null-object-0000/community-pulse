@@ -7,7 +7,7 @@ const os = require('node:os');
 const path = require('node:path');
 
 const SKILL = path.join(__dirname, '..', '.agents', 'skills', 'community-pulse', 'scripts');
-const { neededIdsByDay, postMediaQuery } = require(path.join(SKILL, 'capture_producthunt_post_media.js'));
+const { neededIdsByDay, postMediaQuery, postMediaBatchQuery } = require(path.join(SKILL, 'capture_producthunt_post_media.js'));
 const { mediaByPost } = require(path.join(SKILL, 'backfill_producthunt_media.js'));
 
 const DATE = '2026-02-02';
@@ -199,6 +199,17 @@ test('the by-ID query selects thumbnail and media subfields, never bare fields',
   assert.match(query, /post\(id: "101"\)/);
   assert.match(query, /thumbnail \{ type url \}/);
   assert.match(query, /media \{ type url videoUrl \}/);
+  assert.doesNotMatch(query, /^\s*thumbnail\s*$/m);
+  assert.doesNotMatch(query, /^\s*media\s*$/m);
+});
+
+test('the batched query aliases every post and keeps the media selections', () => {
+  const query = postMediaBatchQuery(['101', '102', '103']);
+  for (const index of [0, 1, 2]) {
+    assert.match(query, new RegExp(`p${index}: post\\(id: "10${index + 1}"\\)`));
+  }
+  assert.equal(query.match(/thumbnail \{ type url \}/g).length, 3);
+  assert.equal(query.match(/media \{ type url videoUrl \}/g).length, 3);
   assert.doesNotMatch(query, /^\s*thumbnail\s*$/m);
   assert.doesNotMatch(query, /^\s*media\s*$/m);
 });

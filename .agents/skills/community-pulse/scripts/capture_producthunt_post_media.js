@@ -24,6 +24,8 @@
  * `--refresh-failures` to retry the IDs that previously errored.
  *
  * Requires PRODUCT_HUNT_TOKEN (shared rotation with capture_producthunt_raw.js).
+ * Posts are looked up in aliased batches (`--batch-size`, default 20) because a
+ * one-ID-per-request sweep only covers ~300 IDs inside a 15 minute quota window.
  *
  * Usage:
  *   node scripts/capture_producthunt_post_media.js --start 2026-01-01 --end 2026-09-10
@@ -57,6 +59,7 @@ function parseArgs(argv) {
     refreshFailures: argv.includes('--refresh-failures'),
     waitOnRateLimit: argv.includes('--wait-on-rate-limit'),
     limitIds: Number(value(argv, '--limit-ids')) || 0,
+    batchSize: Number(value(argv, '--batch-size')) || 20,
   };
 }
 
@@ -132,44 +135,58 @@ function retryableFailuresByDay(start, end) {
 
 // `thumbnail` and `media` are Media objects, so both need selections — asking for
 // the bare field names makes PH reject the query with selectionMismatch.
+const MEDIA_SELECTION = 'id\n      thumbnail { type url }\n      media { type url videoUrl }';
+
 function postMediaQuery(id) {
   return `{
     post(id: ${JSON.stringify(id)}) {
-      id
-      thumbnail { type url }
-      media { type url videoUrl }
+      ${MEDIA_SELECTION}
     }
   }`;
+}
+
+// Aliased batch: several posts per request. Product Hunt's quota is consumed per
+// request, and a one-ID-per-request sweep only lands ~300 IDs per 15 minute
+// window, so batching is what keeps ~4000 lookups inside one or two windows.
+function postMediaBatchQuery(ids) {
+  const fields = ids
+    .map((id, index) => `    p${index}: post(id: ${JSON.stringify(id)}) {\n      ${MEDIA_SELECTION}\n    }`)
+    .join('\n');
+  return `{\n${fields}\n  }`;
 }
 
 function mediaRecord(id) {
   return { id, thumbnail: null, media: null, error: null };
 }
 
+function postToRecord(post, fallbackId) {
+  if (!post || !post.id) return { ...mediaRecord(fallbackId), error: 'post not found' };
+  return {
+    id: String(post.id),
+    thumbnail: post.thumbnail ?? null,
+    media: post.media ?? null,
+    error: null,
+  };
+}
+
+function rateLimitError(error, id) {
+  const wrapped = new Error(`PH_API_RATE_LIMITED while fetching ${id}`);
+  wrapped.code = 'PH_API_RATE_LIMITED';
+  wrapped.retryAfterSeconds = error.retryAfterSeconds;
+  return wrapped;
+}
+
 function fetchOne(id, options) {
   for (let attempt = 1; attempt <= 4; attempt += 1) {
     try {
       const { data } = requestGraphQL(postMediaQuery(id));
-      const post = data.post;
-      if (!post || !post.id) return { ...mediaRecord(id), error: 'post not found' };
-      return {
-        id: String(post.id),
-        thumbnail: post.thumbnail ?? null,
-        media: post.media ?? null,
-        error: null,
-      };
+      return postToRecord(data.post, id);
     } catch (error) {
       if (error.code === 'PH_API_RATE_LIMITED' && options.waitOnRateLimit && attempt < 4) {
         waitForRateLimit(error, `post ${id}`);
         continue;
       }
-      if (error.code === 'PH_API_RATE_LIMITED') {
-        // Surrender the rest of this run: the caller keeps already-written days.
-        const rateError = new Error(`PH_API_RATE_LIMITED while fetching ${id}`);
-        rateError.code = 'PH_API_RATE_LIMITED';
-        rateError.retryAfterSeconds = error.retryAfterSeconds;
-        throw rateError;
-      }
+      if (error.code === 'PH_API_RATE_LIMITED') throw rateLimitError(error, id);
       if (attempt === 4) return { ...mediaRecord(id), error: String(error.message || error).slice(0, 300) };
       // A GraphQL error is a query/schema problem, not a transient network blip:
       // record it once instead of burning retries on every remaining ID.
@@ -180,6 +197,19 @@ function fetchOne(id, options) {
     }
   }
   return { ...mediaRecord(id), error: 'unreachable' };
+}
+
+function fetchBatch(ids, options) {
+  if (ids.length === 1) return [fetchOne(ids[0], options)];
+  try {
+    const { data } = requestGraphQL(postMediaBatchQuery(ids));
+    return ids.map((id, index) => postToRecord(data[`p${index}`], id));
+  } catch (error) {
+    if (error.code === 'PH_API_RATE_LIMITED') throw rateLimitError(error, ids[0]);
+    // One rejected ID must not cost the whole batch: isolate it per ID.
+    console.error(`[ph-media] batch of ${ids.length} failed (${String(error.message || error).slice(0, 120)}); retrying individually`);
+    return ids.map((id) => fetchOne(id, options));
+  }
 }
 
 function execSleep(seconds) {
@@ -241,17 +271,17 @@ function main() {
   let writtenDays = 0;
   let remaining = capped;
   let rateLimited = false;
+  const batchSize = Math.max(1, Math.min(50, options.batchSize || 20));
   const startedAt = Date.now();
   for (const date of [...needed.keys()].sort()) {
     if (remaining <= 0) break;
     const ids = needed.get(date).slice(0, remaining);
     const results = [];
-    for (const [index, id] of ids.entries()) {
+    for (let start = 0; start < ids.length; start += batchSize) {
+      const slice = ids.slice(start, start + batchSize);
+      let records;
       try {
-        const record = fetchOne(id, options);
-        results.push(record);
-        if (record.error) failed += 1;
-        else fetched += 1;
+        records = fetchBatch(slice, options);
       } catch (error) {
         if (error.code === 'PH_API_RATE_LIMITED') {
           rateLimited = true;
@@ -259,10 +289,13 @@ function main() {
         }
         throw error;
       }
-      remaining -= 1;
-      if ((index + 1) % 50 === 0) {
-        console.error(`[ph-media] ${date}: ${index + 1}/${ids.length} (${Math.round((Date.now() - startedAt) / 1000)}s)`);
+      for (const record of records) {
+        results.push(record);
+        if (record.error) failed += 1;
+        else fetched += 1;
       }
+      remaining -= slice.length;
+      console.error(`[ph-media] ${date}: ${Math.min(start + slice.length, ids.length)}/${ids.length} (${Math.round((Date.now() - startedAt) / 1000)}s)`);
     }
     if (results.length) {
       writeDay(date, results);
@@ -293,4 +326,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { neededIdsByDay, postMediaQuery };
+module.exports = { neededIdsByDay, postMediaQuery, postMediaBatchQuery };
