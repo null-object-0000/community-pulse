@@ -49,6 +49,7 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 - `scripts/enhanced-report.js`：沿用原 final 摘要匹配策略，未匹配项仍为 raw，部分匹配标记 mixed。
 - 中英文内容优先使用 `summaryZh` / `summaryEn`（兼容下划线字段）；英文缺译文时优先使用英文仓库介绍，否则显示原文并标注。中文 final 摘要仍优先于 raw。
 - 语言由 URL 确定；切换语言保留路由、搜索和分类筛选。旧的 `?source=` 参数不再过滤，加载时从地址栏清掉。
+- 周期刊来源（`weekly-issue` / `hellogithub-issue`）的行必须落在 release commit 的**北京日**：`collect.js` 只读 `source-raw/<source>/<date>.json`（`loadDocument` 强制 `targetDate === date`），`capture_periodicals_raw.js` 用「发布：《HelloGitHub》第 N 期」这类提交信息反推日期。已退役的实时采集器（`.agents/skills/community-pulse/scripts/sources/*.js`）按「运行日是不是发布日」触发、内容却取当时最新一期，历史重算时把同一期铺到了多个日期（HelloGitHub 125 期 × 3 天、阮一峰周刊 411 期 × 27 个周五，详情页的「收录记录」因此出现重复行）；2026-09-11 已用 source-raw 离线重放修正受影响的 43 个日报（raw 的 json + md），重建时非周期刊来源与 md 其它分区逐字节未变。
 - 完整验证：`npm run check`（构建 + 模型 / 主题 / SEO 路由测试）。
 
 部署后至少检查：
