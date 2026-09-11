@@ -90,6 +90,9 @@ jobs:
           node scripts/collect.js --strict --require-github-repositories --date "$TARGET" --observed-date "$OBSERVED" --markdown --out "../../../知识/大家都在做什么/raw/$TARGET.md" --json-out "../../../知识/大家都在做什么/raw/$TARGET.json"
           ls -la "../../../知识/大家都在做什么/raw/$TARGET."*
 
+      - name: 持久化站点图片
+        run: npm run images:sync
+
       - name: 提交并推送
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"
@@ -97,6 +100,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # 来源层可能顺手修复更早的缺口，因此提交所有来源的日分区目录。
           git add "知识/大家都在做什么/raw/$TARGET.md" "知识/大家都在做什么/raw/$TARGET.json" "知识/大家都在做什么/source-raw/"
+          git add assets/images/
           git commit -m "docs: $TARGET 大家都在做什么日报(raw)" || echo "无变更可提交"
           # 并发 push 可能冲突: pull --rebase 后再推 (最多重试 3 次)
           for i in 1 2 3; do

@@ -1,3 +1,5 @@
+const D = require('../web/shared.js');
+
 function parseEnhancedMarkdown(markdown) {
   const sections = new Map();
   let currentSection = null;
@@ -51,6 +53,7 @@ function applyEnhancedMarkdown(report, markdown, date) {
         item.summaryZh = entry.localized?.summaryZh || entry.summary;
         if (entry.localized?.summaryEn) item.summaryEn = entry.localized.summaryEn;
         if (entry.localized?.titleEn) item.titleEn = entry.localized.titleEn;
+        if (D.isCategoryId(entry.localized?.primaryCategory)) item.primaryCategory = entry.localized.primaryCategory;
         item.summarySource = 'llm-final';
         entry.used = true;
         enhancedCount += 1;

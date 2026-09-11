@@ -2,6 +2,7 @@
 /** Generate a Chinese delivery report plus hidden bilingual site metadata. */
 const fs = require('fs');
 const crypto = require('crypto');
+const D = require('../../../../web/shared.js');
 
 const BASE = process.env.COMMUNITY_PULSE_LLM_BASE || 'http://127.0.0.1:18640/v1';
 const MODEL = process.env.COMMUNITY_PULSE_LLM_MODEL || 'flowlet-flash';
@@ -102,12 +103,15 @@ function validateLocalization(value, item) {
     || (!sourceHasLatinBrand && hasChinese(titleEn)) || chineseCount(titleEn) > 6)) {
     throw new Error('titleEn 不是英文标题');
   }
+  const primaryCategory = String(value.primaryCategory || '').trim();
+  if (!D.isCategoryId(primaryCategory)) throw new Error(`primaryCategory 不在预设分类中：${primaryCategory || '空'}`);
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     sourceHash: sourceHash(item),
     titleEn: clampEnglish(titleEn),
     summaryZh: clampChinese(summaryZh),
     summaryEn: clampEnglish(summaryEn),
+    primaryCategory,
   };
 }
 
@@ -120,15 +124,18 @@ async function localize(item) {
   const sourceIsChinese = hasChinese(sourceDescription);
   const needsEnglishTitle = hasChinese(item.title);
   const requested = sourceIsChinese
-    ? `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","summaryEn":"英文摘要"`
-    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要"`;
+    ? `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","summaryEn":"英文摘要","primaryCategory":"分类ID"`
+    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","primaryCategory":"分类ID"`;
   const direction = sourceIsChinese
     ? `把描述翻译并归纳为不超过 ${MAX_EN_LEN} 个字符的自然英文摘要。`
     : `把描述翻译并归纳为不超过 ${MAX_ZH_LEN} 个字符的简洁中文摘要。`;
   const titleRule = needsEnglishTitle
     ? '同时生成自然、简洁的英文标题；保留已有英文品牌名、仓库名、型号和人名，翻译中文说明部分。'
     : '';
-  const prompt = `为 DevTrends 翻译一条内容。${sourceNote}${direction}${titleRule}
+  const categoryRules = D.categories.map(category => `- ${category.id}: ${category.description}`).join('\n');
+  const prompt = `为 DevTrends 翻译并归类一条内容。${sourceNote}${direction}${titleRule}
+从下面的固定分类中选择一个最能描述项目主要用途和目标用户的分类。必须只选一个。按产品解决的问题归类，不按来源、开源状态或作者身份归类；AI、React、自托管等只是实现或次要功能时，不要据此归类；确实无法判断才选 other。
+${categoryRules}
 不添加原文没有的信息，不输出宣传套话或解释。只输出严格 JSON：{${requested}}
 
 标题：${item.title}
@@ -142,6 +149,7 @@ async function localize(item) {
         titleEn: needsEnglishTitle ? translated.titleEn : item.title,
         summaryZh: translated.summaryZh,
         summaryEn: sourceIsChinese ? translated.summaryEn : sourceDescription,
+        primaryCategory: translated.primaryCategory,
       }, item);
     } catch (error) {
       lastError = error;
@@ -225,7 +233,7 @@ async function main() {
     : new Map();
   for (const item of items) {
     const localized = cached.get(sourceHash(item));
-    if (localized) localizedByIndex.set(item.idx, localized);
+    if (localized && localized.schemaVersion >= 2 && D.isCategoryId(localized.primaryCategory)) localizedByIndex.set(item.idx, localized);
   }
   const concurrency = parseInt(process.env.ENHANCE_CONCURRENCY || '5', 10);
   const pending = items.filter(item => !localizedByIndex.has(item.idx));

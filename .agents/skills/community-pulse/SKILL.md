@@ -129,7 +129,7 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 
 `collect.js` 可从同一批本地输入一次生成 JSON 和 Markdown。后续如需 HTML 报纸/LLM 分组，只读取这些已生成产物，不动抓取层。
 
-`enhance.js` 为每条内容生成中文摘要与英文摘要，并为含中文的标题生成英文标题。中文 final Markdown 保持可直接发送，同时用隐藏的 `devtrends-i18n` 元数据保存 `titleEn`、`summaryZh`、`summaryEn`，供网站构建中英文页面；构建阶段不得再调用 LLM。
+`enhance.js` 为每条内容生成中文摘要与英文摘要，并为含中文的标题生成英文标题。它还必须从 `web/shared.js` 的固定分类中选择一个 `primaryCategory`；分类与翻译在同一次 LLM 请求中完成。中文 final Markdown 保持可直接发送，同时用隐藏的 `devtrends-i18n` 元数据保存 `titleEn`、`summaryZh`、`summaryEn`、`primaryCategory`，供网站构建中英文页面与分类筛选；构建阶段不得再调用 LLM。旧 final 缺少分类时由 `web/shared.js` 的本地规则回退，不修改历史文件。
 
 Markdown 条目的三级标题统一使用纯文字，不在产品名称上包超链接。主链接和补充链接统一放在描述/指标下方的 `🔗` 行，按目标标注为“官网 / GitHub / VibeCafé / Product Hunt / 原文 / 投稿页”。
 

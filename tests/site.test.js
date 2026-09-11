@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const D = require('../web/shared.js');
 const { buildProjects, projectPage } = require('../scripts/projects.js');
 const { applyEnhancedMarkdown } = require('../scripts/enhanced-report.js');
-const { metadataComment, renderLocalizedMarkdown, extractItems } = require('../.agents/skills/community-pulse/scripts/enhance.js');
+const { metadataComment, renderLocalizedMarkdown, extractItems, validateLocalization } = require('../.agents/skills/community-pulse/scripts/enhance.js');
 const report = (date, sources) => ({ date, results: sources.map(([sourceId, items]) => ({ sourceId, sourceName: sourceId, items })) });
 
 test('repository identities normalize case, trailing slash, query, and .git without colliding owner/repo pairs', () => {
@@ -40,16 +40,37 @@ test('final summaries override raw and preserve metrics', () => {
 test('bilingual enhancement carries English titles and summaries through hidden final metadata', () => {
   const rawMarkdown = '## Feed（1 条）\n\n### 中文工具\n> 一个帮助开发者整理数据的工具。\n';
   const items = extractItems(rawMarkdown);
-  const localized = { schemaVersion: 1, titleEn: 'Developer Data Organizer', summaryZh: '一个帮助开发者整理数据的工具。', summaryEn: 'A tool that helps developers organize data.' };
+  const localized = { schemaVersion: 2, titleEn: 'Developer Data Organizer', summaryZh: '一个帮助开发者整理数据的工具。', summaryEn: 'A tool that helps developers organize data.', primaryCategory: 'developer-tools' };
   const finalMarkdown = renderLocalizedMarkdown(rawMarkdown, items, new Map([[items[0].idx, localized]]));
   assert.ok(finalMarkdown.includes(metadataComment(localized)));
   const enhanced = applyEnhancedMarkdown(report('2026-09-09', [['Feed', [{ title: '中文工具', summary: 'raw' }]]]), finalMarkdown, '2026-09-09');
   const item = enhanced.results[0].items[0];
   assert.equal(item.summaryZh, localized.summaryZh);
   assert.equal(item.summaryEn, localized.summaryEn);
+  assert.equal(item.primaryCategory, 'developer-tools');
   assert.equal(D.displayTitle(item, 'en'), localized.titleEn);
   assert.equal(D.displayTitle(item, 'zh-CN'), '中文工具');
   assert.equal(D.summary(item, 'en').original, false);
+});
+
+test('preset categories provide one stable primary category and reject unknown LLM output', () => {
+  assert.deepEqual(D.categories.map(category => category.id), ['ai', 'developer-tools', 'data-infrastructure', 'design-media', 'productivity-collaboration', 'business-growth', 'learning-research', 'lifestyle-entertainment', 'other']);
+  assert.equal(D.itemCategory({ primaryCategory: 'developer-tools', title: 'AI framework' }), 'developer-tools');
+  assert.deepEqual(D.itemCategories({ title: 'A terminal and code editor for developers' }), ['developer-tools']);
+  assert.equal(D.itemCategory({ title: 'A quiet music player' }), 'design-media');
+  const item = { title: 'Data Tool', heading: 'Data Tool', desc: 'A database monitoring tool.', section: 'Feed' };
+  assert.equal(validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'data-infrastructure' }, item).primaryCategory, 'data-infrastructure');
+  assert.throws(() => validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'random' }, item), /primaryCategory/);
+});
+
+test('known data sources expose safe destination links and real website logos', () => {
+  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
+    const source = D.sourceInfo({ sourceId });
+    assert.ok(source, sourceId);
+    assert.ok(D.safeUrl(source.url), `${sourceId} URL`);
+    assert.match(source.logo, /^\/source-[a-z]+\.svg$/, `${sourceId} logo`);
+  }
+  assert.equal(D.sourceInfo({ sourceId: 'unknown-source' }), null);
 });
 
 test('language selection uses translated summaries and explicitly labels fallback originals', () => {
@@ -115,6 +136,8 @@ test('every emitted project, report, and sitemap entry has a real static page an
   for (const date of index.dates) {
     const data = JSON.parse(fs.readFileSync(path.join(dist, `data/reports/${date}.json`)));
     for (const item of D.reportItems(data)) {
+      assert.ok(D.isCategoryId(D.itemCategory(item)), `${date}: ${item.title}`);
+      assert.equal(D.itemCategories(item).length, 1, `${date}: ${item.title}`);
       if (D.repository(item)) assert.equal(item.projectPath, projects[D.repository(item).key]);
       else assert.equal(item.projectPath, undefined);
     }

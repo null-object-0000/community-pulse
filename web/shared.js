@@ -57,14 +57,43 @@
     'github-trending': ['GitHub Trending', 'GitHub Trending'], 'github-trending-cn': ['GitHub 中文趋势', 'GitHub Trending China'],
     producthunt: ['Product Hunt', 'Product Hunt'],
   };
+  const sourceDirectory = {
+    vibecafe: { url: 'https://vibecafe.ai/', logo: '/source-vibecafe.svg' },
+    'chinese-indie-dev': { url: 'https://github.com/1c7/chinese-independent-developer', logo: '/source-github.svg' },
+    'weekly-issues': { url: 'https://github.com/ruanyf/weekly/issues', logo: '/source-github.svg' },
+    'weekly-issue': { url: 'https://github.com/ruanyf/weekly', logo: '/source-github.svg' },
+    'hellogithub-issues': { url: 'https://github.com/521xueweihan/HelloGitHub/issues', logo: '/source-hellogithub.svg' },
+    'hellogithub-issue': { url: 'https://hellogithub.com/', logo: '/source-hellogithub.svg' },
+    'github-trending': { url: 'https://github.com/trending', logo: '/source-github.svg' },
+    'github-trending-cn': { url: 'https://github.com/trending?spoken_language_code=zh', logo: '/source-github.svg' },
+    producthunt: { url: 'https://www.producthunt.com/', logo: '/source-producthunt.svg' },
+  };
+  const categories = [
+    { id: 'ai', labelZh: 'AI 与智能体', labelEn: 'AI & agents', description: '主要价值来自 AI 模型、智能体、生成、推理或机器学习；仅把 AI 当辅助功能的产品按实际用途归类' },
+    { id: 'developer-tools', labelZh: '开发工具', labelEn: 'Developer tools', description: '面向软件开发的编辑器、终端、调试测试、代码工具、自动化、框架、SDK、组件库与运行时' },
+    { id: 'data-infrastructure', labelZh: '数据与基础设施', labelEn: 'Data & infrastructure', description: '数据库、数据工程、后端、云服务、部署运维、网络、安全、存储与可观测性' },
+    { id: 'design-media', labelZh: '设计与媒体', labelEn: 'Design & media', description: '设计、图像、音视频、摄影、创意制作、内容处理与相关专业工作流' },
+    { id: 'productivity-collaboration', labelZh: '效率与协作', labelEn: 'Productivity & collaboration', description: '任务、笔记、文档、日历、会议、知识管理、团队协作与个人工作效率' },
+    { id: 'business-growth', labelZh: '商业与增长', labelEn: 'Business & growth', description: '营销、销售、客户服务、电商、财务、支付、招聘、创业运营与增长工具' },
+    { id: 'learning-research', labelZh: '学习与研究', labelEn: 'Learning & research', description: '教育、课程、学习、阅读、知识整理、学术研究与文档资料' },
+    { id: 'lifestyle-entertainment', labelZh: '生活与娱乐', labelEn: 'Lifestyle & entertainment', description: '健康、旅行、美食、社交、游戏、影音娱乐及其他面向日常生活的消费产品' },
+    { id: 'other', labelZh: '其他', labelEn: 'Other', description: '信息不足，或主要用途无法准确归入以上主题' },
+  ];
+  const categoryIds = new Set(categories.map(category => category.id));
   const t = (locale, key, args = {}) => String(messages[locale]?.[key] ?? messages['zh-CN'][key] ?? key)
     .replace(/\{(\w+)\}/g, (_, name) => args[name] ?? '');
   const escapeHtml = (value = '') => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const json = value => JSON.stringify(value).replace(/</g, '\\u003c');
   const localPath = (route, locale) => (locale === 'en' ? '/en' : '') + route;
   const sourceName = (item, locale) => sourceLabels[item.sourceId]?.[locale === 'en' ? 1 : 0] || item.sourceName || t(locale, 'unknownSource');
+  const sourceInfo = item => sourceDirectory[String(item?.sourceId || '').toLowerCase()] || null;
   function safeUrl(value) {
     try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url.href : ''; } catch { return ''; }
+  }
+  // Only managed, content-addressed images may reach the browser, including old favorites.
+  function localImage(value, manifest = {}) {
+    const candidate = manifest[value] || value;
+    return typeof candidate === 'string' && /^\/images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/.test(candidate) ? candidate : '';
   }
   // Accept repository roots only. Issue/blob/profile URLs must not create false projects.
   function repository(item) {
@@ -109,18 +138,29 @@
     return null;
   }
   const compact = (value, locale) => Number.isFinite(Number(value)) ? new Intl.NumberFormat(locale, { notation: Number(value) >= 1000 ? 'compact' : 'standard', maximumFractionDigits: 1 }).format(Number(value)) : '';
-  function itemCategories(item) {
-    const repo = repository(item);
-    const text = [item.title, item.titleEn, item.summary, item.summaryZh, item.summaryEn, item.github?.description, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLowerCase();
-    const categories = [];
-    if (repo) categories.push('opensource');
-    if (/\b(ai|llm|gpt|agent|model|machine-learning)\b|人工智能|大模型/i.test(text)) categories.push('ai');
-    if (/\b(design|image|video|ui|ux|creative|canvas)\b|设计|图像|视频|画布/i.test(text)) categories.push('design');
-    if (/\b(framework|sdk|library|runtime|react|vue|next\.?js|node\.?js)\b|框架|组件库/i.test(text)) categories.push('framework');
-    if (/\b(cli|editor|tool|ide|browser|desktop|developer)\b|工具|编辑器|开发/i.test(text)) categories.push('tools');
-    if (/indie|vibecafe|producthunt/.test(String(item.sourceId || '').toLowerCase())) categories.push('indie');
-    return [...new Set(categories)];
+  const isCategoryId = value => typeof value === 'string' && categoryIds.has(value);
+  function itemCategory(item) {
+    const explicit = item.primaryCategory || item.primary_category || item.category;
+    if (isCategoryId(explicit)) return explicit;
+    const titleText = [item.title, item.titleEn].filter(Boolean).join(' ').toLowerCase();
+    const text = [titleText, item.summary, item.summaryZh, item.summaryEn, item.github?.description, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLowerCase();
+    const scores = Object.fromEntries(categories.map(category => [category.id, 0]));
+    const add = (id, pattern) => {
+      if (pattern.test(text)) scores[id] += 2;
+      if (pattern.test(titleText)) scores[id] += 3;
+    };
+    add('ai', /\b(ai|llms?|gpt|agentic|agents?|machine[- ]learning|deep[- ]learning|neural|inference|embeddings?|rag|computer vision)\b|人工智能|大模型|智能体|机器学习|深度学习|模型推理|文生|图生/i);
+    add('developer-tools', /\b(cli|ides?|code editor|terminal|debugg?er|testing|test runner|compiler|linter|codegen|developer tools?|devtools|coding|programming|git|api client|automation|workflow|browser extension|frameworks?|sdks?|libraries|library|runtimes?|packages?|components?|starter kit|boilerplate|react|vue|next\.?js|node\.?js|swiftui|toolkit)\b|开发工具|代码编辑|编辑器|终端|命令行|调试|测试工具|编译器|代码生成|编程|自动化|浏览器扩展|框架|组件库|运行时|软件包|开发库|脚手架/i);
+    add('data-infrastructure', /\b(databases?|sql|data pipeline|analytics|cloud|deploy|devops|containers?|docker|kubernetes|servers?|hosting|network|proxy|security|observability|monitoring|logging|storage|backend|api gateway|self[- ]hosted)\b|数据库|数据分析|数据管道|云服务|部署|运维|容器|服务器|托管|网络|代理|安全|监控|可观测|日志|存储|后端|自托管/i);
+    add('design-media', /\b(design|images?|photos?|video|audio|music|ui|ux|creative|canvas|drawing|animation|3d|ocr|screenshot|screen recording|podcast|subtitle|media|voice)\b|设计|图像|图片|照片|视频|音频|音乐|创作|画布|绘图|动画|封面|截图|录屏|播客|字幕|媒体|语音/i);
+    add('productivity-collaboration', /\b(productivity|collaboration|calendar|notes?|todo|task management|project management|documents?|spreadsheet|email|meeting|knowledge base|reader|bookmark|focus|workspace)\b|效率|协作|日历|笔记|待办|任务管理|项目管理|文档|表格|邮件|会议|知识库|阅读器|书签|专注|工作台/i);
+    add('business-growth', /\b(marketing|sales|crm|commerce|ecommerce|customer support|customer service|seo|advertising|finance|fintech|invoice|billing|payment|startup|business|recruiting|hiring|job search)\b|营销|销售|客户管理|客户服务|电商|商业|广告|金融|财务|发票|账单|支付|创业|招聘|求职|报价/i);
+    add('learning-research', /\b(education|learning|course|tutorial|research|paper|book|reading|study|training|documentation|wiki)\b|教育|学习|课程|教程|研究|论文|书籍|阅读|知识|培训|百科/i);
+    add('lifestyle-entertainment', /\b(health|fitness|travel|food|recipe|social|dating|game|gaming|entertainment|sports|shopping|weather|habit|personal finance)\b|健康|健身|旅行|旅游|美食|菜谱|社交|约会|游戏|娱乐|运动|购物|天气|习惯|生活/i);
+    const ranked = categories.filter(category => category.id !== 'other').sort((a, b) => scores[b.id] - scores[a.id]);
+    return scores[ranked[0].id] > 0 ? ranked[0].id : 'other';
   }
+  const itemCategories = item => [itemCategory(item)];
   const dateLabel = (date, locale) => /^\d{4}-\d{2}-\d{2}$/.test(date || '') ? new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`)) : '';
   function trackedUrl(value, item, date) {
     const safe = safeUrl(value);
@@ -173,7 +213,7 @@
     const stars = metric(item, ['stars', 'stargazers_count', 'totalStars']);
     const votes = metric(item, ['votes', 'votesCount']);
     const tags = [...new Set([...(item.github?.topics || []), ...(item.tags || [])])].filter(tag => !['product', 'vibecafe', 'daily', 'new', 'official-featured', 'submission', 'github-trending'].includes(tag)).slice(0, 3);
-    const imageUrl = safeUrl(item.image || item.logo || item.icon);
+    const imageUrl = [item.image, item.logo, item.icon].map(value => localImage(value)).find(Boolean);
     const title = displayTitle(item, locale);
     const score = stars !== null ? stars : votes;
     const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
@@ -189,5 +229,5 @@
       <time class="item-date" datetime="${escapeHtml((item.publishedAt || date || '').slice(0, 10))}">${escapeHtml(published)}</time>
       <div class="item-actions">${favoriteButton(item, locale, saved)}</div></article>`;
   }
-  return { origin, favoritesKey, messages, t, escapeHtml, json, localPath, sourceName, safeUrl, repository, favoriteId, summary, displayTitle, reportItems, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
+  return { origin, favoritesKey, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, safeUrl, localImage, repository, favoriteId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
 });

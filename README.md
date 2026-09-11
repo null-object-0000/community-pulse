@@ -41,7 +41,7 @@ npm run check
 
 详情页按规范化的 `owner/repo` 聚合跨来源和跨日期的条目，展示现有介绍、仓库信息、收录记录及按仓库 topics 匹配的相关项目。只识别仓库根地址，避免把 Issue、文件和用户主页当作项目。暂不为无仓库地址的产品生成详情页，也不会在构建时请求 GitHub 或编造额外项目介绍。指标显示采集快照日期。
 
-语言字典、内容选择和列表组件集中在 `web/shared.js`，供浏览器和构建阶段共用。每日 LLM 增强会在 final Markdown 中写入隐藏的双语元数据：中文页面使用 `summaryZh`，英文页面使用 `summaryEn`；中文产品名称同时生成 `titleEn`。兼容旧的 `summary_en` / `summary_zh` 字段，历史日报缺少译文时标注原文，不在构建阶段联网补译。
+语言字典、内容选择和列表组件集中在 `web/shared.js`，供浏览器和构建阶段共用。网站使用经过近 90 天历史日报验证的单一主题分类：AI 与智能体、开发工具、数据与基础设施、设计与媒体、效率与协作、商业与增长、学习与研究、生活与娱乐、其他。每日 LLM 增强会在 final Markdown 中写入隐藏元数据，一次完成双语摘要和 `primaryCategory` 归类；构建阶段校验分类 ID，旧日报缺少分类时使用同一模块中的本地规则回退。中文页面使用 `summaryZh`，英文页面使用 `summaryEn`；中文产品名称同时生成 `titleEn`。兼容旧的 `summary_en` / `summary_zh` 字段，历史日报缺少译文时标注原文，不在构建阶段联网补译。
 
 收藏使用 `localStorage` 的 `devtrends-favorites-v1`，与旧版本兼容；主题使用 `devtrends-theme-v1`。收藏不上传服务器。语言切换保留当前页面和筛选参数。旧 `?date=` 链接仍能导航到日报，旧 `?style=` 参数不再改变界面。
 
@@ -52,3 +52,12 @@ npm run check
 Cloudflare Workers Builds 连接本仓库 `main` 分支，每次推送（包括每日数据任务）都会自动构建和发布。对外主域名统一使用 <https://devtrends.site>。
 
 发布前运行 `npm run check`。发布后检查首页、静态资源、最新日报 JSON、robots、sitemap、中英文日报及项目详情页，同时核对 canonical、最新日报 `llm-final` 状态和不存在页面的 404 状态。
+
+### 站点图片存储
+
+列表使用的 `image` / `logo` / `icon` 由 `npm run images:sync` 增量下载到 `assets/images/`，按文件内容 SHA-256 去重；`manifest.json` 保存原始 URL 到本地文件的映射。图片文件与清单需一起提交，随 Cloudflare 静态资源发布，访问地址为 `https://devtrends.site/images/<hash>.<ext>`。原始日报保留来源 URL 供追溯。
+
+每日工作流在日报生成后自动同步并提交图片。手动新增、回填日报后先运行 `npm run images:sync`，再运行 `npm run check`。构建不访问外网，发现未经同步的新图片会提示先运行同步命令；生成的日报 JSON 和页面只使用本地图片；旧收藏通过 `/data/images.json` 转换图片地址。外网失效、超过 10 MiB 或非支持的图片会记录为空并显示文字占位，后续同步会重试，浏览器不会回退到外网。已有成功文件会复用，不重复下载。
+
+本地 Node.js 24 使用代理时可运行 `NODE_USE_ENV_PROXY=1 npm run images:sync`。下载支持 PNG、JPEG、GIF、WebP、AVIF 、ICO 和 SVG，通过文件字节识别格式，不把源站错误页保存成图片。
+SVG 随图片响应附带 CSP sandbox，禁止脚本及外部资源请求。

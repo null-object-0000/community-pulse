@@ -3,6 +3,8 @@ const path = require('node:path');
 const D = require('../web/shared.js');
 const { applyEnhancedMarkdown } = require('./enhanced-report.js');
 const R = require('./render-site.js');
+const images = require('./image-store.js');
+const imageManifest = images.readManifest();
 const root = path.resolve(__dirname, '..');
 const sourceDir = path.join(root, '知识', '大家都在做什么', 'raw');
 const finalDir = path.join(root, '知识', '大家都在做什么', 'final');
@@ -12,12 +14,13 @@ function write(file, content) { const target = path.join(outputDir, file); fs.mk
 function writePage(route, content) { write(path.join(route.replace(/^\//, ''), 'index.html'), content); }
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(outputDir, { recursive: true });
-for (const name of ['styles.css', 'app.js', 'shared.js', 'theme.js', 'logo.svg', 'globe.svg']) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
+for (const name of ['styles.css', 'app.js', 'shared.js', 'theme.js', 'logo.svg', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg']) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
 const reports = dates.map(date => {
   const raw = JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8'));
   const finalPath = path.join(finalDir, `${date}.md`), rawMarkdown = path.join(sourceDir, `${date}.md`);
   const finalExists = fs.existsSync(finalPath);
   const report = finalExists ? applyEnhancedMarkdown(raw, fs.readFileSync(finalPath, 'utf8'), date) : { ...raw, presentation: { summarySource: 'raw', enhancedItemCount: 0, totalItemCount: D.reportItems(raw).length } };
+  images.localizeReport(report, imageManifest);
   report.date = date;
   const markdownPath = finalExists ? finalPath : rawMarkdown;
   report.hasMarkdown = fs.existsSync(markdownPath);
@@ -26,6 +29,9 @@ const reports = dates.map(date => {
   if (report.hasMarkdown) write(`data/markdown/${date}.en.md`, englishMarkdown);
   return report;
 });
+images.copyImages(outputDir, imageManifest);
+write('data/images.json', D.json(imageManifest));
+write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
 // Project catalog is built before rendering so report and favorite links point only to generated pages.
 const projects = require('./projects.js').buildProjects(reports);
 for (const report of reports) {

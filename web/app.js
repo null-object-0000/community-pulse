@@ -7,10 +7,11 @@
   const params = new URLSearchParams(location.search);
   const sourceFiltering = page.route !== '/';
   let source = sourceFiltering ? params.get('source') || 'all' : 'all';
-  let category = page.route === '/' ? params.get('category') || 'all' : 'all';
+  let category = page.route === '/' && D.isCategoryId(params.get('category')) ? params.get('category') : 'all';
   let query = params.get('q') || '';
   let sort = 'default';
   let projectPaths = null;
+  let imagePaths = {};
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
   const status = document.getElementById('status');
@@ -74,6 +75,7 @@
   function loadFavorites() {
     items = readFavorites().map(entry => {
       const item = { ...entry.item };
+      for (const field of ['image', 'logo', 'icon']) item[field] = D.localImage(item[field], imagePaths);
       const repo = D.repository(item);
       // Old snapshots remain readable; only catalog-confirmed paths become detail links.
       delete item.projectPath;
@@ -179,6 +181,7 @@
   if (search) search.value = query;
   if (page.view === 'favorites') {
     loadFavorites();
+    fetch('/data/images.json').then(response => { if (!response.ok) throw new Error('images'); return response.json(); }).then(paths => { imagePaths = paths; loadFavorites(); }).catch(() => {});
     fetch('/data/projects.json').then(response => { if (!response.ok) throw new Error('catalog'); return response.json(); }).then(paths => { projectPaths = paths; loadFavorites(); }).catch(() => {});
   } else if (feed) { sourceControls(); renderFeed(); }
   else synchronizeButtons();
