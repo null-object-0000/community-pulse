@@ -1,15 +1,18 @@
 #!/usr/bin/env node
-/** Validate Chinese independent developer source-native daily Markdown files. */
+/**
+ * Validate Chinese independent developer source-native daily Markdown files.
+ *
+ * Usage:
+ *   node scripts/validate_chinese_indie_raw.js --start 2026-01-01 --end 2026-09-10
+ *   node scripts/validate_chinese_indie_raw.js --board programmer --start 2026-01-01 --end 2026-09-10
+ *   node scripts/validate_chinese_indie_raw.js --board game --start 2026-01-01 --end 2026-09-10
+ */
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { REPOSITORY, TIMEZONE, DEFAULT_START, resolveBoard } = require('./chinese_indie_boards');
 
-const SOURCE_ID = 'chinese-indie-dev';
-const REPOSITORY = '1c7/chinese-independent-developer';
-const TIMEZONE = 'Asia/Shanghai';
-const DEFAULT_START = '2026-01-01';
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
-const DEFAULT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw', SOURCE_ID);
 const PROJECT_LINE = /^[-*]\s*:(white_check_mark|clock8|x):\s*\[[^\]]+\]\([^)]+\)/;
 
 function value(argv, name) {
@@ -45,11 +48,13 @@ function digest(valueToHash) {
 
 function main() {
   const argv = process.argv.slice(2);
+  const board = resolveBoard(value(argv, '--board'));
   const start = value(argv, '--start') || DEFAULT_START;
   const end = value(argv, '--end') || beijingDateStr(new Date(Date.now() - 86400000));
-  const root = path.resolve(value(argv, '--root') || DEFAULT_ROOT);
+  const root = path.resolve(value(argv, '--root')
+    || path.join(VAULT, '知识', '大家都在做什么', 'source-raw', board.sourceId));
   const errors = [];
-  const readmeShas = new Set();
+  const documentShas = new Set();
   let totalProjects = 0;
   let emptyDays = 0;
   let activeDays = 0;
@@ -67,7 +72,7 @@ function main() {
       errors.push(`${targetDate}: invalid JSON (${error.message})`);
       continue;
     }
-    if (document.sourceId !== SOURCE_ID) errors.push(`${targetDate}: wrong sourceId`);
+    if (document.sourceId !== board.sourceId) errors.push(`${targetDate}: wrong sourceId`);
     if (document.repository !== REPOSITORY) errors.push(`${targetDate}: wrong repository`);
     if (document.targetDate !== targetDate) errors.push(`${targetDate}: wrong targetDate`);
     if (document.timezone !== TIMEZONE) errors.push(`${targetDate}: wrong timezone`);
@@ -96,11 +101,13 @@ function main() {
       errors.push(`${targetDate}: invalid status`);
     }
     totalProjects += itemCount;
-    if (document.capture?.readmeSha) readmeShas.add(document.capture.readmeSha);
+    const documentSha = document.capture?.documentSha || document.capture?.readmeSha;
+    if (documentSha) documentShas.add(documentSha);
   }
 
   console.log(JSON.stringify({
-    sourceId: SOURCE_ID,
+    sourceId: board.sourceId,
+    board: board.id,
     root,
     start,
     end,
@@ -108,7 +115,7 @@ function main() {
     activeDays,
     emptyDays,
     totalProjects,
-    readmeRevisions: readmeShas.size,
+    documentRevisions: documentShas.size,
     errorCount: errors.length,
     errors,
   }, null, 2));

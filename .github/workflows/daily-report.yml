@@ -62,6 +62,11 @@ jobs:
           node scripts/validate_vibecafe_raw.js --start 2026-06-02 --end "$TARGET"
           node scripts/capture_chinese_indie_raw.js --resume --end "$TARGET"
           node scripts/validate_chinese_indie_raw.js --start 2026-01-01 --end "$TARGET"
+          # 同一仓库还有程序员版 / 游戏版子版面，各自独立成源、独立日文件。
+          node scripts/capture_chinese_indie_raw.js --board programmer --resume --end "$TARGET"
+          node scripts/validate_chinese_indie_raw.js --board programmer --start 2026-01-01 --end "$TARGET"
+          node scripts/capture_chinese_indie_raw.js --board game --resume --end "$TARGET"
+          node scripts/validate_chinese_indie_raw.js --board game --start 2026-01-01 --end "$TARGET"
           node scripts/capture_github_issues_raw.js --resume --end "$TARGET"
           node scripts/validate_github_issues_raw.js --start 2026-01-01 --end "$TARGET"
           node scripts/capture_periodicals_raw.js --resume --end "$TARGET"

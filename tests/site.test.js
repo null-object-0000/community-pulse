@@ -64,9 +64,55 @@ test('preset categories provide one stable primary category and reject unknown L
   assert.throws(() => validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'random' }, item), /primaryCategory/);
 });
 
+test('list rows carry no per-item date, because the selected report date already scopes the list', () => {
+  // weekly-issues items are stamped 2026-09-09T17:22Z (2026-09-10 in Beijing) and used to render as 9月9日
+  // inside the 2026-09-10 report, so the row must not restate a source timestamp at all.
+  const html = D.renderItem({ title: 'Kiri', sourceId: 'weekly-issues', publishedAt: '2026-09-09T17:22:05Z' }, 'zh-CN', { date: '2026-09-10' });
+  assert.ok(!html.includes('item-date'), 'per-item date element');
+  assert.ok(!html.includes('<time'), 'per-item time element');
+  assert.ok(!/9月9日|Sep 9/.test(html), html);
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  assert.ok(!styles.includes('.item-date'), 'stale date column rules');
+  // The list grid must keep one column per rendered cell: number, avatar, primary, tags, source, score.
+  assert.ok(styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(230px, 1\.7fr\) minmax\(150px, \.9fr\) \d+px 70px;/), 'a stray column means a cell lost its track');
+});
+
+test('the two-row tag cap fits exactly two rows, so the second row is never clipped', () => {
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  const tags = styles.match(/\.item-tags \{[^}]*\}/)[0];
+  const tag = styles.match(/\.item-tags \.tag \{[^}]*\}/)[0];
+  const font = Number(tag.match(/font-size:\s*([\d.]+)rem/)[1]);
+  const lineHeight = Number(tag.match(/line-height:\s*([\d.]+)/)[1]);
+  const padding = Number(tag.match(/padding:\s*(\d+)px/)[1]);
+  const gap = Number(tags.match(/gap:\s*(\d+)px/)[1]);
+  const declared = tags.match(/--tag-height:\s*calc\(([\d.]+)rem \* ([\d.]+) \+ (\d+)px\)/);
+  assert.ok(declared, '--tag-height must stay in the tag metric terms');
+  const tagHeight = Number(declared[1]) * 16 * Number(declared[2]) + Number(declared[3]);
+  assert.equal(tagHeight, font * 16 * lineHeight + padding * 2, '--tag-height must equal one rendered tag');
+  const cap = tags.match(/max-height:\s*calc\(var\(--tag-height\) \* (\d+) \+ (\d+)px\)/);
+  assert.ok(cap, 'max-height must derive from --tag-height');
+  assert.equal(Number(cap[1]), 2, 'at most two tag rows');
+  assert.equal(Number(cap[2]), gap, 'max-height must include the row gap');
+});
+
+test('a long source name stays beside its badge instead of wrapping under it', () => {
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  assert.match(styles, /\.item-source \{[^}]*flex-wrap: nowrap[^}]*\}/);
+  assert.match(styles, /\.item-source a, \.item-source > span:last-child \{[^}]*text-overflow: ellipsis/);
+  // The truncated name keeps its full text reachable through title, e.g. 科技爱好者周刊投稿 (108px at .75rem).
+  const html = D.renderItem({ title: 'Kiri', sourceId: 'weekly-issues' }, 'zh-CN');
+  assert.ok(html.includes('title="科技爱好者周刊投稿"'), html);
+  // English is ~6.4px/char at .75rem, so only a short label stays readable inside the same column.
+  const english = D.sourceName({ sourceId: 'weekly-issues' }, 'en');
+  assert.ok(english.length <= 20, `English source label is too long for the row: ${english}`);
+  const sourceColumn = styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(230px, 1\.7fr\) minmax\(150px, \.9fr\) (\d+)px 70px;/);
+  assert.ok(sourceColumn, 'list grid template changed shape');
+  assert.ok(Number(sourceColumn[1]) >= 144, `source column must fit badge 28 + gap 8 + label 108, got ${sourceColumn[1]}`);
+});
+
 test('known data sources expose safe destination links and real website logos', () => {
   const dist = path.join(__dirname, '../dist');
-  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
+  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
     const source = D.sourceInfo({ sourceId });
     assert.ok(source, sourceId);
     assert.ok(D.safeUrl(source.url), `${sourceId} URL`);
@@ -129,7 +175,7 @@ test('the Tech Enthusiast Weekly logo is the official favicon.ico frame, vendore
 
 test('list source badges render the real source logo, never an invented letter or a borrowed mark', () => {
   const badgeOf = item => D.renderItem({ title: 'x', ...item }, 'zh-CN').match(/<span class="source-mini[^"]*" aria-hidden="true">(.*?)<\/span>/)?.[1];
-  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
+  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
     assert.equal(badgeOf({ sourceId }), `<img src="${D.sourceInfo({ sourceId }).logo}" alt="" loading="lazy" />`, sourceId);
   }
   // "HelloGitHub" contains "GitHub"; keying the fallback off the display name made it borrow GitHub's mark.

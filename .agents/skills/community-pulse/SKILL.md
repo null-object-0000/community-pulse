@@ -43,7 +43,9 @@ node scripts/collect.js --strict --require-github-repositories --date 2026-09-07
 | id | 内容 | 抓取方式 | 昨日过滤 |
 |----|------|----------|----------|
 | vibecafe | VibeCafé 作品（最新产品） | `/api/products` 游标翻页 + 每个产品详情页 RSC 原始响应 | ✅ 按 createdAt 北京日归档 |
-| chinese-indie-dev | 中国独立开发者每日项目 | README 完整日分节落盘 | ✅ 按分节日期归档 |
+| chinese-indie-dev | 中国独立开发者主版面每日项目 | README 完整日分节落盘 | ✅ 按分节日期归档 |
+| chinese-indie-dev-programmer | 中国独立开发者·程序员版 | `.github/pages/README-Programmer-Edition.md` 完整日分节落盘 | ✅ 按分节日期归档 |
+| chinese-indie-dev-game | 中国独立开发者·游戏版 | `.github/pages/README-Game.md` 完整日分节落盘 | ✅ 按分节日期归档 |
 | weekly-issues | 阮一峰周刊·用户投稿 | `gh api` 列 issues 按 created_at 过滤 | ✅ 按北京时间昨日过滤 |
 | weekly-issue | 阮一峰周刊·正刊推荐 | release commit + 整期 Contents 原对象 | ✅ 按 release commit 北京日归档 |
 | hellogithub-issues | HelloGitHub·用户投稿 | `gh api` 列 issues 按 created_at 过滤 | ✅ 按北京时间昨日过滤 |
@@ -71,12 +73,16 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 - 有 `createdAt` 所以能按昨日精确过滤——这是与 HN/V2EX 热榜源的本质区别。
 - 列表接口不包含完整的外链。来源采集阶段必须同时保存每个产品详情页的 RSC 原始响应；下游再离线提取 `websiteUrl` 和 GitHub 仓库地址。历史无详情响应的 schema v1 文件仍可读取。
 
-**chinese-indie-dev 抓取要点**（`scripts/sources/chinese-indie-dev.js`）：
-- `gh api repos/1c7/chinese-independent-developer/readme --jq '.content'` 拿 base64 → 解码。
-- README 结构：`### YYYY 年 M 月 D 号添加` 分节 → 作者行 `#### 名称 - [Github](url)` → 项目行 `* :white_check_mark: [名称](url)：介绍`。
-- 状态：`:white_check_mark:`=已上线 `:clock8:`=开发中 `:x:`=已关闭（进 tags）。
-- 日期在节标题里（北京时间），直接按节过滤昨日，天然精确。
-- 注意：注册表 `id` 必须与文件名一致（collect.js 按 `sources/<id>.js` require）。
+**中国独立开发者三个版面**（`scripts/capture_chinese_indie_raw.js` + `scripts/chinese_indie_boards.js`）：
+- 上游仓库 `1c7/chinese-independent-developer` 有 **3 个版面**，格式完全一样但内容不同：主版面 `README.md`（打开即用的网站/App）、程序员版 `.github/pages/README-Programmer-Edition.md`（命令行/开源/开发工具）、游戏版 `.github/pages/README-Game.md`。三个版面各自独立成源，各自写 `source-raw/<source-id>/YYYY-MM-DD.json`。
+- 版面注册表在 `scripts/chinese_indie_boards.js`（`main` / `programmer` / `game` → sourceId、sourceName、文档路径、tag）。采集与校验都用 `--board main|programmer|game` 选版面，默认 `main`；`--board` 决定输出目录，不要再用 `--out-root` 手工指向别的源。
+- 主版面走 `gh api repos/1c7/chinese-independent-developer/readme`，子版面走 `gh api repos/.../contents/<path>`；两者都是 base64 内容 + `sha`，抓取函数同一套（`fetchDocument`）。
+- 文档结构：`### YYYY 年 M 月 D 号添加` 分节 → 作者行 `#### 名称 - [Github](url)` → 项目行 `* :white_check_mark: [名称](url)：介绍`。
+- 状态：`:white_check_mark:`=已上线 `:clock8:`=开发中 `:x:`=已关闭（进 tags；子版面额外带 `程序员版` / `游戏版` tag）。
+- 日期在节标题里（北京时间），直接按节过滤；没有当日节 = `status: "empty"` 的真空白日，不是漏抓（子版面发帖频率低，空日很多：2026 年程序员版 58 个活跃日、游戏版 40 个活跃日）。
+- `capture` 里主版面保留历史字段 `readmePath/readmeSha/readmeSize`（2026 年 1 月起的存量文件只有这些），新文件统一另写 `documentPath/documentSha/documentSize`；校验器两者都认（`documentSha || readmeSha`）。
+- 注意：注册表 `id` 必须与 source-raw 目录名一致；三个版面靠 `source_raw_items.js` 里的同一个 `chineseIndieItems` 转换器标准化，版面差异只由 `src.id` 决定。
+- **`--resume` 只补最早缺失日、不覆盖已存在文件**：如果某天在当天结束前被抓过一次（例如回溯命令的 `--end` 写到了今天），那个文件会永久停在当时的空内容上，正式日报也不会再修它。补历史时 `--end` 只能用**已经结束的北京日**；发现这类脏文件要用 `--replace --date <日期>` 重抓。
 
 **阮一峰周刊双源**（`scripts/sources/weekly-issues.js` + `weekly-issue.js`）：
 - **weekly-issues（投稿）**：`gh api repos/ruanyf/weekly/issues?state=all&per_page=100&sort=created&direction=desc`，按 created_at（北京时间）过滤昨日。标题带前缀标签（【开源自荐】【工具自荐】〖独立工具推荐〗投稿: 等）。body 是富文本自荐，summary 需清洗 markdown 语法后取第一段。**标题含「文章自荐/文章推荐/文章投稿」标签的文章投稿一律排除**（如「【文章自荐】…」「文章投稿：…」，含全角括号变体），日报只收录工具/项目类投稿；过滤实现见 `source_raw_items.js` 的 `issueItems()`。
@@ -185,15 +191,23 @@ node scripts/capture_github_issues_raw.js --resume --end 2026-09-07
 node scripts/validate_github_issues_raw.js --start 2026-01-01 --end 2026-09-07
 ```
 
-中国独立开发者已实现：
+中国独立开发者已实现（三个版面各自独立按日落盘）：
 
 ```bash
-# README 每日原始 Markdown 分节；不把标准化 item 当作原始数据
-node scripts/capture_chinese_indie_raw.js --start 2026-01-01 --end 2026-09-07
+# 主版面：README 每日原始 Markdown 分节；不把标准化 item 当作原始数据
+node scripts/capture_chinese_indie_raw.js --start 2026-01-01 --end 2026-09-10
 
-# 每日可恢复增量与离线校验
-node scripts/capture_chinese_indie_raw.js --resume --end 2026-09-07
-node scripts/validate_chinese_indie_raw.js --start 2026-01-01 --end 2026-09-07
+# 子版面：程序员版 / 游戏版，同一脚本用 --board 选择
+node scripts/capture_chinese_indie_raw.js --board programmer --start 2026-01-01 --end 2026-09-10
+node scripts/capture_chinese_indie_raw.js --board game --start 2026-01-01 --end 2026-09-10
+
+# 每日可恢复增量与离线校验（每个版面各跑一次）
+node scripts/capture_chinese_indie_raw.js --resume --end 2026-09-10
+node scripts/validate_chinese_indie_raw.js --start 2026-01-01 --end 2026-09-10
+node scripts/capture_chinese_indie_raw.js --board programmer --resume --end 2026-09-10
+node scripts/validate_chinese_indie_raw.js --board programmer --start 2026-01-01 --end 2026-09-10
+node scripts/capture_chinese_indie_raw.js --board game --resume --end 2026-09-10
+node scripts/validate_chinese_indie_raw.js --board game --start 2026-01-01 --end 2026-09-10
 ```
 
 阮一峰周刊正刊与 HelloGitHub 月刊已实现：

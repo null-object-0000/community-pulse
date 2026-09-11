@@ -1,27 +1,23 @@
 #!/usr/bin/env node
 /**
- * Capture the exact dated Markdown sections from 1c7/chinese-independent-developer.
- * The README section is the source-native record; parsing into normalized items
+ * Capture the exact dated Markdown sections of one 1c7/chinese-independent-developer board.
+ * The board section is the source-native record; parsing into normalized items
  * belongs to a downstream layer.
  *
  * Usage:
  *   node scripts/capture_chinese_indie_raw.js --start 2026-01-01 --end 2026-09-07
  *   node scripts/capture_chinese_indie_raw.js --resume --end 2026-09-07
  *   node scripts/capture_chinese_indie_raw.js --date 2026-09-07
+ *   node scripts/capture_chinese_indie_raw.js --board programmer --resume --end 2026-09-10
+ *   node scripts/capture_chinese_indie_raw.js --board game --resume --end 2026-09-10
  */
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { REPOSITORY, TIMEZONE, DEFAULT_START, resolveBoard } = require('./chinese_indie_boards');
 
-const SOURCE_ID = 'chinese-indie-dev';
-const SOURCE_NAME = '中国独立开发者';
-const REPOSITORY = '1c7/chinese-independent-developer';
-const ENDPOINT = `https://api.github.com/repos/${REPOSITORY}/readme`;
-const TIMEZONE = 'Asia/Shanghai';
-const DEFAULT_START = '2026-01-01';
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
-const DEFAULT_OUT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw', SOURCE_ID);
 const DATE_HEADING = /^###\s+(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*号添加\s*$/;
 const PROJECT_LINE = /^[-*]\s*:(white_check_mark|clock8|x):\s*\[[^\]]+\]\([^)]+\)/;
 
@@ -42,10 +38,13 @@ function parseArgs(argv) {
     return index >= 0 ? argv[index + 1] : null;
   };
   const date = value('--date');
+  const board = resolveBoard(value('--board'));
   return {
+    board,
     start: date || value('--start') || DEFAULT_START,
     end: date || value('--end') || beijingDateStr(new Date(Date.now() - 86400000)),
-    outRoot: path.resolve(value('--out-root') || DEFAULT_OUT_ROOT),
+    outRoot: path.resolve(value('--out-root')
+      || path.join(VAULT, '知识', '大家都在做什么', 'source-raw', board.sourceId)),
     resume: argv.includes('--resume'),
     replace: argv.includes('--replace'),
   };
@@ -88,15 +87,15 @@ function firstMissingDate(outRoot, start, end) {
   return null;
 }
 
-function fetchReadme() {
-  const output = execFileSync('gh', ['api', `repos/${REPOSITORY}/readme`], {
+function fetchDocument(board) {
+  const output = execFileSync('gh', ['api', `repos/${REPOSITORY}/${board.apiPath}`], {
     encoding: 'utf8',
     maxBuffer: 20 * 1024 * 1024,
     timeout: 60000,
   });
   const payload = JSON.parse(output);
   if (!payload.content || payload.encoding !== 'base64' || !payload.sha) {
-    throw new Error('GitHub README response is missing content/encoding/sha');
+    throw new Error(`GitHub ${board.apiPath} response is missing content/encoding/sha`);
   }
   return {
     payload,
@@ -150,6 +149,7 @@ function parseSections(markdown, requestedStart, requestedEnd) {
 
 function main() {
   const options = parseArgs(process.argv.slice(2));
+  const { board } = options;
   assertDate(options.start, '--start');
   assertDate(options.end, '--end');
   if (options.start > options.end) throw new Error('--start must not be after --end');
@@ -157,7 +157,8 @@ function main() {
     const missingDate = firstMissingDate(options.outRoot, options.start, options.end);
     if (!missingDate) {
       console.log(JSON.stringify({
-        sourceId: SOURCE_ID,
+        sourceId: board.sourceId,
+        board: board.id,
         start: options.start,
         end: options.end,
         outRoot: options.outRoot,
@@ -171,7 +172,7 @@ function main() {
   }
 
   const fetchedAt = new Date().toISOString();
-  const { payload, markdown } = fetchReadme();
+  const { payload, markdown } = fetchDocument(board);
   const parsed = parseSections(markdown, options.start, options.end);
   let written = 0;
   let unchanged = 0;
@@ -190,8 +191,8 @@ function main() {
     if (!section) emptyDays += 1;
     const document = {
       schemaVersion: 1,
-      sourceId: SOURCE_ID,
-      sourceName: SOURCE_NAME,
+      sourceId: board.sourceId,
+      sourceName: board.sourceName,
       repository: REPOSITORY,
       targetDate,
       timezone: TIMEZONE,
@@ -202,14 +203,18 @@ function main() {
       fetchedAt,
       capture: {
         mode: options.start === options.end ? 'daily-finalized-date' : 'historical-reconstruction',
-        endpoint: ENDPOINT,
-        readmePath: payload.path,
-        readmeSha: payload.sha,
-        readmeSize: payload.size,
+        board: board.id,
+        endpoint: `https://api.github.com/repos/${REPOSITORY}/${board.apiPath}`,
+        documentPath: payload.path,
+        documentSha: payload.sha,
+        documentSize: payload.size,
         downloadUrl: payload.download_url,
         totalDatedSectionCount: parsed.totalDatedSectionCount,
         sectionHeading: section?.heading || null,
         authorHeadingCount: section?.authorHeadingCount || 0,
+        // The main board has been captured as `readme*` since 2026-01-01; keep
+        // those keys on new main-board files so historical readers keep working.
+        ...(board.documentPath ? {} : { readmePath: payload.path, readmeSha: payload.sha, readmeSize: payload.size }),
       },
       sectionMarkdown,
     };
@@ -218,13 +223,14 @@ function main() {
   }
 
   console.log(JSON.stringify({
-    sourceId: SOURCE_ID,
+    sourceId: board.sourceId,
+    board: board.id,
     start: options.start,
     end: options.end,
     outRoot: options.outRoot,
     resumed: options.resume,
-    readmeSha: payload.sha,
-    readmeSize: payload.size,
+    documentSha: payload.sha,
+    documentSize: payload.size,
     observedDatedSections: parsed.totalDatedSectionCount,
     written,
     unchanged,

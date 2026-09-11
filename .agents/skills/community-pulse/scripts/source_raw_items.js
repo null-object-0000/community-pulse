@@ -7,6 +7,7 @@ const path = require('path');
 const zlib = require('zlib');
 const { discoverItemRepository, normalizeGitHubRepoUrl } = require('./github_repo_utils');
 const { descriptionFromIssue } = require('./issue-description');
+const { boardBySourceId } = require('./chinese_indie_boards');
 
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const DEFAULT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw');
@@ -161,6 +162,9 @@ function issueItems(document, src) {
 
 function chineseIndieItems(document, src) {
   const items = [];
+  // The repository's 程序员版 / 游戏版 boards are separate sources; the tag keeps
+  // the board visible in search and in the item tag column.
+  const boardTag = boardBySourceId(src.id)?.tag || '';
   let author = '';
   for (const line of (document.sectionMarkdown || '').split('\n')) {
     const text = line.trim();
@@ -183,7 +187,7 @@ function chineseIndieItems(document, src) {
       summary: intro,
       content: intro,
       metrics: {},
-      tags: ['indie-dev', statusName],
+      tags: ['indie-dev', statusName, ...(boardTag ? [boardTag] : [])],
       externalId: `${document.targetDate}-${name}-${url}`,
     });
   }
@@ -492,6 +496,8 @@ function productHuntItems(document, src) {
 const CONVERTERS = {
   vibecafe: vibecafeItems,
   'chinese-indie-dev': chineseIndieItems,
+  'chinese-indie-dev-programmer': chineseIndieItems,
+  'chinese-indie-dev-game': chineseIndieItems,
   'weekly-issues': issueItems,
   'hellogithub-issues': issueItems,
   'weekly-issue': weeklyPeriodicalItems,

@@ -244,7 +244,10 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .report-controls label { margin: 0; font-size: .7rem; }
 .report-controls select { font-size: .7rem; padding: 3px 22px 3px 7px; }
 .feed { border: 0; box-shadow: none; border-radius: 0; background: transparent; }
-.feed-item { grid-template-columns: 30px 48px minmax(230px, 1.7fr) minmax(150px, .9fr) 132px 70px 68px; gap: 14px; min-height: 82px; padding: 13px 0; align-items: center; }
+.feed-item { grid-template-columns: 30px 48px minmax(230px, 1.7fr) minmax(150px, .9fr) 172px 70px; gap: 14px; min-height: 82px; padding: 13px 0; align-items: center; }
+/* 中等宽度：主列和标签列改为可压缩，来源列收到 150px（仍放得下 36px 徽标 + 108px 中文名），
+   否则固定列总宽超过容器时，分数列会被 .feed 的 overflow: hidden 裁掉。 */
+@media (max-width: 900px) { .feed-item { grid-template-columns: 30px 42px minmax(0, 1.6fr) minmax(0, 1fr) 150px 62px; } }
 .item-number { padding: 0; font-size: .8125rem; text-align: center; color: var(--faint); }
 .item-avatar { display: grid; place-items: center; width: 48px; height: 48px; overflow: hidden; border-radius: 10px; background: #101a30; color: white; font-size: 1rem; font-weight: 750; letter-spacing: -.05em; box-shadow: inset 0 0 0 1px #ffffff20; }
 .item-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -258,16 +261,17 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .item-primary { min-width: 0; }
 .item-primary h2 { margin: 0; font-size: 1rem; line-height: 1.45; font-weight: 700; letter-spacing: -.008em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .item-primary .summary { margin: 4px 0 0; font-size: .8125rem; line-height: 1.55; white-space: nowrap; display: block; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
-.item-tags { display: flex; flex-wrap: wrap; gap: 5px; max-height: 45px; overflow: hidden; }
+/* 标签最多两行。max-height 必须正好等于两行加一个行距：写死 45px 时第二行底部会被裁掉一截。 */
+.item-tags { --tag-height: calc(.75rem * 1.35 + 6px); display: flex; flex-wrap: wrap; gap: 5px; max-height: calc(var(--tag-height) * 2 + 5px); overflow: hidden; }
 .item-tags .tag { padding: 3px 8px; border-radius: 5px; background: var(--accent-soft); color: var(--accent); font-size: .75rem; line-height: 1.35; white-space: nowrap; }
-.item-source { display: flex; align-items: center; min-width: 0; gap: 8px; font-size: .75rem; color: var(--muted); }
+/* 数据源名称必须留在徽标右侧一行内：换到徽标下面会把整行撑高，名字过长时用省略号收尾（title 给出全名）。 */
+.item-source { display: flex; flex-wrap: nowrap; align-items: center; min-width: 0; gap: 8px; font-size: .75rem; color: var(--muted); }
 .item-source a, .item-source > span:last-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .source-mini { display: grid; flex: 0 0 28px; place-items: center; width: 28px; height: 28px; padding: 5px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #101a30; font-size: .625rem; font-weight: 800; overflow: hidden; }
 .source-mini svg { width: 15px; height: 15px; }
 .source-mini img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .item-score { display: flex; align-items: center; justify-content: flex-end; gap: 5px; color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
 .item-score svg { width: 15px; height: 15px; }
-.item-date { color: var(--muted); font-size: .75rem; text-align: right; white-space: nowrap; }
 .original-label { display: none; }
 .item-actions { position: absolute; right: 49px; top: 50%; z-index: 2; padding: 0; transform: translateY(-50%); opacity: 0; pointer-events: none; }
 .feed-item:hover .item-actions, .feed-item:focus-within .item-actions, .item-actions:has(.favorite-button.active) { opacity: 1; pointer-events: auto; }
@@ -296,11 +300,12 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .footer { max-width: 1440px; }
 .feed.card-view { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding-bottom: 14px; }
 .card-view .feed-item { grid-template-columns: 48px minmax(0, 1fr); padding: 16px; border: 1px solid var(--line); border-radius: 10px; align-items: start; }
-.card-view .item-number { display: none; }.card-view .item-primary, .card-view .item-tags, .card-view .item-source, .card-view .item-score, .card-view .item-date { grid-column: 2; }.card-view .item-primary .summary { white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }.card-view .item-actions { top: 14px; right: 14px; transform: none; opacity: 1; pointer-events: auto; }.card-view .item-score, .card-view .item-date { justify-content: flex-start; text-align: left; }
+.card-view .item-number { display: none; }.card-view .item-primary, .card-view .item-tags, .card-view .item-source, .card-view .item-score { grid-column: 2; }.card-view .item-primary .summary { white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }.card-view .item-actions { top: 14px; right: 14px; transform: none; opacity: 1; pointer-events: auto; }.card-view .item-score { justify-content: flex-start; text-align: left; }
 :root[data-theme="dark"] .hero-art { opacity: .65; }
 @media (min-width: 1450px) { .discovery-layout { grid-template-columns: minmax(0, 1fr) 365px; }.discovery-hero { min-height: 345px; }.feed-item { padding: 17px 0; } }
 @media (max-width: 1360px) { .topbar-inner { padding: 15px 28px; gap: 16px; flex-wrap: wrap; }.workspace { padding: 24px 28px 48px; }.main-nav { order: 0; width: auto; }.header-search { order: 3; width: 100%; max-width: none; }.preferences { margin-left: auto; }.main-nav a[aria-current="page"]::after { bottom: -5px; }.discovery-layout { grid-template-columns: minmax(0, 1fr); }.discovery-sidebar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 10px; }.side-panel { margin: 0; }.sidebar-signature { align-self: center; }.hero-art { opacity: .9; }.hero-copy h1 { font-size: 2.4rem; } }
-@media (max-width: 600px) { .topbar-inner { padding: 13px 16px; gap: 10px; }.brand span { font-size: 1.1rem; }.main-nav { order: 2; width: 100%; justify-content: flex-start; gap: 12px; }.main-nav a { padding: 7px 10px; font-size: .875rem; }.preferences select { max-width: 112px; }.workspace { padding: 12px 14px 32px; }.discovery-hero { min-height: 330px; padding: 25px 4px; }.hero-copy .eyebrow { font-size: .625rem; letter-spacing: .14em; }.hero-copy h1 { font-size: 1.9rem; line-height: 1.35; }.hero-copy .intro { font-size: .9rem; line-height: 1.7; }.hero-art { width: 75%; right: -24%; opacity: .16; }.hero-art > span { display: none; }.hero-stats { gap: 20px; margin-top: 22px; }.hero-stats small { font-size: .8125rem; }.discovery-results { padding: 0 10px; }.filters { gap: 10px; }.chip-row { display: none; }.chip-select { display: flex; flex: 1 1 auto; }.chip-select select { width: 100%; }.filters-divider { display: none; }.feed-tools { margin-left: auto; }.view-switch button { min-height: 44px; padding: 8px 11px; }.feed-tools select { max-width: 132px; }.feed-heading { gap: 8px; flex-wrap: wrap; }.report-controls .date-control { margin: 0; }.feed-item { grid-template-columns: 28px 42px minmax(0, 1fr) 55px; gap: 10px; min-height: 80px; padding: 14px 0; align-items: center; }.item-avatar { width: 42px; height: 42px; font-size: .875rem; }.item-primary h2 { font-size: .9375rem; }.item-primary .summary { font-size: .8125rem; }.item-tags, .item-source { grid-column: 3 / -1; }.item-tags { display: none; }.item-score { grid-column: 4; grid-row: 1; }.item-date { grid-column: 4; grid-row: 2; }.item-actions { right: 45px; }.favorite-button { min-height: 32px; padding: 4px 6px; }.discovery-sidebar { grid-template-columns: minmax(0, 1fr); }.feed.card-view { grid-template-columns: minmax(0, 1fr); }.sidebar-signature { padding: 12px 5px; } }
+/* 手机端：序号隐藏，头像占第一列；标题列里日期已移除，所以分数列直接顶到第一行。 */
+@media (max-width: 600px) { .topbar-inner { padding: 13px 16px; gap: 10px; }.brand span { font-size: 1.1rem; }.main-nav { order: 2; width: 100%; justify-content: flex-start; gap: 12px; }.main-nav a { padding: 7px 10px; font-size: .875rem; }.preferences select { max-width: 112px; }.workspace { padding: 12px 14px 32px; }.discovery-hero { min-height: 330px; padding: 25px 4px; }.hero-copy .eyebrow { font-size: .625rem; letter-spacing: .14em; }.hero-copy h1 { font-size: 1.9rem; line-height: 1.35; }.hero-copy .intro { font-size: .9rem; line-height: 1.7; }.hero-art { width: 75%; right: -24%; opacity: .16; }.hero-art > span { display: none; }.hero-stats { gap: 20px; margin-top: 22px; }.hero-stats small { font-size: .8125rem; }.discovery-results { padding: 0 10px; }.filters { gap: 10px; }.chip-row { display: none; }.chip-select { display: flex; flex: 1 1 auto; }.chip-select select { width: 100%; }.filters-divider { display: none; }.feed-tools { margin-left: auto; }.view-switch button { min-height: 44px; padding: 8px 11px; }.feed-tools select { max-width: 132px; }.feed-heading { gap: 8px; flex-wrap: wrap; }.report-controls .date-control { margin: 0; }.feed-item { grid-template-columns: 42px minmax(0, 1fr) 55px; gap: 10px; min-height: 80px; padding: 14px 0; align-items: center; }.item-avatar { width: 42px; height: 42px; font-size: .875rem; }.item-primary h2 { font-size: .9375rem; }.item-primary .summary { font-size: .8125rem; }.item-tags, .item-source { grid-column: 2 / -1; }.item-tags { display: none; }.item-score { grid-column: 3; grid-row: 1; }.item-actions { right: 45px; }.favorite-button { min-height: 32px; padding: 4px 6px; }.discovery-sidebar { grid-template-columns: minmax(0, 1fr); }.feed.card-view { grid-template-columns: minmax(0, 1fr); }.sidebar-signature { padding: 12px 5px; } }
 
 /* Header preferences: icon theme menu and globe language selector. */
 .preferences { margin-left: auto; align-items: center; gap: 22px; flex-shrink: 0; }
@@ -334,7 +339,10 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .gallery-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .gallery-thumb:hover { border-color: var(--accent-line); }
 .gallery-more { display: grid; place-items: center; color: var(--muted); font-size: .75rem; font-weight: 700; }
-.item-avatar img.is-logo { padding: 5px; background: #fff; object-fit: contain; }
+/* Product marks carry their own background and corner radius, so the avatar must not add a second plate:
+   any padding here shows the mark's own square nested inside ours, and a barely-off-white mark (#f6f6f6)
+   exposes a seam. Filling the tile leaves one clean rounded square, and transparent marks keep the white. */
+.item-avatar img.is-logo { padding: 0; background: #fff; object-fit: contain; }
 .panel .item-gallery { margin-top: 0; }
 .panel .gallery-thumb { width: 92px; height: 58px; }
 .lightbox { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 5vmin; background: #0b1220cc; }

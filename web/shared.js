@@ -54,7 +54,10 @@
   };
   const sourceLabels = {
     vibecafe: ['VibeCafé', 'VibeCafé'], 'chinese-indie-dev': ['中文独立开发者', 'Chinese Indie Developers'],
-    'weekly-issues': ['科技爱好者周刊投稿', 'Tech Enthusiast Weekly Submissions'], 'weekly-issue': ['科技爱好者周刊', 'Tech Enthusiast Weekly'],
+    'chinese-indie-dev-programmer': ['中文独立开发者·程序员版', 'Indie Dev · Programmers'],
+    'chinese-indie-dev-game': ['中文独立开发者·游戏版', 'Indie Dev · Games'],
+    // List rows give a source name one 172px column; a literal translation no longer fits there.
+    'weekly-issues': ['科技爱好者周刊投稿', 'Weekly Submissions'], 'weekly-issue': ['科技爱好者周刊', 'Tech Enthusiast Weekly'],
     'hellogithub-issues': ['HelloGitHub 投稿', 'HelloGitHub Submissions'], 'hellogithub-issue': ['HelloGitHub 月刊', 'HelloGitHub Monthly Picks'],
     'github-trending': ['GitHub Trending', 'GitHub Trending'], 'github-trending-cn': ['GitHub 中文趋势', 'GitHub Trending China'],
     producthunt: ['Product Hunt', 'Product Hunt'],
@@ -62,6 +65,8 @@
   const sourceDirectory = {
     vibecafe: { url: 'https://vibecafe.ai/', logo: '/source-vibecafe.svg' },
     'chinese-indie-dev': { url: 'https://github.com/1c7/chinese-independent-developer', logo: '/source-github.svg' },
+    'chinese-indie-dev-programmer': { url: 'https://github.com/1c7/chinese-independent-developer/blob/master/.github/pages/README-Programmer-Edition.md', logo: '/source-github.svg' },
+    'chinese-indie-dev-game': { url: 'https://github.com/1c7/chinese-independent-developer/blob/master/.github/pages/README-Game.md', logo: '/source-github.svg' },
     'weekly-issues': { url: 'https://github.com/ruanyf/weekly/issues', logo: '/source-ruanyifeng.png' },
     'weekly-issue': { url: 'https://www.ruanyifeng.com/blog/index.html', logo: '/source-ruanyifeng.png' },
     'hellogithub-issues': { url: 'https://github.com/521xueweihan/HelloGitHub/issues', logo: '/source-hellogithub.svg' },
@@ -282,11 +287,6 @@
   function favoriteButton(item, locale, saved = false) {
     return `<button type="button" class="favorite-button${saved ? ' active' : ''}" data-favorite-id="${escapeHtml(favoriteId(item))}" aria-pressed="${saved}" aria-label="${escapeHtml(t(locale, saved ? 'remove' : 'save') + ' ' + displayTitle(item, locale))}">${icon('bookmark')}<span>${t(locale, saved ? 'saved' : 'save')}</span></button>`;
   }
-  function shortDate(value, locale) {
-    const date = /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? new Date(`${value}T00:00:00Z`) : new Date(value || '');
-    if (Number.isNaN(date.getTime())) return '';
-    return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(date);
-  }
   // Fallback only: a source with a logo asset renders that logo instead. Keyed off sourceId, never the
   // display name, because "HelloGitHub" would otherwise match a /github/ test and borrow GitHub's mark.
   function sourceMark(item) {
@@ -312,16 +312,16 @@
     const title = displayTitle(item, locale);
     const score = stars !== null ? stars : votes;
     const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
-    const published = shortDate(item.publishedAt || item.reportDate || date, locale);
     const sourceUrl = itemLinks(item).find(([label]) => label === 'source')?.[1];
+    // Every row already belongs to the report date in the selector, and an item's own publishedAt
+    // (UTC, per source) only contradicted it, so the row carries no date of its own.
     return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || favoriteId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
       <span class="item-avatar avatar-${index % 5}" aria-hidden="true">${imageUrl ? `<img src="${escapeHtml(imageUrl)}"${logoUrl ? ' class="is-logo"' : ''} alt="" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
       <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}${gallery}</div>
       <div class="item-tags">${language ? `<span class="tag">${escapeHtml(language)}</span>` : ''}${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceName(item, locale))}</a>` : `<span>${escapeHtml(sourceName(item, locale))}</span>`}</div>
+      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div>
-      <time class="item-date" datetime="${escapeHtml((item.publishedAt || date || '').slice(0, 10))}">${escapeHtml(published)}</time>
       <div class="item-actions">${favoriteButton(item, locale, saved)}</div></article>`;
   }
   return { origin, favoritesKey, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, localImages, hotlinkable, galleryHtml, repository, favoriteId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
