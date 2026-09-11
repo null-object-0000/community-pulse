@@ -317,7 +317,7 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-mark { display: grid; place-items: center; width: 74px; height: 74px; overflow: hidden; border-radius: 18px; background: #101a30; color: #fff; font-size: 1.35rem; font-weight: 800; letter-spacing: -.05em; box-shadow: 0 10px 28px #10234b1f; }
   .swipe-mark.has-logo { background: #fff; }
   .swipe-mark img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
-  .swipe-wordmark { min-width: 0; max-height: 4.2em; overflow: hidden; font-size: clamp(1.15rem, 5.6vw, 1.55rem); line-height: 1.4; font-weight: 760; letter-spacing: -.02em; overflow-wrap: anywhere; }
+  .swipe-wordmark { display: -webkit-box; min-width: 0; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-size: clamp(1.15rem, 5.6vw, 1.55rem); line-height: 1.4; font-weight: 760; letter-spacing: -.02em; overflow-wrap: anywhere; }
   .swipe-copy { min-height: 0; padding: 13px 15px 0; }
   .swipe-copy h2 { display: -webkit-box; margin: 0; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 1.08rem; line-height: 1.38; letter-spacing: -.015em; overflow-wrap: anywhere; }
   .swipe-copy .summary { display: -webkit-box; margin: 7px 0 0; overflow: hidden; -webkit-line-clamp: 4; -webkit-box-orient: vertical; color: var(--muted); font-size: .8125rem; line-height: 1.55; overflow-wrap: anywhere; }
