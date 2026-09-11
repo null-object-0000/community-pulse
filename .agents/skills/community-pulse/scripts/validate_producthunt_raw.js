@@ -52,6 +52,7 @@ function main() {
   let totalPages = 0;
   let emptyDays = 0;
   let totalOfficialFeatured = 0;
+  let totalProductPageFailures = 0;
 
   for (const targetDate of eachDate(start, end)) {
     const file = path.join(root, `${targetDate}.json`);
@@ -178,9 +179,13 @@ function main() {
 
     if (data.productPages !== undefined) {
       const productPages = data.productPages;
-      if (productPages?.complete !== true || !Array.isArray(productPages?.pages)) {
+      // 兼容两种格式：
+      //  v1 旧格式: {complete, itemCount, contentSha256, pages[]}（无 failures 字段）
+      //  v2 新格式: 追加 failures/failureCount/attemptedCount，complete=false 表示当天有个别产品页抓取失败(403/404 等)
+      const legacyFormat = !Array.isArray(productPages?.failures);
+      if (!Array.isArray(productPages?.pages) || (legacyFormat && productPages?.complete !== true)) {
         errors.push(`${targetDate}: invalid productPages capture`);
-      } else {
+      } else if (legacyFormat) {
         if (productPages.itemCount !== productPages.pages.length) errors.push(`${targetDate}: productPages itemCount mismatch`);
         if (productPages.contentSha256 !== digest(productPages.pages)) errors.push(`${targetDate}: productPages hash mismatch`);
         const coveredPostIds = new Set();
@@ -203,6 +208,48 @@ function main() {
         for (const record of featured?.records || []) {
           if (!coveredPostIds.has(String(record.id))) errors.push(`${targetDate}: featured ${record.id} has no product page`);
         }
+      } else {
+        const pageFailures = productPages.failures;
+        const allUrls = [...productPages.pages.map((p) => p.url), ...pageFailures.map((f) => f.url)];
+        if (new Set(allUrls).size !== allUrls.length) errors.push(`${targetDate}: duplicate product page URL`);
+        if (productPages.complete !== (pageFailures.length === 0)) errors.push(`${targetDate}: productPages complete flag mismatch`);
+        if (productPages.itemCount !== productPages.pages.length) errors.push(`${targetDate}: productPages itemCount mismatch`);
+        if (productPages.failureCount !== pageFailures.length) errors.push(`${targetDate}: productPages failureCount mismatch`);
+        if (productPages.attemptedCount !== allUrls.length) errors.push(`${targetDate}: productPages attemptedCount mismatch`);
+        if (productPages.contentSha256 !== digest({ pages: productPages.pages, failures: pageFailures })) {
+          errors.push(`${targetDate}: productPages hash mismatch`);
+        }
+        for (const failure of pageFailures) {
+          if (!/^https:\/\/www\.producthunt\.com\/products\/[^/]+$/.test(failure.url || '')) {
+            errors.push(`${targetDate}: invalid failed product page URL ${failure.url || '(missing)'}`);
+          }
+          if (typeof failure.error !== 'string' || !failure.error) errors.push(`${targetDate}: ${failure.url || '?'} missing failure reason`);
+        }
+        totalProductPageFailures += pageFailures.length;
+        const coveredPostIds = new Set();
+        for (const page of productPages.pages) {
+          if (!/^https:\/\/www\.producthunt\.com\/products\/[^/]+$/.test(page.url || '')) {
+            errors.push(`${targetDate}: invalid product page URL ${page.url || '(missing)'}`);
+          }
+          let body = '';
+          try {
+            body = zlib.gunzipSync(Buffer.from(page.response?.body || '', 'base64')).toString('utf8');
+          } catch (error) {
+            errors.push(`${targetDate}: ${page.url || '?'} invalid compressed body (${error.message})`);
+            continue;
+          }
+          if (page.response?.status !== 200 || !/<html\b/i.test(body)) errors.push(`${targetDate}: ${page.url} invalid HTML response`);
+          if (page.response?.byteLength !== Buffer.byteLength(body)) errors.push(`${targetDate}: ${page.url} byteLength mismatch`);
+          if (page.response?.contentSha256 !== digest(body)) errors.push(`${targetDate}: ${page.url} body hash mismatch`);
+          for (const id of page.postIds || []) coveredPostIds.add(String(id));
+        }
+        // 抓取失败的产品页所覆盖的条目予以豁免(它们已进入 failures 记录)。
+        for (const failure of pageFailures) {
+          for (const id of failure.postIds || []) coveredPostIds.add(String(id));
+        }
+        for (const record of featured?.records || []) {
+          if (!coveredPostIds.has(String(record.id))) errors.push(`${targetDate}: featured ${record.id} has no product page`);
+        }
       }
     }
   }
@@ -218,6 +265,7 @@ function main() {
     uniqueIds: globalIds.size,
     totalOfficialFeatured,
     totalPages,
+    totalProductPageFailures,
     errorCount: errors.length,
   };
   console.log(JSON.stringify(summary, null, 2));

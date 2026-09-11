@@ -287,12 +287,27 @@ function requestProductPage(url) {
 
 function captureProductPages(records) {
   const pages = [];
+  const failures = [];
   const seen = new Set();
   const urls = [...new Set(records.map(productPageUrl).filter(Boolean))];
   for (const url of urls) {
     if (seen.has(url)) continue;
     seen.add(url);
-    const response = requestProductPage(url);
+    // 单个产品页失败(如 403/404/超时)不应拖垮整天的采集:
+    // 记录失败项, 继续抓其余页面, 由 validate 判定 complete。
+    let response;
+    try {
+      response = requestProductPage(url);
+    } catch (error) {
+      failures.push({
+        url,
+        postIds: records.filter((item) => productPageUrl(item) === url).map((item) => String(item.id)),
+        error: String(error?.message || error).slice(0, 500),
+        failedAt: new Date().toISOString(),
+      });
+      console.error(`[producthunt] product page FAILED ${failures.length}: ${url} (${error?.message || error})`);
+      continue;
+    }
     const fetchedAt = new Date().toISOString();
     pages.push({
       url,
@@ -311,17 +326,21 @@ function captureProductPages(records) {
     });
     console.error(`[producthunt] product page ${pages.length}/${urls.length}: ${url}`);
   }
-  return pages;
+  return { pages, failures, attempted: urls.length };
 }
 
 function attachProductPages(document, records) {
-  const pages = captureProductPages(records);
+  const captured = captureProductPages(records);
+  const { pages, failures, attempted } = captured;
   document.productPages = {
-    complete: true,
+    complete: failures.length === 0,
     itemCount: pages.length,
-    contentSha256: digest(pages),
+    failureCount: failures.length,
+    attemptedCount: attempted,
+    contentSha256: digest({ pages, failures }),
     fetchedAt: new Date().toISOString(),
     pages,
+    failures,
   };
 }
 
