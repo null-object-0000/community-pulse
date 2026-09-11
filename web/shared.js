@@ -27,7 +27,7 @@
       unknownSource: '开发者社区', reportTitle: '{date} 开发者趋势日报', reportHeading: '{date}大家都在做什么',
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
-      previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', swipeHint: '上滑下一条，下滑上一条',
+      previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', cardsTitle: '今日卡片', cardsIntro: '一张一张看完今天的新发现', cardsRead: '已读 {n} / {total}', cardsComplete: '已全部读完', cardsHint: '向左滑下一条，向右滑上一条',
     },
     en: {
       discover: 'Discover', archive: 'Archive', slogan: 'What developers are building',
@@ -50,7 +50,7 @@
       unknownSource: 'Developer community', reportTitle: '{date} Developer Trends Report', reportHeading: '{date} · What developers are building',
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
-      previousItem: 'Previous', nextItem: 'Next', openItem: 'Open project', swipeHint: 'Swipe up for next, down for previous',
+      previousItem: 'Previous', nextItem: 'Next', openItem: 'Open project', cardsTitle: 'Today’s cards', cardsIntro: 'Browse today’s discoveries one at a time', cardsRead: 'Read {n} / {total}', cardsComplete: 'All read', cardsHint: 'Swipe left for next, right for previous',
     },
   };
   const sourceLabels = {
@@ -424,8 +424,25 @@
   function boundedIndex(index, delta, length) {
     return Math.min(Math.max(index + delta, 0), Math.max(length - 1, 0));
   }
-  function swipeStep(deltaY, deltaX, threshold = 54) {
-    return Math.abs(deltaY) >= threshold && Math.abs(deltaY) > Math.abs(deltaX) * 1.15 ? (deltaY < 0 ? 1 : -1) : 0;
+  function swipeStep(deltaX, deltaY, threshold = 54) {
+    return Math.abs(deltaX) >= threshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.15 ? (deltaX < 0 ? 1 : -1) : 0;
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep };
+  const cardsProgressKey = 'devtrends-cards-v1';
+  function readCardsProgress(storage, date, total) {
+    let record = null;
+    try { record = JSON.parse(storage.getItem(cardsProgressKey) || 'null'); } catch {}
+    const matches = record && record.date === date && Number.isInteger(record.maxIndex) && record.maxIndex >= 0;
+    const maxIndex = matches ? boundedIndex(record.maxIndex, 0, total) : 0;
+    if (!matches) {
+      try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex: 0 })); } catch {}
+    }
+    return { date, maxIndex, readCount: total > 0 && matches ? Math.min(maxIndex + 1, total) : 0, complete: Boolean(total > 0 && matches && maxIndex === total - 1) };
+  }
+  function writeCardsProgress(storage, date, index, total) {
+    const current = readCardsProgress(storage, date, total);
+    const maxIndex = Math.max(current.maxIndex, boundedIndex(index, 0, total));
+    try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
+    return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
+  }
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

@@ -14,7 +14,7 @@ function write(file, content) { const target = path.join(outputDir, file); fs.mk
 function writePage(route, content) { write(path.join(route.replace(/^\//, ''), 'index.html'), content); }
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(outputDir, { recursive: true });
-for (const name of ['styles.css', 'app.js', 'shared.js', 'theme.js', 'logo.svg', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg', 'source-ruanyifeng.png']) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
+for (const name of ['styles.css', 'app.js', 'cards.js', 'shared.js', 'theme.js', 'logo.svg', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg', 'source-ruanyifeng.png']) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
 const reports = dates.map(date => {
   const raw = JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8'));
   const finalPath = path.join(finalDir, `${date}.md`), rawMarkdown = path.join(sourceDir, `${date}.md`);
@@ -34,13 +34,15 @@ images.copyImages(outputDir, imageManifest);
 if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
 // Project catalog is built before rendering so report links point only to generated pages.
 const projects = require('./projects.js').buildProjects(reports);
+const latest = dates[0] || null;
+const latestTotal = D.reportItems(reports[0] || { results: [] }).length;
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
-  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown));
+  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown, latest, latestTotal));
 }
-const latest = dates[0] || null;
 for (const locale of ['zh-CN', 'en']) {
-  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown));
+  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown, latest, latestTotal));
+  writePage(D.localPath('/cards/', locale), R.cardsPage(reports[0] || { results: [] }, latest, locale));
   writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale));
 }
 write('404.html', R.notFoundPage('zh-CN'));

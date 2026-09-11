@@ -15,7 +15,7 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     headerSearch: view === 'report' ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '',
     zhSelected: locale === 'zh-CN' ? 'selected' : '', enSelected: locale === 'en' ? 'selected' : '',
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
-    pageData: D.json({ ...data, locale, view, route }),
+    pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}" defer></script>`,
     ...Object.fromEntries(['skip', 'brandLabel', 'system', 'light', 'dark', 'footer'].map(key => [key, t(locale, key)])),
     languageLabel: t(locale, 'language'), themeLabel: t(locale, 'theme'),
   };
@@ -53,19 +53,30 @@ function discoverySidebar(items, locale, date, hasMarkdown) {
 function empty(locale) {
   return `<div id="empty" class="empty" hidden>${D.icon('search')}<h2 id="empty-title">${t(locale, 'empty')}</h2><p id="empty-hint">${t(locale, 'emptyHint')}</p><button id="clear-filters" type="button">${t(locale, 'clear')}</button></div>`;
 }
-function reportPage(report, date, locale, home = false, hasMarkdown = false) {
+function cardsEntry(date, total, locale) {
+  return `<a class="cards-entry" href="${lp('/cards/', locale)}" data-cards-entry data-date="${e(date)}" data-total="${total}"><span class="cards-entry-icon" aria-hidden="true">${D.icon('box')}</span><span><b>${t(locale, 'cardsTitle')}</b><small>${t(locale, 'cardsIntro')}</small></span><strong data-cards-progress>${t(locale, 'cardsRead', { n: 0, total })}</strong><span class="cards-entry-arrow" aria-hidden="true">→</span></a>`;
+}
+function reportPage(report, date, locale, home = false, hasMarkdown = false, cardsDate = date, cardsTotal = D.reportItems(report).length) {
   const items = D.reportItems(report), route = home ? '/' : `/reports/${date}/`;
   const title = home ? t(locale, 'homeTitle') : `${t(locale, 'reportTitle', { date })} | DevTrends`;
   const description = home ? t(locale, 'intro') : `${t(locale, 'reportTitle', { date })}. ${t(locale, 'count', { n: items.length })}. ${t(locale, 'intro')}`;
   // The report date lives in the heading: the feed itself is already scoped to that one day,
   // so a separate meta row used to restate it (plus the count and the Markdown download).
   const headingText = t(locale, 'reportHeading', { date: D.dateLabel(date, locale) });
-  const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
+  // The entry advertises today's card flow, so it only belongs on the report it links to;
+  // showing it on an archived day would report today's progress next to another day's feed.
+  const entry = date === cardsDate ? cardsEntry(cardsDate, cardsTotal, locale) : '';
+  const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + entry + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
     `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section></div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
   const structured = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical, inLanguage: locale,
     ...(date ? { datePublished: date } : {}), mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 100).map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || D.origin })) } };
   return shell({ locale, view: 'report', route, title, description, content, data: { date, report }, structured });
+}
+function cardsPage(report, date, locale) {
+  const items = D.reportItems(report), title = `${t(locale, 'cardsTitle')} | DevTrends`;
+  const content = `<section class="cards-page" aria-labelledby="cards-title"><header class="cards-page-heading"><div><p class="eyebrow">DEV TRENDS / DAILY CARDS</p><h1 id="cards-title">${t(locale, 'cardsTitle')}</h1></div><a href="${lp('/', locale)}" aria-label="${t(locale, 'home')}">✕</a></header><p class="cards-instruction" id="cards-instruction">${t(locale, 'cardsHint')}</p><div class="swipe-stage" tabindex="0" aria-labelledby="cards-title cards-instruction"></div><div class="swipe-controls"><button type="button" class="swipe-previous"><span aria-hidden="true">←</span><span>${t(locale, 'previousItem')}</span></button><output class="swipe-position" aria-live="polite" aria-atomic="true">${items.length ? `1 / ${items.length}` : '0 / 0'}</output><button type="button" class="swipe-next"><span>${t(locale, 'nextItem')}</span><span aria-hidden="true">→</span></button></div></section>`;
+  return shell({ locale, view: 'cards', route: '/cards/', title, description: t(locale, 'cardsIntro'), content, data: { date, report }, noindex: true });
 }
 function archivePage(reports, locale) {
   const months = new Map();
@@ -82,4 +93,4 @@ function notFoundPage(locale) {
     content: heading(locale, t(locale, 'missing'), t(locale, 'missingHint')), data: {},
   }).replace('</main>', `<a class="button primary" href="${lp('/', locale)}">${t(locale, 'home')}</a></main>`);
 }
-module.exports = { shell, heading, reportPage, archivePage, notFoundPage };
+module.exports = { shell, heading, reportPage, cardsPage, archivePage, notFoundPage };
