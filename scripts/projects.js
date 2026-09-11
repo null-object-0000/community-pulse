@@ -52,7 +52,7 @@ function buildProjects(reports) {
     }
     project.related = [...scores].sort((a, b) => b[1] - a[1] || b[0].lastSeen.localeCompare(a[0].lastSeen) || a[0].key.localeCompare(b[0].key))
       .slice(0, 3).map(([other]) => ({ key: other.key, path: other.path, name: other.fullName, language: D.metric(other.item, ['language', 'lang']) }));
-    // Use a stable, concise repository name on detail pages and when saving from them.
+    // Use a stable, concise repository name on detail pages.
     project.item = { ...project.item, title: project.fullName, githubUrl: project.url, projectPath: project.path };
   }
   return projects;
@@ -76,7 +76,7 @@ function projectPage(project, locale) {
   const gallery = D.galleryHtml(item.images, locale);
   const galleryPanel = gallery ? `<section class="panel" id="screenshots"><h2>${t(locale, 'gallery')}</h2>${gallery}</section>` : '';
   const content = `<nav class="breadcrumb" aria-label="${locale === 'en' ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/', locale)}">${t(locale, 'discover')}</a><span>/</span><span>${t(locale, 'details')}</span></nav>
-    <article class="project-hero"><p class="eyebrow">DEV TRENDS / GITHUB PROJECT</p><div class="project-heading"><div><p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div>${D.favoriteButton(item, locale)}</div>
+    <article class="project-hero"><p class="eyebrow">DEV TRENDS / GITHUB PROJECT</p><div class="project-heading"><div><p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div></div>
     <p class="project-summary" lang="${s.lang}">${e(shortSummary)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
     <div class="project-links">${links.map(([label, url], i) => `<a class="button${i === 0 ? ' primary' : ''}" href="${e(D.trackedUrl(url, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${t(locale, label)} ${D.icon('arrow')}</a>`).join('')}</div>
     ${project.topics.length ? `<div class="project-tags">${project.topics.slice(0, 12).map(topic => `<span class="tag">${e(topic)}</span>`).join('')}</div>` : ''}</article>

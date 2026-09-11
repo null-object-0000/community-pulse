@@ -5,17 +5,16 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
   const origin = 'https://devtrends.site';
-  const favoritesKey = 'devtrends-favorites-v1';
   const messages = {
     'zh-CN': {
-      discover: '今日发现', archive: '历史日报', favorites: '我的收藏', slogan: '大家都在做什么',
+      discover: '今日发现', archive: '历史日报', slogan: '大家都在做什么',
       intro: '每天发现开发者社区的新项目、新产品与开源趋势。', all: '全部来源', search: '搜索项目、作者或标签',
       language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色', date: '日报日期',
-      count: '{n} 个项目', sources: '{n} 个来源', save: '收藏', saved: '已收藏', remove: '取消收藏',
+      count: '{n} 个项目', sources: '{n} 个来源',
       website: '官网', repository: 'GitHub 仓库', source: '来源', details: '项目详情', original: '原文',
       noSummary: '暂无项目介绍。', empty: '没有找到相关项目', emptyHint: '换一个关键词或来源试试。',
-      clear: '清除筛选', emptyFavorites: '把感兴趣的项目留在这里', favoritesHint: '点击项目旁的收藏按钮，保存在当前浏览器中。',
-      unavailable: '内容暂时无法加载', retry: '重新加载', storageError: '浏览器无法保存收藏，请检查存储设置。',
+      clear: '清除筛选',
+      unavailable: '内容暂时无法加载', retry: '重新加载',
       archiveIntro: '沿着日期，回看开发者们的创造。', readReport: '阅读日报', download: '下载 Markdown',
       about: '项目介绍', facts: '仓库信息', timeline: '收录记录', related: '相关项目',
       firstSeen: '首次收录', lastSeen: '最近收录', appearances: '收录天数', days: '{n} 天',
@@ -25,19 +24,19 @@
       brandLabel: '开发者趋势', footer: '从社区出发，发现值得关注的创造。', skip: '跳转到内容',
       noReports: '暂无日报', missing: '页面不存在', missingHint: '这个地址没有对应的项目或日报。', home: '返回今日发现',
       summaryNote: '介绍整理自已收录的社区资料。', projectIntro: '{name} 的项目介绍、GitHub 仓库信息与社区收录记录。',
-      unknownSource: '开发者社区', localOnly: '收藏仅保存在当前浏览器', reportTitle: '{date} 开发者趋势日报',
+      unknownSource: '开发者社区', reportTitle: '{date} 开发者趋势日报',
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
     },
     en: {
-      discover: 'Discover', archive: 'Archive', favorites: 'Favorites', slogan: 'What developers are building',
+      discover: 'Discover', archive: 'Archive', slogan: 'What developers are building',
       intro: 'Daily discoveries from developer communities, independent makers, and open source.', all: 'All sources', search: 'Search projects, authors, or tags',
       language: 'Language', theme: 'Appearance', system: 'System', light: 'Light', dark: 'Dark', date: 'Report date',
-      count: '{n} projects', sources: '{n} sources', save: 'Save', saved: 'Saved', remove: 'Remove favorite',
+      count: '{n} projects', sources: '{n} sources',
       website: 'Website', repository: 'GitHub repository', source: 'Source', details: 'Project details', original: 'Original',
       noSummary: 'No project description yet.', empty: 'No matching projects', emptyHint: 'Try another keyword or source.',
-      clear: 'Clear filters', emptyFavorites: 'Keep your next discovery here', favoritesHint: 'Save a project to keep it in this browser.',
-      unavailable: 'Content could not be loaded', retry: 'Try again', storageError: 'This browser could not save favorites. Check its storage settings.',
+      clear: 'Clear filters',
+      unavailable: 'Content could not be loaded', retry: 'Try again',
       archiveIntro: 'Explore what developers have been building, day by day.', readReport: 'Read report', download: 'Download Markdown',
       about: 'About the project', facts: 'Repository details', timeline: 'Discovery history', related: 'Related projects',
       firstSeen: 'First discovered', lastSeen: 'Last discovered', appearances: 'Days featured', days: '{n} days',
@@ -47,7 +46,7 @@
       brandLabel: 'Developer trends', footer: 'Discover what’s worth following, straight from the community.', skip: 'Skip to content',
       noReports: 'No reports yet', missing: 'Page not found', missingHint: 'There is no project or report at this address.', home: 'Back to Discover',
       summaryNote: 'Descriptions are drawn from collected community sources.', projectIntro: 'Explore {name}, its GitHub repository, and its discovery history across developer communities.',
-      unknownSource: 'Developer community', localOnly: 'Favorites stay in this browser', reportTitle: '{date} Developer Trends Report',
+      unknownSource: 'Developer community', reportTitle: '{date} Developer Trends Report',
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
     },
@@ -188,7 +187,9 @@
     }
     return null;
   }
-  function favoriteId(item) {
+  // Stable identity for list rows: the canonical repository URL when there is one, otherwise a
+  // source-scoped URL or key. Used for row analytics, not for any stored state.
+  function itemId(item) {
     return repository(item)?.url || String(item.websiteUrl || item.url || `${item.sourceId || 'item'}:${item.externalId || item.title || 'untitled'}`).replace(/#.*$/, '').replace(/\/$/, '');
   }
   // 投稿模板字段名。采集层已按字段解析，这里兜底清理历史日报：老数据在采集时把换行压成了
@@ -275,7 +276,7 @@
   }
   const icon = (name) => {
     const paths = {
-      bookmark: '<path d="M6 3h12v18l-6-4-6 4z"/>', arrow: '<path d="M7 17 17 7M7 7h10v10"/>',
+      arrow: '<path d="M7 17 17 7M7 7h10v10"/>',
       search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>',
       repo: '<path d="M5 4h14v16H7a2 2 0 0 1-2-2V4Zm0 12h14M9 7h6"/>',
       github: '<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7.4A5.8 5.8 0 0 0 19.3 3 5.4 5.4 0 0 0 19.1 0S17.9-.4 15 1.5a14 14 0 0 0-6 0C6.1-.4 4.9 0 4.9 0a5.4 5.4 0 0 0-.2 3A5.8 5.8 0 0 0 3.2 7c0 5.8 3.5 7 6.8 7.4A4.8 4.8 0 0 0 9 18v4M9 19c-3 .9-3-1.5-4.2-2"/>',
@@ -284,9 +285,6 @@
     };
     return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.box}</svg>`;
   };
-  function favoriteButton(item, locale, saved = false) {
-    return `<button type="button" class="favorite-button${saved ? ' active' : ''}" data-favorite-id="${escapeHtml(favoriteId(item))}" aria-pressed="${saved}" aria-label="${escapeHtml(t(locale, saved ? 'remove' : 'save') + ' ' + displayTitle(item, locale))}">${icon('bookmark')}<span>${t(locale, saved ? 'saved' : 'save')}</span></button>`;
-  }
   // Fallback only: a source with a logo asset renders that logo instead. Keyed off sourceId, never the
   // display name, because "HelloGitHub" would otherwise match a /github/ test and borrow GitHub's mark.
   function sourceMark(item) {
@@ -295,7 +293,7 @@
     const known = { producthunt: 'P', vibecafe: 'V', hackernews: 'Y', reddit: 'R', devto: 'D', indiehackers: 'IH' };
     return escapeHtml(known[id] || sourceName(item, 'en').replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase() || 'D');
   }
-  function renderItem(item, locale, { date = '', saved = false, index = 0 } = {}) {
+  function renderItem(item, locale, { date = '', index = 0 } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
     const links = itemLinks(item), primary = safeUrl(item.websiteUrl || item.url) || repo?.url;
     const source = sourceInfo(item);
@@ -317,14 +315,13 @@
     const sourceUrl = itemLinks(item).find(([label]) => label === 'source')?.[1];
     // Every row already belongs to the report date in the selector, and an item's own publishedAt
     // (UTC, per source) only contradicted it, so the row carries no date of its own.
-    return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || favoriteId(item))}">
+    return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
       <span class="item-avatar avatar-${index % 5}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
       <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}${gallery}</div>
       <div class="item-tags">${language ? `<span class="tag">${escapeHtml(language)}</span>` : ''}${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
       <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
-      <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div>
-      <div class="item-actions">${favoriteButton(item, locale, saved)}</div></article>`;
+      <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
   }
-  return { origin, favoritesKey, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, localImages, hotlinkable, galleryHtml, repository, favoriteId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem };
 });

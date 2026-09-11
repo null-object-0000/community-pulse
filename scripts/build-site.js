@@ -30,9 +30,8 @@ const reports = dates.map(date => {
   return report;
 });
 images.copyImages(outputDir, imageManifest);
-write('data/images.json', D.json(imageManifest));
 write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
-// Project catalog is built before rendering so report and favorite links point only to generated pages.
+// Project catalog is built before rendering so report links point only to generated pages.
 const projects = require('./projects.js').buildProjects(reports);
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
@@ -42,7 +41,6 @@ const latest = dates[0] || null;
 for (const locale of ['zh-CN', 'en']) {
   writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, dates, locale, true, reports[0]?.hasMarkdown));
   writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale));
-  writePage(D.localPath('/favorites/', locale), R.favoritesPage(locale));
 }
 write('404.html', R.notFoundPage('zh-CN'));
 write('en/404.html', R.notFoundPage('en'));

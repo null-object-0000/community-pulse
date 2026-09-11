@@ -26,7 +26,7 @@ test('cross-source and cross-date occurrences become one project with unique dis
   assert.equal(projects[0].observations.length, 2); assert.equal(projects[0].observations[0].sources.length, 2);
   assert.equal(projects[0].item.github.stars, 20);
   assert.equal(recent.results[2].items[0].projectPath, undefined);
-  assert.equal(D.favoriteId(old.results[0].items[0]), D.favoriteId(recent.results[0].items[0]));
+  assert.equal(D.itemId(old.results[0].items[0]), D.itemId(recent.results[0].items[0]));
 });
 
 test('final summaries override raw and preserve metrics', () => {
@@ -343,7 +343,10 @@ test('every emitted project, report, and sitemap entry has a real static page an
   const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, urls.length);
-  assert.ok(!sitemap.includes('/favorites/'));
+  // Favorites were removed: no page, navigation link, or stored-state copy may survive the build.
+  assert.ok(!fs.existsSync(path.join(dist, 'favorites')), 'favorites page must not be built');
+  assert.ok(!fs.existsSync(path.join(dist, 'en', 'favorites')), 'English favorites page must not be built');
+  assert.ok(!fs.readFileSync(path.join(dist, 'index.html'), 'utf8').includes('/favorites/'), 'navigation must not link favorites');
   for (const url of urls) {
     assert.ok(url.startsWith(D.origin + '/'));
     const route = url.slice(D.origin.length);

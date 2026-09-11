@@ -25,8 +25,6 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 
 网站源码在 `web/`，`scripts/build-site.js` 会读取 `知识/大家都在做什么/raw/*.json`的结构化数据，并在同日 `final/*.md` 存在时将 LLM 增强摘要合并进列表 JSON；只有没有 final 的日期才回退到 raw 摘要。网站采用统一 DevTrends 主题，支持简体中文 / 英文与浅色 / 深色 / 跟随系统模式。Markdown 保留为日报下载入口。
 
-收藏使用浏览器本地 `localStorage`（键名 `devtrends-favorites-v1`），不上传服务端；顶部“我的收藏”入口对应 `/favorites/`。旧收藏按规范化仓库 URL 去重，保留快照并连接已生成的详情页。
-
 仅有有效 GitHub 仓库根地址的项目生成详情页：`/projects/<owner>/<repo>/`，英文路径加 `/en` 前缀。所有者和仓库名统一小写，同仓库跨来源、跨日报合并，Issue / Blob / 用户主页不当作仓库。列表标题进入详情页，GitHub 和官网保留外链；其他产品仍直接访问外部地址。
 
 - `web/shared.js`：构建与浏览器共用的语言字典、仓库识别、摘要、列表渲染和筛选 chip 标记。
@@ -35,7 +33,7 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 - 官网 Logo 兜底层（`source-raw/site-logos/<date>.json`）：没有平台标志的行改读项目官网自己声明的图标。日报 workflow 在 GitHub 仓库快照之后运行 `capture_site_logos_raw.js --date $TARGET --observed-date $OBSERVED --strict`，`validate_site_logos_raw.js` 离线校验；`source_raw_items.js` 只在下游离线把 `siteLogo` 挂到缺标志的行上，`collect.js` 不联网。候选官网取 `websiteUrl` → 仓库 `homepage` → 行自身 URL，并跳过 GitHub / 应用商店 / 微信知乎等内容平台（平台图标会重复且认错对象）；图标按 apple-touch-icon → ≥96px icon → SVG icon → 其他 icon → schema.org logo → `/favicon.ico` 排序，超过 256KiB 的「品牌大图」（可用 `SITE_LOGO_MAX_KB` 调整）会跳到下一个候选，避免把 1MB 的图永久写进 Git。历史日报用 `node scripts/backfill_site_logos.js --start --end [--dry-run]` 回填，再跑 `npm run images:sync` 与 `npm run check`；细节见 `.agents/skills/community-pulse/SKILL.md`。
 - 筛选栏（分类 / 来源）由 `D.chipFilterHtml` 在构建时渲染全部 chip；`web/app.js` 只把放不下的收进「更多分类」菜单，桌面端始终单行且没有横向滚动条，≤600px 换成原生下拉。加减分类不需要改这段逻辑，宽度自适应；被收纳的当前分类会显示在触发按钮上。
 - `web/theme.js`：首屏前应用主题，存储键 `devtrends-theme-v1`。
-- `scripts/render-site.js`：通用 HTML、日报、历史归档和收藏模板。
+- `scripts/render-site.js`：通用 HTML、日报和历史归档模板。
 - `scripts/projects.js`：项目聚合、仓库快照、收录历史、相关项目及详情 SEO。
 - `scripts/enhanced-report.js`：沿用原 final 摘要匹配策略，未匹配项仍为 raw，部分匹配标记 mixed。
 - 中英文内容优先使用 `summaryZh` / `summaryEn`（兼容下划线字段）；英文缺译文时优先使用英文仓库介绍，否则显示原文并标注。中文 final 摘要仍优先于 raw。
@@ -62,4 +60,4 @@ SEO 产物由 `scripts/build-site.js` 随日报一起生成：
 
 部署后还需检查 `/robots.txt`、`/sitemap.xml` 与最新一期 `/reports/<latest>/` 均返回 200，页面 canonical 必须指向 `devtrends.site`。
 
-新版部署后还需检查一个中英文项目详情页均返回 200、sitemap 包含详情页、不存在的项目地址返回 404。收藏页应为 noindex。
+新版部署后还需检查一个中英文项目详情页均返回 200、sitemap 包含详情页、不存在的项目地址返回 404。

@@ -10,23 +10,9 @@
   let category = page.route === '/' && D.isCategoryId(params.get('category')) ? params.get('category') : 'all';
   let query = params.get('q') || '';
   let sort = 'default';
-  let projectPaths = null;
-  let imagePaths = {};
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
-  const status = document.getElementById('status');
   let items = D.reportItems(page.report);
-  function readFavorites() {
-    try {
-      const entries = JSON.parse(localStorage.getItem(D.favoritesKey) || '[]');
-      if (!Array.isArray(entries)) return [];
-      const seen = new Set();
-      return entries.filter(entry => entry?.item && typeof entry.item === 'object').map(entry => ({ ...entry, id: D.favoriteId(entry.item) }))
-        .filter(entry => !seen.has(entry.id) && seen.add(entry.id));
-    } catch { return []; }
-  }
-  function savedIds() { return new Set(readFavorites().map(entry => entry.id)); }
-  function announce(message) { status.textContent = message; }
   // ---- screenshot viewer: every gallery thumbnail (feed rows and project pages) opens one dialog ----
   const lightbox = document.createElement('div');
   lightbox.className = 'lightbox';
@@ -85,16 +71,6 @@
     else if (event.key === 'ArrowLeft') { event.preventDefault(); stepLightbox(-1); }
     else if (event.key === 'ArrowRight') { event.preventDefault(); stepLightbox(1); }
   });
-  function synchronizeButtons() {
-    const ids = savedIds();
-    document.querySelectorAll('[data-favorite-id]').forEach(button => {
-      const saved = ids.has(button.dataset.favoriteId);
-      button.classList.toggle('active', saved); button.setAttribute('aria-pressed', String(saved));
-      const item = items.find(item => D.favoriteId(item) === button.dataset.favoriteId) || page.projectItem;
-      button.setAttribute('aria-label', `${t(saved ? 'remove' : 'save')} ${item ? D.displayTitle(item, locale) : ''}`);
-      button.querySelector('span').textContent = t(saved ? 'saved' : 'save');
-    });
-  }
   function updateFilterUrl() {
     const url = new URL(location.href);
     query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
@@ -203,31 +179,15 @@
     if (!feed) return;
     const q = query.trim().toLocaleLowerCase(locale);
     const filtered = items.filter(item => (source === 'all' || item.sourceId === source) && (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
-    const ids = savedIds();
     if (sort === 'popular') filtered.sort((a, b) => Number(D.metric(b, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0) - Number(D.metric(a, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0));
-    feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index, saved: ids.has(D.favoriteId(item)) })).join('');
+    feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index })).join('');
     feed.hidden = !filtered.length;
     document.getElementById('empty').hidden = Boolean(filtered.length);
-    const favoritesEmpty = page.view === 'favorites' && !items.length;
-    document.getElementById('empty-title').textContent = t(favoritesEmpty ? 'emptyFavorites' : 'empty');
-    document.getElementById('empty-hint').textContent = t(favoritesEmpty ? 'favoritesHint' : 'emptyHint');
+    document.getElementById('empty-title').textContent = t('empty');
+    document.getElementById('empty-hint').textContent = t('emptyHint');
     document.getElementById('clear-filters').hidden = !query && source === 'all' && category === 'all';
     const reportStat = document.getElementById('report-stat');
     if (reportStat) reportStat.textContent = t('count', { n: filtered.length }) + (page.date ? ` · ${D.dateLabel(page.date, locale)}` : '');
-  }
-  function loadFavorites() {
-    items = readFavorites().map(entry => {
-      const item = { ...entry.item };
-      for (const field of ['image', 'logo', 'icon']) item[field] = D.localImage(item[field], imagePaths);
-      // Snapshots saved before `images` existed simply have no gallery.
-      if (Array.isArray(item.images)) item.images = D.localImages(item.images, imagePaths);
-      const repo = D.repository(item);
-      // Old snapshots remain readable; only catalog-confirmed paths become detail links.
-      delete item.projectPath;
-      if (repo && projectPaths?.[repo.key]) item.projectPath = projectPaths[repo.key];
-      return item;
-    });
-    paintFilter('source'); renderFeed();
   }
   const themePicker = document.getElementById('theme-picker');
   function syncThemePicker() {
@@ -332,19 +292,6 @@
     updateFilterUrl(); renderFeed(); search.focus();
   });
   document.addEventListener('click', event => {
-    const button = event.target.closest('button[data-favorite-id]');
-    if (button) {
-      const id = button.dataset.favoriteId;
-      const item = items.find(item => D.favoriteId(item) === id) || (page.projectItem && D.favoriteId(page.projectItem) === id ? page.projectItem : null);
-      if (!item) return;
-      const favorites = readFavorites(); const found = favorites.findIndex(entry => entry.id === id);
-      if (found >= 0) favorites.splice(found, 1);
-      else favorites.unshift({ id, savedAt: new Date().toISOString(), item: { ...item, content: '', reportDate: page.date || item.reportDate } });
-      try { localStorage.setItem(D.favoritesKey, JSON.stringify(favorites)); }
-      catch { announce(t('storageError')); return; }
-      announce(t(found >= 0 ? 'remove' : 'saved'));
-      if (page.view === 'favorites') loadFavorites(); else synchronizeButtons();
-    }
     const link = event.target.closest('a[href]');
     if (link && typeof window.gtag === 'function') {
       try {
@@ -356,17 +303,12 @@
       } catch {}
     }
   });
+  });
   window.addEventListener('storage', event => {
-    if (event.key === D.favoritesKey || event.key === null) { if (page.view === 'favorites') loadFavorites(); else synchronizeButtons(); }
     if (event.key === 'devtrends-theme-v1' || event.key === null) { window.DevTrendsTheme.set(event.newValue); syncThemePicker(); }
   });
   if (search) search.value = query;
-  if (page.view === 'favorites') {
-    loadFavorites();
-    fetch('/data/images.json').then(response => { if (!response.ok) throw new Error('images'); return response.json(); }).then(paths => { imagePaths = paths; loadFavorites(); }).catch(() => {});
-    fetch('/data/projects.json').then(response => { if (!response.ok) throw new Error('catalog'); return response.json(); }).then(paths => { projectPaths = paths; loadFavorites(); }).catch(() => {});
-  } else if (feed) { paintFilter('category'); paintFilter('source'); renderFeed(); }
-  else synchronizeButtons();
+  if (feed) { paintFilter('category'); paintFilter('source'); renderFeed(); }
   // Re-fit the chip row when the container width changes or web fonts finish loading.
   const filterContainers = ['category', 'source'].map(filterContainer).filter(Boolean);
   const relayoutFilters = () => filterContainers.forEach(layoutFilter);
