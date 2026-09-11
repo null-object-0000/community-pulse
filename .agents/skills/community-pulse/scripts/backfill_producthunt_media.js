@@ -41,14 +41,26 @@ function parseArgs(argv) {
   };
 }
 
+// Two source-layer shapes carry media: the official-featured projection and the
+// additive by-ID `recordMedia` section (capture_producthunt_post_media.js) that
+// covers 日报 rows which were never `featured: true`. Featured wins on overlap.
 function mediaByPost(document) {
   const media = new Map();
-  for (const post of document.officialFeatured?.records || []) {
+  const put = (post) => {
+    const id = String(post?.id || '');
+    if (!id || media.has(id)) return;
     const logo = typeof post.thumbnail?.url === 'string' ? post.thumbnail.url.trim() : '';
-    const images = [...new Set((Array.isArray(post.media) ? post.media : [])
+    const gallery = Array.isArray(post.media) ? post.media
+      : (Array.isArray(post.media?.edges) ? post.media.edges.map((edge) => edge?.node) : []);
+    const images = [...new Set(gallery
       .map((entry) => (entry && typeof entry.url === 'string' ? entry.url.trim() : ''))
       .filter((url) => url && url !== logo))];
-    media.set(String(post.id), { logo, images });
+    media.set(id, { logo, images });
+  };
+  for (const post of document.officialFeatured?.records || []) put(post);
+  for (const post of document.recordMedia?.records || []) {
+    if (post?.error) continue;
+    put(post);
   }
   return media;
 }
@@ -65,6 +77,7 @@ function main() {
   let records = 0;
   let missing = 0;
   let unprojected = 0;
+  const missingSample = [];
   for (const date of dates) {
     const rawFile = path.join(RAW_ROOT, `${date}.json`);
     if (!fs.existsSync(rawFile)) {
@@ -73,7 +86,8 @@ function main() {
     }
     const document = JSON.parse(fs.readFileSync(path.join(SOURCE_ROOT, `${date}.json`), 'utf8'));
     const fields = document.officialFeatured?.capture?.sourceFields || [];
-    if (!fields.includes('thumbnail')) {
+    const byId = document.recordMedia?.records || [];
+    if (!fields.includes('thumbnail') && !byId.length) {
       unprojected += 1;
       console.log(`${date}: source-raw has no media projection, skipped`);
       continue;
@@ -88,7 +102,7 @@ function main() {
         const entry = media.get(String(item.externalId));
         if (!entry) {
           missing += 1;
-          console.warn(`${date}: ${item.externalId || item.title} has no source-raw record`);
+          if (missing <= 5) missingSample.push(`${date}: ${item.externalId || item.title}`);
           continue;
         }
         records += 1;
@@ -116,14 +130,19 @@ function main() {
     updatedReports: updated,
     updatedItems: records,
     missingRecords: missing,
+    missingSample,
     daysWithoutProjection: unprojected,
     dryRun: options.dryRun,
   }, null, 2));
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(error.stack || error.message);
-  process.exit(1);
+if (require.main === module) {
+  try {
+    main();
+  } catch (error) {
+    console.error(error.stack || error.message);
+    process.exit(1);
+  }
 }
+
+module.exports = { mediaByPost };

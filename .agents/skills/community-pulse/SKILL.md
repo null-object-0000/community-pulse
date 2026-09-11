@@ -156,6 +156,7 @@ Markdown 条目的三级标题统一使用纯文字，不在产品名称上包�
 | `fill_vibecafe_empty.js` | vibecafe 缺失源补空 | 无产品日补显式 `items: []`(collect.js 空结果也 push 源, 源缺失=当时抓取失败被跳过, 不自洽) |
 | `backfill_vibecafe_media.js` | vibecafe 旧日报补 `logo`/`images` | 只改这两个字段, 不重跑 collect |
 | `backfill_producthunt_media.js` | Product Hunt 旧日报补 `logo`/`images` | 从 `officialFeatured.records` 的 `thumbnail`/`media` 映射, 映射规则与 `source_raw_items.js` 一致, 只改 media 字段 |
+| `capture_producthunt_post_media.js` | 旧混合层 PH 行补媒体 | 按 日报 引用的 Post ID 调 `post(id:)`, 写入来源层新增 `recordMedia` 段(不动 `records`/`officialFeatured`); 只抓同日 `records` 里可归属的 ID, 限流停跑可续 |
 | `ph_backfill.js` | Product Hunt 旧混合层回溯（已废弃） | 只取首屏且写入标准化 item，不能作为来源层全量数据 |
 
 ## 原始来源层（source-raw）
@@ -266,6 +267,20 @@ node scripts/backfill_producthunt_media.js --start 2026-01-01 --end 2026-09-10 [
 npm run images:sync   # 把 ph-files.imgix.net 的产品标志镜像到 assets/images
 npm run check
 ```
+
+**旧混合层日报的 PH 行拿不到精选投影**：2026-01-01~2026-08 的日报（216 天）是已废弃的旧混合层生成的，每天是「当日热门 20 条」而不是 `featured: true`，与 `officialFeatured` 只有 10% 能对上（4433 行里 482 行），所以 `--refresh-featured` 补不到它们的 logo。这类行要按 Post ID 定向补抓（`post(id: ID!)` 支持 `thumbnail { url }` / `media { url }`，见 `capture_producthunt_post_media.js`）：
+
+```bash
+# 计划：只取 raw 日报真正引用、且在同一天 records 里可归属的 ID（其余跳过并报告）
+node scripts/capture_producthunt_post_media.js --start 2026-01-01 --end 2026-09-10 --dry-run
+
+# 抓取：媒体写入同日文件的新增段 recordMedia（records / officialFeatured 原样不动，
+# 因此各自的 contentSha256 仍成立）；限流时停下并置退出码 2，重跑只补缺失 ID
+node scripts/capture_producthunt_post_media.js --start 2026-01-01 --end 2026-09-10
+node scripts/validate_producthunt_raw.js --start 2026-01-01 --end 2026-09-10
+```
+
+`recordMedia` 的每条都必须在同日 `records`（全量 sweep）里存在，校验器会强制这一归属关系；`backfill_producthunt_media.js` 优先用精选投影、缺失时回退 `recordMedia`。Actions 入口：`producthunt-post-media.yml`（`--limit-ids` 可小批试跑）。
 
 新采集的 Product Hunt Post 保留官方 `website` 与 `productLinks { type url }`，并对官方精选的这些 URL 去重后执行链接解析，存入 `linkResolution.links`。最多 3 并发、每请求 12 秒、每次最多 5 跳、最多 2 次尝试（间隔 1 秒）；优先 HEAD，无法取得跳转时 GET，收到响应头立即终止正文传输。只请求 PH 域名，一旦 Location 指向外部即停止，因此 `ok` 表示解析成功，`verified: false` 表示未验证目标可访问性。失败也记录并缓存，`complete` 表示所有链接已尝试，不代表全部成功；已有结果仅 `--refresh-links` 显式刷新，日常 `--resume` 不重试历史失败。
 

@@ -1,0 +1,116 @@
+name: Product Hunt 缺失产品标志补抓（按 Post ID）
+
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: '开始日期 YYYY-MM-DD'
+        required: true
+        default: '2026-01-01'
+      end:
+        description: '结束日期 YYYY-MM-DD'
+        required: true
+        default: '2026-09-10'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: producthunt-backfill
+  cancel-in-progress: false
+
+env:
+  COMMUNITY_PULSE_PROXY: ''
+  PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
+  PRODUCT_HUNT_TOKEN_2: ${{ secrets.PRODUCT_HUNT_TOKEN_2 }}
+  PRODUCT_HUNT_TOKEN_3: ${{ secrets.PRODUCT_HUNT_TOKEN_3 }}
+  PRODUCT_HUNT_TOKEN_4: ${{ secrets.PRODUCT_HUNT_TOKEN_4 }}
+  PRODUCT_HUNT_TOKEN_5: ${{ secrets.PRODUCT_HUNT_TOKEN_5 }}
+
+jobs:
+  post-media:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 配置 Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: 按 Post ID 补抓 media、校验并保存
+        env:
+          START_DATE: ${{ inputs.start }}
+          END_DATE: ${{ inputs.end }}
+        run: |
+          set -euo pipefail
+          SKILL_DIR="$GITHUB_WORKSPACE/.agents/skills/community-pulse"
+          SOURCE_DIR="$GITHUB_WORKSPACE/知识/大家都在做什么/source-raw/producthunt"
+
+          commit_and_push() {
+            git -C "$GITHUB_WORKSPACE" add "$SOURCE_DIR"
+            if git -C "$GITHUB_WORKSPACE" diff --cached --quiet; then
+              return
+            fi
+            git -C "$GITHUB_WORKSPACE" commit -m "data: 补抓 Product Hunt 日报缺失产品标志 ${START_DATE} 至 ${END_DATE}"
+            for attempt in 1 2 3; do
+              if git -C "$GITHUB_WORKSPACE" push; then
+                return
+              fi
+              echo "push 冲突，第 ${attempt} 次 rebase 后重试"
+              git -C "$GITHUB_WORKSPACE" pull --rebase origin main
+            done
+            echo "三次 push 均失败" >&2
+            return 1
+          }
+
+          # 只校验已经有 recordMedia 的日期：增量脚本不动 records/officialFeatured，
+          # 未涉及的日期无需重复全量校验。
+          validate_written_days() {
+            node -e '
+              const fs = require("fs");
+              const path = require("path");
+              const root = process.argv[1];
+              const start = process.argv[2];
+              const end = process.argv[3];
+              for (const name of fs.readdirSync(root).sort()) {
+                const date = name.match(/^(\d{4}-\d{2}-\d{2})\.json$/)?.[1];
+                if (!date || date < start || date > end) continue;
+                const document = JSON.parse(fs.readFileSync(path.join(root, name), "utf8"));
+                if (Array.isArray(document.recordMedia?.records)) process.stdout.write(date + "\n");
+              }
+            ' "$SOURCE_DIR" "$START_DATE" "$END_DATE" | while read -r day; do
+              node "$SKILL_DIR/scripts/validate_producthunt_raw.js" --start "$day" --end "$day" >/dev/null
+              echo "校验通过: $day"
+            done
+          }
+
+          while true; do
+            set +e
+            node "$SKILL_DIR/scripts/capture_producthunt_post_media.js" \
+              --start "$START_DATE" \
+              --end "$END_DATE"
+            code=$?
+            set -e
+
+            validate_written_days
+            commit_and_push
+
+            if [ "$code" -eq 0 ]; then
+              echo "补抓完成"
+              break
+            fi
+            if [ "$code" -ne 2 ]; then
+              echo "补抓异常退出（退出码 $code）" >&2
+              exit "$code"
+            fi
+            echo "全部账号触发限流；已保存完整日期，等待 15 分 20 秒后续跑"
+            sleep 920
+          done

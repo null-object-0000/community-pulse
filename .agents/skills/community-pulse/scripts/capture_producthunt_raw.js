@@ -815,7 +815,7 @@ async function main() {
   }, null, 2));
 }
 
-module.exports = { resolveProductLinks };
+module.exports = { resolveProductLinks, requestGraphQL, waitForRateLimit, atomicWrite, digest };
 if (require.main === module) main().catch((error) => {
   console.error(error.stack || error.message);
   process.exitCode = 1;

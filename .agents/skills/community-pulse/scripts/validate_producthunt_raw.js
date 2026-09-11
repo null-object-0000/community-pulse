@@ -98,6 +98,49 @@ function validateLinkResolution(section, records, errors, date) {
   if (seen.size !== expected.size || [...expected].some((url) => !seen.has(url))) fail('source URL coverage mismatch');
 }
 
+// Additive by-ID media capture for 日报 rows outside the official-featured subset.
+// Every record must be attributable to the same day's full `records` sweep; the
+// section never replaces `records` or `officialFeatured`, so their hashes stand.
+function validateRecordMedia(section, records, errors, date) {
+  const fail = (message) => errors.push(`${date}: recordMedia ${message}`);
+  if (!section || typeof section !== 'object' || !Array.isArray(section.records)) {
+    fail('records must be an array');
+    return;
+  }
+  if (section.complete !== true) fail('attempts are not complete');
+  if (!Number.isFinite(Date.parse(section.fetchedAt))) fail('invalid fetchedAt');
+  const fields = section.sourceFields;
+  if (!Array.isArray(fields) || ['id', 'thumbnail', 'media'].some((field) => !fields.includes(field))) {
+    fail('source field projection is missing media fields');
+  }
+  if (section.itemCount !== section.records.length) fail('itemCount mismatch');
+  if (section.requestedCount !== section.records.length) fail('requestedCount mismatch');
+  if (section.failureCount !== section.records.filter((record) => record?.error).length) fail('failureCount mismatch');
+  if (section.contentSha256 !== digest(section.records)) fail('hash mismatch');
+  const known = new Set(records.map((record) => String(record?.id)));
+  const seen = new Set();
+  for (const record of section.records) {
+    const id = String(record?.id || '');
+    if (!id) { fail('record without id'); continue; }
+    if (seen.has(id)) fail(`duplicate id ${id}`);
+    seen.add(id);
+    if (!known.has(id)) fail(`${id} is absent from the day's records`);
+    if (record.error) {
+      if (typeof record.error !== 'string') fail(`${id} has a non-string error`);
+      continue;
+    }
+    for (const field of ['thumbnail', 'media']) {
+      if (!Object.prototype.hasOwnProperty.call(record, field)) fail(`${id} missing ${field}`);
+    }
+    if (record.thumbnail !== null && typeof record.thumbnail?.url !== 'string') fail(`${id} invalid thumbnail`);
+    if (record.media !== null) {
+      if (!Array.isArray(record.media) || record.media.some((entry) => typeof entry?.url !== 'string')) {
+        fail(`${id} invalid media`);
+      }
+    }
+  }
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const root = path.resolve(value(argv, '--root') || DEFAULT_ROOT);
@@ -234,6 +277,9 @@ function main() {
       }
     }
 
+    if (data.recordMedia !== undefined) {
+      validateRecordMedia(data.recordMedia, data.records || [], errors, targetDate);
+    }
     if (data.linkResolution !== undefined) {
       validateLinkResolution(data.linkResolution, featured?.records || [], errors, targetDate);
     }
