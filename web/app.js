@@ -216,12 +216,6 @@
   });
   search?.addEventListener('input', () => { query = search.value; updateFilterUrl(); renderFeed(); });
   document.getElementById('sort-select')?.addEventListener('change', event => { sort = event.target.value; renderFeed(); });
-  document.querySelectorAll('.view-switch').forEach(group => group.addEventListener('click', event => {
-    const button = event.target.closest('button[data-view]');
-    if (!button || !feed) return;
-    feed.classList.toggle('card-view', button.dataset.view === 'card');
-    group.querySelectorAll('button[data-view]').forEach(node => node.setAttribute('aria-pressed', String(node === button)));
-  }));
   document.addEventListener('keydown', event => {
     if (search && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); search.focus(); }
   });
@@ -286,8 +280,8 @@
       } catch {}
     }
   });
-  // A title or description clipped by CSS (one line in the list, three in the grid) stays readable through
-  // the native tooltip, but only while the rendered row actually hides text — short ones get no title.
+  // A title or description clipped by the one-line list stays readable through the native tooltip,
+  // but only while the rendered row actually hides text — short ones get no title.
   document.addEventListener('pointerover', event => {
     const clipped = event.target.closest?.('.item-primary h2, .item-primary .summary');
     if (!clipped) return;

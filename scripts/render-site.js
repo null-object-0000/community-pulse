@@ -36,8 +36,7 @@ function filters(items, locale) {
   const meta = D.chipFilterMeta(locale);
   const chips = [{ id: 'all', label: meta.all, count: items.length, active: true }, ...categoryOptions(items, locale)];
   const sort = `<select id="sort-select" aria-label="${locale === 'en' ? 'Sort projects' : '项目排序'}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select>`;
-  const view = `<div class="view-switch" role="group" aria-label="${locale === 'en' ? 'View' : '视图切换'}"><button type="button" data-view="card" aria-pressed="false" aria-label="${locale === 'en' ? 'Grid view' : '网格视图'}" title="${locale === 'en' ? 'Grid view' : '网格视图'}">▦</button><button type="button" data-view="list" aria-pressed="true" aria-label="${locale === 'en' ? 'List view' : '列表视图'}" title="${locale === 'en' ? 'List view' : '列表视图'}">☰</button></div>`;
-  return `<section class="filters" aria-label="${t(locale, 'search')}"><div id="${meta.containerId}" class="chip-filter" aria-label="${e(meta.aria)}">${D.chipFilterHtml(chips, locale)}</div><span class="filters-divider" aria-hidden="true"></span><div class="feed-tools">${sort}${view}</div></section>`;
+  return `<section class="filters" aria-label="${t(locale, 'search')}"><div id="${meta.containerId}" class="chip-filter" aria-label="${e(meta.aria)}">${D.chipFilterHtml(chips, locale)}</div><span class="filters-divider" aria-hidden="true"></span><div class="feed-tools">${sort}</div></section>`;
 }
 function discoveryHero(items, locale) {
   const en = locale === 'en';

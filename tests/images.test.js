@@ -116,32 +116,33 @@ test('screenshot galleries localize every entry and refuse unsynced URLs', () =>
   assert.throws(() => localizeReport({ results: [{ items: [{ images: [remote] }] }] }, {}), /images:sync/);
 }));
 
-test('the product logo wins the avatar and screenshots render as a managed gallery', () => {
+test('the product logo wins the avatar and project screenshots render as a managed gallery', () => {
   const html = D.renderItem({ title: 'Example', logo: local, image: local2, images: [local2, remote, local] }, 'en');
+  const gallery = D.galleryHtml([local2, remote, local], 'en');
   assert.ok(html.includes(`<img src="${local}" class="is-logo"`));
   // The avatar chain is logo -> icon -> website logo -> initials; a screenshot never fills it.
   assert.ok(D.renderItem({ title: 'Icon', icon: local2, siteLogo: local }, 'en').includes(`<img src="${local2}" class="is-logo"`));
   assert.ok(D.renderItem({ title: 'Website', siteLogo: local2, image: local }, 'en').includes(`<img src="${local2}" class="is-logo"`));
   assert.ok(!D.renderItem({ title: 'Shot only', image: local }, 'en').includes('<img'));
-  assert.ok(html.includes('class="item-gallery"'), 'gallery strip');
-  assert.ok(html.includes(`data-gallery="[&quot;${local2}&quot;,&quot;${local}&quot;]"`), 'unsafe screenshot dropped');
-  assert.ok(!html.includes(remote));
-  assert.ok(html.includes('gallery-thumb'));
+  assert.ok(gallery.includes('class="item-gallery"'), 'gallery strip');
+  assert.ok(gallery.includes(`data-gallery="[&quot;${local2}&quot;,&quot;${local}&quot;]"`), 'unsafe screenshot dropped');
+  assert.ok(!gallery.includes(remote));
+  assert.ok(gallery.includes('gallery-thumb'));
   // A single screenshot needs no "+n" overflow tile; four do.
-  assert.ok(!D.renderItem({ title: 'One', images: [local] }, 'en').includes('gallery-more'));
-  assert.ok(D.renderItem({ title: 'Four', images: [local, local2, local, local2] }, 'en').includes('gallery-more'));
+  assert.ok(!D.galleryHtml([local], 'en').includes('gallery-more'));
+  assert.ok(D.galleryHtml([local, local2, local, local2], 'en').includes('gallery-more'));
   // Sources without screenshots keep the plain avatar and gain no gallery.
   assert.ok(!D.renderItem({ title: 'Plain', image: local2 }, 'en').includes('item-gallery'));
   assert.ok(D.renderItem({ title: 'Plain', image: local2 }, 'en').includes('Pl'));
 });
 
-test('screenshots show in the grid view only, never in the dense list', () => {
+test('screenshots stay off the dense feed and remain available to project detail pages', () => {
   const css = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   assert.match(css, /\.item-gallery \{[^}]*display: none/);
-  const visible = css.match(/^[^\n]*\.card-view \.item-gallery[^\n]*$/m)?.[0] || '';
-  assert.match(visible, /\.card-view \.item-gallery/);
-  assert.match(visible, /\.panel \.item-gallery/);
-  assert.match(visible, /display: flex/);
+  assert.match(css, /\.panel \.item-gallery \{ display: flex; \}/);
+  assert.doesNotMatch(css, /card-view/);
+  assert.ok(!D.renderItem({ title: 'Example', images: [local, local2] }, 'en').includes('item-gallery'));
+  assert.ok(D.galleryHtml([local, local2], 'en').includes('item-gallery'));
 });
 
 test('download rejects error pages, oversized responses and HTTP failures', async () => {

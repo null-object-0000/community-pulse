@@ -74,7 +74,7 @@ test('list rows carry no per-item date, because the selected report date already
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   assert.ok(!styles.includes('.item-date'), 'stale date column rules');
   // The list grid must keep one column per rendered cell: number, avatar, primary, tags, source, score.
-  assert.ok(styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(230px, 1\.7fr\) minmax\(150px, \.9fr\) \d+px 70px;/), 'a stray column means a cell lost its track');
+  assert.ok(styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(280px, 2\.2fr\) minmax\(130px, \.7fr\) \d+px 64px;/), 'a stray column means a cell lost its track');
 });
 
 test('source scaffolding tags never repeat the row source as a chip', () => {
@@ -106,7 +106,7 @@ test('the primary language renders once, never twice as a language chip and a ta
 });
 
 test('a clipped description earns a tooltip while a fully visible one stays bare', () => {
-  // The list clips one line (horizontal overflow) and the grid clips three (vertical overflow).
+  // The list clips one line horizontally.
   assert.equal(D.isClipped({ scrollWidth: 420, clientWidth: 300, scrollHeight: 20, clientHeight: 20 }), true);
   assert.equal(D.isClipped({ scrollWidth: 300, clientWidth: 300, scrollHeight: 64, clientHeight: 42 }), true);
   assert.equal(D.isClipped({ scrollWidth: 300, clientWidth: 300, scrollHeight: 42, clientHeight: 42 }), false);
@@ -143,7 +143,7 @@ test('a long source name stays beside its badge instead of wrapping under it', (
   // English is ~6.4px/char at .75rem, so only a short label stays readable inside the same column.
   const english = D.sourceName({ sourceId: 'weekly-issues' }, 'en');
   assert.ok(english.length <= 20, `English source label is too long for the row: ${english}`);
-  const sourceColumn = styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(230px, 1\.7fr\) minmax\(150px, \.9fr\) (\d+)px 70px;/);
+  const sourceColumn = styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(280px, 2\.2fr\) minmax\(130px, \.7fr\) (\d+)px 64px;/);
   assert.ok(sourceColumn, 'list grid template changed shape');
   assert.ok(Number(sourceColumn[1]) >= 144, `source column must fit badge 28 + gap 8 + label 108, got ${sourceColumn[1]}`);
 });
@@ -274,7 +274,9 @@ test('built pages ship one collapsed chip row with no horizontal scroller', () =
     assert.ok(html.includes('class="chip-select"'), file);
     assert.ok(html.includes('<noscript><style>.chip-row { flex-wrap: wrap; overflow: visible; }</style></noscript>'), file);
     assert.ok(!html.includes('id="view-toggle"'), file);
-    assert.equal((html.match(/class="view-switch"/g) || []).length, 1, file);
+    assert.ok(!html.includes('class="view-switch"'), file);
+    assert.ok(!html.includes('data-view="card"'), file);
+    assert.ok(!html.includes('data-view="list"'), file);
   }
   const home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
   assert.equal((home.match(/data-category="/g) || []).length, D.categories.length + 1);
