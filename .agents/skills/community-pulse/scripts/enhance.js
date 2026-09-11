@@ -4,10 +4,13 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 const BASE = process.env.COMMUNITY_PULSE_LLM_BASE || 'http://127.0.0.1:18640/v1';
-const MODEL = process.env.COMMUNITY_PULSE_LLM_MODEL || 'flowlet-pro';
+const MODEL = process.env.COMMUNITY_PULSE_LLM_MODEL || 'flowlet-flash';
 const KEY = process.env.COMMUNITY_PULSE_LLM_KEY || process.env.HERMES_CUSTOM_127_0_0_1_18640_API_KEY || '';
 const MAX_ZH_LEN = 100;
 const MAX_EN_LEN = 240;
+// flowlet-pro 是推理模型：reasoning_content 与正文共享 max_tokens 预算。
+// 预算过小时思考会吃满额度，导致 content 为空、finish_reason=length。
+const MAX_TOKENS = parseInt(process.env.COMMUNITY_PULSE_LLM_MAX_TOKENS || '32000', 10);
 
 function hasChinese(value) {
   return /[\u3400-\u9fff]/u.test(String(value || ''));
@@ -61,7 +64,7 @@ async function callLlm(prompt) {
       temperature: 0.2,
       reasoning_effort: 'low',
       response_format: { type: 'json_object' },
-      max_tokens: 8000,
+      max_tokens: MAX_TOKENS,
     }),
   });
   if (!res.ok) throw new Error(`LLM HTTP ${res.status}`);
