@@ -8,6 +8,9 @@
  * The featured subset is projected one step wider (FEATURED_FIELDS: + thumbnail,
  * media) so product marks and launch galleries stay available offline; use
  * `--refresh-featured` to add them to days captured before that projection.
+ * That refresh is incremental: a day whose featured projection already carries
+ * the media fields is skipped, so a rate-limit restart resumes instead of
+ * redoing days it already upgraded.
  *
  * Usage:
  *   node scripts/capture_producthunt_raw.js --start 2026-01-01 --end 2026-09-07
@@ -757,7 +760,10 @@ async function main() {
       const file = path.join(options.outRoot, `${targetDate}.json`);
       if (fs.existsSync(file) && !options.replace) {
         const existing = JSON.parse(fs.readFileSync(file, 'utf8'));
-        if (options.refreshFeatured || !existing.officialFeatured) {
+        const existingFeaturedFields = existing.officialFeatured?.capture?.sourceFields;
+        const missingFeaturedMedia = MEDIA_FIELDS.some((field) => !(Array.isArray(existingFeaturedFields)
+          ? existingFeaturedFields.includes(field) : false));
+        if ((options.refreshFeatured && missingFeaturedMedia) || !existing.officialFeatured) {
           const featuredCapture = fetchDay(targetDate, options.pageSize, options.waitOnRateLimit, true);
           await updateFeaturedSection(options, targetDate, featuredCapture);
           console.error(`[producthunt] ${targetDate}: added ${featuredCapture.records.length} official featured records`);

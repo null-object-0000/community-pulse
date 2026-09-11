@@ -11,6 +11,11 @@ on:
         description: '结束日期 YYYY-MM-DD'
         required: true
         default: '2026-08-31'
+      refresh_featured:
+        description: '只补官方精选的产品标志/配图投影（thumbnail/media），不改全量记录'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -49,10 +54,17 @@ jobs:
         env:
           START_DATE: ${{ inputs.start }}
           END_DATE: ${{ inputs.end }}
+          REFRESH_FEATURED: ${{ inputs.refresh_featured }}
         run: |
           set -euo pipefail
           SKILL_DIR="$GITHUB_WORKSPACE/.agents/skills/community-pulse"
           SOURCE_DIR="$GITHUB_WORKSPACE/知识/大家都在做什么/source-raw/producthunt"
+
+          # 只有显式勾选 refresh_featured 时才补媒体投影；缺省行为保持原样。
+          REFRESH_ARGS=()
+          if [[ "$REFRESH_FEATURED" == "true" ]]; then
+            REFRESH_ARGS+=(--refresh-featured)
+          fi
 
           commit_and_push() {
             git -C "$GITHUB_WORKSPACE" add "$SOURCE_DIR"
@@ -88,6 +100,7 @@ jobs:
               --end "$END_DATE" \
               --reverse \
               --resume \
+              "${REFRESH_ARGS[@]}" \
               --stop-on-rate-limit | tee "$result_file"
 
             validate_existing_days
