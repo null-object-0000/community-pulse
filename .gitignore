@@ -8,3 +8,8 @@ dist/
 # Cloudflare local runtime state
 .wrangler/
 知识/大家都在做什么/final/*.work
+
+# 图片镜像已外置到 R2（见 site.config.json 的 imageBase）：图标不落 Git，只保留清单。
+# `npm run images:sync` 会把清单里缺的文件重新下载到本地供上传/预览使用。
+assets/images/*
+!assets/images/manifest.json

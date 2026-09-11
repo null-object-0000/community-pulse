@@ -23,9 +23,6 @@ env:
   PRODUCT_HUNT_TOKEN_3: ${{ secrets.PRODUCT_HUNT_TOKEN_3 }}  # 账号3 Google/me
   PRODUCT_HUNT_TOKEN_4: ${{ secrets.PRODUCT_HUNT_TOKEN_4 }}  # 账号4 Google/tripwhims
   PRODUCT_HUNT_TOKEN_5: ${{ secrets.PRODUCT_HUNT_TOKEN_5 }}  # 账号5 Google/hopegoo
-  # 图片外置（方案 A）：配置了 R2 凭证后，新镜像的产品标志会同步到 IMAGE_BASE 指向的 R2 桶。
-  # 未配置时下面那步自动跳过，站点继续用仓库内镜像（双写过渡，不会中断）。
-  R2_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
 jobs:
   daily-report:
@@ -112,14 +109,21 @@ jobs:
       - name: 持久化站点图片
         run: npm run images:sync
 
-      - name: 上传新图片到 R2（未配置 CLOUDFLARE_API_TOKEN 时跳过）
-        if: env.R2_TOKEN != ''
+      # 镜像已移出 Git（见 .gitignore）：这一步必须成功，否则当天新增的标志只存在于 runner 上，
+      # 线上会引用 R2 里不存在的对象而破图。因此不再静默跳过，缺凭证直接失败。
+      - name: 上传新图片到 R2
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           IMAGE_BASE: ${{ vars.IMAGE_BASE || 'https://img.devtrends.site' }}
           R2_BUCKET: ${{ vars.R2_BUCKET || 'community-pulse-images' }}
-        run: npm run images:upload
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "缺少 CLOUDFLARE_API_TOKEN：镜像已移出 Git，不上传会导致线上破图。"
+            echo "请在仓库 Settings → Secrets 配置 CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID 后重跑。"
+            exit 1
+          fi
+          npm run images:upload
 
       - name: 提交并推送
         run: |
