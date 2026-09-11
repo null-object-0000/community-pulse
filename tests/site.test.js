@@ -247,7 +247,7 @@ test('filter chips carry counts, disable empty filters, and always offer a mobil
     { id: 'ai', label: 'AI 与智能体', count: 9, active: false },
     { id: 'other', label: '其他', count: 0, active: false },
   ];
-  const html = D.chipFilterHtml('category', options, 'zh-CN');
+  const html = D.chipFilterHtml(options, 'zh-CN');
   assert.ok(html.includes('class="chip-row"'));
   assert.ok(html.includes('data-more-label="更多分类"'));
   assert.ok(html.includes('id="category-chips-menu"'));
@@ -257,15 +257,15 @@ test('filter chips carry counts, disable empty filters, and always offer a mobil
   assert.ok(html.includes('<option value="other" disabled>其他 (0)</option>'));
   assert.ok(html.includes('<option value="all" selected>全部 (12)</option>'));
   // An empty filter stays selectable when it is the active one, otherwise the state is unreachable.
-  assert.ok(!/data-category="other"[^>]*disabled/.test(D.chipFilterHtml('category', [{ ...options[2], active: true }], 'zh-CN')));
-  const source = D.chipFilterMeta('source', 'en');
-  assert.equal(source.containerId, 'source-chips');
-  assert.equal(source.selectId, 'source-select');
-  assert.equal(source.all, 'All');
-  assert.ok(D.chipFilterHtml('source', [{ id: 'all', label: 'All', count: 3, active: true }], 'en').includes('More sources'));
+  assert.ok(!/data-category="other"[^>]*disabled/.test(D.chipFilterHtml([{ ...options[2], active: true }], 'zh-CN')));
+  const en = D.chipFilterMeta('en');
+  assert.equal(en.containerId, 'category-chips');
+  assert.equal(en.selectId, 'category-select');
+  assert.equal(en.all, 'All');
+  assert.ok(D.chipFilterHtml([{ id: 'all', label: 'All', count: 3, active: true }], 'en').includes('More categories'));
 });
 
-test('built pages ship one collapsed chip row per mode with no horizontal scroller', () => {
+test('built pages ship one collapsed chip row with no horizontal scroller', () => {
   const dist = path.join(__dirname, '../dist');
   for (const file of ['index.html', 'en/index.html', 'reports/2026-09-10/index.html', 'en/reports/2026-09-10/index.html']) {
     const html = fs.readFileSync(path.join(dist, file), 'utf8');
@@ -277,13 +277,36 @@ test('built pages ship one collapsed chip row per mode with no horizontal scroll
     assert.equal((html.match(/class="view-switch"/g) || []).length, 1, file);
   }
   const home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
-  assert.ok(home.includes('data-mode="category"'));
   assert.equal((home.match(/data-category="/g) || []).length, D.categories.length + 1);
+  // The report pages filter by the same preset categories; the source directory is not a filter.
   const report = fs.readFileSync(path.join(dist, 'reports/2026-09-10/index.html'), 'utf8');
-  assert.ok(report.includes('data-mode="source"'));
+  assert.equal((report.match(/data-category="/g) || []).length, D.categories.length + 1);
+  for (const html of [home, report]) {
+    assert.ok(!html.includes('data-source="'), 'source filter chips');
+    assert.ok(!html.includes('id="source-chips"'), 'source filter container');
+    assert.ok(!html.includes('id="source-select"'), 'source filter select');
+  }
   const styles = fs.readFileSync(path.join(dist, 'styles.css'), 'utf8');
   assert.ok(/\.chip-row \{[^}]*flex-wrap: nowrap[^}]*overflow: hidden/.test(styles));
   assert.ok(!styles.includes('.source-chips'));
+});
+
+test('report pages carry the date in the heading instead of a separate meta row', () => {
+  const dist = path.join(__dirname, '../dist');
+  const zh = fs.readFileSync(path.join(dist, 'reports/2026-09-10/index.html'), 'utf8');
+  const en = fs.readFileSync(path.join(dist, 'en/reports/2026-09-10/index.html'), 'utf8');
+  assert.ok(zh.includes('<h1>2026年9月10日大家都在做什么</h1>'), 'zh heading');
+  assert.ok(en.includes('<h1>Sep 10, 2026 · What developers are building</h1>'), 'en heading');
+  for (const html of [zh, en]) {
+    // The feed is scoped to one report date, so no count/date meta row and no date picker.
+    assert.ok(!html.includes('id="report-stat"'), 'count and date meta row');
+    assert.ok(!html.includes('id="date-select"'), 'date picker');
+  }
+  // Downloading the Markdown stays reachable through the sidebar digest card.
+  assert.ok(zh.includes('/data/markdown/2026-09-10.md'), 'zh markdown download');
+  assert.ok(en.includes('/data/markdown/2026-09-10.en.md'), 'en markdown download');
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  assert.ok(!/date-control|feed-heading|report-controls/.test(styles), 'stale meta row rules');
 });
 
 test('chip row keeps only the leading run that fits and never collapses entirely', () => {

@@ -5,9 +5,8 @@
   const locale = page.locale;
   const t = (key, args) => D.t(locale, key, args);
   const params = new URLSearchParams(location.search);
-  const sourceFiltering = page.route !== '/';
-  let source = sourceFiltering ? params.get('source') || 'all' : 'all';
-  let category = page.route === '/' && D.isCategoryId(params.get('category')) ? params.get('category') : 'all';
+  // Every page filters by the preset categories; the sidebar source directory is informational only.
+  let category = D.isCategoryId(params.get('category')) ? params.get('category') : 'all';
   let query = params.get('q') || '';
   let sort = 'default';
   const search = document.getElementById('search');
@@ -74,24 +73,18 @@
   function updateFilterUrl() {
     const url = new URL(location.href);
     query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
-    sourceFiltering && source !== 'all' ? url.searchParams.set('source', source) : url.searchParams.delete('source');
     category !== 'all' ? url.searchParams.set('category', category) : url.searchParams.delete('category');
+    // `source` and `style` are legacy parameters the site no longer understands.
+    url.searchParams.delete('source');
     url.searchParams.delete('style');
     history.replaceState(null, '', url);
   }
   // ---- filter chips: one row, whatever does not fit collapses into the "more" menu ----
-  const filterMeta = mode => D.chipFilterMeta(mode, locale);
-  const filterContainer = mode => document.getElementById(filterMeta(mode).containerId);
+  const filterMeta = () => D.chipFilterMeta(locale);
+  const filterContainer = () => document.getElementById(filterMeta().containerId);
   const chipOrder = new WeakMap();
-  function filterOptions(mode) {
-    if (mode === 'source') {
-      const groups = new Map();
-      for (const item of items) groups.set(item.sourceId, { item, count: (groups.get(item.sourceId)?.count || 0) + 1 });
-      if (source !== 'all' && !groups.has(source)) source = 'all';
-      return [{ id: 'all', label: filterMeta('source').all, count: items.length, active: source === 'all' },
-        ...[...groups].map(([id, { item, count }]) => ({ id, label: D.sourceName(item, locale), count, active: source === id }))];
-    }
-    return [{ id: 'all', label: filterMeta('category').all, count: items.length, active: category === 'all' },
+  function filterOptions() {
+    return [{ id: 'all', label: filterMeta().all, count: items.length, active: category === 'all' },
       ...D.categories.map(entry => ({ id: entry.id, label: locale === 'en' ? entry.labelEn : entry.labelZh, count: items.filter(item => D.itemCategory(item) === entry.id).length, active: category === entry.id }))];
   }
   function layoutFilter(container) {
@@ -147,47 +140,43 @@
     menu.hidden = false;
     trigger.setAttribute('aria-expanded', 'true');
   }
-  function paintFilter(mode) {
-    const container = filterContainer(mode);
+  function paintFilter() {
+    const container = filterContainer();
     if (!container) return null;
     chipOrder.delete(container);
-    container.innerHTML = D.chipFilterHtml(mode, filterOptions(mode), locale);
+    container.innerHTML = D.chipFilterHtml(filterOptions(), locale);
     layoutFilter(container);
     return container;
   }
-  function syncFilterState(mode) {
-    const meta = filterMeta(mode), container = filterContainer(mode);
+  function syncFilterState() {
+    const meta = filterMeta(), container = filterContainer();
     if (!container) return;
-    const value = mode === 'category' ? category : source;
     container.querySelectorAll(`[${meta.attr}]`).forEach(node => {
-      const active = node.getAttribute(meta.attr) === value;
+      const active = node.getAttribute(meta.attr) === category;
       node.classList.toggle('is-active', active);
       node.setAttribute('aria-pressed', String(active));
     });
     const select = container.querySelector(`#${meta.selectId}`);
-    if (select) select.value = value;
+    if (select) select.value = category;
     syncMoreTrigger(container);
   }
-  function applyFilter(mode, value) {
-    if (mode === 'category') category = D.isCategoryId(value) ? value : 'all';
-    else source = value || 'all';
-    syncFilterState(mode);
+  function applyFilter(value) {
+    category = D.isCategoryId(value) ? value : 'all';
+    syncFilterState();
     updateFilterUrl();
     renderFeed();
   }
   function renderFeed() {
     if (!feed) return;
     const q = query.trim().toLocaleLowerCase(locale);
-    const filtered = items.filter(item => (source === 'all' || item.sourceId === source) && (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
+    const filtered = items.filter(item => (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
     if (sort === 'popular') filtered.sort((a, b) => Number(D.metric(b, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0) - Number(D.metric(a, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0));
     feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index })).join('');
     feed.hidden = !filtered.length;
     document.getElementById('empty').hidden = Boolean(filtered.length);
     document.getElementById('empty-title').textContent = t('empty');
     document.getElementById('empty-hint').textContent = t('emptyHint');
-    document.getElementById('clear-filters').hidden = !query && source === 'all' && category === 'all';
-    const reportStat = document.getElementById('report-stat');
-    if (reportStat) reportStat.textContent = t('count', { n: filtered.length }) + (page.date ? ` · ${D.dateLabel(page.date, locale)}` : '');
+    document.getElementById('clear-filters').hidden = !query && category === 'all';
   }
   const themePicker = document.getElementById('theme-picker');
   function syncThemePicker() {
@@ -225,12 +214,6 @@
     try { localStorage.setItem('devtrends-locale-v1', event.target.value); } catch {}
     location.assign(url.pathname + url.search + url.hash);
   });
-  document.getElementById('date-select')?.addEventListener('change', event => {
-    const url = new URL(D.localPath(`/reports/${event.target.value}/`, locale), location.origin);
-    if (query) url.searchParams.set('q', query);
-    if (source !== 'all') url.searchParams.set('source', source);
-    location.assign(url.pathname + url.search);
-  });
   search?.addEventListener('input', () => { query = search.value; updateFilterUrl(); renderFeed(); });
   document.getElementById('sort-select')?.addEventListener('change', event => { sort = event.target.value; renderFeed(); });
   document.querySelectorAll('.view-switch').forEach(group => group.addEventListener('click', event => {
@@ -247,10 +230,10 @@
     if (trigger) { toggleChipMenu(trigger); return; }
     const chip = event.target.closest('.chip');
     if (!chip || chip.disabled) return;
-    const mode = container.dataset.mode, value = chip.getAttribute(filterMeta(mode).attr);
+    const value = chip.getAttribute(filterMeta().attr);
     if (value === null) return;
     const collapsed = Boolean(chip.closest('.chip-menu'));
-    applyFilter(mode, value);
+    applyFilter(value);
     closeChipMenus();
     (collapsed ? container.querySelector('.chip-more-trigger') : chip)?.focus();
   }));
@@ -259,7 +242,7 @@
   });
   document.addEventListener('change', event => {
     const select = event.target.closest('.chip-select select');
-    if (select) applyFilter(select.closest('.chip-filter').dataset.mode, select.value);
+    if (select) applyFilter(select.value);
   });
   document.addEventListener('keydown', event => {
     const openMenu = document.querySelector('.chip-menu:not([hidden])');
@@ -287,8 +270,8 @@
     else options[(index + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length].focus();
   });
   document.getElementById('clear-filters')?.addEventListener('click', () => {
-    source = 'all'; category = 'all'; query = ''; search.value = '';
-    syncFilterState('category'); syncFilterState('source');
+    category = 'all'; query = ''; search.value = '';
+    syncFilterState();
     updateFilterUrl(); renderFeed(); search.focus();
   });
   document.addEventListener('click', event => {
@@ -315,21 +298,20 @@
     if (event.key === 'devtrends-theme-v1' || event.key === null) { window.DevTrendsTheme.set(event.newValue); syncThemePicker(); }
   });
   if (search) search.value = query;
-  if (feed) { paintFilter('category'); paintFilter('source'); renderFeed(); }
+  if (feed) { paintFilter(); renderFeed(); updateFilterUrl(); }
   // Re-fit the chip row when the container width changes or web fonts finish loading.
-  const filterContainers = ['category', 'source'].map(filterContainer).filter(Boolean);
+  const filterContainers = [filterContainer()].filter(Boolean);
   const relayoutFilters = () => filterContainers.forEach(layoutFilter);
   if (filterContainers.length && window.ResizeObserver) { const observer = new ResizeObserver(relayoutFilters); filterContainers.forEach(node => observer.observe(node)); }
   window.addEventListener('resize', relayoutFilters);
   if (document.fonts?.ready) document.fonts.ready.then(relayoutFilters).catch(() => {});
   // Preserve legacy date links; legacy style preferences have no effect on the unified theme.
-  if (page.route === '/' && /^\d{4}-\d{2}-\d{2}$/.test(params.get('date') || '')) {
-    const select = document.getElementById('date-select');
-    if ([...select.options].some(option => option.value === params.get('date'))) {
-      const target = new URL(D.localPath(`/reports/${params.get('date')}/`, locale), location.origin);
-      if (query) target.searchParams.set('q', query);
-      if (source !== 'all') target.searchParams.set('source', source);
-      location.replace(target.pathname + target.search);
-    }
+  // Report pages no longer carry a date picker, so the date is validated by shape alone.
+  const legacyDate = params.get('date') || '';
+  if (page.route === '/' && /^\d{4}-\d{2}-\d{2}$/.test(legacyDate)) {
+    const target = new URL(D.localPath(`/reports/${legacyDate}/`, locale), location.origin);
+    if (query) target.searchParams.set('q', query);
+    if (category !== 'all') target.searchParams.set('category', category);
+    location.replace(target.pathname + target.search);
   }
 })();

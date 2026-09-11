@@ -9,10 +9,10 @@
     'zh-CN': {
       discover: '今日发现', archive: '历史日报', slogan: '大家都在做什么',
       intro: '每天发现开发者社区的新项目、新产品与开源趋势。', all: '全部来源', search: '搜索项目、作者或标签',
-      language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色', date: '日报日期',
+      language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色',
       count: '{n} 个项目', sources: '{n} 个来源',
       website: '官网', repository: 'GitHub 仓库', source: '来源', details: '项目详情', original: '原文',
-      noSummary: '暂无项目介绍。', empty: '没有找到相关项目', emptyHint: '换一个关键词或来源试试。',
+      noSummary: '暂无项目介绍。', empty: '没有找到相关项目', emptyHint: '换一个关键词或分类试试。',
       clear: '清除筛选',
       unavailable: '内容暂时无法加载', retry: '重新加载',
       archiveIntro: '沿着日期，回看开发者们的创造。', readReport: '阅读日报', download: '下载 Markdown',
@@ -24,17 +24,17 @@
       brandLabel: '开发者趋势', footer: '从社区出发，发现值得关注的创造。', skip: '跳转到内容',
       noReports: '暂无日报', missing: '页面不存在', missingHint: '这个地址没有对应的项目或日报。', home: '返回今日发现',
       summaryNote: '介绍整理自已收录的社区资料。', projectIntro: '{name} 的项目介绍、GitHub 仓库信息与社区收录记录。',
-      unknownSource: '开发者社区', reportTitle: '{date} 开发者趋势日报',
+      unknownSource: '开发者社区', reportTitle: '{date} 开发者趋势日报', reportHeading: '{date}大家都在做什么',
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
     },
     en: {
       discover: 'Discover', archive: 'Archive', slogan: 'What developers are building',
       intro: 'Daily discoveries from developer communities, independent makers, and open source.', all: 'All sources', search: 'Search projects, authors, or tags',
-      language: 'Language', theme: 'Appearance', system: 'System', light: 'Light', dark: 'Dark', date: 'Report date',
+      language: 'Language', theme: 'Appearance', system: 'System', light: 'Light', dark: 'Dark',
       count: '{n} projects', sources: '{n} sources',
       website: 'Website', repository: 'GitHub repository', source: 'Source', details: 'Project details', original: 'Original',
-      noSummary: 'No project description yet.', empty: 'No matching projects', emptyHint: 'Try another keyword or source.',
+      noSummary: 'No project description yet.', empty: 'No matching projects', emptyHint: 'Try another keyword or category.',
       clear: 'Clear filters',
       unavailable: 'Content could not be loaded', retry: 'Try again',
       archiveIntro: 'Explore what developers have been building, day by day.', readReport: 'Read report', download: 'Download Markdown',
@@ -46,7 +46,7 @@
       brandLabel: 'Developer trends', footer: 'Discover what’s worth following, straight from the community.', skip: 'Skip to content',
       noReports: 'No reports yet', missing: 'Page not found', missingHint: 'There is no project or report at this address.', home: 'Back to Discover',
       summaryNote: 'Descriptions are drawn from collected community sources.', projectIntro: 'Explore {name}, its GitHub repository, and its discovery history across developer communities.',
-      unknownSource: 'Developer community', reportTitle: '{date} Developer Trends Report',
+      unknownSource: 'Developer community', reportTitle: '{date} Developer Trends Report', reportHeading: '{date} · What developers are building',
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
     },
@@ -95,17 +95,13 @@
   const sourceInfo = item => sourceDirectory[String(item?.sourceId || '').toLowerCase()] || null;
   // Filter chips are rendered by the build and rebuilt in the browser, so the markup lives here.
   // app.js only collapses overflowing chips into the "more" menu; nothing else is generated client-side.
-  const chipModes = {
-    category: { attr: 'data-category', containerId: 'category-chips', menuId: 'category-chips-menu', selectId: 'category-select' },
-    source: { attr: 'data-source', containerId: 'source-chips', menuId: 'source-chips-menu', selectId: 'source-select' },
-  };
+  // Every page filters by the preset categories: the report pages used to offer a source filter too.
   const chipCopy = {
-    'zh-CN': { all: '全部', category: { more: '更多分类', field: '分类', aria: '项目分类' }, source: { more: '更多来源', field: '来源', aria: '数据来源' } },
-    en: { all: 'All', category: { more: 'More categories', field: 'Category', aria: 'Categories' }, source: { more: 'More sources', field: 'Source', aria: 'Sources' } },
+    'zh-CN': { more: '更多分类', field: '分类', aria: '项目分类', all: '全部' },
+    en: { more: 'More categories', field: 'Category', aria: 'Categories', all: 'All' },
   };
-  function chipFilterMeta(mode, locale) {
-    const copy = chipCopy[locale === 'en' ? 'en' : 'zh-CN'];
-    return { ...chipModes[mode], ...copy[mode], all: copy.all, mode };
+  function chipFilterMeta(locale) {
+    return { attr: 'data-category', containerId: 'category-chips', menuId: 'category-chips-menu', selectId: 'category-select', ...chipCopy[locale === 'en' ? 'en' : 'zh-CN'] };
   }
   // A zero-count filter stays visible but disabled, so no chip can lead to an empty list.
   const chipDisabled = option => option.id !== 'all' && Number(option.count) === 0 && !option.active;
@@ -121,8 +117,8 @@
     }
     return widths.length ? Math.max(1, count) : 0;
   }
-  function chipFilterHtml(mode, options, locale) {
-    const meta = chipFilterMeta(mode, locale);
+  function chipFilterHtml(options, locale) {
+    const meta = chipFilterMeta(locale);
     const chips = options.map(option => `<button type="button" class="chip${option.active ? ' is-active' : ''}" ${meta.attr}="${escapeHtml(option.id)}" data-label="${escapeHtml(option.label)}" aria-pressed="${option.active}"${chipDisabled(option) ? ' disabled' : ''}>${escapeHtml(option.label)}<span class="chip-count">${Number(option.count) || 0}</span></button>`).join('');
     const listOptions = options.map(option => `<option value="${escapeHtml(option.id)}"${option.active ? ' selected' : ''}${chipDisabled(option) ? ' disabled' : ''}>${escapeHtml(option.label)} (${Number(option.count) || 0})</option>`).join('');
     return `<div class="chip-row">${chips}`

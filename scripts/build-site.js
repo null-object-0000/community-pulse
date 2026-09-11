@@ -36,11 +36,11 @@ if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public
 const projects = require('./projects.js').buildProjects(reports);
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
-  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, dates, locale, false, report.hasMarkdown));
+  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown));
 }
 const latest = dates[0] || null;
 for (const locale of ['zh-CN', 'en']) {
-  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, dates, locale, true, reports[0]?.hasMarkdown));
+  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown));
   writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale));
 }
 write('404.html', R.notFoundPage('zh-CN'));

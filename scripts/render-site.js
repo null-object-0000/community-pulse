@@ -27,48 +27,42 @@ function shell({ locale, view, route, title, description, content, data = {}, st
 function heading(locale, title, intro, right = '', eyebrow = 'DEV TRENDS / DAILY DISCOVERIES') {
   return `<div class="page-heading"><div><p class="eyebrow">${eyebrow}</p><h1>${e(title)}</h1>${intro ? `<p class="intro">${e(intro)}</p>` : ''}</div>${right}</div>`;
 }
-function sourceOptions(items, locale) {
-  const sources = new Map();
-  for (const item of items) sources.set(item.sourceId, { item, count: (sources.get(item.sourceId)?.count || 0) + 1 });
-  return [...sources.values()].map(({ item, count }) => ({ id: item.sourceId, label: D.sourceName(item, locale), count, active: false }));
-}
 function categoryOptions(items, locale) {
   return D.categories.map(category => ({ id: category.id, label: locale === 'en' ? category.labelEn : category.labelZh, count: items.filter(item => D.itemCategory(item) === category.id).length, active: false }));
 }
-function filterChips(mode, items, locale) {
-  const meta = D.chipFilterMeta(mode, locale);
-  const options = [{ id: 'all', label: meta.all, count: items.length, active: true }, ...(mode === 'category' ? categoryOptions(items, locale) : sourceOptions(items, locale))];
-  return `<div id="${meta.containerId}" class="chip-filter" data-mode="${mode}" aria-label="${e(meta.aria)}">${D.chipFilterHtml(mode, options, locale)}</div>`;
-}
-function filters(items, locale, mode = 'source') {
-  const chips = ['category', 'source'].includes(mode) ? filterChips(mode, items, locale) : '';
+// Both the daily feed and the report pages filter by the preset categories; the source directory
+// in the sidebar stays informational, so no page filters by data source.
+function filters(items, locale) {
+  const meta = D.chipFilterMeta(locale);
+  const chips = [{ id: 'all', label: meta.all, count: items.length, active: true }, ...categoryOptions(items, locale)];
   const sort = `<select id="sort-select" aria-label="${locale === 'en' ? 'Sort projects' : '项目排序'}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select>`;
   const view = `<div class="view-switch" role="group" aria-label="${locale === 'en' ? 'View' : '视图切换'}"><button type="button" data-view="card" aria-pressed="false" aria-label="${locale === 'en' ? 'Grid view' : '网格视图'}" title="${locale === 'en' ? 'Grid view' : '网格视图'}">▦</button><button type="button" data-view="list" aria-pressed="true" aria-label="${locale === 'en' ? 'List view' : '列表视图'}" title="${locale === 'en' ? 'List view' : '列表视图'}">☰</button></div>`;
-  return `<section class="filters" aria-label="${t(locale, 'search')}">${chips}${chips ? '<span class="filters-divider" aria-hidden="true"></span>' : ''}<div class="feed-tools">${sort}${view}</div></section>`;
+  return `<section class="filters" aria-label="${t(locale, 'search')}"><div id="${meta.containerId}" class="chip-filter" aria-label="${e(meta.aria)}">${D.chipFilterHtml(chips, locale)}</div><span class="filters-divider" aria-hidden="true"></span><div class="feed-tools">${sort}${view}</div></section>`;
 }
 function discoveryHero(items, locale) {
   const en = locale === 'en';
   return `<section class="discovery-hero"><div class="hero-copy"><p class="eyebrow">FROM THE GLOBAL DEVELOPER COMMUNITY</p><h1>${en ? 'Discover what’s next<br>for developers.' : '发现开发者的<br>新东西、新方法、新趋势'}</h1><p class="intro">${en ? 'Find what’s happening across developer communities.<br>Fresh projects, tools, frameworks and ideas. Every day.' : '从全球开发者社区，发现正在发生的变化。<br>每天自动汇总新的项目、工具、框架和技术动态。'}</p><div class="hero-stats"><div><span class="stat-icon">${D.icon('repo')}</span><span><b>${items.length}</b><small>${en ? 'Discoveries today' : '今日新发现'}</small></span></div><div><span class="stat-icon">${D.icon('box')}</span><span><b>${new Set(items.map(i => i.sourceId)).size}</b><small>${en ? 'Community sources' : '数据来源'}</small></span></div></div></div><div class="hero-art" aria-hidden="true"><img src="/globe.svg" alt=""/><span>Build<br>a more open<br>developer world.</span></div></section>`;
 }
-function discoverySidebar(items, locale, route, date, hasMarkdown) {
-  const en = locale === 'en', sourceFiltering = route !== '/', sources = new Map();
+function discoverySidebar(items, locale, date, hasMarkdown) {
+  const en = locale === 'en', sources = new Map();
   for (const item of items) {
     if (!sources.has(item.sourceId)) sources.set(item.sourceId, { item, count: 0 });
     sources.get(item.sourceId).count++;
   }
-  return `<aside class="discovery-sidebar"><section class="side-panel"><div class="side-heading"><h2>${en ? 'Data sources' : '数据来源'}</h2>${sourceFiltering ? `<a href="#source-chips">${en ? 'Filter' : '筛选'} →</a>` : ''}</div><div class="source-directory">${[...sources].map(([, { item, count }]) => { const source = D.sourceInfo(item); const name = D.sourceName(item, locale); const content = `<span class="source-badge">${source?.logo ? `<img src="${e(source.logo)}" alt="" loading="lazy" />` : e(name.slice(0, 2))}</span><span><b>${e(name)}</b><small>${en ? `${count} discoveries in this report` : `本期收录 ${count} 个新发现`}</small></span>${source?.url ? '<span class="source-arrow" aria-hidden="true">↗</span>' : ''}`; return source?.url ? `<a class="source-entry" href="${e(source.url)}" target="_blank" rel="noopener noreferrer" aria-label="${e(`${name}${en ? ': visit source website' : '：访问来源网站'}`)}">${content}</a>` : `<div class="source-entry">${content}</div>`; }).join('')}</div></section><section class="daily-card"><span class="daily-icon">↗</span><div><h2>${en ? 'Your daily developer digest' : '每天一份开发者灵感'}</h2><p>${en ? 'Explore today. Find what inspires you.' : '发现新项目，遇见好灵感。'}</p></div><a class="button primary" href="${hasMarkdown ? `/data/markdown/${date}${en ? '.en' : ''}.md` : lp('/reports/', locale)}"${hasMarkdown ? ' download' : ''}>${hasMarkdown ? t(locale, 'download') : t(locale, 'archive')} →</a><small>${en ? 'From the community. Open to everyone.' : '来自开发者社区，向每一位探索者开放。'}</small></section><div class="sidebar-signature"><b>DevTrends</b><p>${t(locale, 'footer')}</p><i>Make a more open developer world.</i></div></aside>`;
+  return `<aside class="discovery-sidebar"><section class="side-panel"><div class="side-heading"><h2>${en ? 'Data sources' : '数据来源'}</h2></div><div class="source-directory">${[...sources].map(([, { item, count }]) => { const source = D.sourceInfo(item); const name = D.sourceName(item, locale); const content = `<span class="source-badge">${source?.logo ? `<img src="${e(source.logo)}" alt="" loading="lazy" />` : e(name.slice(0, 2))}</span><span><b>${e(name)}</b><small>${en ? `${count} discoveries in this report` : `本期收录 ${count} 个新发现`}</small></span>${source?.url ? '<span class="source-arrow" aria-hidden="true">↗</span>' : ''}`; return source?.url ? `<a class="source-entry" href="${e(source.url)}" target="_blank" rel="noopener noreferrer" aria-label="${e(`${name}${en ? ': visit source website' : '：访问来源网站'}`)}">${content}</a>` : `<div class="source-entry">${content}</div>`; }).join('')}</div></section><section class="daily-card"><span class="daily-icon">↗</span><div><h2>${en ? 'Your daily developer digest' : '每天一份开发者灵感'}</h2><p>${en ? 'Explore today. Find what inspires you.' : '发现新项目，遇见好灵感。'}</p></div><a class="button primary" href="${hasMarkdown ? `/data/markdown/${date}${en ? '.en' : ''}.md` : lp('/reports/', locale)}"${hasMarkdown ? ' download' : ''}>${hasMarkdown ? t(locale, 'download') : t(locale, 'archive')} →</a><small>${en ? 'From the community. Open to everyone.' : '来自开发者社区，向每一位探索者开放。'}</small></section><div class="sidebar-signature"><b>DevTrends</b><p>${t(locale, 'footer')}</p><i>Make a more open developer world.</i></div></aside>`;
 }
 function empty(locale) {
   return `<div id="empty" class="empty" hidden>${D.icon('search')}<h2 id="empty-title">${t(locale, 'empty')}</h2><p id="empty-hint">${t(locale, 'emptyHint')}</p><button id="clear-filters" type="button">${t(locale, 'clear')}</button></div>`;
 }
-function reportPage(report, date, dates, locale, home = false, hasMarkdown = false) {
+function reportPage(report, date, locale, home = false, hasMarkdown = false) {
   const items = D.reportItems(report), route = home ? '/' : `/reports/${date}/`;
   const title = home ? t(locale, 'homeTitle') : `${t(locale, 'reportTitle', { date })} | DevTrends`;
   const description = home ? t(locale, 'intro') : `${t(locale, 'reportTitle', { date })}. ${t(locale, 'count', { n: items.length })}. ${t(locale, 'intro')}`;
-  const right = `<div class="date-control"><label for="date-select">${t(locale, 'date')}</label><select id="date-select">${dates.map(d => `<option value="${d}"${date === d ? ' selected' : ''}>${e(D.dateLabel(d, locale))}</option>`).join('')}</select></div>`;
-  const reportMeta = home ? '' : `<div class="feed-heading"><span id="report-stat" aria-live="polite">${t(locale, 'count', { n: items.length })} · ${e(D.dateLabel(date, locale))}</span>${hasMarkdown ? `<a href="/data/markdown/${date}${locale === 'en' ? '.en' : ''}.md" download>${t(locale, 'download')} ↓</a>` : ''}</div><div class="report-controls">${right}</div>`;
-  const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, t(locale, 'slogan'), t(locale, 'intro'))) + `<section id="discoveries" class="discovery-results">` + filters(items, locale, home ? 'category' : 'source') + reportMeta +
-    `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section></div>${discoverySidebar(items, locale, route, date, hasMarkdown)}</div>`;
+  // The report date lives in the heading: the feed itself is already scoped to that one day,
+  // so a separate meta row used to restate it (plus the count and the Markdown download).
+  const headingText = t(locale, 'reportHeading', { date: D.dateLabel(date, locale) });
+  const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
+    `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section></div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
   const structured = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical, inLanguage: locale,
     ...(date ? { datePublished: date } : {}), mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 100).map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || D.origin })) } };

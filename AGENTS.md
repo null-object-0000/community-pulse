@@ -39,13 +39,13 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
   - **镜像文件不落 Git**：`.gitignore` 里 `assets/images/*` + `!assets/images/manifest.json`，所以只跟踪清单；`git add assets/images/` 在日报 workflow 里仍然有效（只会带上 manifest）。
   - 切到外置的顺序：① 建 R2 桶并把 `img.devtrends.site` 绑到桶（已完成）；② 跑一次 `images:upload` 全量上传（已完成）；③ 把 `site.config.json` 的 `imageBase` 填成 `https://img.devtrends.site` 并提交——**不需要动 Cloudflare 后台**（`IMAGE_BASE` 环境变量仍可临时覆盖，`IMAGE_BASE=` 强制回仓库内模式）；④ 加 `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` 仓库密钥（已完成，`.github/workflows/images-r2.yml` 手动 workflow 验证通过）；⑤ 跑 `images:verify` 确认全部可达后把 `assets/images/*` 移出 Git（**已完成**：`.gitignore` + `git rm -r --cached`，只保留 manifest，日报 workflow 的上传步骤同时改为缺凭证即失败）；⑥ 历史清理（`git filter-repo` 移除历史里约 328 MB 的图标 blob）**尚未执行**，需要工作区干净且所有协作者同步后再做。
 - 官网 Logo 兜底层（`source-raw/site-logos/<date>.json`）：没有平台标志的行改读项目官网自己声明的图标。日报 workflow 在 GitHub 仓库快照之后运行 `capture_site_logos_raw.js --date $TARGET --observed-date $OBSERVED --strict`，`validate_site_logos_raw.js` 离线校验；`source_raw_items.js` 只在下游离线把 `siteLogo` 挂到缺标志的行上，`collect.js` 不联网。候选官网取 `websiteUrl` → 仓库 `homepage` → 行自身 URL，并跳过 GitHub / 应用商店 / 微信知乎等内容平台（平台图标会重复且认错对象）；图标按 apple-touch-icon → ≥96px icon → SVG icon → 其他 icon → schema.org logo → `/favicon.ico` 排序，超过 256KiB 的「品牌大图」（可用 `SITE_LOGO_MAX_KB` 调整）会跳到下一个候选，避免把 1MB 的图永久写进 Git。历史日报用 `node scripts/backfill_site_logos.js --start --end [--dry-run]` 回填，再跑 `npm run images:sync` 与 `npm run check`；细节见 `.agents/skills/community-pulse/SKILL.md`。
-- 筛选栏（分类 / 来源）由 `D.chipFilterHtml` 在构建时渲染全部 chip；`web/app.js` 只把放不下的收进「更多分类」菜单，桌面端始终单行且没有横向滚动条，≤600px 换成原生下拉。加减分类不需要改这段逻辑，宽度自适应；被收纳的当前分类会显示在触发按钮上。
+- 筛选栏只有「分类」一种：今日发现和历史日报都用 `D.chipFilterHtml(options, locale)` 在构建时渲染预制分类 chip；日报页侧栏的「数据来源」只是带官网链接的目录，不再提供来源筛选。`web/app.js` 只把放不下的收进「更多分类」菜单，桌面端始终单行且没有横向滚动条，≤600px 换成原生下拉。加减分类不需要改这段逻辑，宽度自适应；被收纳的当前分类会显示在触发按钮上。
 - `web/theme.js`：首屏前应用主题，存储键 `devtrends-theme-v1`。
 - `scripts/render-site.js`：通用 HTML、日报和历史归档模板。
 - `scripts/projects.js`：项目聚合、仓库快照、收录历史、相关项目及详情 SEO。
 - `scripts/enhanced-report.js`：沿用原 final 摘要匹配策略，未匹配项仍为 raw，部分匹配标记 mixed。
 - 中英文内容优先使用 `summaryZh` / `summaryEn`（兼容下划线字段）；英文缺译文时优先使用英文仓库介绍，否则显示原文并标注。中文 final 摘要仍优先于 raw。
-- 语言由 URL 确定；切换语言保留路由、搜索和来源筛选。
+- 语言由 URL 确定；切换语言保留路由、搜索和分类筛选。旧的 `?source=` 参数不再过滤，加载时从地址栏清掉。
 - 完整验证：`npm run check`（构建 + 模型 / 主题 / SEO 路由测试）。
 
 部署后至少检查：
