@@ -8,15 +8,16 @@ const local = '/images/' + 'a'.repeat(64) + '.png';
 const local2 = '/images/' + 'b'.repeat(64) + '.png';
 const remote = 'https://example.org/logo.png';
 const vibe = 'https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com/products/x/y.png';
+const site = 'https://kiri.test/apple-touch-icon.png';
 
 test('managed image policy blocks external requests, unsafe paths and legacy favorite hotlinks', () => {
   assert.equal(D.localImage(remote, { [remote]: local }), local);
   assert.equal(D.localImage(local), local);
   for (const value of [remote, '//example.org/x', '/images/../x', 'data:image/png;base64,x', local + '?redirect=x']) {
     assert.equal(D.localImage(value), '');
-    assert.ok(!D.renderItem({ title: 'Example', image: value }, 'en').includes('<img'));
+    assert.ok(!D.renderItem({ title: 'Example', siteLogo: value }, 'en').includes('<img'));
   }
-  assert.ok(D.renderItem({ title: 'Example', image: local }, 'en').includes(`src="${local}"`));
+  assert.ok(D.renderItem({ title: 'Example', siteLogo: local }, 'en').includes(`src="${local}"`));
 });
 
 test('only trusted source CDNs may render an image that was not mirrored', () => {
@@ -28,7 +29,7 @@ test('only trusted source CDNs may render an image that was not mirrored', () =>
   assert.equal(D.localImage(vibe, { [vibe]: local }), local);
   for (const value of ['https://akxlagkpqhwjrwrq.public.blob.vercel-storage.com.evil.test/a.png', 'https://evil.test/a.png', 'https://ph-files.imgix.net.evil.test/a.png']) {
     assert.equal(D.hotlinkable(value), '');
-    assert.ok(!D.renderItem({ title: 'Example', image: value }, 'en').includes('<img'));
+    assert.ok(!D.renderItem({ title: 'Example', siteLogo: value }, 'en').includes('<img'));
   }
 });
 
@@ -46,14 +47,18 @@ test('only product marks are mirrored; screenshots stay on the source CDN', () =
   const item = { logo: vibe, icon: '', image: shot, images: [shot, shot2] };
   assert.deepEqual(itemUrls(item), [vibe]);
   assert.deepEqual([...new Set(itemUrls(item, { screenshots: true }))], [vibe, shot, shot2]);
+  // The website-logo fallback is a product mark too, so it is mirrored like the platform ones.
+  assert.deepEqual(itemUrls({ siteLogo: site, image: shot }), [site]);
   // Unsafe values are dropped from both the mark list and the screenshot list.
   assert.deepEqual(itemUrls({ logo: 'javascript:alert(1)', image: shot, images: ['data:image/png;base64,x'] }, { screenshots: true }), [shot]);
 });
 
 test('report images are localized across all fields and failures get a placeholder', () => {
-  const report = { results: [{ items: [{ image: remote, logo: 'https://example.org/missing', icon: local }] }] };
+  const report = { results: [{ items: [{ image: remote, logo: 'https://example.org/missing', icon: local, siteLogo: remote }] }] };
   localizeReport(report, { [remote]: local, 'https://example.org/missing': null });
-  assert.deepEqual(report.results[0].items[0], { image: local, logo: '', icon: local });
+  assert.deepEqual(report.results[0].items[0], { image: local, logo: '', icon: local, siteLogo: local });
+  // A website logo is never hotlinked from its origin, so it must be mirrored before it can render.
+  assert.throws(() => localizeReport({ results: [{ items: [{ siteLogo: site }] }] }, {}), /images:sync/);
   assert.throws(() => localizeReport({ results: [{ items: [{ image: remote }] }] }, {}), /images:sync/);
   // A pruned mirror is not an error as long as the origin is trusted.
   const archived = { results: [{ items: [{ logo: vibe, images: [vibe] }] }] };
@@ -72,6 +77,10 @@ test('screenshot galleries localize every entry and refuse unsynced URLs', () =>
 test('the product logo wins the avatar and screenshots render as a managed gallery', () => {
   const html = D.renderItem({ title: 'Example', logo: local, image: local2, images: [local2, remote, local] }, 'en');
   assert.ok(html.includes(`<img src="${local}" class="is-logo"`));
+  // The avatar chain is logo -> icon -> website logo -> initials; a screenshot never fills it.
+  assert.ok(D.renderItem({ title: 'Icon', icon: local2, siteLogo: local }, 'en').includes(`<img src="${local2}" class="is-logo"`));
+  assert.ok(D.renderItem({ title: 'Website', siteLogo: local2, image: local }, 'en').includes(`<img src="${local2}" class="is-logo"`));
+  assert.ok(!D.renderItem({ title: 'Shot only', image: local }, 'en').includes('<img'));
   assert.ok(html.includes('class="item-gallery"'), 'gallery strip');
   assert.ok(html.includes(`data-gallery="[&quot;${local2}&quot;,&quot;${local}&quot;]"`), 'unsafe screenshot dropped');
   assert.ok(!html.includes(remote));
@@ -81,6 +90,7 @@ test('the product logo wins the avatar and screenshots render as a managed galle
   assert.ok(D.renderItem({ title: 'Four', images: [local, local2, local, local2] }, 'en').includes('gallery-more'));
   // Sources without screenshots keep the plain avatar and gain no gallery.
   assert.ok(!D.renderItem({ title: 'Plain', image: local2 }, 'en').includes('item-gallery'));
+  assert.ok(D.renderItem({ title: 'Plain', image: local2 }, 'en').includes('Pl'));
 });
 
 test('screenshots show in the grid view only, never in the dense list', () => {
@@ -113,7 +123,7 @@ test('built reports expose either a deployed managed file or a trusted origin', 
   for (const file of fs.readdirSync(path.join(directory, 'data/reports'))) {
     const report = JSON.parse(fs.readFileSync(path.join(directory, 'data/reports', file), 'utf8'));
     for (const item of D.reportItems(report)) {
-      const values = [...['image', 'logo', 'icon'].map(field => item[field]), ...(Array.isArray(item.images) ? item.images : [])];
+      const values = [...['image', 'logo', 'icon', 'siteLogo'].map(field => item[field]), ...(Array.isArray(item.images) ? item.images : [])];
       for (const value of values) {
         if (!value) continue;
         assert.equal(D.localImage(value), value, `${file}: ${value}`);

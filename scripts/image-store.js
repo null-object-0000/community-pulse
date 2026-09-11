@@ -3,14 +3,15 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const D = require('../web/shared.js');
 
-const fields = ['image', 'logo', 'icon'];
+const fields = ['image', 'logo', 'icon', 'siteLogo'];
 // Screenshot galleries: `images` holds every image a source published for a product.
 const listFields = ['images'];
-// A product mark identifies a row and stays small (VibeCafé logos average ~46 KB, Product
-// Hunt thumbnails ~13 KB), so every report's marks are mirrored. Screenshots are hundreds
-// of KB each: they are hotlinked from the source CDN (D.hotlinkable) unless
+// A product mark identifies a row and stays small (VibeCafé logos average ~46 KB, Product Hunt
+// thumbnails ~13 KB, website icons ~10 KB), so every report's marks are mirrored. Screenshots are
+// hundreds of KB each: they are hotlinked from the source CDN (D.hotlinkable) unless
 // IMAGES_RETENTION_DAYS asks for the newest N reports to be mirrored end to end.
-const markFields = ['logo', 'icon'];
+// `siteLogo` is the website-logo fallback: still a product mark, still small, still mirrored.
+const markFields = ['logo', 'icon', 'siteLogo'];
 const storeDir = path.resolve(__dirname, '../assets/images');
 const rawDir = path.resolve(__dirname, '../知识/大家都在做什么/raw');
 const manifestPath = path.join(storeDir, 'manifest.json');
@@ -66,7 +67,11 @@ function imageExtension(bytes) {
 
 async function downloadImage(url, fetcher = fetch) {
   if (!D.safeUrl(url)) throw new Error('Invalid image URL');
-  const response = await fetcher(url, { signal: AbortSignal.timeout(20000) });
+  // Website icons come from arbitrary hosts, some of which answer an empty 403 to unknown agents.
+  const response = await fetcher(url, {
+    signal: AbortSignal.timeout(20000),
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; devtrends-image-sync/1; +https://devtrends.site)', Accept: 'image/*,*/*;q=0.8' },
+  });
   if (!response.ok) { await response.body?.cancel(); throw new Error(`HTTP ${response.status}`); }
   const limit = 10 * 1024 * 1024;
   if (Number(response.headers.get('content-length')) > limit) { await response.body?.cancel(); throw new Error('Image exceeds 10 MiB'); }

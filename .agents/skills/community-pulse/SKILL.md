@@ -158,6 +158,69 @@ Markdown 条目的三级标题统一使用纯文字，不在产品名称上包�
 | `backfill_producthunt_media.js` | Product Hunt 旧日报补 `logo`/`images` | 从 `officialFeatured.records` 的 `thumbnail`/`media` 映射, 映射规则与 `source_raw_items.js` 一致, 只改 media 字段 |
 | `capture_producthunt_post_media.js` | 旧混合层 PH 行补媒体 | 按 日报 引用的 Post ID 调 `post(id:)`, 写入来源层新增 `recordMedia` 段(不动 `records`/`officialFeatured`); 只抓同日 `records` 里可归属的 ID, 限流停跑可续 |
 | `ph_backfill.js` | Product Hunt 旧混合层回溯（已废弃） | 只取首屏且写入标准化 item，不能作为来源层全量数据 |
+| `capture_site_logos_raw.js` | 官网 Logo 兜底抓取 | 没有平台产品标志的行改读官网声明的图标, 按来源层日期落 `source-raw/site-logos/<date>.json`; 见下节 |
+| `validate_site_logos_raw.js` | 离线校验官网 Logo 层 | 用 source-raw 重算候选行, 校验计数/哈希/ok 记录的证据与覆盖率, 不联网 |
+| `backfill_site_logos.js` | 旧日报回填 `siteLogo` | 只把已抓到的图标 URL 写进缺标志的行, 不重跑 collect |
+
+## 官网 Logo 兜底层（site-logos）
+
+平台没给产品标志的行（阮一峰/HelloGitHub 投稿与正刊、中国独立开发者、GitHub Trending）以前只能显示文字首字母。
+这一层让它们改读**项目官网自己声明的 logo**，作为最终兜底；官网也拿不到时才回到文字。
+
+```text
+知识/大家都在做什么/source-raw/site-logos/<date>.json
+```
+
+这一层是**辅助证据层**，不是某个来源的日快照：每条记录按 `sourceId + externalId` 指向日报里的一行，
+只保存证据字段（`pageUrl` / `iconUrl` / `iconKind` / `contentType` / `byteLength` / `contentSha256` /
+`attempts[]` / `status` / `error`），不保存标题、摘要或标签，因此不违反「来源层不做标准化」的约定。
+
+`<date>` 用「消费该行的那份 source-raw 日文件」的日期：普通来源是报告日，GitHub Trending 是观察日
+（与 `source_raw_items.js` 里 `OBSERVED_SOURCES` 的判定一致），所以一次日报抓取会写两个文件（TARGET 与 OBSERVED）。
+
+**同一个日文件会被两次运行写入**：前一天的报告把 Trending 行按观察日存进来，当天自己的报告再把普通来源行
+写到同一文件。记录里带 `reportDate`，脚本只重写自己那次运行的行并保留另一次运行的结果，因此重跑同一天是
+幂等的；`validate_site_logos_raw.js` 也按两天窗口核对覆盖率（当天报告 + 前一天报告的 Trending 行）。
+
+```bash
+cd .agents/skills/community-pulse
+
+# 日报：TARGET=昨天、OBSERVED=今天
+node scripts/capture_site_logos_raw.js --date 2026-09-10 --observed-date 2026-09-11 --strict
+node scripts/validate_site_logos_raw.js --date 2026-09-10
+
+# 试跑 / 预览（不联网写盘）
+node scripts/capture_site_logos_raw.js --date 2026-09-10 --dry-run
+node scripts/capture_site_logos_raw.js --date 2026-09-10 --limit 5 --out-root /tmp/logos
+
+# 历史回填：抓取区间内每一天，再把结果写进旧日报
+node scripts/capture_site_logos_raw.js --start 2026-08-01 --end 2026-09-10
+node scripts/validate_site_logos_raw.js --start 2026-08-01 --end 2026-09-10
+node scripts/backfill_site_logos.js --start 2026-08-01 --end 2026-09-10 --dry-run
+node scripts/backfill_site_logos.js --start 2026-08-01 --end 2026-09-10
+cd ../../.. && npm run images:sync && npm run check
+```
+
+**规则（`scripts/site_logo.js`，纯函数，站点测试也用它）**
+
+- 候选官网：`websiteUrl` → 仓库 `homepage` → 行自身 `url`。仓库 `homepage` 只存在于 GitHub 仓库快照里，
+  所以抓取必须晚于 `capture_github_repositories_raw.js`（脚本会像 collect.js 一样离线合并快照）。
+- 跳过平台页：GitHub/GitLab/Gitee 等代码站、应用商店（App Store / Google Play / Chrome 应用店）、
+  微信知乎 B 站 X Medium 等内容平台、搜索引擎、README 徽章等文件链接。这些站的图标在几十行里反复出现，
+  还会把项目认成平台，反而不如项目自己的首字母；`github.io` 这类项目页不算平台。
+- 图标优先级：apple-touch-icon → `rel=icon` 且 sizes ≥ 96 → SVG icon → 其他 `rel=icon` →
+  schema.org `logo`（`image` 是截图，不取）→ `/favicon.ico`。声明里的 `data:` 图标不能镜像，直接跳过。
+- 选中的图标必须下载成功并按字节嗅探确认是图片（HTML 报错页不算），失败就试下一个候选。
+- **单图上限 256KiB**（`SITE_LOGO_MAX_KB` 可调）：1MB 的「品牌大图」很常见，而镜像的图标会永久留在 Git 里，
+  超预算就跳到下一个候选（通常是 favicon），全部超预算则该行回到文字。
+- 断点续跑：同一天重跑不会重复抓取已成功的行；`--refresh-failures` 只重试上次 failed/missing 的行，
+  `--replace` 重抓本次运行负责的全部行。同一次运行内按页面和图标 URL 去重，回填多天时重复站点只抓一次；
+  命中缓存的页面/图标在记录里标 `cached: true`。
+
+**下游**：`source_raw_items.js` 的 `loadItems` 离线把 `siteLogo` 挂到「无 `logo`/`icon`」的行上
+（按 sourceId+externalId 匹配，退化时按页面 URL），`collect.js` 不联网；站点把 `siteLogo` 与 `logo`/`icon`
+一起镜像（`npm run images:sync`）并按 `logo → icon → siteLogo → 文字` 渲染 48px 头像。图标下载失败时
+清单里记 `null`，该行自动回到文字，不会出现破图。
 
 ## 原始来源层（source-raw）
 

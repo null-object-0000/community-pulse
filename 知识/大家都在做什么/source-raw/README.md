@@ -65,3 +65,18 @@ node scripts/validate_github_trending_raw.js --date "$(TZ=Asia/Shanghai date +%F
 Product Hunt 的单日数据量和 GraphQL complexity 明显更高，历史回填需使用 `--resume --wait-on-rate-limit` 单独长跑；参数会按 API 返回的重置时间等待，并且每次只在整日分页完成后写文件。日常工作流始终先抓目标日，不会为了补历史而漏掉昨天。
 
 Product Hunt 同一发布批次的 Post 会共享完全相同的 `createdAt`，而 API cursor 实际采用偏移量；`NEWEST` 或 `RANKING` 都可能在翻页间漂移，产生重叠并漏项。来源层使用 `order: RANKING`，遇重叠时按 ID 合并并重新扫完整连接；只有唯一 ID 数最终等于 API `totalCount` 才落盘，否则整日拒绝写入。
+
+## 辅助证据层
+
+除按来源分区的日快照外，这里还有两个不隶属于任何单一来源、由下游行派生的辅助目录。它们只保存证据，不保存摘要/标签，也不参与「来源层不做标准化」的判断：
+
+- `github-repositories/YYYY-MM-DD.json`：当日所有来源里出现的 `github.com/owner/repo` 的 GitHub Repository API 原对象。`collect.js` 离线合并 star、语言、license 和 `homepage`。
+- `site-logos/YYYY-MM-DD.json`：没有平台产品标志的行，其**官网自己声明的图标**（apple-touch-icon / `rel=icon` / schema.org logo / 兜底 `/favicon.ico`）。每条记录按 `sourceId + externalId` 指向日报的一行，只含 `pageUrl`、`iconUrl`、`contentType`、`byteLength`、`contentSha256`、`attempts[]`、`status`（`ok` / `missing` / `failed`）。
+
+`site-logos` 的日期是「消费该行的 source-raw 日文件」的日期：普通来源用报告日，GitHub Trending 用观察日。因此同一个日文件会被两次运行写入——前一天的报告把它的 Trending 行按观察日存在这里，当天自己的报告再把普通来源行写到同一文件。记录里带 `reportDate`，脚本据此只重写自己那次运行的行，并始终保留另一次运行的结果，所以重跑同一天是幂等的（可加 `--refresh-failures` 只重试失败行）。
+
+```bash
+cd .agents/skills/community-pulse
+node scripts/capture_site_logos_raw.js --date 2026-09-10 --observed-date 2026-09-11 --strict
+node scripts/validate_site_logos_raw.js --date 2026-09-10
+```

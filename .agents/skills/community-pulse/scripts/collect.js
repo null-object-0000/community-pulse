@@ -12,8 +12,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { loadItems } = require('./source_raw_items');
-const { repositoryKey } = require('./github_repo_utils');
+const { loadItems, loadGithubRepositories, attachGithubRepositories } = require('./source_raw_items');
 
 const ROOT = __dirname;
 const CONFIG = path.join(ROOT, '..', 'config', 'sources.json');
@@ -95,49 +94,6 @@ function itemLinks(it) {
   add(it.issueUrl, '投稿页');
   add(it.relatedIssue, '投稿页');
   return links.length ? `\n\n🔗 ${links.join(' · ')}` : '';
-}
-
-function loadGithubRepositories(rawRoot, targetDate) {
-  const sourceRoot = path.resolve(rawRoot || path.join(ROOT, '..', '..', '..', '..', '知识', '大家都在做什么', 'source-raw'));
-  const file = path.join(sourceRoot, 'github-repositories', `${targetDate}.json`);
-  if (!fs.existsSync(file)) throw new Error(`GitHub repository snapshot is missing: ${file}`);
-  const document = JSON.parse(fs.readFileSync(file, 'utf8'));
-  if (document.sourceId !== 'github-repositories' || document.targetDate !== targetDate || document.complete !== true) {
-    throw new Error(`GitHub repository snapshot is invalid: ${file}`);
-  }
-  const repositories = new Map();
-  for (const record of document.records || []) {
-    const repo = record.response || {};
-    repositories.set(record.repository, {
-      url: repo.html_url,
-      name: repo.full_name,
-      description: repo.description || '',
-      stars: repo.stargazers_count || 0,
-      forks: repo.forks_count || 0,
-      openIssues: repo.open_issues_count || 0,
-      language: repo.language || '',
-      license: repo.license?.spdx_id || repo.license?.name || '',
-      topics: repo.topics || [],
-      homepage: repo.homepage || '',
-      defaultBranch: repo.default_branch || '',
-      createdAt: repo.created_at || null,
-      updatedAt: repo.updated_at || null,
-      pushedAt: repo.pushed_at || null,
-      archived: repo.archived === true,
-      snapshotDate: targetDate,
-    });
-  }
-  return { document, repositories, file };
-}
-
-function attachGithubRepositories(results, repositories) {
-  for (const result of results) {
-    result.items = result.items.map((item) => {
-      const key = repositoryKey(item.githubUrl || item.github?.url);
-      const github = key ? repositories.get(key) : null;
-      return github ? { ...item, githubUrl: github.url, github } : item;
-    });
-  }
 }
 
 // 只渲染 source-raw 中已经存在的源站指标，不联网补数。

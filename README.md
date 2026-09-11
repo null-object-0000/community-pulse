@@ -55,9 +55,11 @@ Cloudflare Workers Builds 连接本仓库 `main` 分支，每次推送（包括�
 
 ### 站点图片存储
 
-列表使用的 `image` / `logo` / `icon` 由 `npm run images:sync` 增量下载到 `assets/images/`，按文件内容 SHA-256 去重；`manifest.json` 保存原始 URL 到本地文件的映射。图片文件与清单需一起提交，随 Cloudflare 静态资源发布，访问地址为 `https://devtrends.site/images/<hash>.<ext>`。原始日报保留来源 URL 供追溯。
+列表使用的 `image` / `logo` / `icon` / `siteLogo` 由 `npm run images:sync` 增量下载到 `assets/images/`，按文件内容 SHA-256 去重；`manifest.json` 保存原始 URL 到本地文件的映射。图片文件与清单需一起提交，随 Cloudflare 静态资源发布，访问地址为 `https://devtrends.site/images/<hash>.<ext>`。原始日报保留来源 URL 供追溯。
 
 每日工作流在日报生成后自动同步并提交图片。手动新增、回填日报后先运行 `npm run images:sync`，再运行 `npm run check`。构建不访问外网，发现未经同步的新图片会提示先运行同步命令；生成的日报 JSON 和页面只使用本地图片；旧收藏通过 `/data/images.json` 转换图片地址。外网失效、超过 10 MiB 或非支持的图片会记录为空并显示文字占位，后续同步会重试，浏览器不会回退到外网。已有成功文件会复用，不重复下载。
 
 本地 Node.js 24 使用代理时可运行 `NODE_USE_ENV_PROXY=1 npm run images:sync`。下载支持 PNG、JPEG、GIF、WebP、AVIF 、ICO 和 SVG，通过文件字节识别格式，不把源站错误页保存成图片。
 SVG 随图片响应附带 CSP sandbox，禁止脚本及外部资源请求。
+
+没有平台产品标志的行（阮一峰/HelloGitHub 投稿、中国独立开发者、GitHub Trending 等）会兜底使用项目官网自己声明的图标，以 `siteLogo` 字段保存：每日工作流在 GitHub 仓库快照之后抓取并离线校验（`source-raw/site-logos/<date>.json`），`logo` → `icon` → `siteLogo` → 文字首字母 依次回退，官网也拿不到时才显示首字母。历史日报可用 `node scripts/backfill_site_logos.js --start <开始> --end <结束>` 回填后再同步图片；命令与取舍见 `.agents/skills/community-pulse/SKILL.md` 的「官网 Logo 兜底层」。

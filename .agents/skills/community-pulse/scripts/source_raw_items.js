@@ -5,9 +5,10 @@
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
-const { discoverItemRepository, normalizeGitHubRepoUrl } = require('./github_repo_utils');
+const { discoverItemRepository, normalizeGitHubRepoUrl, repositoryKey } = require('./github_repo_utils');
 const { descriptionFromIssue } = require('./issue-description');
 const { boardBySourceId } = require('./chinese_indie_boards');
+const { candidatePage } = require('./site_logo');
 
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const DEFAULT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw');
@@ -507,6 +508,91 @@ const CONVERTERS = {
   producthunt: productHuntItems,
 };
 
+// The website-logo fallback is an auxiliary source layer: each day file proves which icon the
+// official website of a mark-less row declared. Reading it stays offline, and a day without a file
+// simply means those rows keep the text avatar.
+function loadSiteLogos(date, rawRoot) {
+  if (!date) return null;
+  const file = path.join(path.resolve(rawRoot || DEFAULT_ROOT), 'site-logos', `${date}.json`);
+  if (!fs.existsSync(file)) return null;
+  let document;
+  try { document = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { return null; }
+  if (document.schemaVersion !== 1 || document.sourceId !== 'site-logos') return null;
+  const byExternalId = new Map();
+  const byPage = new Map();
+  for (const record of document.records || []) {
+    if (record.status !== 'ok' || typeof record.iconUrl !== 'string' || !record.iconUrl) continue;
+    byExternalId.set(`${record.sourceId}\u0000${record.externalId}`, record.iconUrl);
+    byPage.set(`${record.sourceId}\u0000${record.pageUrl}`, record.iconUrl);
+  }
+  return { byExternalId, byPage };
+}
+
+// A row with its own product mark never borrows the website's: this only fills rows that would
+// otherwise render as initials. An interrupted (incomplete) day file still contributes what it has;
+// validate_site_logos_raw.js is what guards the layer in production.
+function attachSiteLogos(items, sourceId, date, rawRoot) {
+  const index = loadSiteLogos(date, rawRoot);
+  if (!index) return items;
+  return items.map((item) => {
+    if (item.logo || item.icon || item.siteLogo) return item;
+    const page = candidatePage(item);
+    const siteLogo = index.byExternalId.get(`${sourceId}\u0000${item.externalId}`)
+      || (page ? index.byPage.get(`${sourceId}\u0000${page}`) : '');
+    return siteLogo ? { ...item, siteLogo } : item;
+  });
+}
+
+// The GitHub repository snapshot is its own source layer: stars, language and — crucially for the
+// website-logo fallback — `homepage` live there, not in the per-source day files. Both the 日报
+// generator and capture_site_logos_raw.js read it through this offline helper.
+function loadGithubRepositories(sourceRoot, targetDate) {
+  const root = path.resolve(sourceRoot || DEFAULT_ROOT);
+  const file = path.join(root, 'github-repositories', `${targetDate}.json`);
+  if (!fs.existsSync(file)) throw new Error(`GitHub repository snapshot is missing: ${file}`);
+  const document = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (document.sourceId !== 'github-repositories' || document.targetDate !== targetDate || document.complete !== true) {
+    throw new Error(`GitHub repository snapshot is invalid: ${file}`);
+  }
+  const repositories = new Map();
+  for (const record of document.records || []) {
+    const repo = record.response || {};
+    repositories.set(record.repository, {
+      url: repo.html_url,
+      name: repo.full_name,
+      description: repo.description || '',
+      stars: repo.stargazers_count || 0,
+      forks: repo.forks_count || 0,
+      openIssues: repo.open_issues_count || 0,
+      language: repo.language || '',
+      license: repo.license?.spdx_id || repo.license?.name || '',
+      topics: repo.topics || [],
+      homepage: repo.homepage || '',
+      defaultBranch: repo.default_branch || '',
+      createdAt: repo.created_at || null,
+      updatedAt: repo.updated_at || null,
+      pushedAt: repo.pushed_at || null,
+      archived: repo.archived === true,
+      snapshotDate: targetDate,
+    });
+  }
+  return { document, repositories, file };
+}
+
+function attachRepositoryFacts(items, repositories) {
+  if (!repositories) return items;
+  return items.map((item) => {
+    const key = repositoryKey(item.githubUrl || item.github?.url);
+    const github = key ? repositories.get(key) : null;
+    return github ? { ...item, githubUrl: github.url, github } : item;
+  });
+}
+
+function attachGithubRepositories(results, repositories) {
+  for (const result of results) result.items = attachRepositoryFacts(result.items, repositories);
+  return results;
+}
+
 function loadItems(src, options = {}) {
   const converter = CONVERTERS[src.id];
   if (!converter) throw new Error(`no source-raw converter registered for ${src.id}`);
@@ -517,8 +603,9 @@ function loadItems(src, options = {}) {
     return { ...item, githubUrl, github: { ...(item.github || {}), url: githubUrl } };
   });
   const max = src.max_items || items.length;
+  const selected = attachSiteLogos(items.slice(0, max), src.id, loaded.targetDate, options.rawRoot);
   return {
-    items: items.slice(0, max),
+    items: selected,
     sourceRaw: {
       sourceId: src.id,
       targetDate: loaded.targetDate,
@@ -529,9 +616,12 @@ function loadItems(src, options = {}) {
       capturedAt: loaded.document.fetchedAt,
       complete: loaded.document.complete,
       inputItemCount: loaded.document.itemCount,
-      outputItemCount: Math.min(items.length, max),
+      outputItemCount: selected.length,
     },
   };
 }
 
-module.exports = { loadItems, latestDate, OBSERVED_SOURCES };
+module.exports = {
+  loadItems, attachSiteLogos, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts,
+  latestDate, OBSERVED_SOURCES,
+};

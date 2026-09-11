@@ -83,6 +83,17 @@ jobs:
           node scripts/capture_github_repositories_raw.js --date "$TARGET" --observed-date "$OBSERVED"
           node scripts/validate_github_repositories_raw.js --date "$TARGET"
 
+      - name: 抓取官网 Logo 兜底层（没有产品标志的行）
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          OBSERVED="$(TZ=Asia/Shanghai date +%F)"
+          cd .agents/skills/community-pulse
+          # 没有平台产品标志的行改为读取其官网自己声明的 logo（apple-touch-icon / rel=icon /
+          # schema.org logo，最后才是 /favicon.ico）。这一步必须晚于 GitHub 仓库快照：官网地址
+          # 常常只存在于仓库 homepage 字段里。Trending 行写在观察日文件，与 collect.js 的读取日一致。
+          node scripts/capture_site_logos_raw.js --date "$TARGET" --observed-date "$OBSERVED" --strict
+          node scripts/validate_site_logos_raw.js --date "$TARGET"
+
       - name: 生成日报 (md + json, 存 raw/)
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"
