@@ -154,6 +154,8 @@ Markdown 条目的三级标题统一使用纯文字，不在产品名称上包�
 | `backfill_indie_dev.js` | chinese-indie-dev 全量重建 | 该源所有日期都在同一个 README 里, 一次抓取按日期回填全部 raw; empty 天=README 无当日节(真实无数据, 非漏) |
 | `backfill_vibecafe.js` | vibecafe 回溯回填 | 用 `/api/products?cursor=` **干净 JSON 分页 API**(不是 RSC 流), 翻页全量抓取按北京日期回填 |
 | `fill_vibecafe_empty.js` | vibecafe 缺失源补空 | 无产品日补显式 `items: []`(collect.js 空结果也 push 源, 源缺失=当时抓取失败被跳过, 不自洽) |
+| `backfill_vibecafe_media.js` | vibecafe 旧日报补 `logo`/`images` | 只改这两个字段, 不重跑 collect |
+| `backfill_producthunt_media.js` | Product Hunt 旧日报补 `logo`/`images` | 从 `officialFeatured.records` 的 `thumbnail`/`media` 映射, 映射规则与 `source_raw_items.js` 一致, 只改 media 字段 |
 | `ph_backfill.js` | Product Hunt 旧混合层回溯（已废弃） | 只取首屏且写入标准化 item，不能作为来源层全量数据 |
 
 ## 原始来源层（source-raw）
@@ -244,6 +246,25 @@ GraphQL 没有“自动返回完整对象”的语义；`records` 保存同日�
 # 只重抓官方精选子集（每天约 1~2 个请求），不重抓全量
 node scripts/capture_producthunt_raw.js --refresh-featured --start 2026-08-01 --end 2026-09-10
 node scripts/validate_producthunt_raw.js --start 2026-08-01 --end 2026-09-10
+```
+
+`--refresh-featured` 是**增量**的：`officialFeatured.capture.sourceFields` 已含 `thumbnail` 的日期直接跳过，所以限流中断后重跑只补剩余日期，不会反复重刷已升级的日期（这一条对 Actions 的 `while` 重试循环是必需的）。
+
+**注意成本**：刷新精选子集会重写该日精选 records（PH 的 `/r/...` 跳转 token 每次请求都会变），因此每次刷新都会连带重跑这些精选链接的 `linkResolution`——校验器要求链接覆盖与 records 完全一致，不能跳过。实测 Actions 出口访问 PH 跳转页返回 403，这些解析会全部记成 `ok:false` 的失败快照（快速失败，不阻断落盘）。按 253 天估算约 1.5 小时。
+
+GitHub Actions 侧用 `producthunt-backfill.yml` 的 `refresh_featured=true` 输入执行同一件事（默认 false，行为不变）：
+
+```bash
+gh workflow run producthunt-backfill.yml --ref main \
+  -f start=2026-01-01 -f end=2026-09-10 -f refresh_featured=true
+```
+
+刷新只改来源层；raw 日报里的 logo/配图用离线脚本补（只改 media 字段，不重跑 collect，避免顺带改写其他来源）：
+
+```bash
+node scripts/backfill_producthunt_media.js --start 2026-01-01 --end 2026-09-10 [--dry-run]
+npm run images:sync   # 把 ph-files.imgix.net 的产品标志镜像到 assets/images
+npm run check
 ```
 
 新采集的 Product Hunt Post 保留官方 `website` 与 `productLinks { type url }`，并对官方精选的这些 URL 去重后执行链接解析，存入 `linkResolution.links`。最多 3 并发、每请求 12 秒、每次最多 5 跳、最多 2 次尝试（间隔 1 秒）；优先 HEAD，无法取得跳转时 GET，收到响应头立即终止正文传输。只请求 PH 域名，一旦 Location 指向外部即停止，因此 `ok` 表示解析成功，`verified: false` 表示未验证目标可访问性。失败也记录并缓存，`complete` 表示所有链接已尝试，不代表全部成功；已有结果仅 `--refresh-links` 显式刷新，日常 `--resume` 不重试历史失败。
