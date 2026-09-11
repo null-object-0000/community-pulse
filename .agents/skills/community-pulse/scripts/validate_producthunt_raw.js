@@ -41,6 +41,63 @@ function digest(records) {
   return crypto.createHash('sha256').update(JSON.stringify(records)).digest('hex');
 }
 
+function validateLinkResolution(section, records, errors, date) {
+  const fail = (message) => errors.push(`${date}: linkResolution ${message}`);
+  const validUrl = (value, external = false) => {
+    try {
+      const url = new URL(value);
+      return typeof value === 'string' && ['http:', 'https:'].includes(url.protocol)
+        && !url.username && !url.password && (!external ||
+          !(url.hostname === 'producthunt.com' || url.hostname.endsWith('.producthunt.com')));
+    } catch (_) { return false; }
+  };
+  if (!section || !Array.isArray(section.links)) { fail('links must be an array'); return; }
+  const links = section.links;
+  if (section.complete !== true) fail('attempts are not complete');
+  if (!Number.isFinite(Date.parse(section.fetchedAt))) fail('invalid fetchedAt');
+  if (section.itemCount !== links.length) fail('itemCount mismatch');
+  if (section.failureCount !== links.filter((link) => link?.ok === false).length) fail('failureCount mismatch');
+  if (section.contentSha256 !== digest(links)) fail('hash mismatch');
+  const expected = new Set(records.flatMap((record) => [record.website,
+    ...(Array.isArray(record.productLinks) ? record.productLinks.map((link) => link?.url) : []),
+  ]).filter((url) => typeof url === 'string' && url.length));
+  const seen = new Set();
+  for (const link of links) {
+    if (!link || typeof link !== 'object') { fail('invalid link'); continue; }
+    if (seen.has(link.originalUrl)) fail('duplicate originalUrl');
+    seen.add(link.originalUrl);
+    // Invalid source URLs are allowed only as recorded failures, never successes.
+    if (typeof link.originalUrl !== 'string' || !link.originalUrl || (link.ok && !validUrl(link.originalUrl))) fail('invalid originalUrl');
+    if (typeof link.ok !== 'boolean' || link.verified !== false) fail('invalid resolution/verification state');
+    if (link.ok ? (!validUrl(link.resolvedUrl, true) || link.error !== null)
+      : (link.resolvedUrl !== null || typeof link.error !== 'string' || !link.error)) fail('invalid result');
+    if (!Number.isFinite(link.elapsedMs) || link.elapsedMs < 0 || !Number.isFinite(Date.parse(link.fetchedAt))) fail('invalid timing');
+    if (!Array.isArray(link.chain)) { fail('chain must be an array'); continue; }
+    if (link.chain.length > 20) fail('too many requests');
+    if (link.ok) {
+      try {
+        const last = link.chain.at(-1);
+        const destination = last ? new URL(last.location, last.url).href : new URL(link.originalUrl).href;
+        if (destination !== link.resolvedUrl || (last && !(last.status >= 300 && last.status < 400 && last.location))) {
+          fail('resolvedUrl does not match redirect evidence');
+        }
+      } catch (_) { fail('invalid resolution evidence'); }
+    }
+    for (const hop of link.chain) {
+      if (!hop || !validUrl(hop.url) || validUrl(hop.url, true)
+        || !['HEAD', 'GET'].includes(hop.method) || ![1, 2].includes(hop.attempt)
+        || !(hop.status === null ? typeof hop.error === 'string'
+          : Number.isInteger(hop.status) && hop.status >= 100 && hop.status <= 599)
+        || !(hop.location === null || typeof hop.location === 'string')) fail('invalid chain hop');
+      if (hop?.location) {
+        try { if (!validUrl(new URL(hop.location, hop.url).href) && link.ok) fail('invalid Location'); }
+        catch (_) { if (link.ok) fail('invalid Location'); }
+      }
+    }
+  }
+  if (seen.size !== expected.size || [...expected].some((url) => !seen.has(url))) fail('source URL coverage mismatch');
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const root = path.resolve(value(argv, '--root') || DEFAULT_ROOT);
@@ -177,6 +234,9 @@ function main() {
       }
     }
 
+    if (data.linkResolution !== undefined) {
+      validateLinkResolution(data.linkResolution, featured?.records || [], errors, targetDate);
+    }
     if (data.productPages !== undefined) {
       const productPages = data.productPages;
       // 兼容两种格式：

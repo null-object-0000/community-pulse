@@ -221,7 +221,18 @@ node scripts/capture_producthunt_raw.js --start 2013-11-22 --end 2026-09-07 --re
 
 GraphQL 没有“自动返回完整对象”的语义；`records` 保存同日全部 Post，`officialFeatured.records` 保存 `featured: true` 官方精选子集，两者都保留独立的分页与 `totalCount` 证明。日报只消费官方精选，全量仅作为底账。时间窗口稍微覆盖北京日边界，再按 `createdAt` 二次归日；遇限流后可从最早缺失日恢复。
 
-新采集的 Product Hunt Post 还必须保留官方 `website` 与 `productLinks { type url }`。GraphQL 的 Post 字段描述的是当次 launch；采集阶段还要为官方精选抓取 `/products/<slug>` 产品页的完整 HTML 压缩快照。日报摘要优先基于产品页的产品简介，缺失时才回退到 launch `description` / `tagline`；当次发布信息保留在 item 的 `launch` 字段。`productLinks` 或官网指向 GitHub 时进入统一仓库快照链路。
+新采集的 Product Hunt Post 保留官方 `website` 与 `productLinks { type url }`，并对官方精选的这些 URL 去重后执行链接解析，存入 `linkResolution.links`。最多 3 并发、每请求 12 秒、每次最多 5 跳、最多 2 次尝试（间隔 1 秒）；优先 HEAD，无法取得跳转时 GET，收到响应头立即终止正文传输。只请求 PH 域名，一旦 Location 指向外部即停止，因此 `ok` 表示解析成功，`verified: false` 表示未验证目标可访问性。失败也记录并缓存，`complete` 表示所有链接已尝试，不代表全部成功；已有结果仅 `--refresh-links` 显式刷新，日常 `--resume` 不重试历史失败。
+
+产品页完整 HTML 快照改为默认关闭的可选增强：新日采集设置 `PRODUCT_HUNT_PAGE_CAPTURE=1` 才抓取，已有日期仅 `--refresh-pages` 显式重抓（该参数同时启用抓页）。关闭时不新建 `productPages`，历史快照保持可读。原因：API 已覆盖所需介绍与外链，当前出口页面访问被 PH 封禁（403），页面 description 多数与 API 相同或只是更泛的品牌介绍，没有稳定增量价值。单个链接或页面失败均降级记录，不阻止当日 API 数据落盘。
+
+日报摘要优先 API `description` / `tagline`，缺失才回退到历史页面简介；当次发布信息仍保留在 `launch`。官网优先解析结果，再回退历史页面 `websiteUrl`、API `website`；`productLinks` 也使用解析后的 URL，使 GitHub 链接进入统一仓库发现与快照链路。下游完全离线，历史无 `linkResolution`、v1/v2 `productPages` 文件继续兼容。
+
+```bash
+# 用已有 API 日文件补解析，无需 PH token；失败缓存，重跑不重复请求
+node scripts/capture_producthunt_raw.js --date 2026-09-10
+# 显式刷新链接（也可配合 --resume）
+node scripts/capture_producthunt_raw.js --date 2026-09-10 --refresh-links
+```
 
 同一 Product Hunt 发布批次的 Post 可能共享完全相同的 `createdAt`，API cursor 又是偏移量；`NEWEST`/`RANKING` 都可能在翻页间漂移并造成跨页重叠。实测 `RANKING` 会随投票变化产生大量重叠，来源层使用相对稳定的 `order: NEWEST` 扫描，按 Post ID 合并多轮完整 sweep；只有唯一 ID 数等于 API `totalCount` 才写文件，否则整日拒绝落盘。
 

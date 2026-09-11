@@ -426,10 +426,14 @@ function productHuntItems(document, src) {
       // with historical files that predate product-page capture.
     }
   }
+  const resolvedLinks = new Map((document.linkResolution?.links || [])
+    .filter((link) => link.ok && link.resolvedUrl)
+    .map((link) => [link.originalUrl, link.resolvedUrl]));
   return featured.records.map((product) => {
     const productOverview = productPages.get(String(product.id));
-    const productLinks = Array.isArray(product.productLinks) ? product.productLinks : [];
-    const websiteUrl = productOverview?.websiteUrl || product.website || '';
+    const productLinks = (Array.isArray(product.productLinks) ? product.productLinks : [])
+      .map((link) => ({ ...link, url: resolvedLinks.get(link.url) || link.url }));
+    const websiteUrl = resolvedLinks.get(product.website) || productOverview?.websiteUrl || product.website || '';
     const identityTokens = (value) => String(value || '').toLowerCase()
       .match(/[a-z0-9][a-z0-9.-]{2,}|[\u4e00-\u9fff]{2,}/g) || [];
     const launchTokens = new Set(identityTokens(product.name));
@@ -448,9 +452,9 @@ function productHuntItems(document, src) {
       author: '',
       authorUrl: '',
       publishedAt: product.createdAt || null,
-      summary: overview || product.description || product.tagline || '',
+      summary: product.description || product.tagline || overview || '',
       tagline: product.tagline || '',
-      content: overview || product.description || product.tagline || '',
+      content: product.description || product.tagline || overview || '',
       metrics: { votes: product.votesCount || 0, comments: product.commentsCount || 0 },
       tags: ['producthunt', 'new', 'official-featured'],
       externalId: String(product.id),
@@ -501,6 +505,7 @@ function loadItems(src, options = {}) {
       targetDate: loaded.targetDate,
       path: path.relative(VAULT, loaded.file),
       contentSha256: loaded.document.contentSha256,
+      linkResolutionContentSha256: loaded.document.linkResolution?.contentSha256 || null,
       productPagesContentSha256: loaded.document.productPages?.contentSha256 || null,
       capturedAt: loaded.document.fetchedAt,
       complete: loaded.document.complete,

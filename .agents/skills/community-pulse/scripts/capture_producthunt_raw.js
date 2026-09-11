@@ -18,7 +18,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
-const { execFileSync } = require('child_process');
+const { execFileSync, spawn } = require('child_process');
 
 const SOURCE_ID = 'producthunt';
 const SOURCE_NAME = 'Product Hunt 新品';
@@ -86,6 +86,9 @@ function parseArgs(argv) {
     replace: argv.includes('--replace'),
     waitOnRateLimit: argv.includes('--wait-on-rate-limit'),
     refreshFeatured: argv.includes('--refresh-featured'),
+    refreshLinks: argv.includes('--refresh-links'),
+    refreshPages: argv.includes('--refresh-pages'),
+    capturePages: process.env.PRODUCT_HUNT_PAGE_CAPTURE === '1' || argv.includes('--refresh-pages'),
     reverse: argv.includes('--reverse'),
     stopOnRateLimit: argv.includes('--stop-on-rate-limit'),
   };
@@ -344,6 +347,136 @@ function attachProductPages(document, records) {
   };
 }
 
+// Only HTTP(S) URLs without credentials are accepted. External URLs are never fetched.
+function linkUrl(value) {
+  const url = new URL(value);
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) {
+    throw new Error('invalid HTTP(S) URL');
+  }
+  return url;
+}
+function isProductHunt(url) {
+  return url.hostname === 'producthunt.com' || url.hostname.endsWith('.producthunt.com');
+}
+function collectProductLinks(records) {
+  return [...new Set(records.flatMap((record) => [record.website,
+    ...(Array.isArray(record.productLinks) ? record.productLinks.map((link) => link?.url) : []),
+  ]).filter((url) => typeof url === 'string' && url.length))];
+}
+
+// No -L: inspect each Location ourselves. On GET, terminate curl as soon as
+// final response headers arrive; do not wait for or store the response body.
+function requestLinkHeaders(url, method) {
+  return new Promise((resolve, reject) => {
+    const args = ['-q', '-sS', '--max-time', '12', '--connect-timeout', '5',
+      '--suppress-connect-headers', '--proto', '=http,https', '-D', '-', '-o', '/dev/null'];
+    if (method === 'HEAD') args.push('--head');
+    else args.push('--max-filesize', '1'); // Bound transfer even before the kill is scheduled.
+    if (PROXY) args.push('-x', PROXY);
+    else args.push('--noproxy', '*');
+    args.push(url);
+    const child = spawn('curl', args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    let buffer = '';
+    let settled = false;
+    const timer = setTimeout(() => finish(new Error('header timeout')), 14000);
+    function finish(error, response) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      child.kill();
+      if (error) reject(error); else resolve(response);
+    }
+    child.stderr.resume();
+    child.stdout.on('data', (chunk) => {
+      buffer += chunk.toString('utf8');
+      if (buffer.length > 65536) return finish(new Error('headers too large'));
+      let end;
+      while ((end = buffer.indexOf('\r\n\r\n')) >= 0) {
+        const rawHeaders = buffer.slice(0, end + 4);
+        buffer = buffer.slice(end + 4);
+        const status = Number(rawHeaders.match(/^HTTP\/\S+\s+(\d+)/)?.[1]);
+        if (status >= 100 && status < 200) continue;
+        if (!status) return finish(new Error('invalid HTTP headers'));
+        const location = rawHeaders.match(/^location:\s*(.*)$/im)?.[1].trim() || null;
+        finish(null, { status, location, rawHeaders });
+        return;
+      }
+    });
+    child.on('error', (error) => finish(error));
+    child.on('close', (code) => finish(new Error(`curl exited ${code} before response headers`)));
+  });
+}
+
+async function resolveProductLinks(records, { existing, refresh = false, request = requestLinkHeaders } = {}) {
+  const urls = collectProductLinks(records);
+  // Failures are immutable attempted snapshots too: retry only on --refresh-links.
+  const cached = new Map((existing?.links || []).map((link) => [link.originalUrl, link]));
+  const links = new Array(urls.length);
+  let cursor = 0;
+  async function worker() {
+    while (cursor < urls.length) {
+      const index = cursor++;
+      const originalUrl = urls[index];
+      if (!refresh && cached.has(originalUrl)) {
+        links[index] = cached.get(originalUrl);
+        continue;
+      }
+      const started = Date.now();
+      const result = { originalUrl, resolvedUrl: null, chain: [], ok: false,
+        error: null, elapsedMs: 0, fetchedAt: new Date().toISOString(), verified: false };
+      for (let attempt = 1; attempt <= 2; attempt += 1) {
+        try {
+          let current = linkUrl(originalUrl);
+          const visited = new Set();
+          for (let hop = 0; ; hop += 1) {
+            if (!isProductHunt(current)) {
+              result.resolvedUrl = current.href;
+              result.ok = true;
+              result.error = null;
+              break;
+            }
+            if (hop >= 5) throw new Error('redirect limit (5)');
+            if (visited.has(current.href)) throw new Error('redirect loop');
+            visited.add(current.href);
+            let response;
+            for (const method of ['HEAD', 'GET']) {
+              try {
+                response = await request(current.href, method);
+                result.chain.push({ url: current.href, method, attempt, ...response });
+                if (response.status >= 300 && response.status < 400 && response.location) break;
+              } catch (error) {
+                result.chain.push({ url: current.href, method, attempt, status: null,
+                  location: null, error: String(error.message || error).slice(0, 500) });
+                if (method === 'GET') throw error;
+              }
+            }
+            if (!(response?.status >= 300 && response.status < 400 && response.location)) {
+              throw new Error(`no external redirect (HTTP ${response?.status || '?'})`);
+            }
+            current = linkUrl(new URL(response.location, current).href);
+          }
+          break;
+        } catch (error) {
+          result.error = String(error.message || error).slice(0, 500);
+          if (attempt < 2) await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      }
+      result.elapsedMs = Date.now() - started;
+      links[index] = result;
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(3, urls.length) }, worker));
+  return { complete: true, itemCount: links.length, failureCount: links.filter((link) => !link.ok).length,
+    contentSha256: digest(links), fetchedAt: new Date().toISOString(), links };
+}
+
+async function attachEnhancements(document, records, options, newDocument = false) {
+  document.linkResolution = await resolveProductLinks(records, {
+    existing: document.linkResolution, refresh: options.refreshLinks,
+  });
+  if (options.capturePages && (newDocument || options.refreshPages)) attachProductPages(document, records);
+}
+
 function queryForDay(targetDate, after, pageSize, featuredOnly = false) {
   const dayStart = new Date(`${targetDate}T00:00:00+08:00`);
   const nextDayStart = new Date(dayStart.getTime() + 86400000);
@@ -523,7 +656,7 @@ function buildFeaturedSection(options, targetDate, capture) {
   };
 }
 
-function updateFeaturedSection(options, targetDate, featuredCapture) {
+async function updateFeaturedSection(options, targetDate, featuredCapture) {
   const file = path.join(options.outRoot, `${targetDate}.json`);
   const document = JSON.parse(fs.readFileSync(file, 'utf8'));
   const allIds = new Set((document.records || []).map((record) => String(record.id)));
@@ -531,11 +664,11 @@ function updateFeaturedSection(options, targetDate, featuredCapture) {
     if (!allIds.has(String(record.id))) throw new Error(`${targetDate}: featured post ${record.id} is absent from all posts`);
   }
   document.officialFeatured = buildFeaturedSection(options, targetDate, featuredCapture);
-  attachProductPages(document, featuredCapture.records);
+  await attachEnhancements(document, featuredCapture.records, options);
   atomicWrite(file, `${JSON.stringify(document, null, 2)}\n`);
 }
 
-function writeDay(options, targetDate, capture, featuredCapture) {
+async function writeDay(options, targetDate, capture, featuredCapture) {
   const file = path.join(options.outRoot, `${targetDate}.json`);
   const contentSha256 = digest(capture.records);
   if (fs.existsSync(file) && !options.replace) {
@@ -578,18 +711,18 @@ function writeDay(options, targetDate, capture, featuredCapture) {
     officialFeatured: buildFeaturedSection(options, targetDate, featuredCapture),
     records: capture.records,
   };
-  attachProductPages(document, featuredCapture.records);
+  await attachEnhancements(document, featuredCapture.records, options, true);
   atomicWrite(file, `${JSON.stringify(document, null, 2)}\n`);
   return 'written';
 }
 
-function main() {
+async function main() {
   const options = parseArgs(process.argv.slice(2));
   assertDate(options.start, '--start');
   assertDate(options.end, '--end');
   if (options.start > options.end) throw new Error('--start must not be after --end');
 
-  if (options.resume) {
+  if (options.resume && !options.refreshLinks && !options.refreshPages && !options.refreshFeatured) {
     const missingDate = firstMissingDate(options.outRoot, options.start, options.end, options.reverse);
     if (!missingDate) {
       console.log(JSON.stringify({
@@ -615,16 +748,15 @@ function main() {
         const existing = JSON.parse(fs.readFileSync(file, 'utf8'));
         if (options.refreshFeatured || !existing.officialFeatured) {
           const featuredCapture = fetchDay(targetDate, options.pageSize, options.waitOnRateLimit, true);
-          updateFeaturedSection(options, targetDate, featuredCapture);
+          await updateFeaturedSection(options, targetDate, featuredCapture);
           console.error(`[producthunt] ${targetDate}: added ${featuredCapture.records.length} official featured records`);
           written += 1;
           pagesFetched += featuredCapture.pages.length;
           continue;
         }
-        if (!existing.productPages?.complete) {
-          attachProductPages(existing, existing.officialFeatured.records);
+        if (options.refreshPages || options.refreshLinks || !existing.linkResolution?.complete) {
+          await attachEnhancements(existing, existing.officialFeatured.records, options);
           atomicWrite(file, `${JSON.stringify(existing, null, 2)}\n`);
-          console.error(`[producthunt] ${targetDate}: added ${existing.productPages.itemCount} product pages`);
           written += 1;
           continue;
         }
@@ -633,7 +765,7 @@ function main() {
       }
       const capture = fetchDay(targetDate, options.pageSize, options.waitOnRateLimit);
       const featuredCapture = fetchDay(targetDate, options.pageSize, options.waitOnRateLimit, true);
-      const outcome = writeDay(options, targetDate, capture, featuredCapture);
+      const outcome = await writeDay(options, targetDate, capture, featuredCapture);
       if (outcome === 'written') written += 1;
       else unchanged += 1;
       totalRecords += capture.records.length;
@@ -666,9 +798,8 @@ function main() {
   }, null, 2));
 }
 
-try {
-  main();
-} catch (error) {
+module.exports = { resolveProductLinks };
+if (require.main === module) main().catch((error) => {
   console.error(error.stack || error.message);
-  process.exit(1);
-}
+  process.exitCode = 1;
+});
