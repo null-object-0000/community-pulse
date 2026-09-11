@@ -285,6 +285,9 @@
     };
     return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.box}</svg>`;
   };
+  // A rendered box hides content when its scroll size exceeds its client size. The list clips a
+  // description to one line and the grid to three, so only a genuinely clipped row earns a tooltip.
+  const isClipped = element => element.scrollWidth > element.clientWidth || element.scrollHeight > element.clientHeight;
   // Fallback only: a source with a logo asset renders that logo instead. Keyed off sourceId, never the
   // display name, because "HelloGitHub" would otherwise match a /github/ test and borrow GitHub's mark.
   function sourceMark(item) {
@@ -292,6 +295,28 @@
     if (id === 'github-trending' || id === 'github-trending-cn') return icon('github');
     const known = { producthunt: 'P', vibecafe: 'V', hackernews: 'Y', reddit: 'R', devto: 'D', indiehackers: 'IH' };
     return escapeHtml(known[id] || sourceName(item, 'en').replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase() || 'D');
+  }
+  // Collectors tag every item with its own source (`producthunt`, `ruanyf-weekly`, `hellogithub`,
+  // `indie-dev`) and with collection bookkeeping (`new`, `official`, `submission`). The row already
+  // names its source beside a badge, so those chips would only repeat what the row already says.
+  const sourceScaffoldTags = new Set([
+    'product', 'vibecafe', 'producthunt', 'ruanyf-weekly', 'hellogithub', 'indie-dev', 'github-trending',
+    'daily', 'new', 'official', 'submission', 'official-featured',
+  ]);
+  // Up to three chips per row, minus everything the row already states elsewhere: the source (badge
+  // and name) and the primary language, which is rendered as its own chip and repeated by the
+  // github-trending collector inside `tags`. Casing variants count as the same tag.
+  function visibleTags(item) {
+    const seen = new Set([String(item.sourceId || '').toLowerCase(), String(metric(item, ['language', 'lang']) || '').toLowerCase(), ...sourceScaffoldTags]);
+    const tags = [];
+    for (const tag of [...(item.github?.topics || []), ...(item.tags || [])]) {
+      const key = String(tag).trim().toLowerCase();
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      tags.push(tag);
+      if (tags.length === 3) break;
+    }
+    return tags;
   }
   function renderItem(item, locale, { date = '', index = 0 } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
@@ -302,7 +327,7 @@
     const language = metric(item, ['language', 'lang']);
     const stars = metric(item, ['stars', 'stargazers_count', 'totalStars']);
     const votes = metric(item, ['votes', 'votesCount']);
-    const tags = [...new Set([...(item.github?.topics || []), ...(item.tags || [])])].filter(tag => !['product', 'vibecafe', 'daily', 'new', 'official-featured', 'submission', 'github-trending'].includes(tag)).slice(0, 3);
+    const tags = visibleTags(item);
     // The product mark identifies an item at 48px. A software screenshot is never borrowed for the
     // avatar: it belongs to the gallery. A row without a platform mark falls back to the logo its
     // official website declares (`siteLogo`, captured offline) and only then to its initials.
@@ -323,5 +348,5 @@
       <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem };
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem };
 });

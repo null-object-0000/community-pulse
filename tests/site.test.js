@@ -77,6 +77,44 @@ test('list rows carry no per-item date, because the selected report date already
   assert.ok(styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(230px, 1\.7fr\) minmax\(150px, \.9fr\) \d+px 70px;/), 'a stray column means a cell lost its track');
 });
 
+test('source scaffolding tags never repeat the row source as a chip', () => {
+  const chipTags = item => [...D.renderItem(item, 'zh-CN').matchAll(/<span class="tag">([^<]*)<\/span>/g)].map(match => match[1]);
+  // Every collector prefixes its items with the source itself plus bookkeeping; the row's source
+  // column already covers that, so Product Hunt rows end up with no chips at all.
+  assert.deepEqual(chipTags({ title: 'Desert Ant Labs', sourceId: 'producthunt', tags: ['producthunt', 'new', 'official-featured'] }), []);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'vibecafe', tags: ['vibecafe', 'product'] }), []);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issue', tags: ['ruanyf-weekly', 'official', '工具'] }), ['工具']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'hellogithub-issue', tags: ['hellogithub', 'official', 'Go'] }), ['Go']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'chinese-indie-dev', tags: ['indie-dev', '已上线'] }), ['已上线']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'Rust'] }), ['Rust']);
+  // A tag that merely repeats the source id is dropped too, and content tags are untouched.
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'mystery-source', tags: ['mystery-source', 'python', 'mcp'] }), ['python', 'mcp']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issues', tags: ['submission'], github: { topics: ['cli'] } }), ['cli']);
+});
+
+test('the primary language renders once, never twice as a language chip and a tag', () => {
+  const chipTags = item => [...D.renderItem(item, 'zh-CN').matchAll(/<span class="tag">([^<]*)<\/span>/g)].map(match => match[1]);
+  // The github-trending collector repeats the language inside `tags`, beside the language chip.
+  const trending = { title: 'OpenMAIC', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'TypeScript'], github: { language: 'TypeScript', topics: [] } };
+  assert.deepEqual(chipTags(trending), ['TypeScript']);
+  assert.deepEqual(chipTags({ title: 'OpenMAIC', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'Go'], github: { language: 'Go', topics: ['cli', 'go'] } }), ['Go', 'cli']);
+  // Casing variants of one tag collapse, including the language written differently in a topic.
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'github-trending', github: { language: 'Python', topics: ['Python', 'python'] } }), ['Python']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'mystery-source', tags: ['TypeScript'], github: { language: 'typescript' } }), ['typescript']);
+  // A source-less item keeps its language chip and still shows unrelated tags.
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issue', tags: ['Rust'], github: { language: 'Rust', topics: ['cli'] } }), ['Rust', 'cli']);
+});
+
+test('a clipped description earns a tooltip while a fully visible one stays bare', () => {
+  // The list clips one line (horizontal overflow) and the grid clips three (vertical overflow).
+  assert.equal(D.isClipped({ scrollWidth: 420, clientWidth: 300, scrollHeight: 20, clientHeight: 20 }), true);
+  assert.equal(D.isClipped({ scrollWidth: 300, clientWidth: 300, scrollHeight: 64, clientHeight: 42 }), true);
+  assert.equal(D.isClipped({ scrollWidth: 300, clientWidth: 300, scrollHeight: 42, clientHeight: 42 }), false);
+  // The markup ships no title: app.js decides on hover, so an unclipped row never shows a duplicate.
+  const html = D.renderItem({ title: 'Kiri', summary: '一段很长的产品介绍' }, 'zh-CN');
+  assert.ok(!/<p class="summary"[^>]*\stitle=/.test(html), html);
+});
+
 test('the two-row tag cap fits exactly two rows, so the second row is never clipped', () => {
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   const tags = styles.match(/\.item-tags \{[^}]*\}/)[0];
