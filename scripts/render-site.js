@@ -27,21 +27,24 @@ function shell({ locale, view, route, title, description, content, data = {}, st
 function heading(locale, title, intro, right = '', eyebrow = 'DEV TRENDS / DAILY DISCOVERIES') {
   return `<div class="page-heading"><div><p class="eyebrow">${eyebrow}</p><h1>${e(title)}</h1>${intro ? `<p class="intro">${e(intro)}</p>` : ''}</div>${right}</div>`;
 }
-function sourceChips(items, locale) {
+function sourceOptions(items, locale) {
   const sources = new Map();
-  for (const item of items) {
-    if (!sources.has(item.sourceId)) sources.set(item.sourceId, { ...item, count: 0 });
-    sources.get(item.sourceId).count++;
-  }
-  return `<button type="button" class="active" data-source="all" aria-pressed="true">${t(locale, 'all')}<b>${items.length}</b></button>` + [...sources.values()].map(s => `<button type="button" data-source="${e(s.sourceId)}" aria-pressed="false">${e(D.sourceName(s, locale))}<b>${s.count}</b></button>`).join('');
+  for (const item of items) sources.set(item.sourceId, { item, count: (sources.get(item.sourceId)?.count || 0) + 1 });
+  return [...sources.values()].map(({ item, count }) => ({ id: item.sourceId, label: D.sourceName(item, locale), count, active: false }));
 }
-function categoryChips(items, locale) {
-  const options = [{ id: 'all', labelZh: '全部', labelEn: 'All' }, ...D.categories];
-  return options.map(category => { const count = category.id === 'all' ? items.length : items.filter(item => D.itemCategory(item) === category.id).length; const label = locale === 'en' ? category.labelEn : category.labelZh; return `<button type="button" data-category="${category.id}" class="${category.id === 'all' ? 'active' : ''}" aria-pressed="${category.id === 'all'}">${e(label)}<b>${count}</b></button>`; }).join('');
+function categoryOptions(items, locale) {
+  return D.categories.map(category => ({ id: category.id, label: locale === 'en' ? category.labelEn : category.labelZh, count: items.filter(item => D.itemCategory(item) === category.id).length, active: false }));
+}
+function filterChips(mode, items, locale) {
+  const meta = D.chipFilterMeta(mode, locale);
+  const options = [{ id: 'all', label: meta.all, count: items.length, active: true }, ...(mode === 'category' ? categoryOptions(items, locale) : sourceOptions(items, locale))];
+  return `<div id="${meta.containerId}" class="chip-filter" data-mode="${mode}" aria-label="${e(meta.aria)}">${D.chipFilterHtml(mode, options, locale)}</div>`;
 }
 function filters(items, locale, mode = 'source') {
-  const chips = mode === 'category' ? `<div id="category-chips" class="source-chips category-chips" aria-label="${locale === 'en' ? 'Categories' : '项目分类'}">${categoryChips(items, locale)}</div>` : mode === 'source' ? `<div id="source-chips" class="source-chips" aria-label="${t(locale, 'source')}">${sourceChips(items, locale)}</div>` : '';
-  return `<section class="filters" aria-label="${t(locale, 'search')}">${chips}<div class="feed-tools"><select id="sort-select" aria-label="${locale === 'en' ? 'Sort projects' : '项目排序'}"><option value="default">${locale === 'en' ? 'Latest discoveries' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most stars / votes' : '最多星标 / 投票'}</option></select><button type="button" id="view-toggle" aria-pressed="false" aria-label="${locale === 'en' ? 'Card view' : '卡片视图'}">▦</button></div></section>`;
+  const chips = ['category', 'source'].includes(mode) ? filterChips(mode, items, locale) : '';
+  const sort = `<select id="sort-select" aria-label="${locale === 'en' ? 'Sort projects' : '项目排序'}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select>`;
+  const view = `<div class="view-switch" role="group" aria-label="${locale === 'en' ? 'View' : '视图切换'}"><button type="button" data-view="card" aria-pressed="false" aria-label="${locale === 'en' ? 'Grid view' : '网格视图'}" title="${locale === 'en' ? 'Grid view' : '网格视图'}">▦</button><button type="button" data-view="list" aria-pressed="true" aria-label="${locale === 'en' ? 'List view' : '列表视图'}" title="${locale === 'en' ? 'List view' : '列表视图'}">☰</button></div>`;
+  return `<section class="filters" aria-label="${t(locale, 'search')}">${chips}${chips ? '<span class="filters-divider" aria-hidden="true"></span>' : ''}<div class="feed-tools">${sort}${view}</div></section>`;
 }
 function discoveryHero(items, locale) {
   const en = locale === 'en';

@@ -73,6 +73,62 @@ test('known data sources expose safe destination links and real website logos', 
   assert.equal(D.sourceInfo({ sourceId: 'unknown-source' }), null);
 });
 
+test('filter chips carry counts, disable empty filters, and always offer a mobile select', () => {
+  const options = [
+    { id: 'all', label: '全部', count: 12, active: true },
+    { id: 'ai', label: 'AI 与智能体', count: 9, active: false },
+    { id: 'other', label: '其他', count: 0, active: false },
+  ];
+  const html = D.chipFilterHtml('category', options, 'zh-CN');
+  assert.ok(html.includes('class="chip-row"'));
+  assert.ok(html.includes('data-more-label="更多分类"'));
+  assert.ok(html.includes('id="category-chips-menu"'));
+  assert.ok(html.includes('id="category-select"'));
+  assert.ok(/data-category="all"[^>]*aria-pressed="true"/.test(html));
+  assert.ok(/data-category="other"[^>]*disabled/.test(html));
+  assert.ok(html.includes('<option value="other" disabled>其他 (0)</option>'));
+  assert.ok(html.includes('<option value="all" selected>全部 (12)</option>'));
+  // An empty filter stays selectable when it is the active one, otherwise the state is unreachable.
+  assert.ok(!/data-category="other"[^>]*disabled/.test(D.chipFilterHtml('category', [{ ...options[2], active: true }], 'zh-CN')));
+  const source = D.chipFilterMeta('source', 'en');
+  assert.equal(source.containerId, 'source-chips');
+  assert.equal(source.selectId, 'source-select');
+  assert.equal(source.all, 'All');
+  assert.ok(D.chipFilterHtml('source', [{ id: 'all', label: 'All', count: 3, active: true }], 'en').includes('More sources'));
+});
+
+test('built pages ship one collapsed chip row per mode with no horizontal scroller', () => {
+  const dist = path.join(__dirname, '../dist');
+  for (const file of ['index.html', 'en/index.html', 'reports/2026-09-10/index.html', 'en/reports/2026-09-10/index.html']) {
+    const html = fs.readFileSync(path.join(dist, file), 'utf8');
+    assert.equal((html.match(/class="chip-filter"/g) || []).length, 1, file);
+    assert.ok(html.includes('class="chip-more"'), file);
+    assert.ok(html.includes('class="chip-select"'), file);
+    assert.ok(html.includes('<noscript><style>.chip-row { flex-wrap: wrap; overflow: visible; }</style></noscript>'), file);
+    assert.ok(!html.includes('id="view-toggle"'), file);
+    assert.equal((html.match(/class="view-switch"/g) || []).length, 1, file);
+  }
+  const home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+  assert.ok(home.includes('data-mode="category"'));
+  assert.equal((home.match(/data-category="/g) || []).length, D.categories.length + 1);
+  const report = fs.readFileSync(path.join(dist, 'reports/2026-09-10/index.html'), 'utf8');
+  assert.ok(report.includes('data-mode="source"'));
+  const styles = fs.readFileSync(path.join(dist, 'styles.css'), 'utf8');
+  assert.ok(/\.chip-row \{[^}]*flex-wrap: nowrap[^}]*overflow: hidden/.test(styles));
+  assert.ok(!styles.includes('.source-chips'));
+});
+
+test('chip row keeps only the leading run that fits and never collapses entirely', () => {
+  // budget = 400 - 100 = 300: 70, then +8+110, then +8+100 = 296 fits; the 130 chip does not.
+  assert.equal(D.fitChipCount([70, 110, 100, 130], 400, 100, 8), 3);
+  assert.equal(D.fitChipCount([70, 110, 100], 400, 0, 8), 3);
+  assert.equal(D.fitChipCount([70, 110, 100, 130], 200, 0, 8), 2);
+  // A single chip wider than the row still stays visible rather than leaving a bare trigger.
+  assert.equal(D.fitChipCount([500], 100, 0, 8), 1);
+  assert.equal(D.fitChipCount([70], 20, 40, 8), 1);
+  assert.equal(D.fitChipCount([], 400, 0, 8), 0);
+});
+
 test('language selection uses translated summaries and explicitly labels fallback originals', () => {
   assert.equal(D.summary({ summary: '中文介绍', summaryEn: 'English translation' }, 'en').text, 'English translation');
   assert.equal(D.summary({ summary: '中文介绍' }, 'en').original, true);

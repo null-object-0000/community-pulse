@@ -87,6 +87,43 @@
   const localPath = (route, locale) => (locale === 'en' ? '/en' : '') + route;
   const sourceName = (item, locale) => sourceLabels[item.sourceId]?.[locale === 'en' ? 1 : 0] || item.sourceName || t(locale, 'unknownSource');
   const sourceInfo = item => sourceDirectory[String(item?.sourceId || '').toLowerCase()] || null;
+  // Filter chips are rendered by the build and rebuilt in the browser, so the markup lives here.
+  // app.js only collapses overflowing chips into the "more" menu; nothing else is generated client-side.
+  const chipModes = {
+    category: { attr: 'data-category', containerId: 'category-chips', menuId: 'category-chips-menu', selectId: 'category-select' },
+    source: { attr: 'data-source', containerId: 'source-chips', menuId: 'source-chips-menu', selectId: 'source-select' },
+  };
+  const chipCopy = {
+    'zh-CN': { all: '全部', category: { more: '更多分类', field: '分类', aria: '项目分类' }, source: { more: '更多来源', field: '来源', aria: '数据来源' } },
+    en: { all: 'All', category: { more: 'More categories', field: 'Category', aria: 'Categories' }, source: { more: 'More sources', field: 'Source', aria: 'Sources' } },
+  };
+  function chipFilterMeta(mode, locale) {
+    const copy = chipCopy[locale === 'en' ? 'en' : 'zh-CN'];
+    return { ...chipModes[mode], ...copy[mode], all: copy.all, mode };
+  }
+  // A zero-count filter stays visible but disabled, so no chip can lead to an empty list.
+  const chipDisabled = option => option.id !== 'all' && Number(option.count) === 0 && !option.active;
+  // Greedy packing for the chip row: how many leading chips fit once `reserve` (the "more"
+  // trigger) is set aside. Always keeps at least one chip so the row is never just a trigger.
+  function fitChipCount(widths, available, reserve = 0, gap = 8) {
+    const budget = available - reserve;
+    let used = 0, count = 0;
+    for (const width of widths) {
+      const cost = width + (count ? gap : 0);
+      if (used + cost > budget) break;
+      used += cost; count += 1;
+    }
+    return widths.length ? Math.max(1, count) : 0;
+  }
+  function chipFilterHtml(mode, options, locale) {
+    const meta = chipFilterMeta(mode, locale);
+    const chips = options.map(option => `<button type="button" class="chip${option.active ? ' is-active' : ''}" ${meta.attr}="${escapeHtml(option.id)}" data-label="${escapeHtml(option.label)}" aria-pressed="${option.active}"${chipDisabled(option) ? ' disabled' : ''}>${escapeHtml(option.label)}<span class="chip-count">${Number(option.count) || 0}</span></button>`).join('');
+    const listOptions = options.map(option => `<option value="${escapeHtml(option.id)}"${option.active ? ' selected' : ''}${chipDisabled(option) ? ' disabled' : ''}>${escapeHtml(option.label)} (${Number(option.count) || 0})</option>`).join('');
+    return `<div class="chip-row">${chips}`
+      + `<div class="chip-more" data-more-label="${escapeHtml(meta.more)}" hidden><button type="button" class="chip chip-more-trigger" aria-expanded="false" aria-controls="${meta.menuId}"><span class="chip-more-label">${escapeHtml(meta.more)}</span><svg class="chip-caret" width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button></div></div>`
+      + `<div class="chip-menu" id="${meta.menuId}" hidden></div>`
+      + `<label class="chip-select"><span class="chip-select-label">${escapeHtml(meta.field)}</span><select id="${meta.selectId}" aria-label="${escapeHtml(meta.aria)}">${listOptions}</select></label>`;
+  }
   function safeUrl(value) {
     try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url.href : ''; } catch { return ''; }
   }
@@ -229,5 +266,5 @@
       <time class="item-date" datetime="${escapeHtml((item.publishedAt || date || '').slice(0, 10))}">${escapeHtml(published)}</time>
       <div class="item-actions">${favoriteButton(item, locale, saved)}</div></article>`;
   }
-  return { origin, favoritesKey, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, safeUrl, localImage, repository, favoriteId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
+  return { origin, favoritesKey, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, localImage, repository, favoriteId, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, favoriteButton, renderItem };
 });

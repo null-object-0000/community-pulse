@@ -29,7 +29,8 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 
 仅有有效 GitHub 仓库根地址的项目生成详情页：`/projects/<owner>/<repo>/`，英文路径加 `/en` 前缀。所有者和仓库名统一小写，同仓库跨来源、跨日报合并，Issue / Blob / 用户主页不当作仓库。列表标题进入详情页，GitHub 和官网保留外链；其他产品仍直接访问外部地址。
 
-- `web/shared.js`：构建与浏览器共用的语言字典、仓库识别、摘要、列表渲染。
+- `web/shared.js`：构建与浏览器共用的语言字典、仓库识别、摘要、列表渲染和筛选 chip 标记。
+- 筛选栏（分类 / 来源）由 `D.chipFilterHtml` 在构建时渲染全部 chip；`web/app.js` 只把放不下的收进「更多分类」菜单，桌面端始终单行且没有横向滚动条，≤600px 换成原生下拉。加减分类不需要改这段逻辑，宽度自适应；被收纳的当前分类会显示在触发按钮上。
 - `web/theme.js`：首屏前应用主题，存储键 `devtrends-theme-v1`。
 - `scripts/render-site.js`：通用 HTML、日报、历史归档和收藏模板。
 - `scripts/projects.js`：项目聚合、仓库快照、收录历史、相关项目及详情 SEO。

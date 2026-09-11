@@ -45,16 +45,101 @@
     url.searchParams.delete('style');
     history.replaceState(null, '', url);
   }
-  function sourceControls() {
-    const chips = document.getElementById('source-chips');
-    if (!chips) return;
-    const groups = new Map();
-    for (const item of items) {
-      if (!groups.has(item.sourceId)) groups.set(item.sourceId, { ...item, count: 0 });
-      groups.get(item.sourceId).count++;
+  // ---- filter chips: one row, whatever does not fit collapses into the "more" menu ----
+  const filterMeta = mode => D.chipFilterMeta(mode, locale);
+  const filterContainer = mode => document.getElementById(filterMeta(mode).containerId);
+  const chipOrder = new WeakMap();
+  function filterOptions(mode) {
+    if (mode === 'source') {
+      const groups = new Map();
+      for (const item of items) groups.set(item.sourceId, { item, count: (groups.get(item.sourceId)?.count || 0) + 1 });
+      if (source !== 'all' && !groups.has(source)) source = 'all';
+      return [{ id: 'all', label: filterMeta('source').all, count: items.length, active: source === 'all' },
+        ...[...groups].map(([id, { item, count }]) => ({ id, label: D.sourceName(item, locale), count, active: source === id }))];
     }
-    if (source !== 'all' && !groups.has(source)) source = 'all';
-    chips.innerHTML = [{ sourceId: 'all', count: items.length }, ...groups.values()].map(item => `<button type="button" data-source="${D.escapeHtml(item.sourceId)}" class="${source === item.sourceId ? 'active' : ''}" aria-pressed="${source === item.sourceId}">${D.escapeHtml(item.sourceId === 'all' ? t('all') : D.sourceName(item, locale))}<b>${item.count}</b></button>`).join('');
+    return [{ id: 'all', label: filterMeta('category').all, count: items.length, active: category === 'all' },
+      ...D.categories.map(entry => ({ id: entry.id, label: locale === 'en' ? entry.labelEn : entry.labelZh, count: items.filter(item => D.itemCategory(item) === entry.id).length, active: category === entry.id }))];
+  }
+  function layoutFilter(container) {
+    const row = container.querySelector('.chip-row');
+    const more = container.querySelector('.chip-more');
+    const menu = container.querySelector('.chip-menu');
+    const trigger = more?.querySelector('.chip-more-trigger');
+    if (!row || !more || !menu || !trigger) return;
+    // Chip order is fixed by the markup, captured before anything is collapsed. Restoring it on
+    // every pass keeps the row stable instead of appending whatever was in the menu last time.
+    let chips = chipOrder.get(container);
+    if (!chips) {
+      chips = [...row.children].filter(node => node.matches('.chip:not(.chip-more-trigger)'));
+      chipOrder.set(container, chips);
+    }
+    for (const node of chips) row.insertBefore(node, more);
+    more.hidden = false;
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    const width = row.clientWidth;
+    if (!width) { more.hidden = true; return; }
+    const gap = parseFloat(getComputedStyle(row).columnGap) || 8;
+    const widths = chips.map(node => node.offsetWidth);
+    const needed = widths.reduce((total, value) => total + value, 0) + gap * Math.max(0, widths.length - 1);
+    if (needed <= width) { more.hidden = true; syncMoreTrigger(container); return; }
+    const visible = D.fitChipCount(widths, width, trigger.offsetWidth + gap, gap);
+    for (const node of chips.slice(visible)) menu.appendChild(node);
+    syncMoreTrigger(container);
+  }
+  // When the active filter is collapsed, the trigger carries its name so the selection stays visible.
+  function syncMoreTrigger(container) {
+    const more = container.querySelector('.chip-more');
+    const trigger = more?.querySelector('.chip-more-trigger');
+    if (!more || !trigger) return;
+    const active = container.querySelector('.chip-menu .chip.is-active');
+    const base = more.dataset.moreLabel || '';
+    trigger.querySelector('.chip-more-label').textContent = active ? active.dataset.label : base;
+    trigger.classList.toggle('is-active', Boolean(active));
+    if (active) trigger.setAttribute('aria-label', `${base}: ${active.dataset.label}`);
+    else trigger.removeAttribute('aria-label');
+  }
+  function closeChipMenus() {
+    document.querySelectorAll('.chip-menu:not([hidden])').forEach(menu => {
+      menu.hidden = true;
+      document.querySelector(`[aria-controls="${menu.id}"]`)?.setAttribute('aria-expanded', 'false');
+    });
+  }
+  function toggleChipMenu(trigger) {
+    const menu = document.getElementById(trigger.getAttribute('aria-controls'));
+    const opening = menu?.hidden;
+    closeChipMenus();
+    if (!menu || !opening) return;
+    menu.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+  }
+  function paintFilter(mode) {
+    const container = filterContainer(mode);
+    if (!container) return null;
+    chipOrder.delete(container);
+    container.innerHTML = D.chipFilterHtml(mode, filterOptions(mode), locale);
+    layoutFilter(container);
+    return container;
+  }
+  function syncFilterState(mode) {
+    const meta = filterMeta(mode), container = filterContainer(mode);
+    if (!container) return;
+    const value = mode === 'category' ? category : source;
+    container.querySelectorAll(`[${meta.attr}]`).forEach(node => {
+      const active = node.getAttribute(meta.attr) === value;
+      node.classList.toggle('is-active', active);
+      node.setAttribute('aria-pressed', String(active));
+    });
+    const select = container.querySelector(`#${meta.selectId}`);
+    if (select) select.value = value;
+    syncMoreTrigger(container);
+  }
+  function applyFilter(mode, value) {
+    if (mode === 'category') category = D.isCategoryId(value) ? value : 'all';
+    else source = value || 'all';
+    syncFilterState(mode);
+    updateFilterUrl();
+    renderFeed();
   }
   function renderFeed() {
     if (!feed) return;
@@ -82,7 +167,7 @@
       if (repo && projectPaths?.[repo.key]) item.projectPath = projectPaths[repo.key];
       return item;
     });
-    sourceControls(); renderFeed();
+    paintFilter('source'); renderFeed();
   }
   const themePicker = document.getElementById('theme-picker');
   function syncThemePicker() {
@@ -128,26 +213,63 @@
   });
   search?.addEventListener('input', () => { query = search.value; updateFilterUrl(); renderFeed(); });
   document.getElementById('sort-select')?.addEventListener('change', event => { sort = event.target.value; renderFeed(); });
-  document.getElementById('view-toggle')?.addEventListener('click', event => {
-    const cards = feed.classList.toggle('card-view');
-    event.currentTarget.setAttribute('aria-pressed', String(cards));
-  });
+  document.querySelectorAll('.view-switch').forEach(group => group.addEventListener('click', event => {
+    const button = event.target.closest('button[data-view]');
+    if (!button || !feed) return;
+    feed.classList.toggle('card-view', button.dataset.view === 'card');
+    group.querySelectorAll('button[data-view]').forEach(node => node.setAttribute('aria-pressed', String(node === button)));
+  }));
   document.addEventListener('keydown', event => {
     if (search && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); search.focus(); }
   });
-  document.getElementById('source-chips')?.addEventListener('click', event => {
-    const button = event.target.closest('button[data-source]'); if (!button) return;
-    source = button.dataset.source; sourceControls(); updateFilterUrl(); renderFeed();
-    document.querySelector('#source-chips button.active')?.focus();
+  document.querySelectorAll('.chip-filter').forEach(container => container.addEventListener('click', event => {
+    const trigger = event.target.closest('.chip-more-trigger');
+    if (trigger) { toggleChipMenu(trigger); return; }
+    const chip = event.target.closest('.chip');
+    if (!chip || chip.disabled) return;
+    const mode = container.dataset.mode, value = chip.getAttribute(filterMeta(mode).attr);
+    if (value === null) return;
+    const collapsed = Boolean(chip.closest('.chip-menu'));
+    applyFilter(mode, value);
+    closeChipMenus();
+    (collapsed ? container.querySelector('.chip-more-trigger') : chip)?.focus();
+  }));
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.chip-more') || event.target.closest('.chip-menu .chip')) closeChipMenus();
   });
-  document.getElementById('category-chips')?.addEventListener('click', event => {
-    const button = event.target.closest('button[data-category]'); if (!button) return;
-    category = button.dataset.category;
-    document.querySelectorAll('[data-category]').forEach(node => { const active = node.dataset.category === category; node.classList.toggle('active', active); node.setAttribute('aria-pressed', String(active)); });
-    updateFilterUrl(); renderFeed(); button.focus();
+  document.addEventListener('change', event => {
+    const select = event.target.closest('.chip-select select');
+    if (select) applyFilter(select.closest('.chip-filter').dataset.mode, select.value);
+  });
+  document.addEventListener('keydown', event => {
+    const openMenu = document.querySelector('.chip-menu:not([hidden])');
+    if (event.key === 'Escape' && openMenu) {
+      const trigger = document.querySelector(`[aria-controls="${openMenu.id}"]`);
+      closeChipMenus();
+      trigger?.focus();
+      return;
+    }
+    const trigger = document.activeElement?.closest?.('.chip-more-trigger');
+    if (trigger && !openMenu && event.key === 'ArrowDown') {
+      event.preventDefault();
+      toggleChipMenu(trigger);
+      document.getElementById(trigger.getAttribute('aria-controls'))?.querySelector('.chip:not(:disabled)')?.focus();
+      return;
+    }
+    if (!openMenu || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    const options = [...openMenu.querySelectorAll('.chip:not(:disabled)')];
+    if (!options.length) return;
+    event.preventDefault();
+    const index = options.indexOf(document.activeElement);
+    if (event.key === 'Home') options[0].focus();
+    else if (event.key === 'End') options[options.length - 1].focus();
+    else if (index < 0) options[event.key === 'ArrowDown' ? 0 : options.length - 1].focus();
+    else options[(index + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length].focus();
   });
   document.getElementById('clear-filters')?.addEventListener('click', () => {
-    source = 'all'; category = 'all'; query = ''; search.value = ''; sourceControls(); document.querySelectorAll('[data-category]').forEach(node => { const active = node.dataset.category === 'all'; node.classList.toggle('active', active); node.setAttribute('aria-pressed', String(active)); }); updateFilterUrl(); renderFeed(); search.focus();
+    source = 'all'; category = 'all'; query = ''; search.value = '';
+    syncFilterState('category'); syncFilterState('source');
+    updateFilterUrl(); renderFeed(); search.focus();
   });
   document.addEventListener('click', event => {
     const button = event.target.closest('button[data-favorite-id]');
@@ -183,8 +305,14 @@
     loadFavorites();
     fetch('/data/images.json').then(response => { if (!response.ok) throw new Error('images'); return response.json(); }).then(paths => { imagePaths = paths; loadFavorites(); }).catch(() => {});
     fetch('/data/projects.json').then(response => { if (!response.ok) throw new Error('catalog'); return response.json(); }).then(paths => { projectPaths = paths; loadFavorites(); }).catch(() => {});
-  } else if (feed) { sourceControls(); renderFeed(); }
+  } else if (feed) { paintFilter('category'); paintFilter('source'); renderFeed(); }
   else synchronizeButtons();
+  // Re-fit the chip row when the container width changes or web fonts finish loading.
+  const filterContainers = ['category', 'source'].map(filterContainer).filter(Boolean);
+  const relayoutFilters = () => filterContainers.forEach(layoutFilter);
+  if (filterContainers.length && window.ResizeObserver) { const observer = new ResizeObserver(relayoutFilters); filterContainers.forEach(node => observer.observe(node)); }
+  window.addEventListener('resize', relayoutFilters);
+  if (document.fonts?.ready) document.fonts.ready.then(relayoutFilters).catch(() => {});
   // Preserve legacy date links; legacy style preferences have no effect on the unified theme.
   if (page.route === '/' && /^\d{4}-\d{2}-\d{2}$/.test(params.get('date') || '')) {
     const select = document.getElementById('date-select');
