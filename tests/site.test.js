@@ -369,6 +369,35 @@ test('language selection uses translated summaries and explicitly labels fallbac
   assert.deepEqual(Object.keys(D.messages.en).sort(), Object.keys(D.messages['zh-CN']).sort());
 });
 
+test('submission labels are stripped from titles in both languages without eating product names', () => {
+  const title = value => D.displayTitle({ title: value }, 'zh-CN');
+  // 中文投稿标签（老规则）与同义的英文、别的括号写法都要清掉。
+  assert.equal(title('【开源自荐】Zedis：Redis 客户端'), 'Zedis：Redis 客户端');
+  assert.equal(title('〖工具自荐〗Deck：macOS 剪贴板管理器'), 'Deck：macOS 剪贴板管理器');
+  assert.equal(title('[开源推荐] LoongFlow'), 'LoongFlow');
+  assert.equal(title('[Open Source] rustnet'), 'rustnet');
+  assert.equal(title('[Tool Self-Promotion] C Dance AI'), 'C Dance AI');
+  assert.equal(title('[Tool self-recommendation] OSINT Tools'), 'OSINT Tools');
+  assert.equal(title('[Show HN] / [Tool] AI Scraper Pro'), 'AI Scraper Pro');
+  assert.equal(title('[开源推荐] [Tool Recommendation] Mini-Tools'), 'Mini-Tools');
+  assert.equal(title('Recommend: Novel Writer Suite'), 'Novel Writer Suite');
+  assert.equal(title('Submit Tool: Gptimage2'), 'Gptimage2');
+  assert.equal(title('推荐项目：astock - A股行情工具'), 'astock - A股行情工具');
+  assert.equal(title('【开源工具】Vercut 分词工具'), 'Vercut 分词工具');
+  // 拿方括号当书名号的产品名、以及其他前缀词不能当成投稿标签。
+  assert.equal(title('【Tokenscope】AI tokens dashboard'), '【Tokenscope】AI tokens dashboard');
+  assert.equal(title('[MAC] Claude Notch Usage Companion'), '[MAC] Claude Notch Usage Companion');
+  assert.equal(title('【开源自荐】【Wegent】开源的AI工作台'), '【Wegent】开源的AI工作台');
+  assert.equal(title('AI-Native PM: Product Validation Toolkit'), 'AI-Native PM: Product Validation Toolkit');
+  assert.equal(title('ai-credit：统计 AI 工具对代码库的真实贡献'), 'ai-credit：统计 AI 工具对代码库的真实贡献');
+  assert.equal(title('Recommendation Engine — 推荐系统实战'), 'Recommendation Engine — 推荐系统实战');
+  assert.equal(title('.resume — 简历工具'), '.resume — 简历工具');
+  // 整个标题就是标签时退回原标题，列表里不能出现空标题。
+  assert.equal(title('[Open Source]'), '[Open Source]');
+  // 英文标题走同一套清理。
+  assert.equal(D.displayTitle({ title: '中文名', titleEn: '[Open Source] ENZO — self-hosted AI workspace' }, 'en'), 'ENZO — self-hosted AI workspace');
+});
+
 test('untrusted source text and URL protocols cannot inject markup or script', () => {
   const item = { title: '<script>alert(1)</script>', summary: '<img src=x onerror=alert(1)>', url: 'javascript:alert(1)', sourceName: '<svg onload=x>' };
   const html = D.renderItem(item, 'en');

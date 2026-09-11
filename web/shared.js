@@ -230,11 +230,46 @@
     const text = cleanSummaryText(raw);
     return { text: text || t(locale, 'noSummary'), original: Boolean(text && !matches(text)), lang: text && /[\u3400-\u9fff]/u.test(text) ? 'zh-CN' : 'en' };
   }
+  // 投稿标签描述「这条是怎么来的」，不是产品名的一部分：【开源自荐】、[开源推荐]、〖工具自荐〗
+  // 这类前缀本来就该从标题里去掉。老规则只认中文的 自荐/推荐/投稿，所以同一批英文投稿
+  // （[Open Source]、[Tool Recommendation]、[Show HN]、[Self-promo]）会原样留在标题里（2026-09 走查）。
+  // 现在命中条件有两种，都只针对开头的括号（或带分隔符的前缀）：
+  //   ① 括号里含投稿动词（自荐/推荐/投稿）—— 沿用老规则，所以「【AI SaaS自荐】」也能清；
+  //   ② 括号里整段都由标签词拼成（[Open Source]、[Tool Self-Promotion]、[Show HN]、【文章】）。
+  // 词表只收「标签词」，所以拿方括号当书名号的产品名（【Tokenscope】、【Wegent】、[MAC]）不受影响。
+  const TITLE_LABEL_WORD = '(?:' + [
+    '(?:已|新)?[开開]源', '工具', '小工具', '[网網][站页頁]', '软件|軟[体件]', '插件', '[项項]目', '[产產]品', '[应應]用', '[资資]源',
+    '文章', '教程', '[课課]程', '[周週]刊', '[资資]讯|資訊', '[内內]容', '好文', '[独獨]立', '[实實]用', '有趣', '博客',
+    '[免兎]费|免費', '系列', '[书書]籍', '言[论論]', '[开開]发|開發', 'AI',
+    '自[荐薦建推宣检]', '自部署', '推[荐薦]', '投稿', 'skills?',
+    'open\\s*source', 'opensource', 'tools?', 'websites?', 'web', 'sites?', 'software', 'plugins?', 'extensions?',
+    'projects?', 'products?', 'apps?', 'resources?', 'articles?', 'tutorials?', 'guides?', 'courses?',
+    'newsletters?', 'blogs?', 'books?', 'free', 'ai', 'submissions?', 'show\\s*hn', 'submit\\s+tool',
+    'self[-\\s]?(?:promo(?:tion)?|recommendation)', 'promos?',
+    'recommend(?:ation|ed|s)?', 'recomend(?:ation|ed)?', 'recommandation',
+    'recomendaci[oó]n(?:\\s+de\\s+herramienta)?', 'おすすめ', 'お勧め',
+  ].join('|') + ')';
+  // 标签词之间允许空格、斜杠、顿号这类连接符；数量都写死上限，避免 (词|词)* 这类写法在长标题上
+  // 退化成指数回溯（浏览器里渲染列表时会卡死）。
+  const TITLE_LABEL_SEP = '[\\s\\-–—/·、,，]{0,2}';
+  const TITLE_LABEL_PHRASE = `${TITLE_LABEL_WORD}(?:${TITLE_LABEL_SEP}${TITLE_LABEL_WORD}){0,4}`;
+  // 括号里的「投稿动词」沿用老规则：只要括号里出现这些词就整段清掉（所以 【AI SaaS自荐】 也能清）。
+  // 只放不会和产品名撞车的写法，recommend 这类英文词不算——[Recommendation Engine] 可能真是产品。
+  const TITLE_LOOSE_VERB = '(?:自[荐薦]|推[荐薦]|投稿|self[-\\s]?(?:promo(?:tion)?|recommendation)|show\\s*hn|submit\\s+tool)';
+  // 不带括号的前缀（Recommend: X、工具自荐：X）必须由「投稿动词」+ 分隔符组成，
+  // 否则「AI-Native PM: …」这种正常标题会被当成 AI 标签吃掉开头。
+  const TITLE_PLAIN_VERB = `(?:${TITLE_LOOSE_VERB}|recommend(?:ation|ed|s)?|recomend(?:ation|ed)?|recommandation|open\\s*source|recomendaci[oó]n|おすすめ|お勧め)`;
+  // 括号标签可以连着写（[开源推荐] [Tool Recommendation] X、[Show HN] / [Tool] X）。
+  const TITLE_BRACKET_LABEL = `[【\\[［〖〔]\\s*(?:[^】\\]］〗〕]*?${TITLE_LOOSE_VERB}[^】\\]］〗〕]*|${TITLE_LABEL_PHRASE})\\s*[】\\]］〗〕]`;
+  const TITLE_PLAIN_LABEL = `(?:${TITLE_LABEL_WORD}${TITLE_LABEL_SEP}){0,4}${TITLE_PLAIN_VERB}(?:${TITLE_LABEL_SEP}${TITLE_LABEL_WORD}){0,4}\\s*[:：\\-–—]`;
+  const TITLE_PREFIX = new RegExp(
+    `^\\s*(?:(?:${TITLE_BRACKET_LABEL}|${TITLE_PLAIN_LABEL})\\s*[/|｜·、,，\\-–—]?\\s*)+`,
+    'i');
+  // 只有标签的标题（如整条就叫 [Open Source]）清完是空串，那样列表会出现没标题的行，退回原标题。
   function displayTitle(item, locale = 'zh-CN') {
     const localized = locale === 'en' ? item.titleEn || item.title_en : item.titleZh || item.title_zh;
-    return String(localized || item.title || repository(item)?.fullName || 'Untitled')
-      .replace(/^\s*[【\[][^】\]]*(?:自荐|推荐|投稿)[^】\]]*[】\]]\s*[:：—-]?\s*/u, '')
-      .replace(/^\s*(?:项目|网站|开源|工具|软件)?\s*(?:自荐|推荐|投稿)\s*[:：—-]\s*/u, '').trim();
+    const title = String(localized || item.title || repository(item)?.fullName || 'Untitled');
+    return title.replace(TITLE_PREFIX, '').trim() || title.trim();
   }
   const reportItems = report => (report?.results || []).flatMap(source => (source.items || []).map(item => ({ ...item, sourceId: item.sourceId || source.sourceId, sourceName: source.sourceName })));
   function metric(item, names) {
