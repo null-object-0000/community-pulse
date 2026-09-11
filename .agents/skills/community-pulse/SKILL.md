@@ -327,9 +327,11 @@ gh workflow run producthunt-backfill.yml --ref main \
 
 ```bash
 node scripts/backfill_producthunt_media.js --start 2026-01-01 --end 2026-09-10 [--dry-run]
-npm run images:sync   # 把 ph-files.imgix.net 的产品标志镜像到 assets/images
+npm run images:sync   # 只镜像小标志；PH 标志按下面的规则回源，不落盘
 npm run check
 ```
+
+**PH 标志不镜像，走回源**：`ph-files.imgix.net` 已在 `web/shared.js` 的 `hotlinkOrigins` 白名单里（PH 图集一直就是这么做的），而 PH 的 `thumbnail` 常是发布原图（实测最大 9 MB，含动态 GIF），最终只渲染成 48px 头像。因此 `scripts/image-store.js` 的 `itemUrls()` 用 `isMirroredMark()` 跳过这个 host：`images:sync` 不下载、manifest 不保留，下次同步会把已有的这类标志一并 prune（实测 476 个文件 / 30 MB）。`IMAGES_RETENTION_DAYS>0` 的「整期镜像」模式不受影响。
 
 **旧混合层日报的 PH 行拿不到精选投影**：2026-01-01~2026-08 的日报（216 天）是已废弃的旧混合层生成的，每天是「当日热门 20 条」而不是 `featured: true`，与 `officialFeatured` 只有 10% 能对上（4433 行里 482 行），所以 `--refresh-featured` 补不到它们的 logo。这类行要按 Post ID 定向补抓（`post(id: ID!)` 支持 `thumbnail { url }` / `media { url }`，见 `capture_producthunt_post_media.js`）：
 

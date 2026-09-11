@@ -53,6 +53,20 @@ test('only product marks are mirrored; screenshots stay on the source CDN', () =
   assert.deepEqual(itemUrls({ logo: 'javascript:alert(1)', image: shot, images: ['data:image/png;base64,x'] }, { screenshots: true }), [shot]);
 });
 
+test('Product Hunt marks are hotlinked instead of mirrored', () => {
+  const phMark = 'https://ph-files.imgix.net/a/thumb.png';
+  const phShot = 'https://ph-files.imgix.net/a/shot.png';
+  // PH marks are launch images (up to 9 MB) shown as a 48px avatar, and the host is already a
+  // trusted hotlink origin, so they never enter the mirror set.
+  assert.deepEqual(itemUrls({ logo: phMark, icon: '', image: phShot }), []);
+  assert.deepEqual(itemUrls({ logo: vibe }), [vibe]);
+  // Hostname matching is case-insensitive, and a lookalike host is a normal mark.
+  assert.deepEqual(itemUrls({ logo: 'https://PH-FILES.IMGIX.NET/a/thumb.png' }), []);
+  assert.deepEqual(itemUrls({ logo: 'https://ph-files.imgix.net.evil.test/a.png' }), ['https://ph-files.imgix.net.evil.test/a.png']);
+  // An explicit retention window still mirrors the whole report, PH included.
+  assert.deepEqual([...new Set(itemUrls({ logo: phMark, images: [phShot] }, { screenshots: true }))], [phMark, phShot]);
+});
+
 test('report images are localized across all fields and failures get a placeholder', () => {
   const report = { results: [{ items: [{ image: remote, logo: 'https://example.org/missing', icon: local, siteLogo: remote }] }] };
   localizeReport(report, { [remote]: local, 'https://example.org/missing': null });

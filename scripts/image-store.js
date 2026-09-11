@@ -6,12 +6,22 @@ const D = require('../web/shared.js');
 const fields = ['image', 'logo', 'icon', 'siteLogo'];
 // Screenshot galleries: `images` holds every image a source published for a product.
 const listFields = ['images'];
-// A product mark identifies a row and stays small (VibeCafé logos average ~46 KB, Product Hunt
-// thumbnails ~13 KB, website icons ~10 KB), so every report's marks are mirrored. Screenshots are
-// hundreds of KB each: they are hotlinked from the source CDN (D.hotlinkable) unless
-// IMAGES_RETENTION_DAYS asks for the newest N reports to be mirrored end to end.
-// `siteLogo` is the website-logo fallback: still a product mark, still small, still mirrored.
+// A product mark identifies a row and stays small (VibeCafé logos average ~46 KB, website icons
+// ~10 KB), so every report's marks are mirrored. Screenshots are hundreds of KB each: they are
+// hotlinked from the source CDN (D.hotlinkable) unless IMAGES_RETENTION_DAYS asks for the newest
+// N reports to be mirrored end to end. `siteLogo` is the website-logo fallback: still a product
+// mark, still small, still mirrored.
 const markFields = ['logo', 'icon', 'siteLogo'];
+// Product Hunt marks are the exception: the legacy 日报 rows carry full launch images (up to
+// 9 MB, often animated GIFs) that only ever render as a 48px avatar, and ph-files.imgix.net is
+// already a trusted hotlink origin for PH screenshot galleries. Mirroring them cost ~230 MB and
+// ~3,900 files while their galleries were hotlinked all along, so the mark list never downloads
+// them. (An explicit IMAGES_RETENTION_DAYS window still mirrors whole reports end to end.)
+const hotlinkMarkOrigins = new Set(['ph-files.imgix.net']);
+const isMirroredMark = value => {
+  const url = D.safeUrl(value);
+  return Boolean(url) && !hotlinkMarkOrigins.has(new URL(url).hostname.toLowerCase());
+};
 const storeDir = path.resolve(__dirname, '../assets/images');
 const rawDir = path.resolve(__dirname, '../知识/大家都在做什么/raw');
 const manifestPath = path.join(storeDir, 'manifest.json');
@@ -27,7 +37,7 @@ const reportDates = () => fs.readdirSync(rawDir).filter(isReportFile).map(name =
 // Marks always; screenshots only inside the retention window.
 function itemUrls(item, { screenshots = false } = {}) {
   const urls = [];
-  for (const field of markFields) if (D.safeUrl(item[field])) urls.push(item[field]);
+  for (const field of markFields) if (isMirroredMark(item[field])) urls.push(item[field]);
   if (!screenshots) return urls;
   for (const field of fields) if (D.safeUrl(item[field])) urls.push(item[field]);
   for (const field of listFields) for (const url of Array.isArray(item[field]) ? item[field] : []) if (D.safeUrl(url)) urls.push(url);
