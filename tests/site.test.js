@@ -87,9 +87,10 @@ test('official publications use their own name and website, while submission cha
   assert.equal(monthly.url, 'https://hellogithub.com/');
   assert.equal(monthly.logo, '/source-hellogithub.svg');
   assert.equal(D.sourceName({ sourceId: 'hellogithub-issue' }, 'zh-CN'), 'HelloGitHub 月刊');
-  // Submissions are collected from GitHub Issues, so renaming must not repoint them at the publication site.
+  // Submissions are collected from GitHub Issues, so their link stays on GitHub — but the badge
+  // is the publication's own mark, not GitHub's, because the row is branded 科技爱好者周刊投稿.
   assert.equal(D.sourceInfo({ sourceId: 'weekly-issues' }).url, 'https://github.com/ruanyf/weekly/issues');
-  assert.equal(D.sourceInfo({ sourceId: 'weekly-issues' }).logo, '/source-github.svg');
+  assert.equal(D.sourceInfo({ sourceId: 'weekly-issues' }).logo, '/source-ruanyifeng.png');
   assert.equal(D.sourceName({ sourceId: 'weekly-issues' }, 'zh-CN'), '科技爱好者周刊投稿');
   assert.equal(D.sourceInfo({ sourceId: 'hellogithub-issues' }).url, 'https://github.com/521xueweihan/HelloGitHub/issues');
 });

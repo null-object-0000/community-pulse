@@ -62,7 +62,7 @@
   const sourceDirectory = {
     vibecafe: { url: 'https://vibecafe.ai/', logo: '/source-vibecafe.svg' },
     'chinese-indie-dev': { url: 'https://github.com/1c7/chinese-independent-developer', logo: '/source-github.svg' },
-    'weekly-issues': { url: 'https://github.com/ruanyf/weekly/issues', logo: '/source-github.svg' },
+    'weekly-issues': { url: 'https://github.com/ruanyf/weekly/issues', logo: '/source-ruanyifeng.png' },
     'weekly-issue': { url: 'https://www.ruanyifeng.com/blog/index.html', logo: '/source-ruanyifeng.png' },
     'hellogithub-issues': { url: 'https://github.com/521xueweihan/HelloGitHub/issues', logo: '/source-hellogithub.svg' },
     'hellogithub-issue': { url: 'https://hellogithub.com/', logo: '/source-hellogithub.svg' },
