@@ -220,8 +220,14 @@ body { background: radial-gradient(ellipse at 52% 12%, var(--accent-soft), trans
 .workspace { max-width: 1536px; padding: 26px 48px 64px; }
 /* The discovery feed benefits from a wider canvas than text-oriented pages. Keep some breathing
    room on large displays, but spend most of the extra width on project titles and summaries. */
+/* Discovery, archive and project routes share one desktop canvas. Their internal grids can differ,
+   but switching routes must not make the page frame visibly jump narrower. */
 body[data-view="report"] .topbar-inner,
-body[data-view="report"] .workspace { max-width: 1720px; }
+body[data-view="archive"] .topbar-inner,
+body[data-view="project"] .topbar-inner,
+body[data-view="report"] .workspace,
+body[data-view="archive"] .workspace,
+body[data-view="project"] .workspace { max-width: 1720px; }
 body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .discovery-layout { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 20px; align-items: start; }
 .discovery-main { min-width: 0; }
@@ -295,7 +301,9 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .sidebar-signature { padding: 28px 10px; color: var(--muted); font-size: .75rem; line-height: 1.6; }
 .sidebar-signature p { margin: 3px 0 12px; }.sidebar-signature i { font-family: cursive; letter-spacing: .08em; }
 .footer { max-width: 1440px; }
-body[data-view="report"] .footer { max-width: 1624px; }
+body[data-view="report"] .footer,
+body[data-view="archive"] .footer,
+body[data-view="project"] .footer { max-width: 1624px; }
 .cards-entry { display: none; }
 body[data-view="cards"] { visibility: hidden; }
 :root[data-theme="dark"] .hero-art { opacity: .65; }

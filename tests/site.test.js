@@ -317,6 +317,17 @@ test('report pages carry the date in the heading instead of a separate meta row'
   assert.ok(!/date-control|feed-heading|report-controls/.test(styles), 'stale meta row rules');
 });
 
+test('discovery, archive, and project pages share the same wide desktop canvas', () => {
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  for (const view of ['report', 'archive', 'project']) {
+    assert.ok(styles.includes(`body[data-view="${view}"] .topbar-inner`), `${view} topbar width`);
+    assert.ok(styles.includes(`body[data-view="${view}"] .workspace`), `${view} workspace width`);
+    assert.ok(styles.includes(`body[data-view="${view}"] .footer`), `${view} footer width`);
+  }
+  assert.match(styles, /body\[data-view="project"\] \.workspace \{ max-width: 1720px; \}/);
+  assert.match(styles, /body\[data-view="project"\] \.footer \{ max-width: 1624px; \}/);
+});
+
 test('chip row keeps only the leading run that fits and never collapses entirely', () => {
   // budget = 400 - 100 = 300: 70, then +8+110, then +8+100 = 296 fits; the 130 chip does not.
   assert.equal(D.fitChipCount([70, 110, 100, 130], 400, 100, 8), 3);
