@@ -13,8 +13,6 @@
   const items = D.reportItems(page.report);
   const stage = document.querySelector('.swipe-stage');
   const position = document.querySelector('.swipe-position');
-  const previous = document.querySelector('.swipe-previous');
-  const next = document.querySelector('.swipe-next');
   let storage = null;
   try { storage = window.localStorage; } catch {}
   const saved = D.readCardsProgress(storage, page.date, items.length);
@@ -44,8 +42,6 @@
       .map(({ item, index: at, depth, interactive }) => D.renderSwipeItem(item, locale, { date: page.date, index: at, depth, interactive }))
       .join('');
     position.textContent = `${index + 1} / ${items.length}`;
-    previous.disabled = index === 0;
-    next.disabled = index === items.length - 1;
     applyDrag(0);
   }
 
@@ -148,8 +144,6 @@
     commit(delta, delta > 0 ? -cardWidth() : cardWidth());
   }
 
-  previous?.addEventListener('click', () => go(-1));
-  next?.addEventListener('click', () => go(1));
   document.addEventListener('keydown', event => {
     if (event.target.closest('input, select, textarea')) return;
     if (event.key === 'ArrowLeft') { event.preventDefault(); go(-1); }
@@ -167,7 +161,7 @@
     // Leave the screen edges to the browser's own back gesture.
     if (event.clientX < 24 || event.clientX > window.innerWidth - 24) return;
     if (isAnimating()) return;
-    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, axis: null, dx: 0 };
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, axis: null, dx: 0, samples: [] };
     // Capture keeps the drag alive when the finger leaves the card. It throws for a pointer id the
     // browser does not know (and on some synthetic events), which must not abort the gesture.
     try { stage.setPointerCapture?.(event.pointerId); } catch {}
@@ -189,18 +183,30 @@
     event.preventDefault();
     cancelLink = true;
     drag.dx = dx;
+    // Keep a short trail so the release can tell a flick from a slow drag.
+    drag.samples.push({ x: event.clientX, t: performance.now() });
+    if (drag.samples.length > 8) drag.samples.shift();
     applyDrag(dx);
   });
 
   const endDrag = event => {
     if (!drag || event.pointerId !== drag.id) return;
-    const { dx } = drag;
+    const { dx, samples } = drag;
     drag = null;
     if (event.type !== 'pointerup') { springBack(); return; }
+    // Speed of the last movement, taken from the recent samples rather than the whole gesture so a
+    // drag that stops before release is not mistaken for a flick.
+    const now = performance.now();
+    const recent = samples.filter(sample => now - sample.t < 120);
+    const first = recent[0] || samples[0];
+    const last = recent[recent.length - 1];
+    const velocity = first && last && last.t > first.t ? (last.x - first.x) / (last.t - first.t) : 0;
     const width = cardWidth();
-    const commitAt = D.swipeCommitDistance(width);
-    if (Math.abs(dx) >= commitAt) commit(dx < 0 ? 1 : -1, dx);
-    else springBack();   // not far enough: the card slides back into the stack
+    // Committing on distance OR speed is the behaviour every platform uses; distance alone makes
+    // every card a deliberate drag.
+    const far = Math.abs(dx) >= D.swipeCommitDistance(width);
+    if (far || D.swipeFlicked(velocity)) commit(dx < 0 ? 1 : -1, dx);
+    else springBack();
     window.setTimeout(() => { cancelLink = false; }, 0);
   };
   stage?.addEventListener('pointerup', endDrag);

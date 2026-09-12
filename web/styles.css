@@ -303,12 +303,16 @@ body[data-view="cards"] { visibility: hidden; }
   body[data-view="cards"] .topbar-inner { flex-wrap: nowrap; }
   body[data-view="cards"] .main-nav, body[data-view="cards"] .footer { display: none; }
   body[data-view="cards"] .workspace { height: calc(100svh - 69px); min-height: 0; padding: 8px 12px 10px; }
-  .cards-page { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; gap: 7px; height: 100%; max-width: 520px; margin: 0 auto; }
+  .cards-page { display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: 6px; height: 100%; max-width: 520px; margin: 0 auto; }
   .cards-page-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .cards-page-heading .eyebrow { margin: 0; font-size: .5625rem; }
   .cards-page-heading h1 { font-size: 1.25rem; }
   .cards-page-heading > a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: var(--muted); }
-  .cards-instruction { margin: 0; color: var(--muted); font-size: .6875rem; line-height: 1.3; text-align: center; }
+  /* One quiet line: how to page on the left, where you are on the right. It replaced both the
+     standalone counter and the two paging buttons, so it also has to stay out of the way. */
+  .cards-status { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0; min-height: 0; }
+  .cards-hint { color: var(--muted); font-size: .625rem; line-height: 1.3; }
+  .swipe-position { color: var(--muted); font-size: .6875rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
   /* The deck. `stage` is the positioning context and owns the height; the cards are stacked inside
      it so the ones behind can rise as the top card leaves. */
   .swipe-stage { --swipe-offset: 0px; position: relative; min-height: 0; touch-action: pan-y; }
@@ -322,7 +326,9 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-item[data-depth="2"] { transform: translateY(26px) scale(.88); }
   .swipe-source { display: flex; align-items: center; gap: 9px; flex: 0 0 auto; padding: 10px 14px; color: var(--muted); font-size: .6875rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .swipe-source .source-mini { flex-basis: 28px; }
-  .swipe-visual { position: relative; flex: 0 0 clamp(112px, 22svh, 190px); overflow: hidden; margin: 0 11px; border-radius: 14px; background: var(--subtle); }
+  /* The image area absorbs whatever height the card has left over, instead of that space collecting
+     as a dead gap above the meta row. On a tall screen the picture simply gets bigger. */
+  .swipe-visual { position: relative; flex: 1 1 auto; min-height: clamp(112px, 22svh, 190px); overflow: hidden; margin: 0 11px; border-radius: 14px; background: var(--subtle); }
   .swipe-visual.has-image img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .swipe-visual.has-image::after { content: ''; position: absolute; inset: auto 0 0; height: 38%; background: linear-gradient(transparent, #0b122033); pointer-events: none; }
   .swipe-visual.is-typographic { display: grid; grid-template-columns: 74px minmax(0, 1fr); align-items: center; gap: 17px; padding: 22px; background: radial-gradient(circle at 85% 15%, var(--accent-line), transparent 42%), linear-gradient(145deg, var(--accent-soft), var(--subtle)); }
@@ -332,7 +338,10 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-wordmark { display: -webkit-box; min-width: 0; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-size: clamp(1.15rem, 5.6vw, 1.55rem); line-height: 1.4; font-weight: 760; letter-spacing: -.02em; overflow-wrap: anywhere; }
   .swipe-copy { min-height: 0; padding: 13px 15px 0; }
   .swipe-copy h2 { display: -webkit-box; margin: 0; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 1.08rem; line-height: 1.38; letter-spacing: -.015em; overflow-wrap: anywhere; }
-  .swipe-copy .summary { display: -webkit-box; margin: 7px 0 0; overflow: hidden; -webkit-line-clamp: 4; -webkit-box-orient: vertical; color: var(--muted); font-size: .8125rem; line-height: 1.55; overflow-wrap: anywhere; }
+  /* The summary line count is capped by the card, not fixed: `swipe-meta` and the open button keep
+     their space (flex: 0 0 auto), so a short card simply shows fewer lines than a tall one instead
+     of the text being clipped while a gap sits underneath. */
+  .swipe-copy .summary { display: -webkit-box; margin: 7px 0 0; overflow: hidden; -webkit-line-clamp: 9; -webkit-box-orient: vertical; color: var(--muted); font-size: .8125rem; line-height: 1.55; overflow-wrap: anywhere; }
   .swipe-original { display: inline-block; margin-top: 6px; color: var(--muted); font-size: .6875rem; }
   .swipe-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-height: 28px; margin-top: auto; padding: 8px 15px 0; overflow: hidden; }
   .swipe-meta .tag { padding: 3px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: .7rem; line-height: 1.4; }
@@ -340,10 +349,6 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-score svg { width: 15px; height: 15px; }
   .swipe-open { display: flex; align-items: center; justify-content: space-between; min-height: 42px; margin: 9px 15px 13px; padding: 8px 13px; border-radius: 11px; background: var(--accent); color: #fff; font-size: .8125rem; font-weight: 700; }
   .swipe-open:hover { color: #fff; }
-  .swipe-controls { display: grid; grid-template-columns: minmax(78px, 1fr) auto minmax(78px, 1fr); align-items: center; gap: 8px; }
-  .swipe-controls button { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 7px 10px; border-radius: 12px; }
-  .swipe-controls button:disabled { cursor: default; opacity: .42; }
-  .swipe-position { color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
 }
 @media (prefers-reduced-motion: reduce) { .swipe-item { animation: none !important; transition: none !important; } }
 

@@ -58,9 +58,8 @@ test('the deck keeps a bounded stack and moves the candidates the maths says it 
   assert.equal(D.swipeStackGeometry(0, 0).progress, 0, 'a zero width never divides by zero');
 
   // The commit distance scales with the card but stays inside sane bounds.
-  assert.equal(D.swipeCommitDistance(390), 101.4);
-  assert.equal(D.swipeCommitDistance(100), 54);
-  assert.equal(D.swipeCommitDistance(1000), 130);
+  assert.equal(D.swipeCommitDistance(100), 36);
+  assert.equal(D.swipeCommitDistance(1000), 96);
 });
 
 test('card content escapes source text and rejects unsafe destinations', () => {
@@ -101,18 +100,35 @@ test('progress stores only the report date and greatest reached index', () => {
   assert.doesNotThrow(() => D.writeCardsProgress(blocked, '2026-09-11', 1, 70));
 });
 
-test('the dense feed is unchanged and the independent script exposes every paging input', () => {
+test('the dense feed is unchanged and the card page keeps its remaining paging inputs', () => {
   const app = fs.readFileSync(path.join(root, 'web', 'app.js'), 'utf8');
   const cards = fs.readFileSync(path.join(root, 'web', 'cards.js'), 'utf8');
   assert.doesNotMatch(app, /renderSwipeItem|swipe-stage|swipeStep/);
   assert.match(app, /filtered\.map\(\(item, index\) => D\.renderItem/);
   assert.match(cards, /location\.replace/);
+  // The arrow keys are now the only non-gesture paging input: the two buttons were removed, so a
+  // keyboard user must not lose paging with them.
   assert.match(cards, /ArrowLeft/);
   assert.match(cards, /ArrowRight/);
-  assert.match(cards, /\.swipe-previous/);
-  assert.match(cards, /\.swipe-next/);
+  assert.doesNotMatch(cards, /swipe-previous|swipe-next|swipe-controls/);
   assert.match(cards, /event\.clientX < 24/);
   assert.doesNotMatch(cards, /ArrowUp|ArrowDown/);
+});
+
+test('a flick commits the card even when the drag falls short of the distance', () => {
+  // Distance alone is what made every card a deliberate drag; the speed path is the fix.
+  assert.equal(D.swipeFlicked(-1.2), true);
+  assert.equal(D.swipeFlicked(0.8), true);
+  assert.equal(D.swipeFlicked(-0.3), false, 'a slow nudge under the threshold snaps back');
+  assert.equal(D.swipeFlicked(0), false);
+  const cards = fs.readFileSync(path.join(root, 'web', 'cards.js'), 'utf8');
+  // The release must consult both, and the velocity has to come from time-stamped samples.
+  assert.match(cards, /swipeFlicked\(velocity\)/);
+  assert.match(cards, /samples\.push\(\{ x: event\.clientX, t: performance\.now\(\) \}\)/);
+  assert.match(cards, /now - sample\.t < 120/);
+  // A threshold in the low end of the 25–50% band the platforms use.
+  assert.equal(D.swipeCommitDistance(390), 70.2);
+  assert.ok(D.swipeCommitDistance(390) / 390 < 0.25);
 });
 
 test('build emits only latest noindex card routes, mobile entries, and no sitemap URLs', () => {
@@ -145,9 +161,15 @@ test('styles keep the entry mobile-only, preserve vertical scrolling, and remove
   assert.match(css, /@media \(max-width: 600px\) \{[\s\S]*\.cards-entry \{ display: grid/);
   assert.match(css, /\.swipe-stage \{[^}]*touch-action: pan-y/);
   assert.doesNotMatch(css.match(/\.swipe-stage \{ --swipe-offset[^}]*\}/)[0], /outline:\s*none/);
-  assert.match(css, /\.swipe-copy \.summary \{[^}]*-webkit-line-clamp: 4/);
+  // The visual area takes the leftover height and the summary line count is only an upper bound, so
+  // a tall card grows its picture instead of collecting a dead gap above the meta row.
+  assert.match(css, /\.swipe-visual \{[^}]*flex: 1 1 auto/);
+  assert.match(css, /\.swipe-visual \{[^}]*min-height: clamp\(/);
+  assert.match(css, /\.swipe-copy \.summary \{[^}]*-webkit-line-clamp: 9/);
   assert.ok(css.lastIndexOf('@media (prefers-reduced-motion: reduce)') > css.indexOf('.swipe-stage { --swipe-offset'));
   assert.doesNotMatch(css, /card-view/);
+  // The two paging buttons are gone; only the gesture and the arrow keys page the deck.
+  assert.doesNotMatch(css, /swipe-controls|swipe-previous|swipe-next/);
 });
 
 test('mobile hides the feed and its filters on the report that has a card page', () => {

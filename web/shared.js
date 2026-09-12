@@ -27,7 +27,7 @@
       unknownSource: '开发者社区', reportTitle: '{date} 开发者趋势日报', reportHeading: '{date}大家都在做什么',
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
-      previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', cardsTitle: '今日卡片', cardsIntro: '一张一张看完今天的新发现', cardsRead: '已读 {n} / {total}', cardsComplete: '已全部读完', cardsHint: '向左滑下一条，向右滑上一条',
+      previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', cardsTitle: '今日卡片', cardsIntro: '一张一张看完今天的新发现', cardsRead: '已读 {n} / {total}', cardsComplete: '已全部读完', cardsHint: '左滑下一条，右滑上一条',
     },
     en: {
       discover: 'Discover', archive: 'Archive', slogan: 'What developers are building',
@@ -402,10 +402,18 @@
   // two cards in motion. Geometry lives here (not in cards.js) so the maths is testable without a
   // DOM and the deck markup and the drag handler cannot drift apart.
   const CARDS_STACK_DEPTH = 3;
-  // How far a card must travel before the release commits to the next/previous item. Scaled to the
-  // card so a 320px phone and a 430px phone both feel the same; clamped so tiny and huge decks stay sane.
-  function swipeCommitDistance(width, min = 54, max = 130) {
-    return Math.min(Math.max(width * 0.26, min), max);
+  // Distance and speed both commit a card, which is what every shipped implementation does:
+  // Android's SwipeDismissBehavior uses 50% of the width, Tinder-style open source cards default to
+  // 25%, and Wear OS / Material Compose explicitly ignore the distance whenever the gesture is a
+  // flick (velocity threshold 1.8 dp/ms). Distance alone forces a long drag on every card; the flick
+  // is what makes the deck feel light. 0.18 sits at the low end of that 25–50% band on purpose.
+  function swipeCommitDistance(width, min = 36, max = 96) {
+    return Math.min(Math.max(width * 0.18, min), max);
+  }
+  // A flick commits regardless of distance. 0.5 px/ms is well below the 1.8 dp/ms Android treats as
+  // a deliberate fling, so an ordinary quick swipe registers while a slow nudge still snaps back.
+  function swipeFlicked(velocity) {
+    return Math.abs(velocity) >= 0.5;
   }
   function swipeStackGeometry(dx, width) {
     const progress = width > 0 ? Math.min(Math.abs(dx) / width, 1) : 0;
@@ -492,5 +500,5 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
