@@ -349,11 +349,15 @@
     'product', 'vibecafe', 'producthunt', 'ruanyf-weekly', 'hellogithub', 'indie-dev', 'github-trending',
     'daily', 'new', 'official', 'submission', 'official-featured',
   ]);
+  // The chinese-independent-developer boards carry the line's status emoji as a tag (`✅ 已上线`,
+  // `🕗 开发中`, `❌ 已关闭`). A status is not a topic: it says nothing a reader can browse by, and
+  // "已上线" is true of nearly every row, so those chips are dropped. The raw tag stays in the report JSON.
+  const collectionStatusTags = new Set(['已上线', '开发中', '已关闭']);
   // Up to three chips per row, minus everything the row already states elsewhere: the source (badge
   // and name) and the primary language, which is rendered as its own chip and repeated by the
   // github-trending collector inside `tags`. Casing variants count as the same tag.
   function visibleTags(item) {
-    const seen = new Set([String(item.sourceId || '').toLowerCase(), String(metric(item, ['language', 'lang']) || '').toLowerCase(), ...sourceScaffoldTags]);
+    const seen = new Set([String(item.sourceId || '').toLowerCase(), String(metric(item, ['language', 'lang']) || '').toLowerCase(), ...sourceScaffoldTags, ...collectionStatusTags]);
     const tags = [];
     for (const tag of [...(item.github?.topics || []), ...(item.tags || [])]) {
       const key = String(tag).trim().toLowerCase();

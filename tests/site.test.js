@@ -85,7 +85,15 @@ test('source scaffolding tags never repeat the row source as a chip', () => {
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'vibecafe', tags: ['vibecafe', 'product'] }), []);
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issue', tags: ['ruanyf-weekly', 'official', '工具'] }), ['工具']);
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'hellogithub-issue', tags: ['hellogithub', 'official', 'Go'] }), ['Go']);
-  assert.deepEqual(chipTags({ title: 'x', sourceId: 'chinese-indie-dev', tags: ['indie-dev', '已上线'] }), ['已上线']);
+  // The chinese-independent-developer boards prefix the line's status emoji as a tag; a status is not
+  // a topic, so the whole `indie-dev` + status prefix leaves the row chip-less.
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'chinese-indie-dev', tags: ['indie-dev', '已上线'] }), []);
+  const indie = (status) => chipTags({ title: 'x', sourceId: 'chinese-indie-dev', tags: ['indie-dev', status] });
+  assert.deepEqual(indie('已上线'), []);
+  assert.deepEqual(indie('开发中'), []);
+  assert.deepEqual(indie('已关闭'), []);
+  // The board tag that separates 程序员版 / 游戏版 from the main board is still a chip.
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'chinese-indie-dev-game', tags: ['indie-dev', '已上线', '游戏版'] }), ['游戏版']);
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'Rust'] }), ['Rust']);
   // A tag that merely repeats the source id is dropped too, and content tags are untouched.
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'mystery-source', tags: ['mystery-source', 'python', 'mcp'] }), ['python', 'mcp']);
