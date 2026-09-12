@@ -112,6 +112,7 @@ test('the dense feed is unchanged and the card page keeps its remaining paging i
   assert.match(cards, /ArrowRight/);
   assert.doesNotMatch(cards, /swipe-previous|swipe-next|swipe-controls/);
   assert.match(cards, /event\.clientX < 24/);
+  assert.match(cards, /data-depth="previous"/, 'a right swipe has the real previous card waiting underneath');
   assert.doesNotMatch(cards, /ArrowUp|ArrowDown/);
 });
 
@@ -141,6 +142,8 @@ test('build emits only latest noindex card routes, mobile entries, and no sitema
     assert.match(html, /<body data-view="cards">/);
     assert.match(html, /<script src="\/cards\.js" defer><\/script>/);
     assert.ok(!html.includes('<script src="/app.js"'));
+    assert.match(html, /class="cards-close"/);
+    assert.doesNotMatch(html, /class="cards-page-heading"|class="cards-status"/, 'the deck has no second visual header');
     const data = JSON.parse(html.match(/<script id="page-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
     assert.equal(data.date, index.latest);
     // The card page mirrors whatever the latest report holds; the count is not pinned to one day.
@@ -183,13 +186,15 @@ test('styles keep the entry mobile-only, preserve vertical scrolling, and remove
 
 test('mobile hides the feed and its filters on the report that has a card page', () => {
   const css = fs.readFileSync(path.join(root, 'web', 'styles.css'), 'utf8');
-  const media = css.match(/@media \(max-width: 600px\) \{\n  \.cards-entry \{ display: grid[\s\S]*?\n\}/)[0];
+  const media = css.slice(css.indexOf('/* One compact header on every ordinary mobile page.'));
   // The feed, its search box and the filter row are hidden only where a card page exists.
   assert.match(media, /body\[data-cards-available="1"\] \.header-search,\n  body\[data-cards-available="1"\] \.discovery-results \{ display: none; \}/);
   // An archived report has no card page, so it must keep the list on mobile.
   assert.doesNotMatch(media, /^\s*\.header-search, \.discovery-results \{ display: none/m);
   // Desktop keeps the list: the rule lives inside the narrow-screen media query only.
-  assert.ok(css.indexOf('body[data-cards-available="1"] .header-search') > css.indexOf('@media (max-width: 600px) {\n  .cards-entry'));
+  assert.ok(css.indexOf('body[data-cards-available="1"] .header-search') > css.indexOf('/* One compact header on every ordinary mobile page.'));
+  assert.match(media, /\.main-nav \{ display: none; \}/, 'mobile removes report route switching');
+  assert.match(media, /body\[data-view="cards"\] \.topbar, body\[data-view="cards"\] \.footer \{ display: none; \}/, 'cards hide the global chrome');
 
   const template = fs.readFileSync(path.join(root, 'web', 'index.html'), 'utf8');
   assert.match(template, /<body data-view="\{\{view\}\}"\{\{bodyAttrs\}\}>/);

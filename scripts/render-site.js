@@ -77,10 +77,10 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
 }
 function cardsPage(report, date, locale) {
   const items = D.reportItems(report), title = `${t(locale, 'cardsTitle')} | DevTrends`;
-  // The deck's own chrome: one quiet line that states the gesture and where you are. The paging
-  // buttons and the separate counter are gone — the gesture and the keyboard cover paging, and this
-  // line was already the place a reader looks to learn the gesture.
-  const content = `<section class="cards-page" aria-labelledby="cards-title"><header class="cards-page-heading"><div><p class="eyebrow">DEV TRENDS / DAILY CARDS</p><h1 id="cards-title">${t(locale, 'cardsTitle')}</h1></div><a href="${lp('/', locale)}" aria-label="${t(locale, 'home')}">✕</a></header><p class="cards-status" id="cards-instruction"><span class="cards-hint">${t(locale, 'cardsHint')}</span><output class="swipe-position" aria-live="polite" aria-atomic="true">${items.length ? `1 / ${items.length}` : '0 / 0'}</output></p><div class="swipe-stage" tabindex="0" aria-labelledby="cards-title cards-instruction"></div></section>`;
+  // Mobile cards are an immersive reader: the global header and a second page heading would both
+  // compete with the deck. Keep only two quiet floating controls and retain the full labelling for
+  // screen readers.
+  const content = `<section class="cards-page" aria-labelledby="cards-title"><h1 class="sr-only" id="cards-title">${t(locale, 'cardsTitle')}</h1><p class="sr-only" id="cards-instruction">${t(locale, 'cardsHint')}</p><a class="cards-close" href="${lp('/', locale)}" aria-label="${t(locale, 'home')}">✕</a><output class="swipe-position" aria-live="polite" aria-atomic="true">${items.length ? `1 / ${items.length}` : '0 / 0'}</output><div class="swipe-stage" tabindex="0" aria-labelledby="cards-title cards-instruction"></div></section>`;
   return shell({ locale, view: 'cards', route: '/cards/', title, description: t(locale, 'cardsIntro'), content, data: { date, report }, noindex: true });
 }
 function archivePage(reports, locale) {

@@ -38,9 +38,16 @@
     if (!stage || !items.length) return;
     // Depth 2 first so depth 0 lands last in the DOM; z-index also orders them, but keeping the
     // source order bottom-up means the a11y tree and the paint order agree.
-    stage.innerHTML = D.swipeDeck(items, index).reverse()
+    const forward = D.swipeDeck(items, index).reverse()
       .map(({ item, index: at, depth, interactive }) => D.renderSwipeItem(item, locale, { date: page.date, index: at, depth, interactive }))
       .join('');
+    // The normal stack looks forward. A separate dormant card is the real previous item, ready to
+    // be revealed under a right swipe; without it the UI showed the next item underneath and then
+    // swapped in the previous item after release, which made only that direction feel abrupt.
+    const previous = index > 0
+      ? D.renderSwipeItem(items[index - 1], locale, { date: page.date, index: index - 1, depth: 'previous', interactive: false })
+      : '';
+    stage.innerHTML = previous + forward;
     position.textContent = `${index + 1} / ${items.length}`;
     applyDrag(0);
   }
@@ -52,17 +59,26 @@
     const top = stage.querySelector('.swipe-item[data-depth="0"]');
     const second = stage.querySelector('.swipe-item[data-depth="1"]');
     const third = stage.querySelector('.swipe-item[data-depth="2"]');
+    const previous = stage.querySelector('.swipe-item[data-depth="previous"]');
     const width = cardWidth();
     const geometry = D.swipeStackGeometry(dx, width);
+    const goingBack = dx > 0;
     if (top) {
       top.style.transform = `translateX(${dx}px) rotate(${geometry.rotate}deg)`;
       // A little fade at the edges sells the motion without a second render pass.
       top.style.opacity = String(1 - geometry.progress * 0.25);
     }
+    if (previous) {
+      previous.style.visibility = goingBack ? 'visible' : 'hidden';
+      previous.style.opacity = goingBack ? '1' : '0';
+      previous.style.transform = `translateY(${geometry.nextOffset}px) scale(${geometry.nextScale})`;
+    }
     if (second) {
+      second.style.visibility = goingBack ? 'hidden' : 'visible';
       second.style.transform = `translateY(${geometry.nextOffset}px) scale(${geometry.nextScale})`;
     }
     if (third) {
+      third.style.visibility = goingBack ? 'hidden' : 'visible';
       third.style.transform = `translateY(${geometry.thirdOffset}px) scale(${geometry.thirdScale})`;
     }
   }
@@ -72,6 +88,7 @@
       node.style.removeProperty('transform');
       node.style.removeProperty('opacity');
       node.style.removeProperty('transition');
+      node.style.removeProperty('visibility');
     });
   }
 
@@ -125,13 +142,23 @@
     const top = stage.querySelector('.swipe-item[data-depth="0"]');
     const second = stage.querySelector('.swipe-item[data-depth="1"]');
     const third = stage.querySelector('.swipe-item[data-depth="2"]');
-    animateNodes([top, second, third], ms, 'cubic-bezier(.4,0,.7,.5)');
+    const previous = stage.querySelector('.swipe-item[data-depth="previous"]');
+    const incoming = delta < 0 ? previous : second;
+    const trailing = delta < 0 ? null : third;
+    if (delta < 0 && previous) {
+      previous.style.visibility = 'visible';
+      previous.style.opacity = '1';
+      if (!dx) previous.style.transform = 'translateY(14px) scale(.94)';
+      if (second) second.style.visibility = 'hidden';
+      if (third) third.style.visibility = 'hidden';
+    }
+    animateNodes([top, incoming, trailing], ms, 'cubic-bezier(.4,0,.7,.5)');
     if (top) {
       top.style.transform = `translateX(${exitX}px) rotate(${Math.max(-14, Math.min(14, exitX / 14))}deg)`;
       top.style.opacity = '0';
     }
-    if (second) second.style.transform = 'translateY(0) scale(1)';
-    if (third) third.style.transform = 'translateY(14px) scale(.94)';
+    if (incoming) incoming.style.transform = 'translateY(0) scale(1)';
+    if (trailing) trailing.style.transform = 'translateY(14px) scale(.94)';
     window.setTimeout(() => {
       clearInlineTransforms();
       center(target);
