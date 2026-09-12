@@ -397,7 +397,34 @@
       <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
   }
-  function renderSwipeItem(item, locale, { date = '', index = 0 } = {}) {
+  // Mobile card deck. Stacked cards are what makes the gesture read as "the content is moving":
+  // the card under the top one rises to full size as the top card leaves, so a drag always shows
+  // two cards in motion. Geometry lives here (not in cards.js) so the maths is testable without a
+  // DOM and the deck markup and the drag handler cannot drift apart.
+  const CARDS_STACK_DEPTH = 3;
+  // How far a card must travel before the release commits to the next/previous item. Scaled to the
+  // card so a 320px phone and a 430px phone both feel the same; clamped so tiny and huge decks stay sane.
+  function swipeCommitDistance(width, min = 54, max = 130) {
+    return Math.min(Math.max(width * 0.26, min), max);
+  }
+  function swipeStackGeometry(dx, width) {
+    const progress = width > 0 ? Math.min(Math.abs(dx) / width, 1) : 0;
+    // Promotion is driven to completion by the commit distance, not by the full card width: a swipe
+    // only ever travels a fraction of the width, so a width-based ramp would leave the card behind
+    // still shrunken at the moment of release (which reads as a page swap rather than a card leaving).
+    const ramp = width > 0 ? Math.min(Math.abs(dx) / swipeCommitDistance(width), 1) : 0;
+    return {
+      progress,
+      // The top card tilts as it is dragged, the way a physical card would when pushed sideways.
+      rotate: Math.max(-14, Math.min(14, dx / 14)),
+      nextScale: 1 - 0.06 * (1 - ramp),
+      nextOffset: 14 * (1 - ramp),
+      // The third card moves up one slot: it takes the size and offset the second card rests at.
+      thirdScale: 0.94 - 0.06 * (1 - ramp),
+      thirdOffset: 14 + 12 * (1 - ramp),
+    };
+  }
+  function renderSwipeItem(item, locale, { date = '', index = 0, depth = 0, interactive = true } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
     const primary = safeUrl(item.websiteUrl || item.url) || repo?.url;
     const titleUrl = projectPath ? localPath(projectPath, locale) : trackedUrl(repo?.url || primary, item, date);
@@ -417,12 +444,18 @@
       ? `<div class="swipe-visual has-image"><img src="${escapeHtml(screenshots[0])}" alt="" /></div>`
       : `<div class="swipe-visual is-typographic" aria-hidden="true"><span class="swipe-mark avatar-${index % 5}${markUrl ? ' has-logo' : ''}">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="" />` : initials}</span><span class="swipe-wordmark">${escapeHtml(title)}</span></div>`;
     const metadata = [language ? `<span class="tag">${escapeHtml(language)}</span>` : '', ...tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`), score !== null ? `<span class="swipe-score">${scoreIcon}<span>${compact(score, locale)}</span></span>` : ''].join('');
-    return `<article class="swipe-item${screenshots.length ? ' has-image' : ' is-typographic'}" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
+    // Only the top card is reachable. The cards waiting behind it must not carry links or buttons at
+    // all: `inert` alone still leaves them in the tab order in Chromium, so a keyboard user would
+    // tab into a card they cannot see. The title is plain text there for the same reason.
+    const deferred = interactive ? '' : ' inert aria-hidden="true"';
+    const titleTag = interactive && titleUrl ? `<a href="${escapeHtml(titleUrl)}"${titleTarget}>${escapeHtml(title)}</a>` : escapeHtml(title);
+    const openLink = interactive && titleUrl ? `<a class="swipe-open" href="${escapeHtml(titleUrl)}"${titleTarget}>${escapeHtml(t(locale, 'openItem'))}<span aria-hidden="true">↗</span></a>` : '';
+    return `<article class="swipe-item" data-depth="${depth}"${deferred} data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
       <header class="swipe-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${sourceBadge}</span><span>${escapeHtml(sourceName(item, locale))}</span></header>
       ${visual}
-      <div class="swipe-copy"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${titleTarget}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="swipe-original">${t(locale, 'original')}</span>` : ''}</div>
+      <div class="swipe-copy"><h2>${titleTag}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="swipe-original">${t(locale, 'original')}</span>` : ''}</div>
       <div class="swipe-meta">${metadata}</div>
-      ${titleUrl ? `<a class="swipe-open" href="${escapeHtml(titleUrl)}"${titleTarget}>${escapeHtml(t(locale, 'openItem'))}<span aria-hidden="true">↗</span></a>` : ''}
+      ${openLink}
     </article>`;
   }
   function boundedIndex(index, delta, length) {
@@ -430,6 +463,17 @@
   }
   function swipeStep(deltaX, deltaY, threshold = 54) {
     return Math.abs(deltaX) >= threshold && Math.abs(deltaX) > Math.abs(deltaY) * 1.15 ? (deltaX < 0 ? 1 : -1) : 0;
+  }
+  // The deck's items: the current one first, then what sits behind it. Bounded so the last card
+  // simply has an emptier stack instead of wrapping around.
+  function swipeDeck(items, index) {
+    const deck = [];
+    for (let i = 0; i < CARDS_STACK_DEPTH; i += 1) {
+      const at = index + i;
+      if (at < 0 || at >= items.length) continue;
+      deck.push({ item: items[at], index: at, depth: i, interactive: i === 0 });
+    }
+    return deck;
   }
   const cardsProgressKey = 'devtrends-cards-v1';
   function readCardsProgress(storage, date, total) {
@@ -448,5 +492,5 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

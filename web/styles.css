@@ -309,11 +309,17 @@ body[data-view="cards"] { visibility: hidden; }
   .cards-page-heading h1 { font-size: 1.25rem; }
   .cards-page-heading > a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: var(--muted); }
   .cards-instruction { margin: 0; color: var(--muted); font-size: .6875rem; line-height: 1.3; text-align: center; }
-  .swipe-stage { --swipe-offset: 0px; min-height: 0; touch-action: pan-y; transform: translateX(var(--swipe-offset)); transition: transform .18s ease, opacity .18s ease; }
+  /* The deck. `stage` is the positioning context and owns the height; the cards are stacked inside
+     it so the ones behind can rise as the top card leaves. */
+  .swipe-stage { --swipe-offset: 0px; position: relative; min-height: 0; touch-action: pan-y; }
   .swipe-stage.is-dragging { transition: none; }
-  .swipe-stage[data-motion="next"] .swipe-item { animation: swipe-from-right .2s ease-out; }
-  .swipe-stage[data-motion="previous"] .swipe-item { animation: swipe-from-left .2s ease-out; }
-  .swipe-item { display: flex; flex-direction: column; height: 100%; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 12px 32px #14264a14; }
+  .swipe-item { position: absolute; inset: 0; display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 12px 32px #14264a14; transform-origin: 50% 100%; will-change: transform; }
+  .swipe-item[data-depth="0"] { z-index: 3; cursor: grab; }
+  .swipe-item[data-depth="1"] { z-index: 2; }
+  .swipe-item[data-depth="2"] { z-index: 1; }
+  /* The waiting cards are scenery: they sit slightly smaller and lower until their turn comes. */
+  .swipe-item[data-depth="1"] { transform: translateY(14px) scale(.94); }
+  .swipe-item[data-depth="2"] { transform: translateY(26px) scale(.88); }
   .swipe-source { display: flex; align-items: center; gap: 9px; flex: 0 0 auto; padding: 10px 14px; color: var(--muted); font-size: .6875rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .swipe-source .source-mini { flex-basis: 28px; }
   .swipe-visual { position: relative; flex: 0 0 clamp(112px, 22svh, 190px); overflow: hidden; margin: 0 11px; border-radius: 14px; background: var(--subtle); }
@@ -339,9 +345,7 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-controls button:disabled { cursor: default; opacity: .42; }
   .swipe-position { color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
 }
-@keyframes swipe-from-right { from { opacity: 0; transform: translateX(18px); } }
-@keyframes swipe-from-left { from { opacity: 0; transform: translateX(-18px); } }
-@media (prefers-reduced-motion: reduce) { .swipe-stage { transition: none; } .swipe-item { animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .swipe-item { animation: none !important; transition: none !important; } }
 
 /* Header preferences: icon theme menu and globe language selector. */
 .preferences { margin-left: auto; align-items: center; gap: 22px; flex-shrink: 0; }

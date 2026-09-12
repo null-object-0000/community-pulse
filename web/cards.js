@@ -19,71 +19,192 @@
   try { storage = window.localStorage; } catch {}
   const saved = D.readCardsProgress(storage, page.date, items.length);
   let index = D.boundedIndex(saved.maxIndex, 0, items.length);
-  let pointerStart = null;
-  let cancelLink = false;
 
-  function paint(direction = 0) {
+  let drag = null;          // { id, x, y, axis, dx, dy } while a pointer is down
+  let cancelLink = false;   // set when a drag happened, so the card link does not also fire
+  // Deadline rather than a boolean: a flag that is only cleared by a timer leaves the whole deck
+  // permanently unresponsive if that callback ever throws. A timestamp cannot get stuck.
+  let animatingUntil = 0;
+  const isAnimating = () => Date.now() < animatingUntil;
+
+  // Spring-ish easing for the snap back to rest; commit uses a shorter, decisive ease so the card
+  // visibly leaves rather than easing out of sight.
+  const SNAP_BACK_MS = 260;
+  const FLY_OUT_MS = 220;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motion = () => (reduceMotion.matches ? 0 : 1);
+
+  const cardWidth = () => (stage?.getBoundingClientRect().width || window.innerWidth);
+
+  function paintDeck() {
     if (!stage || !items.length) return;
-    stage.innerHTML = D.renderSwipeItem(items[index], locale, { date: page.date, index });
-    stage.dataset.motion = direction > 0 ? 'next' : direction < 0 ? 'previous' : '';
+    // Depth 2 first so depth 0 lands last in the DOM; z-index also orders them, but keeping the
+    // source order bottom-up means the a11y tree and the paint order agree.
+    stage.innerHTML = D.swipeDeck(items, index).reverse()
+      .map(({ item, index: at, depth, interactive }) => D.renderSwipeItem(item, locale, { date: page.date, index: at, depth, interactive }))
+      .join('');
     position.textContent = `${index + 1} / ${items.length}`;
     previous.disabled = index === 0;
     next.disabled = index === items.length - 1;
-  }
-  function move(delta) {
-    const target = D.boundedIndex(index, delta, items.length);
-    if (target === index) {
-      stage.style.removeProperty('--swipe-offset');
-      return;
-    }
-    index = target;
-    D.writeCardsProgress(storage, page.date, index, items.length);
-    paint(delta);
-  }
-  function resetPointer() {
-    stage.classList.remove('is-dragging');
-    stage.style.removeProperty('--swipe-offset');
-    pointerStart = null;
+    applyDrag(0);
   }
 
-  previous?.addEventListener('click', () => move(-1));
-  next?.addEventListener('click', () => move(1));
+  // Live drag: the top card follows the finger one-to-one (the deck is not a carousel, so the card
+  // must stay under your thumb), while the cards behind it grow and rise as it leaves.
+  function applyDrag(dx) {
+    if (!stage) return;
+    const top = stage.querySelector('.swipe-item[data-depth="0"]');
+    const second = stage.querySelector('.swipe-item[data-depth="1"]');
+    const third = stage.querySelector('.swipe-item[data-depth="2"]');
+    const width = cardWidth();
+    const geometry = D.swipeStackGeometry(dx, width);
+    if (top) {
+      top.style.transform = `translateX(${dx}px) rotate(${geometry.rotate}deg)`;
+      // A little fade at the edges sells the motion without a second render pass.
+      top.style.opacity = String(1 - geometry.progress * 0.25);
+    }
+    if (second) {
+      second.style.transform = `translateY(${geometry.nextOffset}px) scale(${geometry.nextScale})`;
+    }
+    if (third) {
+      third.style.transform = `translateY(${geometry.thirdOffset}px) scale(${geometry.thirdScale})`;
+    }
+  }
+
+  function clearInlineTransforms() {
+    stage?.querySelectorAll('.swipe-item').forEach(node => {
+      node.style.removeProperty('transform');
+      node.style.removeProperty('opacity');
+      node.style.removeProperty('transition');
+    });
+  }
+
+  // A transition only runs if the browser has committed the "from" state while `transition: none`
+  // was in effect. Setting the transition and the new transform in the same style recalc (no reflow
+  // between) makes the change land as a jump — which is exactly what made the first version of this
+  // feel like a page swap instead of a card leaving. The forced reflow is the whole point.
+  function animateNodes(nodes, ms, ease) {
+    const live = nodes.filter(Boolean);
+    if (!ms || !live.length) return;
+    live.forEach(node => { node.style.transition = 'none'; });
+    void stage.offsetWidth;
+    live.forEach(node => { node.style.transition = `transform ${ms}ms ${ease}, opacity ${ms}ms ease`; });
+  }
+
+  function setTransitions(ms, ease) {
+    stage?.querySelectorAll('.swipe-item').forEach(node => {
+      node.style.transition = `transform ${ms}ms ${ease}, opacity ${ms}ms ease`;
+    });
+  }
+
+  // Released before the commit distance: the card slides back into the stack, and the card behind it
+  // shrinks back to its waiting size.
+  function springBack() {
+    const ms = motion() ? SNAP_BACK_MS : 0;
+    if (!ms) { clearInlineTransforms(); applyDrag(0); return; }
+    animatingUntil = Date.now() + ms;
+    animateNodes([0, 1, 2].map(depth => stage.querySelector(`.swipe-item[data-depth="${depth}"]`)), ms, 'cubic-bezier(.22,.61,.36,1)');
+    applyDrag(0);
+    window.setTimeout(() => { clearInlineTransforms(); applyDrag(0); }, ms);
+  }
+
+  function center(target) {
+    index = D.boundedIndex(target, 0, items.length);
+    D.writeCardsProgress(storage, page.date, index, items.length);
+    paintDeck();
+  }
+
+  // A committed swipe: the top card keeps travelling the way it was thrown while the card behind it
+  // grows into place, and only then is the deck rebuilt. Promoting during the fly-out — instead of
+  // swapping the contents on release — is what makes the whole card read as moving.
+  function commit(delta, dx) {
+    if (!items.length) return;
+    const target = D.boundedIndex(index, delta, items.length);
+    if (target === index) { springBack(); return; }
+    const ms = motion() ? FLY_OUT_MS : 0;
+    if (!ms) { clearInlineTransforms(); center(target); return; }
+    const width = cardWidth();
+    const exitX = (delta > 0 ? -1 : 1) * width * 1.15;
+    animatingUntil = Date.now() + ms;
+    const top = stage.querySelector('.swipe-item[data-depth="0"]');
+    const second = stage.querySelector('.swipe-item[data-depth="1"]');
+    const third = stage.querySelector('.swipe-item[data-depth="2"]');
+    animateNodes([top, second, third], ms, 'cubic-bezier(.4,0,.7,.5)');
+    if (top) {
+      top.style.transform = `translateX(${exitX}px) rotate(${Math.max(-14, Math.min(14, exitX / 14))}deg)`;
+      top.style.opacity = '0';
+    }
+    if (second) second.style.transform = 'translateY(0) scale(1)';
+    if (third) third.style.transform = 'translateY(14px) scale(.94)';
+    window.setTimeout(() => {
+      clearInlineTransforms();
+      center(target);
+    }, ms);
+    void dx;
+  }
+
+  function go(delta) {
+    if (isAnimating() || !items.length) return;
+    commit(delta, delta > 0 ? -cardWidth() : cardWidth());
+  }
+
+  previous?.addEventListener('click', () => go(-1));
+  next?.addEventListener('click', () => go(1));
   document.addEventListener('keydown', event => {
     if (event.target.closest('input, select, textarea')) return;
-    if (event.key === 'ArrowLeft') { event.preventDefault(); move(-1); }
-    else if (event.key === 'ArrowRight') { event.preventDefault(); move(1); }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); go(-1); }
+    else if (event.key === 'ArrowRight') { event.preventDefault(); go(1); }
   });
+
   stage?.addEventListener('click', event => {
     if (!cancelLink) return;
     event.preventDefault();
     cancelLink = false;
   });
+
   stage?.addEventListener('pointerdown', event => {
     if (!event.isPrimary || !['touch', 'pen'].includes(event.pointerType)) return;
+    // Leave the screen edges to the browser's own back gesture.
     if (event.clientX < 24 || event.clientX > window.innerWidth - 24) return;
-    pointerStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
-    stage.setPointerCapture?.(event.pointerId);
+    if (isAnimating()) return;
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, axis: null, dx: 0 };
+    // Capture keeps the drag alive when the finger leaves the card. It throws for a pointer id the
+    // browser does not know (and on some synthetic events), which must not abort the gesture.
+    try { stage.setPointerCapture?.(event.pointerId); } catch {}
+    const top = stage.querySelector('.swipe-item[data-depth="0"]');
+    if (top) { top.style.transition = 'none'; }
   });
+
   stage?.addEventListener('pointermove', event => {
-    if (!pointerStart || event.pointerId !== pointerStart.id) return;
-    const dx = event.clientX - pointerStart.x;
-    const dy = event.clientY - pointerStart.y;
-    if (Math.abs(dx) < 8 || Math.abs(dx) <= Math.abs(dy) * 1.15) return;
+    if (!drag || event.pointerId !== drag.id) return;
+    const dx = event.clientX - drag.x;
+    const dy = event.clientY - drag.y;
+    // Lock the axis on the first meaningful move so a vertical scroll never nudges the card.
+    if (!drag.axis) {
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      drag.axis = Math.abs(dx) > Math.abs(dy) * 1.15 ? 'x' : 'y';
+      if (drag.axis === 'y') { drag = null; return; }
+    }
+    if (drag.axis !== 'x') return;
     event.preventDefault();
     cancelLink = true;
-    stage.classList.add('is-dragging');
-    stage.style.setProperty('--swipe-offset', `${Math.max(-120, Math.min(120, dx * .42))}px`);
+    drag.dx = dx;
+    applyDrag(dx);
   });
-  const finishPointer = event => {
-    if (!pointerStart || event.pointerId !== pointerStart.id) return;
-    const step = event.type === 'pointerup' ? D.swipeStep(event.clientX - pointerStart.x, event.clientY - pointerStart.y) : 0;
-    const dragged = cancelLink;
-    resetPointer();
-    if (step) move(step);
-    if (dragged) setTimeout(() => { cancelLink = false; }, 0);
+
+  const endDrag = event => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const { dx } = drag;
+    drag = null;
+    if (event.type !== 'pointerup') { springBack(); return; }
+    const width = cardWidth();
+    const commitAt = D.swipeCommitDistance(width);
+    if (Math.abs(dx) >= commitAt) commit(dx < 0 ? 1 : -1, dx);
+    else springBack();   // not far enough: the card slides back into the stack
+    window.setTimeout(() => { cancelLink = false; }, 0);
   };
-  stage?.addEventListener('pointerup', finishPointer);
-  stage?.addEventListener('pointercancel', finishPointer);
+  stage?.addEventListener('pointerup', endDrag);
+  stage?.addEventListener('pointercancel', endDrag);
 
   const themePicker = document.getElementById('theme-picker');
   function syncThemePicker() {
@@ -110,5 +231,7 @@
   narrowScreen.addEventListener?.('change', event => {
     if (!event.matches) location.replace(locale === 'en' ? '/en/' : '/');
   });
-  paint();
+  // A rotation changes the card width, so the commit distance and the resting stack both change.
+  window.addEventListener('resize', () => { if (!drag && !isAnimating()) paintDeck(); });
+  paintDeck();
 })();

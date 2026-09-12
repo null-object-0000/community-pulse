@@ -9,18 +9,58 @@ const local = '/images/' + 'a'.repeat(64) + '.png';
 
 test('card rendering has an image treatment and a complete typographic fallback', () => {
   const pictured = D.renderSwipeItem({ title: 'Picture tool', summary: 'Short copy', sourceId: 'producthunt', images: [local], url: 'https://example.com' }, 'en', { index: 3 });
-  assert.match(pictured, /class="swipe-item has-image"/);
+  assert.match(pictured, /class="swipe-item" data-depth="0"/);
   assert.match(pictured, /class="swipe-visual has-image"/);
   assert.match(pictured, new RegExp(`src="${local}"`));
   assert.match(pictured, /class="swipe-open"/);
+  assert.ok(!pictured.includes('inert'), 'the top card stays interactive');
 
   const plain = D.renderSwipeItem({ title: 'A very useful compiler', summary: 'Explains the project in enough detail to stand on its own.', sourceId: 'hellogithub-issue', github: { language: 'Rust', stars: 1234 } }, 'en', { index: 1 });
-  assert.match(plain, /class="swipe-item is-typographic"/);
   assert.match(plain, /class="swipe-visual is-typographic"/);
   assert.match(plain, /class="swipe-mark avatar-1"/);
   assert.match(plain, /A very useful compiler/);
   assert.match(plain, /Rust/);
   assert.match(plain, /1\.2K/);
+
+  // A card waiting behind the top one is scenery: it must not add links or buttons to the tab order.
+  const stacked = D.renderSwipeItem({ title: 'Behind', summary: 'x', url: 'https://example.com' }, 'en', { depth: 1, interactive: false });
+  assert.match(stacked, /class="swipe-item" data-depth="1" inert aria-hidden="true"/);
+  assert.ok(!stacked.includes('<a '), 'a deferred card renders no links at all');
+  assert.ok(!stacked.includes('swipe-open'));
+});
+
+test('the deck keeps a bounded stack and moves the candidates the maths says it should', () => {
+  const items = ['a', 'b', 'c', 'd', 'e'];
+  // The deck starts at the current item and never wraps around the ends.
+  assert.deepEqual(D.swipeDeck(items, 0).map(entry => [entry.item, entry.depth, entry.interactive]), [['a', 0, true], ['b', 1, false], ['c', 2, false]]);
+  assert.deepEqual(D.swipeDeck(items, 3).map(entry => entry.item), ['d', 'e']);
+  assert.deepEqual(D.swipeDeck(items, 4).map(entry => entry.item), ['e']);
+
+  // Dragging shows two cards in motion: the top one tilts, the next one grows and rises into place.
+  const width = 390;
+  const commitAt = D.swipeCommitDistance(width);
+  const rest = D.swipeStackGeometry(0, width);
+  assert.equal(rest.progress, 0);
+  assert.equal(rest.rotate, 0);
+  assert.equal(rest.nextScale, 0.94);
+  assert.equal(rest.nextOffset, 14);
+  // At the release distance the card behind has already reached full size, so the hand-off reads as
+  // one card moving instead of a swap. This is the property the "rough" version was missing.
+  const atCommit = D.swipeStackGeometry(-commitAt, width);
+  assert.equal(atCommit.nextScale, 1, 'promotion completes by the commit distance');
+  assert.equal(atCommit.nextOffset, 0);
+  assert.equal(atCommit.thirdScale, 0.94, 'the third card moves up into the second slot');
+  assert.equal(atCommit.thirdOffset, 14, 'and takes the second slot offset, not the top card position');
+  assert.equal(D.swipeStackGeometry(-width, width).progress, 1, 'progress still tracks the whole width');
+  // The tilt is clamped, and a short drag still tilts proportionally.
+  assert.equal(D.swipeStackGeometry(-9999, width).rotate, -14);
+  assert.equal(D.swipeStackGeometry(70, width).rotate, 5);
+  assert.equal(D.swipeStackGeometry(0, 0).progress, 0, 'a zero width never divides by zero');
+
+  // The commit distance scales with the card but stays inside sane bounds.
+  assert.equal(D.swipeCommitDistance(390), 101.4);
+  assert.equal(D.swipeCommitDistance(100), 54);
+  assert.equal(D.swipeCommitDistance(1000), 130);
 });
 
 test('card content escapes source text and rejects unsafe destinations', () => {
