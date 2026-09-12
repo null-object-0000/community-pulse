@@ -87,7 +87,10 @@ test('build emits only latest noindex card routes, mobile entries, and no sitema
     assert.ok(!html.includes('<script src="/app.js"'));
     const data = JSON.parse(html.match(/<script id="page-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
     assert.equal(data.date, index.latest);
-    assert.equal(D.reportItems(data.report).length, 67);
+    // The card page mirrors whatever the latest report holds; the count is not pinned to one day.
+    const latest = JSON.parse(fs.readFileSync(path.join(root, 'dist', 'data', 'reports', `${index.latest}.json`), 'utf8'));
+    assert.equal(D.reportItems(data.report).length, D.reportItems(latest).length);
+    assert.ok(D.reportItems(data.report).length > 0);
   }
   for (const file of ['dist/index.html', `dist/reports/${index.latest}/index.html`]) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
