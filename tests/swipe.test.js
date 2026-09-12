@@ -161,10 +161,12 @@ test('styles keep the entry mobile-only, preserve vertical scrolling, and remove
   assert.match(css, /@media \(max-width: 600px\) \{[\s\S]*\.cards-entry \{ display: grid/);
   assert.match(css, /\.swipe-stage \{[^}]*touch-action: pan-y/);
   assert.doesNotMatch(css.match(/\.swipe-stage \{ --swipe-offset[^}]*\}/)[0], /outline:\s*none/);
-  // The visual area takes the leftover height and the summary line count is only an upper bound, so
-  // a tall card grows its picture instead of collecting a dead gap above the meta row.
-  assert.match(css, /\.swipe-visual \{[^}]*flex: 1 1 auto/);
-  assert.match(css, /\.swipe-visual \{[^}]*min-height: clamp\(/);
+  assert.match(css, /\.swipe-visual \{[^}]*flex: 0 0 clamp\(/, 'the picture keeps a fixed ratio');
+  assert.doesNotMatch(css, /\.swipe-visual \{[^}]*flex: 1 1 auto/, 'the picture must not stretch into a square crop');
+  // The deck stacks cards in one grid cell so the card can size to its content; a fixed full-height
+  // card is what left a void under a short description.
+  assert.match(css, /\.swipe-stage \{[^}]*display: grid/);
+  assert.match(css, /\.swipe-item \{[^}]*grid-area: 1 \/ 1/);
   assert.match(css, /\.swipe-copy \.summary \{[^}]*-webkit-line-clamp: 9/);
   assert.ok(css.lastIndexOf('@media (prefers-reduced-motion: reduce)') > css.indexOf('.swipe-stage { --swipe-offset'));
   assert.doesNotMatch(css, /card-view/);
