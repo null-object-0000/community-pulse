@@ -36,17 +36,17 @@ const wranglerArgs = wranglerBin === 'npx' ? ['--yes', 'wrangler@4'] : [];
 
 // Every manifest value is `/images/<sha256>.<ext>`; the CDN keeps both the prefix and the name so
 // the markup does not change when the site stops serving the files itself.
-function uploadEntries(manifest) {
+function uploadEntries(manifest, directory = storeDir) {
   const entries = new Map();
   for (const local of Object.values(manifest)) {
     if (typeof local !== 'string' || !local.startsWith('/images/')) continue;
     const name = path.basename(local);
     const type = contentType[path.extname(name).toLowerCase()];
     if (!type) throw new Error(`Unsupported image extension in manifest: ${local}`);
-    if (!fs.existsSync(path.join(storeDir, name))) throw new Error(`Missing mirror file for ${local}; run npm run images:sync`);
+    if (!fs.existsSync(path.join(directory, name))) throw new Error(`Missing mirror file for ${local}; run npm run images:sync`);
     entries.set(`${prefix}/${name}`, type);
   }
-  return [...entries].map(([key, type]) => ({ key, type, file: path.join(storeDir, path.basename(key)) })).sort((a, b) => a.key.localeCompare(b.key));
+  return [...entries].map(([key, type]) => ({ key, type, file: path.join(directory, path.basename(key)) })).sort((a, b) => a.key.localeCompare(b.key));
 }
 
 // A HEAD against the public origin is the cheapest way to learn what is already there: it needs no

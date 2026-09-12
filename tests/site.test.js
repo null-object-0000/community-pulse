@@ -73,8 +73,9 @@ test('list rows carry no per-item date, because the selected report date already
   assert.ok(!/9月9日|Sep 9/.test(html), html);
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   assert.ok(!styles.includes('.item-date'), 'stale date column rules');
-  // The list grid must keep one column per rendered cell: number, avatar, primary, tags, source, score.
-  assert.ok(styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(280px, 2\.2fr\) minmax\(130px, \.7fr\) \d+px 64px;/), 'a stray column means a cell lost its track');
+  // Tags live inside the primary cell, so the grid has five tracks: number, avatar, primary, source, score.
+  assert.ok(styles.match(/\.feed-item \{ grid-template-columns: 30px 56px minmax\(280px, 1fr\) \d+px 64px;/), 'a stray column means a cell lost its track');
+  assert.match(html, /<div class="item-primary">[\s\S]*<p class="summary"[\s\S]*<div class="item-tags">/);
 });
 
 test('source scaffolding tags never repeat the row source as a chip', () => {
@@ -123,22 +124,19 @@ test('a clipped description earns a tooltip while a fully visible one stays bare
   assert.ok(!/<p class="summary"[^>]*\stitle=/.test(html), html);
 });
 
-test('the two-row tag cap fits exactly two rows, so the second row is never clipped', () => {
+test('desktop tags occupy exactly one row beneath the description', () => {
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   const tags = styles.match(/\.item-tags \{[^}]*\}/)[0];
   const tag = styles.match(/\.item-tags \.tag \{[^}]*\}/)[0];
   const font = Number(tag.match(/font-size:\s*([\d.]+)rem/)[1]);
   const lineHeight = Number(tag.match(/line-height:\s*([\d.]+)/)[1]);
   const padding = Number(tag.match(/padding:\s*(\d+)px/)[1]);
-  const gap = Number(tags.match(/gap:\s*(\d+)px/)[1]);
   const declared = tags.match(/--tag-height:\s*calc\(([\d.]+)rem \* ([\d.]+) \+ (\d+)px\)/);
   assert.ok(declared, '--tag-height must stay in the tag metric terms');
   const tagHeight = Number(declared[1]) * 16 * Number(declared[2]) + Number(declared[3]);
   assert.equal(tagHeight, font * 16 * lineHeight + padding * 2, '--tag-height must equal one rendered tag');
-  const cap = tags.match(/max-height:\s*calc\(var\(--tag-height\) \* (\d+) \+ (\d+)px\)/);
-  assert.ok(cap, 'max-height must derive from --tag-height');
-  assert.equal(Number(cap[1]), 2, 'at most two tag rows');
-  assert.equal(Number(cap[2]), gap, 'max-height must include the row gap');
+  assert.match(tags, /flex-wrap:\s*nowrap/);
+  assert.match(tags, /max-height:\s*var\(--tag-height\)/);
 });
 
 test('a long source name stays beside its badge instead of wrapping under it', () => {
@@ -151,7 +149,7 @@ test('a long source name stays beside its badge instead of wrapping under it', (
   // English is ~6.4px/char at .75rem, so only a short label stays readable inside the same column.
   const english = D.sourceName({ sourceId: 'weekly-issues' }, 'en');
   assert.ok(english.length <= 20, `English source label is too long for the row: ${english}`);
-  const sourceColumn = styles.match(/\.feed-item \{ grid-template-columns: 30px 48px minmax\(280px, 2\.2fr\) minmax\(130px, \.7fr\) (\d+)px 64px;/);
+  const sourceColumn = styles.match(/\.feed-item \{ grid-template-columns: 30px 56px minmax\(280px, 1fr\) (\d+)px 64px;/);
   assert.ok(sourceColumn, 'list grid template changed shape');
   assert.ok(Number(sourceColumn[1]) >= 144, `source column must fit badge 28 + gap 8 + label 108, got ${sourceColumn[1]}`);
 });
@@ -437,6 +435,7 @@ test('saved theme applies before rendering, reacts to system changes, and tolera
 
 test('every emitted project, report, and sitemap entry has a real static page and canonical language URLs', () => {
   const dist = path.join(__dirname, '../dist');
+  assert.equal(fs.readFileSync(path.join(dist, 'dd375fa2f04a48819425622556a589bb.txt'), 'utf8').trim(), 'f970d68256a5b5859160a2a189d45611006b23dc');
   const index = JSON.parse(fs.readFileSync(path.join(dist, 'data/index.json')));
   const projects = JSON.parse(fs.readFileSync(path.join(dist, 'data/projects.json')));
   assert.equal(Object.keys(projects).length, index.projectCount); assert.ok(index.projectCount > 0);

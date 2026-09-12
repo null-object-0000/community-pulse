@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const D = require('../web/shared.js');
 const { downloadImage, localizeReport, pruneManifest, itemUrls, readManifest } = require('../scripts/image-store.js');
@@ -161,17 +162,24 @@ test('download rejects error pages, oversized responses and HTTP failures', asyn
 
 test('the uploader maps every mirrored mark to a content-addressed CDN key', () => {
   const { uploadEntries } = require('../scripts/image-upload.js');
-  const entries = uploadEntries(readManifest());
-  assert.ok(entries.length > 0);
-  for (const entry of entries) {
-    assert.match(entry.key, /^images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/);
-    assert.ok(entry.type.startsWith('image/'), entry.type);
-    assert.ok(fs.existsSync(entry.file), entry.file);
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-upload-'));
+  const name = 'c'.repeat(64) + '.svg';
+  try {
+    fs.writeFileSync(path.join(directory, name), '<svg xmlns="http://www.w3.org/2000/svg"/>');
+    const entries = uploadEntries({ first: `/images/${name}`, duplicate: `/images/${name}` }, directory);
+    assert.equal(entries.length, 1);
+    // One upload per file: the content-addressed key collapses duplicates.
+    assert.equal(new Set(entries.map(entry => entry.key)).size, entries.length);
+    for (const entry of entries) {
+      assert.match(entry.key, /^images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/);
+      assert.ok(entry.type.startsWith('image/'), entry.type);
+      assert.ok(fs.existsSync(entry.file), entry.file);
+    }
+    assert.throws(() => uploadEntries({ x: '/images/' + 'a'.repeat(64) + '.bmp' }, directory), /Unsupported image extension/);
+    assert.throws(() => uploadEntries({ x: '/images/' + 'b'.repeat(64) + '.png' }, directory), /Missing mirror file/);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
   }
-  // One upload per file: the key is the content hash, so duplicates collapse.
-  assert.equal(new Set(entries.map(entry => entry.key)).size, entries.length);
-  assert.throws(() => uploadEntries({ x: '/images/' + 'a'.repeat(64) + '.bmp' }), /Unsupported image extension/);
-  assert.throws(() => uploadEntries({ x: '/images/' + 'b'.repeat(64) + '.png' }), /Missing mirror file/);
 });
 
 test('built reports expose either a deployed managed file or a trusted origin', () => {

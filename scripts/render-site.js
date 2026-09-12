@@ -36,7 +36,8 @@ function categoryOptions(items, locale) {
 function filters(items, locale) {
   const meta = D.chipFilterMeta(locale);
   const chips = [{ id: 'all', label: meta.all, count: items.length, active: true }, ...categoryOptions(items, locale)];
-  const sort = `<select id="sort-select" aria-label="${locale === 'en' ? 'Sort projects' : '项目排序'}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select>`;
+  const sortLabel = locale === 'en' ? 'Sort projects' : '项目排序';
+  const sort = `<label class="select-control"><span class="sr-only">${sortLabel}</span><select id="sort-select" aria-label="${sortLabel}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select><svg class="select-control-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></label>`;
   return `<section class="filters" aria-label="${t(locale, 'search')}"><div id="${meta.containerId}" class="chip-filter" aria-label="${e(meta.aria)}">${D.chipFilterHtml(chips, locale)}</div><span class="filters-divider" aria-hidden="true"></span><div class="feed-tools">${sort}</div></section>`;
 }
 function discoveryHero(items, locale) {
