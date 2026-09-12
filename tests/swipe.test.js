@@ -163,10 +163,17 @@ test('styles keep the entry mobile-only, preserve vertical scrolling, and remove
   assert.doesNotMatch(css.match(/\.swipe-stage \{ --swipe-offset[^}]*\}/)[0], /outline:\s*none/);
   assert.match(css, /\.swipe-visual \{[^}]*flex: 0 0 clamp\(/, 'the picture keeps a fixed ratio');
   assert.doesNotMatch(css, /\.swipe-visual \{[^}]*flex: 1 1 auto/, 'the picture must not stretch into a square crop');
-  // The deck stacks cards in one grid cell so the card can size to its content; a fixed full-height
-  // card is what left a void under a short description.
-  assert.match(css, /\.swipe-stage \{[^}]*display: grid/);
-  assert.match(css, /\.swipe-item \{[^}]*grid-area: 1 \/ 1/);
+  // The card fills the stage (no unused band above or below it) and the leftover height stays inside
+  // the card, collected above the meta row by `margin-top: auto`.
+  assert.match(css, /\.swipe-item \{[^}]*position: absolute; inset: 0/);
+  assert.doesNotMatch(css, /\.swipe-stage \{[^}]*align-content: center/);
+  assert.match(css, /\.swipe-meta \{[^}]*margin-top: auto/);
+  // The page height comes from flex, not a hard-coded topbar height: the old `calc(100svh - 69px)`
+  // disagreed with the real 73px bar and left the page scrollable.
+  assert.match(css, /html:has\(body\[data-view="cards"\]\) \{ height: 100%; overflow: hidden; \}/);
+  assert.match(css, /body\[data-view="cards"\] \{ display: flex; flex-direction: column; height: 100%; overflow: hidden; \}/);
+  assert.match(css, /body\[data-view="cards"\] \.workspace \{ flex: 1 1 auto; width: 100%; height: auto/);
+  assert.doesNotMatch(css, /calc\(100svh - \d+px\)/, 'no guessed topbar height');
   assert.match(css, /\.swipe-copy \.summary \{[^}]*-webkit-line-clamp: 9/);
   assert.ok(css.lastIndexOf('@media (prefers-reduced-motion: reduce)') > css.indexOf('.swipe-stage { --swipe-offset'));
   assert.doesNotMatch(css, /card-view/);

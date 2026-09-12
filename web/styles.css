@@ -302,7 +302,17 @@ body[data-view="cards"] { visibility: hidden; }
   body[data-view="cards"] { visibility: visible; overflow: hidden; }
   body[data-view="cards"] .topbar-inner { flex-wrap: nowrap; }
   body[data-view="cards"] .main-nav, body[data-view="cards"] .footer { display: none; }
-  body[data-view="cards"] .workspace { height: calc(100svh - 69px); min-height: 0; padding: 8px 12px 10px; }
+  /* The workspace takes exactly the viewport minus the topbar. `flex: 1` on a body column does that
+     without hard-coding the topbar height (it was 69px in a `calc`, but the bar renders 73px, which
+     scrolled the page by 20px). Two flex details matter: `width: 100%` because a cross-axis `auto`
+     margin stops a flex item from stretching to the body's width, and `border-box` so the padding is
+     part of the height instead of adding to it. */
+  /* `body { overflow: hidden }` alone is not enough: the waiting cards sit 14–26px lower than the top
+     one, which stretched the document and left 16px of page scroll. The page is a fixed app screen, so
+     the root is locked too. */
+  html:has(body[data-view="cards"]) { height: 100%; overflow: hidden; }
+  body[data-view="cards"] { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+  body[data-view="cards"] .workspace { flex: 1 1 auto; width: 100%; height: auto; min-height: 0; padding: 8px 12px 10px; box-sizing: border-box; }
   .cards-page { display: grid; grid-template-rows: auto auto minmax(0, 1fr); gap: 6px; height: 100%; max-width: 520px; margin: 0 auto; }
   .cards-page-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .cards-page-heading .eyebrow { margin: 0; font-size: .5625rem; }
@@ -313,12 +323,12 @@ body[data-view="cards"] { visibility: hidden; }
   .cards-status { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0; min-height: 0; }
   .cards-hint { color: var(--muted); font-size: .625rem; line-height: 1.3; }
   .swipe-position { color: var(--muted); font-size: .6875rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  /* The deck is a grid stack (all cards in one cell) rather than absolutely-filled cards: that way
-     the card is only as tall as its content needs, instead of every card being stretched to the full
-     viewport and leaving a void under a two-line description. */
-  .swipe-stage { --swipe-offset: 0px; position: relative; display: grid; align-content: center; min-height: 0; touch-action: pan-y; }
+  /* The deck fills the stage: the card is always the full available height, so the screen has no
+     unused band above or below it. Whatever height the content does not need stays inside the card,
+     between the description and the meta row, which is where `swipe-meta { margin-top: auto }` puts it. */
+  .swipe-stage { --swipe-offset: 0px; position: relative; min-height: 0; touch-action: pan-y; }
   .swipe-stage.is-dragging { transition: none; }
-  .swipe-item { grid-area: 1 / 1; display: flex; flex-direction: column; min-height: 0; max-height: 100%; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 12px 32px #14264a14; transform-origin: 50% 100%; will-change: transform; }
+  .swipe-item { position: absolute; inset: 0; display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 12px 32px #14264a14; transform-origin: 50% 100%; will-change: transform; }
   .swipe-item[data-depth="0"] { z-index: 3; cursor: grab; }
   .swipe-item[data-depth="1"] { z-index: 2; }
   .swipe-item[data-depth="2"] { z-index: 1; }
@@ -338,9 +348,9 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-mark.has-logo { background: #fff; }
   .swipe-mark img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
   .swipe-wordmark { display: -webkit-box; min-width: 0; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-size: clamp(1.15rem, 5.6vw, 1.55rem); line-height: 1.4; font-weight: 760; letter-spacing: -.02em; overflow-wrap: anywhere; }
-  /* The copy block sits right under the picture: with a content-sized card there is no leftover
-     height to absorb, so it must not grow. */
-  .swipe-copy { flex: 0 0 auto; min-height: 0; padding: 13px 15px 0; overflow: hidden; }
+  /* The copy block sits right under the picture; the leftover height belongs to the card, and it
+     collects between this block and the meta row (see `swipe-meta { margin-top: auto }`). */
+  .swipe-copy { flex: 0 0 auto; min-height: 0; padding: 13px 15px 0; }
   .swipe-copy h2 { display: -webkit-box; margin: 0; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 1.08rem; line-height: 1.38; letter-spacing: -.015em; overflow-wrap: anywhere; }
   /* The summary line count is capped by the card, not fixed: `swipe-meta` and the open button keep
      their space (flex: 0 0 auto), so a short card simply shows fewer lines than a tall one instead
