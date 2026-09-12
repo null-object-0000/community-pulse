@@ -334,6 +334,9 @@
   // A rendered box hides content when its scroll size exceeds its client size, so only a genuinely
   // clipped list title or description earns a tooltip.
   const isClipped = element => element.scrollWidth > element.clientWidth || element.scrollHeight > element.clientHeight;
+  const canStickSidebar = (viewportWidth, viewportHeight, sidebarHeight, minWidth, edgeGap = 20) =>
+    Number(viewportWidth) >= Number(minWidth)
+      && Number(sidebarHeight) <= Math.max(0, Number(viewportHeight) - Number(edgeGap) * 2);
   // Fallback only: a source with a logo asset renders that logo instead. Keyed off sourceId, never the
   // display name, because "HelloGitHub" would otherwise match a /github/ test and borrow GitHub's mark.
   function sourceMark(item) {
@@ -499,5 +502,5 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

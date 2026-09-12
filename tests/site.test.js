@@ -393,6 +393,17 @@ test('language selection uses translated summaries and explicitly labels fallbac
   assert.deepEqual(Object.keys(D.messages.en).sort(), Object.keys(D.messages['zh-CN']).sort());
 });
 
+test('sidebars only stick when their complete height fits the desktop viewport', () => {
+  assert.equal(D.canStickSidebar(1440, 900, 820, 1361), true);
+  assert.equal(D.canStickSidebar(1440, 820, 800, 1361), false);
+  assert.equal(D.canStickSidebar(1280, 900, 700, 1361), false);
+  assert.equal(D.canStickSidebar(1024, 800, 760, 901), true);
+  const css = fs.readFileSync(path.join(__dirname, '../web/styles.css'), 'utf8');
+  assert.match(css, /\.discovery-sidebar\.is-sticky \{ position: sticky/);
+  assert.match(css, /\.project-sidebar\.is-sticky \{ position: sticky/);
+  assert.doesNotMatch(css, /\.(?:discovery|project)-sidebar \{[^}]*overflow-y: auto/);
+});
+
 test('submission labels are stripped from titles in both languages without eating product names', () => {
   const title = value => D.displayTitle({ title: value }, 'zh-CN');
   // 中文投稿标签（老规则）与同义的英文、别的括号写法都要清掉。

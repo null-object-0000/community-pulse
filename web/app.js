@@ -307,12 +307,33 @@
   window.addEventListener('pageshow', paintCardsEntry);
   if (search) search.value = query;
   if (feed) { paintFilter(); renderFeed(); updateFilterUrl(); }
+  // Fix a desktop sidebar only when the complete module fits in the viewport. A taller sidebar
+  // remains in normal document flow, avoiding a second scrollbar beside the page scrollbar.
+  const stickySidebars = [...document.querySelectorAll('.discovery-sidebar, .project-sidebar')];
+  function updateStickySidebars() {
+    stickySidebars.forEach(sidebar => {
+      const minWidth = sidebar.classList.contains('discovery-sidebar') ? 1361 : 901;
+      const height = Math.ceil(sidebar.getBoundingClientRect().height);
+      sidebar.classList.toggle('is-sticky', D.canStickSidebar(window.innerWidth, window.innerHeight, height, minWidth));
+    });
+  }
+  let sidebarLayoutFrame = 0;
+  function scheduleStickySidebars() {
+    if (sidebarLayoutFrame) cancelAnimationFrame(sidebarLayoutFrame);
+    sidebarLayoutFrame = requestAnimationFrame(() => { sidebarLayoutFrame = 0; updateStickySidebars(); });
+  }
+  updateStickySidebars();
+  if (stickySidebars.length && window.ResizeObserver) {
+    const sidebarObserver = new ResizeObserver(scheduleStickySidebars);
+    stickySidebars.forEach(sidebar => sidebarObserver.observe(sidebar));
+  }
+  window.addEventListener('resize', scheduleStickySidebars);
   // Re-fit the chip row when the container width changes or web fonts finish loading.
   const filterContainers = [filterContainer()].filter(Boolean);
   const relayoutFilters = () => filterContainers.forEach(layoutFilter);
   if (filterContainers.length && window.ResizeObserver) { const observer = new ResizeObserver(relayoutFilters); filterContainers.forEach(node => observer.observe(node)); }
   window.addEventListener('resize', relayoutFilters);
-  if (document.fonts?.ready) document.fonts.ready.then(relayoutFilters).catch(() => {});
+  if (document.fonts?.ready) document.fonts.ready.then(() => { relayoutFilters(); scheduleStickySidebars(); }).catch(() => {});
   // Preserve legacy date links; legacy style preferences have no effect on the unified theme.
   // Report pages no longer carry a date picker, so the date is validated by shape alone.
   const legacyDate = params.get('date') || '';
