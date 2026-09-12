@@ -279,6 +279,9 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .source-mini img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .item-score { display: flex; align-items: center; justify-content: flex-end; gap: 5px; color: var(--muted); font-size: .75rem; font-variant-numeric: tabular-nums; }
 .item-score svg { width: 15px; height: 15px; }
+/* Keep the score away from the highlighted row edge on desktop. Mobile uses a narrower score
+   track and does not need this extra inset. */
+@media (min-width: 601px) { .item-score { padding-right: 12px; } }
 .original-label { display: none; }
 .side-panel { border: 1px solid var(--line); border-radius: 10px; padding: 16px; background: var(--surface); margin-bottom: 16px; }
 .side-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }

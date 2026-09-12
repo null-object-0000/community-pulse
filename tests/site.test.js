@@ -154,6 +154,11 @@ test('a long source name stays beside its badge instead of wrapping under it', (
   assert.ok(Number(sourceColumn[1]) >= 144, `source column must fit badge 28 + gap 8 + label 108, got ${sourceColumn[1]}`);
 });
 
+test('desktop scores keep breathing room inside the hovered row edge', () => {
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  assert.match(styles, /@media \(min-width: 601px\) \{ \.item-score \{ padding-right: 12px; \} \}/);
+});
+
 test('known data sources expose safe destination links and real website logos', () => {
   const dist = path.join(__dirname, '../dist');
   for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
