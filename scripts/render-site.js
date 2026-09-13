@@ -125,13 +125,38 @@ function archivePage(reports, locale, commentCounts = {}) {
     if (!months.has(month)) months.set(month, []);
     months.get(month).push(report);
   }
-  const content = heading(locale, t(locale, 'archiveTitle'), t(locale, 'archiveIntro'), '', 'DEV TRENDS / THE ARCHIVE') + [...months.entries()].map(([month, list]) => `<section class="archive-month"><h2>${new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(month + '-01T00:00:00Z'))}</h2><div class="archive-grid">${list.map(report => {
-    const comments = Math.max(0, Number(commentCounts[`report:${report.date}`]) || 0);
-    const sources = new Set(D.reportItems(report).map(item => item.sourceId).filter(Boolean)).size;
-    const commentsLabel = locale === 'en' ? `${comments} ${comments === 1 ? 'comment' : 'comments'}` : `${comments} 条评论`;
-    const sourcesLabel = locale === 'en' ? `${sources} ${sources === 1 ? 'source' : 'sources'}` : `${sources} 个来源`;
-    return `<a class="archive-card" href="${lp(`/reports/${report.date}/`, locale)}"><span class="archive-arrow">↗</span><b>${e(D.dateLabel(report.date, locale))}</b><span class="archive-card-meta"><span>${t(locale, 'count', { n: D.reportItems(report).length })}</span><span>${e(sourcesLabel)}</span><span class="archive-comment-count" aria-label="${e(commentsLabel)}">${D.icon('comment')}${e(commentsLabel)}</span></span></a>`;
-  }).join('')}</div></section>`).join('');
+  const weekdays = locale === 'en' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+  const latestMonth = months.keys().next().value;
+  const content = heading(locale, t(locale, 'archiveTitle'), t(locale, 'archiveIntro'), '', 'DEV TRENDS / THE ARCHIVE') + [...months.entries()].map(([month, list]) => {
+    const [year, monthNumber] = month.split('-').map(Number);
+    const first = new Date(Date.UTC(year, monthNumber - 1, 1));
+    const monthLabel = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', timeZone: 'UTC' }).format(first);
+    const reportByDate = new Map(list.map(report => [report.date, report]));
+    const leading = (first.getUTCDay() + 6) % 7;
+    const daysInMonth = new Date(Date.UTC(year, monthNumber, 0)).getUTCDate();
+    const days = month === latestMonth ? Math.max(...list.map(report => Number(report.date.slice(-2)))) : daysInMonth;
+    const cells = Array.from({ length: leading }, () => '<span class="archive-day is-outside" aria-hidden="true"></span>');
+    for (let day = 1; day <= days; day++) {
+      const date = `${month}-${String(day).padStart(2, '0')}`;
+      const report = reportByDate.get(date);
+      const dateLabel = D.dateLabel(date, locale);
+      const weekend = [0, 6].includes(new Date(`${date}T00:00:00Z`).getUTCDay()) ? ' is-weekend' : '';
+      if (!report) {
+        cells.push(`<span class="archive-day is-empty${weekend}" role="gridcell" aria-label="${e(dateLabel)}"><span class="archive-day-number">${day}</span></span>`);
+        continue;
+      }
+      const items = D.reportItems(report);
+      const comments = Math.max(0, Number(commentCounts[`report:${date}`]) || 0);
+      const sources = new Set(items.map(item => item.sourceId).filter(Boolean)).size;
+      const projectsLabel = locale === 'en' ? `${items.length} ${items.length === 1 ? 'project' : 'projects'}` : `${items.length} 个项目`;
+      const sourcesLabel = locale === 'en' ? `${sources} ${sources === 1 ? 'source' : 'sources'}` : `${sources} 个来源`;
+      const commentsLabel = locale === 'en' ? `${comments} ${comments === 1 ? 'comment' : 'comments'}` : `${comments} 条评论`;
+      const spokenLabel = [dateLabel, projectsLabel, sourcesLabel, commentsLabel].join(locale === 'en' ? ', ' : '，');
+      cells.push(`<a class="archive-day has-report${weekend}${comments ? ' has-comments' : ''}" role="gridcell" href="${lp(`/reports/${date}/`, locale)}" aria-label="${e(spokenLabel)}"><span class="archive-day-heading"><b class="archive-day-number">${day}</b><b class="archive-day-full">${e(dateLabel)}</b><span aria-hidden="true">↗</span></span><span class="archive-day-meta"><span>${e(projectsLabel)}</span><span>${e(sourcesLabel)}</span><span class="archive-comment-count">${D.icon('comment')}${e(commentsLabel)}</span></span></a>`);
+    }
+    while (cells.length % 7) cells.push('<span class="archive-day is-outside" aria-hidden="true"></span>');
+    return `<section class="archive-month"><h2>${e(monthLabel)}</h2><div class="archive-calendar" role="grid" aria-label="${e(monthLabel)}"><div class="archive-weekdays" role="row">${weekdays.map((day, index) => `<span role="columnheader"${index > 4 ? ' class="is-weekend"' : ''}>${e(day)}</span>`).join('')}</div>${cells.join('')}</div></section>`;
+  }).join('');
   return shell({ locale, view: 'archive', route: '/reports/', title: `${t(locale, 'archiveTitle')} | DevTrends`, description: t(locale, 'archiveIntro'), content });
 }
 function notFoundPage(locale) {

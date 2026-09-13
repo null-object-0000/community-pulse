@@ -29,7 +29,7 @@ test('comments client is lazy loaded and keeps the giscus theme in sync', () => 
   assert.match(client, /MutationObserver\(syncGiscusTheme\)/);
 });
 
-test('archive cards show the discussion count in both locales', () => {
+test('archive calendar days show source and discussion counts in both locales', () => {
   const reports = [{ date: '2026-09-13', results: [{ items: [
     { title: 'One', sourceId: 'github-trending' },
     { title: 'Two', sourceId: 'producthunt' },
@@ -45,15 +45,17 @@ test('archive cards show the discussion count in both locales', () => {
   assert.match(chinese, /2 个来源/);
   assert.match(english, /2 sources/);
   assert.match(empty, /0 条评论/);
+  assert.match(chinese, /class="archive-calendar"/);
+  assert.match(chinese, /role="columnheader">周一/);
+  assert.match(chinese, /class="archive-day is-outside"/);
   assert.match(chinese, /archive-comment-count/);
 });
 
-test('archive grid steps down cleanly after adding its third metadata field', () => {
+test('archive calendar keeps seven columns and becomes a list on phones', () => {
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
-  assert.match(styles, /\.archive-grid \{ display: grid; grid-template-columns: repeat\(4,minmax\(0,1fr\)\)/);
-  assert.match(styles, /@media \(max-width: 1200px\) \{ \.archive-grid \{ grid-template-columns: repeat\(3,minmax\(0,1fr\)\)/);
-  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.archive-grid \{ grid-template-columns: repeat\(2,minmax\(0,1fr\)\)/);
-  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.archive-grid \{ grid-template-columns: minmax\(0,1fr\)/);
+  assert.match(styles, /\.archive-calendar \{ display: grid; grid-template-columns: repeat\(7,minmax\(0,1fr\)\)/);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.archive-calendar \{ display: flex; flex-direction: column-reverse/);
+  assert.match(styles, /\.archive-weekdays, \.archive-day\.is-empty, \.archive-day\.is-outside \{ display: none; \}/);
 });
 
 test('project pages have one stable discussion shared by Chinese and English routes', () => {
