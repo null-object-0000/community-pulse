@@ -48,6 +48,14 @@ test('archive cards show the discussion count in both locales', () => {
   assert.match(chinese, /archive-comment-count/);
 });
 
+test('archive grid steps down cleanly after adding its third metadata field', () => {
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  assert.match(styles, /\.archive-grid \{ display: grid; grid-template-columns: repeat\(4,minmax\(0,1fr\)\)/);
+  assert.match(styles, /@media \(max-width: 1200px\) \{ \.archive-grid \{ grid-template-columns: repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(styles, /@media \(max-width: 900px\)[\s\S]*?\.archive-grid \{ grid-template-columns: repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.archive-grid \{ grid-template-columns: minmax\(0,1fr\)/);
+});
+
 test('project pages have one stable discussion shared by Chinese and English routes', () => {
   const project = {
     key: 'acme/widget', owner: 'Acme', name: 'Widget', fullName: 'Acme/Widget',
