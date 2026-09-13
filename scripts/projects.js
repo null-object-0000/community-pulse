@@ -25,6 +25,7 @@ function buildProjects(reports) {
         }
         if (!project.item.summaryEn && (snapshot.summaryEn || snapshot.summary_en)) project.item.summaryEn = snapshot.summaryEn || snapshot.summary_en;
         if (!project.item.summaryZh && (snapshot.summaryZh || snapshot.summary_zh)) project.item.summaryZh = snapshot.summaryZh || snapshot.summary_zh;
+        if (!D.taxonomyHasValues(project.item.taxonomy) && D.taxonomyHasValues(snapshot.taxonomy)) project.item.taxonomy = D.normalizeTaxonomy(snapshot.taxonomy);
         // Screenshots come from whichever observation published them (VibeCafé products carry 1-9).
         if (!project.item.images?.length && snapshot.images?.length) project.item.images = snapshot.images;
         if (report.date === project.lastSeen && snapshot.summarySource === 'llm-final' && project.item.summarySource !== 'llm-final') {
@@ -81,11 +82,16 @@ function projectPage(project, locale) {
   const sourceBadge = source?.logo ? `<img src="${e(source.logo)}" alt="" loading="lazy" />` : e(sourceName.slice(0, 2));
   const sourceLine = `<div class="project-source-line"><span class="source-mini" aria-hidden="true">${sourceBadge}</span>${sourceUrl ? `<a href="${e(D.trackedUrl(sourceUrl, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${e(sourceName)} ↗</a>` : `<span>${e(sourceName)}</span>`}<time datetime="${project.lastSeen}">${e(D.dateLabel(project.lastSeen, locale))}</time></div>`;
   const initials = e(project.name.replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
-  const detailTags = [...new Set([language, ...project.topics].filter(Boolean).map(String))].slice(0, 12);
+  const seenTags = new Set();
+  const detailTags = [
+    ...D.taxonomyTags(item, locale, 8).map(label => ({ label, origin: 'devtrends' })),
+    ...(language ? [{ label: language, origin: 'language' }] : []),
+    ...project.topics.map(label => ({ label, origin: 'source' })),
+  ].filter(tag => { const key = String(tag.label).toLowerCase(); if (!key || seenTags.has(key)) return false; seenTags.add(key); return true; }).slice(0, 12);
   const content = `<nav class="breadcrumb" aria-label="${locale === 'en' ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/', locale)}">${t(locale, 'discover')}</a><span>/</span><span>${t(locale, 'details')}</span></nav>
     <article class="project-hero"><div class="project-identity"><span class="project-mark${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${e(markUrl)}" class="is-logo" alt="" />` : initials}</span><div class="project-heading"><div>${sourceLine}<p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div></div></div>
     <p class="project-summary" lang="${s.lang}">${e(shortSummary)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
-    ${detailTags.length ? `<div class="project-tags">${detailTags.map(topic => `<span class="tag">${e(topic)}</span>`).join('')}</div>` : ''}
+    ${detailTags.length ? `<div class="project-tags">${detailTags.map(tag => D.tagHtml(tag, locale)).join('')}</div>` : ''}
     <div class="project-links">${links.map(([label, url], i) => `<a class="button${i === 0 ? ' primary' : ''}" href="${e(D.trackedUrl(url, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${t(locale, label)} ${D.icon('arrow')}</a>`).join('')}</div></article>
     <div class="project-layout"><div>
       ${galleryPanel}

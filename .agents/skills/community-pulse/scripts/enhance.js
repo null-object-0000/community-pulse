@@ -105,13 +105,23 @@ function validateLocalization(value, item) {
   }
   const primaryCategory = String(value.primaryCategory || '').trim();
   if (!D.isCategoryId(primaryCategory)) throw new Error(`primaryCategory 不在预设分类中：${primaryCategory || '空'}`);
+  if (!value.taxonomy || typeof value.taxonomy !== 'object') throw new Error('taxonomy 缺失');
+  const facetLimits = { useCases: 2, agentRoles: 2, productForms: 2, platforms: 3, integrations: 5 };
+  for (const [name, allowed] of Object.entries(D.taxonomyFacets)) {
+    const selected = value.taxonomy[name];
+    const allowedIds = new Set(allowed.map(([id]) => id));
+    if (!Array.isArray(selected) || selected.length > facetLimits[name] || selected.some(id => !allowedIds.has(id))) throw new Error(`taxonomy.${name} 含无效或过多标签`);
+  }
+  const taxonomy = D.normalizeTaxonomy(value.taxonomy);
+  if (!taxonomy.useCases.length) throw new Error('taxonomy.useCases 至少需要一个受控业务场景');
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     sourceHash: sourceHash(item),
     titleEn: clampEnglish(titleEn),
     summaryZh: clampChinese(summaryZh),
     summaryEn: clampEnglish(summaryEn),
     primaryCategory,
+    taxonomy,
   };
 }
 
@@ -124,8 +134,8 @@ async function localize(item) {
   const sourceIsChinese = hasChinese(sourceDescription);
   const needsEnglishTitle = hasChinese(item.title);
   const requested = sourceIsChinese
-    ? `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","summaryEn":"英文摘要","primaryCategory":"分类ID"`
-    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","primaryCategory":"分类ID"`;
+    ? `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","summaryEn":"英文摘要","primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`
+    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`;
   const direction = sourceIsChinese
     ? `把描述翻译并归纳为不超过 ${MAX_EN_LEN} 个字符的自然英文摘要。`
     : `把描述翻译并归纳为不超过 ${MAX_ZH_LEN} 个字符的简洁中文摘要。`;
@@ -133,9 +143,13 @@ async function localize(item) {
     ? '同时生成自然、简洁的英文标题；保留已有英文品牌名、仓库名、型号和人名，翻译中文说明部分。'
     : '';
   const categoryRules = D.categories.map(category => `- ${category.id}: ${category.description}`).join('\n');
+  const facetRules = Object.entries(D.taxonomyFacets).map(([name, values]) => `${name}: ${values.map(([id, zh]) => `${id}（${zh}）`).join('、')}`).join('\n');
   const prompt = `为 DevTrends 翻译并归类一条内容。${sourceNote}${direction}${titleRule}
 从下面的固定分类中选择一个最能描述项目主要用途和目标用户的分类。必须只选一个。按产品解决的问题归类，不按来源、开源状态或作者身份归类；AI、React、自托管等只是实现或次要功能时，不要据此归类；确实无法判断才选 other。
 ${categoryRules}
+再从以下受控分面中选择标签，只能使用列出的 ID：
+${facetRules}
+useCases 表示项目解决的业务场景，必须选 1–2 个；agentRoles 只在项目属于 Agent 生态时选 0–2 个，并区分垂直 Agent、能力扩展、管理编排、可观测性、评测安全和运行时；productForms 选 0–2 个；platforms 选 0–3 个；integrations 选 0–5 个。编程语言不是运行平台，不要把 Python、TypeScript 等填进 platforms。没有可靠证据的可选分面返回空数组。
 描述来自社区投稿，可能混着投稿模板的字段名（「项目地址」「项目标题」「项目描述」「必写」「类别」等）、空字段占位（「No response」「暂无」「待补充」）、残缺标签（「官网有演示：」）或 markdown 链接语法。摘要只写项目本身：不要出现这些字段名、占位符、模板残句和链接语法。
 不添加原文没有的信息，不输出宣传套话或解释。只输出严格 JSON：{${requested}}
 
@@ -151,6 +165,7 @@ ${categoryRules}
         summaryZh: translated.summaryZh,
         summaryEn: sourceIsChinese ? translated.summaryEn : sourceDescription,
         primaryCategory: translated.primaryCategory,
+        taxonomy: translated.taxonomy,
       }, item);
     } catch (error) {
       lastError = error;
@@ -234,7 +249,7 @@ async function main() {
     : new Map();
   for (const item of items) {
     const localized = cached.get(sourceHash(item));
-    if (localized && localized.schemaVersion >= 2 && D.isCategoryId(localized.primaryCategory)) localizedByIndex.set(item.idx, localized);
+    if (localized && localized.schemaVersion >= 3 && D.isCategoryId(localized.primaryCategory) && D.normalizeTaxonomy(localized.taxonomy).useCases.length) localizedByIndex.set(item.idx, localized);
   }
   const concurrency = parseInt(process.env.ENHANCE_CONCURRENCY || '5', 10);
   const pending = items.filter(item => !localizedByIndex.has(item.idx));

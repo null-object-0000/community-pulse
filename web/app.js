@@ -6,7 +6,7 @@
   const t = (key, args) => D.t(locale, key, args);
   const params = new URLSearchParams(location.search);
   // Every page filters by the preset categories; the sidebar source directory is informational only.
-  let category = D.isCategoryId(params.get('category')) ? params.get('category') : 'all';
+  let category = page.view !== 'trend-cluster' && D.isCategoryId(params.get('category')) ? params.get('category') : 'all';
   let query = params.get('q') || '';
   let sort = 'default';
   const search = document.getElementById('search');
@@ -216,7 +216,7 @@
     const q = query.trim().toLocaleLowerCase(locale);
     const filtered = items.filter(item => (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
     if (sort === 'popular') filtered.sort((a, b) => Number(D.metric(b, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0) - Number(D.metric(a, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0));
-    feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.date, index })).join('');
+    feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.view === 'trend-cluster' ? (item.trendDate || page.date) : page.date, index, showDate: page.view === 'trend-cluster' })).join('');
     feed.hidden = !filtered.length;
     document.getElementById('empty').hidden = Boolean(filtered.length);
     document.getElementById('empty-title').textContent = t('empty');
@@ -313,6 +313,37 @@
     syncFilterState();
     updateFilterUrl(); renderFeed(); search.focus();
   });
+  // ---- trend horizon: keep one 12-week series in the static page and reveal the requested tail ----
+  const trendPeriod = document.querySelector('.trend-period');
+  if (trendPeriod) {
+    const allowedWeeks = [4, 8, 12];
+    const requested = Number((params.get('period') || '').replace(/w$/, ''));
+    let visibleWeeks = allowedWeeks.includes(requested) ? requested : 12;
+    function paintTrendPeriod(updateUrl = true) {
+      trendPeriod.querySelectorAll('[data-trend-weeks]').forEach(button => {
+        button.setAttribute('aria-pressed', String(Number(button.dataset.trendWeeks) === visibleWeeks));
+      });
+      document.querySelectorAll('.trend-bars').forEach(bars => {
+        const points = [...bars.querySelectorAll('[data-trend-week]')];
+        points.forEach((point, index) => { point.hidden = index < Math.max(0, points.length - visibleWeeks); });
+      });
+      document.querySelectorAll('.trend-axis-start').forEach(label => {
+        const starts = Object.fromEntries((label.dataset.trendStarts || '').split(';').map(value => value.split(':')));
+        if (starts[visibleWeeks]) label.textContent = D.dateLabel(starts[visibleWeeks], locale);
+      });
+      if (!updateUrl) return;
+      const url = new URL(location.href);
+      visibleWeeks === 12 ? url.searchParams.delete('period') : url.searchParams.set('period', `${visibleWeeks}w`);
+      history.replaceState(null, '', url);
+    }
+    trendPeriod.addEventListener('click', event => {
+      const button = event.target.closest('[data-trend-weeks]');
+      if (!button) return;
+      visibleWeeks = Number(button.dataset.trendWeeks);
+      paintTrendPeriod();
+    });
+    paintTrendPeriod(Boolean(params.has('period')));
+  }
   document.addEventListener('click', event => {
     const link = event.target.closest('a[href]');
     if (link && typeof window.gtag === 'function') {

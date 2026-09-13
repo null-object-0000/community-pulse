@@ -7,8 +7,8 @@ const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.conf
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
-  const active = view === 'report' ? (route === '/' ? 'discover' : 'archive') : view;
-  const navigation = [['discover', '/'], ['archive', '/reports/']].map(([key, url]) =>
+  const active = view === 'report' ? (route === '/' ? 'discover' : 'archive') : (view === 'trend-cluster' ? 'trends' : view);
+  const navigation = [['discover', '/'], ['trends', '/trends/'], ['archive', '/reports/']].map(([key, url]) =>
     `<a href="${lp(url, locale)}"${active === key ? ' aria-current="page"' : ''}>${t(locale, key)}</a>`).join('');
   const values = {
     locale, view, title: e(title), description: e(description), canonical, zhUrl: D.origin + route, enUrl: D.origin + '/en' + route,
@@ -16,7 +16,7 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     ogImage: D.origin + '/og-image.png', ogImageAlt: locale === 'en' ? 'DevTrends — daily developer discoveries' : 'DevTrends 开发者趋势——大家都在做什么',
     feedUrl, feedTitle: locale === 'en' ? 'DevTrends daily discoveries' : 'DevTrends 开发者趋势日报',
     homePath: lp('/', locale), navigation, navLabel: locale === 'en' ? 'Main navigation' : '主导航',
-    headerSearch: view === 'report' ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '',
+    headerSearch: ['report', 'trend-cluster'].includes(view) ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '',
     zhSelected: locale === 'zh-CN' ? 'selected' : '', enSelected: locale === 'en' ? 'selected' : '',
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
     pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}" defer></script>`,
@@ -35,14 +35,16 @@ function heading(locale, title, intro, right = '', eyebrow = 'DEV TRENDS / DAILY
 function categoryOptions(items, locale) {
   return D.categories.map(category => ({ id: category.id, label: locale === 'en' ? category.labelEn : category.labelZh, count: items.filter(item => D.itemCategory(item) === category.id).length, active: false }));
 }
+function projectSort(locale) {
+  const sortLabel = locale === 'en' ? 'Sort projects' : '项目排序';
+  return `<label class="select-control"><span class="sr-only">${sortLabel}</span><select id="sort-select" aria-label="${sortLabel}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select><svg class="select-control-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></label>`;
+}
 // Both the daily feed and the report pages filter by the preset categories; the source directory
 // in the sidebar stays informational, so no page filters by data source.
 function filters(items, locale) {
   const meta = D.chipFilterMeta(locale);
   const chips = [{ id: 'all', label: meta.all, count: items.length, active: true }, ...categoryOptions(items, locale)];
-  const sortLabel = locale === 'en' ? 'Sort projects' : '项目排序';
-  const sort = `<label class="select-control"><span class="sr-only">${sortLabel}</span><select id="sort-select" aria-label="${sortLabel}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select><svg class="select-control-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></label>`;
-  return `<section class="filters" aria-label="${t(locale, 'search')}"><div id="${meta.containerId}" class="chip-filter" aria-label="${e(meta.aria)}">${D.chipFilterHtml(chips, locale)}</div><span class="filters-divider" aria-hidden="true"></span><div class="feed-tools">${sort}</div></section>`;
+  return `<section class="filters" aria-label="${t(locale, 'search')}"><div id="${meta.containerId}" class="chip-filter" aria-label="${e(meta.aria)}">${D.chipFilterHtml(chips, locale)}</div><span class="filters-divider" aria-hidden="true"></span><div class="feed-tools">${projectSort(locale)}</div></section>`;
 }
 function discoveryHero(items, locale) {
   const en = locale === 'en';
@@ -183,9 +185,67 @@ function archivePage(reports, locale, commentCounts = {}) {
   ] };
   return shell({ locale, view: 'archive', route, title, description: t(locale, 'archiveIntro'), content, structured });
 }
+function trendsPage(model, locale) {
+  const route = '/trends/', canonical = D.origin + lp(route, locale), en = locale === 'en';
+  const title = `${t(locale, 'trendsTitle')} | DevTrends`;
+  const dateRange = value => `${D.dateLabel(value.start, locale)} – ${D.dateLabel(value.end, locale)}`;
+  const cards = model.clusters.map(cluster => {
+    const label = D.facetLabel(cluster.type, cluster.id, locale);
+    const clusterHref = lp(cluster.path, locale);
+    const change = cluster.isNew
+      ? `<strong class="trend-change is-new">${t(locale, 'trendsNew')}</strong>`
+      : `<strong class="trend-change${cluster.growthPercent < 0 ? ' is-down' : ''}">${cluster.growthPercent >= 0 ? '+' : ''}${cluster.growthPercent}%</strong>`;
+    const examples = cluster.examples.map(example => {
+      const name = en ? example.titleEn : example.titleZh;
+      const href = example.internal ? lp(example.url, locale) : example.url;
+      return `<li><a href="${e(href)}"${example.internal ? '' : ' target="_blank" rel="noopener noreferrer"'}>${e(name)}<span aria-hidden="true">↗</span></a><time datetime="${example.date}">${e(D.dateLabel(example.date, locale))}</time></li>`;
+    }).join('');
+    const weekly = cluster.weekly || [];
+    const peak = Math.max(1, ...weekly.map(point => point.count));
+    const bars = weekly.map((point, index) => {
+      const label = `${D.dateLabel(point.start, locale)} – ${D.dateLabel(point.end, locale)}: ${t(locale, 'trendsProjects', { n: point.count })}`;
+      const height = point.count ? Math.max(8, Math.round(point.count / peak * 100)) : 3;
+      return `<span class="trend-bar" data-trend-week="${index}" title="${e(label)}" aria-label="${e(label)}"><i style="height:${height}%"></i></span>`;
+    }).join('');
+    const starts = [4, 8, 12].map(weeks => `${weeks}:${weekly[Math.max(0, weekly.length - weeks)]?.start || model.recent.start}`).join(';');
+    const spark = `<div class="trend-spark" aria-label="${t(locale, 'trendsWeekly')}"><div class="trend-spark-heading"><span>${t(locale, 'trendsWeekly')}</span></div><div class="trend-bars">${bars}</div><div class="trend-axis"><time class="trend-axis-start" data-trend-starts="${e(starts)}">${e(D.dateLabel(weekly[0]?.start || model.recent.start, locale))}</time><time>${e(D.dateLabel(model.latest, locale))}</time></div></div>`;
+    return `<article class="trend-card"><header><div><span class="trend-kind">${cluster.type === 'agentRoles' ? (en ? 'AGENT ECOSYSTEM' : 'AGENT 生态') : (en ? 'USE CASE' : '业务场景')}</span><h2><a href="${e(clusterHref)}">${e(label)}</a></h2></div>${change}</header><div class="trend-metrics"><b><a href="${e(clusterHref)}">${e(t(locale, 'trendsProjects', { n: cluster.recentCount }))} →</a></b><span>${e(t(locale, 'trendsSources', { n: cluster.sourceCount }))}</span><span>${t(locale, 'trendsBaseline')} ${cluster.baselineCount}</span></div>${spark}<h3>${t(locale, 'trendsExamples')}</h3><ul>${examples}</ul></article>`;
+  }).join('');
+  const summary = `<div class="trend-window"><div><span>${t(locale, 'trendsWindow')}</span><b>${e(dateRange(model.recent))}</b></div><div><span>${t(locale, 'trendsBaseline')}</span><b>${e(dateRange(model.baseline))}</b></div><p>${en ? `A cluster appears after at least ${model.thresholds.minProjects} new projects from ${model.thresholds.minSources} sources, with a daily rate up ${model.thresholds.minGrowthPercent}% or newly emerging.` : `至少 ${model.thresholds.minProjects} 个新项目、覆盖 ${model.thresholds.minSources} 个来源，且日均出现速度提升 ${model.thresholds.minGrowthPercent}%（或为新主题）后才展示。`}</p></div>`;
+  const periods = [4, 8, 12].map(weeks => `<button type="button" data-trend-weeks="${weeks}" aria-pressed="${weeks === 12}">${t(locale, `trends${weeks}Weeks`)}</button>`).join('');
+  const periodPicker = `<div class="trend-period"><span>${t(locale, 'trendsPeriod')}</span><div role="group" aria-label="${t(locale, 'trendsPeriod')}">${periods}</div></div>`;
+  const content = heading(locale, t(locale, 'trendsTitle'), t(locale, 'trendsIntro'), '', 'DEV TRENDS / SIGNALS') + periodPicker + summary + `<section class="trend-grid">${cards || `<p class="trend-empty">${t(locale, 'trendsEmpty')}</p>`}</section>`;
+  const structured = { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'CollectionPage', '@id': canonical, url: canonical, name: title, description: t(locale, 'trendsIntro'), inLanguage: locale, isPartOf: { '@id': D.origin + '/#website' }, mainEntity: { '@type': 'ItemList', numberOfItems: model.clusters.length, itemListElement: model.clusters.map((cluster, index) => ({ '@type': 'ListItem', position: index + 1, name: D.facetLabel(cluster.type, cluster.id, locale) })) } },
+  ] };
+  return shell({ locale, view: 'trends', route, title, description: t(locale, 'trendsIntro'), content, data: { trends: model }, structured });
+}
+function trendClusterPage(model, cluster, locale) {
+  const en = locale === 'en', route = cluster.path, canonical = D.origin + lp(route, locale);
+  const label = D.facetLabel(cluster.type, cluster.id, locale);
+  const kind = cluster.type === 'agentRoles' ? (en ? 'Agent ecosystem' : 'Agent 生态') : (en ? 'Use case' : '业务场景');
+  const items = cluster.projects || [];
+  const range = `${D.dateLabel(model.recent.start, locale)} – ${D.dateLabel(model.recent.end, locale)}`;
+  const count = t(locale, 'trendsProjects', { n: items.length });
+  const intro = en ? `${count} first discovered during ${range}, deduplicated across ${cluster.sourceCount} sources.` : `${range} 内首次发现的 ${count}，已跨 ${cluster.sourceCount} 个来源去重。`;
+  const title = `${kind} · ${label} | DevTrends`;
+  const breadcrumb = `<nav class="breadcrumb" aria-label="${en ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/trends/', locale)}">${t(locale, 'trendsTitle')}</a><span>/</span><span>${e(label)}</span></nav>`;
+  const tagLegend = `<div class="tag-legend" aria-label="${en ? 'Tag sources' : '标签来源'}"><span><i class="tag-key-devtrends">${t(locale, 'tagDevTrends')}</i>${t(locale, 'tagDevTrendsTitle')}</span><span><i class="tag-key-source">${t(locale, 'tagSource')}</i>${t(locale, 'tagSourceTitle')}</span></div>`;
+  const tools = `<section class="filters trend-cluster-tools" aria-label="${t(locale, 'search')}"><div><b>${e(count)}</b><span>${e(t(locale, 'trendsSources', { n: cluster.sourceCount }))}</span></div><div class="feed-tools">${projectSort(locale)}</div></section>`;
+  const content = breadcrumb + heading(locale, `${kind} · ${label}`, intro, '', 'DEV TRENDS / CATEGORY') + tagLegend + `<section class="discovery-results trend-cluster-list">${tools}<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date: item.trendDate || model.latest, index, showDate: true })).join('')}</div>${empty(locale)}</section>`;
+  const structured = { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'CollectionPage', '@id': canonical, url: canonical, name: title, description: intro, inLanguage: locale, isPartOf: { '@id': D.origin + '/#website' }, breadcrumb: { '@id': canonical + '#breadcrumb' }, mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || canonical })) } },
+    { '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t(locale, 'trendsTitle'), item: D.origin + lp('/trends/', locale) },
+      { '@type': 'ListItem', position: 2, name: label, item: canonical },
+    ] },
+  ] };
+  const report = { date: model.latest, results: [{ sourceId: 'trend-cluster', items }] };
+  return shell({ locale, view: 'trend-cluster', route, title, description: intro, content, data: { date: model.latest, report, trendCluster: { type: cluster.type, id: cluster.id } }, structured });
+}
 function notFoundPage(locale) {
   return shell({ locale, view: 'missing', route: '/404/', title: `${t(locale, 'missing')} | DevTrends`, description: t(locale, 'missingHint'), noindex: true,
     content: heading(locale, t(locale, 'missing'), t(locale, 'missingHint')), data: {},
   }).replace('</main>', `<a class="button primary" href="${lp('/', locale)}">${t(locale, 'home')}</a></main>`);
 }
-module.exports = { shell, heading, commentsSection, reportPage, cardsPage, archivePage, notFoundPage };
+module.exports = { shell, heading, commentsSection, reportPage, cardsPage, archivePage, trendsPage, trendClusterPage, notFoundPage };

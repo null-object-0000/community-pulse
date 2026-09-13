@@ -60,6 +60,8 @@ function applyEnhancedMarkdown(report, markdown, date) {
         if (entry.localized?.summaryEn) item.summaryEn = entry.localized.summaryEn;
         if (entry.localized?.titleEn) item.titleEn = entry.localized.titleEn;
         if (D.isCategoryId(entry.localized?.primaryCategory)) item.primaryCategory = entry.localized.primaryCategory;
+        const taxonomy = D.normalizeTaxonomy(entry.localized?.taxonomy);
+        if (D.taxonomyHasValues(taxonomy)) item.taxonomy = taxonomy;
         item.summarySource = 'llm-final';
         entry.used = true;
         enhancedCount += 1;

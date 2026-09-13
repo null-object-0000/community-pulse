@@ -55,7 +55,7 @@ test('final matching ignores incidental whitespace and accepts processed items w
 test('bilingual enhancement carries English titles and summaries through hidden final metadata', () => {
   const rawMarkdown = '## Feed（1 条）\n\n### 中文工具\n> 一个帮助开发者整理数据的工具。\n';
   const items = extractItems(rawMarkdown);
-  const localized = { schemaVersion: 2, titleEn: 'Developer Data Organizer', summaryZh: '一个帮助开发者整理数据的工具。', summaryEn: 'A tool that helps developers organize data.', primaryCategory: 'developer-tools' };
+  const localized = { schemaVersion: 3, titleEn: 'Developer Data Organizer', summaryZh: '一个帮助开发者整理数据的工具。', summaryEn: 'A tool that helps developers organize data.', primaryCategory: 'developer-tools', taxonomy: { useCases: ['software-development'], agentRoles: [], productForms: [], platforms: [], integrations: [] } };
   const finalMarkdown = renderLocalizedMarkdown(rawMarkdown, items, new Map([[items[0].idx, localized]]));
   assert.ok(finalMarkdown.includes(metadataComment(localized)));
   const enhanced = applyEnhancedMarkdown(report('2026-09-09', [['Feed', [{ title: '中文工具', summary: 'raw' }]]]), finalMarkdown, '2026-09-09');
@@ -63,6 +63,7 @@ test('bilingual enhancement carries English titles and summaries through hidden 
   assert.equal(item.summaryZh, localized.summaryZh);
   assert.equal(item.summaryEn, localized.summaryEn);
   assert.equal(item.primaryCategory, 'developer-tools');
+  assert.deepEqual(item.taxonomy.useCases, ['software-development']);
   assert.equal(D.displayTitle(item, 'en'), localized.titleEn);
   assert.equal(D.displayTitle(item, 'zh-CN'), '中文工具');
   assert.equal(D.summary(item, 'en').original, false);
@@ -74,8 +75,10 @@ test('preset categories provide one stable primary category and reject unknown L
   assert.deepEqual(D.itemCategories({ title: 'A terminal and code editor for developers' }), ['developer-tools']);
   assert.equal(D.itemCategory({ title: 'A quiet music player' }), 'design-media');
   const item = { title: 'Data Tool', heading: 'Data Tool', desc: 'A database monitoring tool.', section: 'Feed' };
-  assert.equal(validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'data-infrastructure' }, item).primaryCategory, 'data-infrastructure');
-  assert.throws(() => validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'random' }, item), /primaryCategory/);
+  const taxonomy = { useCases: ['data-operations'], agentRoles: [], productForms: [], platforms: [], integrations: [] };
+  assert.equal(validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'data-infrastructure', taxonomy }, item).primaryCategory, 'data-infrastructure');
+  assert.throws(() => validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'random', taxonomy }, item), /primaryCategory/);
+  assert.throws(() => validateLocalization({ summaryZh: '数据库监控工具。', summaryEn: item.desc, primaryCategory: 'data-infrastructure', taxonomy: { useCases: ['made-up'] } }, item), /taxonomy\.useCases/);
 });
 
 test('list rows carry no per-item date, because the selected report date already scopes the list', () => {
@@ -93,7 +96,7 @@ test('list rows carry no per-item date, because the selected report date already
 });
 
 test('source scaffolding tags never repeat the row source as a chip', () => {
-  const chipTags = item => [...D.renderItem(item, 'zh-CN').matchAll(/<span class="tag">([^<]*)<\/span>/g)].map(match => match[1]);
+  const chipTags = item => [...D.renderItem(item, 'zh-CN').matchAll(/data-tag-label="([^"]*)"/g)].map(match => match[1]);
   // Every collector prefixes its items with the source itself plus bookkeeping; the row's source
   // column already covers that, so Product Hunt rows end up with no chips at all.
   assert.deepEqual(chipTags({ title: 'Desert Ant Labs', sourceId: 'producthunt', tags: ['producthunt', 'new', 'official-featured'] }), []);
@@ -111,21 +114,28 @@ test('source scaffolding tags never repeat the row source as a chip', () => {
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'chinese-indie-dev-game', tags: ['indie-dev', '已上线', '游戏版'] }), ['游戏版']);
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'Rust'] }), ['Rust']);
   // A tag that merely repeats the source id is dropped too, and content tags are untouched.
-  assert.deepEqual(chipTags({ title: 'x', sourceId: 'mystery-source', tags: ['mystery-source', 'python', 'mcp'] }), ['python', 'mcp']);
-  assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issues', tags: ['submission'], github: { topics: ['cli'] } }), ['cli']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'mystery-source', tags: ['mystery-source', 'python', 'mcp'] }), ['Agent 能力扩展', 'MCP 服务', 'python']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issues', tags: ['submission'], github: { topics: ['cli'] } }), ['命令行工具', '终端']);
 });
 
 test('the primary language renders once, never twice as a language chip and a tag', () => {
-  const chipTags = item => [...D.renderItem(item, 'zh-CN').matchAll(/<span class="tag">([^<]*)<\/span>/g)].map(match => match[1]);
+  const chipTags = item => [...D.renderItem(item, 'zh-CN').matchAll(/data-tag-label="([^"]*)"/g)].map(match => match[1]);
   // The github-trending collector repeats the language inside `tags`, beside the language chip.
   const trending = { title: 'OpenMAIC', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'TypeScript'], github: { language: 'TypeScript', topics: [] } };
   assert.deepEqual(chipTags(trending), ['TypeScript']);
-  assert.deepEqual(chipTags({ title: 'OpenMAIC', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'Go'], github: { language: 'Go', topics: ['cli', 'go'] } }), ['Go', 'cli']);
+  assert.deepEqual(chipTags({ title: 'OpenMAIC', sourceId: 'github-trending', tags: ['github-trending', 'daily', 'Go'], github: { language: 'Go', topics: ['cli', 'go'] } }), ['Go', '命令行工具', '终端']);
   // Casing variants of one tag collapse, including the language written differently in a topic.
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'github-trending', github: { language: 'Python', topics: ['Python', 'python'] } }), ['Python']);
   assert.deepEqual(chipTags({ title: 'x', sourceId: 'mystery-source', tags: ['TypeScript'], github: { language: 'typescript' } }), ['typescript']);
   // A source-less item keeps its language chip and still shows unrelated tags.
-  assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issue', tags: ['Rust'], github: { language: 'Rust', topics: ['cli'] } }), ['Rust', 'cli']);
+  assert.deepEqual(chipTags({ title: 'x', sourceId: 'weekly-issue', tags: ['Rust'], github: { language: 'Rust', topics: ['cli'] } }), ['Rust', '命令行工具', '终端']);
+});
+
+test('rendered tags disclose whether DevTrends or the original project supplied them', () => {
+  const html = D.renderItem({ title: 'Tagged tool', sourceId: 'weekly-issues', taxonomy: { useCases: ['content-creation'] }, github: { language: 'Go', topics: ['original-topic'] } }, 'zh-CN');
+  assert.match(html, /data-tag-origin="language" data-tag-label="Go"[^>]*><small>语言<\/small>/);
+  assert.match(html, /data-tag-origin="devtrends" data-tag-label="内容创作"[^>]*><small>DT<\/small>/);
+  assert.match(html, /data-tag-origin="source" data-tag-label="original-topic"[^>]*><small>原始<\/small>/);
 });
 
 test('a clipped description earns a tooltip while a fully visible one stays bare', () => {
@@ -339,15 +349,16 @@ test('report pages carry the date in the heading instead of a separate meta row'
   assert.ok(!/date-control|feed-heading|report-controls/.test(styles), 'stale meta row rules');
 });
 
-test('discovery, archive, and project pages share the same wide desktop canvas', () => {
+test('discovery, archive, trends, trend cluster, and project pages share the same wide desktop canvas', () => {
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
-  for (const view of ['report', 'archive', 'project']) {
+  for (const view of ['report', 'archive', 'trends', 'trend-cluster', 'project']) {
     assert.ok(styles.includes(`body[data-view="${view}"] .topbar-inner`), `${view} topbar width`);
     assert.ok(styles.includes(`body[data-view="${view}"] .workspace`), `${view} workspace width`);
     assert.ok(styles.includes(`body[data-view="${view}"] .footer`), `${view} footer width`);
   }
   assert.match(styles, /body\[data-view="project"\] \.workspace \{ max-width: 1720px; \}/);
   assert.match(styles, /body\[data-view="project"\] \.footer \{ max-width: 1624px; \}/);
+  assert.match(styles, /@media \(min-width: 1500px\) \{ \.trend-grid \{ grid-template-columns: repeat\(3, minmax\(0, 1fr\)\); \} \}/);
 });
 
 test('chip row keeps only the leading run that fits and never collapses entirely', () => {
@@ -529,6 +540,24 @@ test('every emitted project, report, and sitemap entry has a real static page an
   const index = JSON.parse(fs.readFileSync(path.join(dist, 'data/index.json')));
   const projects = JSON.parse(fs.readFileSync(path.join(dist, 'data/projects.json')));
   assert.equal(Object.keys(projects).length, index.projectCount); assert.ok(index.projectCount > 0);
+  const trends = JSON.parse(fs.readFileSync(path.join(dist, 'data/trends.json')));
+  assert.equal(trends.clusters.length, index.trendCount);
+  assert.ok(fs.existsSync(path.join(dist, 'trends', 'index.html')));
+  assert.ok(fs.existsSync(path.join(dist, 'en', 'trends', 'index.html')));
+  const trendsPage = fs.readFileSync(path.join(dist, 'trends', 'index.html'), 'utf8');
+  assert.match(trendsPage, /data-trend-weeks="4"/);
+  assert.match(trendsPage, /data-trend-weeks="8"/);
+  assert.match(trendsPage, /data-trend-weeks="12"/);
+  assert.match(trendsPage, /class="trend-bar" data-trend-week="11"/);
+  const contentCreation = trends.clusters.find(cluster => cluster.key === 'useCases:content-creation');
+  assert.ok(contentCreation?.path);
+  const clusterPagePath = path.join(dist, contentCreation.path.replace(/^\//, ''), 'index.html');
+  assert.ok(fs.existsSync(clusterPagePath));
+  const clusterPage = fs.readFileSync(clusterPagePath, 'utf8');
+  assert.match(clusterPage, new RegExp(`${contentCreation.recentCount} 个新项目`));
+  assert.equal((clusterPage.match(/class="feed-item"/g) || []).length, contentCreation.recentCount);
+  assert.match(clusterPage, /data-tag-origin="devtrends"/);
+  assert.match(clusterPage, /class="item-discovery-date" datetime="2026-09-/);
   const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, urls.length);
@@ -541,6 +570,9 @@ test('every emitted project, report, and sitemap entry has a real static page an
   assert.equal(baiduUrls.length * 2, urls.length);
   assert.ok(baiduUrls.every(url => url.startsWith(D.origin + '/') && !url.startsWith(D.origin + '/en/')));
   assert.ok(!baiduSitemap.includes('hreflang'));
+  const robots = fs.readFileSync(path.join(dist, 'robots.txt'), 'utf8');
+  assert.ok(robots.includes(`${D.origin}/sitemap.xml`));
+  assert.ok(robots.includes(`${D.origin}/sitemap-baidu.xml`));
   for (const locale of ['', 'en/']) {
     const feed = fs.readFileSync(path.join(dist, locale, 'feed.xml'), 'utf8');
     assert.match(feed, /^<\?xml version="1\.0" encoding="UTF-8"\?>/);

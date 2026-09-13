@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const D = require('../web/shared.js');
 const { applyEnhancedMarkdown } = require('./enhanced-report.js');
+const { buildTrends } = require('./trends.js');
 const R = require('./render-site.js');
 const images = require('./image-store.js');
 const imageManifest = images.readManifest();
@@ -46,6 +47,7 @@ if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public
 const projects = require('./projects.js').buildProjects(reports);
 const latest = dates[0] || null;
 const latestTotal = D.reportItems(reports[0] || { results: [] }).length;
+const trends = latest ? buildTrends(reports, latest) : { schemaVersion: 1, latest: null, recent: {}, baseline: {}, thresholds: { minProjects: 3, minSources: 2, minGrowthPercent: 25 }, clusters: [] };
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
   for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown, latest, latestTotal));
@@ -53,7 +55,9 @@ for (const report of reports) {
 for (const locale of ['zh-CN', 'en']) {
   writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown, latest, latestTotal));
   writePage(D.localPath('/cards/', locale), R.cardsPage(reports[0] || { results: [] }, latest, locale));
+  writePage(D.localPath('/trends/', locale), R.trendsPage(trends, locale));
   writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale, commentCounts));
+  for (const cluster of trends.clusters) writePage(D.localPath(cluster.path, locale), R.trendClusterPage(trends, cluster, locale));
 }
 write('404.html', R.notFoundPage('zh-CN'));
 write('en/404.html', R.notFoundPage('en'));
@@ -61,8 +65,9 @@ writePage('/404/', R.notFoundPage('zh-CN'));
 writePage('/en/404/', R.notFoundPage('en'));
 if (projects.length) require('./projects.js').writeProjects(projects, { write, writePage });
 write('data/projects.json', D.json(Object.fromEntries(projects.map(project => [project.key, project.path]))));
-write('data/index.json', JSON.stringify({ latest, dates, projectCount: projects.length, generatedAt: new Date().toISOString() }, null, 2));
-write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${D.origin}/sitemap.xml\n`);
+write('data/trends.json', D.json(trends));
+write('data/index.json', JSON.stringify({ latest, dates, projectCount: projects.length, trendCount: trends.clusters.length, generatedAt: new Date().toISOString() }, null, 2));
+write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${D.origin}/sitemap.xml\nSitemap: ${D.origin}/sitemap-baidu.xml\n`);
 function feedXml(locale) {
   const en = locale === 'en', feedPath = D.localPath('/feed.xml', locale), homePath = D.localPath('/', locale);
   const channelTitle = en ? 'DevTrends — Daily Developer Discoveries' : 'DevTrends 开发者趋势日报';
@@ -80,7 +85,8 @@ function feedXml(locale) {
 write('feed.xml', feedXml('zh-CN'));
 write('en/feed.xml', feedXml('en'));
 const pagePairs = [
-  { route: '/', date: latest }, { route: '/reports/', date: latest },
+  { route: '/', date: latest }, { route: '/trends/', date: latest }, { route: '/reports/', date: latest },
+  ...trends.clusters.map(cluster => ({ route: cluster.path, date: latest })),
   ...dates.map(date => ({ route: `/reports/${date}/`, date })),
   ...projects.map(project => ({ route: project.path, date: project.lastSeen })),
 ];

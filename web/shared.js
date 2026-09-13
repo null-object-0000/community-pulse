@@ -7,7 +7,7 @@
   const origin = 'https://devtrends.site';
   const messages = {
     'zh-CN': {
-      discover: '今日发现', archive: '历史日报', slogan: '大家都在做什么',
+      discover: '今日发现', trends: '趋势', archive: '历史日报', slogan: '大家都在做什么',
       intro: '每天发现开发者社区的新项目、新产品与开源趋势。', all: '全部来源', search: '搜索项目、作者或标签',
       language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色',
       count: '{n} 个项目', sources: '{n} 个来源',
@@ -28,9 +28,10 @@
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
       previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', cardsTitle: '今日卡片', cardsIntro: '一张一张看完今天的新发现', cardsRead: '已读 {n} / {total}', cardsComplete: '已全部读完', cardsHint: '左滑下一条，右滑上一条',
+      trendsTitle: '大家正在集中做什么', trendsIntro: '按业务场景和 Agent 生态角色聚合最近的新项目，并与此前四周比较。', trendsWindow: '最近 7 天', trendsBaseline: '此前 28 天', trendsNew: '新出现', trendsProjects: '{n} 个新项目', trendsSources: '{n} 个来源', trendsExamples: '代表项目', trendsEmpty: '还没有形成达到展示门槛的趋势簇。', trendsPeriod: '观察周期', trends4Weeks: '近 4 周', trends8Weeks: '近 8 周', trends12Weeks: '近 12 周', trendsWeekly: '每周新增项目', tagDevTrends: 'DT', tagSource: '原始', tagLanguage: '语言', tagDevTrendsTitle: 'DevTrends 归类', tagSourceTitle: '项目或来源原始标签', tagLanguageTitle: '编程语言',
     },
     en: {
-      discover: 'Discover', archive: 'Archive', slogan: 'What developers are building',
+      discover: 'Discover', trends: 'Trends', archive: 'Archive', slogan: 'What developers are building',
       intro: 'Daily discoveries from developer communities, independent makers, and open source.', all: 'All sources', search: 'Search projects, authors, or tags',
       language: 'Language', theme: 'Appearance', system: 'System', light: 'Light', dark: 'Dark',
       count: '{n} projects', sources: '{n} sources',
@@ -51,6 +52,7 @@
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
       previousItem: 'Previous', nextItem: 'Next', openItem: 'Open project', cardsTitle: 'Today’s cards', cardsIntro: 'Browse today’s discoveries one at a time', cardsRead: 'Read {n} / {total}', cardsComplete: 'All read', cardsHint: 'Swipe left for next, right for previous',
+      trendsTitle: 'What developers are converging on', trendsIntro: 'New projects grouped by use case and agent-ecosystem role, compared with the preceding four weeks.', trendsWindow: 'Last 7 days', trendsBaseline: 'Previous 28 days', trendsNew: 'New', trendsProjects: '{n} new projects', trendsSources: '{n} sources', trendsExamples: 'Representative projects', trendsEmpty: 'No trend cluster has reached the display threshold yet.', trendsPeriod: 'Time range', trends4Weeks: '4 weeks', trends8Weeks: '8 weeks', trends12Weeks: '12 weeks', trendsWeekly: 'New projects by week', tagDevTrends: 'DT', tagSource: 'Original', tagLanguage: 'Language', tagDevTrendsTitle: 'DevTrends classification', tagSourceTitle: 'Original project or source tag', tagLanguageTitle: 'Programming language',
     },
   };
   const sourceLabels = {
@@ -88,6 +90,112 @@
     { id: 'other', labelZh: '其他', labelEn: 'Other', description: '信息不足，或主要用途无法准确归入以上主题' },
   ];
   const categoryIds = new Set(categories.map(category => category.id));
+  // Facets answer different questions and must not compete in one flat category list. A use case
+  // says what job the product does; an agent role says where it sits in the agent toolchain;
+  // form/platform/integration describe how and where it is used. IDs are deliberately controlled
+  // so historical rule-based inference and new LLM-enriched reports stay comparable over time.
+  const taxonomyFacets = {
+    useCases: [
+      ['novel-writing', '小说创作', 'Novel writing'], ['content-creation', '内容创作', 'Content creation'],
+      ['software-development', '软件开发', 'Software development'], ['research-learning', '研究与学习', 'Research & learning'],
+      ['security-testing', '安全与测试', 'Security & testing'], ['data-operations', '数据与运维', 'Data & operations'],
+      ['desktop-productivity', '桌面效率', 'Desktop productivity'], ['business-growth', '商业与增长', 'Business & growth'],
+      ['lifestyle-entertainment', '生活与娱乐', 'Lifestyle & entertainment'],
+    ],
+    agentRoles: [
+      ['vertical-agent', '垂直 Agent', 'Vertical agent'], ['capability-extension', 'Agent 能力扩展', 'Agent extension'],
+      ['orchestration-control', 'Agent 管理与编排', 'Agent orchestration'], ['observability', 'Agent 可观测性', 'Agent observability'],
+      ['evaluation-security', 'Agent 评测与安全', 'Agent evaluation & safety'], ['runtime-framework', 'Agent 运行时', 'Agent runtime'],
+    ],
+    productForms: [
+      ['web-app', 'Web 应用', 'Web app'], ['desktop-app', '桌面应用', 'Desktop app'], ['mobile-app', '移动应用', 'Mobile app'],
+      ['cli', '命令行工具', 'CLI'], ['skill-plugin', 'Skill / 插件', 'Skill / plugin'], ['mcp-service', 'MCP 服务', 'MCP service'],
+      ['library-sdk', '库 / SDK', 'Library / SDK'], ['content-resource', '内容 / 资源', 'Content / resource'],
+    ],
+    platforms: [
+      ['web', 'Web', 'Web'], ['macos', 'macOS', 'macOS'], ['windows', 'Windows', 'Windows'], ['linux', 'Linux', 'Linux'],
+      ['ios', 'iOS', 'iOS'], ['android', 'Android', 'Android'], ['browser', '浏览器', 'Browser'], ['terminal', '终端', 'Terminal'],
+    ],
+    integrations: [
+      ['claude-code', 'Claude Code', 'Claude Code'], ['codex', 'Codex', 'Codex'], ['opencode', 'OpenCode', 'OpenCode'],
+      ['deepseek-harness', 'DeepSeek Harness', 'DeepSeek Harness'], ['openclaw', 'OpenClaw', 'OpenClaw'], ['cursor', 'Cursor', 'Cursor'],
+    ],
+  };
+  const facetIndex = Object.fromEntries(Object.entries(taxonomyFacets).map(([name, values]) => [name, new Map(values.map(([id, zh, en]) => [id, { id, labelZh: zh, labelEn: en }]))]));
+  function normalizeTaxonomy(value = {}) {
+    const result = { version: 1 };
+    for (const [name, index] of Object.entries(facetIndex)) {
+      const limit = name === 'integrations' ? 5 : (name === 'platforms' ? 3 : 2);
+      result[name] = [...new Set((Array.isArray(value?.[name]) ? value[name] : []).map(String).filter(id => index.has(id)))].slice(0, limit);
+    }
+    return result;
+  }
+  const taxonomyHasValues = value => {
+    const normalized = normalizeTaxonomy(value);
+    return Object.keys(facetIndex).some(name => normalized[name].length);
+  };
+  const facetLabel = (name, id, locale = 'zh-CN') => {
+    const entry = facetIndex[name]?.get(id);
+    return entry ? (locale === 'en' ? entry.labelEn : entry.labelZh) : id;
+  };
+  function taxonomyText(item) {
+    const contentTags = (item.tags || []).filter(tag => {
+      const key = String(tag).trim().toLowerCase();
+      return !sourceScaffoldTags.has(key) && !collectionStatusTags.has(key) && !['程序员版', '游戏版'].includes(key);
+    });
+    return [item.title, item.titleEn, item.summary, item.summaryZh, item.summaryEn, item.content, item.description, item.github?.description, ...contentTags, ...(item.github?.topics || [])].filter(Boolean).join(' ').toLowerCase();
+  }
+  function inferTaxonomy(item) {
+    const text = taxonomyText(item), useCases = [], agentRoles = [], productForms = [], platforms = [], integrations = [];
+    const add = (list, id, pattern) => { if (pattern.test(text) && !list.includes(id)) list.push(id); };
+    add(useCases, 'novel-writing', /(?:novel|fiction|story).{0,24}(?:writ|author|creation)|(?:writ|author).{0,24}(?:novel|fiction|story)|小说创作|小说写作|写小说|网文.{0,12}(?:写|创作)|故事创作|写作助手/i);
+    add(useCases, 'content-creation', /\b(?:content creation|creative writing|copywriting|image generation|video editing|media production)\b|内容创作|文案|写作|绘图|图像生成|视频创作|音频创作|剪辑/i);
+    add(useCases, 'security-testing', /\b(?:security|vulnerabilit\w*|penetration|audit|guardrail)\b|安全(?:工具|测试|审计|研究|防护)|网络安全|漏洞|渗透|攻防|红队|恶意|攻击|审计|护栏/i);
+    add(useCases, 'research-learning', /\b(?:research|learning|education|study|paper|literature|book|course|guide)\b|科研|研究|学习|教育|论文|文献|书籍|教程|课程/i);
+    add(useCases, 'data-operations', /database|infrastructure|devops|deploy|network|proxy|observability|数据库|基础设施|运维|部署|网络|代理环境/i);
+    add(useCases, 'business-growth', /\b(?:marketing|sales|seo|crm|recruit(?:ing|ment)?|finance|business growth)\b|营销|销售|增长|招聘|求职|财务|商业增长/i);
+    add(useCases, 'desktop-productivity', /desktop (?:app|tool|client|utility|workflow|pet)|menu bar|menubar|shortcut|clipboard|window manager|桌面(?:应用|工具|客户端|效率|宠物)|菜单栏|快捷键|剪贴板|窗口管理|效率工具/i);
+    add(useCases, 'lifestyle-entertainment', /game|travel|health|fitness|social|music|游戏|旅行|健康|健身|社交|音乐|娱乐/i);
+    add(useCases, 'software-development', /\b(?:developer|coding|programming|code review|terminal|git|ide|sdk)\b|开发|编程|代码|终端|调试|测试/i);
+    const agent = /\b(ai[- ]?agents?|agents?|agentic|coding agents?|claude code|codex|opencode|openclaw|deepseek harness|mcp)\b|\b(?:token|nerf)\s*(?:tracker|meter)\b|智能体|编程\s*agent/i.test(text);
+    if (agent) {
+      add(agentRoles, 'capability-extension', /skill|plugin|extension|hook|mcp|memory|context|integration|tool access|技能|插件|扩展|钩子|记忆|上下文|接入/i);
+      add(agentRoles, 'orchestration-control', /orchestrat|manager|management|command center|control plane|kanban|multi[- ]agent|multiple agents|workspace|workbench|编排|管理|控制台|看板|多智能体|多个\s*agent|工作台/i);
+      add(agentRoles, 'observability', /\b(?:agent|claude code|codex)\b.{0,48}\b(?:observability|monitor(?:ing)?|status|usage|quota|costs?|telemetry|logs?|traces?|sessions?|dashboard|alerts?|notifications?)\b|\b(?:observability|monitor(?:ing)?|status|usage|quota|costs?|telemetry|logs?|traces?|sessions?|dashboard|alerts?|notifications?)\b.{0,48}\b(?:agent|claude code|codex)\b|\b(?:token|nerf)\s*(?:tracker|meter)\b|\bsessions?\b.{0,32}\b(?:status|alerts?|monitor(?:ing)?|awaiting input)\b|(?:Agent|Claude Code|Codex).{0,28}(?:可观测|监控|状态|用量|额度|账本|日志|追踪|提醒|通知|会话)|(?:可观测|监控|状态|用量|额度|账本|日志|追踪|提醒|通知|会话).{0,28}(?:Agent|Claude Code|Codex)/i);
+      add(agentRoles, 'evaluation-security', /\b(?:evaluation|benchmark|test harness|security|audit|guardrail|red team)\b|评测|基准测试|安全测试|安全审计|护栏|红队/i);
+      add(agentRoles, 'runtime-framework', /\b(?:agent|agentic)\s+(?:runtime|framework|sdk|platform|harness)\b|\b(?:runtime|framework|platform)\s+for\s+(?:ai\s+)?agents?\b|智能体.{0,10}(?:运行时|框架|开发平台)/i);
+      const verticalUseCase = useCases.some(id => !['software-development', 'data-operations', 'security-testing', 'desktop-productivity'].includes(id));
+      if ((!agentRoles.length || /assistant|copilot|agent for|智能体|助手|搭档/i.test(text)) && verticalUseCase) agentRoles.push('vertical-agent');
+    }
+    add(productForms, 'web-app', /web app|website|browser[- ]based|网页|网站|web 应用/i);
+    add(productForms, 'desktop-app', /desktop (?:app|tool|client|utility|pet)|native macos|menu bar|menubar|桌面应用|桌面端|桌面工具|桌面宠物|菜单栏|原生 mac/i);
+    add(productForms, 'mobile-app', /mobile app|ios app|android app|移动应用|手机应用/i);
+    add(productForms, 'cli', /\bcli\b|command line|terminal tool|命令行|终端工具/i);
+    add(productForms, 'skill-plugin', /\bskills?\b|plugin|extension|技能包|插件/i);
+    add(productForms, 'mcp-service', /\bmcp\b|model context protocol/i);
+    add(productForms, 'library-sdk', /\bsdk\b|library|framework|开发库|组件库|框架/i);
+    add(productForms, 'content-resource', /book|course|guide|directory|list|教程|课程|书籍|资源列表|导航站/i);
+    add(platforms, 'web', /web app|website|browser[- ]based|网页|网站|\bweb\b/i); add(platforms, 'macos', /macos|mac os|\bmac\b|mac 菜单栏|mac桌面|原生 mac/i);
+    add(platforms, 'windows', /windows|win32|win11|win10/i); add(platforms, 'linux', /linux|ubuntu|bash/i);
+    add(platforms, 'ios', /\bios\b|iphone|ipad/i); add(platforms, 'android', /android/i); add(platforms, 'browser', /browser extension|chrome extension|浏览器扩展/i); add(platforms, 'terminal', /terminal|\bcli\b|命令行|终端/i);
+    add(integrations, 'claude-code', /claude code/i); add(integrations, 'codex', /\bcodex\b/i); add(integrations, 'opencode', /opencode/i);
+    add(integrations, 'deepseek-harness', /deepseek harness|\bdsh\b/i); add(integrations, 'openclaw', /openclaw/i); add(integrations, 'cursor', /\bcursor\b/i);
+    return normalizeTaxonomy({ useCases, agentRoles, productForms, platforms, integrations });
+  }
+  function itemTaxonomy(item) {
+    const explicit = normalizeTaxonomy(item?.taxonomy);
+    return taxonomyHasValues(explicit) ? explicit : inferTaxonomy(item || {});
+  }
+  function taxonomyTags(item, locale = 'zh-CN', limit = 3) {
+    const taxonomy = itemTaxonomy(item), ordered = ['useCases', 'agentRoles', 'productForms', 'platforms', 'integrations'];
+    const tags = [];
+    for (const name of ordered) for (const id of taxonomy[name]) {
+      const label = facetLabel(name, id, locale);
+      if (!tags.includes(label)) tags.push(label);
+      if (tags.length >= limit) return tags;
+    }
+    return tags;
+  }
   const t = (locale, key, args = {}) => String(messages[locale]?.[key] ?? messages['zh-CN'][key] ?? key)
     .replace(/\{(\w+)\}/g, (_, name) => args[name] ?? '');
   const escapeHtml = (value = '') => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -361,19 +469,41 @@
   // Up to three chips per row, minus everything the row already states elsewhere: the source (badge
   // and name) and the primary language, which is rendered as its own chip and repeated by the
   // github-trending collector inside `tags`. Casing variants count as the same tag.
-  function visibleTags(item) {
+  function visibleTagEntries(item, locale = 'zh-CN', limit = 3) {
     const seen = new Set([String(item.sourceId || '').toLowerCase(), String(metric(item, ['language', 'lang']) || '').toLowerCase(), ...sourceScaffoldTags, ...collectionStatusTags]);
-    const tags = [];
+    const taxonomy = itemTaxonomy(item);
+    const semanticIds = new Set(Object.values(taxonomy).flat().map(value => String(value).toLowerCase()));
+    if (semanticIds.has('mcp-service')) semanticIds.add('mcp');
+    const facetTags = taxonomyTags({ ...item, taxonomy }, locale);
+    const originalTags = [];
     for (const tag of [...(item.github?.topics || []), ...(item.tags || [])]) {
+      const key = String(tag).trim().toLowerCase();
+      if (!key || seen.has(key) || semanticIds.has(key)) continue;
+      seen.add(key);
+      originalTags.push({ label: tag, origin: 'source' });
+    }
+    const tags = [];
+    // When the project supplies a meaningful original label, reserve one of the three visible
+    // slots for it so the provenance marker is useful rather than merely theoretical.
+    const devtrendsLimit = Math.max(0, limit - Math.min(1, originalTags.length));
+    for (const tag of facetTags) {
       const key = String(tag).trim().toLowerCase();
       if (!key || seen.has(key)) continue;
       seen.add(key);
-      tags.push(tag);
-      if (tags.length === 3) break;
+      tags.push({ label: tag, origin: 'devtrends' });
+      if (tags.length === devtrendsLimit) break;
     }
+    tags.push(...originalTags.slice(0, limit - tags.length));
     return tags;
   }
-  function renderItem(item, locale, { date = '', index = 0 } = {}) {
+  const visibleTags = (item, locale = 'zh-CN') => visibleTagEntries(item, locale).map(tag => tag.label);
+  function tagHtml(tag, locale = 'zh-CN') {
+    const origin = tag.origin === 'source' ? 'source' : tag.origin === 'language' ? 'language' : 'devtrends';
+    const marker = origin === 'source' ? t(locale, 'tagSource') : origin === 'language' ? t(locale, 'tagLanguage') : t(locale, 'tagDevTrends');
+    const title = origin === 'source' ? t(locale, 'tagSourceTitle') : origin === 'language' ? t(locale, 'tagLanguageTitle') : t(locale, 'tagDevTrendsTitle');
+    return `<span class="tag tag-${origin}" data-tag-origin="${origin}" data-tag-label="${escapeHtml(tag.label)}" title="${escapeHtml(title)}"><small>${escapeHtml(marker)}</small>${escapeHtml(tag.label)}</span>`;
+  }
+  function renderItem(item, locale, { date = '', index = 0, showDate = false } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
     const links = itemLinks(item), primary = safeUrl(item.websiteUrl || item.url) || repo?.url;
     const source = sourceInfo(item);
@@ -382,7 +512,7 @@
     const language = metric(item, ['language', 'lang']);
     const stars = metric(item, ['stars', 'stargazers_count', 'totalStars']);
     const votes = metric(item, ['votes', 'votesCount']);
-    const tags = visibleTags(item);
+    const tags = visibleTagEntries(item, locale);
     // The product mark identifies an item at 48px. A software screenshot is never borrowed for the
     // avatar: it belongs to the gallery. A row without a platform mark falls back to the logo its
     // official website declares (`siteLogo`, captured offline) and only then to its initials.
@@ -397,8 +527,8 @@
     return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
       <span class="item-avatar avatar-${index % 5}${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
-      <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="item-tags">${language ? `<span class="tag">${escapeHtml(language)}</span>` : ''}${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div></div>
-      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
+      <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="item-tags">${language ? tagHtml({ label: language, origin: 'language' }, locale) : ''}${tags.map(tag => tagHtml(tag, locale)).join('')}</div></div>
+      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}${showDate && date ? `<time class="item-discovery-date" datetime="${escapeHtml(date)}">${escapeHtml(dateLabel(date, locale))}</time>` : ''}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
   }
   // Mobile card deck. Stacked cards are what makes the gesture read as "the content is moving":
@@ -447,7 +577,7 @@
     const votes = metric(item, ['votes', 'votesCount']);
     const score = stars !== null ? stars : votes;
     const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
-    const tags = visibleTags(item).slice(0, 2);
+    const tags = visibleTags(item, locale).slice(0, 2);
     const markUrl = localImage(item.logo) || localImage(item.icon) || localImage(item.siteLogo);
     const screenshots = localImages([...(Array.isArray(item.images) ? item.images : []), item.image]);
     const initials = escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
@@ -504,5 +634,5 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, categories, taxonomyFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, inferTaxonomy, itemTaxonomy, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
