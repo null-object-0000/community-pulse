@@ -477,6 +477,16 @@ test('saved theme applies before rendering, reacts to system changes, and tolera
   assert.equal(environment(null, true).document.documentElement.dataset.theme, 'dark');
 });
 
+test('every page carries the site analytics tags', () => {
+  const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
+  assert.ok(template.includes('https://www.clarity.ms/tag/') && template.includes('"clarity", "script", "yhhvfzftgj"'), 'Clarity tag must stay in the shared head template');
+  assert.ok(template.includes('googletagmanager.com/gtag/js?id=G-1E9PXZ2EVK'));
+  // 每个页面都走同一个 shell，所以首页渲染出来就证明全站都带上了这两个标签。
+  const home = fs.readFileSync(path.join(__dirname, '../dist/index.html'), 'utf8');
+  assert.ok(home.includes('"clarity", "script", "yhhvfzftgj"'));
+  assert.ok(home.includes('gtag(\'config\',\'G-1E9PXZ2EVK\')'));
+});
+
 test('every site verification file is served from the site root byte-for-byte', () => {
   const dist = path.join(__dirname, '../dist');
   const directory = path.join(__dirname, '../verification');
