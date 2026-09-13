@@ -48,6 +48,8 @@ test('archive calendar days show source and discussion counts in both locales', 
   assert.match(chinese, /class="archive-calendar"/);
   assert.match(chinese, /role="columnheader">周一/);
   assert.match(chinese, /class="archive-day is-outside"/);
+  assert.match(chinese, /class="archive-project-count"><svg/);
+  assert.match(chinese, /class="archive-source-count"><svg/);
   assert.match(chinese, /archive-comment-count/);
 });
 
@@ -56,6 +58,7 @@ test('archive calendar keeps seven columns and becomes a list on phones', () => 
   assert.match(styles, /\.archive-calendar \{ display: grid; grid-template-columns: repeat\(7,minmax\(0,1fr\)\)/);
   assert.match(styles, /@media \(max-width: 600px\)[\s\S]*?\.archive-calendar \{ display: flex; flex-direction: column-reverse/);
   assert.match(styles, /\.archive-weekdays, \.archive-day\.is-empty, \.archive-day\.is-outside \{ display: none; \}/);
+  assert.match(styles, /\.archive-day-meta > span \{ display: inline-flex; align-items: center/);
 });
 
 test('project pages have one stable discussion shared by Chinese and English routes', () => {
