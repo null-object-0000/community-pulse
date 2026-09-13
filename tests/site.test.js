@@ -404,12 +404,13 @@ test('summary cleanup removes source template leftovers without damaging normal 
 
 test('secondary text and avatar initials meet WCAG AA contrast in the light theme', () => {
   const css = fs.readFileSync(path.join(__dirname, '../web/styles.css'), 'utf8');
+  const tokens = fs.readFileSync(path.join(__dirname, '../web/token.css'), 'utf8');
   const luminance = hex => {
     const value = parseInt(hex.slice(1), 16), channel = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
     return 0.2126 * channel((value >> 16) & 255) + 0.7152 * channel((value >> 8) & 255) + 0.0722 * channel(value & 255);
   };
   const ratio = (a, b) => { const [hi, lo] = [luminance(a), luminance(b)].sort((m, n) => n - m); return (hi + 0.05) / (lo + 0.05); };
-  const faint = css.match(/--faint:\s*(#[0-9a-f]{6})/i)[1];
+  const faint = tokens.match(/--color-text-faint:\s*(#[0-9a-f]{6})/i)[1];
   assert.ok(ratio(faint, '#ffffff') >= 4.5, `--faint ${faint} on white is ${ratio(faint, '#ffffff').toFixed(2)}`);
   // 无配图时显示白色首字母，必须对渐变最亮的一端也达标
   for (const name of ['avatar-1', 'avatar-3', 'avatar-4']) {

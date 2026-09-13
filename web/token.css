@@ -1,0 +1,121 @@
+/*
+ * DevTrends design tokens
+ *
+ * Change this file to adjust the site's visual language. Component selectors belong in
+ * styles.css; this file only contains reusable design decisions and theme overrides.
+ */
+:root {
+  color-scheme: light;
+
+  /* Typography */
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --font-size-root: 16px;
+  --font-size-xs: .75rem;
+  --font-size-sm: .8125rem;
+  --font-size-md: .875rem;
+  --font-size-body: 1rem;
+  --font-size-lg: 1.15rem;
+  --line-height-tight: 1.3;
+  --line-height-normal: 1.6;
+  --line-height-relaxed: 1.8;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Shape */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 18px;
+  --radius-pill: 999px;
+  --border-width: 1px;
+
+  /* Layout */
+  --layout-content: 1120px;
+  --layout-header: 1256px;
+  --control-height: 40px;
+
+  /* Motion */
+  --duration-press: 80ms;
+  --duration-fast: 160ms;
+  --duration-page: 220ms;
+  --duration-emphasis: 300ms;
+  --ease-standard: ease;
+  --ease-emphasis: cubic-bezier(.22, .61, .36, 1);
+  --transition-control: color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard), transform var(--duration-press) var(--ease-standard);
+
+  /* Light theme */
+  --color-canvas: #f8fbff;
+  --color-surface: #fff;
+  --color-surface-hover: #f6f9ff;
+  --color-surface-subtle: #f0f5ff;
+  --color-text: #111827;
+  --color-text-muted: #56657a;
+  /* Secondary text must remain WCAG AA on the surface. */
+  --color-text-faint: #64748b;
+  --color-border: #e5ebf3;
+  --color-accent: #1b57df;
+  --color-accent-soft: #edf4ff;
+  --color-accent-border: #d6e3ff;
+  --color-on-accent: #fff;
+  --color-brand-ink: #101a30;
+  --color-overlay: #0b1220cc;
+
+  /* Elevation */
+  --shadow-surface: 0 6px 24px #182b4b03;
+  --shadow-menu: 0 14px 36px #0b1c3320;
+  --shadow-floating: 0 10px 32px #10234b20;
+
+  /* Stable semantic aliases used by components. */
+  --bg: var(--color-canvas);
+  --surface: var(--color-surface);
+  --panel: var(--color-surface);
+  --surface-hover: var(--color-surface-hover);
+  --subtle: var(--color-surface-subtle);
+  --text: var(--color-text);
+  --muted: var(--color-text-muted);
+  --faint: var(--color-text-faint);
+  --line: var(--color-border);
+  --accent: var(--color-accent);
+  --accent-soft: var(--color-accent-soft);
+  --accent-line: var(--color-accent-border);
+  --shadow: var(--shadow-surface);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-canvas: #11151c;
+  --color-surface: #181e28;
+  --color-surface-hover: #1c2532;
+  --color-surface-subtle: #222b38;
+  --color-text: #f1f5f9;
+  --color-text-muted: #b4bfd0;
+  --color-text-faint: #929eb0;
+  --color-border: #303b4a;
+  --color-accent: #87afff;
+  --color-accent-soft: #202f4b;
+  --color-accent-border: #385689;
+  --color-on-accent: #11151c;
+  --shadow-surface: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-press: .01ms;
+    --duration-fast: .01ms;
+    --duration-page: .01ms;
+    --duration-emphasis: .01ms;
+  }
+}
