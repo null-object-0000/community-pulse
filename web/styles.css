@@ -26,6 +26,7 @@ svg { flex-shrink: 0; vertical-align: middle; }
 .topbar { background: var(--surface); border-bottom: 1px solid var(--line); }
 .topbar-inner { max-width: var(--layout-header); padding: 18px var(--space-7); margin: auto; display: flex; align-items: center; gap: 44px; }
 .brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; line-height: 1.15; }
+.brand-logo { color: #58a6ff; }
 .brand span { font-size: 1.15rem; font-weight: 750; letter-spacing: -.5px; }
 .brand small { display: block; margin-top: 5px; font-size: .75rem; letter-spacing: .04em; font-weight: 450; color: var(--muted); }
 .main-nav { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -71,8 +72,8 @@ h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.3; margin: 0; lette
 .select-control select { width: 100%; }
 .select-control-chevron { position: absolute; right: 12px; pointer-events: none; color: var(--muted); }
 .chip-select .select-control-chevron { right: 12px; }
-/* Selected chips use the solid accent on light. The dark accent is a light blue that would
-   fail contrast behind white text, so dark keeps the soft fill with accent text instead. */
+/* Selected chips use the solid accent on light. Dark themes use a soft fill because their
+   accent colors are intentionally light and need dark text or a low-contrast surface. */
 :root[data-theme="dark"] .chip.is-active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent); }
 .filters-divider { flex: 0 0 auto; align-self: stretch; width: 1px; margin: 9px 2px; background: var(--line); }
 .feed { background: var(--surface); border: var(--border-width) solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; }
@@ -153,7 +154,7 @@ h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.3; margin: 0; lette
 .trend-card h2 { margin: 4px 0 0; font-size: 1.35rem; letter-spacing: -.02em; }
 .trend-card h2 a, .trend-metrics b a { color: inherit; text-decoration: none; }
 .trend-card h2 a:hover, .trend-metrics b a:hover { color: var(--accent); }
-.trend-change { flex: 0 0 auto; padding: 5px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: .78rem; font-variant-numeric: tabular-nums; }
+.trend-change { flex: 0 0 auto; padding: 5px 9px; border: 1px solid var(--positive-line); border-radius: 999px; background: var(--positive-soft); color: var(--positive); font-size: .78rem; font-variant-numeric: tabular-nums; }
 .trend-change.is-down { background: var(--subtle); color: var(--muted); }
 .trend-change.is-new { letter-spacing: .04em; }
 .trend-metrics { display: flex; flex-wrap: wrap; gap: 7px 14px; margin: 18px 0; padding: 13px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); font-size: .8rem; }
@@ -170,6 +171,21 @@ h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.3; margin: 0; lette
 .trend-card li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; min-width: 0; }
 .trend-card li a { min-width: 0; overflow: hidden; font-size: .9rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
 .trend-card li a span { margin-left: 5px; color: var(--accent); }
+
+/* A neutral interface still needs a restrained data ink on the trends page. Keep this separate
+   from both the fixed brand blue and the visitor-selected interaction accent. */
+:root[data-accent="neutral"] body[data-view="trends"] { background: var(--bg); }
+:root[data-accent="neutral"] .trend-kind { color: #68707c; }
+:root[data-accent="neutral"] .trend-change {
+  border-color: var(--line-strong);
+  background: var(--subtle);
+  color: var(--text);
+}
+:root[data-accent="neutral"] .trend-bars { background: linear-gradient(to top, #f1f2f4, transparent 72%); }
+:root[data-accent="neutral"] .trend-bar i { background: #636b77; opacity: .78; }
+:root[data-theme="dark"][data-accent="neutral"] .trend-kind { color: #a6adb8; }
+:root[data-theme="dark"][data-accent="neutral"] .trend-bars { background: linear-gradient(to top, #202329, transparent 72%); }
+:root[data-theme="dark"][data-accent="neutral"] .trend-bar i { background: #9ca4b0; }
 .trend-card li time { flex: 0 0 auto; color: var(--faint); font-size: .72rem; font-variant-numeric: tabular-nums; }
 .trend-empty { grid-column: 1 / -1; margin: 0; padding: 54px 20px; border: 1px dashed var(--line); border-radius: 14px; background: var(--surface); color: var(--muted); text-align: center; }
 .trend-cluster-tools { justify-content: space-between; }
@@ -397,7 +413,7 @@ body[data-view="cards"] { visibility: hidden; }
 @media (min-width: 1450px) { .discovery-layout { grid-template-columns: minmax(0, 1fr) 320px; }.discovery-hero { min-height: 345px; }.feed-item { padding: 17px 0; } }
 @media (min-width: 1500px) { .trend-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (min-width: 1361px) { .discovery-sidebar.is-sticky { position: sticky; top: 20px; } }
-@media (max-width: 1360px) { .topbar-inner { padding: 15px 28px; gap: 16px; flex-wrap: wrap; }.workspace { padding: 24px 28px 48px; }.main-nav { order: 0; width: auto; }.header-search { order: 3; width: 100%; max-width: none; }.preferences { margin-left: auto; }.main-nav a[aria-current="page"]::after { bottom: -5px; }.discovery-layout { grid-template-columns: minmax(0, 1fr); }.discovery-sidebar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 10px; }.side-panel { margin: 0; }.sidebar-signature { align-self: center; }.hero-art { opacity: .9; }.hero-copy h1 { font-size: 2.4rem; } }
+@media (max-width: 1360px) { .topbar-inner { padding: 15px 28px; gap: 16px; flex-wrap: wrap; }.workspace { padding: 24px 28px 48px; }.main-nav { order: 0; width: auto; }.header-search { order: 3; width: 100%; max-width: none; }.preferences, .header-search + .preferences { margin-left: auto; }.main-nav a[aria-current="page"]::after { bottom: -5px; }.discovery-layout { grid-template-columns: minmax(0, 1fr); }.discovery-sidebar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 10px; }.side-panel { margin: 0; }.sidebar-signature { align-self: center; }.hero-art { opacity: .9; }.hero-copy h1 { font-size: 2.4rem; } }
 @media (max-width: 760px) { .trend-grid { grid-template-columns: minmax(0, 1fr); } }
 /* 手机端：序号隐藏，头像占第一列；标题列里日期已移除，所以分数列直接顶到第一行。 */
 @media (max-width: 600px) { .topbar-inner { padding: 13px 16px; gap: 10px; }.brand span { font-size: 1.1rem; }.main-nav { order: 2; width: 100%; justify-content: flex-start; gap: 12px; }.main-nav a { padding: 7px 10px; font-size: .875rem; }.preferences select { max-width: 112px; }.workspace { padding: 12px 14px 32px; }.discovery-hero { min-height: 330px; padding: 25px 4px; }.hero-copy .eyebrow { font-size: .625rem; letter-spacing: .14em; }.hero-copy h1 { font-size: 1.9rem; line-height: 1.35; }.hero-copy .intro { font-size: .9rem; line-height: 1.7; }.hero-art { width: 75%; right: -24%; opacity: .16; }.hero-art > span { display: none; }.hero-stats { gap: 20px; margin-top: 22px; }.hero-stats small { font-size: .8125rem; }.discovery-results { padding: 0 10px; }.filters { gap: 10px; }.chip-row { display: none; }.chip-select { display: flex; flex: 1 1 auto; }.chip-select select { width: 100%; }.filters-divider { display: none; }.feed-tools { margin-left: auto; }.feed-tools select { max-width: 132px; }.feed-item { grid-template-columns: 42px minmax(0, 1fr) 55px; gap: 10px; min-height: 80px; padding: 14px 0; align-items: center; }.item-avatar { width: 42px; height: 42px; border-radius: 10px; font-size: .875rem; }.item-primary h2 { font-size: .9375rem; }.item-primary .summary { font-size: .8125rem; }.item-tags, .item-source { grid-column: 2 / -1; }.item-tags { display: none; }.item-score { grid-column: 3; grid-row: 1; }.discovery-sidebar { grid-template-columns: minmax(0, 1fr); }.sidebar-signature { padding: 12px 5px; } }
@@ -506,12 +522,22 @@ body[data-view="cards"] { visibility: hidden; }
 .theme-moon { display: none; }
 :root[data-theme="dark"] .theme-sun { display: none; }
 :root[data-theme="dark"] .theme-moon { display: block; }
-.theme-options { position: absolute; top: calc(100% + 10px); right: 0; z-index: 50; width: 174px; padding: 6px; border: var(--border-width) solid var(--line); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-floating); }
+.theme-options { position: absolute; top: calc(100% + 10px); right: 0; z-index: 50; width: 190px; padding: 6px; border: var(--border-width) solid var(--line); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-floating); }
 .theme-options button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 42px; border: 0; background: transparent; padding: 8px 10px; font-size: .875rem; text-align: left; }
 .theme-options button:hover, .theme-options button[aria-pressed="true"] { color: var(--accent); background: var(--accent-soft); }
 .theme-options button > span:first-child { width: 18px; font-size: 1rem; text-align: center; }
 .theme-check { margin-left: auto; visibility: hidden; }
 .theme-options button[aria-pressed="true"] .theme-check { visibility: visible; }
+.theme-options-divider { height: 1px; margin: 6px 5px 8px; background: var(--line); }
+.accent-options-label { display: block; padding: 0 8px 5px; color: var(--muted); font-size: .72rem; font-weight: 650; }
+.accent-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.theme-options .accent-options button { position: relative; justify-content: center; min-height: 42px; padding: 7px; }
+.accent-swatch { width: 20px !important; height: 20px; border: 1px solid #0002; border-radius: 50%; box-shadow: inset 0 0 0 2px #fff8; }
+.accent-swatch.is-neutral { background: #242424; }
+.accent-swatch.is-blue { background: #1b57df; }
+.accent-swatch.is-forest { background: #0f766e; }
+.accent-swatch.is-violet { background: #6d28d9; }
+.accent-options .theme-check { position: absolute; right: 3px; bottom: 0; margin: 0; font-size: .7rem; font-weight: 800; }
 .language-picker { position: relative; display: flex; align-items: center; height: 38px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
 .language-picker > svg:first-child { position: absolute; left: 12px; pointer-events: none; }
 .preferences .language-picker select { appearance: none; border: 0; border-radius: 8px; padding: 8px 30px 8px 40px; background: transparent; font-size: .875rem; max-width: none; height: 100%; }

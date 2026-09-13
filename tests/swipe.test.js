@@ -141,7 +141,7 @@ test('build emits only latest noindex card routes, mobile entries, and no sitema
     const html = fs.readFileSync(path.join(root, 'dist', prefix, 'cards/index.html'), 'utf8');
     assert.match(html, /<meta name="robots" content="noindex, follow"/);
     assert.match(html, /<body data-view="cards">/);
-    assert.match(html, /<script src="\/cards\.js" defer><\/script>/);
+    assert.match(html, /<script src="\/cards\.js\?v=[^"]+" defer><\/script>/);
     assert.ok(!html.includes('<script src="/app.js"'));
     assert.match(html, /class="cards-close"/);
     assert.doesNotMatch(html, /class="cards-page-heading"|class="cards-status"/, 'the deck has no second visual header');
@@ -196,6 +196,7 @@ test('mobile hides the feed and its filters on the report that has a card page',
   // Desktop keeps the list: the rule lives inside the narrow-screen media query only.
   assert.ok(css.indexOf('body[data-cards-available="1"] .header-search') > css.indexOf('/* One compact header on every ordinary mobile page.'));
   assert.match(media, /\.main-nav \{ display: none; \}/, 'mobile removes report route switching');
+  assert.match(css, /@media \(max-width: 1360px\) \{[^\n]*\.preferences, \.header-search \+ \.preferences \{ margin-left: auto;/, 'wrapped desktop headers keep appearance controls on the right');
   assert.match(css, /@media \(max-width: 600px\) \{ \.preferences, \.header-search \+ \.preferences \{ margin-left: auto;/, 'header controls stay pinned right even beside a hidden search');
   assert.match(media, /body\[data-view="cards"\] \.topbar, body\[data-view="cards"\] \.footer \{ display: none; \}/, 'cards hide the global chrome');
 

@@ -9,7 +9,7 @@
     'zh-CN': {
       discover: '今日发现', trends: '趋势洞察', archive: '历史日报', slogan: '大家都在做什么',
       intro: '每天发现开发者社区的新项目、新产品与开源趋势。', all: '全部来源', search: '搜索项目、作者或标签',
-      language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色',
+      language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色', accentTheme: '主题色', neutralAccent: '无主色', blueAccent: '蓝色', forestAccent: '墨绿', violetAccent: '紫罗兰',
       count: '{n} 个项目', sources: '{n} 个来源',
       website: '官网', repository: 'GitHub 仓库', source: '来源', details: '项目详情', original: '原文',
       noSummary: '暂无项目介绍。', empty: '没有找到相关项目', emptyHint: '换一个关键词或分类试试。',
@@ -33,7 +33,7 @@
     en: {
       discover: 'Discover', trends: 'Trends', archive: 'Archive', slogan: 'What developers are building',
       intro: 'Daily discoveries from developer communities, independent makers, and open source.', all: 'All sources', search: 'Search projects, authors, or tags',
-      language: 'Language', theme: 'Appearance', system: 'System', light: 'Light', dark: 'Dark',
+      language: 'Language', theme: 'Appearance', system: 'System', light: 'Light', dark: 'Dark', accentTheme: 'Accent color', neutralAccent: 'Neutral', blueAccent: 'Blue', forestAccent: 'Forest', violetAccent: 'Violet',
       count: '{n} projects', sources: '{n} sources',
       website: 'Website', repository: 'GitHub repository', source: 'Source', details: 'Project details', original: 'Original',
       noSummary: 'No project description yet.', empty: 'No matching projects', emptyHint: 'Try another keyword or category.',

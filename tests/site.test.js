@@ -487,14 +487,19 @@ test('saved theme applies before rendering, reacts to system changes, and tolera
     let change; const attrs = {};
     const document = { documentElement: { dataset: {}, style: {} }, querySelector: () => ({ setAttribute: (k, v) => { attrs[k] = v; } }) };
     const media = { matches: true, addEventListener: (_, callback) => { change = callback; } };
-    const context = { document, localStorage: { getItem() { if (blocked) throw Error('blocked'); return saved; }, setItem() { if (blocked) throw Error('blocked'); } }, window: { matchMedia: () => media } };
+    const context = { document, localStorage: { getItem(key) { if (blocked) throw Error('blocked'); return typeof saved === 'object' ? saved[key] : (key === 'devtrends-theme-v1' ? saved : null); }, setItem() { if (blocked) throw Error('blocked'); } }, window: { matchMedia: () => media } };
     vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../web/theme.js'), 'utf8'), context);
     return { document, media, change: () => change(), theme: context.window.DevTrendsTheme, attrs };
   }
-  const env = environment('light'); assert.equal(env.document.documentElement.dataset.theme, 'light');
+  const env = environment({ 'devtrends-theme-v1': 'light', 'devtrends-accent-v1': 'forest' });
+  assert.equal(env.document.documentElement.dataset.theme, 'light');
+  assert.equal(env.document.documentElement.dataset.accent, 'forest');
   env.theme.set('system'); assert.equal(env.document.documentElement.dataset.theme, 'dark');
+  env.theme.setAccent('violet'); assert.equal(env.document.documentElement.dataset.accent, 'violet');
   env.media.matches = false; env.change(); assert.equal(env.document.documentElement.dataset.theme, 'light');
-  assert.equal(environment(null, true).document.documentElement.dataset.theme, 'dark');
+  const blocked = environment(null, true);
+  assert.equal(blocked.document.documentElement.dataset.theme, 'dark');
+  assert.equal(blocked.document.documentElement.dataset.accent, 'neutral');
 });
 
 test('every page carries the site analytics tags', () => {

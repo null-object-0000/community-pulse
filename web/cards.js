@@ -254,15 +254,26 @@
   stage?.addEventListener('pointercancel', endDrag);
 
   const themePicker = document.getElementById('theme-picker');
+  const accentMessage = { neutral: 'neutralAccent', blue: 'blueAccent', forest: 'forestAccent', violet: 'violetAccent' };
   function syncThemePicker() {
     const preference = window.DevTrendsTheme.get();
+    const accent = window.DevTrendsTheme.getAccent();
     themePicker.querySelectorAll('[data-theme-choice]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === preference)));
-    const label = `${t('theme')}: ${t(preference)}`;
+    themePicker.querySelectorAll('[data-accent-choice]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.accentChoice === accent)));
+    const label = `${t('theme')}: ${t(preference)} · ${t('accentTheme')}: ${t(accentMessage[accent])}`;
     themePicker.querySelector('summary').setAttribute('aria-label', label);
     themePicker.querySelector('summary').title = label;
   }
   syncThemePicker();
   themePicker.addEventListener('click', event => {
+    const accentButton = event.target.closest('[data-accent-choice]');
+    if (accentButton) {
+      window.DevTrendsTheme.setAccent(accentButton.dataset.accentChoice);
+      syncThemePicker();
+      themePicker.open = false;
+      themePicker.querySelector('summary').focus();
+      return;
+    }
     const button = event.target.closest('[data-theme-choice]');
     if (!button) return;
     window.DevTrendsTheme.set(button.dataset.themeChoice);
