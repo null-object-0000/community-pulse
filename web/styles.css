@@ -438,7 +438,7 @@ body[data-view="cards"] { visibility: hidden; }
   /* Entries to the standalone flows (card reader, trends). One compact card each, stacked. */
   .home-entry { view-transition-name: home-entry; display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "icon copy arrow" "icon progress arrow"; align-items: center; gap: 4px 14px; min-height: 112px; margin: 8px 0 6px; padding: 18px; border: 1px solid var(--accent-line); border-radius: 18px; background: linear-gradient(120deg, var(--accent-soft), var(--surface)); color: var(--text); box-shadow: 0 10px 28px #14264a0a; }
   .home-entry:hover { color: var(--text); border-color: var(--accent); }
-  .home-entry-icon { grid-area: icon; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 15px; background: var(--accent); color: #fff; }
+  .home-entry-icon { grid-area: icon; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 15px; background: var(--accent); color: var(--color-on-accent); }
   .home-entry-icon svg { width: 28px; height: 28px; }
   .home-entry > span:nth-child(2) { grid-area: copy; }
   .home-entry b, .home-entry small { display: block; }
@@ -510,8 +510,8 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-meta .tag { padding: 3px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: .7rem; line-height: 1.4; }
   .swipe-score { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; color: var(--muted); font-size: .75rem; }
   .swipe-score svg { width: 15px; height: 15px; }
-  .swipe-open { display: flex; align-items: center; justify-content: space-between; min-height: 42px; margin: auto 15px 13px; padding: 8px 13px; border-radius: 11px; background: var(--accent); color: #fff; font-size: .8125rem; font-weight: 700; }
-  .swipe-open:hover { color: #fff; }
+  .swipe-open { display: flex; align-items: center; justify-content: space-between; min-height: 42px; margin: auto 15px 13px; padding: 8px 13px; border-radius: 11px; background: var(--accent); color: var(--color-on-accent); font-size: .8125rem; font-weight: 700; }
+  .swipe-open:hover { color: var(--color-on-accent); }
 }
 @media (prefers-reduced-motion: reduce) {
   .swipe-item { animation: none !important; transition: none !important; }
