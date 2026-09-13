@@ -12,6 +12,51 @@
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
   let items = D.reportItems(page.report);
+  // ---- comments: one stable GitHub Discussion per report, shared by home/archive and zh/en routes ----
+  const comments = document.querySelector('[data-giscus-comments]');
+  function giscusTheme() {
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+  }
+  function syncGiscusTheme() {
+    const frame = document.querySelector('iframe.giscus-frame');
+    frame?.contentWindow?.postMessage({ giscus: { setConfig: { theme: giscusTheme() } } }, 'https://giscus.app');
+  }
+  function loadComments() {
+    if (!comments || comments.dataset.giscusLoaded === '1') return;
+    comments.dataset.giscusLoaded = '1';
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    const config = {
+      repo: comments.dataset.giscusRepo,
+      repoId: comments.dataset.giscusRepoId,
+      category: comments.dataset.giscusCategory,
+      categoryId: comments.dataset.giscusCategoryId,
+      mapping: 'specific',
+      term: comments.dataset.giscusTerm,
+      strict: '1',
+      reactionsEnabled: '1',
+      emitMetadata: '0',
+      inputPosition: 'top',
+      theme: giscusTheme(),
+      lang: comments.dataset.giscusLang,
+      loading: 'lazy',
+    };
+    for (const [key, value] of Object.entries(config)) script.dataset[key] = value;
+    comments.querySelector('.giscus').appendChild(script);
+  }
+  if (comments) {
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        observer.disconnect();
+        loadComments();
+      }, { rootMargin: '500px 0px' });
+      observer.observe(comments);
+    } else loadComments();
+    new MutationObserver(syncGiscusTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
   // ---- screenshot viewer: every gallery thumbnail (feed rows and project pages) opens one dialog ----
   const lightbox = document.createElement('div');
   lightbox.className = 'lightbox';

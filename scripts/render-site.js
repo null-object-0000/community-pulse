@@ -3,6 +3,7 @@ const path = require('node:path');
 const D = require('../web/shared.js');
 const { t, escapeHtml: e, localPath: lp } = D;
 const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
+const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const active = view === 'report' ? (route === '/' ? 'discover' : 'archive') : view;
@@ -81,6 +82,12 @@ function trendingContinuation(report, locale) {
     : `${total} 个仓库已在最近 ${policy.cooldownDays} 期日报出现，不再作为今日新发现重复展示。`;
   return `<details class="trending-continuation"><summary><span>${D.icon('github')}<b>${title}</b></span><small>${en ? `${items.length} highlights` : `${items.length} 个精选`}⌄</small></summary><p>${e(note)}</p><ul>${rows}</ul></details>`;
 }
+function commentsSection(date, locale) {
+  const config = siteConfig.comments;
+  if (!date || config?.provider !== 'giscus' || !config.repo || !config.repoId || !config.category || !config.categoryId) return '';
+  const en = locale === 'en';
+  return `<section class="comments-panel" id="comments" data-giscus-comments data-giscus-repo="${e(config.repo)}" data-giscus-repo-id="${e(config.repoId)}" data-giscus-category="${e(config.category)}" data-giscus-category-id="${e(config.categoryId)}" data-giscus-term="report:${e(date)}" data-giscus-lang="${en ? 'en' : 'zh-CN'}"><div class="comments-heading"><div><p class="eyebrow">DEV TRENDS / COMMUNITY</p><h2>${en ? 'Discuss this edition' : '讨论本期日报'}</h2><p>${en ? 'Sign in with GitHub to share a thought, question, or useful follow-up.' : '使用 GitHub 登录，分享你的看法、问题或补充信息。'}</p></div><a href="https://github.com/${e(config.repo)}/discussions" target="_blank" rel="noopener noreferrer">${en ? 'Open discussions' : '查看全部讨论'} ↗</a></div><div class="giscus" aria-live="polite"></div><noscript><p>${en ? 'JavaScript is required to load comments.' : '请启用 JavaScript 以加载评论。'}</p></noscript></section>`;
+}
 function reportPage(report, date, locale, home = false, hasMarkdown = false, cardsDate = date, cardsTotal = D.reportItems(report).length) {
   const items = D.reportItems(report), route = home ? '/' : `/reports/${date}/`;
   const title = home ? t(locale, 'homeTitle') : `${t(locale, 'reportTitle', { date })} | DevTrends`;
@@ -92,7 +99,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
   // showing it on an archived day would report today's progress next to another day's feed.
   const entry = date === cardsDate ? cardsEntry(cardsDate, cardsTotal, locale) : '';
   const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + entry + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
-    `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, locale)}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
+    `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, locale)}${commentsSection(date, locale)}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
   const structured = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical, inLanguage: locale,
     ...(date ? { datePublished: date } : {}), mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 100).map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || D.origin })) } };
@@ -121,4 +128,4 @@ function notFoundPage(locale) {
     content: heading(locale, t(locale, 'missing'), t(locale, 'missingHint')), data: {},
   }).replace('</main>', `<a class="button primary" href="${lp('/', locale)}">${t(locale, 'home')}</a></main>`);
 }
-module.exports = { shell, heading, reportPage, cardsPage, archivePage, notFoundPage };
+module.exports = { shell, heading, commentsSection, reportPage, cardsPage, archivePage, notFoundPage };
