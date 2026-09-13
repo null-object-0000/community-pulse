@@ -136,6 +136,10 @@ test('rendered tags disclose whether DevTrends or the original project supplied 
   assert.match(html, /data-tag-origin="language" data-tag-label="Go"[^>]*><small>语言<\/small>/);
   assert.match(html, /data-tag-origin="devtrends" data-tag-label="内容创作"[^>]*><small>DT<\/small>/);
   assert.match(html, /data-tag-origin="source" data-tag-label="original-topic"[^>]*><small>原始<\/small>/);
+  const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
+  const originMarker = styles.match(/\.project-tags \.tag small, \.item-tags \.tag small \{[^}]*\}/)[0];
+  assert.ok(Number(originMarker.match(/font-size:\s*([\d.]+)rem/)[1]) >= .75, 'tag provenance markers must remain legible');
+  assert.match(originMarker, /opacity:\s*1/);
 });
 
 test('a clipped description earns a tooltip while a fully visible one stays bare', () => {
@@ -166,10 +170,14 @@ test('desktop tags occupy exactly one row beneath the description', () => {
 test('a long source name stays beside its badge instead of wrapping under it', () => {
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   assert.match(styles, /\.item-source \{[^}]*flex-wrap: nowrap[^}]*\}/);
-  assert.match(styles, /\.item-source a, \.item-source > span:last-child \{[^}]*text-overflow: ellipsis/);
+  assert.match(styles, /\.item-source \.source-label \{[^}]*white-space: nowrap[^}]*text-overflow: ellipsis/);
   // The truncated name keeps its full text reachable through title, e.g. 科技爱好者周刊投稿 (108px at .75rem).
   const html = D.renderItem({ title: 'Kiri', sourceId: 'weekly-issues' }, 'zh-CN');
   assert.ok(html.includes('title="科技爱好者周刊投稿"'), html);
+  const clusterHtml = D.renderItem({ title: 'Kiri', sourceId: 'chinese-indie-dev' }, 'zh-CN', { date: '2026-09-12', showDate: true });
+  assert.match(clusterHtml, /<div class="item-tags has-date"><time class="tag tag-date item-discovery-date"[^>]*>2026年9月12日<\/time>/);
+  assert.match(clusterHtml, /<span class="source-label"[^>]*>中文独立开发者<\/span><\/div>/);
+  assert.doesNotMatch(clusterHtml, /<div class="item-source">[\s\S]*?<time/);
   // English is ~6.4px/char at .75rem, so only a short label stays readable inside the same column.
   const english = D.sourceName({ sourceId: 'weekly-issues' }, 'en');
   assert.ok(english.length <= 20, `English source label is too long for the row: ${english}`);
@@ -557,7 +565,7 @@ test('every emitted project, report, and sitemap entry has a real static page an
   assert.match(clusterPage, new RegExp(`${contentCreation.recentCount} 个新项目`));
   assert.equal((clusterPage.match(/class="feed-item"/g) || []).length, contentCreation.recentCount);
   assert.match(clusterPage, /data-tag-origin="devtrends"/);
-  assert.match(clusterPage, /class="item-discovery-date" datetime="2026-09-/);
+  assert.match(clusterPage, /class="tag tag-date item-discovery-date" datetime="2026-09-/);
   const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, urls.length);
