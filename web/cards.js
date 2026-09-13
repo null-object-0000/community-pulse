@@ -13,6 +13,7 @@
   const items = D.reportItems(page.report);
   const stage = document.querySelector('.swipe-stage');
   const position = document.querySelector('.swipe-position');
+  const close = document.querySelector('.cards-close');
   let storage = null;
   try { storage = window.localStorage; } catch {}
   const saved = D.readCardsProgress(storage, page.date, items.length);
@@ -33,6 +34,19 @@
   const motion = () => (reduceMotion.matches ? 0 : 1);
 
   const cardWidth = () => (stage?.getBoundingClientRect().width || window.innerWidth);
+
+  // Returning through history reuses the homepage from the back/forward cache and restores its
+  // exact scroll position. Direct visits retain the anchor's ordinary home fallback.
+  close?.addEventListener('click', event => {
+    try {
+      const from = new URL(document.referrer);
+      const homePath = locale === 'en' ? '/en/' : '/';
+      if (history.length > 1 && from.origin === location.origin && from.pathname === homePath) {
+        event.preventDefault();
+        history.back();
+      }
+    } catch {}
+  });
 
   function paintDeck() {
     if (!stage || !items.length) return;

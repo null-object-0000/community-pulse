@@ -12,6 +12,11 @@
   --accent: #87afff; --accent-soft: #202f4b; --accent-line: #385689; --shadow: none;
 }
 * { box-sizing: border-box; }
+/* Same-origin page changes progressively morph the daily-card entry into the reader. Browsers that
+   do not implement cross-document View Transitions ignore this block and keep normal navigation. */
+@view-transition { navigation: auto; }
+::view-transition-group(daily-cards) { animation-duration: 300ms; animation-timing-function: cubic-bezier(.22,.61,.36,1); }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 220ms; animation-timing-function: ease; }
 html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: 100px; }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif; font-size: 1rem; line-height: 1.6; letter-spacing: 0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 a { color: inherit; text-decoration: none; }
@@ -330,7 +335,7 @@ body[data-view="cards"] { visibility: hidden; }
   .preferences .language-picker select { max-width: 104px; padding-left: 30px; padding-right: 21px; font-size: .75rem; }
   .language-picker > svg:first-child { left: 8px; width: 16px; }
   .select-chevron { right: 6px; }
-  .cards-entry { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "icon copy arrow" "icon progress arrow"; align-items: center; gap: 4px 14px; min-height: 112px; margin: 8px 0 6px; padding: 18px; border: 1px solid var(--accent-line); border-radius: 18px; background: linear-gradient(120deg, var(--accent-soft), var(--surface)); color: var(--text); box-shadow: 0 10px 28px #14264a0a; }
+  .cards-entry { view-transition-name: daily-cards; display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "icon copy arrow" "icon progress arrow"; align-items: center; gap: 4px 14px; min-height: 112px; margin: 8px 0 6px; padding: 18px; border: 1px solid var(--accent-line); border-radius: 18px; background: linear-gradient(120deg, var(--accent-soft), var(--surface)); color: var(--text); box-shadow: 0 10px 28px #14264a0a; }
   .cards-entry:hover { color: var(--text); border-color: var(--accent); }
   .cards-entry-icon { grid-area: icon; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 15px; background: var(--accent); color: #fff; }
   .cards-entry-icon svg { width: 28px; height: 28px; }
@@ -359,13 +364,12 @@ body[data-view="cards"] { visibility: hidden; }
   html:has(body[data-view="cards"]) { height: 100%; overflow: hidden; }
   body[data-view="cards"] { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
   body[data-view="cards"] .workspace { flex: 1 1 auto; width: 100%; height: auto; min-height: 0; padding: 8px 10px 10px; box-sizing: border-box; }
-  .cards-page { position: relative; height: 100%; max-width: 520px; margin: 0 auto; }
+  .cards-page { view-transition-name: daily-cards; position: relative; height: 100%; max-width: 520px; margin: 0 auto; }
   .cards-close, .swipe-position { position: absolute; z-index: 8; top: 12px; border: 1px solid color-mix(in srgb, var(--line) 72%, transparent); background: color-mix(in srgb, var(--surface) 88%, transparent); box-shadow: 0 4px 18px #14264a12; backdrop-filter: blur(10px); }
   .cards-close { right: 14px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: var(--muted); font-size: .9rem; }
   .swipe-position { right: 58px; min-width: 58px; padding: 5px 10px; border-radius: 999px; color: var(--muted); font-size: .6875rem; font-variant-numeric: tabular-nums; line-height: 1.4; text-align: center; white-space: nowrap; }
   /* The deck fills the stage: the card is always the full available height, so the screen has no
-     unused band above or below it. Whatever height the content does not need stays inside the card,
-     between the description and the meta row, which is where `swipe-meta { margin-top: auto }` puts it. */
+     unused band above or below it. Unused height stays between the metadata and the primary action. */
   .swipe-stage { --swipe-offset: 0px; position: relative; height: 100%; min-height: 0; touch-action: pan-y; }
   .swipe-stage.is-dragging { transition: none; }
   .swipe-item { position: absolute; inset: 0; display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 12px 32px #14264a14; transform-origin: 50% 100%; will-change: transform; }
@@ -389,8 +393,7 @@ body[data-view="cards"] { visibility: hidden; }
   .swipe-mark.has-logo { background: #fff; }
   .swipe-mark img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
   .swipe-wordmark { display: -webkit-box; min-width: 0; overflow: hidden; -webkit-line-clamp: 3; -webkit-box-orient: vertical; font-size: clamp(1.15rem, 5.6vw, 1.55rem); line-height: 1.4; font-weight: 760; letter-spacing: -.02em; overflow-wrap: anywhere; }
-  /* The copy block sits right under the picture; the leftover height belongs to the card, and it
-     collects between this block and the meta row (see `swipe-meta { margin-top: auto }`). */
+  /* The copy and its metadata read as one content block directly under the picture. */
   .swipe-copy { flex: 0 0 auto; min-height: 0; padding: 13px 15px 0; }
   .swipe-copy h2 { display: -webkit-box; margin: 0; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 1.08rem; line-height: 1.38; letter-spacing: -.015em; overflow-wrap: anywhere; }
   /* The summary line count is capped by the card, not fixed: `swipe-meta` and the open button keep
@@ -398,14 +401,17 @@ body[data-view="cards"] { visibility: hidden; }
      of the text being clipped while a gap sits underneath. */
   .swipe-copy .summary { display: -webkit-box; margin: 7px 0 0; overflow: hidden; -webkit-line-clamp: 9; -webkit-box-orient: vertical; color: var(--muted); font-size: .8125rem; line-height: 1.55; overflow-wrap: anywhere; }
   .swipe-original { display: inline-block; margin-top: 6px; color: var(--muted); font-size: .6875rem; }
-  .swipe-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-height: 28px; margin-top: auto; padding: 8px 15px 0; overflow: hidden; }
+  .swipe-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-height: 28px; margin-top: 0; padding: 8px 15px 0; overflow: hidden; }
   .swipe-meta .tag { padding: 3px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: .7rem; line-height: 1.4; }
   .swipe-score { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; color: var(--muted); font-size: .75rem; }
   .swipe-score svg { width: 15px; height: 15px; }
-  .swipe-open { display: flex; align-items: center; justify-content: space-between; min-height: 42px; margin: 9px 15px 13px; padding: 8px 13px; border-radius: 11px; background: var(--accent); color: #fff; font-size: .8125rem; font-weight: 700; }
+  .swipe-open { display: flex; align-items: center; justify-content: space-between; min-height: 42px; margin: auto 15px 13px; padding: 8px 13px; border-radius: 11px; background: var(--accent); color: #fff; font-size: .8125rem; font-weight: 700; }
   .swipe-open:hover { color: #fff; }
 }
-@media (prefers-reduced-motion: reduce) { .swipe-item { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) {
+  .swipe-item { animation: none !important; transition: none !important; }
+  ::view-transition-group(root), ::view-transition-group(daily-cards) { animation-duration: .01ms; }
+}
 
 /* Header preferences: icon theme menu and globe language selector. */
 .preferences { margin-left: auto; align-items: center; gap: 22px; flex-shrink: 0; }
@@ -429,7 +435,7 @@ body[data-view="cards"] { visibility: hidden; }
 .language-picker option { background: var(--surface); color: var(--text); }
 .select-chevron { position: absolute; right: 11px; pointer-events: none; }
 .language-picker:hover { border-color: var(--accent-line); }
-@media (max-width: 600px) { .preferences { gap: 7px; }.theme-picker summary { width: 36px; height: 38px; }.preferences .language-picker select { font-size: .8125rem; padding-left: 32px; padding-right: 23px; }.language-picker > svg:first-child { left: 8px; width: 17px; }.select-chevron { right: 7px; }.theme-options { right: -80px; } }
+@media (max-width: 600px) { .preferences, .header-search + .preferences { margin-left: auto; }.preferences { gap: 7px; }.theme-picker summary { width: 36px; height: 38px; }.preferences .language-picker select { font-size: .8125rem; padding-left: 32px; padding-right: 23px; }.language-picker > svg:first-child { left: 8px; width: 17px; }.select-chevron { right: 7px; }.theme-options { right: -80px; } }
 
 /* Product screenshots belong to project detail pages; the discovery feed stays one dense text row. */
 .item-gallery { display: none; align-items: center; gap: 5px; margin-top: 8px; }

@@ -113,6 +113,7 @@ test('the dense feed is unchanged and the card page keeps its remaining paging i
   assert.doesNotMatch(cards, /swipe-previous|swipe-next|swipe-controls/);
   assert.match(cards, /event\.clientX < 24/);
   assert.match(cards, /data-depth="previous"/, 'a right swipe has the real previous card waiting underneath');
+  assert.match(cards, /history\.back\(\)/, 'closing reuses the cached homepage when the reader was opened from it');
   assert.doesNotMatch(cards, /ArrowUp|ArrowDown/);
 });
 
@@ -161,16 +162,17 @@ test('build emits only latest noindex card routes, mobile entries, and no sitema
 test('styles keep the entry mobile-only, preserve vertical scrolling, and remove motion when requested', () => {
   const css = fs.readFileSync(path.join(root, 'web', 'styles.css'), 'utf8');
   assert.match(css, /\.cards-entry \{ display: none; \}/);
-  assert.match(css, /@media \(max-width: 600px\) \{[\s\S]*\.cards-entry \{ display: grid/);
+  assert.match(css, /@media \(max-width: 600px\) \{[\s\S]*\.cards-entry \{[^}]*display: grid/);
   assert.match(css, /\.swipe-stage \{[^}]*touch-action: pan-y/);
   assert.doesNotMatch(css.match(/\.swipe-stage \{ --swipe-offset[^}]*\}/)[0], /outline:\s*none/);
   assert.match(css, /\.swipe-visual \{[^}]*flex: 0 0 clamp\(/, 'the picture keeps a fixed ratio');
   assert.doesNotMatch(css, /\.swipe-visual \{[^}]*flex: 1 1 auto/, 'the picture must not stretch into a square crop');
-  // The card fills the stage (no unused band above or below it) and the leftover height stays inside
-  // the card, collected above the meta row by `margin-top: auto`.
+  // The card fills the stage (no unused band above or below it); metadata follows the description,
+  // while the primary action absorbs the leftover height and stays at the bottom.
   assert.match(css, /\.swipe-item \{[^}]*position: absolute; inset: 0/);
   assert.doesNotMatch(css, /\.swipe-stage \{[^}]*align-content: center/);
-  assert.match(css, /\.swipe-meta \{[^}]*margin-top: auto/);
+  assert.match(css, /\.swipe-meta \{[^}]*margin-top: 0/);
+  assert.match(css, /\.swipe-open \{[^}]*margin: auto 15px 13px/, 'the action, not metadata, absorbs leftover card height');
   // The page height comes from flex, not a hard-coded topbar height: the old `calc(100svh - 69px)`
   // disagreed with the real 73px bar and left the page scrollable.
   assert.match(css, /html:has\(body\[data-view="cards"\]\) \{ height: 100%; overflow: hidden; \}/);
@@ -194,7 +196,12 @@ test('mobile hides the feed and its filters on the report that has a card page',
   // Desktop keeps the list: the rule lives inside the narrow-screen media query only.
   assert.ok(css.indexOf('body[data-cards-available="1"] .header-search') > css.indexOf('/* One compact header on every ordinary mobile page.'));
   assert.match(media, /\.main-nav \{ display: none; \}/, 'mobile removes report route switching');
+  assert.match(css, /@media \(max-width: 600px\) \{ \.preferences, \.header-search \+ \.preferences \{ margin-left: auto;/, 'header controls stay pinned right even beside a hidden search');
   assert.match(media, /body\[data-view="cards"\] \.topbar, body\[data-view="cards"\] \.footer \{ display: none; \}/, 'cards hide the global chrome');
+
+  const app = fs.readFileSync(path.join(root, 'web', 'app.js'), 'utf8');
+  assert.match(app, /prefetch\.rel = 'prefetch'/, 'mobile warms the card document before navigation');
+  assert.match(css, /@view-transition \{ navigation: auto; \}/, 'same-origin navigation gets a progressive transition');
 
   const template = fs.readFileSync(path.join(root, 'web', 'index.html'), 'utf8');
   assert.match(template, /<body data-view="\{\{view\}\}"\{\{bodyAttrs\}\}>/);

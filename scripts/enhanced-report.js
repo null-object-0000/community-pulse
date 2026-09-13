@@ -47,10 +47,16 @@ function applyEnhancedMarkdown(report, markdown, date) {
     source.items.forEach((item) => {
       totalCount += 1;
       const expectedHeading = `${item.title}${item.author ? ` 👤 ${item.author}` : ''}`;
-      const entry = entries.find((candidate) => candidate.heading === expectedHeading && !candidate.used);
-      if (entry?.summary !== null && entry?.summary !== undefined) {
-        item.summary = entry.summary;
-        item.summaryZh = entry.localized?.summaryZh || entry.summary;
+      const normalizedHeading = value => String(value || '').trim().replace(/\s+/g, ' ');
+      const entry = entries.find((candidate) => normalizedHeading(candidate.heading) === normalizedHeading(expectedHeading) && !candidate.used);
+      // A final entry with no quote can still be complete when the source itself had no summary:
+      // localization metadata such as category/title proves the item was processed, and retaining an
+      // empty source description is more honest than inventing copy at build time.
+      const hasFinalSummary = entry?.summary !== null && entry?.summary !== undefined;
+      const processedEmptySource = Boolean(entry?.localized) && !String(item.summary || '').trim();
+      if (entry && (hasFinalSummary || processedEmptySource)) {
+        if (hasFinalSummary) item.summary = entry.summary;
+        item.summaryZh = entry.localized?.summaryZh || (hasFinalSummary ? entry.summary : item.summary);
         if (entry.localized?.summaryEn) item.summaryEn = entry.localized.summaryEn;
         if (entry.localized?.titleEn) item.titleEn = entry.localized.titleEn;
         if (D.isCategoryId(entry.localized?.primaryCategory)) item.primaryCategory = entry.localized.primaryCategory;

@@ -38,6 +38,20 @@ test('final summaries override raw and preserve metrics', () => {
   assert.equal(raw.results[0].items[0].summary, 'raw');
 });
 
+test('final matching ignores incidental whitespace and accepts processed items with no source summary', () => {
+  const localized = Buffer.from(JSON.stringify({ titleEn: 'Empty repo', summaryZh: '', summaryEn: '', primaryCategory: 'developer-tools' })).toString('base64');
+  const raw = report('2026-09-09', [['Feed', [
+    { title: 'Trailing title ', summary: 'raw' },
+    { title: 'Empty repo', summary: '' },
+  ]]]);
+  const finalMarkdown = `## Feed（2 条）\n### Trailing title\n> 已整理摘要\n### Empty repo\n<!-- devtrends-i18n:${localized} -->`;
+  const enhanced = applyEnhancedMarkdown(raw, finalMarkdown, '2026-09-09');
+  assert.equal(enhanced.presentation.summarySource, 'llm-final');
+  assert.equal(enhanced.results[0].items[0].summary, '已整理摘要');
+  assert.equal(enhanced.results[0].items[1].summary, '');
+  assert.equal(enhanced.results[0].items[1].primaryCategory, 'developer-tools');
+});
+
 test('bilingual enhancement carries English titles and summaries through hidden final metadata', () => {
   const rawMarkdown = '## Feed（1 条）\n\n### 中文工具\n> 一个帮助开发者整理数据的工具。\n';
   const items = extractItems(rawMarkdown);
