@@ -4,6 +4,7 @@ const D = require('../web/shared.js');
 const { t, escapeHtml: e, localPath: lp } = D;
 const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
 const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
+const assetVersion = '20260913-theme-color-4';
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
@@ -19,10 +20,10 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     headerSearch: ['report', 'trend-cluster'].includes(view) ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '',
     zhSelected: locale === 'zh-CN' ? 'selected' : '', enSelected: locale === 'en' ? 'selected' : '',
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
-    pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}" defer></script>`,
+    pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}?v=${assetVersion}" defer></script>`,
     bodyAttrs: bodyAttrs ? ` ${bodyAttrs}` : '',
-    ...Object.fromEntries(['skip', 'brandLabel', 'system', 'light', 'dark', 'footer'].map(key => [key, t(locale, key)])),
-    languageLabel: t(locale, 'language'), themeLabel: t(locale, 'theme'),
+    ...Object.fromEntries(['skip', 'brandLabel', 'system', 'light', 'dark', 'footer', 'neutralAccent', 'blueAccent', 'forestAccent', 'violetAccent'].map(key => [key, t(locale, key)])),
+    languageLabel: t(locale, 'language'), themeLabel: t(locale, 'theme'), accentLabel: t(locale, 'accentTheme'), assetVersion,
   };
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => {
     if (!(key in values)) throw new Error(`Missing template value: ${key}`);
