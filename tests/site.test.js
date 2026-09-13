@@ -171,6 +171,9 @@ test('a long source name stays beside its badge instead of wrapping under it', (
 test('desktop scores keep breathing room inside the hovered row edge', () => {
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   assert.match(styles, /@media \(min-width: 601px\) \{ \.item-score \{ padding-right: 12px; \} \}/);
+  assert.match(styles, /\.item-score \{[^}]*white-space: nowrap;/);
+  const html = D.renderItem({ title: 'HelloGitHub', sourceId: 'github-trending-cn', github: { stars: 176000 } }, 'zh-CN');
+  assert.match(html, /<div class="item-score">[\s\S]*<span>17\.6万<\/span>/);
 });
 
 test('known data sources expose safe destination links and real website logos', () => {
