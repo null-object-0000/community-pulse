@@ -409,7 +409,7 @@ body[data-view="archive"] .footer,
 body[data-view="trends"] .footer,
 body[data-view="trend-cluster"] .footer,
 body[data-view="project"] .footer { max-width: 1624px; }
-.cards-entry { display: none; }
+.home-entry { display: none; }
 body[data-view="cards"] { visibility: hidden; }
 :root[data-theme="dark"] .hero-art { opacity: .65; }
 @media (min-width: 1450px) { .discovery-layout { grid-template-columns: minmax(0, 1fr) 320px; }.discovery-hero { min-height: 345px; }.feed-item { padding: 17px 0; } }
@@ -435,22 +435,27 @@ body[data-view="cards"] { visibility: hidden; }
   .theme-picker summary { width: 34px; height: 38px; }
   .language-picker > summary { max-width: 116px; min-height: 38px; padding-inline: 7px; gap: 6px; font-size: .75rem; }
   .language-picker > summary svg:first-child { width: 16px; }
-  .cards-entry { view-transition-name: daily-cards; display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "icon copy arrow" "icon progress arrow"; align-items: center; gap: 4px 14px; min-height: 112px; margin: 8px 0 6px; padding: 18px; border: 1px solid var(--accent-line); border-radius: 18px; background: linear-gradient(120deg, var(--accent-soft), var(--surface)); color: var(--text); box-shadow: 0 10px 28px #14264a0a; }
-  .cards-entry:hover { color: var(--text); border-color: var(--accent); }
-  .cards-entry-icon { grid-area: icon; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 15px; background: var(--accent); color: #fff; }
-  .cards-entry-icon svg { width: 28px; height: 28px; }
-  .cards-entry > span:nth-child(2) { grid-area: copy; }
-  .cards-entry b, .cards-entry small { display: block; }
-  .cards-entry b { font-size: 1.125rem; line-height: 1.3; }
-  .cards-entry small { margin-top: 3px; color: var(--muted); font-size: .8125rem; line-height: 1.4; }
-  .cards-entry strong { grid-area: progress; color: var(--accent); font-size: .8125rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .cards-entry-arrow { grid-area: arrow; align-self: stretch; display: grid; place-items: center; color: var(--accent); font-size: 1.35rem; }
+  /* Entries to the standalone flows (card reader, trends). One compact card each, stacked. */
+  .home-entry { view-transition-name: home-entry; display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "icon copy arrow" "icon progress arrow"; align-items: center; gap: 4px 14px; min-height: 112px; margin: 8px 0 6px; padding: 18px; border: 1px solid var(--accent-line); border-radius: 18px; background: linear-gradient(120deg, var(--accent-soft), var(--surface)); color: var(--text); box-shadow: 0 10px 28px #14264a0a; }
+  .home-entry:hover { color: var(--text); border-color: var(--accent); }
+  .home-entry-icon { grid-area: icon; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 15px; background: var(--accent); color: #fff; }
+  .home-entry-icon svg { width: 28px; height: 28px; }
+  .home-entry > span:nth-child(2) { grid-area: copy; }
+  .home-entry b, .home-entry small { display: block; }
+  .home-entry b { font-size: 1.125rem; line-height: 1.3; }
+  .home-entry small { margin-top: 3px; color: var(--muted); font-size: .8125rem; line-height: 1.4; }
+  .home-entry strong { grid-area: progress; color: var(--accent); font-size: .8125rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .home-entry-arrow { grid-area: arrow; align-self: stretch; display: grid; place-items: center; color: var(--accent); font-size: 1.35rem; }
   /* Mobile reads the current report through the card flow, so on that one report the dense feed and
      the controls that exist only to filter it (search box, category/sort row, empty state) are not
      shown. The markup still ships for the desktop layout, which keeps the list, and archived days
      keep the list on mobile too — they have no card page to send the reader to. */
-  body[data-cards-available="1"] .header-search,
-  body[data-cards-available="1"] .discovery-results { display: none; }
+  body[data-home-entries="1"] .header-search,
+  body[data-home-entries="1"] .discovery-results { display: none; }
+  /* An archived day has no card entry (nothing to send the reader to), so its mobile page keeps the
+     list instead of showing an empty screen. */
+  body[data-home-entries="1"]:not([data-cards-available="1"]) .discovery-results,
+  body[data-home-entries="1"]:not([data-cards-available="1"]) .header-search { display: revert; }
   body[data-view="cards"] { visibility: visible; overflow: hidden; }
   body[data-view="cards"] .topbar, body[data-view="cards"] .footer { display: none; }
   /* The workspace takes exactly the viewport minus the topbar. `flex: 1` on a body column does that

@@ -452,7 +452,7 @@
     if (event.key === D.cardsProgressKey || event.key === null) paintCardsEntry();
   });
   function paintCardsEntry() {
-    const entry = document.querySelector('[data-cards-entry]');
+    const entry = document.querySelector('[data-home-entry="cards"]');
     if (!entry) return;
     const total = Number(entry.dataset.total) || 0;
     let storage = null;
@@ -464,16 +464,17 @@
   }
   paintCardsEntry();
   window.addEventListener('pageshow', paintCardsEntry);
-  // Warm the next document only on the mobile surface where the entry is visible. Combined with
-  // cross-document View Transitions this removes the blank navigation beat without turning the two
+  // Warm the standalone flows only on the mobile surface where the entries are visible. Combined
+  // with cross-document View Transitions this removes the blank navigation beat without turning the
   // routes into a stateful SPA.
-  const cardsEntry = document.querySelector('[data-cards-entry]');
-  if (cardsEntry && window.matchMedia('(max-width: 600px)').matches) {
-    const prefetch = document.createElement('link');
-    prefetch.rel = 'prefetch';
-    prefetch.href = cardsEntry.href;
-    prefetch.as = 'document';
-    document.head.append(prefetch);
+  if (window.matchMedia('(max-width: 600px)').matches) {
+    for (const entry of document.querySelectorAll('[data-home-entry]')) {
+      const prefetch = document.createElement('link');
+      prefetch.rel = 'prefetch';
+      prefetch.href = entry.href;
+      prefetch.as = 'document';
+      document.head.append(prefetch);
+    }
   }
   if (search) search.value = query;
   // ---- category library: the cluster page also browses every project the archive ever classified

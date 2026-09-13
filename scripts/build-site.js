@@ -57,10 +57,10 @@ for (const cluster of trends.clusters) {
 }
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
-  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown, latest, latestTotal));
+  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown, latest, latestTotal, Boolean(trends.latest)));
 }
 for (const locale of ['zh-CN', 'en']) {
-  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown, latest, latestTotal));
+  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown, latest, latestTotal, Boolean(trends.latest)));
   writePage(D.localPath('/cards/', locale), R.cardsPage(reports[0] || { results: [] }, latest, locale));
   writePage(D.localPath('/trends/', locale), R.trendsPage(trends, locale));
   writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale, commentCounts));

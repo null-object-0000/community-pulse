@@ -157,15 +157,37 @@ test('build emits only latest noindex card routes, mobile entries, and no sitema
   }
   for (const file of ['dist/index.html', `dist/reports/${index.latest}/index.html`]) {
     const html = fs.readFileSync(path.join(root, file), 'utf8');
-    assert.match(html, /data-cards-entry/);
+    assert.match(html, /data-home-entry="cards"/);
     assert.match(html, /data-cards-progress/);
   }
 });
 
-test('styles keep the entry mobile-only, preserve vertical scrolling, and remove motion when requested', () => {
+test('the home page advertises the trends flow next to the card entry, and archived days do not', () => {
+  const index = JSON.parse(fs.readFileSync(path.join(root, 'dist/data/index.json')));
+  const home = fs.readFileSync(path.join(root, 'dist', 'index.html'), 'utf8');
+  assert.match(home, /data-home-entry="trends"/);
+  assert.match(home, /class="home-entry-icon"[^>]*>\s*<svg/);
+  assert.match(home, /href="\/trends\/"/);
+  const en = fs.readFileSync(path.join(root, 'dist', 'en', 'index.html'), 'utf8');
+  assert.match(en, /data-home-entry="trends"/);
+  assert.match(en, /href="\/en\/trends\/"/);
+  // A trends entry reads "View trends"; the card entry keeps its live progress copy.
+  assert.match(home, /查看趋势/);
+  // Archived reports must not carry either flow entry: the card entry would report today's progress
+  // beside another day's feed, and the trends entry belongs on the home page.
+  const archive = fs.readdirSync(path.join(root, 'dist', 'reports')).filter(name => /^\d{4}-\d{2}-\d{2}$/.test(name)).sort();
+  const older = archive.filter(name => name !== index.latest).slice(0, 3);
+  for (const day of older) {
+    const html = fs.readFileSync(path.join(root, 'dist', 'reports', day, 'index.html'), 'utf8');
+    assert.doesNotMatch(html, /data-home-entry="trends"/, `${day} must not advertise the trends flow`);
+    assert.doesNotMatch(html, /data-home-entry="cards"/, `${day} must not advertise the card flow`);
+  }
+});
+
+test('styles keep the entries mobile-only, preserve vertical scrolling, and remove motion when requested', () => {
   const css = fs.readFileSync(path.join(root, 'web', 'styles.css'), 'utf8');
-  assert.match(css, /\.cards-entry \{ display: none; \}/);
-  assert.match(css, /@media \(max-width: 600px\) \{[\s\S]*\.cards-entry \{[^}]*display: grid/);
+  assert.match(css, /\.home-entry \{ display: none; \}/);
+  assert.match(css, /@media \(max-width: 600px\) \{[\s\S]*\.home-entry \{[^}]*display: grid/);
   assert.match(css, /\.swipe-stage \{[^}]*touch-action: pan-y/);
   assert.doesNotMatch(css.match(/\.swipe-stage \{ --swipe-offset[^}]*\}/)[0], /outline:\s*none/);
   assert.match(css, /\.swipe-visual \{[^}]*flex: 0 0 clamp\(/, 'the picture keeps a fixed ratio');
@@ -192,12 +214,14 @@ test('styles keep the entry mobile-only, preserve vertical scrolling, and remove
 test('mobile hides the feed and its filters on the report that has a card page', () => {
   const css = fs.readFileSync(path.join(root, 'web', 'styles.css'), 'utf8');
   const media = css.slice(css.indexOf('/* One compact header on every ordinary mobile page.'));
-  // The feed, its search box and the filter row are hidden only where a card page exists.
-  assert.match(media, /body\[data-cards-available="1"\] \.header-search,\n  body\[data-cards-available="1"\] \.discovery-results \{ display: none; \}/);
-  // An archived report has no card page, so it must keep the list on mobile.
+  // The feed, its search box and the filter row are hidden only on a page that renders a flow entry.
+  assert.match(media, /body\[data-home-entries="1"\] \.header-search,\n  body\[data-home-entries="1"\] \.discovery-results \{ display: none; \}/);
+  // An archived report has no card page, so it must keep the list on mobile even though it may
+  // render the trends entry.
+  assert.match(media, /body\[data-home-entries="1"\]:not\(\[data-cards-available="1"\]\) \.discovery-results/);
   assert.doesNotMatch(media, /^\s*\.header-search, \.discovery-results \{ display: none/m);
   // Desktop keeps the list: the rule lives inside the narrow-screen media query only.
-  assert.ok(css.indexOf('body[data-cards-available="1"] .header-search') > css.indexOf('/* One compact header on every ordinary mobile page.'));
+  assert.ok(css.indexOf('body[data-home-entries="1"] .header-search') > css.indexOf('/* One compact header on every ordinary mobile page.'));
   assert.match(media, /\.main-nav \{ display: none; \}/, 'mobile removes report route switching');
   assert.match(css, /@media \(max-width: 1360px\) \{[^\n]*\.preferences, \.header-search \+ \.preferences \{ margin-left: auto;/, 'wrapped desktop headers keep appearance controls on the right');
   assert.match(css, /@media \(max-width: 600px\) \{ \.preferences, \.header-search \+ \.preferences \{ margin-left: auto;/, 'header controls stay pinned right even beside a hidden search');
@@ -210,5 +234,7 @@ test('mobile hides the feed and its filters on the report that has a card page',
   const template = fs.readFileSync(path.join(root, 'web', 'index.html'), 'utf8');
   assert.match(template, /<body data-view="\{\{view\}\}"\{\{bodyAttrs\}\}>/);
   const render = fs.readFileSync(path.join(root, 'scripts', 'render-site.js'), 'utf8');
-  assert.match(render, /bodyAttrs: entry \? 'data-cards-available="1"' : ''/);
+  // The card flag marks the one report that owns a card page; the entry flag marks rendered entries.
+  assert.match(render, /date === cardsDate \? 'data-cards-available="1"' : ''/);
+  assert.match(render, /entry \? 'data-home-entries="1"' : ''/);
 });

@@ -28,6 +28,7 @@
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
       previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', cardsTitle: '今日卡片', cardsIntro: '一张一张看完今天的新发现', cardsRead: '已读 {n} / {total}', cardsComplete: '已全部读完', cardsHint: '左滑下一条，右滑上一条',
+      trendsEntryTitle: '趋势洞察', trendsEntryIntro: '看看大家最近在集中做什么，与此前四周比较', trendsEntryLink: '查看趋势',
       trendsTitle: '大家正在集中做什么', trendsIntro: '从业务场景、Agent 生态和编程语言观察最近的新项目，并与此前四周比较。', trendsWindow: '最近 7 天', trendsBaseline: '此前 28 天', trendsNew: '新出现', trendsProjects: '{n} 个新项目', trendsSources: '{n} 个来源', trendsExamples: '代表项目', trendsEmpty: '这个视角还没有形成达到展示门槛的趋势簇。', trendsDimension: '洞察视角', trendsUseCases: '业务场景', trendsAgentRoles: 'Agent 生态', trendsLanguages: '编程语言', trendsPeriod: '观察周期', trends4Weeks: '近 4 周', trends8Weeks: '近 8 周', trends12Weeks: '近 12 周', trendsWeekly: '每周新增项目',
       trendsRange: '收录范围', trendsRangeRecent: '本周期', trendsRange4Weeks: '近 4 周', trendsRange12Weeks: '近 12 周', trendsRangeAll: '全部历史',
       trendsRangeSpan: '{start} – {end} 内首次发现 {n} 个项目', trendsLibrarySpan: '共收录 {n} 个项目 · 最早 {first} · 最近 {last}',
@@ -55,6 +56,7 @@
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
       previousItem: 'Previous', nextItem: 'Next', openItem: 'Open project', cardsTitle: 'Today’s cards', cardsIntro: 'Browse today’s discoveries one at a time', cardsRead: 'Read {n} / {total}', cardsComplete: 'All read', cardsHint: 'Swipe left for next, right for previous',
+      trendsEntryTitle: 'Trend insights', trendsEntryIntro: 'See what developers are converging on, compared with the preceding four weeks', trendsEntryLink: 'View trends',
       trendsTitle: 'What developers are converging on', trendsIntro: 'Explore recent projects by use case, agent ecosystem, or programming language, compared with the preceding four weeks.', trendsWindow: 'Last 7 days', trendsBaseline: 'Previous 28 days', trendsNew: 'New', trendsProjects: '{n} new projects', trendsSources: '{n} sources', trendsExamples: 'Representative projects', trendsEmpty: 'No trend cluster in this view has reached the display threshold yet.', trendsDimension: 'Lens', trendsUseCases: 'Use cases', trendsAgentRoles: 'Agent ecosystem', trendsLanguages: 'Programming languages', trendsPeriod: 'Time range', trends4Weeks: '4 weeks', trends8Weeks: '8 weeks', trends12Weeks: '12 weeks', trendsWeekly: 'New projects by week',
       trendsRange: 'Time range', trendsRangeRecent: 'This period', trendsRange4Weeks: '4 weeks', trendsRange12Weeks: '12 weeks', trendsRangeAll: 'All time',
       trendsRangeSpan: '{n} projects first discovered {start} – {end}', trendsLibrarySpan: 'Total {n} projects · first {first} · latest {last}',
@@ -486,6 +488,7 @@
       comment: '<path d="M21 12a8 8 0 0 1-8 8H5l-3 2 1-5a9 9 0 1 1 18-5Z"/>',
       source: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="m8.3 7 7.2-.1M7.5 8.1l3.2 7.6m5.6-6.5-3.1 6.6"/>',
       star: '<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/>',
+      trend: '<path d="M3 17.5 9 11l4 4 8-8.5M15 6.5h6v6"/>',
     };
     return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.box}</svg>`;
   };

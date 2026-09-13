@@ -66,8 +66,28 @@ function discoverySidebar(items, locale, date, hasMarkdown) {
 function empty(locale) {
   return `<div id="empty" class="empty" hidden>${D.icon('search')}<h2 id="empty-title">${t(locale, 'empty')}</h2><p id="empty-hint">${t(locale, 'emptyHint')}</p><button id="clear-filters" type="button">${t(locale, 'clear')}</button></div>`;
 }
-function cardsEntry(date, total, locale) {
-  return `<a class="cards-entry" href="${lp('/cards/', locale)}" data-cards-entry data-date="${e(date)}" data-total="${total}"><span class="cards-entry-icon" aria-hidden="true">${D.icon('box')}</span><span><b>${t(locale, 'cardsTitle')}</b><small>${t(locale, 'cardsIntro')}</small></span><strong data-cards-progress>${t(locale, 'cardsRead', { n: 0, total })}</strong><span class="cards-entry-arrow" aria-hidden="true">→</span></a>`;
+// Home-page entries to the standalone flows. Both share one implementation so a new flow only has
+// to be declared here: `progressKey` marks the entry whose copy carries live progress.
+const HOME_ENTRIES = [
+  { id: 'cards', route: '/cards/', icon: 'box', title: 'cardsTitle', intro: 'cardsIntro', progressKey: 'data-cards-progress', progressTitle: 'cardsRead' },
+  { id: 'trends', route: '/trends/', icon: 'trend', title: 'trendsEntryTitle', intro: 'trendsEntryIntro', link: 'trendsEntryLink' },
+];
+function homeEntry(entry, date, total, locale) {
+  const progress = entry.progressKey
+    ? `<strong ${entry.progressKey}>${t(locale, entry.progressTitle, { n: 0, total })}</strong>`
+    : (entry.link ? `<strong>${t(locale, entry.link)}</strong>` : '');
+  return `<a class="home-entry" href="${lp(entry.route, locale)}" data-home-entry="${entry.id}"`
+    + `${date ? ` data-date="${e(date)}"` : ''}${entry.progressKey ? ` data-total="${total}"` : ''}>`
+    + `<span class="home-entry-icon" aria-hidden="true">${D.icon(entry.icon)}</span>`
+    + `<span><b>${t(locale, entry.title)}</b><small>${t(locale, entry.intro)}</small></span>`
+    + `${progress}<span class="home-entry-arrow" aria-hidden="true">→</span></a>`;
+}
+function homeEntries(date, total, locale, cardsDate, trendsAvailable) {
+  return HOME_ENTRIES.filter(entry => {
+    if (entry.route === '/cards/') return date === cardsDate;
+    if (entry.route === '/trends/') return trendsAvailable;
+    return true;
+  }).map(entry => homeEntry(entry, date, total, locale)).join('');
 }
 function trendingContinuation(report, locale) {
   const policy = report?.trendingPolicy;
@@ -103,16 +123,19 @@ function commentsSection({ term, locale, kind = 'report' }) {
     : (project ? '使用 GitHub 登录，分享使用体验、问题或项目新动态。' : '使用 GitHub 登录，分享你的看法、问题或补充信息。');
   return `<section class="comments-panel" id="comments" data-giscus-comments data-giscus-repo="${e(config.repo)}" data-giscus-repo-id="${e(config.repoId)}" data-giscus-category="${e(config.category)}" data-giscus-category-id="${e(config.categoryId)}" data-giscus-term="${e(term)}" data-giscus-lang="${en ? 'en' : 'zh-CN'}"><div class="comments-heading"><div><p class="eyebrow">DEV TRENDS / COMMUNITY</p><h2>${title}</h2><p>${intro}</p></div><a href="https://github.com/${e(config.repo)}/discussions" target="_blank" rel="noopener noreferrer">${en ? 'Open discussions' : '查看全部讨论'} ↗</a></div><div class="giscus" aria-live="polite"></div><noscript><p>${en ? 'JavaScript is required to load comments.' : '请启用 JavaScript 以加载评论。'}</p></noscript></section>`;
 }
-function reportPage(report, date, locale, home = false, hasMarkdown = false, cardsDate = date, cardsTotal = D.reportItems(report).length) {
+function reportPage(report, date, locale, home = false, hasMarkdown = false, cardsDate = date, cardsTotal = D.reportItems(report).length, trendsAvailable = false) {
   const items = D.reportItems(report), route = home ? '/' : `/reports/${date}/`;
   const title = home ? t(locale, 'homeTitle') : `${t(locale, 'reportTitle', { date })} | DevTrends`;
   const description = home ? t(locale, 'intro') : `${t(locale, 'reportTitle', { date })}. ${t(locale, 'count', { n: items.length })}. ${t(locale, 'intro')}`;
   // The report date lives in the heading: the feed itself is already scoped to that one day,
   // so a separate meta row used to restate it (plus the count and the Markdown download).
   const headingText = t(locale, 'reportHeading', { date: D.dateLabel(date, locale) });
-  // The entry advertises today's card flow, so it only belongs on the report it links to;
-  // showing it on an archived day would report today's progress next to another day's feed.
-  const entry = date === cardsDate ? cardsEntry(cardsDate, cardsTotal, locale) : '';
+  // See homeEntries(): the card entry advertises today's card flow and so belongs only on the
+  // report it links to; the trends entry is a home-page entry only — adding it to all 255 archived
+  // report pages would be the same pollution the card entry was already fixed for.
+  const entry = (home || date === cardsDate)
+    ? homeEntries(date, cardsTotal, locale, cardsDate, home && trendsAvailable)
+    : '';
   const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + entry + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
     `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, locale)}${commentsSection({ term: `report:${date}`, locale })}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
@@ -130,7 +153,13 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
     { '@type': 'ListItem', position: 2, name: headingText, item: canonical },
   ] });
   const structured = { '@context': 'https://schema.org', '@graph': graph };
-  return shell({ locale, view: 'report', route, title, description, content, data: { date, report }, structured, bodyAttrs: entry ? 'data-cards-available="1"' : '' });
+  // `data-cards-available` marks the one report that has a card page (mobile hides its feed in favour
+  // of the card flow); `data-home-entries` marks any page that renders a flow entry.
+  const bodyAttrs = [
+    entry ? 'data-home-entries="1"' : '',
+    date === cardsDate ? 'data-cards-available="1"' : '',
+  ].filter(Boolean).join(' ');
+  return shell({ locale, view: 'report', route, title, description, content, data: { date, report }, structured, bodyAttrs });
 }
 function cardsPage(report, date, locale) {
   const items = D.reportItems(report), title = `${t(locale, 'cardsTitle')} | DevTrends`;
