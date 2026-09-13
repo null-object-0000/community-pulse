@@ -499,6 +499,31 @@ test('every site verification file is served from the site root byte-for-byte', 
   assert.equal(fs.readFileSync(path.join(dist, 'dd375fa2f04a48819425622556a589bb.txt'), 'utf8').trim(), 'f970d68256a5b5859160a2a189d45611006b23dc');
 });
 
+test('the worker serves verification .html files with 200 instead of the html_handling redirect', async () => {
+  const directory = path.join(__dirname, '../verification');
+  const names = fs.readdirSync(directory).filter(name => name.endsWith('.html')).sort();
+  assert.ok(names.length > 0, 'verification/ must hold at least one .html ownership file');
+  // Cloudflare 静态资源默认把 /x.html 307 到 /x；run_worker_first 必须覆盖这些路径，否则百度又只看到 307。
+  const config = fs.readFileSync(path.join(__dirname, '../wrangler.toml'), 'utf8');
+  assert.match(config, /run_worker_first\s*=\s*\[[^\]]*"\/baidu_verify_\*"/);
+  const worker = (await import(require('node:url').pathToFileURL(path.join(__dirname, '../worker/index.js')).href)).default;
+  for (const name of names) {
+    const expected = fs.readFileSync(path.join(directory, name), 'utf8').trim();
+    const requested = [];
+    const env = { ASSETS: { fetch: async request => {
+      const pathname = new URL(request.url).pathname;
+      requested.push(pathname);
+      return pathname === `/${name.replace(/\.html$/, '')}`
+        ? new Response(expected, { status: 200 })
+        : new Response(null, { status: 307, headers: { location: pathname.replace(/\.html$/, '') } });
+    } } };
+    const response = await worker.fetch(new Request(`https://devtrends.site/${name}`), env);
+    assert.equal(response.status, 200, `${name} must be served with 200, not the 307 html_handling redirect`);
+    assert.equal((await response.text()).trim(), expected);
+    assert.deepEqual(requested, [`/${name.replace(/\.html$/, '')}`]);
+  }
+});
+
 test('every emitted project, report, and sitemap entry has a real static page and canonical language URLs', () => {
   const dist = path.join(__dirname, '../dist');
   const index = JSON.parse(fs.readFileSync(path.join(dist, 'data/index.json')));

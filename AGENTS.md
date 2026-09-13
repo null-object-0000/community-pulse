@@ -74,6 +74,7 @@ SEO 产物由 `scripts/build-site.js` 随日报一起生成：
 - `/og-image.png`（1200×630 品牌分享图）与 `/logo-512.png`（Apple Touch Icon）；每个页面输出 `og:image` 与 `twitter:summary_large_image`。这两个 PNG 是提交进仓库的成品，可编辑源文件是 `web/og-image.svg` 与 `web/logo.svg`——仓库没有依赖，所以不做构建期栅格化，改图后要人工重新导出一次（`build-site.js` 只负责复制）。
 - `/<indexNowKey>.txt`：IndexNow 的公开 key 文件，key 存在 `site.config.json` 的 `indexNowKey`（8~128 位十六进制，构建时校验，非法直接报错），页面源文件在 `web/<key>.txt`。
 - 站长平台的**归属验证文件**（百度的 `baidu_verify_code*.html`、既有的 `dd375fa2…txt` 等）统一放在仓库根的 `verification/`，构建时整目录原样复制到站点根：接新平台只要把文件丢进那个目录，不用改代码。`tests/site.test.js` 会核对每个文件都按原字节出现在 `dist/`；**验证通过后不要删文件**（删掉验证就失效），百度下发的验证码也在测试里固定断言，避免被误改。
+  - Cloudflare 静态资源的默认 `html_handling`（`auto-trailing-slash`）会把 `/x.html` **307** 跳到 `/x`，而百度这类文件验证要求下发的那条 `.html` 地址本身返回 200（实测 check-host 30 个节点里 29 个都是 307，百度因此报「无法连接到您网站的服务器」）。所以 `wrangler.toml` 配了 `main = "worker/index.js"` + `run_worker_first = ["/baidu_verify_*"]`，由 `worker/index.js` 用 `ASSETS` 绑定取同名无扩展名资源并以 200 直出；**其余请求不经过脚本**，目录路由、`/index.html` 的规范化 307 与 404 行为都不变。注意 `html_handling = "none"` 能把 `.html` 变回 200，但它同时会让 `/reports/` 这类目录索引全部 404，**不能用**；`_redirects` 也不支持 200 重写（官方文档明确 Rewrites ❌）。接新平台时在 `worker/index.js` 的正则和 `run_worker_first` 里各加一条。
 - `/reports/` 历史归档与 `/reports/<YYYY-MM-DD>/` 独立静态报告页。
 - `/projects/<owner>/<repo>/` GitHub 项目详情页及 `/en/` 对应页，包含 canonical、hreflang 与 WebSite / Organization / CollectionPage / SoftwareSourceCode / BreadcrumbList 结构化数据（首页是 `WebSite` + `Organization` 的锚点，其余页面用 `isPartOf` 指回去）。
 - `404.html` / `en/404.html`；Cloudflare 使用 `404-page` 返回真实 404，避免无效项目地址返回首页 200。
