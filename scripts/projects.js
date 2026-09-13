@@ -99,8 +99,8 @@ function projectPage(project, locale) {
     ${R.commentsSection({ term: `project:${project.key}`, locale, kind: 'project' })}`;
   const structured = {
     '@context': 'https://schema.org', '@graph': [
-      { '@type': 'WebPage', '@id': canonical, url: canonical, name: title, description, inLanguage: locale, dateModified: project.lastSeen, mainEntity: { '@id': canonical + '#repository' }, breadcrumb: { '@id': canonical + '#breadcrumb' } },
-      { '@type': 'SoftwareSourceCode', '@id': canonical + '#repository', name: project.fullName, description: s.text, codeRepository: project.url, url: canonical, ...(language ? { programmingLanguage: language } : {}) },
+      { '@type': 'WebPage', '@id': canonical, url: canonical, name: title, description, inLanguage: locale, dateModified: project.lastSeen, isPartOf: { '@id': D.origin + '/#website' }, mainEntity: { '@id': canonical + '#repository' }, breadcrumb: { '@id': canonical + '#breadcrumb' } },
+      { '@type': 'SoftwareSourceCode', '@id': canonical + '#repository', name: project.fullName, description: s.text, codeRepository: project.url, url: canonical, dateCreated: project.firstSeen, dateModified: project.lastSeen, ...(language ? { programmingLanguage: language } : {}), ...(license && license !== 'NOASSERTION' ? { license } : {}) },
       { '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [
         { '@type': 'ListItem', position: 1, name: t(locale, 'discover'), item: D.origin + lp('/', locale) },
         { '@type': 'ListItem', position: 2, name: project.fullName, item: canonical },

@@ -66,13 +66,18 @@ GitHub Trending 的 `daily` 榜是滚动窗口。来源层保留每天完整快�
 
 SEO 产物由 `scripts/build-site.js` 随日报一起生成：
 
-- `/robots.txt`
-- `/sitemap.xml`
-- `/reports/` 历史归档
-- `/reports/<YYYY-MM-DD>/` 独立静态报告页
-- `/projects/<owner>/<repo>/` GitHub 项目详情页及 `/en/` 对应页，包含 canonical、hreflang 与 SoftwareSourceCode / BreadcrumbList 结构化数据
-- `404.html` / `en/404.html`；Cloudflare 使用 `404-page` 返回真实 404，避免无效项目地址返回首页 200
+- `/robots.txt`。线上看到的是 Cloudflare Managed robots.txt 在前、我们这份在后的拼接结果：内容信号（`search=yes,ai-train=no,use=reference`）与 `GPTBot` / `CCBot` / `ClaudeBot` / `Google-Extended` / `Bytespider` 等训练爬虫的 `Disallow` 由 Cloudflare 追加，`OAI-SearchBot` 没有被屏蔽（ChatGPT 搜索能抓、训练不能），所以仓库里的 `dist/robots.txt` 故意只写 `User-agent: *` + `Sitemap`，不要重复 Cloudflare 那一段。
+- `/sitemap.xml`：每个 `<url>` 都带 `xhtml:link` 的 `zh-CN` / `en` / `x-default` 对应关系（中英各一条 `<url>`）。
+- `/sitemap-baidu.xml`：只有中文 canonical URL、不含国际化扩展的独立站点地图，给百度搜索资源平台用。
+- `/feed.xml` 与 `/en/feed.xml`：最近 30 期日报的 RSS，页面用 `<link rel="alternate" type="application/rss+xml">` 声明。
+- `/og-image.png`（1200×630 品牌分享图）与 `/logo-512.png`（Apple Touch Icon）；每个页面输出 `og:image` 与 `twitter:summary_large_image`。这两个 PNG 是提交进仓库的成品，可编辑源文件是 `web/og-image.svg` 与 `web/logo.svg`——仓库没有依赖，所以不做构建期栅格化，改图后要人工重新导出一次（`build-site.js` 只负责复制）。
+- `/<indexNowKey>.txt`：IndexNow 的公开 key 文件，key 存在 `site.config.json` 的 `indexNowKey`（8~128 位十六进制，构建时校验，非法直接报错），页面源文件在 `web/<key>.txt`。
+- `/reports/` 历史归档与 `/reports/<YYYY-MM-DD>/` 独立静态报告页。
+- `/projects/<owner>/<repo>/` GitHub 项目详情页及 `/en/` 对应页，包含 canonical、hreflang 与 WebSite / Organization / CollectionPage / SoftwareSourceCode / BreadcrumbList 结构化数据（首页是 `WebSite` + `Organization` 的锚点，其余页面用 `isPartOf` 指回去）。
+- `404.html` / `en/404.html`；Cloudflare 使用 `404-page` 返回真实 404，避免无效项目地址返回首页 200。
 
-部署后还需检查 `/robots.txt`、`/sitemap.xml` 与最新一期 `/reports/<latest>/` 均返回 200，页面 canonical 必须指向 `devtrends.site`。
+- 搜索引擎主动推送：`scripts/search-submit.js`（`npm run search:submit -- --date YYYY-MM-DD [--dry-run] [--indexnow-only|--baidu-only]`）用同一份日报算出本期变化的 URL，IndexNow 一次推送全部中英地址（POST `https://api.indexnow.org/indexnow`，`key` 取自 `site.config.json`，`keyLocation` 就是 `/<key>.txt`），百度「普通收录」只推中文 canonical URL。`.github/workflows/search-index.yml` 在「大家都在做什么·日报」成功后触发：先轮询 `/data/index.json` 直到线上出现该日报（最多 10 分钟，避免推送 Cloudflare 还没上线的地址），再依次推送；缺 `BAIDU_SITE_TOKEN` 仓库 Secret 时百度整步跳过而不失败，所以接入前后都不影响日报发布。支持手动 `workflow_dispatch` 指定 `date` 或 `dry_run` 补推某一期。IndexNow 不需要注册；Bing Webmaster Tools（可直接从 Google Search Console 导入站点与 Sitemap）和百度搜索资源平台的站点验证、Sitemap 提交仍需人工在各自后台做一次。
+
+部署后还需检查 `/robots.txt`、`/sitemap.xml` 与最新一期 `/reports/<latest>/` 均返回 200，页面 canonical 必须指向 `devtrends.site`；`/feed.xml`、`/en/feed.xml`、`/sitemap-baidu.xml`、`/og-image.png`（1200×630 PNG）、`/logo-512.png` 与 `/<indexNowKey>.txt` 也都要返回 200，`/sitemap.xml` 的每个 `<url>` 带 3 条 `xhtml:link`、`/sitemap-baidu.xml` 的 `<loc>` 数量正好是它的一半。
 
 新版部署后还需检查一个中英文项目详情页均返回 200、sitemap 包含详情页、不存在的项目地址返回 404。

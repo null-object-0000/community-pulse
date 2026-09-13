@@ -486,6 +486,22 @@ test('every emitted project, report, and sitemap entry has a real static page an
   const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, urls.length);
+  assert.match(sitemap, /xmlns:xhtml="http:\/\/www\.w3\.org\/1999\/xhtml"/);
+  assert.equal((sitemap.match(/hreflang="zh-CN"/g) || []).length, urls.length);
+  assert.equal((sitemap.match(/hreflang="en"/g) || []).length, urls.length);
+  assert.equal((sitemap.match(/hreflang="x-default"/g) || []).length, urls.length);
+  const baiduSitemap = fs.readFileSync(path.join(dist, 'sitemap-baidu.xml'), 'utf8');
+  const baiduUrls = [...baiduSitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
+  assert.equal(baiduUrls.length * 2, urls.length);
+  assert.ok(baiduUrls.every(url => url.startsWith(D.origin + '/') && !url.startsWith(D.origin + '/en/')));
+  assert.ok(!baiduSitemap.includes('hreflang'));
+  for (const locale of ['', 'en/']) {
+    const feed = fs.readFileSync(path.join(dist, locale, 'feed.xml'), 'utf8');
+    assert.match(feed, /^<\?xml version="1\.0" encoding="UTF-8"\?>/);
+    assert.match(feed, /<rss version="2\.0"/);
+    assert.ok((feed.match(/<item>/g) || []).length > 0);
+    assert.ok((feed.match(/<item>/g) || []).length <= 30);
+  }
   // Favorites were removed: no page, navigation link, or stored-state copy may survive the build.
   assert.ok(!fs.existsSync(path.join(dist, 'favorites')), 'favorites page must not be built');
   assert.ok(!fs.existsSync(path.join(dist, 'en', 'favorites')), 'English favorites page must not be built');
@@ -496,7 +512,11 @@ test('every emitted project, report, and sitemap entry has a real static page an
     const html = fs.readFileSync(path.join(dist, route, 'index.html'), 'utf8');
     assert.ok(html.includes(`<link rel="canonical" href="${url}"`), url);
     assert.ok(html.includes(`<html lang="${route.startsWith('/en/') ? 'en' : 'zh-CN'}">`), url);
+    assert.ok(html.includes('type="application/rss+xml"'), url);
+    assert.ok(html.includes('<meta property="og:image" content="https://devtrends.site/og-image.png"'), url);
+    assert.ok(html.includes('<meta name="twitter:card" content="summary_large_image"'), url);
     assert.ok(!html.includes('style-select'), url);
+    for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) assert.doesNotThrow(() => JSON.parse(match[1]), url);
     const data = JSON.parse(html.match(/<script id="page-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
     assert.ok(data.locale);
     if (route.includes('/projects/')) {
@@ -505,6 +525,13 @@ test('every emitted project, report, and sitemap entry has a real static page an
       assert.equal(repo.path, route.replace(/^\/en(?=\/)/, ''));
     }
   }
+  const homeHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+  assert.ok(homeHtml.includes('"@type":"WebSite"'));
+  assert.ok(homeHtml.includes('"alternateName":["开发者趋势","devtrends.site"]'));
+  assert.ok(fs.statSync(path.join(dist, 'logo-512.png')).size > 1000);
+  assert.ok(fs.statSync(path.join(dist, 'og-image.png')).size > 1000);
+  const config = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
+  assert.equal(fs.readFileSync(path.join(dist, `${config.indexNowKey}.txt`), 'utf8').trim(), config.indexNowKey);
   for (const date of index.dates) {
     const data = JSON.parse(fs.readFileSync(path.join(dist, `data/reports/${date}.json`)));
     for (const item of D.reportItems(data)) {

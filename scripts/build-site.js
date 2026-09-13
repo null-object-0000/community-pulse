@@ -6,6 +6,7 @@ const R = require('./render-site.js');
 const images = require('./image-store.js');
 const imageManifest = images.readManifest();
 const root = path.resolve(__dirname, '..');
+const siteConfig = JSON.parse(fs.readFileSync(path.join(root, 'site.config.json'), 'utf8'));
 const sourceDir = path.join(root, '知识', '大家都在做什么', 'raw');
 const finalDir = path.join(root, '知识', '大家都在做什么', 'final');
 const outputDir = path.join(root, 'dist');
@@ -16,7 +17,10 @@ function write(file, content) { const target = path.join(outputDir, file); fs.mk
 function writePage(route, content) { write(path.join(route.replace(/^\//, ''), 'index.html'), content); }
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(outputDir, { recursive: true });
-for (const name of ['styles.css', 'app.js', 'cards.js', 'shared.js', 'theme.js', 'logo.svg', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg', 'source-ruanyifeng.png']) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
+const staticFiles = ['styles.css', 'app.js', 'cards.js', 'shared.js', 'theme.js', 'logo.svg', 'logo-512.png', 'og-image.png', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg', 'source-ruanyifeng.png'];
+if (!/^[a-f0-9]{8,128}$/i.test(siteConfig.indexNowKey || '')) throw new Error('site.config.json indexNowKey must contain 8-128 hexadecimal characters');
+staticFiles.push(`${siteConfig.indexNowKey}.txt`);
+for (const name of staticFiles) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
 for (const name of ['dd375fa2f04a48819425622556a589bb.txt']) fs.copyFileSync(path.join(root, name), path.join(outputDir, name));
 const reports = dates.map(date => {
   const raw = JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8'));
@@ -56,10 +60,40 @@ if (projects.length) require('./projects.js').writeProjects(projects, { write, w
 write('data/projects.json', D.json(Object.fromEntries(projects.map(project => [project.key, project.path]))));
 write('data/index.json', JSON.stringify({ latest, dates, projectCount: projects.length, generatedAt: new Date().toISOString() }, null, 2));
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${D.origin}/sitemap.xml\n`);
-const pages = [
-  ...['/', '/en/', '/reports/', '/en/reports/'].map(route => ({ route, date: latest })),
-  ...dates.flatMap(date => ['', '/en'].map(prefix => ({ route: `${prefix}/reports/${date}/`, date }))),
-  ...projects.flatMap(project => ['', '/en'].map(prefix => ({ route: prefix + project.path, date: project.lastSeen }))),
+function feedXml(locale) {
+  const en = locale === 'en', feedPath = D.localPath('/feed.xml', locale), homePath = D.localPath('/', locale);
+  const channelTitle = en ? 'DevTrends — Daily Developer Discoveries' : 'DevTrends 开发者趋势日报';
+  const channelDescription = en ? 'Daily discoveries from developer communities, independent makers, and open source.' : '每天发现开发者社区的新项目、新产品与开源趋势。';
+  const entries = reports.slice(0, 30).map(report => {
+    const url = D.origin + D.localPath(`/reports/${report.date}/`, locale);
+    const items = D.reportItems(report);
+    const description = en ? `${items.length} developer projects, products, and open-source discoveries.` : `本期收录 ${items.length} 个开发者项目、产品与开源新发现。`;
+    const capturedAt = new Date(report.generatedAt || `${report.date}T00:00:00+08:00`);
+    const publishedAt = Number.isNaN(capturedAt.valueOf()) ? new Date(`${report.date}T00:00:00+08:00`) : capturedAt;
+    return `<item><title>${D.escapeHtml(D.t(locale, 'reportTitle', { date: report.date }))}</title><link>${D.escapeHtml(url)}</link><guid isPermaLink="true">${D.escapeHtml(url)}</guid><pubDate>${publishedAt.toUTCString()}</pubDate><description>${D.escapeHtml(description)}</description></item>`;
+  }).join('');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>${D.escapeHtml(channelTitle)}</title><link>${D.escapeHtml(D.origin + homePath)}</link><description>${D.escapeHtml(channelDescription)}</description><language>${locale}</language><atom:link href="${D.escapeHtml(D.origin + feedPath)}" rel="self" type="application/rss+xml"/>${entries}</channel></rss>\n`;
+}
+write('feed.xml', feedXml('zh-CN'));
+write('en/feed.xml', feedXml('en'));
+const pagePairs = [
+  { route: '/', date: latest }, { route: '/reports/', date: latest },
+  ...dates.map(date => ({ route: `/reports/${date}/`, date })),
+  ...projects.map(project => ({ route: project.path, date: project.lastSeen })),
 ];
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(page => `<url><loc>${D.escapeHtml(D.origin + page.route)}</loc>${page.date ? `<lastmod>${page.date}</lastmod>` : ''}</url>`).join('')}</urlset>\n`);
+const alternates = route => [
+  ['zh-CN', D.origin + D.localPath(route, 'zh-CN')],
+  ['en', D.origin + D.localPath(route, 'en')],
+  ['x-default', D.origin + D.localPath(route, 'zh-CN')],
+].map(([language, href]) => `<xhtml:link rel="alternate" hreflang="${language}" href="${D.escapeHtml(href)}"/>`).join('');
+const sitemapUrls = pagePairs.flatMap(page => ['zh-CN', 'en'].map(locale => {
+  const url = D.origin + D.localPath(page.route, locale);
+  return `<url><loc>${D.escapeHtml(url)}</loc>${alternates(page.route)}${page.date ? `<lastmod>${page.date}</lastmod>` : ''}</url>`;
+}));
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${sitemapUrls.join('')}</urlset>\n`);
+const baiduUrls = pagePairs.map(page => {
+  const url = D.origin + D.localPath(page.route, 'zh-CN');
+  return `<url><loc>${D.escapeHtml(url)}</loc>${page.date ? `<lastmod>${page.date}</lastmod>` : ''}</url>`;
+});
+write('sitemap-baidu.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${baiduUrls.join('')}</urlset>\n`);
 console.log(`Built ${dates.length} reports and ${projects.length} GitHub projects in Chinese and English; latest: ${latest}.`);

@@ -6,12 +6,15 @@ const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf
 const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
+  const feedUrl = D.origin + lp('/feed.xml', locale);
   const active = view === 'report' ? (route === '/' ? 'discover' : 'archive') : view;
   const navigation = [['discover', '/'], ['archive', '/reports/']].map(([key, url]) =>
     `<a href="${lp(url, locale)}"${active === key ? ' aria-current="page"' : ''}>${t(locale, key)}</a>`).join('');
   const values = {
     locale, view, title: e(title), description: e(description), canonical, zhUrl: D.origin + route, enUrl: D.origin + '/en' + route,
     robots: noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large', ogLocale: locale === 'en' ? 'en_US' : 'zh_CN',
+    ogImage: D.origin + '/og-image.png', ogImageAlt: locale === 'en' ? 'DevTrends — daily developer discoveries' : 'DevTrends 开发者趋势——大家都在做什么',
+    feedUrl, feedTitle: locale === 'en' ? 'DevTrends daily discoveries' : 'DevTrends 开发者趋势日报',
     homePath: lp('/', locale), navigation, navLabel: locale === 'en' ? 'Main navigation' : '主导航',
     headerSearch: view === 'report' ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '',
     zhSelected: locale === 'zh-CN' ? 'selected' : '', enSelected: locale === 'en' ? 'selected' : '',
@@ -51,7 +54,7 @@ function discoverySidebar(items, locale, date, hasMarkdown) {
     if (!sources.has(item.sourceId)) sources.set(item.sourceId, { item, count: 0 });
     sources.get(item.sourceId).count++;
   }
-  return `<aside class="discovery-sidebar"><section class="side-panel"><div class="side-heading"><h2>${en ? 'Data sources' : '数据来源'}</h2></div><div class="source-directory">${[...sources].map(([, { item, count }]) => { const source = D.sourceInfo(item); const name = D.sourceName(item, locale); const content = `<span class="source-badge">${source?.logo ? `<img src="${e(source.logo)}" alt="" loading="lazy" />` : e(name.slice(0, 2))}</span><span><b>${e(name)}</b><small>${en ? `${count} discoveries in this report` : `本期收录 ${count} 个新发现`}</small></span>${source?.url ? '<span class="source-arrow" aria-hidden="true">↗</span>' : ''}`; return source?.url ? `<a class="source-entry" href="${e(source.url)}" target="_blank" rel="noopener noreferrer" aria-label="${e(`${name}${en ? ': visit source website' : '：访问来源网站'}`)}">${content}</a>` : `<div class="source-entry">${content}</div>`; }).join('')}</div></section><section class="daily-card"><span class="daily-icon">↗</span><div><h2>${en ? 'Your daily developer digest' : '每天一份开发者灵感'}</h2><p>${en ? 'Explore today. Find what inspires you.' : '发现新项目，遇见好灵感。'}</p></div><a class="button primary" href="${hasMarkdown ? `/data/markdown/${date}${en ? '.en' : ''}.md` : lp('/reports/', locale)}"${hasMarkdown ? ' download' : ''}>${hasMarkdown ? t(locale, 'download') : t(locale, 'archive')} →</a><small>${en ? 'From the community. Open to everyone.' : '来自开发者社区，向每一位探索者开放。'}</small></section><div class="sidebar-signature"><b>DevTrends</b><p>${t(locale, 'footer')}</p><i>Make a more open developer world.</i></div></aside>`;
+  return `<aside class="discovery-sidebar"><section class="side-panel"><div class="side-heading"><h2>${en ? 'Data sources' : '数据来源'}</h2></div><div class="source-directory">${[...sources].map(([, { item, count }]) => { const source = D.sourceInfo(item); const name = D.sourceName(item, locale); const content = `<span class="source-badge">${source?.logo ? `<img src="${e(source.logo)}" alt="" loading="lazy" />` : e(name.slice(0, 2))}</span><span><b>${e(name)}</b><small>${en ? `${count} discoveries in this report` : `本期收录 ${count} 个新发现`}</small></span>${source?.url ? '<span class="source-arrow" aria-hidden="true">↗</span>' : ''}`; return source?.url ? `<a class="source-entry" href="${e(source.url)}" target="_blank" rel="noopener noreferrer" aria-label="${e(`${name}${en ? ': visit source website' : '：访问来源网站'}`)}">${content}</a>` : `<div class="source-entry">${content}</div>`; }).join('')}</div></section><section class="daily-card"><span class="daily-icon" aria-hidden="true">${D.icon('arrow')}</span><div><h2>${en ? 'Your daily developer digest' : '每天一份开发者灵感'}</h2><p>${en ? 'Explore today. Find what inspires you.' : '发现新项目，遇见好灵感。'}</p></div><a class="button primary" href="${hasMarkdown ? `/data/markdown/${date}${en ? '.en' : ''}.md` : lp('/reports/', locale)}"${hasMarkdown ? ' download' : ''}>${hasMarkdown ? t(locale, 'download') : t(locale, 'archive')} →</a><small>${en ? 'From the community. Open to everyone.' : '来自开发者社区，向每一位探索者开放。'}</small></section><div class="sidebar-signature"><b>DevTrends</b><p>${t(locale, 'footer')}</p><i>Make a more open developer world.</i></div></aside>`;
 }
 function empty(locale) {
   return `<div id="empty" class="empty" hidden>${D.icon('search')}<h2 id="empty-title">${t(locale, 'empty')}</h2><p id="empty-hint">${t(locale, 'emptyHint')}</p><button id="clear-filters" type="button">${t(locale, 'clear')}</button></div>`;
@@ -106,8 +109,20 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
   const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + entry + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
     `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, locale)}${commentsSection({ term: `report:${date}`, locale })}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
-  const structured = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical, inLanguage: locale,
-    ...(date ? { datePublished: date } : {}), mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 100).map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || D.origin })) } };
+  const website = D.origin + '/#website', organization = D.origin + '/#organization';
+  const page = { '@type': 'CollectionPage', '@id': canonical, name: title, description, url: canonical, inLanguage: locale,
+    isPartOf: { '@id': website }, publisher: { '@id': organization }, ...(date ? { datePublished: date, dateModified: date } : {}),
+    mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 100).map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || D.origin })) } };
+  if (!home) page.breadcrumb = { '@id': canonical + '#breadcrumb' };
+  const graph = [page];
+  if (home) graph.unshift(
+    { '@type': 'WebSite', '@id': website, url: D.origin + '/', name: 'DevTrends', alternateName: ['开发者趋势', 'devtrends.site'], inLanguage: ['zh-CN', 'en'], publisher: { '@id': organization } },
+    { '@type': 'Organization', '@id': organization, url: D.origin + '/', name: 'DevTrends', alternateName: '开发者趋势', logo: { '@type': 'ImageObject', url: D.origin + '/logo-512.png', width: 512, height: 512 } },
+  ); else graph.push({ '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t(locale, 'discover'), item: D.origin + lp('/', locale) },
+    { '@type': 'ListItem', position: 2, name: headingText, item: canonical },
+  ] });
+  const structured = { '@context': 'https://schema.org', '@graph': graph };
   return shell({ locale, view: 'report', route, title, description, content, data: { date, report }, structured, bodyAttrs: entry ? 'data-cards-available="1"' : '' });
 }
 function cardsPage(report, date, locale) {
@@ -157,7 +172,16 @@ function archivePage(reports, locale, commentCounts = {}) {
     while (cells.length % 7) cells.push('<span class="archive-day is-outside" aria-hidden="true"></span>');
     return `<section class="archive-month"><h2>${e(monthLabel)}</h2><div class="archive-calendar" role="grid" aria-label="${e(monthLabel)}"><div class="archive-weekdays" role="row">${weekdays.map((day, index) => `<span role="columnheader"${index > 4 ? ' class="is-weekend"' : ''}>${e(day)}</span>`).join('')}</div>${cells.join('')}</div></section>`;
   }).join('');
-  return shell({ locale, view: 'archive', route: '/reports/', title: `${t(locale, 'archiveTitle')} | DevTrends`, description: t(locale, 'archiveIntro'), content });
+  const route = '/reports/', canonical = D.origin + lp(route, locale), title = `${t(locale, 'archiveTitle')} | DevTrends`;
+  const structured = { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'CollectionPage', '@id': canonical, url: canonical, name: title, description: t(locale, 'archiveIntro'), inLanguage: locale, isPartOf: { '@id': D.origin + '/#website' }, breadcrumb: { '@id': canonical + '#breadcrumb' },
+      mainEntity: { '@type': 'ItemList', numberOfItems: reports.length, itemListElement: reports.slice(0, 100).map((report, index) => ({ '@type': 'ListItem', position: index + 1, name: t(locale, 'reportTitle', { date: report.date }), url: D.origin + lp(`/reports/${report.date}/`, locale) })) } },
+    { '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t(locale, 'discover'), item: D.origin + lp('/', locale) },
+      { '@type': 'ListItem', position: 2, name: t(locale, 'archiveTitle'), item: canonical },
+    ] },
+  ] };
+  return shell({ locale, view: 'archive', route, title, description: t(locale, 'archiveIntro'), content, structured });
 }
 function notFoundPage(locale) {
   return shell({ locale, view: 'missing', route: '/404/', title: `${t(locale, 'missing')} | DevTrends`, description: t(locale, 'missingHint'), noindex: true,

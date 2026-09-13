@@ -333,12 +333,16 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .source-badge img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .source-arrow { margin-left: auto; color: var(--muted); }
 .daily-card { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 20px; border-radius: 10px; background: var(--accent-soft); }
-.daily-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--surface); color: var(--accent); font-size: 1.8rem; }
+.daily-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--surface); color: var(--accent); }
+/* The mark is an SVG now: the old ↗ glyph sat off-centre and its ink touched the circle edge. */
+.daily-icon svg { width: 22px; height: 22px; }
 .daily-card p { margin: 4px 0 0; font-size: .8125rem; line-height: 1.55; color: var(--muted); }
 .daily-card .button { flex-basis: 100%; justify-content: space-between; font-size: .875rem; }
 .daily-card small { color: var(--muted); font-size: .75rem; line-height: 1.5; }
-.sidebar-signature { padding: 28px 10px; color: var(--muted); font-size: .75rem; line-height: 1.6; }
-.sidebar-signature p { margin: 3px 0 12px; }.sidebar-signature i { font-family: cursive; letter-spacing: .08em; }
+.sidebar-signature { padding: 28px 10px; color: var(--muted); font-size: .875rem; line-height: 1.65; }
+.sidebar-signature b { color: var(--text); font-size: 1.0625rem; letter-spacing: -.01em; }
+.sidebar-signature p { margin: 5px 0 14px; }
+.sidebar-signature i { display: block; font-family: cursive; font-size: 1rem; letter-spacing: .04em; }
 .footer { max-width: 1440px; }
 body[data-view="report"] .footer,
 body[data-view="archive"] .footer,

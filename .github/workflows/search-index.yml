@@ -1,0 +1,95 @@
+name: 搜索引擎主动推送
+
+on:
+  workflow_run:
+    workflows: ["大家都在做什么·日报"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      date:
+        description: '推送日期 YYYY-MM-DD（默认最新日报）'
+        required: false
+        default: ''
+      dry_run:
+        description: '只列出 URL，不请求搜索引擎'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: search-index
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 检出最新主分支
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 确定推送日报
+        id: target
+        env:
+          INPUT_DATE: ${{ inputs.date }}
+        run: |
+          set -euo pipefail
+          if [ -n "$INPUT_DATE" ]; then
+            TARGET="$INPUT_DATE"
+          else
+            TARGET="$(node -e 'const s=require("./scripts/search-submit.js"); process.stdout.write(s.reportDates()[0] || "")')"
+          fi
+          if ! [[ "$TARGET" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+            echo "无法确定有效日报日期: $TARGET" >&2
+            exit 1
+          fi
+          echo "date=$TARGET" >> "$GITHUB_OUTPUT"
+
+      - name: 等待 Cloudflare 部署包含该日报
+        if: inputs.dry_run != true
+        env:
+          TARGET_DATE: ${{ steps.target.outputs.date }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 40); do
+            if curl -fsS --max-time 15 "https://devtrends.site/data/index.json?deploy-check=$GITHUB_RUN_ID-$attempt" \
+              | TARGET_DATE="$TARGET_DATE" node -e '
+                let input="";
+                process.stdin.on("data", chunk => input += chunk);
+                process.stdin.on("end", () => {
+                  try {
+                    const index = JSON.parse(input);
+                    process.exit(Array.isArray(index.dates) && index.dates.includes(process.env.TARGET_DATE) ? 0 : 1);
+                  } catch { process.exit(1); }
+                });
+              '; then
+              echo "线上已包含 $TARGET_DATE"
+              exit 0
+            fi
+            echo "等待部署（$attempt/40）"
+            sleep 15
+          done
+          echo "等待线上部署超时，未向搜索引擎推送" >&2
+          exit 1
+
+      - name: 推送 IndexNow 与百度
+        env:
+          BAIDU_SITE_TOKEN: ${{ secrets.BAIDU_SITE_TOKEN }}
+          BAIDU_SITE: ${{ vars.BAIDU_SITE || 'devtrends.site' }}
+        run: |
+          ARGS=(--date "${{ steps.target.outputs.date }}")
+          if [[ "${{ inputs.dry_run }}" == "true" ]]; then
+            ARGS+=(--dry-run)
+          fi
+          npm run search:submit -- "${ARGS[@]}"
