@@ -29,6 +29,25 @@ test('comments client is lazy loaded and keeps the giscus theme in sync', () => 
   assert.match(client, /MutationObserver\(syncGiscusTheme\)/);
 });
 
+test('archive cards show the discussion count in both locales', () => {
+  const reports = [{ date: '2026-09-13', results: [{ items: [
+    { title: 'One', sourceId: 'github-trending' },
+    { title: 'Two', sourceId: 'producthunt' },
+    { title: 'Three', sourceId: 'producthunt' },
+  ] }] }];
+  const counts = { 'report:2026-09-13': 3 };
+  const chinese = R.archivePage(reports, 'zh-CN', counts);
+  const english = R.archivePage(reports, 'en', counts);
+  const empty = R.archivePage(reports, 'zh-CN');
+
+  assert.match(chinese, /3 条评论/);
+  assert.match(english, /3 comments/);
+  assert.match(chinese, /2 个来源/);
+  assert.match(english, /2 sources/);
+  assert.match(empty, /0 条评论/);
+  assert.match(chinese, /archive-comment-count/);
+});
+
 test('project pages have one stable discussion shared by Chinese and English routes', () => {
   const project = {
     key: 'acme/widget', owner: 'Acme', name: 'Widget', fullName: 'Acme/Widget',

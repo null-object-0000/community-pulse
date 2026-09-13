@@ -109,6 +109,9 @@ jobs:
       - name: 持久化站点图片
         run: npm run images:sync
 
+      - name: 同步历史日报评论数
+        run: npm run comments:sync
+
       # 镜像已移出 Git（见 .gitignore）：这一步必须成功，否则当天新增的标志只存在于 runner 上，
       # 线上会引用 R2 里不存在的对象而破图。因此不再静默跳过，缺凭证直接失败。
       - name: 上传新图片到 R2
@@ -133,6 +136,7 @@ jobs:
           # 来源层可能顺手修复更早的缺口，因此提交所有来源的日分区目录。
           git add "知识/大家都在做什么/raw/$TARGET.md" "知识/大家都在做什么/raw/$TARGET.json" "知识/大家都在做什么/source-raw/"
           git add assets/images/
+          git add data/comment-counts.json
           git commit -m "docs: $TARGET 大家都在做什么日报(raw)" || echo "无变更可提交"
           # 并发 push 可能冲突: pull --rebase 后再推 (最多重试 3 次)
           for i in 1 2 3; do

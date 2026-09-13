@@ -9,6 +9,8 @@ const root = path.resolve(__dirname, '..');
 const sourceDir = path.join(root, '知识', '大家都在做什么', 'raw');
 const finalDir = path.join(root, '知识', '大家都在做什么', 'final');
 const outputDir = path.join(root, 'dist');
+const commentCountsPath = path.join(root, 'data', 'comment-counts.json');
+const commentCounts = fs.existsSync(commentCountsPath) ? JSON.parse(fs.readFileSync(commentCountsPath, 'utf8')).counts || {} : {};
 const dates = fs.readdirSync(sourceDir).filter(name => /^\d{4}-\d{2}-\d{2}\.json$/.test(name)).map(name => name.slice(0, -5)).sort().reverse();
 function write(file, content) { const target = path.join(outputDir, file); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, content); }
 function writePage(route, content) { write(path.join(route.replace(/^\//, ''), 'index.html'), content); }
@@ -44,7 +46,7 @@ for (const report of reports) {
 for (const locale of ['zh-CN', 'en']) {
   writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown, latest, latestTotal));
   writePage(D.localPath('/cards/', locale), R.cardsPage(reports[0] || { results: [] }, latest, locale));
-  writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale));
+  writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale, commentCounts));
 }
 write('404.html', R.notFoundPage('zh-CN'));
 write('en/404.html', R.notFoundPage('en'));

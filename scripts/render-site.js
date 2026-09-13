@@ -118,14 +118,20 @@ function cardsPage(report, date, locale) {
   const content = `<section class="cards-page" aria-labelledby="cards-title"><h1 class="sr-only" id="cards-title">${t(locale, 'cardsTitle')}</h1><p class="sr-only" id="cards-instruction">${t(locale, 'cardsHint')}</p><a class="cards-close" href="${lp('/', locale)}" aria-label="${t(locale, 'home')}">✕</a><output class="swipe-position" aria-live="polite" aria-atomic="true">${items.length ? `1 / ${items.length}` : '0 / 0'}</output><div class="swipe-stage" tabindex="0" aria-labelledby="cards-title cards-instruction"></div></section>`;
   return shell({ locale, view: 'cards', route: '/cards/', title, description: t(locale, 'cardsIntro'), content, data: { date, report }, noindex: true });
 }
-function archivePage(reports, locale) {
+function archivePage(reports, locale, commentCounts = {}) {
   const months = new Map();
   for (const report of reports) {
     const month = report.date.slice(0, 7);
     if (!months.has(month)) months.set(month, []);
     months.get(month).push(report);
   }
-  const content = heading(locale, t(locale, 'archiveTitle'), t(locale, 'archiveIntro'), '', 'DEV TRENDS / THE ARCHIVE') + [...months.entries()].map(([month, list]) => `<section class="archive-month"><h2>${new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(month + '-01T00:00:00Z'))}</h2><div class="archive-grid">${list.map(report => `<a class="archive-card" href="${lp(`/reports/${report.date}/`, locale)}"><span class="archive-arrow">↗</span><b>${e(D.dateLabel(report.date, locale))}</b><span>${t(locale, 'count', { n: D.reportItems(report).length })}</span></a>`).join('')}</div></section>`).join('');
+  const content = heading(locale, t(locale, 'archiveTitle'), t(locale, 'archiveIntro'), '', 'DEV TRENDS / THE ARCHIVE') + [...months.entries()].map(([month, list]) => `<section class="archive-month"><h2>${new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(month + '-01T00:00:00Z'))}</h2><div class="archive-grid">${list.map(report => {
+    const comments = Math.max(0, Number(commentCounts[`report:${report.date}`]) || 0);
+    const sources = new Set(D.reportItems(report).map(item => item.sourceId).filter(Boolean)).size;
+    const commentsLabel = locale === 'en' ? `${comments} ${comments === 1 ? 'comment' : 'comments'}` : `${comments} 条评论`;
+    const sourcesLabel = locale === 'en' ? `${sources} ${sources === 1 ? 'source' : 'sources'}` : `${sources} 个来源`;
+    return `<a class="archive-card" href="${lp(`/reports/${report.date}/`, locale)}"><span class="archive-arrow">↗</span><b>${e(D.dateLabel(report.date, locale))}</b><span class="archive-card-meta"><span>${t(locale, 'count', { n: D.reportItems(report).length })}</span><span>${e(sourcesLabel)}</span><span class="archive-comment-count" aria-label="${e(commentsLabel)}">${D.icon('comment')}${e(commentsLabel)}</span></span></a>`;
+  }).join('')}</div></section>`).join('');
   return shell({ locale, view: 'archive', route: '/reports/', title: `${t(locale, 'archiveTitle')} | DevTrends`, description: t(locale, 'archiveIntro'), content });
 }
 function notFoundPage(locale) {
