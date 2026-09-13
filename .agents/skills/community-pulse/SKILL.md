@@ -1,6 +1,6 @@
 ---
 name: community-pulse
-description: "聚合各社区/平台「大家都在做什么」动态：HN/V2EX 热榜、GitHub Trending 新仓库、社区新帖。数据源注册表驱动，统一 item 结构。触发词：大家都在做什么、热榜、社区动态、今日热点、HN、V2EX、GitHub trending、新产品、信息收集、聚合。"
+description: "聚合各社区/平台「大家都在做什么」动态：Show HN / V2EX 分享创造 发布流、GitHub Trending 新仓库、社区新帖。数据源注册表驱动，统一 item 结构。触发词：大家都在做什么、热榜、社区动态、今日热点、HN、Show HN、V2EX、GitHub trending、新产品、信息收集、聚合。"
 ---
 
 # community-pulse（大家都在做什么）
@@ -53,8 +53,14 @@ node scripts/collect.js --strict --require-github-repositories --date 2026-09-07
 | github-trending | GitHub Trending 每日热榜 | 完整 HTML 无损压缩快照 | ⚪ 只有实际观察日 |
 | github-trending-cn | GitHub Trending 中文圈 | 完整 HTML 无损压缩快照 | ⚪ 只有实际观察日 |
 | producthunt | Product Hunt 新品 | GraphQL 全量分页 + 官方精选子集 | ✅ 按 createdAt 北京日归档 |
+| showhn | Hacker News · Show HN | Algolia 搜索 API 按北京日区间取全量（`created_at_i` 范围） | ✅ 可按北京日回溯到 2025-01 |
+| v2ex | V2EX · 分享创造 | 官方公开 API（`/api/topics/show.json?node_name=create`）当前 10 条 | ⚪ 只有实际观察日，无历史接口 |
 
 所有来源中只要能从结构化字段、产品详情或正文识别出 `github.com/owner/repo`，就由 `capture_github_repositories_raw.js` 统一请求 GitHub Repository API，将原始仓库对象落在 `source-raw/github-repositories/YYYY-MM-DD.json`。`collect.js` 只离线合并 star、fork、语言、许可证、创建/更新时间等字段。
+
+**「按报告日读」与「按观察日读」的区别**（加新源时最容易踩的坑）：`source_raw_items.js` 的 `OBSERVED_SOURCES` 决定该源的文件名用哪个日期。GitHub Trending 与 V2EX 没有历史接口，文件只能记「哪一天观察到的」，所以按**观察日**读；其余来源（含 Show HN）都能按报告日寻址，按**报告日**读。Show HN 虽然也是 Algolia 实时接口，但它的 `created_at_i` 区间查询可以精确重建任意历史北京日，因此属于报告日一类，**不要**把它加进 `OBSERVED_SOURCES`。
+
+**Show HN 不接受未结束的当天**：`capture_showhn_raw.js` 默认拒绝抓「今天」（`--allow-partial-day` 可显式放行）。原因是文件不可变，当天抓一半就会把缺失的那半天永久冻结——第二天重跑只会看到「已存在」而跳过。workflow 传的是昨日（`TARGET`），所以正常路径不受影响。
 
 **历史日快照缺失时**：`source-raw/github-repositories/` 只从 2026-09-07 开始有快照。更早的日期（如 09-05/09-06）识别出的仓库没有指标行——此时用 `capture_github_repositories_raw.js --date <历史日> --observed-date <今天>` 补一份「当前值」快照（记录抓取时间=今天，观察日=今天，不伪装成历史当日值），之后重跑 collect 即可显示指标。快照文件按 `targetDate`（报告日）落盘，`observed-date` 仅记录观察日。
 

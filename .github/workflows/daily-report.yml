@@ -79,6 +79,14 @@ jobs:
           # 历史缺口由 capture_producthunt_raw.js --resume --wait-on-rate-limit 专门回填。
           node scripts/capture_producthunt_raw.js --date "$TARGET"
           node scripts/validate_producthunt_raw.js --start "$TARGET" --end "$TARGET"
+          # Show HN 是英文世界最大的「我做了个东西」渠道，Algolia 可按北京日回溯：
+          # 当天用观察快照，历史缺口用 --start/--end 重建（模式写进 capture.mode）。
+          node scripts/capture_showhn_raw.js --date "$TARGET"
+          node scripts/validate_showhn_raw.js --date "$TARGET"
+          # V2EX 分享创造节点是中文侧同类渠道，但公开 API 只返回当前 10 条、无历史接口，
+          # 因此和 Trending 一样只保存观察日快照（--date 必须等于当天，脚本自身会拒绝回溯）。
+          node scripts/capture_v2ex_raw.js --date "$OBSERVED"
+          node scripts/validate_v2ex_raw.js --date "$OBSERVED"
           # 统一发现所有来源中的 GitHub 仓库，并将 API 原对象按报告日落盘。
           node scripts/capture_github_repositories_raw.js --date "$TARGET" --observed-date "$OBSERVED"
           node scripts/validate_github_repositories_raw.js --date "$TARGET"

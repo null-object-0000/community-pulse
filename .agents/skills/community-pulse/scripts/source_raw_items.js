@@ -12,7 +12,10 @@ const { candidatePage } = require('./site_logo');
 
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const DEFAULT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw');
-const OBSERVED_SOURCES = new Set(['github-trending', 'github-trending-cn']);
+// Sources whose only file is a live observation: they have no date-addressable API, so
+// their rows are read by the observation day rather than the report day. Show HN is
+// deliberately absent — its Algolia range query makes it addressable by report day.
+const OBSERVED_SOURCES = new Set(['github-trending', 'github-trending-cn', 'v2ex']);
 
 function latestDate(root, sourceId) {
   const directory = path.join(root, sourceId);
@@ -501,8 +504,48 @@ function productHuntItems(document, src) {
   });
 }
 
+// Show HN rows: the maker's own announcement, the English-writing world's main
+// "I built a thing" channel. Metrics are the snapshot values taken on the source
+// day, so they read as "on that day this story had N points".
+function showHnItems(document, src) {
+  return (document.records || []).map((story) => ({
+    sourceId: src.id,
+    title: story.title || '',
+    url: story.url || story.hnUrl || `https://news.ycombinator.com/item?id=${story.objectID}`,
+    author: story.author || '',
+    authorUrl: story.author ? `https://news.ycombinator.com/user?id=${story.author}` : '',
+    publishedAt: story.createdAt || null,
+    summary: stripHtml(story.storyText || ''),
+    content: stripHtml(story.storyText || ''),
+    metrics: { points: story.points || 0, comments: story.comments || 0 },
+    tags: ['showhn'],
+    externalId: String(story.objectID),
+    hnUrl: story.hnUrl || `https://news.ycombinator.com/item?id=${story.objectID}`,
+  }));
+}
+
+// V2EX 分享创造 rows. The public API returns the node's current page, so these
+// items are whatever the node showed on the observation day.
+function v2exItems(document, src) {
+  return (document.records || []).map((topic) => ({
+    sourceId: src.id,
+    title: topic.title || '',
+    url: topic.url || `https://www.v2ex.com/t/${topic.topicId}`,
+    author: topic.author || '',
+    authorUrl: topic.author ? `https://www.v2ex.com/member/${topic.author}` : '',
+    publishedAt: topic.createdAt || null,
+    summary: stripHtml(topic.content || ''),
+    content: stripHtml(topic.content || ''),
+    metrics: { replies: topic.replies || 0 },
+    tags: ['v2ex', 'create'],
+    externalId: String(topic.topicId),
+  }));
+}
+
 const CONVERTERS = {
   vibecafe: vibecafeItems,
+  showhn: showHnItems,
+  v2ex: v2exItems,
   'chinese-indie-dev': chineseIndieItems,
   'chinese-indie-dev-programmer': chineseIndieItems,
   'chinese-indie-dev-game': chineseIndieItems,
