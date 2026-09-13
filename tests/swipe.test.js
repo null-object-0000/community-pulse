@@ -104,7 +104,10 @@ test('the dense feed is unchanged and the card page keeps its remaining paging i
   const app = fs.readFileSync(path.join(root, 'web', 'app.js'), 'utf8');
   const cards = fs.readFileSync(path.join(root, 'web', 'cards.js'), 'utf8');
   assert.doesNotMatch(app, /renderSwipeItem|swipe-stage|swipeStep/);
-  assert.match(app, /filtered\.map\(\(item, index\) => D\.renderItem/);
+  // The dense feed still renders every visible row through the shared row renderer; the category
+  // library may cap how many rows are painted at once, which is why the map source no longer has to
+  // start with `filtered`.
+  assert.match(app, /\.map\(\(item, index\) => D\.renderItem/);
   assert.match(cards, /location\.replace/);
   // The arrow keys are now the only non-gesture paging input: the two buttons were removed, so a
   // keyboard user must not lose paging with them.

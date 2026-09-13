@@ -9,6 +9,10 @@
   let category = page.view !== 'trend-cluster' && D.isCategoryId(params.get('category')) ? params.get('category') : 'all';
   let query = params.get('q') || '';
   let sort = 'default';
+  // The category library renders wide ranges incrementally; report feeds keep rendering everything.
+  let chunkSize = 0;
+  let chunkShown = 1;
+  const loadMoreButton = document.getElementById('load-more');
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
   let items = D.reportItems(page.report);
@@ -213,17 +217,24 @@
     updateFilterUrl();
     renderFeed();
   }
-  function renderFeed() {
+  function renderFeed(resetPage = true) {
     if (!feed) return;
     const q = query.trim().toLocaleLowerCase(locale);
     const filtered = items.filter(item => (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
     if (sort === 'popular') filtered.sort((a, b) => Number(D.metric(b, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0) - Number(D.metric(a, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0));
-    feed.innerHTML = filtered.map((item, index) => D.renderItem(item, locale, { date: page.view === 'trend-cluster' ? (item.trendDate || page.date) : page.date, index, showDate: page.view === 'trend-cluster' })).join('');
+    if (resetPage) chunkShown = 1;
+    const clipped = chunkSize ? filtered.slice(0, chunkShown * chunkSize) : filtered;
+    feed.innerHTML = clipped.map((item, index) => D.renderItem(item, locale, { date: page.view === 'trend-cluster' ? (item.trendDate || page.date) : page.date, index, showDate: page.view === 'trend-cluster' })).join('');
     feed.hidden = !filtered.length;
     document.getElementById('empty').hidden = Boolean(filtered.length);
     document.getElementById('empty-title').textContent = t('empty');
     document.getElementById('empty-hint').textContent = t('emptyHint');
     document.getElementById('clear-filters').hidden = !query && category === 'all';
+    if (loadMoreButton) {
+      const remaining = filtered.length - clipped.length;
+      loadMoreButton.hidden = !chunkSize || remaining <= 0;
+      loadMoreButton.textContent = remaining > 0 ? t('trendsLoadMore', { n: remaining }) : '';
+    }
   }
   const themePicker = document.getElementById('theme-picker');
   const accentMessage = { neutral: 'neutralAccent', blue: 'blueAccent', forest: 'forestAccent', violet: 'violetAccent' };
@@ -465,6 +476,79 @@
     document.head.append(prefetch);
   }
   if (search) search.value = query;
+  // ---- category library: the cluster page also browses every project the archive ever classified
+  // into the cluster. The default "recent" list is server-rendered; the wider ranges lazy-load a
+  // per-category data file once and filter it client-side, keeping the initial page small and the
+  // whole archive searchable, sortable, and indexable through the same feed.
+  const clusterRange = document.querySelector('[data-cluster-range]');
+  if (clusterRange && feed && page.view === 'trend-cluster') {
+    const cluster = page.trendCluster || {};
+    const ranges = cluster.ranges || {};
+    const dataPath = cluster.dataPath;
+    let range = ['4w', '12w', 'all'].includes(params.get('range')) ? params.get('range') : 'recent';
+    let library = null;
+    const statsEl = document.getElementById('cluster-range-stats');
+    const countEl = document.getElementById('cluster-count');
+    const sourcesEl = document.getElementById('cluster-sources');
+    function paintRangeButtons() {
+      clusterRange.querySelectorAll('[data-range]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.range === range));
+      });
+    }
+    function syncRangeUrl() {
+      const url = new URL(location.href);
+      range === 'recent' ? url.searchParams.delete('range') : url.searchParams.set('range', range);
+      history.replaceState(null, '', url);
+    }
+    function paintRangeStats() {
+      const spec = ranges[range];
+      if (!spec || !statsEl) return;
+      statsEl.textContent = range === 'all'
+        ? t('trendsLibrarySpan', { n: spec.count, first: D.dateLabel(spec.start, locale), last: D.dateLabel(spec.end, locale) })
+        : t('trendsRangeSpan', { n: spec.count, start: D.dateLabel(spec.start, locale), end: D.dateLabel(spec.end, locale) });
+      if (countEl) countEl.textContent = range === 'recent' ? t('trendsProjects', { n: spec.count }) : t('count', { n: spec.count });
+      if (sourcesEl) sourcesEl.textContent = t('trendsSources', { n: spec.sources });
+    }
+    async function activateRange() {
+      paintRangeButtons();
+      paintRangeStats();
+      syncRangeUrl();
+      if (range === 'recent') {
+        chunkSize = 0;
+        items = D.reportItems(page.report);
+        renderFeed();
+        return;
+      }
+      if (!library) {
+        feed.hidden = true;
+        try {
+          const response = await fetch(dataPath);
+          if (!response.ok) throw new Error(`library ${response.status}`);
+          library = await response.json();
+        } catch (error) {
+          range = 'recent';
+          paintRangeButtons();
+          paintRangeStats();
+          syncRangeUrl();
+          items = D.reportItems(page.report);
+          renderFeed();
+          return;
+        }
+      }
+      const start = (library.ranges && library.ranges[range]) ? library.ranges[range].start : (ranges[range] ? ranges[range].start : null);
+      chunkSize = 60;
+      items = (library.projects || []).filter(row => !start || row.trendDate >= start);
+      renderFeed();
+    }
+    clusterRange.addEventListener('click', event => {
+      const button = event.target.closest('[data-range]');
+      if (!button || button.dataset.range === range) return;
+      range = button.dataset.range;
+      activateRange();
+    });
+    loadMoreButton?.addEventListener('click', () => { chunkShown++; renderFeed(false); });
+    if (range !== 'recent') activateRange();
+  }
   if (feed) { paintFilter(); renderFeed(); updateFilterUrl(); }
   // Fix a desktop sidebar only when the complete module fits in the viewport. A taller sidebar
   // remains in normal document flow, avoiding a second scrollbar beside the page scrollbar.

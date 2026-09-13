@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const D = require('../web/shared.js');
 const { applyEnhancedMarkdown } = require('./enhanced-report.js');
-const { buildTrends } = require('./trends.js');
+const { buildTrends, buildEntityIndex, buildClusterLibrary } = require('./trends.js');
 const R = require('./render-site.js');
 const images = require('./image-store.js');
 const imageManifest = images.readManifest();
@@ -47,7 +47,14 @@ if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public
 const projects = require('./projects.js').buildProjects(reports);
 const latest = dates[0] || null;
 const latestTotal = D.reportItems(reports[0] || { results: [] }).length;
-const trends = latest ? buildTrends(reports, latest) : { schemaVersion: 1, latest: null, recent: {}, baseline: {}, thresholds: { minProjects: 3, minSources: 2, minGrowthPercent: 25 }, clusters: [] };
+// The entity index is shared by the trend model and the per-category libraries so both see the
+// same first-seen dates, deduplication keys, and "richer observation" item replacements.
+const entities = latest ? buildEntityIndex(reports) : new Map();
+const trends = latest ? buildTrends(reports, latest, { entities }) : { schemaVersion: 1, latest: null, recent: {}, baseline: {}, thresholds: { minProjects: 3, minSources: 2, minGrowthPercent: 25 }, clusters: [] };
+for (const cluster of trends.clusters) {
+  if (!cluster.dataPath) continue;
+  write(cluster.dataPath.replace(/^\//, ''), D.json(buildClusterLibrary(entities, cluster, latest)));
+}
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
   for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown, latest, latestTotal));

@@ -4,7 +4,7 @@ const D = require('../web/shared.js');
 const { t, escapeHtml: e, localPath: lp } = D;
 const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
 const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
-const assetVersion = '20260913-menu-pickers-2';
+const assetVersion = '20260913-cluster-libraries-2';
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
@@ -253,8 +253,27 @@ function trendClusterPage(model, cluster, locale) {
   const title = `${kind} · ${label} | DevTrends`;
   const breadcrumb = `<nav class="breadcrumb" aria-label="${en ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/trends/', locale)}">${t(locale, 'trendsTitle')}</a><span>/</span><span>${e(label)}</span></nav>`;
   const tagLegend = `<div class="tag-legend" aria-label="${en ? 'Tag sources' : '标签来源'}"><span><i class="tag-key-devtrends">${t(locale, 'tagDevTrends')}</i>${t(locale, 'tagDevTrendsTitle')}</span><span><i class="tag-key-source">${t(locale, 'tagSource')}</i>${t(locale, 'tagSourceTitle')}</span></div>`;
-  const tools = `<section class="filters trend-cluster-tools" aria-label="${t(locale, 'search')}"><div><b>${e(count)}</b><span>${e(t(locale, 'trendsSources', { n: cluster.sourceCount }))}</span></div><div class="feed-tools">${projectSort(locale)}</div></section>`;
-  const content = breadcrumb + heading(locale, `${kind} · ${label}`, intro, '', 'DEV TRENDS / CATEGORY') + tagLegend + `<section class="discovery-results trend-cluster-list">${tools}<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date: item.trendDate || model.latest, index, showDate: true })).join('')}</div>${empty(locale)}</section>`;
+  const tools = `<section class="filters trend-cluster-tools" aria-label="${t(locale, 'search')}"><div><b id="cluster-count">${e(count)}</b><span id="cluster-sources">${e(t(locale, 'trendsSources', { n: cluster.sourceCount }))}</span></div><div class="feed-tools">${projectSort(locale)}</div></section>`;
+  // The same page also browses every project the archive ever classified into this cluster: a lazy
+  // library file backs the wider ranges, while the default "recent" list stays server-rendered so the
+  // page works without JavaScript and Search still sees the current trend without a huge payload.
+  const ranges = cluster.ranges || {};
+  const recentRange = ranges.recent || { start: model.recent.start, end: model.recent.end, count: items.length, sources: cluster.sourceCount };
+  const rangeKeys = [['recent', 'trendsRangeRecent'], ['4w', 'trendsRange4Weeks'], ['12w', 'trendsRange12Weeks'], ['all', 'trendsRangeAll']];
+  const rangeButtons = rangeKeys.map(([id, key]) => {
+    const spec = ranges[id];
+    const number = spec ? spec.count : (id === 'recent' ? items.length : 0);
+    return `<button type="button" data-range="${id}" aria-pressed="${id === 'recent'}"><span>${t(locale, key)}</span><em>${number}</em></button>`;
+  }).join('');
+  // The stats line doubles as the entry hook to the full category archive, so it opens on the
+  // all-time summary and only describes the active window after a switch.
+  const allRange = ranges.all;
+  const libraryStats = e(allRange
+    ? t(locale, 'trendsLibrarySpan', { n: allRange.count, first: D.dateLabel(allRange.start, locale), last: D.dateLabel(allRange.end, locale) })
+    : t(locale, 'trendsRangeSpan', { n: recentRange.count, start: D.dateLabel(recentRange.start, locale), end: D.dateLabel(recentRange.end, locale) }));
+  const rangeControl = `<section class="cluster-range" aria-label="${t(locale, 'trendsRange')}"><span>${t(locale, 'trendsRange')}</span><div class="cluster-range-buttons" role="group" aria-label="${t(locale, 'trendsRange')}" data-cluster-range>${rangeButtons}</div><p class="cluster-range-stats" id="cluster-range-stats" aria-live="polite">${libraryStats}</p></section>`;
+  const loadMore = `<button type="button" id="load-more" class="load-more" hidden>${e(t(locale, 'trendsLoadMore', { n: 0 }))}</button>`;
+  const content = breadcrumb + heading(locale, `${kind} · ${label}`, intro, '', 'DEV TRENDS / CATEGORY') + rangeControl + tagLegend + `<section class="discovery-results trend-cluster-list">${tools}<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date: item.trendDate || model.latest, index, showDate: true })).join('')}</div>${loadMore}${empty(locale)}</section>`;
   const structured = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'CollectionPage', '@id': canonical, url: canonical, name: title, description: intro, inLanguage: locale, isPartOf: { '@id': D.origin + '/#website' }, breadcrumb: { '@id': canonical + '#breadcrumb' }, mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || canonical })) } },
     { '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [
@@ -263,7 +282,7 @@ function trendClusterPage(model, cluster, locale) {
     ] },
   ] };
   const report = { date: model.latest, results: [{ sourceId: 'trend-cluster', items }] };
-  return shell({ locale, view: 'trend-cluster', route, title, description: intro, content, data: { date: model.latest, report, trendCluster: { type: cluster.type, id: cluster.id } }, structured });
+  return shell({ locale, view: 'trend-cluster', route, title, description: intro, content, data: { date: model.latest, report, trendCluster: { type: cluster.type, id: cluster.id, dataPath: cluster.dataPath, ranges } }, structured });
 }
 function notFoundPage(locale) {
   return shell({ locale, view: 'missing', route: '/404/', title: `${t(locale, 'missing')} | DevTrends`, description: t(locale, 'missingHint'), noindex: true,

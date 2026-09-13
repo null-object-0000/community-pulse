@@ -42,17 +42,12 @@ function trendPath(type, id) {
   return segment && /^[a-z0-9-]+$/.test(id || '') ? `/trends/${segment}/${id}/` : null;
 }
 
-function buildTrends(reports, latest, options = {}) {
-  const recentDays = options.recentDays || 7;
-  const baselineDays = options.baselineDays || 28;
-  const minProjects = options.minProjects || 3;
-  const minSources = options.minSources || 2;
-  const minGrowthPercent = options.minGrowthPercent ?? 25;
-  const recentStart = dateOffset(latest, -(recentDays - 1));
-  const baselineEnd = dateOffset(recentStart, -1);
-  const baselineStart = dateOffset(baselineEnd, -(baselineDays - 1));
-  const entities = new Map();
+// Range windows offered by the category library, in days. "recent" mirrors the trend model's
+// display window (7 days); the wider ones are pure supersets computed over the same first-seen dates.
+const WINDOW_DAYS = { recent: 7, '4w': 28, '12w': 84 };
 
+function buildEntityIndex(reports) {
+  const entities = new Map();
   for (const report of [...reports].sort((a, b) => a.date.localeCompare(b.date))) {
     for (const item of D.reportItems(report)) {
       const key = trendIdentity(item);
@@ -63,6 +58,78 @@ function buildTrends(reports, latest, options = {}) {
       if (report.date >= entity.firstSeen && D.summary(item, 'zh-CN').text.length > D.summary(entity.item, 'zh-CN').text.length) entity.item = item;
     }
   }
+  return entities;
+}
+
+function clusterMemberships(entity) {
+  const taxonomy = D.itemTaxonomy(entity.item);
+  return [
+    ...taxonomy.useCases.map(id => ['useCases', id]),
+    ...taxonomy.agentRoles.map(id => ['agentRoles', id]),
+    ...D.itemLanguages(entity.item).map(id => ['languages', id]),
+  ];
+}
+
+function rangeStats(list, latest) {
+  const stats = {};
+  for (const [id, days] of Object.entries(WINDOW_DAYS)) {
+    const start = dateOffset(latest, -(days - 1));
+    const members = list.filter(entity => entity.firstSeen >= start && entity.firstSeen <= latest);
+    stats[id] = {
+      start, end: latest, count: members.length,
+      sources: new Set(members.flatMap(entity => [...entity.sources])).size,
+    };
+  }
+  const first = list.reduce((best, entity) => entity.firstSeen < best ? entity.firstSeen : best, latest);
+  stats.all = {
+    start: first, end: latest, count: list.length,
+    sources: new Set(list.flatMap(entity => [...entity.sources])).size,
+  };
+  return stats;
+}
+
+// The category library lists every first-seen product in the cluster, so it only carries the fields
+// the feed renderer consumes (plus the computed taxonomy so classification matches the build exactly).
+// `content` alone would multiply these files several times over for the largest categories.
+const LIBRARY_FIELDS = [
+  'sourceId', 'sourceName', 'externalId', 'title', 'titleZh', 'titleEn',
+  'url', 'websiteUrl', 'githubUrl', 'issueUrl', 'relatedIssue', 'vibecafeUrl', 'productHuntUrl', 'projectPath',
+  'author', 'summary', 'summaryZh', 'summaryEn', 'tags', 'github', 'metrics', 'language', 'lang',
+  'logo', 'icon', 'siteLogo', 'image', 'images', 'imageUrls', 'primaryCategory',
+];
+
+function libraryRow(entity) {
+  const row = { trendDate: entity.firstSeen };
+  for (const key of LIBRARY_FIELDS) if (entity.item[key] !== undefined) row[key] = entity.item[key];
+  row.taxonomy = D.itemTaxonomy(entity.item);
+  return row;
+}
+
+function buildClusterLibrary(entities, cluster, latest) {
+  const list = [...entities.values()].filter(entity =>
+    clusterMemberships(entity).some(([type, id]) => type === cluster.type && id === cluster.id));
+  return {
+    schemaVersion: 1, type: cluster.type, id: cluster.id, path: cluster.path,
+    latest, ranges: rangeStats(list, latest),
+    projects: list.sort((a, b) => b.firstSeen.localeCompare(a.firstSeen) || a.key.localeCompare(b.key)).map(libraryRow),
+  };
+}
+
+function trendDataPath(type, id) {
+  const segment = type === 'agentRoles' ? 'agent-roles' : type === 'useCases' ? 'use-cases' : type === 'languages' ? 'programming-languages' : null;
+  return segment && /^[a-z0-9-]+$/.test(id || '') ? `/data/trends/${segment}/${id}.json` : null;
+}
+
+function buildTrends(reports, latest, options = {}) {
+  const recentDays = options.recentDays || 7;
+  const baselineDays = options.baselineDays || 28;
+  const minProjects = options.minProjects || 3;
+  const minSources = options.minSources || 2;
+  const minGrowthPercent = options.minGrowthPercent ?? 25;
+  const recentStart = dateOffset(latest, -(recentDays - 1));
+  const baselineEnd = dateOffset(recentStart, -1);
+  const baselineStart = dateOffset(baselineEnd, -(baselineDays - 1));
+  const entities = options.entities || buildEntityIndex(reports);
 
   const clusters = new Map();
   function cluster(type, id) {
@@ -71,12 +138,7 @@ function buildTrends(reports, latest, options = {}) {
     return clusters.get(key);
   }
   for (const entity of entities.values()) {
-    const taxonomy = D.itemTaxonomy(entity.item);
-    const memberships = [
-      ...taxonomy.useCases.map(id => ['useCases', id]),
-      ...taxonomy.agentRoles.map(id => ['agentRoles', id]),
-      ...D.itemLanguages(entity.item).map(id => ['languages', id]),
-    ];
+    const memberships = clusterMemberships(entity);
     const period = entity.firstSeen >= recentStart && entity.firstSeen <= latest
       ? 'recent'
       : (entity.firstSeen >= baselineStart && entity.firstSeen <= baselineEnd ? 'baseline' : null);
@@ -102,6 +164,8 @@ function buildTrends(reports, latest, options = {}) {
     const projects = [...value.recent].sort((a, b) => b.firstSeen.localeCompare(a.firstSeen) || a.key.localeCompare(b.key)).map(entity => ({ ...entity.item, trendDate: entity.firstSeen }));
     return {
       key: value.key, type: value.type, id: value.id, path: trendPath(value.type, value.id),
+      dataPath: trendDataPath(value.type, value.id),
+      ranges: rangeStats(entityList.filter(entity => clusterMemberships(entity).some(([type, id]) => type === value.type && id === value.id)), latest),
       recentCount: value.recent.length, baselineCount: value.baseline.length, sourceCount: value.sources.size,
       growthPercent, isNew: value.baseline.length === 0, examples,
       weekly: buildWeeklySeries(entityList, value.type, value.id, latest, 12), projects,
@@ -120,4 +184,4 @@ function buildTrends(reports, latest, options = {}) {
   };
 }
 
-module.exports = { dateOffset, trendIdentity, buildWeeklySeries, trendPath, buildTrends };
+module.exports = { dateOffset, trendIdentity, buildWeeklySeries, trendPath, trendDataPath, buildEntityIndex, clusterMemberships, buildClusterLibrary, buildTrends };
