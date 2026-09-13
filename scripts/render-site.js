@@ -264,9 +264,8 @@ function trendsPage(model, locale) {
     // 2026-09-01, so every earlier day contributes nothing and the growth rate is an artefact.
     const notice = model.languages && !model.languages.complete && id === 'languages'
       ? `<p class="trend-empty trend-notice">${e(t(locale, 'trendsLangUnavailable', {
+        eligible: model.languages.baseline.eligible,
         covered: model.languages.baseline.covered,
-        days: model.languages.baseline.days,
-        start: D.dateLabel(model.languages.sourceStart, locale),
         label: t(locale, 'trendsBaseline'),
       }))}</p>`
       : '';

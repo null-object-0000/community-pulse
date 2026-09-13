@@ -78,7 +78,8 @@ test('trend model counts unique first-seen products and applies project/source t
     assert.equal(language.path, '/trends/programming-languages/typescript/');
   } else {
     assert.equal(language, undefined, 'an under-covered snapshot must not publish language clusters');
-    assert.ok(model.languages.baseline.covered < model.languages.baseline.days);
+    assert.ok(model.languages.baseline.covered < model.languages.baseline.eligible,
+      'eligible days are those carrying GitHub projects');
   }
 });
 
@@ -104,8 +105,8 @@ test('an under-covered language snapshot suppresses the language lens instead of
   ];
   // 4 of 28 baseline days covered, mirroring the real layer (starts 2026-09-01).
   const partial = {
-    recent: { start: '2026-09-07', end: '2026-09-13', days: 7, covered: 6 },
-    baseline: { start: '2026-08-10', end: '2026-09-06', days: 28, covered: 4 },
+    recent: { start: "2026-09-07", end: "2026-09-13", days: 7, eligible: 7, covered: 6 },
+    baseline: { start: "2026-08-10", end: "2026-09-06", days: 28, eligible: 7, covered: 4 },
     source: 'github-repositories', sourceStart: '2026-09-01', complete: false,
   };
   const suppressed = buildTrends(reports, '2026-09-13', { languages: partial });
@@ -116,7 +117,7 @@ test('an under-covered language snapshot suppresses the language lens instead of
   assert.ok(suppressed.clusters.some(cluster => cluster.key === 'useCases:novel-writing'));
 
   // Once the layer covers the whole window the lens returns by itself — no code change needed.
-  const complete = { ...partial, baseline: { ...partial.baseline, covered: 28 }, recent: { ...partial.recent, covered: 7 }, complete: true };
+  const complete = { ...partial, baseline: { ...partial.baseline, covered: 7 }, recent: { ...partial.recent, covered: 7 }, complete: true };
   const restored = buildTrends(reports, '2026-09-13', { languages: complete });
   assert.ok(restored.clusters.some(cluster => cluster.key === 'languages:typescript'));
 });

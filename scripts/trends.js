@@ -1,9 +1,4 @@
-const fs = require('fs');
-const path = require('path');
 const D = require('../web/shared.js');
-
-// The source-raw vault lives at the repository root; trends.js sits in scripts/.
-const VAULT = path.resolve(__dirname, '..');
 
 function dateOffset(date, days) {
   const value = new Date(`${date}T00:00:00Z`);
@@ -125,29 +120,42 @@ function trendDataPath(type, id) {
   return segment && /^[a-z0-9-]+$/.test(id || '') ? `/data/trends/${segment}/${id}.json` : null;
 }
 
-// Programming-language membership comes only from the GitHub repository snapshot, and that layer
-// starts on 2026-09-01. Every earlier day contributes nothing, so a language's "baseline" is not a
-// real 28-day baseline and its growth percentage is an artefact of the data arriving. Measuring the
-// snapshot's actual day coverage lets the page state that instead of printing the number. Days
-// without a snapshot file simply add nothing here and so lower the coverage, which is the point:
-// when the layer is later backfilled the ratio rises on its own and the view recovers.
-function languageCoverage(reports, recentStart, latest, baselineStart, baselineEnd, rawRoot) {
-  const root = path.resolve(rawRoot || path.join(VAULT, '知识', '大家都在做什么', 'source-raw'));
-  const hasSnapshot = date => fs.existsSync(path.join(root, 'github-repositories', `${date}.json`));
+// Programming-language membership comes only from the GitHub repository snapshot layer, which starts
+// on 2026-09-01. Two things consequently have to hold for a language comparison to mean anything:
+//
+//  1. Coverage is measured from the reports themselves — the exact input this model consumes — not
+//     from whether snapshot files exist on disk. Backfilling those files without re-deriving the
+//     reports would otherwise report completeness while the lens still saw nothing.
+//  2. The denominator is the days that could carry a language at all, i.e. days whose report holds a
+//     GitHub repository reference. Most days have none (only monthly issues and trending days bring
+//     repositories), so demanding every calendar day would make the ratio unreachable and hide the
+//     lens forever even once the data is complete.
+//
+// When both hold, the ratio reaches 100% and the view recovers without any code change.
+function languageCoverage(reports, recentStart, latest, baselineStart, baselineEnd) {
+  const byDate = new Map(reports.map(report => [report.date, report]));
   const count = (from, to) => {
-    let days = 0, covered = 0;
-    for (let date = from; date <= to; date = dateOffset(date, 1)) { days += 1; if (hasSnapshot(date)) covered += 1; }
-    return { days, covered };
+    let days = 0, eligible = 0, covered = 0;
+    for (let date = from; date <= to; date = dateOffset(date, 1)) {
+      days += 1;
+      const report = byDate.get(date);
+      if (!report) continue;
+      const items = D.reportItems(report);
+      // A day with no repository reference cannot yield a language, so it is not part of the scope.
+      if (!items.some(item => item.githubUrl || item.github?.url)) continue;
+      eligible += 1;
+      if (items.some(item => D.itemLanguages(item).length)) covered += 1;
+    }
+    return { days, eligible, covered };
   };
   const recent = count(recentStart, latest);
   const baseline = count(baselineStart, baselineEnd);
-  const complete = baseline.days > 0 ? baseline.covered === baseline.days : true;
   return {
     recent: { start: recentStart, end: latest, ...recent },
     baseline: { start: baselineStart, end: baselineEnd, ...baseline },
     source: 'github-repositories',
     sourceStart: '2026-09-01',
-    complete,
+    complete: baseline.covered === baseline.eligible && recent.covered === recent.eligible,
   };
 }
 
@@ -162,13 +170,21 @@ function buildTrends(reports, latest, options = {}) {
   const baselineStart = dateOffset(baselineEnd, -(baselineDays - 1));
   const entities = options.entities || buildEntityIndex(reports);
   const languages = options.languages
-    || languageCoverage(reports, recentStart, latest, baselineStart, baselineEnd, options.rawRoot);
-  // A language cluster is only comparable when the snapshot layer covers both windows. Otherwise its
-  // "growth" measures when the language data started, not what developers adopted, so it is dropped
-  // from the page entirely rather than shown with a misleading percentage. The coverage object
-  // travels with the model so the page can explain the omission (and so it disappears by itself once
-  // the layer is backfilled).
+    || languageCoverage(reports, recentStart, latest, baselineStart, baselineEnd);
+  // A cluster is only comparable when the snapshot layer covers both windows. Otherwise its "growth"
+  // measures when the language data started, not what developers adopted, so it is dropped from the
+  // page entirely rather than shown with a misleading percentage. The coverage object travels with
+  // the model so the page can explain the omission (and so it disappears by itself once the layer is
+  // backfilled).
   const facetComparable = type => type !== 'languages' || languages.complete;
+  // The rate must divide by the days on which the facet could be observed at all, not by calendar
+  // days. Language only exists on days whose report carries a repository reference — 7 of the 28
+  // baseline days — so dividing by 28 understated the baseline roughly fourfold and inflated every
+  // language's growth by the same factor. Taxonomy is observable on every day, so its denominator is
+  // unchanged. `days` is what the page states; `observed` is what the rate uses.
+  const observedDays = type => (type === 'languages'
+    ? { recent: languages.recent.eligible, baseline: languages.baseline.eligible }
+    : { recent: recentDays, baseline: baselineDays });
 
   const clusters = new Map();
   function cluster(type, id) {
@@ -191,8 +207,9 @@ function buildTrends(reports, latest, options = {}) {
 
   const entityList = [...entities.values()];
   const output = [...clusters.values()].filter(value => facetComparable(value.type)).filter(value => value.recent.length >= minProjects && value.sources.size >= minSources).map(value => {
-    const recentRate = value.recent.length / recentDays;
-    const baselineRate = value.baseline.length / baselineDays;
+    const days = observedDays(value.type);
+    const recentRate = value.recent.length / Math.max(1, days.recent);
+    const baselineRate = value.baseline.length / Math.max(1, days.baseline);
     const growthPercent = baselineRate ? Math.round((recentRate / baselineRate - 1) * 100) : null;
     const examples = [...value.recent].sort((a, b) => b.firstSeen.localeCompare(a.firstSeen) || a.key.localeCompare(b.key)).slice(0, 4).map(entity => ({
       titleZh: D.displayTitle(entity.item, 'zh-CN'), titleEn: D.displayTitle(entity.item, 'en'),
