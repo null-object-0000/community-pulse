@@ -1,4 +1,9 @@
+const fs = require('fs');
+const path = require('path');
 const D = require('../web/shared.js');
+
+// The source-raw vault lives at the repository root; trends.js sits in scripts/.
+const VAULT = path.resolve(__dirname, '..');
 
 function dateOffset(date, days) {
   const value = new Date(`${date}T00:00:00Z`);
@@ -120,6 +125,32 @@ function trendDataPath(type, id) {
   return segment && /^[a-z0-9-]+$/.test(id || '') ? `/data/trends/${segment}/${id}.json` : null;
 }
 
+// Programming-language membership comes only from the GitHub repository snapshot, and that layer
+// starts on 2026-09-01. Every earlier day contributes nothing, so a language's "baseline" is not a
+// real 28-day baseline and its growth percentage is an artefact of the data arriving. Measuring the
+// snapshot's actual day coverage lets the page state that instead of printing the number. Days
+// without a snapshot file simply add nothing here and so lower the coverage, which is the point:
+// when the layer is later backfilled the ratio rises on its own and the view recovers.
+function languageCoverage(reports, recentStart, latest, baselineStart, baselineEnd, rawRoot) {
+  const root = path.resolve(rawRoot || path.join(VAULT, '知识', '大家都在做什么', 'source-raw'));
+  const hasSnapshot = date => fs.existsSync(path.join(root, 'github-repositories', `${date}.json`));
+  const count = (from, to) => {
+    let days = 0, covered = 0;
+    for (let date = from; date <= to; date = dateOffset(date, 1)) { days += 1; if (hasSnapshot(date)) covered += 1; }
+    return { days, covered };
+  };
+  const recent = count(recentStart, latest);
+  const baseline = count(baselineStart, baselineEnd);
+  const complete = baseline.days > 0 ? baseline.covered === baseline.days : true;
+  return {
+    recent: { start: recentStart, end: latest, ...recent },
+    baseline: { start: baselineStart, end: baselineEnd, ...baseline },
+    source: 'github-repositories',
+    sourceStart: '2026-09-01',
+    complete,
+  };
+}
+
 function buildTrends(reports, latest, options = {}) {
   const recentDays = options.recentDays || 7;
   const baselineDays = options.baselineDays || 28;
@@ -130,6 +161,14 @@ function buildTrends(reports, latest, options = {}) {
   const baselineEnd = dateOffset(recentStart, -1);
   const baselineStart = dateOffset(baselineEnd, -(baselineDays - 1));
   const entities = options.entities || buildEntityIndex(reports);
+  const languages = options.languages
+    || languageCoverage(reports, recentStart, latest, baselineStart, baselineEnd, options.rawRoot);
+  // A language cluster is only comparable when the snapshot layer covers both windows. Otherwise its
+  // "growth" measures when the language data started, not what developers adopted, so it is dropped
+  // from the page entirely rather than shown with a misleading percentage. The coverage object
+  // travels with the model so the page can explain the omission (and so it disappears by itself once
+  // the layer is backfilled).
+  const facetComparable = type => type !== 'languages' || languages.complete;
 
   const clusters = new Map();
   function cluster(type, id) {
@@ -151,7 +190,7 @@ function buildTrends(reports, latest, options = {}) {
   }
 
   const entityList = [...entities.values()];
-  const output = [...clusters.values()].filter(value => value.recent.length >= minProjects && value.sources.size >= minSources).map(value => {
+  const output = [...clusters.values()].filter(value => facetComparable(value.type)).filter(value => value.recent.length >= minProjects && value.sources.size >= minSources).map(value => {
     const recentRate = value.recent.length / recentDays;
     const baselineRate = value.baseline.length / baselineDays;
     const growthPercent = baselineRate ? Math.round((recentRate / baselineRate - 1) * 100) : null;
@@ -177,11 +216,11 @@ function buildTrends(reports, latest, options = {}) {
   });
 
   return {
-    schemaVersion: 3, latest, seriesWeeks: 12,
+    schemaVersion: 4, latest, seriesWeeks: 12,
     recent: { start: recentStart, end: latest, days: recentDays },
     baseline: { start: baselineStart, end: baselineEnd, days: baselineDays },
-    thresholds: { minProjects, minSources, minGrowthPercent }, clusters: output,
+    thresholds: { minProjects, minSources, minGrowthPercent }, languages, clusters: output,
   };
 }
 
-module.exports = { dateOffset, trendIdentity, buildWeeklySeries, trendPath, trendDataPath, buildEntityIndex, clusterMemberships, buildClusterLibrary, buildTrends };
+module.exports = { dateOffset, trendIdentity, buildWeeklySeries, trendPath, trendDataPath, buildEntityIndex, clusterMemberships, buildClusterLibrary, buildTrends, languageCoverage };

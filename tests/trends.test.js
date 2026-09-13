@@ -61,17 +61,25 @@ test('trend model counts unique first-seen products and applies project/source t
   assert.equal(trendIdentity(reports[1].results[0].items[0]), trendIdentity(reports[2].results[0].items[0]));
   assert.equal(model.recent.start, '2026-09-07');
   assert.equal(model.baseline.start, '2026-08-10');
-  assert.equal(model.schemaVersion, 3);
+  assert.equal(model.schemaVersion, 4);
   assert.equal(useCase.weekly.length, 12);
   assert.equal(useCase.weekly.at(-1).count, 3, 'the newest weekly bucket shows the three recent projects');
   assert.equal(useCase.weekly.reduce((total, point) => total + point.count, 0), 4, 'repeat appearances stay deduplicated in the timeline');
   assert.equal(useCase.path, '/trends/use-cases/novel-writing/');
   assert.equal(useCase.projects.length, useCase.recentCount);
   assert.equal(trendPath('agentRoles', 'observability'), '/trends/agent-roles/observability/');
+  // The language lens is suppressed here only because the standalone fixture has no repository
+  // snapshots on disk, i.e. the layer under-covers the window (covered < days). The comparisons
+  // themselves are exercised by the dedicated coverage test below.
   const language = model.clusters.find(cluster => cluster.key === 'languages:typescript');
-  assert.equal(language.recentCount, 3);
-  assert.equal(language.baselineCount, 1);
-  assert.equal(language.path, '/trends/programming-languages/typescript/');
+  if (model.languages.complete) {
+    assert.ok(language.recentCount >= 3);
+    assert.ok(language.baselineCount >= 1);
+    assert.equal(language.path, '/trends/programming-languages/typescript/');
+  } else {
+    assert.equal(language, undefined, 'an under-covered snapshot must not publish language clusters');
+    assert.ok(model.languages.baseline.covered < model.languages.baseline.days);
+  }
 });
 
 test('programming languages are deterministic families with stable routes', () => {
@@ -81,4 +89,34 @@ test('programming languages are deterministic families with stable routes', () =
   assert.deepEqual(D.itemLanguages({ github: { language: 'HTML' } }), []);
   assert.equal(D.facetLabel('languages', 'java-kotlin', 'zh-CN'), 'Java / Kotlin');
   assert.equal(trendPath('languages', 'typescript'), '/trends/programming-languages/typescript/');
+});
+
+test('an under-covered language snapshot suppresses the language lens instead of printing a fake trend', () => {
+  // Language membership comes only from the github-repositories snapshot. When that layer covers only
+  // part of the comparison window, a language's "growth" measures the data arriving rather than
+  // adoption — inventing figures like +454% / +1700%. The lens must disappear rather than mislead.
+  const explicit = { useCases: ['novel-writing'], agentRoles: [], productForms: [], platforms: [], integrations: [] };
+  const reports = [
+    report('2026-08-12', [item('Old novel tool', 'old', 'archive', 'https://old.example/', explicit, 'TypeScript')]),
+    report('2026-09-08', [item('Story One', 'one', 'vibecafe', 'https://one.example/', explicit, 'TypeScript')]),
+    report('2026-09-10', [item('Story Two', 'two', 'weekly-issues', 'https://two.example/', explicit, 'TypeScript')]),
+    report('2026-09-12', [item('Story Three', 'three', 'github-trending', 'https://three.example/', explicit, 'TypeScript')]),
+  ];
+  // 4 of 28 baseline days covered, mirroring the real layer (starts 2026-09-01).
+  const partial = {
+    recent: { start: '2026-09-07', end: '2026-09-13', days: 7, covered: 6 },
+    baseline: { start: '2026-08-10', end: '2026-09-06', days: 28, covered: 4 },
+    source: 'github-repositories', sourceStart: '2026-09-01', complete: false,
+  };
+  const suppressed = buildTrends(reports, '2026-09-13', { languages: partial });
+  assert.equal(suppressed.languages.complete, false);
+  assert.ok(!suppressed.clusters.some(cluster => cluster.type === 'languages'),
+    'no language cluster may be published while the snapshot under-covers the window');
+  // The non-language lenses are unaffected: they do not depend on the snapshot layer.
+  assert.ok(suppressed.clusters.some(cluster => cluster.key === 'useCases:novel-writing'));
+
+  // Once the layer covers the whole window the lens returns by itself — no code change needed.
+  const complete = { ...partial, baseline: { ...partial.baseline, covered: 28 }, recent: { ...partial.recent, covered: 7 }, complete: true };
+  const restored = buildTrends(reports, '2026-09-13', { languages: complete });
+  assert.ok(restored.clusters.some(cluster => cluster.key === 'languages:typescript'));
 });

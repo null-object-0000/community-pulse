@@ -583,9 +583,19 @@ test('every emitted project, report, and sitemap entry has a real static page an
   assert.match(trendsPage, /data-trend-facet-panel="agentRoles" hidden/);
   assert.match(trendsPage, /data-trend-facet-panel="languages" hidden/);
   assert.match(trendsPage, /class="trend-bar" data-trend-week="11"/);
-  const language = trends.clusters.find(cluster => cluster.type === 'languages');
-  assert.ok(language?.path?.startsWith('/trends/programming-languages/'));
-  assert.ok(fs.existsSync(path.join(dist, language.path.replace(/^\//, ''), 'index.html')));
+  // The language lens is suppressed while the repository snapshot under-covers the window (see
+  // scripts/trends.js `languageCoverage`): the page explains why instead of showing a growth figure
+  // that only reflects the data arriving. When the layer is backfilled this notice disappears.
+  const languageClusters = trends.clusters.filter(cluster => cluster.type === 'languages');
+  if (trends.languages?.complete === false) {
+    assert.equal(languageClusters.length, 0, 'an under-covered snapshot must publish no language clusters');
+    assert.match(trendsPage, /class="trend-empty trend-notice"/);
+    assert.match(trendsPage, /编程语言视角暂不可用/);
+  } else {
+    const language = languageClusters[0];
+    assert.ok(language?.path?.startsWith('/trends/programming-languages/'));
+    assert.ok(fs.existsSync(path.join(dist, language.path.replace(/^\//, ''), 'index.html')));
+  }
   const contentCreation = trends.clusters.find(cluster => cluster.key === 'useCases:content-creation');
   assert.ok(contentCreation?.path);
   const travel = trends.clusters.find(cluster => cluster.key === 'useCases:travel-mobility');

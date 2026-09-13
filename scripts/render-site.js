@@ -259,7 +259,19 @@ function trendsPage(model, locale) {
   const facetPicker = `<div class="trend-facets"><span>${t(locale, 'trendsDimension')}</span><div role="tablist" aria-label="${t(locale, 'trendsDimension')}">${facetTabs}</div></div>`;
   const grids = facets.map(([id]) => {
     const cards = model.clusters.filter(cluster => cluster.type === id).map(card).join('');
-    return `<section class="trend-grid" id="trend-panel-${id}" role="tabpanel" aria-labelledby="trend-tab-${id}" data-trend-facet-panel="${id}"${id === 'useCases' ? '' : ' hidden'}>${cards || `<p class="trend-empty">${t(locale, 'trendsEmpty')}</p>`}</section>`;
+    // A lens whose source data does not cover the comparison window states that instead of showing
+    // numbers it cannot support. The language lens is the current case: its snapshot layer starts
+    // 2026-09-01, so every earlier day contributes nothing and the growth rate is an artefact.
+    const notice = model.languages && !model.languages.complete && id === 'languages'
+      ? `<p class="trend-empty trend-notice">${e(t(locale, 'trendsLangUnavailable', {
+        covered: model.languages.baseline.covered,
+        days: model.languages.baseline.days,
+        start: D.dateLabel(model.languages.sourceStart, locale),
+        label: t(locale, 'trendsBaseline'),
+      }))}</p>`
+      : '';
+    const body = notice || cards || `<p class="trend-empty">${t(locale, 'trendsEmpty')}</p>`;
+    return `<section class="trend-grid" id="trend-panel-${id}" role="tabpanel" aria-labelledby="trend-tab-${id}" data-trend-facet-panel="${id}"${id === 'useCases' ? '' : ' hidden'}>${body}</section>`;
   }).join('');
   const summary = `<div class="trend-window"><div><span>${t(locale, 'trendsWindow')}</span><b>${e(dateRange(model.recent))}</b></div><div><span>${t(locale, 'trendsBaseline')}</span><b>${e(dateRange(model.baseline))}</b></div><p>${en ? `A cluster appears after at least ${model.thresholds.minProjects} new projects from ${model.thresholds.minSources} sources, with a daily rate up ${model.thresholds.minGrowthPercent}% or newly emerging.` : `至少 ${model.thresholds.minProjects} 个新项目、覆盖 ${model.thresholds.minSources} 个来源，且日均出现速度提升 ${model.thresholds.minGrowthPercent}%（或为新主题）后才展示。`}</p></div>`;
   const periods = [4, 8, 12].map(weeks => `<button type="button" data-trend-weeks="${weeks}" aria-pressed="${weeks === 12}">${t(locale, `trends${weeks}Weeks`)}</button>`).join('');
