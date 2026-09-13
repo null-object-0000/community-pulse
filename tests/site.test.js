@@ -477,9 +477,20 @@ test('saved theme applies before rendering, reacts to system changes, and tolera
   assert.equal(environment(null, true).document.documentElement.dataset.theme, 'dark');
 });
 
+test('every site verification file is served from the site root byte-for-byte', () => {
+  const dist = path.join(__dirname, '../dist');
+  const directory = path.join(__dirname, '../verification');
+  const names = fs.readdirSync(directory).sort();
+  assert.ok(names.length > 0, 'verification/ must hold at least one ownership file');
+  for (const name of names) assert.deepEqual(fs.readFileSync(path.join(dist, name)), fs.readFileSync(path.join(directory, name)), name);
+  // 站长平台按文件名 + 内容核对归属，内容被改写验证就会失效，所以这几个码固定断言。
+  assert.equal(fs.readFileSync(path.join(dist, 'baidu_verify_codeva-PJeG1Qb5NW.html'), 'utf8').trim(), 'eb183876075868f7a4e2e0429c5bd045');
+  assert.equal(fs.readFileSync(path.join(dist, 'baidu_verify_codeva-u7AKnhQOjC.html'), 'utf8').trim(), '0c4b01be5dededec00ebc9432ef7c9c6');
+  assert.equal(fs.readFileSync(path.join(dist, 'dd375fa2f04a48819425622556a589bb.txt'), 'utf8').trim(), 'f970d68256a5b5859160a2a189d45611006b23dc');
+});
+
 test('every emitted project, report, and sitemap entry has a real static page and canonical language URLs', () => {
   const dist = path.join(__dirname, '../dist');
-  assert.equal(fs.readFileSync(path.join(dist, 'dd375fa2f04a48819425622556a589bb.txt'), 'utf8').trim(), 'f970d68256a5b5859160a2a189d45611006b23dc');
   const index = JSON.parse(fs.readFileSync(path.join(dist, 'data/index.json')));
   const projects = JSON.parse(fs.readFileSync(path.join(dist, 'data/projects.json')));
   assert.equal(Object.keys(projects).length, index.projectCount); assert.ok(index.projectCount > 0);

@@ -21,7 +21,10 @@ const staticFiles = ['styles.css', 'app.js', 'cards.js', 'shared.js', 'theme.js'
 if (!/^[a-f0-9]{8,128}$/i.test(siteConfig.indexNowKey || '')) throw new Error('site.config.json indexNowKey must contain 8-128 hexadecimal characters');
 staticFiles.push(`${siteConfig.indexNowKey}.txt`);
 for (const name of staticFiles) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
-for (const name of ['dd375fa2f04a48819425622556a589bb.txt']) fs.copyFileSync(path.join(root, name), path.join(outputDir, name));
+// 站长平台的归属验证文件（百度 / Google / 必应等下发）统一放在仓库根的 verification/，原样复制到站点根。
+// 加新平台只需要把文件丢进那个目录：这里整目录复制，不需要改代码，也不会再漏掉某一行的复制规则。
+const verificationDir = path.join(root, 'verification');
+for (const name of fs.readdirSync(verificationDir)) fs.copyFileSync(path.join(verificationDir, name), path.join(outputDir, name));
 const reports = dates.map(date => {
   const raw = JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8'));
   const finalPath = path.join(finalDir, `${date}.md`), rawMarkdown = path.join(sourceDir, `${date}.md`);
