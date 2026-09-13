@@ -124,6 +124,13 @@ function issueSummary(body) {
   return descriptionFromIssue(body);
 }
 
+// Plain-text submissions often wrap a URL in Chinese punctuation without a
+// separating space (`https://example.com/）。说明…`). Stop at prose punctuation
+// instead of percent-encoding the following sentence into a bogus URL.
+function extractExternalUrls(value) {
+  return String(value || '').match(/https?:\/\/[^\s<>()[\]{}"'（）［］【】《》〈〉「」『』，。：；！？、…]+/g) || [];
+}
+
 function issueItems(document, src) {
   const repository = src.id === 'weekly-issues' ? 'ruanyf/weekly' : '521xueweihan/HelloGitHub';
   const tags = src.id === 'weekly-issues'
@@ -153,7 +160,7 @@ function issueItems(document, src) {
     const githubUrl = discoverItemRepository(item);
     if (githubUrl) item.url = githubUrl;
     else {
-      const found = issue.body ? issue.body.match(/https?:\/\/[^\s)\]"']+/g) : null;
+      const found = extractExternalUrls(issue.body);
       item.url = found?.find((url) => !/\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#]|$)/i.test(url)
         && !/github\.com\/(?:user-attachments|[^/]+\/[^/]+\/(?:assets|issues|releases))(?:\/|$)/i.test(url)) || issueUrl;
     }
@@ -625,6 +632,6 @@ function loadItems(src, options = {}) {
 }
 
 module.exports = {
-  loadItems, attachSiteLogos, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts,
+  loadItems, attachSiteLogos, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts, extractExternalUrls,
   latestDate, OBSERVED_SOURCES,
 };

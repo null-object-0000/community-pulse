@@ -86,6 +86,7 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 
 **阮一峰周刊双源**（`scripts/sources/weekly-issues.js` + `weekly-issue.js`）：
 - **weekly-issues（投稿）**：`gh api repos/ruanyf/weekly/issues?state=all&per_page=100&sort=created&direction=desc`，按 created_at（北京时间）过滤昨日。标题带前缀标签（【开源自荐】【工具自荐】〖独立工具推荐〗投稿: 等）。body 是富文本自荐，summary 需清洗 markdown 语法后取第一段。**标题含「文章自荐/文章推荐/文章投稿」标签的文章投稿一律排除**（如「【文章自荐】…」「文章投稿：…」，含全角括号变体），日报只收录工具/项目类投稿；过滤实现见 `source_raw_items.js` 的 `issueItems()`。
+- 投稿正文中的纯文本链接必须在中英文括号、句号、冒号等正文标点处终止。例如 `https://example.com/）。它是` 只能标准化为 `https://example.com/`；否则浏览器会把后续中文编码进路径，同一产品的重复投稿也无法按 URL 合并。规则与回归测试见 `source_raw_items.js` 的 `extractExternalUrls()` / `tests/issue-url.test.js`。
 - **weekly-issue（正刊）**：README 顶部引用最新期号 → `docs/issue-NNN.md`。只取「推荐」小节（工具/资源/软件/AI 工具/学习资源），**排除文章/科技动态/言论/图片/文摘**。条目 `N、[名称](链接)`，**简介在下一行**（图片行前），简介末尾 `（[@作者](issue链接) 投稿）` 关联回原始 issue（`relatedIssue` 字段）。**发布日判断：正刊周五发布，`opts.date` 非周五 → 返回空**（`needs_date: true` 让 collect.js 传 date）。
 - **docs 目录列文件按字母序会错**（issue-99 > issue-411），别用目录列文件找最新期，用 README 引用。
 
