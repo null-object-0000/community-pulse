@@ -28,7 +28,7 @@
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
       previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', cardsTitle: '今日卡片', cardsIntro: '一张一张看完今天的新发现', cardsRead: '已读 {n} / {total}', cardsComplete: '已全部读完', cardsHint: '左滑下一条，右滑上一条',
-      trendsTitle: '大家正在集中做什么', trendsIntro: '按业务场景和 Agent 生态角色聚合最近的新项目，并与此前四周比较。', trendsWindow: '最近 7 天', trendsBaseline: '此前 28 天', trendsNew: '新出现', trendsProjects: '{n} 个新项目', trendsSources: '{n} 个来源', trendsExamples: '代表项目', trendsEmpty: '还没有形成达到展示门槛的趋势簇。', trendsPeriod: '观察周期', trends4Weeks: '近 4 周', trends8Weeks: '近 8 周', trends12Weeks: '近 12 周', trendsWeekly: '每周新增项目', tagDevTrends: 'DT', tagSource: '原始', tagLanguage: '语言', tagDevTrendsTitle: 'DevTrends 归类', tagSourceTitle: '项目或来源原始标签', tagLanguageTitle: '编程语言',
+      trendsTitle: '大家正在集中做什么', trendsIntro: '从业务场景、Agent 生态和编程语言观察最近的新项目，并与此前四周比较。', trendsWindow: '最近 7 天', trendsBaseline: '此前 28 天', trendsNew: '新出现', trendsProjects: '{n} 个新项目', trendsSources: '{n} 个来源', trendsExamples: '代表项目', trendsEmpty: '这个视角还没有形成达到展示门槛的趋势簇。', trendsDimension: '洞察视角', trendsUseCases: '业务场景', trendsAgentRoles: 'Agent 生态', trendsLanguages: '编程语言', trendsPeriod: '观察周期', trends4Weeks: '近 4 周', trends8Weeks: '近 8 周', trends12Weeks: '近 12 周', trendsWeekly: '每周新增项目', tagDevTrends: 'DT', tagSource: '原始', tagLanguage: '语言', tagDevTrendsTitle: 'DevTrends 归类', tagSourceTitle: '项目或来源原始标签', tagLanguageTitle: '编程语言',
     },
     en: {
       discover: 'Discover', trends: 'Trends', archive: 'Archive', slogan: 'What developers are building',
@@ -52,7 +52,7 @@
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
       previousItem: 'Previous', nextItem: 'Next', openItem: 'Open project', cardsTitle: 'Today’s cards', cardsIntro: 'Browse today’s discoveries one at a time', cardsRead: 'Read {n} / {total}', cardsComplete: 'All read', cardsHint: 'Swipe left for next, right for previous',
-      trendsTitle: 'What developers are converging on', trendsIntro: 'New projects grouped by use case and agent-ecosystem role, compared with the preceding four weeks.', trendsWindow: 'Last 7 days', trendsBaseline: 'Previous 28 days', trendsNew: 'New', trendsProjects: '{n} new projects', trendsSources: '{n} sources', trendsExamples: 'Representative projects', trendsEmpty: 'No trend cluster has reached the display threshold yet.', trendsPeriod: 'Time range', trends4Weeks: '4 weeks', trends8Weeks: '8 weeks', trends12Weeks: '12 weeks', trendsWeekly: 'New projects by week', tagDevTrends: 'DT', tagSource: 'Original', tagLanguage: 'Language', tagDevTrendsTitle: 'DevTrends classification', tagSourceTitle: 'Original project or source tag', tagLanguageTitle: 'Programming language',
+      trendsTitle: 'What developers are converging on', trendsIntro: 'Explore recent projects by use case, agent ecosystem, or programming language, compared with the preceding four weeks.', trendsWindow: 'Last 7 days', trendsBaseline: 'Previous 28 days', trendsNew: 'New', trendsProjects: '{n} new projects', trendsSources: '{n} sources', trendsExamples: 'Representative projects', trendsEmpty: 'No trend cluster in this view has reached the display threshold yet.', trendsDimension: 'Lens', trendsUseCases: 'Use cases', trendsAgentRoles: 'Agent ecosystem', trendsLanguages: 'Programming languages', trendsPeriod: 'Time range', trends4Weeks: '4 weeks', trends8Weeks: '8 weeks', trends12Weeks: '12 weeks', trendsWeekly: 'New projects by week', tagDevTrends: 'DT', tagSource: 'Original', tagLanguage: 'Language', tagDevTrendsTitle: 'DevTrends classification', tagSourceTitle: 'Original project or source tag', tagLanguageTitle: 'Programming language',
     },
   };
   const sourceLabels = {
@@ -103,6 +103,7 @@
       ['software-development', '软件开发', 'Software development'], ['research-learning', '研究与学习', 'Research & learning'],
       ['security-testing', '安全与测试', 'Security & testing'], ['data-operations', '数据与运维', 'Data & operations'],
       ['desktop-productivity', '桌面效率', 'Desktop productivity'], ['business-growth', '商业与增长', 'Business & growth'],
+      ['travel-mobility', '旅行与出行', 'Travel & mobility'],
       ['lifestyle-entertainment', '生活与娱乐', 'Lifestyle & entertainment'],
     ],
     agentRoles: [
@@ -124,6 +125,16 @@
       ['deepseek-harness', 'DeepSeek Harness', 'DeepSeek Harness'], ['openclaw', 'OpenClaw', 'OpenClaw'], ['cursor', 'Cursor', 'Cursor'],
     ],
   };
+  // The trend page treats the primary implementation language as a third analytical lens. Keep it
+  // deterministic and separate from editorial taxonomy so old reports participate immediately and
+  // a model cannot turn synonymous spellings into incompatible time-series buckets.
+  const languageFacets = [
+    ['typescript', 'TypeScript', 'TypeScript'], ['javascript', 'JavaScript', 'JavaScript'], ['python', 'Python', 'Python'],
+    ['go', 'Go', 'Go'], ['rust', 'Rust', 'Rust'], ['java-kotlin', 'Java / Kotlin', 'Java / Kotlin'],
+    ['swift', 'Swift', 'Swift'], ['c-cpp', 'C / C++', 'C / C++'], ['csharp', 'C#', 'C#'],
+    ['php', 'PHP', 'PHP'], ['ruby', 'Ruby', 'Ruby'], ['dart', 'Dart', 'Dart'],
+  ];
+  const languageIndex = new Map(languageFacets.map(([id, zh, en]) => [id, { id, labelZh: zh, labelEn: en }]));
   const facetIndex = Object.fromEntries(Object.entries(taxonomyFacets).map(([name, values]) => [name, new Map(values.map(([id, zh, en]) => [id, { id, labelZh: zh, labelEn: en }]))]));
   function normalizeTaxonomy(value = {}) {
     const result = { version: 1 };
@@ -138,9 +149,18 @@
     return Object.keys(facetIndex).some(name => normalized[name].length);
   };
   const facetLabel = (name, id, locale = 'zh-CN') => {
-    const entry = facetIndex[name]?.get(id);
+    const entry = facetIndex[name]?.get(id) || (name === 'languages' ? languageIndex.get(id) : null);
     return entry ? (locale === 'en' ? entry.labelEn : entry.labelZh) : id;
   };
+  function itemLanguages(item = {}) {
+    const raw = String(item.github?.language || item.language || '').trim().toLowerCase();
+    const aliases = {
+      typescript: 'typescript', javascript: 'javascript', python: 'python', go: 'go', golang: 'go', rust: 'rust',
+      java: 'java-kotlin', kotlin: 'java-kotlin', swift: 'swift', c: 'c-cpp', 'c++': 'c-cpp', cpp: 'c-cpp',
+      'c#': 'csharp', csharp: 'csharp', php: 'php', ruby: 'ruby', dart: 'dart',
+    };
+    return aliases[raw] ? [aliases[raw]] : [];
+  }
   function taxonomyText(item) {
     const contentTags = (item.tags || []).filter(tag => {
       const key = String(tag).trim().toLowerCase();
@@ -158,7 +178,12 @@
     add(useCases, 'data-operations', /database|infrastructure|devops|deploy|network|proxy|observability|数据库|基础设施|运维|部署|网络|代理环境/i);
     add(useCases, 'business-growth', /\b(?:marketing|sales|seo|crm|recruit(?:ing|ment)?|finance|business growth)\b|营销|销售|增长|招聘|求职|财务|商业增长/i);
     add(useCases, 'desktop-productivity', /desktop (?:app|tool|client|utility|workflow|pet)|menu bar|menubar|shortcut|clipboard|window manager|桌面(?:应用|工具|客户端|效率|宠物)|菜单栏|快捷键|剪贴板|窗口管理|效率工具/i);
-    add(useCases, 'lifestyle-entertainment', /game|travel|health|fitness|social|music|游戏|旅行|健康|健身|社交|音乐|娱乐/i);
+    // Keep the top-level scene broad enough to include supporting travel utilities; narrower
+    // distinctions such as travel imagery will live in its second-level topics. Exclude the
+    // unrelated engineering phrase "time travel" used by replay/debugging tools.
+    const travelText = text.replace(/\btime[ -]?travel(?:ling|ing)?\b/gi, '');
+    if (/\b(?:travell?er|travell?ing|travel|tourism|tourist|road[ -]?trip|trip planner|trip planning|itinerary|destination guide|city guide|sightseeing|hotel|hostel|airfare|airline|flight (?:tracker|tracking|booking)|travel eSIM)\b|\b(?:visa|passport).{0,28}(?:photo|travel|application|ocr|verification|immigration|interview)\b|\b(?:photo|travel|application|ocr|verification|immigration|interview).{0,28}(?:visa|passport)\b|旅游|旅行|行程规划|出行规划|机票|航班|酒店|民宿|青旅|景点|签证|护照|圣地巡礼|旅拍|旅行.{0,20}足迹|足迹.{0,20}旅行|游记|自驾|包车|旅行社|境外上网/i.test(travelText)) useCases.push('travel-mobility');
+    add(useCases, 'lifestyle-entertainment', /game|health|fitness|social|music|游戏|健康|健身|社交|音乐|娱乐/i);
     add(useCases, 'software-development', /\b(?:developer|coding|programming|code review|terminal|git|ide|sdk)\b|开发|编程|代码|终端|调试|测试/i);
     const agent = /\b(ai[- ]?agents?|agents?|agentic|coding agents?|claude code|codex|opencode|openclaw|deepseek harness|mcp)\b|\b(?:token|nerf)\s*(?:tracker|meter)\b|智能体|编程\s*agent/i.test(text);
     if (agent) {
@@ -187,7 +212,15 @@
   }
   function itemTaxonomy(item) {
     const explicit = normalizeTaxonomy(item?.taxonomy);
-    return taxonomyHasValues(explicit) ? explicit : inferTaxonomy(item || {});
+    if (!taxonomyHasValues(explicit)) return inferTaxonomy(item || {});
+    // Travel used to live inside the broad lifestyle bucket. Preserve explicit LLM metadata for all
+    // other facets, but deterministically promote historical travel products into the new stable
+    // business scene so the trend starts with the full archive rather than only tomorrow's report.
+    const inferred = inferTaxonomy(item || {});
+    if (inferred.useCases.includes('travel-mobility') && !explicit.useCases.includes('travel-mobility')) {
+      explicit.useCases = ['travel-mobility', ...explicit.useCases.filter(id => id !== 'lifestyle-entertainment')].slice(0, 2);
+    }
+    return explicit;
   }
   function taxonomyTags(item, locale = 'zh-CN', limit = 3) {
     const taxonomy = itemTaxonomy(item), ordered = ['useCases', 'agentRoles', 'productForms', 'platforms', 'integrations'];
@@ -287,7 +320,9 @@
     const label = t(locale, 'galleryOpen');
     const visible = images.slice(0, 3);
     const hidden = images.length - visible.length;
-    const thumb = (src, index, extra = '') => `<button type="button" class="gallery-thumb${extra}" data-index="${index}" aria-label="${escapeHtml(`${label} · ${index + 1}/${images.length}`)}"><img src="${escapeHtml(src)}" alt="" loading="lazy" /></button>`;
+    // Every image carries its own text: an empty `alt` is what search consoles report as a missing
+    // alt attribute, and here the description ("查看配图 · 1/3") is exactly what a reader needs.
+    const thumb = (src, index, extra = '') => `<button type="button" class="gallery-thumb${extra}" data-index="${index}" aria-label="${escapeHtml(`${label} · ${index + 1}/${images.length}`)}"><img src="${escapeHtml(src)}" alt="${escapeHtml(`${label} · ${index + 1}/${images.length}`)}" loading="lazy" /></button>`;
     const thumbs = visible.map((src, index) => thumb(src, index)).join('');
     const more = hidden > 0 ? `<button type="button" class="gallery-thumb gallery-more" data-index="${visible.length}" aria-label="${escapeHtml(`${label} · +${hidden}`)}">+${hidden}</button>` : '';
     return `<div class="item-gallery" data-gallery="${escapeHtml(JSON.stringify(images))}" role="group" aria-label="${escapeHtml(t(locale, 'gallery'))}">${thumbs}${more}</div>`;
@@ -300,7 +335,11 @@
         if (!['https:', 'http:'].includes(url.protocol) || !['github.com', 'www.github.com'].includes(url.hostname.toLowerCase()) || url.username || url.password || url.port) continue;
         const parts = url.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
         if (parts.length !== 2) continue;
-        const owner = parts[0], repo = parts[1].replace(/\.git$/i, '');
+        // Submissions copy the URL out of a sentence, so it can end in the sentence's punctuation
+        // ("github.com/larryteal/mcp-workspace."); a trailing dot would otherwise become a project
+        // page whose own address ends in a dot. GitHub names cannot end in one anyway.
+        const trim = value => value.replace(/[\s.]+$/, '');
+        const owner = trim(parts[0]), repo = trim(parts[1]).replace(/\.git$/i, '');
         if (!/^[a-z\d](?:[a-z\d-]{0,38})$/i.test(owner) || !/^[a-z\d_.-]{1,100}$/i.test(repo) || /^\.+$/.test(repo)) continue;
         if (['features', 'topics', 'collections', 'settings', 'marketplace', 'orgs', 'users', 'search', 'sponsors', 'login', 'signup', 'apps', 'enterprise', 'organizations'].includes(owner.toLowerCase())) continue;
         const key = `${owner}/${repo}`.toLowerCase();
@@ -531,9 +570,9 @@
     // (UTC, per source) only contradicted it, so the row carries no date of its own.
     return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
-      <span class="item-avatar avatar-${index % 5}${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
+      <span class="item-avatar avatar-${index % 5}${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
       <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="item-tags${discoveryDate ? ' has-date' : ''}">${discoveryDate}${language ? tagHtml({ label: language, origin: 'language' }, locale) : ''}${tags.map(tag => tagHtml(tag, locale)).join('')}</div></div>
-      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a class="source-label" href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span class="source-label" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
+      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="${escapeHtml(sourceName(item, locale))}" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a class="source-label" href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span class="source-label" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
   }
   // Mobile card deck. Stacked cards are what makes the gesture read as "the content is moving":
@@ -586,10 +625,10 @@
     const markUrl = localImage(item.logo) || localImage(item.icon) || localImage(item.siteLogo);
     const screenshots = localImages([...(Array.isArray(item.images) ? item.images : []), item.image]);
     const initials = escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
-    const sourceBadge = source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="" loading="lazy" />` : sourceMark(item);
+    const sourceBadge = source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="${escapeHtml(sourceName(item, locale))}" loading="lazy" />` : sourceMark(item);
     const visual = screenshots.length
-      ? `<div class="swipe-visual has-image"><img src="${escapeHtml(screenshots[0])}" alt="" /></div>`
-      : `<div class="swipe-visual is-typographic" aria-hidden="true"><span class="swipe-mark avatar-${index % 5}${markUrl ? ' has-logo' : ''}">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="" />` : initials}</span><span class="swipe-wordmark">${escapeHtml(title)}</span></div>`;
+      ? `<div class="swipe-visual has-image"><img src="${escapeHtml(screenshots[0])}" alt="${escapeHtml(`${title} · ${t(locale, 'gallery')}`)}" /></div>`
+      : `<div class="swipe-visual is-typographic" aria-hidden="true"><span class="swipe-mark avatar-${index % 5}${markUrl ? ' has-logo' : ''}">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" />` : initials}</span><span class="swipe-wordmark">${escapeHtml(title)}</span></div>`;
     const metadata = [language ? `<span class="tag">${escapeHtml(language)}</span>` : '', ...tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`), score !== null ? `<span class="swipe-score">${scoreIcon}<span>${compact(score, locale)}</span></span>` : ''].join('');
     // Only the top card is reachable. The cards waiting behind it must not carry links or buttons at
     // all: `inert` alone still leaves them in the tab order in Chromium, so a keyboard user would
@@ -639,5 +678,5 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, taxonomyFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, inferTaxonomy, itemTaxonomy, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, categories, taxonomyFacets, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

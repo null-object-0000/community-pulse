@@ -15,6 +15,8 @@ test('repository identities normalize case, trailing slash, query, and .git with
   assert.notEqual(D.repository({ url: 'https://github.com/a-b/c' }).path, D.repository({ url: 'https://github.com/a/b-c' }).path);
   for (const url of ['https://github.com/owner', 'https://github.com/owner/repo/issues/1', 'https://github.com/owner/repo/blob/main/README.md', 'https://github.com/topics/python', 'https://github.com/orgs/openai', 'https://github.com.evil.test/a/b', 'javascript:alert(1)', 'https://evil.test/a/b', 'https://github.com/a/%2e%2e']) assert.equal(D.repository({ githubUrl: url }), null, url);
   assert.equal(D.repository({ githubUrl: 'https://github.com/owner/repo/issues/1', url: 'https://github.com/other/valid' }).key, 'other/valid');
+  // A URL pasted out of a sentence keeps the sentence's full stop: the page must not end in a dot.
+  assert.equal(D.repository({ githubUrl: 'https://github.com/larryteal/mcp-workspace.' }).key, 'larryteal/mcp-workspace');
 });
 
 test('cross-source and cross-date occurrences become one project with unique discovery days and newest metadata', () => {
@@ -260,7 +262,7 @@ test('the Tech Enthusiast Weekly logo is the official favicon.ico frame, vendore
 test('list source badges render the real source logo, never an invented letter or a borrowed mark', () => {
   const badgeOf = item => D.renderItem({ title: 'x', ...item }, 'zh-CN').match(/<span class="source-mini[^"]*" aria-hidden="true">(.*?)<\/span>/)?.[1];
   for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
-    assert.equal(badgeOf({ sourceId }), `<img src="${D.sourceInfo({ sourceId }).logo}" alt="" loading="lazy" />`, sourceId);
+    assert.equal(badgeOf({ sourceId }), `<img src="${D.sourceInfo({ sourceId }).logo}" alt="${D.escapeHtml(D.sourceName({ sourceId }, 'zh-CN'))}" loading="lazy" />`, sourceId);
   }
   // "HelloGitHub" contains "GitHub"; keying the fallback off the display name made it borrow GitHub's mark.
   assert.match(badgeOf({ sourceId: 'hellogithub-issue' }), /source-hellogithub\.svg/);
@@ -562,9 +564,20 @@ test('every emitted project, report, and sitemap entry has a real static page an
   assert.match(trendsPage, /data-trend-weeks="4"/);
   assert.match(trendsPage, /data-trend-weeks="8"/);
   assert.match(trendsPage, /data-trend-weeks="12"/);
+  assert.match(trendsPage, /role="tab"[^>]+aria-selected="true"[^>]+data-trend-facet="useCases"/);
+  assert.match(trendsPage, /data-trend-facet="agentRoles"/);
+  assert.match(trendsPage, /data-trend-facet="languages"/);
+  assert.match(trendsPage, /data-trend-facet-panel="agentRoles" hidden/);
+  assert.match(trendsPage, /data-trend-facet-panel="languages" hidden/);
   assert.match(trendsPage, /class="trend-bar" data-trend-week="11"/);
+  const language = trends.clusters.find(cluster => cluster.type === 'languages');
+  assert.ok(language?.path?.startsWith('/trends/programming-languages/'));
+  assert.ok(fs.existsSync(path.join(dist, language.path.replace(/^\//, ''), 'index.html')));
   const contentCreation = trends.clusters.find(cluster => cluster.key === 'useCases:content-creation');
   assert.ok(contentCreation?.path);
+  const travel = trends.clusters.find(cluster => cluster.key === 'useCases:travel-mobility');
+  assert.ok(travel?.path === '/trends/use-cases/travel-mobility/');
+  assert.ok(fs.existsSync(path.join(dist, travel.path.replace(/^\//, ''), 'index.html')));
   const clusterPagePath = path.join(dist, contentCreation.path.replace(/^\//, ''), 'index.html');
   assert.ok(fs.existsSync(clusterPagePath));
   const clusterPage = fs.readFileSync(clusterPagePath, 'utf8');

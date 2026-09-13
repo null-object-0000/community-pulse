@@ -136,18 +136,20 @@ h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.3; margin: 0; lette
 .archive-day-meta > span { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 .archive-day-meta svg { flex: 0 0 auto; width: 14px; height: 14px; }
 .archive-day.has-comments .archive-comment-count { color: var(--accent); font-weight: 650; }
-.trend-period { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin: -4px 0 18px; }
-.trend-period > span { color: var(--muted); font-size: .8rem; font-weight: 650; }
-.trend-period > div { display: inline-flex; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
-.trend-period button { min-height: 32px; padding: 5px 13px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font: inherit; font-size: .8rem; font-weight: 650; cursor: pointer; }
-.trend-period button:hover { color: var(--text); }
-.trend-period button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+.trend-controls { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: -4px 0 18px; }
+.trend-period, .trend-facets { display: flex; align-items: center; gap: 12px; }
+.trend-period > span, .trend-facets > span { color: var(--muted); font-size: .8rem; font-weight: 650; }
+.trend-period > div, .trend-facets > div { display: inline-flex; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.trend-period button, .trend-facets button { min-height: 32px; padding: 5px 13px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font: inherit; font-size: .8rem; font-weight: 650; cursor: pointer; }
+.trend-period button:hover, .trend-facets button:hover { color: var(--text); }
+.trend-period button[aria-pressed="true"], .trend-facets button[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
 .trend-window { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 0 0 22px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
 .trend-window > div { display: grid; gap: 3px; }
 .trend-window span { color: var(--muted); font-size: .75rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
 .trend-window b { font-size: .95rem; font-variant-numeric: tabular-nums; }
 .trend-window p { grid-column: 1 / -1; margin: 0; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .8125rem; }
 .trend-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.trend-grid[hidden] { display: none; }
 .trend-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
 .trend-card header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
 .trend-kind { color: var(--accent); font-size: .68rem; font-weight: 750; letter-spacing: .11em; }
@@ -418,7 +420,8 @@ body[data-view="cards"] { visibility: hidden; }
 /* 手机端：序号隐藏，头像占第一列；标题列里日期已移除，所以分数列直接顶到第一行。 */
 @media (max-width: 600px) { .topbar-inner { padding: 13px 16px; gap: 10px; }.brand span { font-size: 1.1rem; }.main-nav { order: 2; width: 100%; justify-content: flex-start; gap: 12px; }.main-nav a { padding: 7px 10px; font-size: .875rem; }.preferences select { max-width: 112px; }.workspace { padding: 12px 14px 32px; }.discovery-hero { min-height: 330px; padding: 25px 4px; }.hero-copy .eyebrow { font-size: .625rem; letter-spacing: .14em; }.hero-copy h1 { font-size: 1.9rem; line-height: 1.35; }.hero-copy .intro { font-size: .9rem; line-height: 1.7; }.hero-art { width: 75%; right: -24%; opacity: .16; }.hero-art > span { display: none; }.hero-stats { gap: 20px; margin-top: 22px; }.hero-stats small { font-size: .8125rem; }.discovery-results { padding: 0 10px; }.filters { gap: 10px; }.chip-row { display: none; }.chip-select { display: flex; flex: 1 1 auto; }.chip-select select { width: 100%; }.filters-divider { display: none; }.feed-tools { margin-left: auto; }.feed-tools select { max-width: 132px; }.feed-item { grid-template-columns: 42px minmax(0, 1fr) 55px; gap: 10px; min-height: 80px; padding: 14px 0; align-items: center; }.item-avatar { width: 42px; height: 42px; border-radius: 10px; font-size: .875rem; }.item-primary h2 { font-size: .9375rem; }.item-primary .summary { font-size: .8125rem; }.item-tags, .item-source { grid-column: 2 / -1; }.item-tags { display: none; }.item-score { grid-column: 3; grid-row: 1; }.discovery-sidebar { grid-template-columns: minmax(0, 1fr); }.sidebar-signature { padding: 12px 5px; } }
 @media (max-width: 600px) { .item-tags.has-date { display: flex; }.item-tags.has-date .tag:not(.tag-date) { display: none; } }
-@media (max-width: 600px) { .trend-period { align-items: flex-start; justify-content: space-between; margin-top: 0; }.trend-period > span { padding-top: 9px; }.trend-period button { padding-inline: 10px; }.trend-window { grid-template-columns: minmax(0, 1fr); padding: 17px; }.trend-window p { grid-column: 1; }.trend-card { padding: 18px; }.trend-card li { align-items: flex-start; }.trend-card li time { padding-top: 2px; } }
+@media (max-width: 760px) { .trend-controls { align-items: stretch; flex-direction: column; }.trend-period, .trend-facets { justify-content: space-between; }.trend-period > div, .trend-facets > div { overflow-x: auto; } }
+@media (max-width: 600px) { .trend-period, .trend-facets { align-items: flex-start; }.trend-period > span, .trend-facets > span { padding-top: 9px; }.trend-period button, .trend-facets button { padding-inline: 10px; white-space: nowrap; }.trend-window { grid-template-columns: minmax(0, 1fr); padding: 17px; }.trend-window p { grid-column: 1; }.trend-card { padding: 18px; }.trend-card li { align-items: flex-start; }.trend-card li time { padding-top: 2px; } }
 
 @media (max-width: 600px) {
   /* One compact header on every ordinary mobile page. The desktop route tabs are deliberately

@@ -29,7 +29,8 @@ function buildWeeklySeries(entities, type, id, latest, weeks = 12) {
   const startTime = Date.parse(`${start}T00:00:00Z`);
   for (const entity of entities) {
     if (entity.firstSeen < start || entity.firstSeen > latest) continue;
-    if (!D.itemTaxonomy(entity.item)[type]?.includes(id)) continue;
+    const memberships = type === 'languages' ? D.itemLanguages(entity.item) : D.itemTaxonomy(entity.item)[type];
+    if (!memberships?.includes(id)) continue;
     const index = Math.floor((Date.parse(`${entity.firstSeen}T00:00:00Z`) - startTime) / 604800000);
     if (buckets[index]) buckets[index].count++;
   }
@@ -37,7 +38,7 @@ function buildWeeklySeries(entities, type, id, latest, weeks = 12) {
 }
 
 function trendPath(type, id) {
-  const segment = type === 'agentRoles' ? 'agent-roles' : type === 'useCases' ? 'use-cases' : null;
+  const segment = type === 'agentRoles' ? 'agent-roles' : type === 'useCases' ? 'use-cases' : type === 'languages' ? 'programming-languages' : null;
   return segment && /^[a-z0-9-]+$/.test(id || '') ? `/trends/${segment}/${id}/` : null;
 }
 
@@ -74,6 +75,7 @@ function buildTrends(reports, latest, options = {}) {
     const memberships = [
       ...taxonomy.useCases.map(id => ['useCases', id]),
       ...taxonomy.agentRoles.map(id => ['agentRoles', id]),
+      ...D.itemLanguages(entity.item).map(id => ['languages', id]),
     ];
     const period = entity.firstSeen >= recentStart && entity.firstSeen <= latest
       ? 'recent'
@@ -105,12 +107,13 @@ function buildTrends(reports, latest, options = {}) {
       weekly: buildWeeklySeries(entityList, value.type, value.id, latest, 12), projects,
     };
   }).filter(value => value.isNew || value.growthPercent >= minGrowthPercent).sort((a, b) => {
-    const typeOrder = Number(b.type === 'agentRoles') - Number(a.type === 'agentRoles');
+    const order = { useCases: 0, agentRoles: 1, languages: 2 };
+    const typeOrder = (order[a.type] ?? 9) - (order[b.type] ?? 9);
     return typeOrder || b.recentCount - a.recentCount || (b.growthPercent ?? 9999) - (a.growthPercent ?? 9999) || a.key.localeCompare(b.key);
   });
 
   return {
-    schemaVersion: 2, latest, seriesWeeks: 12,
+    schemaVersion: 3, latest, seriesWeeks: 12,
     recent: { start: recentStart, end: latest, days: recentDays },
     baseline: { start: baselineStart, end: baselineEnd, days: baselineDays },
     thresholds: { minProjects, minSources, minGrowthPercent }, clusters: output,

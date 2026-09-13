@@ -61,7 +61,7 @@
   const lightbox = document.createElement('div');
   lightbox.className = 'lightbox';
   lightbox.hidden = true;
-  lightbox.innerHTML = `<div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="${D.escapeHtml(t('gallery'))}"><button type="button" class="lightbox-close" aria-label="${D.escapeHtml(t('closeViewer'))}">✕</button><button type="button" class="lightbox-step prev" aria-label="${D.escapeHtml(t('previousImage'))}">‹</button><img class="lightbox-image" alt="" /><button type="button" class="lightbox-step next" aria-label="${D.escapeHtml(t('nextImage'))}">›</button><p class="lightbox-counter" aria-live="polite"></p></div>`;
+  lightbox.innerHTML = `<div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="${D.escapeHtml(t('gallery'))}"><button type="button" class="lightbox-close" aria-label="${D.escapeHtml(t('closeViewer'))}">✕</button><button type="button" class="lightbox-step prev" aria-label="${D.escapeHtml(t('previousImage'))}">‹</button><img class="lightbox-image" alt="${D.escapeHtml(t('gallery'))}" /><button type="button" class="lightbox-step next" aria-label="${D.escapeHtml(t('nextImage'))}">›</button><p class="lightbox-counter" aria-live="polite"></p></div>`;
   document.body.appendChild(lightbox);
   const lightboxImage = lightbox.querySelector('.lightbox-image');
   const lightboxCounter = lightbox.querySelector('.lightbox-counter');
@@ -70,6 +70,8 @@
   let galleryOpener = null;
   function paintLightbox() {
     lightboxImage.src = galleryImages[galleryIndex];
+    // The dialog repeats the thumbnail's own description so its alt is never empty either.
+    lightboxImage.alt = galleryOpener?.getAttribute('aria-label') || t('gallery');
     lightboxCounter.textContent = t('imageCounter', { n: galleryIndex + 1, total: galleryImages.length });
     lightbox.querySelectorAll('.lightbox-step').forEach(button => { button.hidden = galleryImages.length < 2; });
   }
@@ -326,6 +328,30 @@
     syncFilterState();
     updateFilterUrl(); renderFeed(); search.focus();
   });
+  // ---- trend lens: business use cases are the default; the other stable facets are opt-in ----
+  const trendFacets = document.querySelector('.trend-facets');
+  if (trendFacets) {
+    const allowedFacets = ['useCases', 'agentRoles', 'languages'];
+    let activeFacet = allowedFacets.includes(params.get('facet')) ? params.get('facet') : 'useCases';
+    function paintTrendFacet(updateUrl = true) {
+      trendFacets.querySelectorAll('[data-trend-facet]').forEach(button => {
+        const active = button.dataset.trendFacet === activeFacet;
+        button.setAttribute('aria-selected', String(active));
+      });
+      document.querySelectorAll('[data-trend-facet-panel]').forEach(panel => { panel.hidden = panel.dataset.trendFacetPanel !== activeFacet; });
+      if (!updateUrl) return;
+      const url = new URL(location.href);
+      activeFacet === 'useCases' ? url.searchParams.delete('facet') : url.searchParams.set('facet', activeFacet);
+      history.replaceState(null, '', url);
+    }
+    trendFacets.addEventListener('click', event => {
+      const button = event.target.closest('[data-trend-facet]');
+      if (!button) return;
+      activeFacet = button.dataset.trendFacet;
+      paintTrendFacet();
+    });
+    paintTrendFacet(Boolean(params.has('facet')));
+  }
   // ---- trend horizon: keep one 12-week series in the static page and reveal the requested tail ----
   const trendPeriod = document.querySelector('.trend-period');
   if (trendPeriod) {
