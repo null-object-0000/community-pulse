@@ -7,7 +7,7 @@
   const origin = 'https://devtrends.site';
   const messages = {
     'zh-CN': {
-      discover: '今日发现', trends: '趋势', archive: '历史日报', slogan: '大家都在做什么',
+      discover: '今日发现', trends: '趋势洞察', archive: '历史日报', slogan: '大家都在做什么',
       intro: '每天发现开发者社区的新项目、新产品与开源趋势。', all: '全部来源', search: '搜索项目、作者或标签',
       language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色',
       count: '{n} 个项目', sources: '{n} 个来源',
