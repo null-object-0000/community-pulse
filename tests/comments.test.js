@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const R = require('../scripts/render-site.js');
+const P = require('../scripts/projects.js');
 
 const report = { results: [] };
 
@@ -26,4 +27,23 @@ test('comments client is lazy loaded and keeps the giscus theme in sync', () => 
   assert.match(client, /mapping: 'specific'/);
   assert.match(client, /https:\/\/giscus\.app\/client\.js/);
   assert.match(client, /MutationObserver\(syncGiscusTheme\)/);
+});
+
+test('project pages have one stable discussion shared by Chinese and English routes', () => {
+  const project = {
+    key: 'acme/widget', owner: 'Acme', name: 'Widget', fullName: 'Acme/Widget',
+    path: '/projects/acme/widget/', url: 'https://github.com/Acme/Widget',
+    firstSeen: '2026-09-12', lastSeen: '2026-09-12', snapshotDate: '2026-09-12',
+    item: { title: 'Acme/Widget', summary: 'A useful developer widget.', sourceId: 'github-trending' },
+    observations: [], topics: [], related: [],
+  };
+  const chinese = P.projectPage(project, 'zh-CN');
+  const english = P.projectPage(project, 'en');
+
+  for (const html of [chinese, english]) {
+    assert.match(html, /data-giscus-term="project:acme\/widget"/);
+    assert.equal((html.match(/data-giscus-comments/g) || []).length, 1);
+  }
+  assert.match(chinese, /讨论这个项目/);
+  assert.match(english, /Discuss this project/);
 });

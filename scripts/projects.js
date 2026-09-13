@@ -95,7 +95,8 @@ function projectPage(project, locale) {
         return `<li><a href="${lp(`/reports/${observation.date}/`, locale)}"><time datetime="${observation.date}">${e(D.dateLabel(observation.date, locale))}</time> ↗</a><p lang="${text.lang}">${e(text.text)}</p>${text.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="source-links">${observation.sources.map(source => `<a href="${e(D.trackedUrl(source.url, observation.item, observation.date))}" target="_blank" rel="noopener noreferrer">${e(D.sourceName(source, locale))} ↗</a>`).join('')}</div></li>`;
       }).join('')}</ol></section></div>
       <aside class="project-sidebar"><section class="panel"><h2>${t(locale, 'facts')}</h2>${factsHtml(facts)}<p class="caption">${e(t(locale, 'snapshot', { date: D.dateLabel(snapshotDate, locale) }))}</p>${item.github?.archived ? `<span class="original-label">${t(locale, 'archived')}</span>` : ''}</section>
-      <section class="panel">${factsHtml([['firstSeen', D.dateLabel(project.firstSeen, locale)], ['lastSeen', D.dateLabel(project.lastSeen, locale)], ['appearances', t(locale, 'days', { n: project.observations.length })]])}</section>${related}</aside></div>`;
+      <section class="panel">${factsHtml([['firstSeen', D.dateLabel(project.firstSeen, locale)], ['lastSeen', D.dateLabel(project.lastSeen, locale)], ['appearances', t(locale, 'days', { n: project.observations.length })]])}</section>${related}</aside></div>
+    ${R.commentsSection({ term: `project:${project.key}`, locale, kind: 'project' })}`;
   const structured = {
     '@context': 'https://schema.org', '@graph': [
       { '@type': 'WebPage', '@id': canonical, url: canonical, name: title, description, inLanguage: locale, dateModified: project.lastSeen, mainEntity: { '@id': canonical + '#repository' }, breadcrumb: { '@id': canonical + '#breadcrumb' } },
