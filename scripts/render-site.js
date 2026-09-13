@@ -4,7 +4,7 @@ const D = require('../web/shared.js');
 const { t, escapeHtml: e, localPath: lp } = D;
 const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
 const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
-const assetVersion = '20260913-theme-color-4';
+const assetVersion = '20260913-menu-pickers-2';
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
@@ -19,6 +19,8 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     homePath: lp('/', locale), navigation, navLabel: locale === 'en' ? 'Main navigation' : '主导航',
     headerSearch: ['report', 'trend-cluster'].includes(view) ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '',
     zhSelected: locale === 'zh-CN' ? 'selected' : '', enSelected: locale === 'en' ? 'selected' : '',
+    zhChecked: locale === 'zh-CN' ? 'true' : 'false', enChecked: locale === 'en' ? 'true' : 'false',
+    currentLanguage: locale === 'en' ? 'English' : '简体中文',
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
     pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}?v=${assetVersion}" defer></script>`,
     bodyAttrs: bodyAttrs ? ` ${bodyAttrs}` : '',
@@ -38,7 +40,9 @@ function categoryOptions(items, locale) {
 }
 function projectSort(locale) {
   const sortLabel = locale === 'en' ? 'Sort projects' : '项目排序';
-  return `<label class="select-control"><span class="sr-only">${sortLabel}</span><select id="sort-select" aria-label="${sortLabel}"><option value="default">${locale === 'en' ? 'Latest' : '最新发现'}</option><option value="popular">${locale === 'en' ? 'Most starred' : '最多星标 / 投票'}</option></select><svg class="select-control-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></label>`;
+  const latest = locale === 'en' ? 'Latest' : '最新发现';
+  const popular = locale === 'en' ? 'Most starred / voted' : '最多星标 / 投票';
+  return `<details class="menu-picker sort-picker" id="sort-picker"><summary aria-label="${sortLabel}"><span data-menu-current>${latest}</span><svg class="menu-caret" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary><div class="menu-options" role="menu" aria-label="${sortLabel}"><button type="button" role="menuitemradio" aria-checked="true" data-sort-choice="default" data-menu-label="${latest}"><span>${latest}</span><span class="menu-check" aria-hidden="true">✓</span></button><button type="button" role="menuitemradio" aria-checked="false" data-sort-choice="popular" data-menu-label="${popular}"><span>${popular}</span><span class="menu-check" aria-hidden="true">✓</span></button></div></details>`;
 }
 // Both the daily feed and the report pages filter by the preset categories; the source directory
 // in the sidebar stays informational, so no page filters by data source.

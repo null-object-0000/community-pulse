@@ -266,16 +266,48 @@
       themePicker.querySelector('summary').focus();
     }
   });
-  document.getElementById('language-select').addEventListener('change', event => {
+  function bindMenuPicker(picker, choiceAttribute, onChoose) {
+    if (!picker) return;
+    const summary = picker.querySelector('summary');
+    const buttons = [...picker.querySelectorAll(`[${choiceAttribute}]`)];
+    const choose = button => {
+      buttons.forEach(option => option.setAttribute('aria-checked', String(option === button)));
+      picker.querySelector('[data-menu-current]').textContent = button.dataset.menuLabel;
+      picker.open = false;
+      summary.focus();
+      onChoose(button.getAttribute(choiceAttribute));
+    };
+    picker.addEventListener('click', event => {
+      const button = event.target.closest(`[${choiceAttribute}]`);
+      if (button) choose(button);
+    });
+    picker.addEventListener('keydown', event => {
+      if (event.target === summary && event.key === 'ArrowDown') {
+        event.preventDefault(); picker.open = true; buttons[0]?.focus(); return;
+      }
+      if (event.key === 'Escape' && picker.open) {
+        event.preventDefault(); picker.open = false; summary.focus(); return;
+      }
+      if (!buttons.includes(document.activeElement) || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const current = buttons.indexOf(document.activeElement);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (current + (event.key === 'ArrowDown' ? 1 : -1) + buttons.length) % buttons.length;
+      buttons[next]?.focus();
+    });
+  }
+  bindMenuPicker(document.getElementById('language-picker'), 'data-language-choice', value => {
     const url = new URL(location.href);
     const route = location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
-    url.pathname = D.localPath(route, event.target.value);
+    url.pathname = D.localPath(route, value);
     url.searchParams.delete('style');
-    try { localStorage.setItem('devtrends-locale-v1', event.target.value); } catch {}
+    try { localStorage.setItem('devtrends-locale-v1', value); } catch {}
     location.assign(url.pathname + url.search + url.hash);
   });
   search?.addEventListener('input', () => { query = search.value; updateFilterUrl(); renderFeed(); });
-  document.getElementById('sort-select')?.addEventListener('change', event => { sort = event.target.value; renderFeed(); });
+  bindMenuPicker(document.getElementById('sort-picker'), 'data-sort-choice', value => { sort = value; renderFeed(); });
+  document.addEventListener('click', event => {
+    document.querySelectorAll('.menu-picker[open]').forEach(picker => { if (!picker.contains(event.target)) picker.open = false; });
+  });
   document.addEventListener('keydown', event => {
     if (search && (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); search.focus(); }
   });

@@ -359,6 +359,19 @@ test('report pages carry the date in the heading instead of a separate meta row'
   assert.ok(!/date-control|feed-heading|report-controls/.test(styles), 'stale meta row rules');
 });
 
+test('language and sort controls use the same custom menu pattern as the site pickers', () => {
+  const home = fs.readFileSync(path.join(__dirname, '../dist/index.html'), 'utf8');
+  assert.match(home, /<details class="menu-picker language-picker" id="language-picker">/);
+  assert.match(home, /data-language-choice="zh-CN"/);
+  assert.match(home, /data-language-choice="en"/);
+  assert.match(home, /<details class="menu-picker sort-picker" id="sort-picker">/);
+  assert.match(home, /data-sort-choice="default"/);
+  assert.match(home, /data-sort-choice="popular"/);
+  assert.doesNotMatch(home, /id="language-select"|id="sort-select"/);
+  const styles = fs.readFileSync(path.join(__dirname, '../web/styles.css'), 'utf8');
+  assert.match(styles, /\.menu-options \{[^}]*box-shadow: var\(--shadow-floating\)/);
+});
+
 test('discovery, archive, trends, trend cluster, and project pages share the same wide desktop canvas', () => {
   const styles = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
   for (const view of ['report', 'archive', 'trends', 'trend-cluster', 'project']) {

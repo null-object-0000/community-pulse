@@ -281,9 +281,23 @@
     themePicker.open = false;
     themePicker.querySelector('summary').focus();
   });
-  document.getElementById('language-select').addEventListener('change', event => {
+  const languagePicker = document.getElementById('language-picker');
+  const languageSummary = languagePicker.querySelector('summary');
+  languagePicker.addEventListener('click', event => {
+    const button = event.target.closest('[data-language-choice]');
+    if (!button) return;
+    languagePicker.open = false;
+    try { localStorage.setItem('devtrends-locale-v1', button.dataset.languageChoice); } catch {}
     const route = location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
-    location.assign(D.localPath(route, event.target.value));
+    location.assign(D.localPath(route, button.dataset.languageChoice));
+  });
+  languagePicker.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && languagePicker.open) {
+      event.preventDefault(); languagePicker.open = false; languageSummary.focus(); return;
+    }
+  });
+  document.addEventListener('click', event => {
+    if (!languagePicker.contains(event.target)) languagePicker.open = false;
   });
 
   narrowScreen.addEventListener?.('change', event => {
