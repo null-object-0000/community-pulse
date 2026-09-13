@@ -149,6 +149,18 @@ test('V2EX cannot be backfilled and the capture script refuses earlier days', ()
   assert.equal(lastRejectsFuture('2026-09-13', '2026-09-13'), false);
 });
 
+test('both capture scripts retry a transient network failure instead of failing the run', () => {
+  // Observed in practice: one `curl: (56) OpenSSL SSL_read: unexpected eof` killed a 27-minute
+  // backfill. The daily workflow runs unattended, so a single flaky connection must not take
+  // down the whole report build — both fetchers wrap the request in a bounded retry.
+  const showhn = fs.readFileSync(path.join(CP, 'scripts', 'capture_showhn_raw.js'), 'utf8');
+  const v2ex = fs.readFileSync(path.join(CP, 'scripts', 'capture_v2ex_raw.js'), 'utf8');
+  assert.match(showhn, /function curlJson\(url, attempts = 3\)/);
+  assert.match(showhn, /function curlJsonOnce\(url\)/);
+  assert.match(v2ex, /function fetchNode\(nodeName, attempts = 3\)/);
+  assert.match(v2ex, /function fetchNodeOnce\(nodeName\)/);
+});
+
 test('the new sources are wired into the daily workflow with capture and validate steps', () => {
   const workflow = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'daily-report.yml'), 'utf8');
   assert.match(workflow, /capture_showhn_raw\.js/, 'Show HN capture must run in the daily workflow');

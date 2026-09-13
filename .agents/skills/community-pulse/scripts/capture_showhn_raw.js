@@ -78,7 +78,24 @@ function atomicWrite(file, content) {
   fs.renameSync(temporary, file);
 }
 
-function curlJson(url) {
+function curlJson(url, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return curlJsonOnce(url);
+    } catch (error) {
+      lastError = error;
+      // A long backfill is one request per day, and a single transient TLS/network hiccup
+      // (observed: `curl: (56) OpenSSL SSL_read: unexpected eof`) must not discard the whole
+      // run. Back off briefly and retry; the daily workflow runs unattended, so this is what
+      // keeps one flaky connection from failing the entire report build.
+      if (attempt < attempts) execFileSync('sleep', [String(attempt * 2)]);
+    }
+  }
+  throw lastError;
+}
+
+function curlJsonOnce(url) {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'community-pulse-showhn-'));
   const bodyFile = path.join(temporary, 'body');
   const headerFile = path.join(temporary, 'headers');

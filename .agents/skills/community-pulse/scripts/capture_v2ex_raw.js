@@ -67,7 +67,21 @@ function atomicWrite(file, content) {
   fs.renameSync(temporary, file);
 }
 
-function fetchNode(nodeName) {
+function fetchNode(nodeName, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return fetchNodeOnce(nodeName);
+    } catch (error) {
+      lastError = error;
+      // A single transient TLS/network hiccup must not fail the unattended daily run.
+      if (attempt < attempts) execFileSync('sleep', [String(attempt * 2)]);
+    }
+  }
+  throw lastError;
+}
+
+function fetchNodeOnce(nodeName) {
   const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'community-pulse-v2ex-'));
   const bodyFile = path.join(temporary, 'body');
   const headerFile = path.join(temporary, 'headers');
