@@ -25,6 +25,8 @@ Cloudflare Workers Builds 已直接连接 GitHub 仓库。任何推送到 `main`
 
 网站源码在 `web/`，`scripts/build-site.js` 会读取 `知识/大家都在做什么/raw/*.json`的结构化数据，并在同日 `final/*.md` 存在时将 LLM 增强摘要合并进列表 JSON；只有没有 final 的日期才回退到 raw 摘要。网站采用统一 DevTrends 主题，支持简体中文 / 英文与浅色 / 深色 / 跟随系统模式。Markdown 保留为日报下载入口。
 
+GitHub Trending 的 `daily` 榜是滚动窗口。来源层保留每天完整快照，日报与「今日发现」在发布层按规范化 `owner/repo` 执行 3 期冷却：过去 3 份已发布日报出现过的仓库不再进入普通项目列表；全球榜和中文榜同日重复时全球榜优先。聚合器读取完整榜单，排重后再按来源上限截断，避免榜单前部的旧项目挤掉后面的新发现。持续热门按当日新增 star 选最多 3 个，折叠展示并写入报告顶层 `trendingPolicy`。
+
 仅有有效 GitHub 仓库根地址的项目生成详情页：`/projects/<owner>/<repo>/`，英文路径加 `/en` 前缀。所有者和仓库名统一小写，同仓库跨来源、跨日报合并，Issue / Blob / 用户主页不当作仓库。列表标题进入详情页，GitHub 和官网保留外链；其他产品仍直接访问外部地址。
 
 - `web/shared.js`：构建与浏览器共用的语言字典、仓库识别、摘要、列表渲染和筛选 chip 标记。

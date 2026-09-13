@@ -58,6 +58,29 @@ function empty(locale) {
 function cardsEntry(date, total, locale) {
   return `<a class="cards-entry" href="${lp('/cards/', locale)}" data-cards-entry data-date="${e(date)}" data-total="${total}"><span class="cards-entry-icon" aria-hidden="true">${D.icon('box')}</span><span><b>${t(locale, 'cardsTitle')}</b><small>${t(locale, 'cardsIntro')}</small></span><strong data-cards-progress>${t(locale, 'cardsRead', { n: 0, total })}</strong><span class="cards-entry-arrow" aria-hidden="true">→</span></a>`;
 }
+function trendingContinuation(report, locale) {
+  const policy = report?.trendingPolicy;
+  const items = policy?.continuedItems || [];
+  if (!items.length) return '';
+  const en = locale === 'en';
+  const total = policy.suppressedCount || items.length;
+  const rows = items.map(item => {
+    const url = D.safeUrl(item.githubUrl || item.url);
+    const today = Number(item.metrics?.today || 0);
+    const appearances = item.trendingContinuation?.recentAppearances || 1;
+    const meta = [
+      today > 0 ? (en ? `+${D.compact(today, locale)} stars today` : `今日 +${D.compact(today, locale)} stars`) : '',
+      en ? `seen in ${appearances} recent reports` : `近 ${policy.cooldownDays} 期出现 ${appearances} 次`,
+    ].filter(Boolean).join(' · ');
+    const content = `<b>${e(D.displayTitle(item, locale))}</b><small>${e(meta)}</small>`;
+    return `<li>${url ? `<a href="${e(url)}" target="_blank" rel="noopener noreferrer">${content}<span aria-hidden="true">↗</span></a>` : content}</li>`;
+  }).join('');
+  const title = en ? 'Still trending' : '持续热门';
+  const note = en
+    ? `${total} repositories were already featured in the last ${policy.cooldownDays} reports, so they are not repeated in today’s discoveries.`
+    : `${total} 个仓库已在最近 ${policy.cooldownDays} 期日报出现，不再作为今日新发现重复展示。`;
+  return `<details class="trending-continuation"><summary><span>${D.icon('github')}<b>${title}</b></span><small>${en ? `${items.length} highlights` : `${items.length} 个精选`}⌄</small></summary><p>${e(note)}</p><ul>${rows}</ul></details>`;
+}
 function reportPage(report, date, locale, home = false, hasMarkdown = false, cardsDate = date, cardsTotal = D.reportItems(report).length) {
   const items = D.reportItems(report), route = home ? '/' : `/reports/${date}/`;
   const title = home ? t(locale, 'homeTitle') : `${t(locale, 'reportTitle', { date })} | DevTrends`;
@@ -69,7 +92,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
   // showing it on an archived day would report today's progress next to another day's feed.
   const entry = date === cardsDate ? cardsEntry(cardsDate, cardsTotal, locale) : '';
   const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + entry + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
-    `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section></div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
+    `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, locale)}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
   const structured = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: canonical, inLanguage: locale,
     ...(date ? { datePublished: date } : {}), mainEntity: { '@type': 'ItemList', numberOfItems: items.length, itemListElement: items.slice(0, 100).map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: D.displayTitle(item, locale), url: item.projectPath ? D.origin + lp(item.projectPath, locale) : D.safeUrl(item.websiteUrl || item.url) || D.origin })) } };

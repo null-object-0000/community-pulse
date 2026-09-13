@@ -13,9 +13,14 @@
 const fs = require('fs');
 const path = require('path');
 const { loadItems, loadGithubRepositories, attachGithubRepositories } = require('./source_raw_items');
+const { repositoryKey } = require('./github_repo_utils');
 
 const ROOT = __dirname;
 const CONFIG = path.join(ROOT, '..', 'config', 'sources.json');
+const DEFAULT_REPORT_HISTORY_ROOT = path.resolve(ROOT, '..', '..', '..', '..', '知识', '大家都在做什么', 'raw');
+const TRENDING_SOURCES = new Set(['github-trending', 'github-trending-cn']);
+const TRENDING_COOLDOWN_DAYS = 3;
+const TRENDING_CONTINUATION_LIMIT = 3;
 
 function loadConfig() {
   return JSON.parse(fs.readFileSync(CONFIG, 'utf8'));
@@ -49,6 +54,121 @@ function normUrl(u) {
     .replace(/[#?].*$/, '')             // 去查询参数
     .replace(/\/+$/, '')                // 去尾部斜杠
     .toLowerCase();
+}
+
+function shiftDate(date, days) {
+  const value = new Date(`${date}T00:00:00Z`);
+  value.setUTCDate(value.getUTCDate() + days);
+  return value.toISOString().slice(0, 10);
+}
+
+function itemIdentity(item) {
+  const repo = repositoryKey(item.githubUrl || item.github?.url || item.url);
+  if (repo) return `github:${repo}`;
+  return `item:${(item.author || '').toLowerCase()}|${normUrl(item.url)}`;
+}
+
+function recentReports(reportRoot, reportDate, days = TRENDING_COOLDOWN_DAYS) {
+  if (!reportDate) return [];
+  const reports = [];
+  for (let offset = 1; offset <= days; offset += 1) {
+    const file = path.join(reportRoot, `${shiftDate(reportDate, -offset)}.json`);
+    if (!fs.existsSync(file)) continue;
+    reports.push(JSON.parse(fs.readFileSync(file, 'utf8')));
+  }
+  return reports;
+}
+
+function trendingKeys(report) {
+  const keys = new Set();
+  for (const result of report?.results || []) {
+    if (!TRENDING_SOURCES.has(result.sourceId)) continue;
+    for (const item of result.items || []) keys.add(itemIdentity(item));
+  }
+  return keys;
+}
+
+// GitHub's daily Trending page is a rolling window, so a repository commonly
+// stays on the list for several days. Keep the source snapshots untouched and
+// make the published feed novel: suppress projects shown in the last N reports,
+// merge today's global/Chinese overlap by canonical owner/repo, then truncate.
+function applyTrendingPolicy(results, options = {}) {
+  const cooldownDays = options.cooldownDays ?? TRENDING_COOLDOWN_DAYS;
+  const continuationLimit = options.continuationLimit ?? TRENDING_CONTINUATION_LIMIT;
+  const historyReports = options.historyReports || [];
+  const historyKeys = historyReports.map(trendingKeys);
+  const recentlyPublished = new Set(historyKeys.flatMap(keys => [...keys]));
+  const current = new Map();
+  const continued = [];
+  let suppressedCount = 0;
+
+  for (const result of results) {
+    if (!TRENDING_SOURCES.has(result.sourceId)) continue;
+    const fresh = [];
+    let sourceSuppressedCount = 0;
+    for (const item of result.items || []) {
+      const key = itemIdentity(item);
+      const existing = current.get(key);
+      if (existing) {
+        const names = new Set(existing.item.__mergedSources || [existing.sourceName]);
+        names.add(result.sourceName);
+        existing.item.__mergedSources = [...names];
+        existing.item.__mergedCount = names.size;
+        continue;
+      }
+
+      const entry = { item, sourceName: result.sourceName };
+      current.set(key, entry);
+      if (recentlyPublished.has(key)) {
+        const recentAppearances = historyKeys.filter(keys => keys.has(key)).length;
+        item.trendingContinuation = {
+          cooldownDays,
+          recentAppearances,
+        };
+        continued.push(item);
+        suppressedCount += 1;
+        sourceSuppressedCount += 1;
+      } else {
+        fresh.push(item);
+      }
+    }
+
+    const sourceMax = options.maxItemsBySource?.get(result.sourceId) ?? fresh.length;
+    result.items = fresh.slice(0, sourceMax);
+    // A global row below its display cap must not reserve the repository key:
+    // if the same project ranks highly on the Chinese list, that list may still
+    // publish it. Kept rows retain global-list priority.
+    for (const item of fresh.slice(sourceMax)) {
+      const key = itemIdentity(item);
+      if (current.get(key)?.item === item) current.delete(key);
+    }
+    if (result.sourceRaw) {
+      result.sourceRaw.novelItemCount = fresh.length;
+      result.sourceRaw.suppressedRecentCount = sourceSuppressedCount;
+      result.sourceRaw.outputItemCount = result.items.length;
+    }
+  }
+
+  const continuedItems = continued
+    .sort((a, b) => Number(b.metrics?.today || 0) - Number(a.metrics?.today || 0))
+    .slice(0, continuationLimit)
+    // This compact report section does not render logos, screenshots or the
+    // full repository snapshot. Keeping only display fields avoids duplicating
+    // large metadata and leaking unsynchronised image URLs into site JSON.
+    .map(item => ({
+      sourceId: item.sourceId,
+      title: item.title,
+      url: item.url,
+      githubUrl: item.githubUrl,
+      metrics: { today: Number(item.metrics?.today || 0) },
+      trendingContinuation: item.trendingContinuation,
+      ...(item.__mergedSources ? { __mergedSources: item.__mergedSources } : {}),
+    }));
+  return {
+    cooldownDays,
+    suppressedCount,
+    continuedItems,
+  };
 }
 
 // GitHub 仓库信息 → 一行小字 (⭐ 1.2k · 🍴 45 · Python · MIT · 创建于 2024-03 · 3天前更新)
@@ -123,15 +243,16 @@ function fmtK(n) {
   return String(n);
 }
 
-// 去重: 按 作者+URL 分组, 保留创建时间最新; 跨源合并标注来源
+// 去重: GitHub 项目优先按规范化 owner/repo，其余按作者+URL；
+// 保留创建时间最新，并为跨源条目标注全部来源。
 function dedupe(results) {
   // 展平所有条目并分组
-  const groups = new Map(); // key = sourceId|author|normUrl -> items[]
+  const groups = new Map(); // key = sourceId|canonical item identity -> items[]
   const items = [];
   for (const r of results) {
     for (const it of r.items) {
       items.push({ ...it, __source: r.sourceId, __sourceName: r.sourceName });
-      const key = `${r.sourceId}|${(it.author || '').toLowerCase()}|${normUrl(it.url)}`;
+      const key = `${r.sourceId}|${itemIdentity(it)}`;
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(it);
     }
@@ -152,10 +273,10 @@ function dedupe(results) {
     }
   }
 
-  // B: 跨源聚合 (不同 sourceId 同 作者+URL, 保留最新, 标注来源)
-  const crossGroups = new Map(); // key = author|normUrl -> items[]
+  // B: 跨源聚合 (不同 sourceId 的同一项目，保留最新并标注来源)
+  const crossGroups = new Map(); // key = canonical item identity -> items[]
   for (const it of items) {
-    const key = `${(it.author || '').toLowerCase()}|${normUrl(it.url)}`;
+    const key = itemIdentity(it);
     if (!crossGroups.has(key)) crossGroups.set(key, []);
     crossGroups.get(key).push(it);
   }
@@ -204,6 +325,7 @@ async function main() {
   const dateFilter = getArg('--date') || (args.includes('--yesterday') ? yesterdayStr() : null);
   const observedDate = getArg('--observed-date');
   const rawRoot = getArg('--source-raw-root');
+  const reportHistoryRoot = path.resolve(getArg('--report-history-root') || DEFAULT_REPORT_HISTORY_ROOT);
   const summary = args.includes('--summary');
   const markdown = args.includes('--markdown');
   const strict = args.includes('--strict');
@@ -219,7 +341,14 @@ async function main() {
   const results = [];
   for (const src of sources) {
     try {
-      const loaded = loadItems(src, { date: dateFilter, observedDate, rawRoot });
+      // Trending must be filtered for novelty before max_items is applied, or
+      // repeated top rows leave holes while unseen lower-ranked rows are lost.
+      const loaded = loadItems(src, {
+        date: dateFilter,
+        observedDate,
+        rawRoot,
+        maxItems: TRENDING_SOURCES.has(src.id) && dateFilter ? Infinity : undefined,
+      });
       let items = loaded.items;
       if (dateFilter && src.daily_filter !== false) {
         items = items.filter(it => inDate(it.publishedAt, dateFilter));
@@ -253,6 +382,17 @@ async function main() {
     }
   }
 
+  const maxItemsBySource = new Map(sources.map(source => [source.id, source.max_items || Infinity]));
+  const trendingPolicy = dateFilter
+    ? applyTrendingPolicy(results, {
+      historyReports: recentReports(reportHistoryRoot, dateFilter),
+      maxItemsBySource,
+    })
+    : null;
+  if (trendingPolicy) {
+    console.error(`[trending novelty] ${trendingPolicy.suppressedCount} recent repositories suppressed; ${trendingPolicy.continuedItems.length} kept as continuation highlights`);
+  }
+
   // 去重: 源内重复(保留最新) + 跨源聚合(保留最新, 标注来源)
   const deduped = dedupe(results);
   // 替换 results 引用 (后续 markdown/json 输出用 deduped)
@@ -283,6 +423,16 @@ async function main() {
         lines.push('');
       }
     }
+    if (trendingPolicy?.continuedItems.length) {
+      lines.push(`## GitHub Trending·持续热门（${trendingPolicy.continuedItems.length} 条）`, '', `> 这些项目已在最近 ${trendingPolicy.cooldownDays} 期日报出现，本期不重复展开。`, '');
+      for (const it of trendingPolicy.continuedItems) {
+        const today = Number(it.metrics?.today || 0);
+        const metric = today > 0 ? ` · 今日 +${fmtK(today)} stars` : '';
+        const appearances = it.trendingContinuation?.recentAppearances || 1;
+        lines.push(`- [${it.title}](${it.githubUrl || it.url}) · 近 ${trendingPolicy.cooldownDays} 期出现 ${appearances} 次${metric}`);
+      }
+      lines.push('');
+    }
     const text = lines.join('\n');
     if (outFile) {
       fs.writeFileSync(outFile, text);
@@ -293,7 +443,7 @@ async function main() {
     // 一次抓取同时输出 JSON (供存档/回溯/分析)
     if (jsonOut) {
       const generatedAt = new Date().toISOString();
-      const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, results };
+      const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
       fs.writeFileSync(jsonOut, JSON.stringify(out, null, 2));
       console.log(`written to ${jsonOut}`);
     }
@@ -313,7 +463,7 @@ async function main() {
     }
   } else {
     const generatedAt = new Date().toISOString();
-    const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, results };
+    const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
     const text = JSON.stringify(out, null, 2);
     if (outFile) {
       fs.writeFileSync(outFile, text);
@@ -324,4 +474,13 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error('FATAL', e); process.exit(1); });
+if (require.main === module) main().catch(e => { console.error('FATAL', e); process.exit(1); });
+
+module.exports = {
+  applyTrendingPolicy,
+  dedupe,
+  itemIdentity,
+  recentReports,
+  shiftDate,
+  trendingKeys,
+};

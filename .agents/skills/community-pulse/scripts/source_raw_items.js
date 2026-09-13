@@ -602,7 +602,10 @@ function loadItems(src, options = {}) {
     if (!githubUrl) return item;
     return { ...item, githubUrl, github: { ...(item.github || {}), url: githubUrl } };
   });
-  const max = src.max_items || items.length;
+  // Aggregators may need the complete normalized ranking before applying a
+  // cross-day novelty policy. The default remains source-config truncation so
+  // every existing caller keeps its previous behaviour.
+  const max = options.maxItems === Infinity ? items.length : (options.maxItems ?? src.max_items ?? items.length);
   const selected = attachSiteLogos(items.slice(0, max), src.id, loaded.targetDate, options.rawRoot);
   return {
     items: selected,

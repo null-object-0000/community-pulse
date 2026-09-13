@@ -100,6 +100,8 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 - 新版页面无 `repo-stars-counter-star` 语义结构，数字是裸文本序列 `... 语言  <总star>  <forks>  Built by <今日star> stars today`。
 - **解析数字前必须先去掉 HTML tag**（否则 class/aria 里的数字会混入导致错位）。
 - 今日新增 star 是趋势核心指标；本机走代理，Actions runner 直连（GitHub 自家域名）。
+- `daily` 是滚动热度窗口，同一个仓库连续多日出现是源站事实。原始快照始终完整保留；`collect.js` 只在发布层按规范化 `owner/repo` 与过去 3 份已发布 `raw/*.json` 比较，主列表不重复展示冷却期内已发仓库。全球榜与中文榜同日重合时全球榜优先，先对完整榜单排重再执行 `max_items` 截断；未展示的低排名项目以后升榜仍可进入日报。
+- 被冷却的项目不进入日报/今日发现的普通卡片；按 `stars today` 取最多 3 个写进顶层 `trendingPolicy.continuedItems`，Markdown 与网站以折叠的「持续热门」摘要展示。报告历史不足 3 天时只使用实际存在的历史文件，来源层不受影响。
 
 ## GitHub 开源项目信息补全（已移出主链路）
 

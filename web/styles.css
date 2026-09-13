@@ -439,6 +439,23 @@ body[data-view="cards"] { visibility: hidden; }
 
 /* Product screenshots belong to project detail pages; the discovery feed stays one dense text row. */
 .item-gallery { display: none; align-items: center; gap: 5px; margin-top: 8px; }
+
+/* Repositories that remain on GitHub Trending are useful context, but not new discoveries. Keep
+   three compact highlights collapsed below the feed instead of repeating full project cards. */
+.trending-continuation { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.trending-continuation summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 16px; cursor: pointer; list-style: none; }
+.trending-continuation summary::-webkit-details-marker { display: none; }
+.trending-continuation summary > span { display: inline-flex; align-items: center; gap: 8px; }
+.trending-continuation summary svg { width: 18px; height: 18px; color: var(--muted); }
+.trending-continuation summary small, .trending-continuation > p, .trending-continuation li small { color: var(--muted); }
+.trending-continuation[open] summary small { transform: rotate(180deg); }
+.trending-continuation > p { margin: 0; padding: 0 16px 10px; font-size: .8125rem; }
+.trending-continuation ul { margin: 0; padding: 0 16px 12px; list-style: none; }
+.trending-continuation li + li { border-top: 1px solid var(--line); }
+.trending-continuation li a, .trending-continuation li:not(:has(a)) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 12px; padding: 9px 0; }
+.trending-continuation li b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trending-continuation li small { grid-column: 1; font-size: .75rem; }
+.trending-continuation li a > span { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--muted); }
 .panel .item-gallery { display: flex; }
 .gallery-thumb { flex: 0 0 auto; width: 54px; height: 34px; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--subtle); }
 .gallery-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
