@@ -124,7 +124,8 @@ test('the product logo wins the avatar and project screenshots render as a manag
   // The avatar chain is logo -> icon -> website logo -> initials; a screenshot never fills it.
   assert.ok(D.renderItem({ title: 'Icon', icon: local2, siteLogo: local }, 'en').includes(`<img src="${local2}" class="is-logo"`));
   assert.ok(D.renderItem({ title: 'Website', siteLogo: local2, image: local }, 'en').includes(`<img src="${local2}" class="is-logo"`));
-  assert.ok(!D.renderItem({ title: 'Shot only', image: local }, 'en').includes('<img'));
+  // The avatar itself never borrows a screenshot; the screenshot only reaches the gallery strip.
+  assert.match(D.renderItem({ title: 'Shot only', image: local }, 'en'), /class="item-avatar avatar-\d" aria-hidden="true">Sh</);
   assert.ok(gallery.includes('class="item-gallery"'), 'gallery strip');
   assert.ok(gallery.includes(`data-gallery="[&quot;${local2}&quot;,&quot;${local}&quot;]"`), 'unsafe screenshot dropped');
   assert.ok(!gallery.includes(remote));
@@ -132,17 +133,22 @@ test('the product logo wins the avatar and project screenshots render as a manag
   // A single screenshot needs no "+n" overflow tile; four do.
   assert.ok(!D.galleryHtml([local], 'en').includes('gallery-more'));
   assert.ok(D.galleryHtml([local, local2, local, local2], 'en').includes('gallery-more'));
-  // Sources without screenshots keep the plain avatar and gain no gallery.
-  assert.ok(!D.renderItem({ title: 'Plain', image: local2 }, 'en').includes('item-gallery'));
-  assert.ok(D.renderItem({ title: 'Plain', image: local2 }, 'en').includes('Pl'));
+  // A row carrying a picture shows its gallery strip; one carrying none keeps the plain avatar and
+  // adds no empty strip (so the dense feed keeps its height).
+  assert.ok(D.renderItem({ title: 'Plain', image: local2 }, 'en').includes('item-gallery'));
+  assert.ok(!D.renderItem({ title: 'Plain' }, 'en').includes('item-gallery'));
+  assert.ok(D.renderItem({ title: 'Plain' }, 'en').includes('Pl'));
 });
 
-test('screenshots stay off the dense feed and remain available to project detail pages', () => {
+test('the gallery renders on the row itself, and only when the row has a picture', () => {
   const css = fs.readFileSync(path.join(__dirname, '..', 'web', 'styles.css'), 'utf8');
-  assert.match(css, /\.item-gallery \{[^}]*display: none/);
+  // A GitHub-less row has no detail page, so the feed row is the only place its pictures can show.
+  assert.match(css, /\.item-gallery \{[^}]*display: flex/);
   assert.match(css, /\.panel \.item-gallery \{ display: flex; \}/);
   assert.doesNotMatch(css, /card-view/);
-  assert.ok(!D.renderItem({ title: 'Example', images: [local, local2] }, 'en').includes('item-gallery'));
+  // Rows with no picture render no strip at all, so the dense feed keeps its height.
+  assert.ok(!D.renderItem({ title: 'Example' }, 'en').includes('item-gallery'));
+  assert.ok(D.renderItem({ title: 'Example', images: [local, local2] }, 'en').includes('item-gallery'));
   assert.ok(D.galleryHtml([local, local2], 'en').includes('item-gallery'));
 });
 
