@@ -9,6 +9,7 @@ const MODEL = process.env.COMMUNITY_PULSE_LLM_MODEL || 'flowlet-flash';
 const KEY = process.env.COMMUNITY_PULSE_LLM_KEY || process.env.HERMES_CUSTOM_127_0_0_1_18640_API_KEY || '';
 const MAX_ZH_LEN = 100;
 const MAX_EN_LEN = 240;
+const PROMPT_VERSION = 'enhance-localize-v3';
 // flowlet-pro 是推理模型：reasoning_content 与正文共享 max_tokens 预算。
 // 预算过小时思考会吃满额度，导致 content 为空、finish_reason=length。
 const MAX_TOKENS = parseInt(process.env.COMMUNITY_PULSE_LLM_MAX_TOKENS || '32000', 10);
@@ -55,7 +56,21 @@ function clampEnglish(value) {
   return clamp(value, MAX_EN_LEN, ['.', '!', '?', ';']);
 }
 
-async function callLlm(prompt) {
+function retryAfterMs(value, now = Date.now()) {
+  if (!value) return 0;
+  const seconds = Number(value);
+  if (Number.isFinite(seconds)) return Math.max(0, seconds * 1000);
+  const date = Date.parse(value);
+  return Number.isFinite(date) ? Math.max(0, date - now) : 0;
+}
+
+function rateLimitDelayMs(attempt, retryAfter = 0, random = Math.random) {
+  const exponential = Math.min(30_000, 750 * (2 ** Math.max(0, attempt - 1)));
+  return Math.max(retryAfter, exponential) + Math.floor(random() * 750);
+}
+
+async function callLlm(prompt, options = {}) {
+  options.onRequest?.();
   const res = await fetch(`${BASE}/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${KEY}` },
@@ -68,7 +83,12 @@ async function callLlm(prompt) {
       max_tokens: MAX_TOKENS,
     }),
   });
-  if (!res.ok) throw new Error(`LLM HTTP ${res.status}`);
+  if (!res.ok) {
+    const error = new Error(`LLM HTTP ${res.status}`);
+    error.status = res.status;
+    error.retryAfterMs = retryAfterMs(res.headers.get('retry-after'));
+    throw error;
+  }
   const data = await res.json();
   const content = String(data.choices?.[0]?.message?.content || '').trim();
   if (!content) throw new Error('返回空');
@@ -125,7 +145,7 @@ function validateLocalization(value, item) {
   };
 }
 
-async function localize(item) {
+async function localize(item, options = {}) {
   const productHunt = /^Product Hunt\b/i.test(item.section || '');
   const sourceNote = productHunt
     ? '这段简介优先来自 Product Hunt 产品主页。概括产品本身，不要把某次发布更新误当成整体定位。'
@@ -164,7 +184,7 @@ useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二�
   let lastError;
   for (let attempt = 1; attempt <= 5; attempt += 1) {
     try {
-      const translated = parseJsonResponse(await callLlm(prompt));
+      const translated = parseJsonResponse(await callLlm(prompt, options));
       return validateLocalization({
         titleEn: needsEnglishTitle ? translated.titleEn : item.title,
         summaryZh: translated.summaryZh,
@@ -175,6 +195,10 @@ useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二�
     } catch (error) {
       lastError = error;
       console.error(`  ${item.title.slice(0, 30)} 尝试${attempt}: ${error.message}`);
+      if (error.status === 429 && attempt < 5) {
+        const delay = rateLimitDelayMs(attempt, error.retryAfterMs, options.random);
+        await (options.sleep || (ms => new Promise(resolve => setTimeout(resolve, ms))))(delay);
+      }
     }
   }
   throw new Error(`${item.title}: 双语增强失败（${lastError?.message || '未知错误'}）`);
@@ -319,4 +343,7 @@ module.exports = {
   decodeMetadataComment,
   cachedLocalizations,
   renderLocalizedMarkdown,
+  PROMPT_VERSION,
+  retryAfterMs,
+  rateLimitDelayMs,
 };
