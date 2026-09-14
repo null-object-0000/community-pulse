@@ -387,6 +387,103 @@
   if (trendFacets) {
     const allowedFacets = ['useCases', 'agentRoles', 'languages'];
     let activeFacet = allowedFacets.includes(params.get('facet')) ? params.get('facet') : 'useCases';
+    const sourceFilter = document.querySelector('[data-trend-source-filter]');
+    const sourceOptions = sourceFilter?.querySelector('[data-source-options]');
+    const sourceStatus = sourceFilter?.querySelector('[data-source-status]');
+    let catalogSources = [];
+    let selectedSources = new Set();
+    let trendRequest = 0;
+    let trendRefreshTimer = 0;
+
+    const number = value => new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN').format(value);
+    const percent = value => new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN', {
+      style: 'percent', maximumFractionDigits: 1,
+    }).format(value);
+    function catalogCard(row) {
+      const label = locale === 'en' ? row.labelEn : row.labelZh;
+      const parentLabel = row.parentId ? D.facetLabel(activeFacet, row.parentId, locale) : '';
+      const parent = parentLabel ? (locale === 'en' ? `SUBTOPIC · ${parentLabel}` : `子主题 · ${parentLabel}`) : '';
+      const change = row.isNew
+        ? `<strong class="trend-change is-new">${locale === 'en' ? 'NEW' : '新出现'}</strong>`
+        : `<strong class="trend-change${row.growth < 0 ? ' is-down' : ''}">${row.growth >= 0 ? '+' : ''}${percent(row.growth)}</strong>`;
+      return `<article class="trend-card${row.parentId ? ' is-subtopic' : ''}" data-catalog-trend-id="${D.escapeHtml(row.id)}"><header><div><span class="trend-kind">${D.escapeHtml(parent || (locale === 'en' ? 'FULL CATALOG' : '全量产品库'))}</span><h2>${D.escapeHtml(label)}</h2></div>${change}</header><div class="trend-metrics"><b>${locale === 'en' ? `${number(row.currentCount)} products` : `${number(row.currentCount)} 个产品`}</b><span>${locale === 'en' ? 'Share' : '占比'} ${percent(row.share)}</span><span>${locale === 'en' ? 'Previous' : '上一周期'} ${number(row.previousCount)}</span></div></article>`;
+    }
+    function updateSourceUrl() {
+      const url = new URL(location.href);
+      const selected = [...selectedSources].sort();
+      if (selected.length === catalogSources.length) url.searchParams.delete('sources');
+      else url.searchParams.set('sources', selected.join(','));
+      history.replaceState(null, '', url);
+    }
+    async function refreshCatalogTrends() {
+      if (!catalogSources.length || !selectedSources.size) {
+        if (sourceStatus) sourceStatus.textContent = locale === 'en' ? 'Choose at least one source.' : '请至少选择一个数据源。';
+        const panel = document.querySelector(`[data-trend-facet-panel="${activeFacet}"]`);
+        if (panel) panel.innerHTML = `<p class="trend-empty">${locale === 'en' ? 'Choose at least one source to calculate trends.' : '请选择至少一个数据源后再计算趋势。'}</p>`;
+        return;
+      }
+      const requestId = ++trendRequest;
+      const panel = document.querySelector(`[data-trend-facet-panel="${activeFacet}"]`);
+      panel?.setAttribute('aria-busy', 'true');
+      const query = new URLSearchParams({ facet: activeFacet, sources: [...selectedSources].sort().join(',') });
+      try {
+        const response = await fetch(`/api/v1/trends?${query}`, { headers: { accept: 'application/json' } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        if (requestId !== trendRequest) return;
+        const rows = data.results.filter(row => row.currentCount > 0);
+        if (panel) panel.innerHTML = rows.length
+          ? rows.map(catalogCard).join('')
+          : `<p class="trend-empty">${locale === 'en' ? 'No matching products in this period.' : '当前周期没有符合条件的产品。'}</p>`;
+        const currentWindow = document.querySelector('[data-trend-current-window]');
+        const baselineWindow = document.querySelector('[data-trend-baseline-window]');
+        const coverage = document.querySelector('[data-trend-coverage]');
+        if (currentWindow) currentWindow.textContent = `${D.dateLabel(data.filters.from, locale)} – ${D.dateLabel(data.filters.to, locale)}`;
+        if (baselineWindow) baselineWindow.textContent = `${D.dateLabel(data.filters.comparison.from, locale)} – ${D.dateLabel(data.filters.comparison.to, locale)}`;
+        if (coverage) coverage.textContent = locale === 'en'
+          ? `${number(data.coverage.uniqueProducts)} unique products · ${number(data.coverage.classifiedProducts)} classified · ${percent(data.coverage.classificationRate)} coverage. First-seen dates are recomputed within the selected sources.`
+          : `${number(data.coverage.uniqueProducts)} 个去重产品 · ${number(data.coverage.classifiedProducts)} 个已有分类 · 分类覆盖率 ${percent(data.coverage.classificationRate)}。首次发现日期按当前所选来源重新计算。`;
+        if (sourceStatus) sourceStatus.textContent = locale === 'en'
+          ? `${selectedSources.size} of ${catalogSources.length} sources participate in this result.`
+          : `${catalogSources.length} 个来源中有 ${selectedSources.size} 个参与本次计算。`;
+        const period = document.querySelector('.trend-period');
+        if (period) period.hidden = true;
+      } catch (_) {
+        if (requestId === trendRequest && sourceStatus) sourceStatus.textContent = locale === 'en'
+          ? 'The full-catalog query is temporarily unavailable; showing the static fallback.'
+          : '全量产品库查询暂时不可用，当前保留静态兜底结果。';
+      } finally {
+        if (requestId === trendRequest) panel?.removeAttribute('aria-busy');
+      }
+    }
+    function scheduleCatalogTrends() {
+      clearTimeout(trendRefreshTimer);
+      trendRefreshTimer = setTimeout(refreshCatalogTrends, 220);
+    }
+    function paintSourceOptions() {
+      if (!sourceOptions) return;
+      sourceOptions.innerHTML = catalogSources.map(source => `<label title="${D.escapeHtml(`${source.name} · ${number(source.productCount)} ${locale === 'en' ? 'products' : '个产品'}`)}"><input type="checkbox" value="${D.escapeHtml(source.id)}"${selectedSources.has(source.id) ? ' checked' : ''}/><span>${D.escapeHtml(source.name)}</span></label>`).join('');
+    }
+    async function loadCatalogSources() {
+      if (!sourceFilter) return;
+      try {
+        const response = await fetch('/api/v1/sources', { headers: { accept: 'application/json' } });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!Array.isArray(data.sources) || !data.sources.length) return;
+        catalogSources = data.sources;
+        const requested = new Set((params.get('sources') || '').split(',').filter(Boolean));
+        selectedSources = requested.size
+          ? new Set(catalogSources.map(source => source.id).filter(id => requested.has(id)))
+          : new Set(catalogSources.map(source => source.id));
+        if (!selectedSources.size) selectedSources = new Set(catalogSources.map(source => source.id));
+        paintSourceOptions();
+        sourceFilter.hidden = false;
+        await refreshCatalogTrends();
+      } catch (_) {
+        // Static report-derived trends remain visible when the database is unavailable.
+      }
+    }
     function paintTrendFacet(updateUrl = true) {
       trendFacets.querySelectorAll('[data-trend-facet]').forEach(button => {
         const active = button.dataset.trendFacet === activeFacet;
@@ -403,8 +500,25 @@
       if (!button) return;
       activeFacet = button.dataset.trendFacet;
       paintTrendFacet();
+      scheduleCatalogTrends();
     });
     paintTrendFacet(Boolean(params.has('facet')));
+    sourceOptions?.addEventListener('change', event => {
+      const input = event.target.closest('input[type="checkbox"]');
+      if (!input) return;
+      input.checked ? selectedSources.add(input.value) : selectedSources.delete(input.value);
+      updateSourceUrl();
+      scheduleCatalogTrends();
+    });
+    sourceFilter?.querySelector('[data-source-all]')?.addEventListener('click', () => {
+      selectedSources = new Set(catalogSources.map(source => source.id));
+      paintSourceOptions(); updateSourceUrl(); scheduleCatalogTrends();
+    });
+    sourceFilter?.querySelector('[data-source-none]')?.addEventListener('click', () => {
+      selectedSources.clear();
+      paintSourceOptions(); updateSourceUrl(); scheduleCatalogTrends();
+    });
+    loadCatalogSources();
   }
   // ---- trend horizon: keep one 12-week series in the static page and reveal the requested tail ----
   const trendPeriod = document.querySelector('.trend-period');

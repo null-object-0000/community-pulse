@@ -1,3 +1,5 @@
+import { handleCatalogApi } from './catalog-api.mjs';
+
 // 站长平台的归属验证文件（仓库根的 verification/ 目录，构建时复制到站点根）。
 //
 // Cloudflare 静态资源的默认 html_handling（auto-trailing-slash）会把 /x.html **307** 到 /x，
@@ -10,6 +12,7 @@ const VERIFICATION_FILE = /^\/(baidu_verify_[A-Za-z0-9._-]+)\.html$/;
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname.startsWith('/api/v1/')) return handleCatalogApi(request, env);
     const match = url.pathname.match(VERIFICATION_FILE);
     if (!match) return env.ASSETS.fetch(request);
     // html_handling 会把无扩展名的同名路径映射回这个 .html 文件，那一侧是正常的 200。

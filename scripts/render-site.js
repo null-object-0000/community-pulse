@@ -273,6 +273,14 @@ function trendsPage(model, locale) {
   ];
   const facetTabs = facets.map(([id, key], index) => `<button type="button" role="tab" id="trend-tab-${id}" aria-controls="trend-panel-${id}" aria-selected="${index === 0}" data-trend-facet="${id}">${t(locale, key)}</button>`).join('');
   const facetPicker = `<div class="trend-facets"><span>${t(locale, 'trendsDimension')}</span><div role="tablist" aria-label="${t(locale, 'trendsDimension')}">${facetTabs}</div></div>`;
+  // The source list itself comes from D1 so newly registered sources appear without
+  // changing this template. Keep the control hidden until the API is available: the
+  // static report-derived model remains a readable fallback during migration or outage.
+  const sourcePicker = `<section class="trend-source-picker" data-trend-source-filter data-locale="${locale}" hidden>
+    <header><div><span>${en ? 'DATA SOURCES' : '数据来源'}</span><b>${en ? 'Choose any source combination' : '自由选择参与计算的数据源'}</b></div><div><button type="button" data-source-all>${en ? 'Select all' : '全选'}</button><button type="button" data-source-none>${en ? 'Clear' : '清空'}</button></div></header>
+    <div class="trend-source-options" data-source-options></div>
+    <p data-source-status aria-live="polite"></p>
+  </section>`;
   const grids = facets.map(([id]) => {
     const cards = model.clusters.filter(cluster => cluster.type === id).map(card).join('');
     // A lens whose source data does not cover the comparison window states that instead of showing
@@ -288,11 +296,11 @@ function trendsPage(model, locale) {
     const body = notice || cards || `<p class="trend-empty">${t(locale, 'trendsEmpty')}</p>`;
     return `<section class="trend-grid" id="trend-panel-${id}" role="tabpanel" aria-labelledby="trend-tab-${id}" data-trend-facet-panel="${id}"${id === 'useCases' ? '' : ' hidden'}>${body}</section>`;
   }).join('');
-  const summary = `<div class="trend-window"><div><span>${t(locale, 'trendsWindow')}</span><b>${e(dateRange(model.recent))}</b></div><div><span>${t(locale, 'trendsBaseline')}</span><b>${e(dateRange(model.baseline))}</b></div><p>${en ? `A cluster appears after at least ${model.thresholds.minProjects} new projects from ${model.thresholds.minSources} sources, with a daily rate up ${model.thresholds.minGrowthPercent}% or newly emerging.` : `至少 ${model.thresholds.minProjects} 个新项目、覆盖 ${model.thresholds.minSources} 个来源，且日均出现速度提升 ${model.thresholds.minGrowthPercent}%（或为新主题）后才展示。`}</p></div>`;
+  const summary = `<div class="trend-window"><div><span>${t(locale, 'trendsWindow')}</span><b data-trend-current-window>${e(dateRange(model.recent))}</b></div><div><span>${t(locale, 'trendsBaseline')}</span><b data-trend-baseline-window>${e(dateRange(model.baseline))}</b></div><p data-trend-coverage>${en ? `A cluster appears after at least ${model.thresholds.minProjects} new projects from ${model.thresholds.minSources} sources, with a daily rate up ${model.thresholds.minGrowthPercent}% or newly emerging.` : `至少 ${model.thresholds.minProjects} 个新项目、覆盖 ${model.thresholds.minSources} 个来源，且日均出现速度提升 ${model.thresholds.minGrowthPercent}%（或为新主题）后才展示。`}</p></div>`;
   const periods = [4, 8, 12].map(weeks => `<button type="button" data-trend-weeks="${weeks}" aria-pressed="${weeks === 12}">${t(locale, `trends${weeks}Weeks`)}</button>`).join('');
   const periodPicker = `<div class="trend-period"><span>${t(locale, 'trendsPeriod')}</span><div role="group" aria-label="${t(locale, 'trendsPeriod')}">${periods}</div></div>`;
   const controls = `<div class="trend-controls">${facetPicker}${periodPicker}</div>`;
-  const content = heading(locale, t(locale, 'trendsTitle'), t(locale, 'trendsIntro'), '', 'DEV TRENDS / SIGNALS') + controls + summary + grids;
+  const content = heading(locale, t(locale, 'trendsTitle'), t(locale, 'trendsIntro'), '', 'DEV TRENDS / SIGNALS') + sourcePicker + controls + summary + grids;
   const structured = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'CollectionPage', '@id': canonical, url: canonical, name: title, description: t(locale, 'trendsIntro'), inLanguage: locale, isPartOf: { '@id': D.origin + '/#website' }, mainEntity: { '@type': 'ItemList', numberOfItems: model.clusters.length, itemListElement: model.clusters.map((cluster, index) => ({ '@type': 'ListItem', position: index + 1, name: D.facetPathLabel(cluster.type, cluster.id, locale) })) } },
   ] };

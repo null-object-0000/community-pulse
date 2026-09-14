@@ -420,7 +420,7 @@ function trendingItems(document, src) {
   return items;
 }
 
-function productHuntItems(document, src) {
+function productHuntItems(document, src, options = {}) {
   const featured = document.officialFeatured;
   if (!featured || featured.complete !== true || !Array.isArray(featured.records)) {
     throw new Error(`${src.id}: complete officialFeatured records are missing`);
@@ -447,7 +447,17 @@ function productHuntItems(document, src) {
   const resolvedLinks = new Map((document.linkResolution?.links || [])
     .filter((link) => link.ok && link.resolvedUrl)
     .map((link) => [link.originalUrl, link.resolvedUrl]));
-  return featured.records.map((product) => {
+  // The published daily report intentionally consumes Product Hunt's official
+  // featured subset. The product catalog needs the complete daily ledger. Keep
+  // both views in this one converter so parsing, URL resolution and identity
+  // discovery cannot drift between the report and catalog pipelines.
+  const featuredById = new Map(featured.records.map((product) => [String(product.id), product]));
+  const records = options.productHuntView === 'all'
+    ? (Array.isArray(document.records) ? document.records : [])
+    : featured.records;
+  return records.map((rawProduct) => {
+    const featuredProduct = featuredById.get(String(rawProduct.id));
+    const product = featuredProduct ? { ...rawProduct, ...featuredProduct } : rawProduct;
     const productOverview = productPages.get(String(product.id));
     const productLinks = (Array.isArray(product.productLinks) ? product.productLinks : [])
       .map((link) => ({ ...link, url: resolvedLinks.get(link.url) || link.url }));
@@ -481,7 +491,7 @@ function productHuntItems(document, src) {
       tagline: product.tagline || '',
       content: product.description || product.tagline || overview || '',
       metrics: { votes: product.votesCount || 0, comments: product.commentsCount || 0 },
-      tags: ['producthunt', 'new', 'official-featured'],
+      tags: ['producthunt', 'new', ...(featuredProduct ? ['official-featured'] : [])],
       externalId: String(product.id),
       image: screenshots[0] || logo,
       logo,
@@ -834,7 +844,7 @@ function loadItems(src, options = {}) {
   const converter = CONVERTERS[src.id];
   if (!converter) throw new Error(`no source-raw converter registered for ${src.id}`);
   const loaded = loadDocument(src, options);
-  const items = converter(loaded.document, src).map((item) => {
+  const items = converter(loaded.document, src, options).map((item) => {
     const githubUrl = normalizeGitHubRepoUrl(item.githubUrl) || discoverItemRepository(item);
     if (!githubUrl) return item;
     return { ...item, githubUrl, github: { ...(item.github || {}), url: githubUrl } };
