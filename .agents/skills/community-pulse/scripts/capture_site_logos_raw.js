@@ -35,8 +35,8 @@ const os = require('os');
 const path = require('path');
 const { execFile } = require('child_process');
 const { promisify } = require('util');
-const { loadItems, loadGithubRepositories, attachRepositoryFacts, OBSERVED_SOURCES } = require('./source_raw_items');
-const { candidatePage, parseIconCandidates, pickIcon, faviconUrl, imageKind } = require('./site_logo');
+const { loadItems, loadGithubRepositories, attachRepositoryFacts, OBSERVED_SOURCES, sourceDescriptionLength, meetsDescriptionFloor, DESCRIPTION_MIN_LENGTH } = require('./source_raw_items');
+const { candidatePage, parseIconCandidates, parsePageDescription, parseOgImage, pickIcon, faviconUrl, imageKind } = require('./site_logo');
 
 const run = promisify(execFile);
 const SOURCE_ID = 'site-logos';
@@ -167,7 +167,12 @@ function collectCandidates(args, sources) {
       }
       const fileDate = observedSource ? observedDate : date;
       for (const item of attachRepositoryFacts(loaded.items, repositories)) {
-        if (item.logo || item.icon) continue;
+        // 一行有两种理由需要抓官网 HTML：缺产品标志（拿图标）、缺产品描述（拿 <meta description>）。
+        // 已有 logo 但描述过短的行不能整行跳过，否则第三级描述永远拿不到。
+        const needsIcon = !(item.logo || item.icon);
+        const needsDescription = sourceDescriptionLength(item) < DESCRIPTION_MIN_LENGTH
+          && !meetsDescriptionFloor(item.github && item.github.description);
+        if (!needsIcon && !needsDescription) continue;
         const pageUrl = candidatePage(item);
         if (!pageUrl) continue;
         const key = `${source.id}\u0000${item.externalId || pageUrl}`;
@@ -180,6 +185,8 @@ function collectCandidates(args, sources) {
           title: String(item.title || ''),
           reportDate: date,
           pageUrl,
+          needsIcon,
+          needsDescription,
         });
       }
     }
@@ -250,6 +257,20 @@ async function fetchPageHtml(pageUrl, workingDir) {
   return { ...response, text: response.body ? response.body.toString('utf8') : '' };
 }
 
+// The og:image is downloaded only to hash it: the byte size decides nothing, but the dHash is what
+// lets the browser drop an og:image that is literally the product's own logo. A failure here is not
+// fatal — the gallery simply shows the source's own media and our screenshot.
+async function fetchMarkHashes(ogUrl, workingDir, io) {
+  if (!ogUrl) return null;
+  try {
+    const download = await io.fetchIconBytes(ogUrl, workingDir);
+    if (!download.body || !download.kind) return null;
+    return { url: ogUrl, sha256: crypto.createHash('sha256').update(download.body).digest('hex'), bytes: download.body };
+  } catch (_) {
+    return null;
+  }
+}
+
 async function fetchIconBytes(iconUrl, workingDir) {
   const response = await curlToFile(iconUrl, {
     accept: 'image/avif,image/webp,image/svg+xml,image/*,*/*;q=0.8',
@@ -270,7 +291,17 @@ async function fetchIconBytes(iconUrl, workingDir) {
 // `io` is injectable so the fall-through rules can be tested without the network.
 async function resolvePage(pageUrl, workingDir, iconCache, io = { fetchPageHtml, fetchIconBytes }) {
   const html = await io.fetchPageHtml(pageUrl, workingDir);
+  const description = html.text ? parsePageDescription(html.text) : '';
   const declared = html.text ? parseIconCandidates(html.text, pageUrl) : [];
+  // The og:image comes out of the SAME response the icons do — one page request per URL, as before.
+  // Only its hash is needed (to drop an og:image that is really the product logo), but the bytes
+  // have to be downloaded once to compute it.
+  const ogImageUrl = html.text ? parseOgImage(html.text, pageUrl) : '';
+  let ogImage = null;
+  if (ogImageUrl) {
+    const hashes = await fetchMarkHashes(ogImageUrl, workingDir, io);
+    if (hashes) ogImage = { url: hashes.url, sha256: hashes.sha256 };
+  }
   const order = declared.slice(0, MAX_DECLARED_ATTEMPTS);
   const fallback = faviconUrl(pageUrl);
   if (fallback && !order.some((candidate) => candidate.url === fallback)) {
@@ -278,7 +309,7 @@ async function resolvePage(pageUrl, workingDir, iconCache, io = { fetchPageHtml,
   }
   if (!order.length) {
     const error = html.error || 'no icon declared and no favicon URL could be derived';
-    return { pageUrl, status: 'failed', declaredIconCount: declared.length, attempts: [], iconUrl: '', iconKind: '', contentType: '', byteLength: 0, contentSha256: '', error };
+    return { pageUrl, description, ogImage, status: 'failed', declaredIconCount: declared.length, attempts: [], iconUrl: '', iconKind: '', contentType: '', byteLength: 0, contentSha256: '', error };
   }
   const attempts = [];
   let oversized = 0;
@@ -311,6 +342,8 @@ async function resolvePage(pageUrl, workingDir, iconCache, io = { fetchPageHtml,
     if (download.kind && !overBudget) {
       return {
         pageUrl,
+        description,
+        ogImage,
         status: 'ok',
         declaredIconCount: declared.length,
         attempts,
@@ -330,6 +363,8 @@ async function resolvePage(pageUrl, workingDir, iconCache, io = { fetchPageHtml,
     : `no usable icon among ${order.length} candidate(s)`;
   return {
     pageUrl,
+    description,
+    ogImage,
     status,
     declaredIconCount: declared.length,
     attempts,
@@ -451,6 +486,8 @@ async function main() {
           title: candidate.title,
           reportDate: candidate.reportDate,
           pageUrl: candidate.pageUrl,
+          description: page.description || '',
+          ogImage: page.ogImage || null,
           status: page.status,
           iconUrl: page.iconUrl,
           iconKind: page.iconKind,

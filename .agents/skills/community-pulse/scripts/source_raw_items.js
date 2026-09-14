@@ -578,6 +578,43 @@ function loadSiteLogos(date, rawRoot) {
   return { byExternalId, byPage };
 }
 
+// Same day file, second view: the `og:image` and the dedup hashes of the mark. `og:image` is a
+// gallery candidate, not a mark — see attachSiteOgImages.
+function loadSiteOgImages(date, rawRoot) {
+  if (!date) return null;
+  const file = path.join(path.resolve(rawRoot || DEFAULT_ROOT), 'site-logos', `${date}.json`);
+  if (!fs.existsSync(file)) return null;
+  let document;
+  try { document = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { return null; }
+  if (document.schemaVersion !== 1 || document.sourceId !== 'site-logos') return null;
+  const byExternalId = new Map();
+  const byPage = new Map();
+  for (const record of document.records || []) {
+    const og = record.ogImage;
+    if (!og || typeof og.url !== 'string' || !og.url) continue;
+    const entry = { url: og.url, sha256: og.sha256 || '', dhash: typeof og.dhash === 'number' ? og.dhash : null };
+    byExternalId.set(`${record.sourceId}\u0000${record.externalId}`, entry);
+    if (record.pageUrl) byPage.set(`${record.sourceId}\u0000${record.pageUrl}`, entry);
+  }
+  if (!byExternalId.size && !byPage.size) return null;
+  return { byExternalId, byPage };
+}
+
+// The mark's own dedup hash travels beside the row so the browser can drop an OG image that is
+// literally the product logo. Kept out of the item's own fields: it is render metadata.
+function attachMarkImage(items, sourceId, date, rawRoot) {
+  const index = loadSiteOgImages(date, rawRoot);
+  if (!index) return items;
+  return items.map((item) => {
+    if (item.markImage) return item;
+    const page = candidatePage(item);
+    const record = index.byExternalId.get(`${sourceId}\u0000${item.externalId}`)
+      || (page ? index.byPage.get(`${sourceId}\u0000${page}`) : null);
+    if (!record || record.dhash === null) return item;
+    return { ...item, markImage: { sha256: record.sha256 || '', dhash: record.dhash } };
+  });
+}
+
 // A row with its own product mark never borrows the website's: this only fills rows that would
 // otherwise render as initials. An interrupted (incomplete) day file still contributes what it has;
 // validate_site_logos_raw.js is what guards the layer in production.
@@ -590,6 +627,156 @@ function attachSiteLogos(items, sourceId, date, rawRoot) {
     const siteLogo = index.byExternalId.get(`${sourceId}\u0000${item.externalId}`)
       || (page ? index.byPage.get(`${sourceId}\u0000${page}`) : '');
     return siteLogo ? { ...item, siteLogo } : item;
+  });
+}
+
+// The same day file also carries the page's `og:image`, which is a *gallery* candidate rather than
+// a mark: it is far too wide to identify a product at 48px, so it must never reach the avatar. It
+// is attached on its own field (`ogImage`) and the browser decides whether to show it after the
+// source's own media and our own screenshot.
+function attachSiteOgImages(items, sourceId, date, rawRoot) {
+  const index = loadSiteOgImages(date, rawRoot);
+  if (!index) return items;
+  return items.map((item) => {
+    if (item.ogImage) return item;
+    const page = candidatePage(item);
+    const og = index.byExternalId.get(`${sourceId}\u0000${item.externalId}`)
+      || (page ? index.byPage.get(`${sourceId}\u0000${page}`) : null);
+    return og ? { ...item, ogImage: og } : item;
+  });
+}
+
+const SOURCE_ID_SCREENSHOTS = 'screenshots';
+// 官网首屏截图层：独立目录，一天一个日文件，图片字节按内容寻址存在同级的 -files 目录。
+// 上传 R2 后这里存的是镜像路径，与其它图片走同一条 localImage 通道。
+function loadScreenshots(date, sourceRawRoot) {
+  if (!date) return null;
+  const root = path.resolve(sourceRawRoot || DEFAULT_ROOT);
+  const file = path.join(root, 'screenshots', `${date}.json`);
+  if (!fs.existsSync(file)) return null;
+  let document;
+  try { document = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { return null; }
+  if (document.schemaVersion !== 1 || document.sourceId !== 'screenshots') return null;
+  const byKey = new Map();
+  for (const record of document.records || []) {
+    if (record.status !== 'ok' || !record.screenshot) continue;
+    const name = `${record.screenshot.thumbSha256}.${record.screenshot.extension}`;
+    const entry = {
+      name,
+      // `screenshots-files/<name>` is turned into a mirror path by image-store.js; until then the
+      // browser drops it, so a missing mirror degrades the row instead of breaking the build.
+      source: `${SOURCE_ID_SCREENSHOTS}-files/${name}`,
+      sha256: record.screenshot.thumbSha256,
+      width: record.screenshot.width || 0,
+    };
+    byKey.set(`${record.sourceId}\u0000${record.externalId}`, entry);
+    byKey.set(`${record.sourceId}\u0000${record.pageUrl}`, entry);
+  }
+  if (!byKey.size) return null;
+  return { byKey };
+}
+
+function attachScreenshots(items, screenshots) {
+  if (!screenshots) return items;
+  return items.map((item) => {
+    if (Array.isArray(item.screenshots) && item.screenshots.length) return item;
+    const page = candidatePage(item);
+    const entry = screenshots.byKey.get(`${item.sourceId}\u0000${item.externalId}`)
+      || (page ? screenshots.byKey.get(`${item.sourceId}\u0000${page}`) : null);
+    return entry ? { ...item, screenshots: [entry.source] } : item;
+  });
+}
+
+// ── 产品描述兜底 ─────────────────────────────────────────────────────────────
+// 一条行可能三种来源都没有描述：社区采集只给了标题（Show HN 链接帖）、投稿模板字段残缺、
+// 或者来源本身就没有长描述。按固定优先级补一个：
+//
+//   ① 行自带的描述字段（summary / content / tagline / productOverview，取最长的那个）
+//   ② GitHub 仓库描述（来自 github-repositories 快照，离线、零请求）
+//   ③ 官网描述（<meta name="description"> / og:description，由 site-logos 层顺带抓取）
+//
+// 三级都不满足阈值就保持原样。**只在原描述过短时填补，绝不覆盖已有的社区描述** ——
+// 官网描述常是营销文案（实测有比原描述更差的例子），社区原文才是首选。
+const DESCRIPTION_MIN_LENGTH = 40;
+
+// 与 web/shared.js 的展示回退链保持一致：summary → tagline → (github.description) → content。
+// 这里不引入 github.description，否则第二级会被自己短路掉、永远走不到第三级。
+const SOURCE_DESCRIPTION_FIELDS = ['summary', 'tagline', 'productOverview', 'content', 'description'];
+
+function itemDescriptionCandidates(item) {
+  const values = [];
+  for (const field of SOURCE_DESCRIPTION_FIELDS) {
+    const value = item?.[field];
+    if (typeof value === 'string' && value.trim()) values.push(value.trim());
+  }
+  // Product Hunt 的 launch 块可能带 tagline / description。
+  if (item?.launch && typeof item.launch === 'object') {
+    for (const field of ['tagline', 'description', 'overview']) {
+      const value = item.launch[field];
+      if (typeof value === 'string' && value.trim()) values.push(value.trim());
+    }
+  }
+  return values;
+}
+
+function sourceDescriptionLength(item) {
+  return itemDescriptionCandidates(item).reduce((longest, value) => Math.max(longest, value.replace(/\s+/g, ' ').trim().length), 0);
+}
+
+function meetsDescriptionFloor(value) {
+  return typeof value === 'string' && value.replace(/\s+/g, ' ').trim().length >= DESCRIPTION_MIN_LENGTH;
+}
+
+// 官网描述的读取与 site-logos 图标同源同文件，所以不增加任何请求；文件不存在时静默跳过，
+// 那些行就停在第二级。按 externalId 优先、pageUrl 兜底，和 icon 的匹配方式一致。
+function loadSiteDescriptions(date, rawRoot) {
+  if (!date) return null;
+  const file = path.join(path.resolve(rawRoot || DEFAULT_ROOT), 'site-logos', `${date}.json`);
+  if (!fs.existsSync(file)) return null;
+  let document;
+  try { document = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { return null; }
+  if (document.schemaVersion !== 1 || document.sourceId !== 'site-logos') return null;
+  const byExternalId = new Map();
+  const byPage = new Map();
+  for (const record of document.records || []) {
+    const description = typeof record.description === 'string' ? record.description.trim() : '';
+    if (!meetsDescriptionFloor(description)) continue;
+    byExternalId.set(`${record.sourceId}\u0000${record.externalId}`, description);
+    if (record.pageUrl) byPage.set(`${record.sourceId}\u0000${record.pageUrl}`, description);
+  }
+  if (!byExternalId.size && !byPage.size) return null;
+  return { byExternalId, byPage };
+}
+
+/**
+ * 按「源 → 仓库 → 官网」顺序给描述过短的行补一个产品描述。
+ *
+ * 必须在 dedupe 之前调用：collect.js 的标题+描述兜底去重要求**两边描述都 ≥ 40 字符**
+ * （descriptionSimilarity 的长度守卫），描述空着的行参与不了那道去重。补完描述再排重，
+ * 顺带把历史上因描述为空而漏掉的重复也纳入判定。
+ *
+ * 只写 `summary`，不写 `content`：content 在若干来源里是「原文全文」的语义（如 V2EX 楼层），
+ * 断言里也把它当原文存档比对；描述兜底是展示层的事，碰它会让「原文」语义失真。
+ */
+function attachDescriptionFallback(items, options = {}) {
+  const { repositories = null, descriptions = null } = options;
+  if (!repositories && !descriptions) return items;
+  return items.map((item) => {
+    if (sourceDescriptionLength(item) >= DESCRIPTION_MIN_LENGTH) return item;
+    const key = repositoryKey(item.githubUrl || item.github?.url);
+    const github = (key && repositories?.get(key)) || item.github || null;
+    if (github && meetsDescriptionFloor(github.description)) {
+      return { ...item, summary: github.description.trim(), descriptionSource: 'repository' };
+    }
+    if (descriptions) {
+      const page = candidatePage(item);
+      const fromWebsite = descriptions.byExternalId.get(`${item.sourceId}\u0000${item.externalId}`)
+        || (page ? descriptions.byPage.get(`${item.sourceId}\u0000${page}`) : '');
+      if (meetsDescriptionFloor(fromWebsite)) {
+        return { ...item, summary: fromWebsite.trim(), descriptionSource: 'website' };
+      }
+    }
+    return item;
   });
 }
 
@@ -656,7 +843,12 @@ function loadItems(src, options = {}) {
   // cross-day novelty policy. The default remains source-config truncation so
   // every existing caller keeps its previous behaviour.
   const max = options.maxItems === Infinity ? items.length : (options.maxItems ?? src.max_items ?? items.length);
-  const selected = attachSiteLogos(items.slice(0, max), src.id, loaded.targetDate, options.rawRoot);
+  // Three views of the same site-logos day file, applied in this order: the mark (48px avatar), the
+  // gallery candidate (og:image) and the dedup hash that keeps the two from being shown twice.
+  const capped = items.slice(0, max);
+  const withLogos = attachSiteLogos(capped, src.id, loaded.targetDate, options.rawRoot);
+  const withOgImages = attachSiteOgImages(withLogos, src.id, loaded.targetDate, options.rawRoot);
+  const selected = attachMarkImage(withOgImages, src.id, loaded.targetDate, options.rawRoot);
   return {
     items: selected,
     sourceRaw: {
@@ -675,6 +867,7 @@ function loadItems(src, options = {}) {
 }
 
 module.exports = {
-  loadItems, attachSiteLogos, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts, extractExternalUrls,
+  loadItems, attachSiteLogos, attachSiteOgImages, attachMarkImage, loadSiteOgImages, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts, extractExternalUrls,
+  loadSiteDescriptions, attachDescriptionFallback, loadScreenshots, attachScreenshots, sourceDescriptionLength, meetsDescriptionFloor, DESCRIPTION_MIN_LENGTH,
   latestDate, OBSERVED_SOURCES,
 };

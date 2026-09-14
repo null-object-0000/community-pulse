@@ -74,7 +74,7 @@ function projectPage(project, locale) {
   const facts = [['owner', project.owner], ['programmingLanguage', language], ['license', license && license !== 'NOASSERTION' ? license : null], ['stars', stars !== null ? new Intl.NumberFormat(locale).format(Number(stars)) : null], ['forks', forks !== null ? new Intl.NumberFormat(locale).format(Number(forks)) : null]].filter(([, value]) => value !== null && value !== undefined && value !== '');
   const factsHtml = list => `<dl class="facts">${list.map(([key, value]) => `<div><dt>${t(locale, key)}</dt><dd>${e(value)}</dd></div>`).join('')}</dl>`;
   const related = project.related.length ? `<section class="panel"><h2>${t(locale, 'related')}</h2><div class="related-list">${project.related.map(other => `<a href="${lp(other.path, locale)}"><b>${e(other.name)}</b>${other.language ? `<span>${e(other.language)}</span>` : ''}</a>`).join('')}</div></section>` : '';
-  const gallery = D.galleryHtml(item.images, locale);
+  const gallery = D.galleryHtml(D.mediaEntries(item), locale);
   const galleryPanel = gallery ? `<section class="panel" id="screenshots"><h2>${t(locale, 'gallery')}</h2>${gallery}</section>` : '';
   const markUrl = D.localImage(item.logo) || D.localImage(item.icon) || D.localImage(item.siteLogo);
   const source = D.sourceInfo(item), sourceName = D.sourceName(item, locale);

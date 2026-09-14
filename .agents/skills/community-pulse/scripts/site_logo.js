@@ -256,11 +256,53 @@ function imageKind(bytes) {
   throw new Error('unsupported image bytes');
 }
 
+// The page's own one-line product description, for rows whose source gives none. `og:description`
+// is the fallback because some sites fill only the social card; both are already present in the
+// HTML the icon pass downloads, so this costs no extra request.
+function decodeEntities(value) {
+  return String(value || '')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;|&apos;|&#x27;/gi, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ');
+}
+
+function parsePageDescription(html) {
+  const htmlText = String(html || '');
+  const tags = htmlText.match(/<meta\b[^>]*>/gi) || [];
+  const read = (tag) => decodeEntities(tag.match(/\bcontent\s*=\s*(["'])(.*?)\1/is)?.[2] || '').replace(/\s+/g, ' ').trim();
+  const nameOf = (tag) => (tag.match(/\b(?:name|property)\s*=\s*(["'])(.*?)\1/i)?.[2] || '').toLowerCase();
+  const byName = new Map();
+  for (const tag of tags) {
+    const name = nameOf(tag);
+    if (!name) continue;
+    if (!byName.has(name)) byName.set(name, read(tag));
+  }
+  return byName.get('description') || byName.get('og:description') || '';
+}
+
+// The page's own social/hero image. Unlike an icon this is a wide marketing visual, so it is never
+// a mark — it only ever joins the gallery, after the source's own media and our own screenshot.
+function parseOgImage(html, pageUrl) {
+  const htmlText = String(html || '');
+  const region = htmlText.slice(0, htmlText.indexOf('</head>') + 1 || htmlText.length);
+  const page = normalizePageUrl(pageUrl) || String(pageUrl || '');
+  const tags = region.match(/<meta\b[^>]*>/gi) || [];
+  for (const tag of tags) {
+    const name = (tag.match(/\b(?:property|name)\s*=\s*(["'])(.*?)\1/i)?.[2] || '').toLowerCase();
+    if (name !== 'og:image' && name !== 'og:image:secure_url' && name !== 'twitter:image') continue;
+    const href = decodeEntities(tag.match(/\bcontent\s*=\s*(["'])(.*?)\1/is)?.[2] || '').trim();
+    const resolved = resolveUrl(href, page);
+    if (resolved) return resolved;
+  }
+  return '';
+}
+
 module.exports = {
   PLATFORM_HOSTS,
   normalizePageUrl,
   candidatePage,
   parseIconCandidates,
+  parsePageDescription,
+  parseOgImage,
   pickIcon,
   faviconUrl,
   iconSize,

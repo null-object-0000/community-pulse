@@ -12,7 +12,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { loadItems, loadGithubRepositories, attachGithubRepositories } = require('./source_raw_items');
+const { loadItems, loadGithubRepositories, attachGithubRepositories, loadSiteDescriptions, attachDescriptionFallback, loadScreenshots, attachScreenshots } = require('./source_raw_items');
 const { repositoryKey } = require('./github_repo_utils');
 
 const ROOT = __dirname;
@@ -479,6 +479,32 @@ async function main() {
       const snapshot = loadGithubRepositories(rawRoot, dateFilter);
       attachGithubRepositories(results, snapshot.repositories);
       console.error(`[ok] github-repositories: ${snapshot.repositories.size} repositories from source-raw/github-repositories/${dateFilter}.json`);
+      // 描述兜底必须在去重之前：标题+描述兜底去重要求两边描述都 >= 40 字符，描述空着的行
+      // 参与不了那道判定。补完再排重，顺带把历史上因描述为空而漏掉的重复也纳入。
+      const descriptions = loadSiteDescriptions(dateFilter, rawRoot);
+      let filled = 0;
+      const byTier = { repository: 0, website: 0 };
+      for (const result of results) {
+        const before = result.items;
+        result.items = attachDescriptionFallback(before, { repositories: snapshot.repositories, descriptions });
+        for (let index = 0; index < result.items.length; index += 1) {
+          if (result.items[index] !== before[index]) {
+            filled += 1;
+            byTier[result.items[index].descriptionSource] += 1;
+          }
+        }
+      }
+      console.error(`[desc fallback] ${filled} 条补上描述（仓库 ${byTier.repository} / 官网 ${byTier.website}）${descriptions ? '' : '；本期无 site-logos 描述，仅走仓库层'}`);
+      // 我们自己去官网截的首屏截图：与 og:image 同为插图集候选，但优先级更高（见 web/shared.js
+      // 的 mediaEntries）。截图是独立一层，缺失时按行降级，不影响日报生成。
+      const screenshots = loadScreenshots(dateFilter, rawRoot);
+      let shotFilled = 0;
+      for (const result of results) {
+        const before = result.items;
+        result.items = attachScreenshots(before, screenshots);
+        for (let index = 0; index < result.items.length; index += 1) if (result.items[index] !== before[index]) shotFilled += 1;
+      }
+      console.error(`[screenshots] ${shotFilled} 条挂上官网截图${screenshots ? '' : '；本期无截图层文件'}`);
     } catch (error) {
       githubRepositoryError = error;
       console.error(`[fail] github-repositories: ${error.message}`);

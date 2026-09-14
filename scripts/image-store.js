@@ -53,6 +53,11 @@ const reportDates = () => fs.readdirSync(rawDir).filter(isReportFile).map(name =
 function itemUrls(item, { screenshots = false } = {}) {
   const urls = [];
   for (const field of markFields) if (isMirroredMark(item[field])) urls.push(item[field]);
+  // The website's og:image is a gallery visual, not a mark — but it is captured by our own logo
+  // pass and stays in the same size class as a siteLogo (median 151 KB vs ~10 KB for an icon), so
+  // it is mirrored like a mark. Mirroring only inside the retention window would silently drop the
+  // third gallery tier, because the default window is zero.
+  if (item.ogImage && D.safeUrl(item.ogImage.url)) urls.push(item.ogImage.url);
   if (!screenshots) return urls;
   for (const field of fields) if (D.safeUrl(item[field])) urls.push(item[field]);
   for (const field of listFields) for (const url of Array.isArray(item[field]) ? item[field] : []) if (D.safeUrl(url)) urls.push(url);
@@ -110,7 +115,29 @@ async function downloadImage(url, fetcher = fetch) {
   return { bytes, extension: imageExtension(bytes) };
 }
 
+// Our own screenshot bytes live beside their day file, addressed by content hash, so they are
+// copied rather than downloaded.
+const SCREENSHOT_PREFIX = 'screenshots-files/';
+function screenshotFilesDir() {
+  return path.join(path.dirname(rawDir), 'source-raw', 'screenshots-files');
+}
+function localScreenshotPath(value) {
+  return typeof value === 'string' && value.startsWith(SCREENSHOT_PREFIX) ? value : '';
+}
+
 function localizeUrl(value, manifest) {
+  // Our own screenshot layer stores bytes on disk beside its day file (`screenshots-files/<name>`);
+  // there is nothing to download, so it is copied into the mirror store as-is. Materializing here
+  // (not only during sync) is what keeps a plain `npm run build` working on a fresh checkout that
+  // ran the capture but not `images:sync`.
+  const local = localScreenshotPath(value);
+  if (local) {
+    const name = path.basename(local);
+    const mirror = materializeScreenshot(value, storeDir);
+    if (!mirror) throw new Error(`Missing screenshot ${name}; re-run capture_screenshots_raw.js`);
+    manifest[value] = mirror;
+    return mirrorUrl(mirror);
+  }
   // A URL is buildable when it is mapped to a managed file or when its source CDN is
   // trusted for direct hotlinking (older reports). Anything else must be synced first.
   if (D.safeUrl(value) && !Object.hasOwn(manifest, value) && !D.hotlinkable(value)) {
@@ -127,6 +154,19 @@ function localizeReport(report, manifest) {
     for (const field of listFields) if (Array.isArray(item[field])) {
       // An unsynced URL throws before this point, so filtering only drops known-bad images.
       item[field] = item[field].map(url => localizeUrl(url, manifest)).filter(Boolean);
+    }
+    // Our own screenshots are a list like `images`; the website's og:image is a single object.
+    if (Array.isArray(item.screenshots)) {
+      item.screenshots = item.screenshots.map(url => localizeUrl(url, manifest)).filter(Boolean);
+    }
+    if (item.ogImage && item.ogImage.url) {
+      try {
+        item.ogImage = { ...item.ogImage, url: localizeUrl(item.ogImage.url, manifest) };
+      } catch (_) {
+        // An og:image that was never mirrored (outside the retention window) must not break the
+        // build: the gallery simply keeps the source's own media and our screenshot.
+        item.ogImage = null;
+      }
     }
   }
   return report;
@@ -150,6 +190,39 @@ function copyImages(outputDir, manifest) {
   }
 }
 
+// Our own screenshots arrive as local paths (`screenshots-files/<sha>.<ext>`), not URLs to
+// download. They still have to become ordinary mirrors: only then do prune, upload, verify and
+// copyImages treat them like every other image, and only then does the markup get a `/images/<name>`
+// that the CDN can serve. The bytes are copied into the same store directory (still gitignored).
+function screenshotUrls(dates, reportDir = rawDir) {
+  const urls = new Set();
+  for (const date of dates) {
+    const file = path.join(reportDir, `${date}.json`);
+    if (!fs.existsSync(file)) continue;
+    let report;
+    try { report = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { continue; }
+    for (const item of D.reportItems(report)) {
+      for (const value of Array.isArray(item.screenshots) ? item.screenshots : []) {
+        if (localScreenshotPath(value)) urls.add(value);
+      }
+    }
+  }
+  return urls;
+}
+
+// Copy a capture-layer file into the mirror store, keeping the content-addressed name. An entry
+// already in the store is returned as-is: the capture file may be long gone by then (it is
+// gitignored and lives only on the machine that took the screenshot).
+function materializeScreenshot(value, store, filesDir = screenshotFilesDir()) {
+  const name = path.basename(localScreenshotPath(value));
+  const target = path.join(store, name);
+  if (fs.existsSync(target)) return `/images/${name}`;
+  const source = path.join(filesDir, name);
+  if (!fs.existsSync(source)) return '';
+  fs.copyFileSync(source, target);
+  return `/images/${name}`;
+}
+
 async function syncImages() {
   fs.mkdirSync(storeDir, { recursive: true });
   const dates = reportDates();
@@ -157,7 +230,16 @@ async function syncImages() {
   const retained = reportUrls(dates);
   const window = dates.slice(0, days);
   if (window.length) for (const url of reportUrls(window, { screenshots: true })) retained.add(url);
+  // Our screenshots are already on disk, so they are kept unconditionally: without them in
+  // `retained` the next prune would drop them from the manifest and the gallery would silently lose
+  // its middle tier.
+  const localScreenshots = screenshotUrls(dates);
+  for (const url of localScreenshots) retained.add(url);
   const { kept: manifest, removed } = pruneManifest(readManifest(), retained);
+  for (const url of localScreenshots) {
+    const mirror = materializeScreenshot(url, storeDir);
+    if (mirror) manifest[url] = mirror;
+  }
   const pending = [...retained].filter(url => !D.localImage(manifest[url]) || !fs.existsSync(path.join(storeDir, path.basename(manifest[url]))));
   let done = 0, failed = 0;
   const save = () => {
@@ -195,5 +277,5 @@ async function syncImages() {
   console.log(`Images: ${retained.size} mirrored URLs (marks from ${dates.length} reports, screenshots from ${window.length}), ${done} downloaded, ${failed} unavailable, ${removed.length} manifest entries and ${pruned} files pruned.`);
 }
 
-module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays };
+module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays, localScreenshotPath, screenshotFilesDir, screenshotUrls, materializeScreenshot };
 if (require.main === module) syncImages().catch(error => { console.error(error); process.exitCode = 1; });
