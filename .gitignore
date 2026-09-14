@@ -5,6 +5,11 @@ data/cache/
 *.log
 dist/
 
+# 一次性分析脚本、探针产物、回溯备份、QA 图（agent 临时工作区）。
+# 从不进入 Git：历史提交里 0 个 .scratch 文件，它只是一直以未跟踪噪音出现在 git status 里。
+# attach_repository_language.js 仍会往 .scratch/backup-language-backfill 写备份，与忽略不冲突。
+.scratch/
+
 # Cloudflare local runtime state
 .wrangler/
 知识/大家都在做什么/final/*.work
