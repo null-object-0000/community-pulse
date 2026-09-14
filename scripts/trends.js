@@ -134,18 +134,22 @@ function trendDataPath(type, id) {
   return segment && /^[a-z0-9-]+$/.test(id || '') ? `/data/trends/${segment}/${id}.json` : null;
 }
 
-// Programming-language membership comes only from the GitHub repository snapshot layer, which starts
-// on 2026-09-01. Two things consequently have to hold for a language comparison to mean anything:
+// Programming-language membership comes only from the GitHub repository snapshot layer, and
+// that layer can only describe days whose report already carries a GitHub repository row. Two
+// things consequently have to hold for a language comparison to mean anything:
 //
-//  1. Coverage is measured from the reports themselves — the exact input this model consumes — not
-//     from whether snapshot files exist on disk. Backfilling those files without re-deriving the
-//     reports would otherwise report completeness while the lens still saw nothing.
-//  2. The denominator is the days that could carry a language at all, i.e. days whose report holds a
-//     GitHub repository reference. Most days have none (only monthly issues and trending days bring
-//     repositories), so demanding every calendar day would make the ratio unreachable and hide the
-//     lens forever even once the data is complete.
+//  1. Coverage is measured from the reports themselves — the exact input this model consumes —
+//     not from whether snapshot files exist on disk. Backfilling those files without re-deriving
+//     the reports would otherwise report completeness while the lens still saw nothing.
+//  2. The denominator is the days that could carry a language at all, i.e. days whose report
+//     holds a GitHub repository reference. Before 2026-06-22 the only such days were the weekly
+//     and monthly issue days (one or two a week); since the GitHub Trending backfill every day
+//     carries one, so the denominator is now close to the calendar length of the window.
 //
-// When both hold, the ratio reaches 100% and the view recovers without any code change.
+// The constant below records when that densification starts. It is metadata for readers of
+// /data/trends.json — the model derives everything it acts on from the reports.
+const LANGUAGE_SERIES_START = '2026-06-22';
+
 function languageCoverage(reports, recentStart, latest, baselineStart, baselineEnd) {
   const byDate = new Map(reports.map(report => [report.date, report]));
   const count = (from, to) => {
@@ -168,7 +172,7 @@ function languageCoverage(reports, recentStart, latest, baselineStart, baselineE
     recent: { start: recentStart, end: latest, ...recent },
     baseline: { start: baselineStart, end: baselineEnd, ...baseline },
     source: 'github-repositories',
-    sourceStart: '2026-09-01',
+    sourceStart: LANGUAGE_SERIES_START,
     complete: baseline.covered === baseline.eligible && recent.covered === recent.eligible,
   };
 }

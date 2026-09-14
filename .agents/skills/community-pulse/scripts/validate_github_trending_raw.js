@@ -46,6 +46,12 @@ function main() {
   const root = path.resolve(value(argv, '--root') || DEFAULT_ROOT);
   const targetDate = value(argv, '--date');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(targetDate || '')) throw new Error('--date YYYY-MM-DD is required');
+  // The live pipeline always captures both lists, so a missing file is a failure there.
+  // Backfilled days are different: the Chinese list is archived on a minority of days,
+  // so a caller may declare a source optional and accept a partial day.
+  const optionalMissing = new Set((value(argv, '--optional-missing') || '')
+    .split(',').map((item) => item.trim()).filter(Boolean));
+  const skipped = [];
   const errors = [];
   let totalRows = 0;
   let totalBytes = 0;
@@ -53,6 +59,10 @@ function main() {
   for (const [sourceId, expected] of Object.entries(SOURCES)) {
     const file = path.join(root, sourceId, `${targetDate}.json`);
     if (!fs.existsSync(file)) {
+      if (optionalMissing.has(sourceId)) {
+        skipped.push(sourceId);
+        continue;
+      }
       errors.push(`${sourceId}: missing ${file}`);
       continue;
     }
@@ -68,11 +78,53 @@ function main() {
     if (data.targetDate !== targetDate) errors.push(`${sourceId}: targetDate mismatch`);
     if (data.timezone !== TIMEZONE) errors.push(`${sourceId}: timezone mismatch`);
     if (data.status !== 'ok' || data.complete !== true) errors.push(`${sourceId}: capture is not complete and ok`);
-    if (data.capture?.mode !== 'observed-snapshot') errors.push(`${sourceId}: wrong capture mode`);
+    // Two legitimate provenances share this schema. `observed-snapshot` is the live
+    // fetcher, which may only ever label today. `archived-observation` is a Wayback
+    // capture of the page as it actually read on an earlier day: there the observation
+    // date is evidence carried by the archive, not an assertion, so it may describe the
+    // past. Both keep `historicalBackfillSupported: false` — the live fetcher still may
+    // not relabel a current page as a past day.
+    const mode = data.capture?.mode;
+    if (mode !== 'observed-snapshot' && mode !== 'archived-observation') {
+      errors.push(`${sourceId}: unknown capture mode ${JSON.stringify(mode)}`);
+    }
     if (data.capture?.historicalBackfillSupported !== false) errors.push(`${sourceId}: historical backfill flag must be false`);
     if (data.capture?.since !== 'daily') errors.push(`${sourceId}: since must be daily`);
     if (data.capture?.spokenLanguageCode !== expected.spokenLanguageCode) errors.push(`${sourceId}: spoken language mismatch`);
     if (data.capture?.httpStatus !== 200) errors.push(`${sourceId}: HTTP status is not 200`);
+    if (mode === 'archived-observation') {
+      const archive = data.capture?.archive;
+      if (!archive || typeof archive !== 'object') {
+        errors.push(`${sourceId}: archived capture is missing its archive evidence`);
+      } else {
+        if (archive.provider !== 'web.archive.org') errors.push(`${sourceId}: unexpected archive provider`);
+        if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(archive.capturedAtUtc || '')) {
+          errors.push(`${sourceId}: archive capturedAtUtc must be an ISO UTC instant`);
+        }
+        if (!/^[a-z0-9]{20,}$/i.test(archive.cdxDigest || '')) errors.push(`${sourceId}: archive CDX digest is missing`);
+        if (archive.observedDate !== targetDate) errors.push(`${sourceId}: archive observedDate must equal targetDate`);
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(archive.reportDate || '')) errors.push(`${sourceId}: archive reportDate is missing`);
+        if (typeof archive.offsetFromLiveObservationSeconds !== 'number') {
+          errors.push(`${sourceId}: archive offset from the live observation hour is missing`);
+        }
+        // The Chinese list is only archived without `since=daily`, so the recorded URL is
+        // the one actually fetched; assert the spoken-language filter survived, since that
+        // is what makes the archived page the Chinese list rather than the global one.
+        const archivedUrl = String(archive.originalUrl || '');
+        if (expected.spokenLanguageCode && !archivedUrl.includes(`spoken_language_code=${expected.spokenLanguageCode}`)) {
+          errors.push(`${sourceId}: archived URL is missing the spoken language filter`);
+        }
+        if (!expected.spokenLanguageCode && /spoken_language_code=/.test(archivedUrl)) {
+          errors.push(`${sourceId}: global list must not carry a spoken language filter`);
+        }
+        // The archive instant recorded in capturedAtUtc must appear in the fetch URL, so
+        // the evidence and the bytes cannot describe two different captures.
+        const stamp = String(archive.capturedAtUtc || '').replace(/[-:TZ]/g, '');
+        if (!stamp || !String(archive.fetchUrl || '').includes(stamp)) {
+          errors.push(`${sourceId}: fetch URL does not match the archived timestamp`);
+        }
+      }
+    }
 
     let body;
     try {
@@ -100,7 +152,14 @@ function main() {
     totalRows += evidence.rows.length;
   }
 
-  console.log(JSON.stringify({ targetDate, sourceCount: Object.keys(SOURCES).length, totalRows, totalBytes, errorCount: errors.length }, null, 2));
+  console.log(JSON.stringify({
+    targetDate,
+    sourceCount: Object.keys(SOURCES).length - skipped.length,
+    skippedSources: skipped,
+    totalRows,
+    totalBytes,
+    errorCount: errors.length,
+  }, null, 2));
   if (errors.length) {
     for (const error of errors) console.error(error);
     process.exit(1);
