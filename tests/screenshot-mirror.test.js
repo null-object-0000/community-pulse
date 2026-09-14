@@ -57,3 +57,30 @@ test('a screenshot that was never materialized fails the build instead of shippi
   const manifest = {};
   assert.throws(() => store.localizeReport({ results: [{ items: [{ screenshots: [local] }] }] }, manifest), /images:sync|Missing screenshot/);
 });
+
+// Cloudflare Workers Builds runs `npm run build` only — it never runs capture_screenshots_raw.js, and
+// the capture output is gitignored. Once the manifest (which *is* committed) maps a capture file to its
+// content-addressed mirror, an external IMAGE_BASE build therefore has everything it needs: the CDN
+// serves the bytes. Requiring the file on disk failed every production build after 2026-09-13.
+test('an external mirror builds screenshots that the manifest already maps, without the capture bytes', () => {
+  const previous = process.env.IMAGE_BASE;
+  const name = `${'d'.repeat(64)}.webp`;
+  const local = `screenshots-files/${name}`;
+  const report = () => ({ results: [{ items: [{ title: 'A', screenshots: [local] }] }] });
+  try {
+    process.env.IMAGE_BASE = 'https://img.example.test';
+    const manifest = { [local]: `/images/${name}` };
+    store.localizeReport(report(), manifest);
+    assert.equal(manifest[local], `/images/${name}`, 'the mirror entry is reused as-is');
+    const external = report();
+    store.localizeReport(external, manifest);
+    assert.deepEqual(external.results[0].items[0].screenshots, [`https://img.example.test/images/${name}`]);
+    // Without a manifest entry there is nothing to serve from, so the loud failure stays.
+    assert.throws(() => store.localizeReport(report(), {}), /Missing screenshot/);
+    // The repo-local mode has to carry the bytes itself: no manifest-only shortcut there.
+    process.env.IMAGE_BASE = '';
+    assert.throws(() => store.localizeReport(report(), {}), /Missing screenshot/);
+  } finally {
+    if (previous === undefined) delete process.env.IMAGE_BASE; else process.env.IMAGE_BASE = previous;
+  }
+});

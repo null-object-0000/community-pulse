@@ -184,6 +184,10 @@
   - **过程（试错）**：第一版把 `facetMembershipIds` 定义成「自身 + 祖先」并当作父级的 scope，测试立刻暴露两处语义反了 —— 父级只算到自己（`content-creation` 还是 34）、子主题的周序列反而把父级项目算了进来（3 → 6）。改成 `facetDescendants`（自身 + 后代）当 scope、「祖先」只用于把项目挂到父级上之后自洽。
   - **测试**：`tests/trends.test.js` 新增 3 个用例（层级助手与「父 + 子」折叠、父级计数 / 周序列 / 分类库的 roll-up、趋势页与分类页的父子标注与面包屑，中英文各断言一遍）；`tests/site.test.js` 在子主题确实已发布时核对父页 ↔ 子页互链（子主题是数据驱动的，沿用现有的条件断言写法）。
 - **发现（未处理，与本次改动无关）**：工作区里**已暂存**的 `知识/大家都在做什么/raw/2026-09-13.json`（上一批去重回溯的产物）给 3 条 Show HN 项目补上了 `summary`（`git show HEAD:` 的版本里这 3 条是空字符串），而同日 `final/2026-09-13.md` 里它们只有 i18n 元数据、没有译文摘要行，于是 `enhanced-report.js` 按既有规则把它们判为 `raw`（源里有摘要却没译文时不允许空着），构建出的最新日报成了 `presentation.summarySource: "mixed"`（76/79），`npm run check` 里「最新一期存在同日 final 时必须为 `llm-final`」的断言因此失败。用 HEAD 的 raw 重放是 79/79 `llm-final`，确认是待提交数据与 final 不同步：修法是重跑 09-13 的增强（需 LLM 凭据），或让那 3 条回到 HEAD 的空摘要。除这一条外全部断言通过（135/136）。
+- **生产阻塞（已修）**：`dede37f`「截图字节接入镜像链路」让 `screenshots-files/<hash>` 变成构建必读项，但这些字节按设计**不进 Git**（`.gitignore` 忽略 `知识/大家都在做什么/source-raw/screenshots-files/`），而 Cloudflare Workers Builds 只跑 `npm run build`、从不跑采集脚本 —— 于是 `4a54dc6`（09-13 raw，含 28 条截图引用）的 Workers 构建 **failed**，线上停在 `004290b`（用 `gh api …/commits/<sha>/check-runs` 核实：`4a54dc6` = failure、`004290b` / `dede37f` = success；线上 `/data/reports/2026-09-13.json` 仍是 `llm-final`，正是 09-13 raw 没上线的旁证）。
+  - **修法**：`scripts/image-store.js` 的 `localizeUrl()` 在**外置镜像模式**（`IMAGE_BASE` 或 `site.config.json` 有值）下，只要提交进 Git 的 `assets/images/manifest.json` 已把该截图映射到 `/images/<name>`，就直接返回镜像 URL，不再要求本地存在采集字节（R2 上确认可访问：`https://img.devtrends.site/images/4e58….webp` → 200 / `image/webp` / 15094B）。**仓库内镜像模式仍然要求字节**：那时 `dist/` 必须自带文件，缺了照旧报错，保住「不发死链」这条既有约束。
+  - **测试**：`tests/screenshot-mirror.test.js` 新增用例 —— 外置模式下「manifest 有映射 + 本地无字节」可构建、无映射仍报错、`IMAGE_BASE=` 下仍报错。
+  - **代价（待办）**：线上 09-13 的 `presentation.summarySource` 会从 `llm-final` 变成 `mixed`（那 3 条 Show HN 显示源站英文摘要），要等重跑 09-13 的 LLM 增强才恢复；`search-index` 的 `submit` check 在 `4a54dc6` 同样失败（它要轮询线上出现该期日报，部署失败自然等不到），部署成功后需 `workflow_dispatch` 补推一次。
 
 ---
 

@@ -132,6 +132,12 @@ function localizeUrl(value, manifest) {
   // ran the capture but not `images:sync`.
   const local = localScreenshotPath(value);
   if (local) {
+    // The committed manifest already maps this capture file to its content-addressed mirror, and with
+    // an external IMAGE_BASE the CDN serves those very bytes — so production builds (Cloudflare
+    // Workers Builds never runs the capture) must not require the gitignored capture output on disk.
+    // Only the repo-local mirror mode has to materialize it, because then `dist/` carries the bytes.
+    const mirrored = manifest[value];
+    if (mirrored && imageOrigin()) return mirrorUrl(mirrored);
     const name = path.basename(local);
     const mirror = materializeScreenshot(value, storeDir);
     if (!mirror) throw new Error(`Missing screenshot ${name}; re-run capture_screenshots_raw.js`);
