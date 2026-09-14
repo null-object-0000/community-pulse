@@ -71,12 +71,14 @@
     vibecafe: ['VibeCafé', 'VibeCafé'], 'chinese-indie-dev': ['中文独立开发者', 'Chinese Indie Developers'],
     'chinese-indie-dev-programmer': ['中文独立开发者·程序员版', 'Indie Dev · Programmers'],
     'chinese-indie-dev-game': ['中文独立开发者·游戏版', 'Indie Dev · Games'],
-    // List rows give a source name one 172px column; a literal translation no longer fits there.
+    // List rows give a source name one 150px column（12px 字号下，扣掉 28px 徽标与 8px 间距只剩 114px）；
+    // 名字超过这个宽度就会被省略号截断，翻译和全称都放不下。
     'weekly-issues': ['科技爱好者周刊投稿', 'Weekly Submissions'], 'weekly-issue': ['科技爱好者周刊', 'Tech Enthusiast Weekly'],
     'hellogithub-issues': ['HelloGitHub 投稿', 'HelloGitHub Submissions'], 'hellogithub-issue': ['HelloGitHub 月刊', 'HelloGitHub Monthly Picks'],
     'github-trending': ['GitHub Trending', 'GitHub Trending'], 'github-trending-cn': ['GitHub 中文趋势', 'GitHub Trending China'],
     producthunt: ['Product Hunt', 'Product Hunt'],
-    showhn: ['Hacker News·Show HN', 'Hacker News · Show HN'], v2ex: ['V2EX·分享创造', 'V2EX · I Made This'],
+    // Show HN 只是 HN 的投稿渠道，不是整个 HN 热榜；徽标已是 HN 图标，名字不必再背一遍品牌（原名宽 136px，行内必被截断）。
+    showhn: ['Show HN', 'Show HN'], v2ex: ['V2EX·分享创造', 'V2EX · I Made This'],
   };
   const sourceDirectory = {
     vibecafe: { url: 'https://vibecafe.ai/', logo: '/source-vibecafe.svg' },

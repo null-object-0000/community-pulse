@@ -27,7 +27,7 @@ const { execFileSync } = require('child_process');
 
 const TIMEZONE = 'Asia/Shanghai';
 const SOURCE_ID = 'showhn';
-const SOURCE_NAME = 'Hacker News · Show HN';
+const SOURCE_NAME = 'Show HN';
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const DEFAULT_OUT_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw');
 const ENDPOINT = 'https://hn.algolia.com/api/v1/search';
