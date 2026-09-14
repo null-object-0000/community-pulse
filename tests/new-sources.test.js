@@ -73,7 +73,7 @@ test('Show HN and V2EX are registered sources with converter and site wiring', (
     assert.ok(D.sourceName({ sourceId: id }, 'en'), `${id} needs an English label`);
     const info = D.sourceInfo({ sourceId: id });
     assert.ok(info && info.url, `${id} needs a source-directory entry`);
-    assert.match(info.logo, /^\/source-.+\.svg$/);
+    assert.match(info.logo, /^\/source-.+\.(svg|png)$/);
     assert.ok(fs.existsSync(path.join(ROOT, 'web', info.logo.replace(/^\//, ''))), `${id} logo file must exist`);
   }
   // The site's own source registry must not advertise a source the pipeline lacks.

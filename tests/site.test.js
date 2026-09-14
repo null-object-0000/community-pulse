@@ -198,11 +198,11 @@ test('desktop scores keep breathing room inside the hovered row edge', () => {
 
 test('known data sources expose safe destination links and real website logos', () => {
   const dist = path.join(__dirname, '../dist');
-  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
+  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt', 'v2ex']) {
     const source = D.sourceInfo({ sourceId });
     assert.ok(source, sourceId);
     assert.ok(D.safeUrl(source.url), `${sourceId} URL`);
-    assert.match(source.logo, /^\/source-[a-z]+\.(svg|png)$/, `${sourceId} logo`);
+    assert.match(source.logo, /^\/source-[a-z0-9]+\.(svg|png)$/, `${sourceId} logo`);
     // A logo missing from web/ or from the build output ships as a broken image.
     for (const dir of [path.join(__dirname, '..', 'web'), dist]) assert.ok(fs.existsSync(path.join(dir, source.logo.slice(1))), `${sourceId} logo in ${path.basename(dir)}`);
   }
@@ -259,9 +259,21 @@ test('the Tech Enthusiast Weekly logo is the official favicon.ico frame, vendore
   assert.equal(crypto.createHash('sha256').update(png).digest('hex'), '5f9ed89c4b6868a1da65263f874d3ead128a5d884359f99668df8aa625078859');
 });
 
+test('the V2EX source logo is the site favicon, vendored as a 32px PNG', () => {
+  const png = fs.readFileSync(path.join(__dirname, '..', 'web', 'source-v2ex.png'));
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a', 'PNG signature');
+  assert.equal(png.readUInt32BE(16), 32, 'IHDR width');
+  assert.equal(png.readUInt32BE(20), 32, 'IHDR height');
+  // Byte-for-byte the body of https://www.v2ex.com/static/favicon.ico?v=bd989a59ed950fa4feded2ea25d8ddd5,
+  // so the hand-drawn grey "V" stand-in cannot come back.
+  assert.equal(crypto.createHash('sha256').update(png).digest('hex'), '9c3dc86307a63f5e5b1d2ed7840c7ef4796185ece9209a69a093fe127f680428');
+  assert.equal(D.sourceInfo({ sourceId: 'v2ex' }).logo, '/source-v2ex.png');
+  assert.ok(!fs.existsSync(path.join(__dirname, '..', 'web', 'source-v2ex.svg')), 'the invented SVG mark is gone');
+});
+
 test('list source badges render the real source logo, never an invented letter or a borrowed mark', () => {
   const badgeOf = item => D.renderItem({ title: 'x', ...item }, 'zh-CN').match(/<span class="source-mini[^"]*" aria-hidden="true">(.*?)<\/span>/)?.[1];
-  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt']) {
+  for (const sourceId of ['vibecafe', 'chinese-indie-dev', 'chinese-indie-dev-programmer', 'chinese-indie-dev-game', 'weekly-issues', 'weekly-issue', 'hellogithub-issues', 'hellogithub-issue', 'github-trending', 'github-trending-cn', 'producthunt', 'v2ex']) {
     assert.equal(badgeOf({ sourceId }), `<img src="${D.sourceInfo({ sourceId }).logo}" alt="${D.escapeHtml(D.sourceName({ sourceId }, 'zh-CN'))}" loading="lazy" />`, sourceId);
   }
   // "HelloGitHub" contains "GitHub"; keying the fallback off the display name made it borrow GitHub's mark.

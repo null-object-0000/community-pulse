@@ -89,7 +89,7 @@
     'github-trending-cn': { url: 'https://github.com/trending?spoken_language_code=zh', logo: '/source-github.svg' },
     producthunt: { url: 'https://www.producthunt.com/', logo: '/source-producthunt.svg' },
     showhn: { url: 'https://news.ycombinator.com/show', logo: '/source-hackernews.svg' },
-    v2ex: { url: 'https://www.v2ex.com/?tab=create', logo: '/source-v2ex.svg' },
+    v2ex: { url: 'https://www.v2ex.com/?tab=create', logo: '/source-v2ex.png' },
   };
   const categories = [
     { id: 'ai', labelZh: 'AI 与智能体', labelEn: 'AI & agents', description: '主要价值来自 AI 模型、智能体、生成、推理或机器学习；仅把 AI 当辅助功能的产品按实际用途归类' },

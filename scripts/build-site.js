@@ -18,7 +18,7 @@ function write(file, content) { const target = path.join(outputDir, file); fs.mk
 function writePage(route, content) { write(path.join(route.replace(/^\//, ''), 'index.html'), content); }
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.mkdirSync(outputDir, { recursive: true });
-const staticFiles = ['token.css', 'styles.css', 'app.js', 'cards.js', 'shared.js', 'theme.js', 'logo.svg', 'logo-512.png', 'og-image.png', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg', 'source-ruanyifeng.png', 'source-hackernews.svg', 'source-v2ex.svg'];
+const staticFiles = ['token.css', 'styles.css', 'app.js', 'cards.js', 'shared.js', 'theme.js', 'logo.svg', 'logo-512.png', 'og-image.png', 'globe.svg', 'source-vibecafe.svg', 'source-github.svg', 'source-hellogithub.svg', 'source-producthunt.svg', 'source-ruanyifeng.png', 'source-hackernews.svg', 'source-v2ex.png'];
 if (!/^[a-f0-9]{8,128}$/i.test(siteConfig.indexNowKey || '')) throw new Error('site.config.json indexNowKey must contain 8-128 hexadecimal characters');
 staticFiles.push(`${siteConfig.indexNowKey}.txt`);
 for (const name of staticFiles) fs.copyFileSync(path.join(root, 'web', name), path.join(outputDir, name));
