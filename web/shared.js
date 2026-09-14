@@ -27,6 +27,7 @@
       unknownSource: '开发者社区', reportTitle: '{date} 开发者趋势日报', reportHeading: '{date}大家都在做什么',
       archiveTitle: '历史日报', homeTitle: 'DevTrends 开发者趋势｜大家都在做什么', translationNote: '暂无此语言译文，以下保留原文。',
       gallery: '产品配图', galleryOpen: '查看配图', closeViewer: '关闭配图', previousImage: '上一张', nextImage: '下一张', imageCounter: '第 {n} 张，共 {total} 张',
+      mediaOriginal: '原始配图', mediaScreenshot: '官网截图', mediaOg: 'OG 图',
       previousItem: '上一条', nextItem: '下一条', openItem: '打开项目', cardsTitle: '今日卡片', cardsIntro: '一张一张看完今天的新发现', cardsRead: '已读 {n} / {total}', cardsComplete: '已全部读完', cardsHint: '左滑下一条，右滑上一条',
       trendsEntryTitle: '趋势洞察', trendsEntryIntro: '看看大家最近在集中做什么，与此前四周比较', trendsEntryLink: '查看趋势',
       trendsTitle: '大家正在集中做什么', trendsIntro: '从业务场景、Agent 生态和编程语言观察最近的新项目，并与此前四周比较。', trendsWindow: '最近 7 天', trendsBaseline: '此前 28 天', trendsNew: '新出现', trendsProjects: '{n} 个新项目', trendsSources: '{n} 个来源', trendsExamples: '代表项目', trendsEmpty: '这个视角还没有形成达到展示门槛的趋势簇。', trendsDimension: '洞察视角', trendsUseCases: '业务场景', trendsAgentRoles: 'Agent 生态', trendsLanguages: '编程语言', trendsPeriod: '观察周期', trends4Weeks: '近 4 周', trends8Weeks: '近 8 周', trends12Weeks: '近 12 周', trendsWeekly: '每周新增项目',
@@ -56,6 +57,7 @@
       unknownSource: 'Developer community', reportTitle: '{date} Developer Trends Report', reportHeading: '{date} · What developers are building',
       archiveTitle: 'Report archive', homeTitle: 'DevTrends | What developers are building', translationNote: 'A translation is not available yet. The original text is shown below.',
       gallery: 'Product screenshots', galleryOpen: 'View screenshots', closeViewer: 'Close viewer', previousImage: 'Previous image', nextImage: 'Next image', imageCounter: 'Image {n} of {total}',
+      mediaOriginal: 'Source', mediaScreenshot: 'Screenshot', mediaOg: 'OG image',
       previousItem: 'Previous', nextItem: 'Next', openItem: 'Open project', cardsTitle: 'Today’s cards', cardsIntro: 'Browse today’s discoveries one at a time', cardsRead: 'Read {n} / {total}', cardsComplete: 'All read', cardsHint: 'Swipe left for next, right for previous',
       trendsEntryTitle: 'Trend insights', trendsEntryIntro: 'See what developers are converging on, compared with the preceding four weeks', trendsEntryLink: 'View trends',
       trendsTitle: 'What developers are converging on', trendsIntro: 'Explore recent projects by use case, agent ecosystem, or programming language, compared with the preceding four weeks.', trendsWindow: 'Last 7 days', trendsBaseline: 'Previous 28 days', trendsNew: 'New', trendsProjects: '{n} new projects', trendsSources: '{n} sources', trendsExamples: 'Representative projects', trendsEmpty: 'No trend cluster in this view has reached the display threshold yet.', trendsDimension: 'Lens', trendsUseCases: 'Use cases', trendsAgentRoles: 'Agent ecosystem', trendsLanguages: 'Programming languages', trendsPeriod: 'Time range', trends4Weeks: '4 weeks', trends8Weeks: '8 weeks', trends12Weeks: '12 weeks', trendsWeekly: 'New projects by week',
@@ -322,20 +324,82 @@
   function localImages(value, manifest = {}) {
     return (Array.isArray(value) ? value : []).map(entry => localImage(entry, manifest)).filter(Boolean);
   }
-  // Thumbnail strip for a product's screenshots. Values must already be managed local paths;
-  // the full list travels in data-gallery so app.js can open the viewer without a second request.
+  // ── 插图集 ──────────────────────────────────────────────────────────────────
+  // 一条行可能有三类配图，按信息量排序展示：
+  //
+  //   original   来源自带的配图（Product Hunt media 等）—— 平台原图，最能代表产品
+  //   screenshot 我们自己去官网截的首屏图 —— 反映官网现在真实的样子
+  //   og         官网声明的 og:image —— 常是营销主视觉（实测有 4 张只是 logo）
+  //
+  // 只返回「本地/可信来源」的 URL；三类之外的原始地址一律丢掉。
+  const MEDIA_ORIGIN_LABELS = { original: 'mediaOriginal', screenshot: 'mediaScreenshot', og: 'mediaOg' };
+  function mediaKindUrl(value) {
+    if (typeof value === 'string') return value;
+    if (value && typeof value === 'object') return value.url;
+    return '';
+  }
+  // OG 图与产品标志相同（同一地址、或同一内容哈希）时不再重复展示：它要么就是那个 logo，
+  // 要么是同一张图，放进插图集只会和头像重复。dHash 距离 <= 2 视为同图。
+  function sameImageAsMark(entry, markHash) {
+    if (!markHash || !entry) return false;
+    if (entry.sha256 && entry.sha256 === markHash.sha256) return true;
+    if (typeof entry.dhash === 'number' && typeof markHash.dhash === 'number') {
+      const distance = popcount(entry.dhash ^ markHash.dhash);
+      if (distance <= 2) return true;
+    }
+    return false;
+  }
+  function popcount(value) {
+    let count = 0, n = value >>> 0;
+    while (n) { n &= n - 1; count += 1; }
+    return count;
+  }
+  function markImageRef(item) {
+    return item?.markImage && typeof item.markImage === 'object' ? item.markImage : null;
+  }
+  function mediaEntries(item, manifest = {}) {
+    const mark = markImageRef(item);
+    const entries = [];
+    const push = (value, origin) => {
+      const url = localImage(mediaKindUrl(value), manifest);
+      if (url) entries.push({ url, origin });
+    };
+    for (const value of Array.isArray(item?.images) ? item.images : []) push(value, 'original');
+    push(item?.image, 'original');
+    for (const value of Array.isArray(item?.screenshots) ? item.screenshots : []) push(value, 'screenshot');
+    const og = item?.ogImage;
+    if (og && !sameImageAsMark(og, mark)) push(og, 'og');
+    // The same file can arrive from two sources (a mirror path from images and from screenshots);
+    // the first — highest-priority — origin keeps it.
+    const seen = new Set();
+    return entries.filter(entry => (seen.has(entry.url) ? false : (seen.add(entry.url), true)));
+  }
+  // Thumbnail strip for a product's gallery. Values must already be managed local paths; the full
+  // list travels in data-gallery so app.js can open the viewer without a second request.
   function galleryHtml(value, locale) {
-    const images = localImages(value);
-    if (!images.length) return '';
+    // A plain URL list keeps the old signature working (tests and older callers pass images directly).
+    const entries = (Array.isArray(value) ? value : [])
+      .map(entry => (typeof entry === 'string' ? { url: entry, origin: 'original' } : entry))
+      .map(entry => ({ url: localImage(entry?.url), origin: entry?.origin || 'original' }))
+      .filter(entry => entry.url);
+    if (!entries.length) return '';
+    const images = entries.map(entry => entry.url);
     const label = t(locale, 'galleryOpen');
-    const visible = images.slice(0, 3);
-    const hidden = images.length - visible.length;
+    const visible = entries.slice(0, 3);
+    const hidden = entries.length - visible.length;
+    const originLabel = (origin) => t(locale, MEDIA_ORIGIN_LABELS[origin] || MEDIA_ORIGIN_LABELS.original);
+    const originList = entries.map(entry => originLabel(entry.origin));
     // Every image carries its own text: an empty `alt` is what search consoles report as a missing
     // alt attribute, and here the description ("查看配图 · 1/3") is exactly what a reader needs.
-    const thumb = (src, index, extra = '') => `<button type="button" class="gallery-thumb${extra}" data-index="${index}" aria-label="${escapeHtml(`${label} · ${index + 1}/${images.length}`)}"><img src="${escapeHtml(src)}" alt="${escapeHtml(`${label} · ${index + 1}/${images.length}`)}" loading="lazy" /></button>`;
-    const thumbs = visible.map((src, index) => thumb(src, index)).join('');
+    const thumb = (entry, index, extra = '') => {
+      const description = `${label} · ${index + 1}/${entries.length} · ${originLabel(entry.origin)}`;
+      return `<button type="button" class="gallery-thumb${extra}" data-index="${index}" data-origin="${escapeHtml(entry.origin)}" title="${escapeHtml(originLabel(entry.origin))}" aria-label="${escapeHtml(description)}"><img src="${escapeHtml(entry.url)}" alt="${escapeHtml(description)}" loading="lazy" /><span class="gallery-origin">${escapeHtml(originLabel(entry.origin))}</span></button>`;
+    };
+    const thumbs = visible.map((entry, index) => thumb(entry, index)).join('');
     const more = hidden > 0 ? `<button type="button" class="gallery-thumb gallery-more" data-index="${visible.length}" aria-label="${escapeHtml(`${label} · +${hidden}`)}">+${hidden}</button>` : '';
-    return `<div class="item-gallery" data-gallery="${escapeHtml(JSON.stringify(images))}" role="group" aria-label="${escapeHtml(t(locale, 'gallery'))}">${thumbs}${more}</div>`;
+    // `data-gallery` stays a plain URL array — app.js parses it straight into the lightbox. The
+    // per-image origin travels beside it so the viewer can label what is being shown.
+    return `<div class="item-gallery" data-gallery="${escapeHtml(JSON.stringify(images))}" data-origins="${escapeHtml(JSON.stringify(originList))}" role="group" aria-label="${escapeHtml(t(locale, 'gallery'))}">${thumbs}${more}</div>`;
   }
   // Accept repository roots only. Issue/blob/profile URLs must not create false projects.
   function repository(item) {
@@ -634,7 +698,7 @@
     const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
     const tags = visibleTags(item, locale).slice(0, 2);
     const markUrl = localImage(item.logo) || localImage(item.icon) || localImage(item.siteLogo);
-    const screenshots = localImages([...(Array.isArray(item.images) ? item.images : []), item.image]);
+    const screenshots = mediaEntries(item).map(entry => entry.url);
     const initials = escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
     const sourceBadge = source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="${escapeHtml(sourceName(item, locale))}" loading="lazy" />` : sourceMark(item);
     const visual = screenshots.length
@@ -689,5 +753,5 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, taxonomyFacets, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, categories, taxonomyFacets, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

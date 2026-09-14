@@ -275,9 +275,24 @@ async function main() {
     if (localizedByIndex.size !== items.length) {
       throw new Error(`双语增强不完整：${localizedByIndex.size}/${items.length}`);
     }
+    // 摘要为空本身不算错（源描述缺失时 validateLocalization 会主动清空，宁可留空也不让模型编），
+    // 但「源描述非空却产出空摘要」一律是 bug —— 校验只查条数查不到它，历史上 13 条 Show HN
+    // 空摘要就是这样静默通过了整条流水线。这里把它变成硬失败。
+    const hollow = items.filter((item) => {
+      if (!translationInput(item.desc)) return false;
+      const localized = localizedByIndex.get(item.idx);
+      return !localized || !String(localized.summaryZh || '').trim() || !String(localized.summaryEn || '').trim();
+    });
+    if (hollow.length) {
+      throw new Error(`摘要缺失：${hollow.length} 条源描述非空却产出空摘要（${hollow.slice(0, 3).map((item) => item.title.slice(0, 24)).join(' / ')}）`);
+    }
     fs.renameSync(checkpointFile, outFile);
   }
-  console.error(`完成: ${localizedByIndex.size} 条双语增强`);
+  const emptySummaries = items.filter((item) => {
+    const localized = localizedByIndex.get(item.idx);
+    return localized && !String(localized.summaryZh || '').trim();
+  }).length;
+  console.error(`完成: ${localizedByIndex.size} 条双语增强${emptySummaries ? `（其中 ${emptySummaries} 条因源描述缺失而留空）` : ''}`);
 }
 
 if (require.main === module) {

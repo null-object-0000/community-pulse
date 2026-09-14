@@ -583,9 +583,19 @@ body[data-view="cards"] { visibility: hidden; }
 .trending-continuation li small { grid-column: 1; font-size: .75rem; }
 .trending-continuation li a > span { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--muted); }
 .panel .item-gallery { display: flex; }
-.gallery-thumb { flex: 0 0 auto; width: 54px; height: 34px; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--subtle); }
+.gallery-thumb { position: relative; flex: 0 0 auto; width: 54px; height: 34px; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--subtle); }
 .gallery-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .gallery-thumb:hover { border-color: var(--accent-line); }
+/* Each thumbnail names where its image came from: the source's own media, our own capture of the
+   official site, or the site's og:image. Without it a reader cannot tell a platform screenshot
+   from a marketing card, and the three carry very different weight. */
+.gallery-origin {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 1px 3px;
+  background: var(--color-overlay); color: #fff;
+  font-size: .5625rem; line-height: 1.35; letter-spacing: .01em;
+  text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.panel .gallery-origin { font-size: .625rem; padding: 2px 5px; }
 .gallery-more { display: grid; place-items: center; color: var(--muted); font-size: .75rem; font-weight: 700; }
 /* Product marks carry their own background and corner radius, so the avatar must not add a second plate:
    any padding here shows the mark's own square nested inside ours, and a barely-off-white mark (#f6f6f6)

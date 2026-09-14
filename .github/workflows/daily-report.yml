@@ -102,6 +102,23 @@ jobs:
           node scripts/capture_site_logos_raw.js --date "$TARGET" --observed-date "$OBSERVED" --strict
           node scripts/validate_site_logos_raw.js --date "$TARGET"
 
+      - name: 准备截图环境（CJK 字体 + webp 工具）
+        run: |
+          # runner 镜像只带 fonts-noto-color-emoji，中文官网会渲成方框；webp 工具没有就只能
+          # 落 PNG（每期 8.7MB 而不是 0.6MB），所以两者都装。
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk webp
+
+      - name: 抓取官网首屏截图（有官网的行）
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          OBSERVED="$(TZ=Asia/Shanghai date +%F)"
+          cd .agents/skills/community-pulse
+          # 截图比 logo 层贵（每张几百 KB，缩成 640px webp 后约 15KB），所以单独一层、单独
+          # 保留期。runner 预装 Chrome，不需要 Playwright。渲染后再验一次 DOM，Chrome 自己的
+          # 错误页是「看起来成功」的失败（实测 orcarouter.ai 就截到过）。
+          node scripts/capture_screenshots_raw.js --date "$TARGET" --observed-date "$OBSERVED" || true
+
       - name: 生成日报 (md + json, 存 raw/)
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"

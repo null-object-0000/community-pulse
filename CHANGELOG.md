@@ -19,7 +19,7 @@
 | 09-11 | 52 | 143 文件 +5,671/-707 | 2,077 文件 +1,477,893/-61,134 | 图片外置 R2、日报口径修正 | community-pulse |
 | 09-12 | 16 | 50 文件 +936/-348 | 18 文件 +34,170/-14 | 移动端卡片阅读器 | community-pulse |
 | 09-13 | 28 | 147 文件 +4,008/-394 | 671 文件 +902,580/-81 | 趋势分析、SEO、新增数据源 | community-pulse |
-| 09-14 | 1（另有未提交） | 10 文件 +360/-58 | 384 文件 +49,600/-7,440 | 投稿相似去重与全量日报回溯；V2EX 徽标换回官网 favicon | community-pulse |
+| 09-14 | 2（另有未提交） | 26 文件 +840/-70 | 384 文件 +49,600/-7,440 | 投稿相似去重与全量日报回溯；V2EX 徽标换回官网 favicon；配图三级来源 + 描述三级兜底 | community-pulse |
 | **合计** | **276** | **584 文件 +28,326/-4,498** | **14,505 文件 +9,807,813/-174,137** | | |
 
 ---
@@ -124,7 +124,38 @@
   3. **补数据**：新增 `backfill_github_repositories_snapshots.js` 与 `attach_repository_language.js`，补 2026-01-01 → 09-12 共 251 天快照并给 38 天日报补上 `language`（496 条）。**只补 language**：它是仓库的身份属性（跨全部快照零变化），而 star/fork 是当日测量值，补进历史日报等于用今日值冒充历史，正是既有快照规则禁止的。
   修复后语言簇 45%~250%、非语言簇 43%~500%，中位增长率 90% vs 89% —— 同量级，数字自洽。
 
-## 2026-09-14（1 个提交，另有工作区待提交）· 补齐无产品 URL 投稿的去重 + V2EX 徽标换回官网图标
+## 2026-09-14（1 个提交，另有工作区待提交）· 投稿去重 + V2EX 徽标 + 配图三级来源与描述兜底
+### 配图来源与产品描述：R1–R4 四项必修
+
+**需求来源**：官网 OG 图与我们自己截的首屏图哪张更适合当配图（实测后定：都保留，按来源优先级排序），以及「有打标却没有中文描述」的追问（YazSes）。四项改动一次落地。
+
+- **R1 配图三级来源（`web/shared.js` / `web/app.js` / `web/styles.css` / `scripts/imageStore`）**：一条行现在可能有三类配图，按信息量排序展示 —— **原始配图**（来源自带，如 Product Hunt media）→ **官网截图**（我们自己的截图层）→ **OG 图**（官网 `og:image`）。每张缩略图带 `gallery-origin` 标签（原始配图 / 官网截图 / OG 图），灯箱计数里也标出来源。
+  - **为什么 OG 排最后**：实测 2026-09-13 那期 19 张 OG 图里有 4 张只是 logo / 品牌横幅，而 36 个「有官网」的条目 **36/36 都能截到图**，所以 OG 几乎从不单独撑场；把它排在末位，那 4 张差图自然被压到底部。
+  - **去重只做「同一文件」那一层**：同 URL 或同 sha256 的 OG 图会被丢弃（实测只有 `photobridge-app.vercel.app` 命中——它把 `icon.png` 同时当 logo 和 og:image）。**试过又放弃**：用「正方形 / 高单色占比 / dHash 距离」识别「看起来像 logo 的横幅」，实测 8 张好图里误伤 6 张（`aipetmemorialportrait` 主色占比 0.892 与 VoiceStudio 那条品牌图 0.941 分不开），收益 1 张换误删 6 张，不值。浏览器端因此只比 URL / sha256，不做图像相似度。
+  - **`data-gallery` 仍是纯 URL 数组**：`app.js` 直接把它交给灯箱；来源标签另走 `data-origins`。改成一个对象数组会让既有解析静默拿到字符串而非 URL。
+  - **配图条不进密集列表**：既有约定是「配图只在项目详情页展示」（`.item-gallery` 默认 `display:none`，`.panel .item-gallery` 才显示），所以没有往 `renderItem` 的 feed 行里加配图条。
+- **R1b 截图层（新增 `capture_screenshots_raw.js` + workflow 步骤）**：用 runner 预装的 Chrome 无头渲染每个「有官网」的行，产出 `source-raw/screenshots/<日期>.json`，字节按内容寻址存在同级的 `-files/` 目录。
+  - **只跑在 Actions**：本机实测直连境外站基本不通（`gauzy.co` / `roomai.ai` / `photobridge` 直连 40s 超时，挂网关后 5–6s 正常），而 runner 直连的成功率高一个量级（site-logos 层 256 期网络失败率仅 2.90%）。
+  - **不装 Playwright**：`ubuntu-latest`（24.04）镜像预装 Chrome 152 / Chromium 152，一行 `google-chrome --headless=new --screenshot` 就够，省掉 +400MB 镜像。
+  - **必须装 CJK 字体**：runner 镜像的字体只有 `fonts-noto-color-emoji` 一个包，中文官网会渲成方框；workflow 里补 `fonts-noto-cjk` 与 `webp`（后者缺失时落 PNG，每期 8.7MB 而非 0.6MB）。
+  - **截图后必须验 DOM**：Chrome 自己的错误页是一份「看起来正常」的文档，本机实测 `jiandan.qd.je` 与 `orcarouter.ai` 都截到过 `ERR_CONNECTION_CLOSED` 且文件大小完全正常 —— 只验字节数会把失败记成成功。
+  - **体积**：36 张 1280×800 PNG = 8.7MB/期；缩到 640px webp q78 后 0.6MB，只占 6%。
+- **R2 产品描述三级兜底（`source_raw_items.js` + `collect.js`）**：按 **源描述 → 仓库描述 → 官网描述** 的顺序，给描述过短（< 40 字符）的行补一个。三级都只在原描述不足时触发，**绝不覆盖已有的社区描述**（官网常是营销文案，实测有比原文更差的例子），且**只写 `summary` 不写 `content`**（`content` 在若干来源里是「原文全文」的语义）。
+  - **顺序在去重之前**：标题+描述兜底去重要求两边描述都 ≥ 40 字符，描述空着的行参与不了那道判定；补完再排重，顺带把历史上因描述为空而漏掉的重复也纳入。
+  - **为什么不在 `enhance.js` 里修**：翻译层只读 Markdown，看不到 `github.description`，那条信息就在数据里却从未进入描述位。
+  - **官网描述零新增请求**：`capture_site_logos_raw.js` 已经在抓同一批官网 HTML，只是多解析一个 `<meta name="description">`（兜底 `og:description`）。
+  - **放宽了 site-logos 的采集条件**：原先「已有 logo/icon 的行整行跳过」，而描述缺口里 176 条已经带 logo —— 不放宽就永远走不到第三级。放宽后日均多抓约 2 行。
+  - **实测产出**（256 期 / 10397 条）：源描述够用 9610 条（92.4%），真实缺口 787 条；其中仓库描述补 125 条、官网描述补 284 条，可改善 409 条 = 52% 的缺口。
+  - **一处测量口径错误（已修正）**：首版测量用 `summary || content` —— summary 非空但很短（如 25 字）时就不再去看 146 字的 content，把 4824 条有完整正文的 Product Hunt 条目误判成缺口，缺口因此被高估到 1875 条。正确口径是取各字段里**最长**的那个。
+- **R3 og:image + 去重哈希（`site_logo.js` / `capture_site_logos_raw.js`）**：同一份 HTML 里多解析 `og:image`，并下载一次算 sha256（供 R1 的「同一文件」判定）。存入 `record.ogImage`，由 `attachSiteOgImages` 挂到条目、`attachMarkImage` 挂上标志哈希。
+  - **og:image 归到「永久镜像」档**：它由我们自己的 logo 层抓到、尺寸与 siteLogo 同量级（中位 151KB vs 图标约 10KB），若按配图那样只镜像保留期内的报告，默认保留期=0 时第三级会被静默丢弃。
+- **R4 空摘要断言（`enhance.js`）**：新增「**源描述非空却产出空摘要**」的硬失败。此前 `main()` 只校验条数（`localizedByIndex.size === items.length`），所以 2026-09-13 那期 13 条空摘要静默通过了整条流水线。
+  - **为什么空摘要本身不算错**：源描述确实缺失时 `validateLocalization` 会主动清空（`summaryZh` / `summaryEn`），宁可留空也不让模型凭空编；只有「源描述非空却产出空摘要」才是 bug。
+  - **YazSes 的完整病因**：它是 Show HN 纯链接帖（`source_raw_items.js` 的 `summary: stripHtml(story.storyText || '')` 拿不到正文）→ raw md 没有 `> ` 行 → `enhance.js` 的 `extractItems` 取到空 `desc` → 摘要被清空；而**分类不依赖 desc**（模型只看标题就能判出 desktop-app / 三个平台），校验也只查 ID 合法性，所以同一次请求里打标有、翻译没有。
+  - **修后实测**：09-13 那期 Show HN 有描述行 2/15 → **14/15**，全期 `> ` 行 67 → 79；重跑增强后**摘要双空 13 条 → 1 条**（剩下那条三个来源都没有描述）。
+- **测试**：新增 24 个用例（`description-fallback.test.js` 10 个、`enhance-summary-assert.test.js` 3 个、`gallery-origin.test.js` 11 个），覆盖三级顺序与优先级、不覆盖已有描述、`content` 不被改写、og:image 与 logo 同文件时丢弃、`data-gallery` 契约不变、缺失截图层不算错、以及截图必须验 DOM。全套 132 → **156 个测试通过**。
+
+
 
 - **代码**：`collect.js` 在仓库 / 网址去重之后新增保守兜底：归一化标题必须完全相同，且两段有效描述均不少于 40 字符、三字片段 Dice 相似度至少 85%，才保留发布时间较新的一条。选择 85% 而不是单纯按同名去重，是为了兼容截图 / 格式差异，同时保留真正同名但不同的产品；去重删除改按对象实例追踪，修复同一来源 ID 重复出现时可能整组误删的问题。
 - **回溯工具**：新增 `backfill_report_dedupe.js`，可按日期范围 dry-run 或重放当前去重规则，并同步修正 raw JSON、raw Markdown 与存在的 final Markdown。Markdown 渲染从采集主流程抽成共用函数；历史 JSON 中已有条目但仍残留采集错误时，以 JSON 条目为准，避免 Markdown 把有效数据隐藏掉。

@@ -70,13 +70,17 @@
   const lightboxImage = lightbox.querySelector('.lightbox-image');
   const lightboxCounter = lightbox.querySelector('.lightbox-counter');
   let galleryImages = [];
+  let galleryOrigins = [];
   let galleryIndex = 0;
   let galleryOpener = null;
   function paintLightbox() {
     lightboxImage.src = galleryImages[galleryIndex];
     // The dialog repeats the thumbnail's own description so its alt is never empty either.
     lightboxImage.alt = galleryOpener?.getAttribute('aria-label') || t('gallery');
-    lightboxCounter.textContent = t('imageCounter', { n: galleryIndex + 1, total: galleryImages.length });
+    // Name the image's origin beside the counter: "our screenshot" and "the site's OG card" look
+    // alike in a viewer but mean different things.
+    const origin = galleryOrigins[galleryIndex];
+    lightboxCounter.textContent = t('imageCounter', { n: galleryIndex + 1, total: galleryImages.length }) + (origin ? ` · ${origin}` : '');
     lightbox.querySelectorAll('.lightbox-step').forEach(button => { button.hidden = galleryImages.length < 2; });
   }
   function openLightbox(images, index, opener) {
@@ -90,6 +94,7 @@
     if (lightbox.hidden) return;
     lightbox.hidden = true;
     galleryImages = [];
+    galleryOrigins = [];
     lightboxImage.removeAttribute('src');
     document.documentElement.classList.remove('lightbox-open');
     if (galleryOpener?.isConnected) galleryOpener.focus();
@@ -104,9 +109,15 @@
     const thumb = event.target.closest?.('.item-gallery [data-index]');
     if (thumb) {
       let images = [];
-      try { images = JSON.parse(thumb.closest('.item-gallery').dataset.gallery || '[]'); } catch { images = []; }
+      let origins = [];
+      try {
+        const box = thumb.closest('.item-gallery');
+        images = JSON.parse(box.dataset.gallery || '[]');
+        origins = JSON.parse(box.dataset.origins || '[]');
+      } catch { images = []; origins = []; }
       if (!Array.isArray(images) || !images.length) return;
       event.preventDefault();
+      galleryOrigins = Array.isArray(origins) ? origins : [];
       openLightbox(images, Number(thumb.dataset.index) || 0, thumb);
       return;
     }

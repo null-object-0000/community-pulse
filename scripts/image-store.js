@@ -53,6 +53,11 @@ const reportDates = () => fs.readdirSync(rawDir).filter(isReportFile).map(name =
 function itemUrls(item, { screenshots = false } = {}) {
   const urls = [];
   for (const field of markFields) if (isMirroredMark(item[field])) urls.push(item[field]);
+  // The website's og:image is a gallery visual, not a mark — but it is captured by our own logo
+  // pass and stays in the same size class as a siteLogo (median 151 KB vs ~10 KB for an icon), so
+  // it is mirrored like a mark. Mirroring only inside the retention window would silently drop the
+  // third gallery tier, because the default window is zero.
+  if (item.ogImage && D.safeUrl(item.ogImage.url)) urls.push(item.ogImage.url);
   if (!screenshots) return urls;
   for (const field of fields) if (D.safeUrl(item[field])) urls.push(item[field]);
   for (const field of listFields) for (const url of Array.isArray(item[field]) ? item[field] : []) if (D.safeUrl(url)) urls.push(url);
@@ -110,7 +115,27 @@ async function downloadImage(url, fetcher = fetch) {
   return { bytes, extension: imageExtension(bytes) };
 }
 
+// Our own screenshot bytes live beside their day file, addressed by content hash, so they are
+// copied rather than downloaded.
+const SCREENSHOT_PREFIX = 'screenshots-files/';
+function screenshotFilesDir() {
+  return path.join(path.dirname(rawDir), 'source-raw', 'screenshots-files');
+}
+function localScreenshotPath(value) {
+  return typeof value === 'string' && value.startsWith(SCREENSHOT_PREFIX) ? value : '';
+}
+
 function localizeUrl(value, manifest) {
+  // Our own screenshot layer stores bytes on disk beside its day file (`screenshots-files/<name>`);
+  // there is nothing to download, so it is copied into the mirror as-is.
+  const local = localScreenshotPath(value);
+  if (local) {
+    const name = path.basename(local);
+    const source = path.join(screenshotFilesDir(), name);
+    if (!fs.existsSync(source)) throw new Error(`Missing screenshot ${name}; re-run capture_screenshots_raw.js`);
+    manifest[value] = `/images/${name}`;
+    return mirrorUrl(`/images/${name}`);
+  }
   // A URL is buildable when it is mapped to a managed file or when its source CDN is
   // trusted for direct hotlinking (older reports). Anything else must be synced first.
   if (D.safeUrl(value) && !Object.hasOwn(manifest, value) && !D.hotlinkable(value)) {
@@ -127,6 +152,19 @@ function localizeReport(report, manifest) {
     for (const field of listFields) if (Array.isArray(item[field])) {
       // An unsynced URL throws before this point, so filtering only drops known-bad images.
       item[field] = item[field].map(url => localizeUrl(url, manifest)).filter(Boolean);
+    }
+    // Our own screenshots are a list like `images`; the website's og:image is a single object.
+    if (Array.isArray(item.screenshots)) {
+      item.screenshots = item.screenshots.map(url => localizeUrl(url, manifest)).filter(Boolean);
+    }
+    if (item.ogImage && item.ogImage.url) {
+      try {
+        item.ogImage = { ...item.ogImage, url: localizeUrl(item.ogImage.url, manifest) };
+      } catch (_) {
+        // An og:image that was never mirrored (outside the retention window) must not break the
+        // build: the gallery simply keeps the source's own media and our screenshot.
+        item.ogImage = null;
+      }
     }
   }
   return report;
@@ -195,5 +233,5 @@ async function syncImages() {
   console.log(`Images: ${retained.size} mirrored URLs (marks from ${dates.length} reports, screenshots from ${window.length}), ${done} downloaded, ${failed} unavailable, ${removed.length} manifest entries and ${pruned} files pruned.`);
 }
 
-module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays };
+module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays, localScreenshotPath, screenshotFilesDir };
 if (require.main === module) syncImages().catch(error => { console.error(error); process.exitCode = 1; });
