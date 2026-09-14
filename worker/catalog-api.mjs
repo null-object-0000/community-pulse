@@ -71,7 +71,7 @@ export async function queryTrends(db, filters) {
   // Assignments store leaf terms. The recursive relation rolls each leaf up to
   // every ancestor at read time, so a novel-writing product also contributes to
   // content-creation without storing the parent twice. Totals, coverage and term
-  // rows share one materialized selected_products CTE so D1 does not repeat the
+  // rows share one materialized selected_products CTE so MySQL does not repeat the
   // expensive selected-source MIN(first_seen_date) scan three times per request.
   const resultsSql = `WITH RECURSIVE
     ${cte},
@@ -163,9 +163,14 @@ export async function queryTrends(db, filters) {
 export async function handleCatalogApi(request, env) {
   const url = new URL(request.url);
   if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, { status: 405, cacheControl: 'no-store' });
-  if (!env.DB) return json({ error: 'catalog_database_unavailable' }, { status: 503, cacheControl: 'no-store' });
+  if (!env.HYPERDRIVE_READ) return json({ error: 'catalog_database_unavailable' }, { status: 503, cacheControl: 'no-store' });
+  let db;
+  let close = async () => {};
   try {
-    const sources = await availableSources(env.DB);
+    const opened = await (await import('./mysql-db.mjs')).openMysql(env.HYPERDRIVE_READ);
+    db = opened.db;
+    close = opened.close;
+    const sources = await availableSources(db);
     if (url.pathname === '/api/v1/sources') {
       return json({ schemaVersion: 1, sources });
     }
@@ -173,10 +178,12 @@ export async function handleCatalogApi(request, env) {
       const latest = sources.map((source) => source.lastSeenDate).filter(Boolean).sort().at(-1);
       if (!latest) return json({ error: 'catalog_is_empty' }, { status: 503, cacheControl: 'no-store' });
       const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
-      return json(await queryTrends(env.DB, filters));
+      return json(await queryTrends(db, filters));
     }
     return json({ error: 'not_found' }, { status: 404, cacheControl: 'no-store' });
   } catch (error) {
     return json({ error: 'invalid_request', message: error.message }, { status: 400, cacheControl: 'no-store' });
+  } finally {
+    await close();
   }
 }

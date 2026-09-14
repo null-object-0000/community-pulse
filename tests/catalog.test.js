@@ -6,10 +6,10 @@ const test = require('node:test');
 const { DatabaseSync } = require('node:sqlite');
 const { applyMigrations } = require('../scripts/catalog/build-database');
 const { identitiesFor } = require('../scripts/catalog/identity');
-const { exportDatabase } = require('../scripts/catalog/export-d1');
+const { exportDatabase } = require('../scripts/catalog/export-mysql');
 const { loadItems } = require('../.agents/skills/community-pulse/scripts/source_raw_items');
 
-class D1StatementAdapter {
+class QueryStatementAdapter {
   constructor(statement) {
     this.statement = statement;
     this.values = [];
@@ -26,9 +26,9 @@ class D1StatementAdapter {
   }
 }
 
-class D1Adapter {
+class QueryAdapter {
   constructor(database) { this.database = database; }
-  prepare(sql) { return new D1StatementAdapter(this.database.prepare(sql)); }
+  prepare(sql) { return new QueryStatementAdapter(this.database.prepare(sql)); }
 }
 
 test('catalog identity prefers repository, keeps website and source aliases', () => {
@@ -77,11 +77,11 @@ test('trend query recomputes first-seen within the selected source set', async (
     from: '2026-09-08', to: '2026-09-14', days: 7, facet: 'useCases',
     previousFrom: '2026-09-01', previousTo: '2026-09-07',
   };
-  const allSources = await queryTrends(new D1Adapter(db), { ...base, sources: ['producthunt', 'showhn'] });
+  const allSources = await queryTrends(new QueryAdapter(db), { ...base, sources: ['producthunt', 'showhn'] });
   assert.equal(allSources.coverage.uniqueProducts, 1);
   assert.equal(allSources.results.find((row) => row.id === 'novel-writing').previousCount, 1);
 
-  const showHn = await queryTrends(new D1Adapter(db), { ...base, sources: ['showhn'] });
+  const showHn = await queryTrends(new QueryAdapter(db), { ...base, sources: ['showhn'] });
   assert.equal(showHn.coverage.uniqueProducts, 2);
   assert.equal(showHn.results.find((row) => row.id === 'novel-writing').currentCount, 1);
   assert.equal(showHn.results.find((row) => row.id === 'content-creation').currentCount, 2);
@@ -90,7 +90,7 @@ test('trend query recomputes first-seen within the selected source set', async (
   fs.rmSync(directory, { recursive: true, force: true });
 });
 
-test('D1 exports omit local surrogate ids and invalidate stale upload progress', () => {
+test('MySQL exports omit local surrogate ids, upsert dates and preserve backslashes', () => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-export-'));
   const database = path.join(directory, 'test.sqlite');
   const output = path.join(directory, 'out');
@@ -100,6 +100,7 @@ test('D1 exports omit local surrogate ids and invalidate stale upload progress',
     INSERT INTO sources(id,name) VALUES ('showhn','Show HN');
     INSERT INTO products(id,canonical_key,title,first_seen_date,last_seen_date)
       VALUES ('p1','source:showhn:1','One','2026-09-14','2026-09-14');
+    UPDATE products SET canonical_url='https://example.com/path\\segment' WHERE id='p1';
     INSERT INTO product_source_first_seen(product_id,source_id,first_seen_date,last_seen_date)
       VALUES ('p1','showhn','2026-09-14','2026-09-14');
     INSERT INTO taxonomy_terms(facet,id,label_zh,label_en)
@@ -113,31 +114,48 @@ test('D1 exports omit local surrogate ids and invalidate stale upload progress',
   const manifest = exportDatabase({ database, out: output, profile: 'trends', maxBytes: 100_000 });
   const assignmentFile = manifest.files.find((file) => file.table === 'taxonomy_assignments');
   const sql = fs.readFileSync(path.join(output, assignmentFile.name), 'utf8');
-  assert.match(sql, /INSERT OR IGNORE INTO taxonomy_assignments \(product_id,facet,term_id/);
+  assert.match(sql, /INSERT IGNORE INTO taxonomy_assignments \(product_id,facet,term_id/);
   assert.doesNotMatch(sql, /taxonomy_assignments \(id,/);
   const firstSeenFile = manifest.files.find((file) => file.table === 'product_source_first_seen');
   const firstSeenSql = fs.readFileSync(path.join(output, firstSeenFile.name), 'utf8');
-  assert.match(firstSeenSql, /ON CONFLICT\(product_id,source_id\) DO UPDATE SET/);
-  assert.match(firstSeenSql, /first_seen_date=min\(product_source_first_seen\.first_seen_date, excluded\.first_seen_date\)/);
-
-  const target = new DatabaseSync(path.join(directory, 'target.sqlite'));
-  applyMigrations(target);
-  const executeExport = (exported) => exported.files.forEach((file) => {
-    target.exec(fs.readFileSync(path.join(output, file.name), 'utf8'));
-  });
-  executeExport(manifest);
-  const source = new DatabaseSync(database);
-  source.exec(`
-    UPDATE products SET first_seen_date='2026-09-10', last_seen_date='2026-09-15' WHERE id='p1';
-    UPDATE product_source_first_seen SET first_seen_date='2026-09-10', last_seen_date='2026-09-15' WHERE product_id='p1';
-  `);
-  source.close();
-  executeExport(exportDatabase({ database, out: output, profile: 'trends', maxBytes: 100_000 }));
-  assert.deepEqual({ ...target.prepare('SELECT first_seen_date, last_seen_date FROM product_source_first_seen').get() }, {
-    first_seen_date: '2026-09-10', last_seen_date: '2026-09-15',
-  });
-  assert.equal(target.prepare('SELECT count(*) AS count FROM taxonomy_assignments').get().count, 1);
-  target.close();
+  assert.match(firstSeenSql, /ON DUPLICATE KEY UPDATE/);
+  assert.match(firstSeenSql, /first_seen_date=LEAST\(product_source_first_seen\.first_seen_date, VALUES\(first_seen_date\)\)/);
+  const productFile = manifest.files.find((file) => file.table === 'products');
+  const productSql = fs.readFileSync(path.join(output, productFile.name), 'utf8');
+  assert.match(productSql, /path\\\\segment/);
+  assert.equal(manifest.dialect, 'mysql');
   assert.equal(fs.existsSync(path.join(output, '.uploaded.json')), false);
   fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('MySQL adapter preserves the query prepare-bind-all contract', async () => {
+  const calls = [];
+  const { mysqlAdapter } = await import('../worker/mysql-db.mjs');
+  const db = mysqlAdapter({
+    async query(sql, bindings) {
+      calls.push({ sql, bindings });
+      return [[{ id: 'showhn' }], []];
+    },
+  });
+  const result = await db.prepare('SELECT id FROM sources WHERE id = ?').bind('showhn').all();
+  assert.deepEqual(result, { results: [{ id: 'showhn' }] });
+  assert.deepEqual(calls, [{ sql: 'SELECT id FROM sources WHERE id = ?', bindings: ['showhn'] }]);
+});
+
+test('MySQL import splitter ignores semicolons inside quoted source text', async () => {
+  const { splitSql } = await import('../worker/catalog-import.mjs');
+  assert.deepEqual(splitSql("INSERT INTO products(title) VALUES ('one; two'); INSERT INTO sources(id) VALUES ('s');"), [
+    "INSERT INTO products(title) VALUES ('one; two')",
+    "INSERT INTO sources(id) VALUES ('s')",
+  ]);
+  assert.deepEqual(splitSql("INSERT INTO products(title) VALUES ('it''s; fine');"), [
+    "INSERT INTO products(title) VALUES ('it''s; fine')",
+  ]);
+});
+
+test('daily catalog upload writes the MySQL projection in one blocking step', () => {
+  const workflow = fs.readFileSync(path.join(__dirname, '..', '.github', 'workflows', 'daily-report.yml'), 'utf8');
+  assert.match(workflow, /node scripts\/catalog\/export-mysql\.js --database data\/catalog\/daily\.sqlite --profile trends\s+node scripts\/catalog\/upload-mysql\.js/);
+  assert.doesNotMatch(workflow, /export-d1|upload-d1/);
+  assert.match(workflow, /run: npm ci/);
 });

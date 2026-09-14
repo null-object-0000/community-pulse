@@ -1,6 +1,7 @@
 name = "community-pulse"
 main = "worker/index.js"
 compatibility_date = "2026-09-09"
+compatibility_flags = ["nodejs_compat"]
 
 [assets]
 directory = "./dist"
@@ -10,7 +11,11 @@ not_found_handling = "404-page"
 # 而百度要求这条 .html 地址本身返回 200（见 worker/index.js）。
 run_worker_first = ["/baidu_verify_*", "/api/v1/*"]
 
-[[d1_databases]]
-binding = "DB"
-database_name = "devtrends-catalog"
-database_id = "0f6c0b0d-e495-4fed-80f7-82296e789557"
+# MySQL 是唯一在线产品库。读连接允许 Hyperdrive 缓存，写连接禁用缓存。
+[[hyperdrive]]
+binding = "HYPERDRIVE_READ"
+id = "e010513efd9240b194cc4ee16d7779e5"
+
+[[hyperdrive]]
+binding = "HYPERDRIVE_WRITE"
+id = "5e20952cbb6d4407b42be43eb6e8f809"

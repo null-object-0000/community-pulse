@@ -273,7 +273,7 @@ function trendsPage(model, locale) {
   ];
   const facetTabs = facets.map(([id, key], index) => `<button type="button" role="tab" id="trend-tab-${id}" aria-controls="trend-panel-${id}" aria-selected="${index === 0}" data-trend-facet="${id}">${t(locale, key)}</button>`).join('');
   const facetPicker = `<div class="trend-facets"><span>${t(locale, 'trendsDimension')}</span><div role="tablist" aria-label="${t(locale, 'trendsDimension')}">${facetTabs}</div></div>`;
-  // The source list itself comes from D1 so newly registered sources appear without
+  // The source list itself comes from MySQL so newly registered sources appear without
   // changing this template. Keep the control hidden until the API is available: the
   // static report-derived model remains a readable fallback during migration or outage.
   const sourcePicker = `<section class="trend-source-picker" data-trend-source-filter data-locale="${locale}" hidden>

@@ -39,6 +39,9 @@ jobs:
           # 产品库构建使用 Node 内置 SQLite；Node 24 已稳定提供 node:sqlite。
           node-version: 24
 
+      - name: 安装项目依赖
+        run: npm ci
+
       - name: 安装 gh CLI (已随 ubuntu-latest 自带, 此步兼容旧runner)
         run: gh --version || (curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null && sudo apt update && sudo apt install gh -y)
 
@@ -132,24 +135,24 @@ jobs:
           node scripts/collect.js --strict --require-github-repositories --date "$TARGET" --observed-date "$OBSERVED" --markdown --out "../../../知识/大家都在做什么/raw/$TARGET.md" --json-out "../../../知识/大家都在做什么/raw/$TARGET.json"
           ls -la "../../../知识/大家都在做什么/raw/$TARGET."*
 
-      - name: 将全量产品观察增量写入 D1
+      - name: 将全量产品观察增量写入 MySQL
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
-            echo "缺少 CLOUDFLARE_API_TOKEN：全量产品库不能落入 D1。"
+            echo "缺少 CLOUDFLARE_API_TOKEN：全量产品库不能落入 MySQL。"
             exit 1
           fi
           TARGET="${{ steps.setdate.outputs.date }}"
           OBSERVED="$(TZ=Asia/Shanghai date +%F)"
           # runner 是一次性的，所以这里只构建 TARGET..OBSERVED 的增量投影；稳定 product_id
-          # 与 INSERT OR IGNORE 让重复执行幂等。Product Hunt 使用全量 records，不是精选日报子集。
+          # 与 MySQL upsert 让重复执行幂等。Product Hunt 使用全量 records，不是精选日报子集。
           node scripts/catalog/build-database.js --start "$TARGET" --end "$OBSERVED" \
             --out data/catalog/daily.sqlite --replace
           node scripts/catalog/check-database.js data/catalog/daily.sqlite
-          node scripts/catalog/export-d1.js --database data/catalog/daily.sqlite --profile trends
-          node scripts/catalog/upload-d1.js
+          node scripts/catalog/export-mysql.js --database data/catalog/daily.sqlite --profile trends
+          node scripts/catalog/upload-mysql.js
 
       - name: 持久化站点图片
         run: npm run images:sync
