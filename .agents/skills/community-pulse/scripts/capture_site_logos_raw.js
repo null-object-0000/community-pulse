@@ -41,6 +41,9 @@ const { candidatePage, parseIconCandidates, parsePageDescription, parseOgImage, 
 const run = promisify(execFile);
 const SOURCE_ID = 'site-logos';
 const SOURCE_NAME = '官网 Logo 兜底';
+// Fields a record must carry before it can be reused by a later pass. Adding a captured field means
+// adding it here, which is what forces the pages that predate it to be fetched again.
+const RESUME_FIELDS = ['description', 'ogImage'];
 const TIMEZONE = 'Asia/Shanghai';
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const CONFIG = path.join(__dirname, '..', 'config', 'sources.json');
@@ -452,7 +455,12 @@ async function main() {
       if (existing && !args.replace) {
         for (const record of existing.records || []) {
           if (!ownedDates.has(record.reportDate)) continue;
-          // Resumable: keep the logos an earlier pass already proved, only redo the rest.
+          // Resumable: keep what an earlier pass already proved, only redo the rest.
+          // A record written before `description` / `ogImage` existed is NOT resumable — reusing it
+          // verbatim would leave those two tiers permanently empty for its page (the run reports
+          // success while carrying none of the new data). Key presence, not truthiness: a page may
+          // legitimately declare no meta description and no og:image.
+          if (!RESUME_FIELDS.every((field) => field in record)) continue;
           if (record.status === 'ok' || !args.refreshFailures) known.set(recordKey(record), record);
         }
       }

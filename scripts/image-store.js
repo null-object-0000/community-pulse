@@ -132,17 +132,17 @@ function localizeUrl(value, manifest) {
   // ran the capture but not `images:sync`.
   const local = localScreenshotPath(value);
   if (local) {
-    // The committed manifest already maps this capture file to its content-addressed mirror, and with
-    // an external IMAGE_BASE the CDN serves those very bytes — so production builds (Cloudflare
-    // Workers Builds never runs the capture) must not require the gitignored capture output on disk.
-    // Only the repo-local mirror mode has to materialize it, because then `dist/` carries the bytes.
-    const mirrored = manifest[value];
-    if (mirrored && imageOrigin()) return mirrorUrl(mirrored);
-    const name = path.basename(local);
     const mirror = materializeScreenshot(value, storeDir);
-    if (!mirror) throw new Error(`Missing screenshot ${name}; re-run capture_screenshots_raw.js`);
-    manifest[value] = mirror;
-    return mirrorUrl(mirror);
+    if (mirror) {
+      manifest[value] = mirror;
+      return mirrorUrl(mirror);
+    }
+    // The screenshot bytes never enter Git (they are capture output), so a checkout that did not
+    // run the capture has no local copy. With an external IMAGE_BASE the day's upload已经把它们
+    // 放到了 CDN 上的同一内容寻址路径，sync 时写下的 manifest 条目就是权威来源 —— 信任它，
+    // 而不是让构建失败（Cloudflare 的构建正是这种情况）。
+    if (imageOrigin() && Object.hasOwn(manifest, value)) return mirrorUrl(manifest[value]);
+    throw new Error(`Missing screenshot ${path.basename(local)}; re-run capture_screenshots_raw.js`);
   }
   // A URL is buildable when it is mapped to a managed file or when its source CDN is
   // trusted for direct hotlinking (older reports). Anything else must be synced first.
@@ -239,14 +239,30 @@ async function syncImages() {
   // Our screenshots are already on disk, so they are kept unconditionally: without them in
   // `retained` the next prune would drop them from the manifest and the gallery would silently lose
   // its middle tier.
+  // Two sources keep the screenshot tier alive: the day files still reference it, and the manifest
+  // already carries a mirror entry whose bytes live on the CDN. Without the second one a checkout
+  // that never ran the capture would prune every screenshot entry away.
   const localScreenshots = screenshotUrls(dates);
   for (const url of localScreenshots) retained.add(url);
-  const { kept: manifest, removed } = pruneManifest(readManifest(), retained);
+  const existingManifest = readManifest();
+  for (const [url, local] of Object.entries(existingManifest)) {
+    if (localScreenshotPath(url) && local) retained.add(url);
+  }
+  const { kept: manifest, removed } = pruneManifest(existingManifest, retained);
   for (const url of localScreenshots) {
+    if (D.localImage(manifest[url])) continue;
     const mirror = materializeScreenshot(url, storeDir);
     if (mirror) manifest[url] = mirror;
   }
-  const pending = [...retained].filter(url => !D.localImage(manifest[url]) || !fs.existsSync(path.join(storeDir, path.basename(manifest[url]))));
+  // Screenshot entries are never downloaded: their bytes are capture output, not a remote object.
+  // A fresh checkout has the manifest entry (committed) but not the bytes (gitignored), so putting
+  // them in the download queue would fail and null the entry out — silently deleting the middle
+  // tier from every future report. Only entries whose local copy is genuinely absent are re-fetched,
+  // and a screenshot that already has a mirror entry is left exactly as the capture left it.
+  const pending = [...retained].filter(url => {
+    if (localScreenshotPath(url)) return !D.localImage(manifest[url]);
+    return !D.localImage(manifest[url]) || !fs.existsSync(path.join(storeDir, path.basename(manifest[url])));
+  });
   let done = 0, failed = 0;
   const save = () => {
     fs.writeFileSync(manifestPath + '.tmp', JSON.stringify(Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b))), null, 2) + '\n');

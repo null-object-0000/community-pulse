@@ -702,7 +702,7 @@
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
       <span class="item-avatar avatar-${index % 5}${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
       <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="item-tags${discoveryDate ? ' has-date' : ''}">${discoveryDate}${language ? tagHtml({ label: language, origin: 'language' }, locale) : ''}${tags.map(tag => tagHtml(tag, locale)).join('')}</div></div>
-      ${trailing}${galleryHtml(mediaEntries(item), locale)}</article>`;
+      ${trailing}</article>`;
   }
   // Mobile card deck. Stacked cards are what makes the gesture read as "the content is moving":
   // the card under the top one rises to full size as the top card leaves, so a drag always shows

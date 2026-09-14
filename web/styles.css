@@ -573,10 +573,8 @@ body[data-view="cards"] { visibility: hidden; }
 @media (max-width: 600px) { .preferences, .header-search + .preferences { margin-left: auto; }.preferences { gap: 7px; }.theme-picker summary { width: 36px; height: 38px; }.language-picker > summary { padding-inline: 8px; font-size: .8125rem; }.language-picker > summary svg:first-child { width: 17px; }.theme-options { right: -80px; } }
 
 /* A row's gallery is the only place its pictures can appear when it has no GitHub detail page — and
-   most rows with media are exactly that (Product Hunt launches, 投稿, Show HN landing pages). It
-   sits below the row's own metadata so the dense text line above stays unchanged. Rows without any
-   picture render nothing at all (galleryHtml returns ''). */
-.item-gallery { display: flex; align-items: center; gap: 5px; margin-top: 8px; grid-column: 1 / -1; }
+/* Product screenshots belong to project detail pages; the discovery feed stays one dense text row. */
+.item-gallery { display: none; align-items: center; gap: 5px; margin-top: 8px; }
 
 /* Repositories that remain on GitHub Trending are useful context, but not new discoveries. They stay
    collapsed below the feed and keep the shape of a feed row — description, mark, tags, project link —
