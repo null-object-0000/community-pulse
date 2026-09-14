@@ -21,3 +21,11 @@ assets/images/*
 
 # 官网截图的字节按内容寻址存在日文件旁边，体积大且可从采集复现，不进 Git；只提交日文件。
 知识/大家都在做什么/source-raw/screenshots-files/
+
+# 一次性分析脚本、探针产物、回溯备份、QA 图（agent 临时工作区）。
+
+# 从不进入 Git：历史提交里 0 个 .scratch 文件，它只是一直以未跟踪噪音出现在 git status 里。
+
+# attach_repository_language.js 仍会往 .scratch/backup-language-backfill 写备份，与忽略不冲突。
+
+.scratch/

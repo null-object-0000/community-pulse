@@ -197,11 +197,13 @@ test('an under-covered language snapshot suppresses the language lens instead of
     report('2026-09-10', [item('Story Two', 'two', 'weekly-issues', 'https://two.example/', explicit, 'TypeScript')]),
     report('2026-09-12', [item('Story Three', 'three', 'github-trending', 'https://three.example/', explicit, 'TypeScript')]),
   ];
-  // 4 of 28 baseline days covered, mirroring the real layer (starts 2026-09-01).
+  // A synthetic under-covered layer: the shape is what matters, the dates only have to line up
+  // with the fixture reports. Since the Trending backfill real coverage is close to the whole
+  // window, so this no longer mirrors production — it guards the suppression path.
   const partial = {
     recent: { start: "2026-09-07", end: "2026-09-13", days: 7, eligible: 7, covered: 6 },
     baseline: { start: "2026-08-10", end: "2026-09-06", days: 28, eligible: 7, covered: 4 },
-    source: 'github-repositories', sourceStart: '2026-09-01', complete: false,
+    source: 'github-repositories', sourceStart: '2026-06-22', complete: false,
   };
   const suppressed = buildTrends(reports, '2026-09-13', { languages: partial });
   assert.equal(suppressed.languages.complete, false);

@@ -29,8 +29,8 @@ node scripts/collect.js --strict --date 2026-09-07 --observed-date 2026-09-08 \
 - `weekly-issue/`：阮一峰《科技爱好者周刊》正式刊物，年度数据从 `2026-01-01` 开始。
 - `hellogithub-issue/`：《HelloGitHub》月刊正式刊物，年度数据从 `2026-01-01` 开始。
 - `producthunt/`：Product Hunt GraphQL `Post` 节点，年度数据从 `2026-01-01` 开始。
-- `github-trending/`：GitHub Trending `daily` 全球榜完整 HTML 观察快照，从 `2026-09-08` 开始。
-- `github-trending-cn/`：GitHub Trending `daily` 中文口语筛选榜完整 HTML 观察快照，从 `2026-09-08` 开始。
+- `github-trending/`：GitHub Trending `daily` 全球榜完整 HTML 观察快照。逐日实时采集从 `2026-09-08` 开始；`2026-06-23 → 2026-09-01` 由 Internet Archive 归档回填（见下）。
+- `github-trending-cn/`：GitHub Trending `daily` 中文口语筛选榜完整 HTML 观察快照。逐日实时采集从 `2026-09-08` 开始；归档回填只覆盖窗口内 16 天（`2026-06-25 → 2026-09-01` 中的零星日期），其余日子归档里没有这一榜。
 
 GitHub Issues 来源的 `records` 保留 API 返回的 Issue 对象原貌。GitHub 的 Issues API 同时返回 Pull Request；PR 不属于投稿 Issue，因此在分日之前排除，并在每日文件的 `capture.excludedPullRequestCount` 中记录数量。
 
@@ -42,7 +42,11 @@ Issue 会在创建后发生关闭、评论等状态变化。历史文件标记�
 
 Product Hunt 是 GraphQL API，不存在 REST 意义上的“返回整个对象”；每日文件的 `records` 原样保存查询所选择的全部 `Post`，`officialFeatured.records` 则原样保存同日 `featured: true` 的官方精选子集。两边都必须翻到 `hasNextPage=false` 且累计边数等于 API `totalCount`。新采集还会保存下游使用的 `featuredAt`/`votesCount`/`commentsCount`，避免生成报告时再查 API；早期已落盘文件没有这三个字段，下游按缺省值处理。日常报告只消费官方精选，全量底账不丢。日界线按 `Asia/Shanghai` 二次归属，邻日边界记录会排除并计数。
 
-GitHub Trending 是随时变化的榜单，`since=daily` 表示趋势统计窗口，不是可查询的历史日期。因此文件日期是北京时间的实际观察日，`capture.mode` 固定为 `observed-snapshot`；抓取器会拒绝用当前页面回填过去日期。`response.body` 对完整 HTML 做无损 gzip 后以 base64 保存，可按 SHA-256 复核解压后原始字节，不只保留榜单前 15 条；仓库路径只作完整性校验证据。
+GitHub Trending 是随时变化的榜单，`since=daily` 表示趋势统计窗口，不是可查询的历史日期。因此文件日期是北京时间的实际观察日，实时采集的 `capture.mode` 是 `observed-snapshot`；抓取器会拒绝用当前页面回填过去日期。`response.body` 对完整 HTML 做无损 gzip 后以 base64 保存，可按 SHA-256 复核解压后原始字节，不只保留榜单前 15 条；仓库路径只作完整性校验证据。
+
+归档回填的文件用第二种 `capture.mode`：`archived-observation`。它不是「拿今天的页面冒充过去」，而是 Internet Archive 在**那一天**抓下的同一页面，观察日期由归档本身携带，所以可以描述过去。这类文件额外带 `capture.archive`：归档时间戳、CDX digest、实际抓取 URL、当天在归档里的快照数，以及相对站内采集时刻（北京 `00:07`，即报告日 `16:07Z`）的偏移秒数 —— 回填时在同一北京日内挑离该时刻最近的一张。两条榜单的归档 URL 形态不同，必须按归档里真实存在的那条取：全球榜只有不带参数的 `https://github.com/trending` 是逐日归档的（带 `?since=daily` 的变体一年只有十几次），中文榜只有 `https://github.com/trending?spoken_language_code=zh` 有归档且覆盖稀疏；两个页面都按 GitHub 默认的 `daily` 窗口渲染，`capture.since` 仍记 `daily`。`historicalBackfillSupported: false` 在两种模式下都不变：实时采集器依旧不许回填。
+
+回填只动 source-raw 与日报的**新增部分**：`backfill_report_trending.js` 把 Trending 结果条目和 Markdown 分区插进已发布日报（位置与现行版式一致，在 Product Hunt 之前），已有条目与正文逐字节不变 —— 该脚本用原文件的切片拼装，并在拼装时断言「非新增部分与原文完全相等」。语言不来自仓库快照（这些日子的快照是从已发布日报派生的，不认识新增仓库），而是取自归档页面自身的 `programmingLanguage` 字段，写进行的 `language`；star / fork 是测量值，不作为仓库事实写入。
 
 每日可恢复增量：
 
