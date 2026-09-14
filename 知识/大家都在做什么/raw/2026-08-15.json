@@ -134,7 +134,12 @@
             "submission"
           ],
           "externalId": "11190",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11190"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11190",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -153,7 +158,12 @@
             "submission"
           ],
           "externalId": "11191",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11191"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11191",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -394,44 +404,6 @@
       "sourceId": "hellogithub-issues",
       "sourceName": "HelloGitHub·用户投稿",
       "items": [
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] 让 DeepSeek Harness 按需发现 MCP 工具",
-          "url": "https://github.com/labmimors/dsh-mcp-lens",
-          "author": "labmimors",
-          "authorUrl": "https://github.com/labmimors",
-          "publishedAt": "2026-08-14T21:02:51Z",
-          "summary": "项目地址 类别 人工智能 项目标题 让 DeepSeek Harness 按需发现 MCP 工具 项目描述 MCP Lens 是一个 MIT 开源的 DeepSeek Harness 插件，面向几十到上千个 MCP 工具的场景。它不再把整份工具 Schema 每轮都交给模型，而是固定暴露搜索和调用两个入口，命中后才返回准确 inputSchema，并支持本地目录缓存、allow/deny 策略及 stdio、Streamable HTTP。 亮点 同一套 1,000 工具、同一 Harness 运行环境的三任务实测中，完整模型可见工具由 1,025 降到 27，双方均完成 3/3。 request/header.tools JSON 从 674,249 B 降到 27,401 B；这是 UTF8 字节，不冒充 Token。 默认不开放远端工具，denyTools 始终优先；搜索命中后返回原工具的准确 inputSchema。 提供完全在浏览器本地运行的目录计算器，用户可以粘贴脱敏 Tool JSON 验证自己的目录规模，不上传 Schema。 示例代码 bash dsh plugin profile web add dsh profile web 截图或演示视频 本地目录计算器：",
-          "content": "### 项目地址\n\nhttps://github.com/labmimors/dsh-mcp-lens\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n让 DeepSeek Harness 按需发现 MCP 工具\n\n### 项目描述\n\nMCP Lens 是一个 MIT 开源的 DeepSeek Harness 插件，面向几十到上千个 MCP 工具的场景。它不再把整份工具 Schema 每轮都交给模型，而是固定暴露搜索和调用两个入口，命中后才返回准确 inputSchema，并支持本地目录缓存、allow/deny 策略及 stdio、Streamable HTTP。\n\n### 亮点\n\n- 同一套 1,000 工具、同一 Harness 运行环境的三任务实测中，完整模型可见工具由 1,025 降到 27，双方均完成 3/3。\n- `request/header.tools` JSON 从 674,249 B 降到 27,401 B；这是 UTF-8 字节，不冒充 Token。\n- 默认不开放远端工具，`denyTools` 始终优先；搜索命中后返回原工具的准确 inputSchema。\n- 提供完全在浏览器本地运行的目录计算器，用户可以粘贴脱敏 Tool JSON 验证自己的目录规模，不上传 Schema。\n\n### 示例代码\n\n```bash\ndsh plugin --profile web add https://github.com/labmimors/dsh-mcp-lens/releases/download/v0.1.0-rc.6/dsh-mcp-lens-0.1.0-rc.6.tgz\ndsh --profile web\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/labmimors/dsh-mcp-lens/main/assets/mcp-lens-comparison.zh-CN.svg\n\n本地目录计算器：https://labmimors.github.io/dsh-mcp-lens/",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3542",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3542"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] 面向 Agent 构建者的 DeepSeek Harness 实战手册",
-          "url": "https://github.com/sandbaseai/deepseek-harness-handbook",
-          "author": "denial123789",
-          "authorUrl": "https://github.com/denial123789",
-          "publishedAt": "2026-08-15T02:00:44Z",
-          "summary": "项目地址 类别 人工智能 项目标题 面向 Agent 构建者的 DeepSeek Harness 实战手册 项目描述 这是一本独立维护的 DeepSeek Harness 开源实战手册，从 Agent 构建与运维视角讲解快速上手、插件架构、工具审批、沙箱、会话、MCP、子代理与故障排查。内容以官方源码和文档为依据，并标注验证日期，帮助开发者避开预览期常见误区。 亮点 不把 Harness 混同于模型或 API，清楚拆分模型、Provider、运行时、工具、策略与会话层。 提供架构图、任务导向学习路径、多语言导航和可打印 PDF，不是 README 的简单复述。 每篇教程强调可复现命令、成功证据和失败分支，并持续跟踪上游版本变化。 收录子代理路由继承、Windows/MSYS2、工具参数错误、上下文压缩等真实问题的诊断方法。 采用 Apache2.0 许可证，方便社区翻译、修订和再分发。 示例代码 sh npx @deepseekai/dsh web 启动后先运行一个有边界、可验证的任务： text Inspect this repository and explain its runtime boundaries. Do not edit files. Cite the exact files that support each conclusion. 截图或演示视频 在线阅读： 项目预览图：",
-          "content": "### 项目地址\n\nhttps://github.com/sandbaseai/deepseek-harness-handbook\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n面向 Agent 构建者的 DeepSeek Harness 实战手册\n\n### 项目描述\n\n这是一本独立维护的 DeepSeek Harness 开源实战手册，从 Agent 构建与运维视角讲解快速上手、插件架构、工具审批、沙箱、会话、MCP、子代理与故障排查。内容以官方源码和文档为依据，并标注验证日期，帮助开发者避开预览期常见误区。\n\n### 亮点\n\n- 不把 Harness 混同于模型或 API，清楚拆分模型、Provider、运行时、工具、策略与会话层。\n- 提供架构图、任务导向学习路径、多语言导航和可打印 PDF，不是 README 的简单复述。\n- 每篇教程强调可复现命令、成功证据和失败分支，并持续跟踪上游版本变化。\n- 收录子代理路由继承、Windows/MSYS2、工具参数错误、上下文压缩等真实问题的诊断方法。\n- 采用 Apache-2.0 许可证，方便社区翻译、修订和再分发。\n\n### 示例代码\n\n```sh\nnpx @deepseek-ai/dsh web\n```\n\n启动后先运行一个有边界、可验证的任务：\n\n```text\nInspect this repository and explain its runtime boundaries.\nDo not edit files. Cite the exact files that support each conclusion.\n```\n\n### 截图或演示视频\n\n在线阅读：https://sandbaseai.github.io/deepseek-harness-handbook/\n\n项目预览图：https://raw.githubusercontent.com/sandbaseai/deepseek-harness-handbook/main/assets/deepseek-harness-handbook-social-preview.png\n",
-          "metrics": {
-            "comments": 1
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3543",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3543"
-        },
         {
           "sourceId": "hellogithub-issues",
           "title": "[开源推荐] NextBand：探索融合健康传感、语音交互与 AI Agent 的下一代可穿戴设备",

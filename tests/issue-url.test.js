@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 const { extractExternalUrls } = require('../.agents/skills/community-pulse/scripts/source_raw_items.js');
-const { dedupe } = require('../.agents/skills/community-pulse/scripts/collect.js');
+const { dedupe, descriptionSimilarity } = require('../.agents/skills/community-pulse/scripts/collect.js');
 
 test('plain-text issue URLs stop before Chinese prose punctuation', () => {
   const body = 'MakeBingoCards（https://makebingocards.com/）。它是一个工具，演示：https://example.com/demo。文档：https://docs.example.com/：说明';
@@ -25,4 +25,43 @@ test('duplicate submissions with a Chinese-wrapped and a plain website URL colla
   }];
   const output = dedupe(results);
   assert.deepEqual(output[0].items.map(item => item.externalId), ['11650']);
+});
+
+test('same product title and highly similar descriptions collapse when submissions omit the product URL', () => {
+  const base = '基于多智能体架构与自主决策机制，输入自然语言指令，AI 自动完成从目标侦察到漏洞验证的完整渗透测试流程。多智能体协同完成信息收集、攻击与报告。';
+  const newer = `${base}\n<img src="https://example.com/screenshot.png">`;
+  assert.ok(descriptionSimilarity(base, newer) >= 0.85);
+  const results = [{
+    sourceId: 'weekly-issues',
+    sourceName: '科技爱好者周刊投稿',
+    items: [
+      { sourceId: 'weekly-issues', externalId: '11658', author: 'Tangruwo', title: '「开源自荐」RuwoScan - 基于Agentic 架构的自动化AI漏洞扫描工具', url: 'https://github.com/ruanyf/weekly/issues/11658', issueUrl: 'https://github.com/ruanyf/weekly/issues/11658', summary: base, publishedAt: '2026-09-13T04:35:25Z' },
+      { sourceId: 'weekly-issues', externalId: '11659', author: 'Tangruwo', title: '「开源自荐」RuwoScan - 基于Agentic 架构的自动化AI漏洞扫描工具', url: 'https://github.com/ruanyf/weekly/issues/11659', issueUrl: 'https://github.com/ruanyf/weekly/issues/11659', summary: newer, publishedAt: '2026-09-13T04:36:48Z' },
+    ],
+  }];
+  const output = dedupe(results);
+  assert.deepEqual(output[0].items.map(item => item.externalId), ['11659']);
+});
+
+test('same title with materially different descriptions remains separate', () => {
+  const results = [{
+    sourceId: 'weekly-issues', sourceName: '科技爱好者周刊投稿', items: [
+      { sourceId: 'weekly-issues', externalId: '1', author: 'one', title: 'Workbench', url: 'https://example.com/one', summary: '这是一个用于自动化安全测试和漏洞验证的多智能体工具，支持从目标侦察到报告生成的完整流程。', publishedAt: '2026-09-13T01:00:00Z' },
+      { sourceId: 'weekly-issues', externalId: '2', author: 'two', title: 'Workbench', url: 'https://example.com/two', summary: '这是一个给摄影师使用的桌面照片管理软件，支持批量调色、相册分类、客户交付和云端备份。', publishedAt: '2026-09-13T02:00:00Z' },
+    ],
+  }];
+  assert.equal(dedupe(results)[0].items.length, 2);
+});
+
+test('duplicate occurrences sharing one externalId still keep the newest occurrence', () => {
+  const description = '这是一段足够长的产品描述，用于确保两个来源行的内容能够进入去重比较流程，并在相同外部编号时仅删除旧行。';
+  const results = [{
+    sourceId: 'chinese-indie-dev', sourceName: '中国独立开发者', items: [
+      { sourceId: 'chinese-indie-dev', externalId: 'same-id', title: 'Same Product', author: '', url: 'https://same.example', summary: description, publishedAt: '2026-01-30T00:00:00Z' },
+      { sourceId: 'chinese-indie-dev', externalId: 'same-id', title: 'Same Product', author: 'newer', url: 'https://same.example', summary: description, publishedAt: '2026-01-30T01:00:00Z' },
+    ],
+  }];
+  const output = dedupe(results);
+  assert.equal(output[0].items.length, 1);
+  assert.equal(output[0].items[0].author, 'newer');
 });

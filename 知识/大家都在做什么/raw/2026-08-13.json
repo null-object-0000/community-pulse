@@ -207,7 +207,12 @@
             "submission"
           ],
           "externalId": "11158",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11158"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11158",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -284,7 +289,12 @@
             "submission"
           ],
           "externalId": "11162",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11162"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11162",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -413,46 +423,7 @@
     {
       "sourceId": "hellogithub-issues",
       "sourceName": "HelloGitHub·用户投稿",
-      "items": [
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] 用代码定义和约束 AI Agent 工作流的框架",
-          "url": "https://github.com/Fzkuji/OpenProgram",
-          "author": "Fzkuji",
-          "authorUrl": "https://github.com/Fzkuji",
-          "publishedAt": "2026-08-13T03:06:10Z",
-          "summary": "项目地址 类别 人工智能 项目标题 用代码定义和约束 AI Agent 工作流的框架 项目描述 OpenProgram 是一个开源的自编程 AI Agent 框架。开发者用普通程序定义确定性流程，把需要语义判断的步骤交给模型；Agent 还能创建、执行并持续改进自己的函数与工作流。框架统一管理模型、工具、记忆、上下文、执行 DAG 和多 Agent 协作，提供 Web、TUI 与 Python 接口。 亮点 一个 @agenticfunction 把普通函数变成 Agent，类型标注生成工具 schema，控制流仍由代码执行。 每次模型和函数调用进入可追踪的执行 DAG，支持重试、分支、上下文组合和结果复用。 Agent 可以生成并加载新的 agentic function，在运行时改进工作流。 支持多模型、多 Agent、隔离 worktree、Web UI、TUI 和安装式 harness。 项目论文已被 KDD 2026 AgenticSE Workshop 接收。 示例代码 python from openprogram import agenticfunction @agenticfunction def triage(ticket: str, runtime=None) str: \"\"\"Classify a ticket and draft a reply.\"\"\" kind = runtime.exec( ticket, choices=[\"bug\", \"feature\", \"question\"] ) if kind == \"bug\": return runtime.exec(\"Draft a reply requesting reproduction details.\") return runtime.exec(\"Draft a concise reply.\") 截图或演示视频 !OpenProgram Web UI !OpenProgram Agentic Function !OpenProgram Agentic Workflow",
-          "content": "### 项目地址\n\nhttps://github.com/Fzkuji/OpenProgram\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n用代码定义和约束 AI Agent 工作流的框架\n\n### 项目描述\n\nOpenProgram 是一个开源的自编程 AI Agent 框架。开发者用普通程序定义确定性流程，把需要语义判断的步骤交给模型；Agent 还能创建、执行并持续改进自己的函数与工作流。框架统一管理模型、工具、记忆、上下文、执行 DAG 和多 Agent 协作，提供 Web、TUI 与 Python 接口。\n\n### 亮点\n\n- 一个 `@agentic_function` 把普通函数变成 Agent，类型标注生成工具 schema，控制流仍由代码执行。\n- 每次模型和函数调用进入可追踪的执行 DAG，支持重试、分支、上下文组合和结果复用。\n- Agent 可以生成并加载新的 agentic function，在运行时改进工作流。\n- 支持多模型、多 Agent、隔离 worktree、Web UI、TUI 和安装式 harness。\n- 项目论文已被 KDD 2026 AgenticSE Workshop 接收。\n\n### 示例代码\n\n```python\nfrom openprogram import agentic_function\n\n@agentic_function\ndef triage(ticket: str, runtime=None) -> str:\n    \"\"\"Classify a ticket and draft a reply.\"\"\"\n    kind = runtime.exec(\n        ticket, choices=[\"bug\", \"feature\", \"question\"]\n    )\n    if kind == \"bug\":\n        return runtime.exec(\"Draft a reply requesting reproduction details.\")\n    return runtime.exec(\"Draft a concise reply.\")\n```\n\n### 截图或演示视频\n\n![OpenProgram Web UI](https://openprogram.io/docs/images/chat_hero.png)\n\n![OpenProgram Agentic Function](https://openprogram.io/docs/images/highlights/00-agentic-function.png)\n\n![OpenProgram Agentic Workflow](https://openprogram.io/docs/images/highlights/02-agentic-workflow.png)",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3534",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3534"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] seo-geo-skill：让 AI 编程助手做 SEO 与 AI 搜索可见性体检",
-          "url": "https://github.com/asale-ai/seo-geo-skill",
-          "author": "asale-user",
-          "authorUrl": "https://github.com/asale-user",
-          "publishedAt": "2026-08-13T08:55:49Z",
-          "summary": "项目地址 类别 Rust 项目标题 给 AI 编程助手装上 SEO 和 AI 搜索优化技能 项目描述 一个给 AI 编程助手用的网站体检技能集。它把传统 SEO 审计和 GEO（面向 ChatGPT、Perplexity、Gemini、Google AI Overviews 等答案引擎的可见性优化）做成 48 个技能和 23 个子代理，真正干活的是一个 Rust 写的静态二进制，不依赖 Python 和 pip。用自然语言提需求就行，比如看看某个站在 AI 搜索里的可见性，它会给出评分和排好优先级的改进清单。初学者能顺带搞懂 robots.txt、结构化数据、llms.txt、Core Web Vitals 到底在管什么。 亮点 1. 关注点不一样：同类 SEO 工具告诉你在 Google 的排名，它额外回答两个新问题——AI 爬虫到底能不能抓到你的页面，以及你的段落好不好被答案引擎引用（逐段落打可引用分）。 2. 零依赖：执行层是一个 Rust 静态二进制，一条 curl 装完并校验 SHA256，没有 virtualenv 和 pip install 的折腾；没有 Node 也能装。 3. 不绑定单一工具：通过 npx skills 支持 75+ 个 agent（Claude Code、Codex、Cursor、Cline、Copilot、Windsurf 等），一份副本放在 ~/.agents/skills 里软链到各个 agent，技能和二进制版本锁在同一个 tag，不会不同步。 4. 大部分能力开箱可用：可引用度评分、AI 爬虫可达性检测、llms.txt 生成与校验、结构化数据检测与生成、hreflang、图片审计、部署间 SEO 回归对比、PDF 报告，全部不需要注册和 API key；Search Console / PageSpeed / Moz / DataForSEO 是可选增强，缺什么会直接告诉你。 5. 不假装原创：技能分类和评分模型来自两个 MIT 项目（claudeseo 和 geoseoclaude），README 里完整保留了上游署名链，本项目做的是把执行步骤从 Python 搬到二进制、并把安装面从 Claude Code 扩到 75+ 个 agent。 示例代码 markdown 安装（macOS / Linux） curl fsSL | sh seogeo version 然后在 Claude Code / Cursor / Codex 里直接用自然语言问： 帮我审计 的 AI 搜索可见性 为什么我的产品页没被 ChatGPT 引用？ 检查 AI 爬虫能不能真的访问我的站点 也可以直接用斜杠命令： /geo audit GEO + SEO 综合评分与改进计划 /geo citability 逐段落可引用度评分 /geo llmstxt 生成或校验 llms.txt /seo technical 可抓取性、可索引性、Core Web Vitals 截图或演示视频 No response",
-          "content": "### 项目地址\n\nhttps://github.com/asale-ai/seo-geo-skill\n\n### 类别\n\nRust\n\n### 项目标题\n\n给 AI 编程助手装上 SEO 和 AI 搜索优化技能\n\n### 项目描述\n\n一个给 AI 编程助手用的网站体检技能集。它把传统 SEO 审计和 GEO（面向 ChatGPT、Perplexity、Gemini、Google AI Overviews 等答案引擎的可见性优化）做成 48 个技能和 23 个子代理，真正干活的是一个 Rust 写的静态二进制，不依赖 Python 和 pip。用自然语言提需求就行，比如看看某个站在 AI 搜索里的可见性，它会给出评分和排好优先级的改进清单。初学者能顺带搞懂 robots.txt、结构化数据、llms.txt、Core Web Vitals 到底在管什么。\n\n### 亮点\n\n1. **关注点不一样**：同类 SEO 工具告诉你在 Google 的排名，它额外回答两个新问题——AI 爬虫到底能不能抓到你的页面，以及你的段落好不好被答案引擎引用（逐段落打可引用分）。\n\n2. **零依赖**：执行层是一个 Rust 静态二进制，一条 curl 装完并校验 SHA256，没有 virtualenv 和 pip install 的折腾；没有 Node 也能装。\n\n3. **不绑定单一工具**：通过 npx skills 支持 75+ 个 agent（Claude Code、Codex、Cursor、Cline、Copilot、Windsurf 等），一份副本放在 ~/.agents/skills 里软链到各个 agent，技能和二进制版本锁在同一个 tag，不会不同步。\n\n4. **大部分能力开箱可用**：可引用度评分、AI 爬虫可达性检测、llms.txt 生成与校验、结构化数据检测与生成、hreflang、图片审计、部署间 SEO 回归对比、PDF 报告，全部不需要注册和 API key；Search Console / PageSpeed / Moz / DataForSEO 是可选增强，缺什么会直接告诉你。\n\n5. **不假装原创**：技能分类和评分模型来自两个 MIT 项目（claude-seo 和 geo-seo-claude），README 里完整保留了上游署名链，本项目做的是把执行步骤从 Python 搬到二进制、并把安装面从 Claude Code 扩到 75+ 个 agent。\n\n### 示例代码\n\n```markdown\n# 安装（macOS / Linux）\ncurl -fsSL https://raw.githubusercontent.com/asale-ai/seo-geo-skill/main/install.sh | sh\nseogeo --version\n\n# 然后在 Claude Code / Cursor / Codex 里直接用自然语言问：\n#   帮我审计 https://example.com 的 AI 搜索可见性\n#   为什么我的产品页没被 ChatGPT 引用？\n#   检查 AI 爬虫能不能真的访问我的站点\n\n# 也可以直接用斜杠命令：\n/geo audit https://example.com        # GEO + SEO 综合评分与改进计划\n/geo citability https://example.com   # 逐段落可引用度评分\n/geo llmstxt https://example.com      # 生成或校验 llms.txt\n/seo technical https://example.com    # 可抓取性、可索引性、Core Web Vitals\n```\n\n### 截图或演示视频\n\n_No response_",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3535",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3535"
-        }
-      ]
+      "items": []
     },
     {
       "sourceId": "hellogithub-issue",

@@ -68,6 +68,42 @@ function itemIdentity(item) {
   return `item:${(item.author || '').toLowerCase()}|${normUrl(item.url)}`;
 }
 
+const DESCRIPTION_DEDUPE_THRESHOLD = 0.85;
+const DESCRIPTION_DEDUPE_MIN_LENGTH = 40;
+
+// A source may publish the same product twice without including its canonical URL.
+// Keep this fallback deliberately strict: the normalized title must match exactly,
+// and only substantial, highly similar descriptions qualify.
+function normalizedProductTitle(value) {
+  return String(value || '').normalize('NFKC').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function normalizedDescription(value) {
+  return String(value || '')
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/https?:\/\/\S+/g, ' ')
+    .replace(/[^\p{L}\p{N}]+/gu, '');
+}
+
+function descriptionSimilarity(left, right) {
+  const a = normalizedDescription(left);
+  const b = normalizedDescription(right);
+  if (a.length < DESCRIPTION_DEDUPE_MIN_LENGTH || b.length < DESCRIPTION_DEDUPE_MIN_LENGTH) return 0;
+  const shingles = (text) => {
+    const values = new Set();
+    for (let index = 0; index <= text.length - 3; index += 1) values.add(text.slice(index, index + 3));
+    return values;
+  };
+  const aSet = shingles(a);
+  const bSet = shingles(b);
+  let overlap = 0;
+  for (const value of aSet) if (bSet.has(value)) overlap += 1;
+  return (2 * overlap) / (aSet.size + bSet.size);
+}
+
 function recentReports(reportRoot, reportDate, days = TRENDING_COOLDOWN_DAYS) {
   if (!reportDate) return [];
   const reports = [];
@@ -251,7 +287,7 @@ function dedupe(results) {
   const items = [];
   for (const r of results) {
     for (const it of r.items) {
-      items.push({ ...it, __source: r.sourceId, __sourceName: r.sourceName });
+      items.push({ ...it, __source: r.sourceId, __sourceName: r.sourceName, __original: it });
       const key = `${r.sourceId}|${itemIdentity(it)}`;
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(it);
@@ -259,16 +295,16 @@ function dedupe(results) {
   }
 
   // A: 源内去重 (同 sourceId+作者+URL, 保留最新)
-  const keep = new Set(); // 保留的 externalId+sourceId
-  const removed = new Set(); // sourceId|externalId of removed
+  // Historical malformed rows can share an externalId. Track occurrences by
+  // object identity so removing one duplicate never removes its keeper too.
+  const removed = new WeakSet();
   const dupLog = [];
   for (const [key, list] of groups) {
-    if (list.length <= 1) { keep.add(`${list[0].sourceId}|${list[0].externalId}`); continue; }
+    if (list.length <= 1) continue;
     // 按 publishedAt 降序, 保留最新
     const sorted = [...list].sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''));
-    keep.add(`${sorted[0].sourceId}|${sorted[0].externalId}`);
     for (const it of sorted.slice(1)) {
-      removed.add(`${it.sourceId}|${it.externalId}`); // 源内重复的移除
+      removed.add(it); // 源内重复的移除
       dupLog.push(`[源内去重] ${it.sourceId} ${it.author}: ${(it.title || '').slice(0, 30)} (保留 ${sorted[0].publishedAt})`);
     }
   }
@@ -276,6 +312,7 @@ function dedupe(results) {
   // B: 跨源聚合 (不同 sourceId 的同一项目，保留最新并标注来源)
   const crossGroups = new Map(); // key = canonical item identity -> items[]
   for (const it of items) {
+    if (removed.has(it.__original)) continue;
     const key = itemIdentity(it);
     if (!crossGroups.has(key)) crossGroups.set(key, []);
     crossGroups.get(key).push(it);
@@ -288,18 +325,60 @@ function dedupe(results) {
     const keeper = sorted[0];
     const srcNames = [...new Set(list.map(it => it.__sourceName))];
     for (const it of sorted.slice(1)) {
-      // 被并入的条目: 从 removed 集合中移除 (仅当它原本要保留)
-      removed.add(`${it.__source}|${it.externalId}`);
+      removed.add(it.__original);
       dupLog.push(`[跨源聚合] ${it.author}: ${(it.title || '').slice(0, 30)} (并入 ${keeper.__sourceName}, 来源: ${srcNames.join('+')})`);
     }
-    // 标记 keeper 的来源 (按 sourceId+externalId 查找原 results 里的对象)
-    const keepId = `${keeper.__source}|${keeper.externalId}`;
-    for (const r of results) {
-      for (const it of r.items) {
-        if (`${r.sourceId}|${it.externalId}` === keepId) {
-          it.__mergedSources = srcNames;
-          it.__mergedCount = list.length;
-        }
+    keeper.__original.__mergedSources = srcNames;
+    keeper.__original.__mergedCount = list.length;
+  }
+
+  // C: URL-less duplicate submissions. GitHub Issues are only envelopes, so two
+  // duplicate posts otherwise have distinct URLs. Exact normalized title + fuzzy
+  // description matching supplies a conservative final identity signal.
+  const titleGroups = new Map();
+  for (const it of items) {
+    if (removed.has(it.__original)) continue;
+    const title = normalizedProductTitle(it.title);
+    if (!title) continue;
+    if (!titleGroups.has(title)) titleGroups.set(title, []);
+    titleGroups.get(title).push(it);
+  }
+  for (const list of titleGroups.values()) {
+    if (list.length <= 1) continue;
+    const parents = list.map((_, index) => index);
+    const find = (index) => parents[index] === index ? index : (parents[index] = find(parents[index]));
+    const union = (left, right) => {
+      const a = find(left), b = find(right);
+      if (a !== b) parents[b] = a;
+    };
+    for (let left = 0; left < list.length; left += 1) {
+      for (let right = left + 1; right < list.length; right += 1) {
+        const similarity = descriptionSimilarity(
+          list[left].summary || list[left].content,
+          list[right].summary || list[right].content,
+        );
+        if (similarity >= DESCRIPTION_DEDUPE_THRESHOLD) union(left, right);
+      }
+    }
+    const components = new Map();
+    for (let index = 0; index < list.length; index += 1) {
+      const root = find(index);
+      if (!components.has(root)) components.set(root, []);
+      components.get(root).push(list[index]);
+    }
+    for (const component of components.values()) {
+      if (component.length <= 1) continue;
+      const sorted = [...component].sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''));
+      const keeper = sorted[0];
+      const srcNames = [...new Set(component.map(it => it.__sourceName))];
+      for (const it of sorted.slice(1)) {
+        removed.add(it.__original);
+        const similarity = descriptionSimilarity(keeper.summary || keeper.content, it.summary || it.content);
+        dupLog.push(`[标题+描述去重] ${it.author}: ${(it.title || '').slice(0, 30)} (相似度 ${(similarity * 100).toFixed(1)}%, 并入 ${keeper.__sourceName})`);
+      }
+      if (srcNames.length > 1) {
+        keeper.__original.__mergedSources = srcNames;
+        keeper.__original.__mergedCount = srcNames.length;
       }
     }
   }
@@ -307,12 +386,45 @@ function dedupe(results) {
   // 重建 results (去掉被去重的)
   const newResults = results.map(r => ({
     ...r,
-    items: r.items.filter(it => !removed.has(`${r.sourceId}|${it.externalId}`)),
+    items: r.items.filter(it => !removed.has(it)),
   }));
 
   // 打印日志
   for (const l of dupLog) console.error(l);
   return newResults;
+}
+
+function renderMarkdown(results, dateFilter, trendingPolicy = null) {
+  const dateLabel = dateFilter || '最新';
+  const lines = [`# 📰 大家都在做什么 · ${dateLabel}`, ''];
+  for (const r of results) {
+    if (r.error) { lines.push(`## ${r.sourceName} ❌ 抓取失败`, '', r.error, ''); continue; }
+    if (!r.items.length) continue;
+    lines.push(`## ${r.sourceName}（${r.items.length} 条）`, '');
+    for (const it of r.items) {
+      const author = it.author ? ` 👤 ${it.author}` : '';
+      const mergedTag = it.__mergedSources && it.__mergedSources.length > 1
+        ? `\n\n📌 同时收录于：${it.__mergedSources.join('、')}`
+        : '';
+      const desc = it.summary ? `\n> ${it.summary}` : '';
+      const ghBadgeStr = [it.github ? ghBadge(it.github) : '', sourceMetricBadge(it)].filter(Boolean).join(' · ');
+      const ghLine = ghBadgeStr ? `\n\n${ghBadgeStr}` : '';
+      lines.push(`### ${it.title}${author}${desc}${ghLine}${itemLinks(it)}${mergedTag}`, '', '');
+    }
+  }
+  if (trendingPolicy?.continuedItems.length) {
+    lines.push(`## GitHub Trending·持续热门（${trendingPolicy.continuedItems.length} 条）`, '', `> 这些项目已在最近 ${trendingPolicy.cooldownDays} 期日报出现，本期不重复展开。`, '');
+    for (const it of trendingPolicy.continuedItems) {
+      const today = Number(it.metrics?.today || 0);
+      const metric = today > 0 ? ` · 今日 +${fmtK(today)} stars` : '';
+      const appearances = it.trendingContinuation?.recentAppearances || 1;
+      lines.push(`- [${it.title}](${it.githubUrl || it.url}) · 近 ${trendingPolicy.cooldownDays} 期出现 ${appearances} 次${metric}`);
+    }
+    lines.push('');
+  }
+  // Source text occasionally carries trailing spaces. Keep generated reports
+  // diff-clean and end them with exactly one newline.
+  return `${lines.join('\n').split('\n').map(line => line.trimEnd()).join('\n').trimEnd()}\n`;
 }
 
 async function main() {
@@ -400,40 +512,7 @@ async function main() {
 
   if (markdown) {
     // Markdown 格式产物 (发 .md 文件用)
-    const dateLabel = dateFilter || '最新';
-    const lines = [`# 📰 大家都在做什么 · ${dateLabel}`, ''];
-    for (const r of results) {
-      if (r.error) { lines.push(`## ${r.sourceName} ❌ 抓取失败`, '', r.error, ''); continue; }
-      if (!r.items.length) continue; // 0 条不显示 (如非发布日的周刊/月刊)
-      lines.push(`## ${r.sourceName}（${r.items.length} 条）`, '');
-      for (const it of r.items) {
-        const author = it.author ? ` 👤 ${it.author}` : '';
-        // 跨源聚合标注: 放描述区下方另起一行, 不进标题
-        const mergedTag = it.__mergedSources && it.__mergedSources.length > 1
-          ? `\n\n📌 同时收录于：${it.__mergedSources.join('、')}`
-          : '';
-        // 标题统一使用纯文字；所有链接在内容下方单独展示。
-        const title = it.title;
-        const desc = it.summary ? `\n> ${it.summary}` : '';
-        // GitHub 仓库信息: 独立段落 (不带 > 引用, 与描述分开; 仅当条目是 GitHub 开源项目且有补全数据)
-        const ghBadgeStr = [it.github ? ghBadge(it.github) : '', sourceMetricBadge(it)].filter(Boolean).join(' · ');
-        const ghLine = ghBadgeStr ? `\n\n${ghBadgeStr}` : '';
-        const linkLine = itemLinks(it);
-        lines.push(`### ${title}${author}${desc}${ghLine}${linkLine}${mergedTag}`, '');
-        lines.push('');
-      }
-    }
-    if (trendingPolicy?.continuedItems.length) {
-      lines.push(`## GitHub Trending·持续热门（${trendingPolicy.continuedItems.length} 条）`, '', `> 这些项目已在最近 ${trendingPolicy.cooldownDays} 期日报出现，本期不重复展开。`, '');
-      for (const it of trendingPolicy.continuedItems) {
-        const today = Number(it.metrics?.today || 0);
-        const metric = today > 0 ? ` · 今日 +${fmtK(today)} stars` : '';
-        const appearances = it.trendingContinuation?.recentAppearances || 1;
-        lines.push(`- [${it.title}](${it.githubUrl || it.url}) · 近 ${trendingPolicy.cooldownDays} 期出现 ${appearances} 次${metric}`);
-      }
-      lines.push('');
-    }
-    const text = lines.join('\n');
+    const text = renderMarkdown(results, dateFilter, trendingPolicy);
     if (outFile) {
       fs.writeFileSync(outFile, text);
       console.log(`written to ${outFile}`);
@@ -479,7 +558,10 @@ if (require.main === module) main().catch(e => { console.error('FATAL', e); proc
 module.exports = {
   applyTrendingPolicy,
   dedupe,
+  descriptionSimilarity,
   itemIdentity,
+  normalizedProductTitle,
+  renderMarkdown,
   recentReports,
   shiftDate,
   trendingKeys,

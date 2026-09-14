@@ -223,25 +223,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "[开源自荐] Vox Director:一句话生成 Vox 拼贴风讲解/广告视频的 agent skill",
-          "url": "https://github.com/Alisa0808/vox-director",
-          "author": "Alisa0808",
-          "authorUrl": "https://github.com/Alisa0808",
-          "publishedAt": "2026-07-13T03:19:43Z",
-          "summary": "项目地址: 一个开源(MIT)的 agent skill:给一句话选题,自动产出一条 Vox 拼贴风格的讲解 / 广告短视频 —— 脚本 → 拼贴关键帧 → 动效 → 旁白 → 配乐 → 字幕,全流程自动化,后端跑 Atlas Cloud API + 本地 ffmpeg。支持 Claude Code、Codex 等任意 SKILL.md agent。 亮点 一句话进,一条成片出;只有两个人工决策点(确认分镜、挑风格),其余全自动 真·纸质拼贴视觉(撕纸/网点/剪纸标题),不是\"会动的 PPT\";风格随主题自适应 一条 60 秒成片,几分钟、几美元;仓库内含中华文明、货币简史、墨西哥美食三条样片 后端可插拔、跨 agent(Claude Code / Codex),不绑定单一产品",
-          "content": "**项目地址**:https://github.com/Alisa0808/vox-director\n\n一个开源(MIT)的 **agent skill**:给一句话选题,自动产出一条 **Vox 拼贴风格**的讲解 / 广告短视频 —— 脚本 → 拼贴关键帧 → 动效 → 旁白 → 配乐 → 字幕,全流程自动化,后端跑 Atlas Cloud API + 本地 ffmpeg。支持 Claude Code、Codex 等任意 SKILL.md agent。\n\n**亮点**\n- 一句话进,一条成片出;只有两个人工决策点(确认分镜、挑风格),其余全自动\n- 真·纸质拼贴视觉(撕纸/网点/剪纸标题),不是\"会动的 PPT\";风格随主题自适应\n- 一条 60 秒成片,几分钟、几美元;仓库内含中华文明、货币简史、墨西哥美食三条样片\n- 后端可插拔、跨 agent(Claude Code / Codex),不绑定单一产品",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10692",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10692"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】Orbital：以本地文件夹为长期记忆的本地AI agent（支持 Claude Code / Codex）",
           "url": "https://github.com/zqiren/Orbital",
           "author": "zqiren",
@@ -357,25 +338,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Orca — DeepSeek 原生终端 Coding Agent，支持持久 Goal 模式和 Workflow 编排",
-          "url": "https://github.com/echoVic/blade-deepseek",
-          "author": "echoVic",
-          "authorUrl": "https://github.com/echoVic",
-          "publishedAt": "2026-07-13T09:40:59Z",
-          "summary": "项目简介 Orca 是一个本地终端 Coding Agent，专为 DeepSeek 模型设计。它不是对通用 Agent 框架的包装，而是从提示词构造、SSE 流式解析、工具调用语义到上下文窗口管理，全链路围绕 DeepSeek 的行为特征构建。 仓库地址： （产品名 Orca，仓库名 bladedeepseek） 官网： 解决什么问题 Claude Code、Cursor 等 AI 编程工具很好用，但它们绑定特定模型和平台。Orca 想做的事很简单：用你自己的 DeepSeek API Key，在终端里跑一个深谙 DeepSeek 脾气的 Coding Agent。 核心亮点 1. Persistent Goal 模式：设个目标，它自己一直干——用 /goal 设定一个长期目标（比如\"把这个模块的测试覆盖率提上去\"），Agent 每轮成功后自动继续下一轮；重启终端、恢复会话都不会丢失进度，只有模型自己判定\"已完成\"或\"被阻塞\"才会停下来。 2. Workflow 多阶段编排 + 子 Agent——Workflow 引擎支持多阶段并行任务编排（脚本可放在项目 .orca/workflows/ 下随仓库共享），工具调用以后台任务运行，最终报告自动送回当前 TUI 会话；同步 subagent 共享 workspace 和审批策略。 3. DeepSeek 原生，不是通用壳——默认 max reasoning effort、reasoning/content 双流 SSE 解析、空回复自动重试。这些不是配置项，是融在 Agent loop 里的行为。 4. 为前缀缓存做的省钱设计——DeepSeek 的上下文缓存按前缀命中计费，命中部分输入价格远低于未命中。Orca 为此把整条请求链做成字节级稳定：对话历史只追加、从不改写已有消息，工具 schema 序列化顺序完全确定（这两点都有测试锁定），保证多轮长任务的前缀持续命中缓存；每轮的缓存命中 token 数也会被解析并计入实时成本显示。 5. 1M token 上下文，自动管理——对话超过 80% 阈值自动压缩，保留 system prompt 和最近对话，长任务不断片。 6. 按能力分级的审批策略——每个工具声明自己的能力（读 / 写 / shell / 网络），审批按能力分类放行，不是简单的\"全部允许 / 全部拦截\"。 快速上手 单个二进制文件，macOS / Linux 通用，npm 或 curl 安装： bash npm 安装 npm install g @bladeai/orca 或 curl 安装 curl fsSL | sh 设置 API Key 即可使用 export DEEPSEEKAPIKEY=sk... orca exec \"fix this test\" 项目状态 已迭代 200+ 个 release，当前 v0.2.21，npm 可直接安装。 欢迎试用和反馈！QQ 群：472309526",
-          "content": "## 项目简介\n\nOrca 是一个本地终端 Coding Agent，专为 DeepSeek 模型设计。它不是对通用 Agent 框架的包装，而是从提示词构造、SSE 流式解析、工具调用语义到上下文窗口管理，全链路围绕 DeepSeek 的行为特征构建。\n\n- 仓库地址：https://github.com/echoVic/blade-deepseek （产品名 Orca，仓库名 blade-deepseek）\n- 官网：https://orcaagent.dev\n\n## 解决什么问题\n\nClaude Code、Cursor 等 AI 编程工具很好用，但它们绑定特定模型和平台。Orca 想做的事很简单：**用你自己的 DeepSeek API Key，在终端里跑一个深谙 DeepSeek 脾气的 Coding Agent。**\n\n## 核心亮点\n\n1. **Persistent Goal 模式：设个目标，它自己一直干**——用 `/goal` 设定一个长期目标（比如\"把这个模块的测试覆盖率提上去\"），Agent 每轮成功后自动继续下一轮；重启终端、恢复会话都不会丢失进度，只有模型自己判定\"已完成\"或\"被阻塞\"才会停下来。\n2. **Workflow 多阶段编排 + 子 Agent**——Workflow 引擎支持多阶段并行任务编排（脚本可放在项目 `.orca/workflows/` 下随仓库共享），工具调用以后台任务运行，最终报告自动送回当前 TUI 会话；同步 subagent 共享 workspace 和审批策略。\n3. **DeepSeek 原生，不是通用壳**——默认 max reasoning effort、reasoning/content 双流 SSE 解析、空回复自动重试。这些不是配置项，是融在 Agent loop 里的行为。\n4. **为前缀缓存做的省钱设计**——DeepSeek 的上下文缓存按前缀命中计费，命中部分输入价格远低于未命中。Orca 为此把整条请求链做成字节级稳定：对话历史只追加、从不改写已有消息，工具 schema 序列化顺序完全确定（这两点都有测试锁定），保证多轮长任务的前缀持续命中缓存；每轮的缓存命中 token 数也会被解析并计入实时成本显示。\n5. **1M token 上下文，自动管理**——对话超过 80% 阈值自动压缩，保留 system prompt 和最近对话，长任务不断片。\n6. **按能力分级的审批策略**——每个工具声明自己的能力（读 / 写 / shell / 网络），审批按能力分类放行，不是简单的\"全部允许 / 全部拦截\"。\n\n## 快速上手\n\n单个二进制文件，macOS / Linux 通用，npm 或 curl 安装：\n\n```bash\n# npm 安装\nnpm install -g @blade-ai/orca\n\n# 或 curl 安装\ncurl -fsSL https://orcaagent.dev/install.sh | sh\n\n# 设置 API Key 即可使用\nexport DEEPSEEK_API_KEY=sk-...\norca exec \"fix this test\"\n```\n\n## 项目状态\n\n已迭代 200+ 个 release，当前 v0.2.21，npm 可直接安装。\n\n欢迎试用和反馈！QQ 群：472309526\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10700",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10700"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】屏译（Screen Translator）Android 游戏 / 漫画实时屏幕翻译",
           "url": "https://github.com/ciddwd/overlay-translator",
           "author": "ciddwd",
@@ -480,7 +442,12 @@
             "submission"
           ],
           "externalId": "3436",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3436"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3436",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -537,7 +504,12 @@
             "submission"
           ],
           "externalId": "3439",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3439"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3439",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

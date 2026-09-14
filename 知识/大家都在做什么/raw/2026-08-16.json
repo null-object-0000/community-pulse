@@ -20,7 +20,13 @@
             "indie-dev",
             "已上线"
           ],
-          "externalId": "2026-08-16-MetaClean-https://github.com/Moresyl/metaclean"
+          "externalId": "2026-08-16-MetaClean-https://github.com/Moresyl/metaclean",
+          "__mergedSources": [
+            "中国独立开发者",
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 3
         }
       ]
     },
@@ -45,26 +51,12 @@
             "submission"
           ],
           "externalId": "11205",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11205"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】MetaClean：离线清理文件中的隐私元数据",
-          "url": "https://github.com/Moresyl/metaclean",
-          "author": "Moresyl",
-          "authorUrl": "https://github.com/Moresyl",
-          "publishedAt": "2026-08-15T16:07:32Z",
-          "summary": "分享文件时，图片里的拍摄位置和设备信息、Office 文档里的作者与修订信息，以及 PDF 的创建工具等元数据，常常会被一起发送出去。为了让清理过程更直观，我做了 MetaClean。 GitHub： 它是一款 MIT 开源、完全离线运行的跨平台桌面工具，面向分享文件前的隐私清理场景。 主要功能： 批量清理图片、PDF 和 Office 文档中的敏感元数据 默认保留原文件，生成单独的清理副本 文件只在本机处理，不上传服务器 支持拖放文件、任务进度与结果展示 提供 Windows、macOS 和 Linux 原生安装包 支持系统托盘、最小化和桌面快捷方式 下载： !MetaClean 软件界面 项目目前处于早期阶段，欢迎试用并反馈不同文件格式的兼容情况。 披露：我是 MetaClean 的维护者。",
-          "content": "分享文件时，图片里的拍摄位置和设备信息、Office 文档里的作者与修订信息，以及 PDF 的创建工具等元数据，常常会被一起发送出去。为了让清理过程更直观，我做了 **MetaClean**。\n\n**GitHub：** https://github.com/Moresyl/metaclean\n\n它是一款 MIT 开源、完全离线运行的跨平台桌面工具，面向分享文件前的隐私清理场景。\n\n**主要功能：**\n\n- 批量清理图片、PDF 和 Office 文档中的敏感元数据\n- 默认保留原文件，生成单独的清理副本\n- 文件只在本机处理，不上传服务器\n- 支持拖放文件、任务进度与结果展示\n- 提供 Windows、macOS 和 Linux 原生安装包\n- 支持系统托盘、最小化和桌面快捷方式\n\n**下载：** https://github.com/Moresyl/metaclean/releases/tag/v0.1.0\n\n![MetaClean 软件界面](https://raw.githubusercontent.com/Moresyl/metaclean/master/assets/metaclean-screenshot.png)\n\n项目目前处于早期阶段，欢迎试用并反馈不同文件格式的兼容情况。\n\n披露：我是 MetaClean 的维护者。",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11205",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
           ],
-          "externalId": "11206",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11206"
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -122,25 +114,6 @@
           ],
           "externalId": "11209",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11209"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】dsh-deepread：五种模式精读图书与文章的 AI 精读助手",
-          "url": "https://github.com/xiehuan123/dsh-deepread",
-          "author": "xiehuan123",
-          "authorUrl": "https://github.com/xiehuan123",
-          "publishedAt": "2026-08-15T17:09:49Z",
-          "summary": "收藏的文章永远「稍后读」，读完的书转头就忘 AI 工具让内容生产越来越快，但「读懂」这件事没有跟上：公众号文章点个收藏就再也没打开；PDF 读几页就忘了前面；更别提把一本书真正消化、能讲给别人听。普通 AI 总结往往只给一段话，细节和论据全丢了。 我做了一个精读工具：DeepRead（dshdeepread） 它把精读做成了流水线，五种模式按需选： quick 快速要点：一句话说清「这篇文章讲啥」 deep 深度精读：核心论点 + 论证结构 + 原文引文，长文自动分段 map 知识地图：输出「观点—证据—数据—关系」结构化报告，每条观点配证据，四档置信度区分作者原意与推断，附 Mermaid 思维导图与主动回忆问题 feynman 费曼读书法：11 步闭环（提问→分章→合上书讲解→自检缺口→回原文修正→再讲一次），并给出第 1/3/7/14/30 天间隔复习计划 book 全书精读：整本书分部分读透再汇总 输入支持微信公众号链接、txt/md/html/pdf 文件（内置纯 JS PDF 提取器，无需外部依赖）、直接粘贴文本；可导出 Markdown、FreeMind/XMind 思维导图和 HTML 网页报告。 项目地址： 安装 DeepSeek Harness 插件（npm 已发布）：dsh plugin profile web add dshdeepread Claude Code / Codex：claude plugin install xiehuan123/dshdeepread 通用技能安装：npx skills add xiehuan123/dshdeepread MIT 协议，欢迎体验与反馈 😁",
-          "content": "## 收藏的文章永远「稍后读」，读完的书转头就忘\n\nAI 工具让内容生产越来越快，但「读懂」这件事没有跟上：公众号文章点个收藏就再也没打开；PDF 读几页就忘了前面；更别提把一本书真正消化、能讲给别人听。普通 AI 总结往往只给一段话，细节和论据全丢了。\n\n## 我做了一个精读工具：DeepRead（dsh-deepread）\n\n它把精读做成了流水线，五种模式按需选：\n\n- `quick` 快速要点：一句话说清「这篇文章讲啥」\n- `deep` 深度精读：核心论点 + 论证结构 + 原文引文，长文自动分段\n- `map` 知识地图：输出「观点—证据—数据—关系」结构化报告，每条观点配证据，四档置信度区分作者原意与推断，附 Mermaid 思维导图与主动回忆问题\n- `feynman` 费曼读书法：11 步闭环（提问→分章→合上书讲解→自检缺口→回原文修正→再讲一次），并给出第 1/3/7/14/30 天间隔复习计划\n- `book` 全书精读：整本书分部分读透再汇总\n\n输入支持微信公众号链接、txt/md/html/pdf 文件（内置纯 JS PDF 提取器，无需外部依赖）、直接粘贴文本；可导出 Markdown、FreeMind/XMind 思维导图和 HTML 网页报告。\n\n项目地址：https://github.com/xiehuan123/dsh-deepread\n\n## 安装\n\n- DeepSeek Harness 插件（npm 已发布）：`dsh plugin --profile web add dsh-deepread`\n- Claude Code / Codex：`claude plugin install xiehuan123/dsh-deepread`\n- 通用技能安装：`npx skills add xiehuan123/dsh-deepread`\n\nMIT 协议，欢迎体验与反馈 😁\n",
-          "metrics": {
-            "comments": 1
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11210",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11210"
         },
         {
           "sourceId": "weekly-issues",
@@ -241,25 +214,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】dsh-win32，补上 DeepSeek Harness 缺失的 Windows 进程检查器",
-          "url": "https://github.com/sjh9714/dsh-win32",
-          "author": "sjh9714",
-          "authorUrl": "https://github.com/sjh9714",
-          "publishedAt": "2026-08-16T05:07:29Z",
-          "summary": "项目地址 DeepSeek Harness 在 Windows 上选极简模式会直接报错，terminal inspection is unsupported on platform win32。第一反应都是 nodepty 没装好，但重装、换 Node 版本、装 VS Build Tools 全没用，报错一个字都不变。 顺着报错读源码才发现，问题不在 nodepty。官方 subprocess 运行时里有个 createProcessInspector，按平台分派进程检查器实现，Linux 一个 macOS 一个，win32 分支是直接 throw。而这次调用发生在起 PTY 之前，所以 Windows 上根本轮不到 nodepty 表演，前一步就抛了。少了这块，持久 shell 这个概念在 Windows 上就立不住，依赖它的极简模式整个不可用。 这个项目就是通过官方留的注入座补上 win32 实现，核心一行不改。进程树用一次 CIM 快照，pid、ppid 和 CreationDate 三者构成进程身份防 pid 复用，信号走 taskkill，中途取消按 ConPTY 惯例把 CtrlC 作为 PTY 输入写进去。 做的过程中还挖出两个更麻烦的东西。 一个是沙箱。workspacewrite 用的是受限令牌，Git Bash 这类 MSYS shell 会死在 cygheap 初始化，实测签名是 NtSetInformationToken 0xC0000022，后来有用户在自己机器上报告了同族的第二个签名 CreateFileMapping Win32 error 5。这是 MSYS 运行时模型和受限令牌的直接冲突，插件层修不了，也解释了为什么现有的 Windows 方案清一色要求 dangerfullaccess。换成纯 Win32 实现、没有 POSIX 模拟层的 busyboxw32 ash 就能活下来。据我所知这是目前唯一能在 DSH 沙箱内跑起来的 Windows 持久 shell。 另一个是前台命令识别。Windows 上不能靠父进程链回答终端里现在跑着什么，MSYS 的 fork 模拟会切断链条。实测很直白，Git Bash 的 PTY 里跑 sleep 20，查它的直接子进程是空的，同一时刻查 ConPTY 的控制台进程列表，那个 sleep 清清楚楚在里面。控制台归属是控制台自己的属性，不靠父子关系维持，fork 模拟骗得过进程树，骗不过控制台附着。这块由外部贡献者实现并合并。 顺带修了 GBK。官方 fs 对 GBK / UTF16 文件返回 FSNOTTEXT 直接拒读，国内老项目里这种文件一大把，Agent 连读都读不了。 所有主张都在 windowslatest CI 上每次推送复跑，41 个单测，3 系统矩阵。限制也全写在 README 里，比如 Git Bash 预设需要 dangerfullaccess，PTY 输出的旧代码页在插件层无解，isStdinWaiting 故意恒为 false。个人项目，MIT 协议。 安装一条命令。 npx dshwin32 setup",
-          "content": "\n项目地址 https://github.com/sjh9714/dsh-win32\n\nDeepSeek Harness 在 Windows 上选极简模式会直接报错，terminal inspection is unsupported on platform win32。第一反应都是 node-pty 没装好，但重装、换 Node 版本、装 VS Build Tools 全没用，报错一个字都不变。\n\n顺着报错读源码才发现，问题不在 node-pty。官方 subprocess 运行时里有个 createProcessInspector，按平台分派进程检查器实现，Linux 一个 macOS 一个，win32 分支是直接 throw。而这次调用发生在起 PTY 之前，所以 Windows 上根本轮不到 node-pty 表演，前一步就抛了。少了这块，持久 shell 这个概念在 Windows 上就立不住，依赖它的极简模式整个不可用。\n\n这个项目就是通过官方留的注入座补上 win32 实现，核心一行不改。进程树用一次 CIM 快照，pid、ppid 和 CreationDate 三者构成进程身份防 pid 复用，信号走 taskkill，中途取消按 ConPTY 惯例把 Ctrl-C 作为 PTY 输入写进去。\n\n做的过程中还挖出两个更麻烦的东西。\n\n一个是沙箱。workspace-write 用的是受限令牌，Git Bash 这类 MSYS shell 会死在 cygheap 初始化，实测签名是 NtSetInformationToken 0xC0000022，后来有用户在自己机器上报告了同族的第二个签名 CreateFileMapping Win32 error 5。这是 MSYS 运行时模型和受限令牌的直接冲突，插件层修不了，也解释了为什么现有的 Windows 方案清一色要求 danger-full-access。换成纯 Win32 实现、没有 POSIX 模拟层的 busybox-w32 ash 就能活下来。据我所知这是目前唯一能在 DSH 沙箱内跑起来的 Windows 持久 shell。\n\n另一个是前台命令识别。Windows 上不能靠父进程链回答终端里现在跑着什么，MSYS 的 fork 模拟会切断链条。实测很直白，Git Bash 的 PTY 里跑 sleep 20，查它的直接子进程是空的，同一时刻查 ConPTY 的控制台进程列表，那个 sleep 清清楚楚在里面。控制台归属是控制台自己的属性，不靠父子关系维持，fork 模拟骗得过进程树，骗不过控制台附着。这块由外部贡献者实现并合并。\n\n顺带修了 GBK。官方 fs 对 GBK / UTF-16 文件返回 FS_NOT_TEXT 直接拒读，国内老项目里这种文件一大把，Agent 连读都读不了。\n\n所有主张都在 windows-latest CI 上每次推送复跑，41 个单测，3 系统矩阵。限制也全写在 README 里，比如 Git Bash 预设需要 danger-full-access，PTY 输出的旧代码页在插件层无解，isStdinWaiting 故意恒为 false。个人项目，MIT 协议。\n\n安装一条命令。\n\n```\nnpx dsh-win32 setup\n```\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11217",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11217"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】LTPP：学练一体的全栈在线开发学习平台，把 OJ 判题、在线 IDE、云端 Linux、内容社区、电商装进一个 Web 应用",
           "url": "https://github.com/eastspire/LTPP-CODE",
           "author": "eastspire",
@@ -294,7 +248,12 @@
             "submission"
           ],
           "externalId": "11219",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11219"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11219",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -387,44 +346,6 @@
       "items": [
         {
           "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] 用桌面界面管理 DeepSeek Harness",
-          "url": "https://github.com/Moresyl/dsh-studio",
-          "author": "Moresyl",
-          "authorUrl": "https://github.com/Moresyl",
-          "publishedAt": "2026-08-15T16:02:24Z",
-          "summary": "项目地址 类别 人工智能 项目标题 用桌面界面管理 DeepSeek Harness 项目描述 DSH Studio 是一款 MIT 开源、本地优先的跨平台桌面工具，为 DeepSeek Harness 提供安装、启动停止、健康检查、日志查看和进程监管能力。开发者无需反复操作终端，即可在 macOS、Windows 或 Linux 上集中管理 Harness 的完整运行生命周期。 亮点 将安装、运行控制、健康状态、日志和后台进程集中到同一个原生桌面界面；同时通过 GitHub Actions 自动构建 macOS Apple Silicon、macOS Intel、Windows 和 Linux 发行包。项目结构清晰，适合学习 Tauri 跨平台桌面应用、Rust 进程管理与多系统 CI 发布实践。 示例代码 markdown 截图或演示视频 !DSH Studio 启动器 !Harness 运行界面 维护者自荐，最新版本：",
-          "content": "### 项目地址\n\nhttps://github.com/Moresyl/dsh-studio\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n用桌面界面管理 DeepSeek Harness\n\n### 项目描述\n\nDSH Studio 是一款 MIT 开源、本地优先的跨平台桌面工具，为 DeepSeek Harness 提供安装、启动停止、健康检查、日志查看和进程监管能力。开发者无需反复操作终端，即可在 macOS、Windows 或 Linux 上集中管理 Harness 的完整运行生命周期。\n\n### 亮点\n\n将安装、运行控制、健康状态、日志和后台进程集中到同一个原生桌面界面；同时通过 GitHub Actions 自动构建 macOS Apple Silicon、macOS Intel、Windows 和 Linux 发行包。项目结构清晰，适合学习 Tauri 跨平台桌面应用、Rust 进程管理与多系统 CI 发布实践。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n![DSH Studio 启动器](https://raw.githubusercontent.com/Moresyl/dsh-studio/main/assets/screenshot-launcher.png)\n\n![Harness 运行界面](https://raw.githubusercontent.com/Moresyl/dsh-studio/main/assets/screenshot-harness.png)\n\n维护者自荐，最新版本：https://github.com/Moresyl/dsh-studio/releases/tag/v0.1.1",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3546",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3546"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] MetaClean：跨平台离线元数据清理工具",
-          "url": "https://github.com/Moresyl/metaclean",
-          "author": "Moresyl",
-          "authorUrl": "https://github.com/Moresyl",
-          "publishedAt": "2026-08-15T16:06:01Z",
-          "summary": "项目地址 类别 Rust 项目标题 离线清理文件隐私元数据的跨平台桌面工具 项目描述 MetaClean 是基于 Rust 与 Tauri 构建的跨平台桌面应用，可在本地批量移除图片、PDF 和 Office 文档中的作者、位置、设备等敏感元数据。所有处理均离线完成，适合在分享文件前降低隐私泄露风险。 亮点 默认保留原文件并生成清理副本，避免误覆盖；无需上传文件或配置服务；支持拖放、批量处理和任务结果展示，并提供 Windows、macOS、Linux 的原生安装包。 示例代码 markdown 截图或演示视频 !MetaClean 软件界面 利益关系披露：我是 MetaClean 的维护者。",
-          "content": "### 项目地址\n\nhttps://github.com/Moresyl/metaclean\n\n### 类别\n\nRust\n\n### 项目标题\n\n离线清理文件隐私元数据的跨平台桌面工具\n\n### 项目描述\n\nMetaClean 是基于 Rust 与 Tauri 构建的跨平台桌面应用，可在本地批量移除图片、PDF 和 Office 文档中的作者、位置、设备等敏感元数据。所有处理均离线完成，适合在分享文件前降低隐私泄露风险。\n\n### 亮点\n\n默认保留原文件并生成清理副本，避免误覆盖；无需上传文件或配置服务；支持拖放、批量处理和任务结果展示，并提供 Windows、macOS、Linux 的原生安装包。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n![MetaClean 软件界面](https://raw.githubusercontent.com/Moresyl/metaclean/master/assets/metaclean-screenshot.png)\n\n利益关系披露：我是 MetaClean 的维护者。",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3547",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3547"
-        },
-        {
-          "sourceId": "hellogithub-issues",
           "title": "[开源推荐] 让 DeepSeek Harness 的极简模式在 Windows 上跑起来",
           "url": "https://github.com/sjh9714/dsh-win32",
           "author": "sjh9714",
@@ -440,7 +361,12 @@
             "submission"
           ],
           "externalId": "3548",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3548"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3548",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -482,25 +408,6 @@
         },
         {
           "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] 让 AI 助手实时看懂网球比赛的 MCP 服务器",
-          "url": "https://github.com/livetennisapi/livetennisapi-mcp",
-          "author": "bensynapse",
-          "authorUrl": "https://github.com/bensynapse",
-          "publishedAt": "2026-08-16T10:18:01Z",
-          "summary": "项目地址 类别 其它 项目标题 让 AI 助手实时看懂网球比赛的 MCP 服务器 项目描述 这是一个网球数据的 MCP（Model Context Protocol）服务器，让 Claude、Cursor 等 AI 助手直接查询实时网球数据：比分（含发球方、破发点状态）、赛程、球员资料、排名、历史交锋，覆盖 ATP、WTA、挑战赛、ITF 和青少年五大巡回赛。共 24 个工具，支持 npx 本地运行和托管远程端点两种接入方式，API 有免费套餐（无需信用卡），配置一个密钥即可使用。 亮点 体育数据类 MCP 服务器很少，网球方向目前几乎是空白。它把\"现在谁在发球、是不是破发点\"这类实时状态直接喂给 AI 助手，可以用自然语言问\"阿尔卡拉斯现在打到第几盘了\"。另外提供托管端点 mcp.livetennisapi.com，不想本地跑进程的话零安装即可接入。MIT 协议，TypeScript 编写，自带完整的工具描述和结构化输出。 示例代码 json { \"mcpServers\": { \"livetennisapi\": { \"command\": \"npx\", \"args\": [\"livetennisapimcp\"], \"env\": { \"LIVETENNISAPIKEY\": \"你的密钥\" } } } } 补充说明 自荐项目：我是该项目的维护者。",
-          "content": "### 项目地址\n\nhttps://github.com/livetennisapi/livetennisapi-mcp\n\n### 类别\n\n其它\n\n### 项目标题\n\n让 AI 助手实时看懂网球比赛的 MCP 服务器\n\n### 项目描述\n\n这是一个网球数据的 MCP（Model Context Protocol）服务器，让 Claude、Cursor 等 AI 助手直接查询实时网球数据：比分（含发球方、破发点状态）、赛程、球员资料、排名、历史交锋，覆盖 ATP、WTA、挑战赛、ITF 和青少年五大巡回赛。共 24 个工具，支持 npx 本地运行和托管远程端点两种接入方式，API 有免费套餐（无需信用卡），配置一个密钥即可使用。\n\n### 亮点\n\n体育数据类 MCP 服务器很少，网球方向目前几乎是空白。它把\"现在谁在发球、是不是破发点\"这类实时状态直接喂给 AI 助手，可以用自然语言问\"阿尔卡拉斯现在打到第几盘了\"。另外提供托管端点 mcp.livetennisapi.com，不想本地跑进程的话零安装即可接入。MIT 协议，TypeScript 编写，自带完整的工具描述和结构化输出。\n\n### 示例代码\n\n```json\n{\n  \"mcpServers\": {\n    \"livetennisapi\": {\n      \"command\": \"npx\",\n      \"args\": [\"livetennisapi-mcp\"],\n      \"env\": { \"LIVETENNIS_API_KEY\": \"你的密钥\" }\n    }\n  }\n}\n```\n\n### 补充说明\n\n自荐项目：我是该项目的维护者。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3551",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3551"
-        },
-        {
-          "sourceId": "hellogithub-issues",
           "title": "【自荐】PlayBook —— YAML 驱动的对话流程编排框架（metacoding 概念）",
           "url": "https://github.com/BlendTreeD/PlayBook",
           "author": "BlendTreeD",
@@ -535,7 +442,12 @@
             "submission"
           ],
           "externalId": "3553",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3553"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3553",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

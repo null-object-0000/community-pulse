@@ -235,25 +235,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】TokenTracker — macOS 菜单栏上的 AI 用量与花费仪表盘（支持 8 家 CLI）",
-          "url": "https://raw.githubusercontent.com/mm7894215/TokenTracker/main/docs/screenshots/menubar.gif",
-          "author": "xiufengsun",
-          "authorUrl": "https://github.com/xiufengsun",
-          "publishedAt": "2026-04-14T11:02:07Z",
-          "summary": "重度用 Claude Code、Codex、Cursor、Gemini CLI 的朋友应该都有这个困扰：每个工具一个账单、一套 quota，想知道\"这个月我到底花了多少 token、哪个模型最贵、限额还剩多少\"几乎没法看全。 于是做了 TokenTracker，一个 macOS 菜单栏小工具 + Web Dashboard，自动从本地日志里聚合 8 家 AI CLI 的 token 用量，不用接 API Key、不上传对话内容、一条命令就跑起来。 !menubar demo 核心功能 8 家 AI CLI 全支持 — Claude Code / Codex / Cursor / Gemini CLI / OpenCode / OpenClaw / Every Code / Kiro，自动检测已安装的工具并挂 hook 菜单栏实时 token 数 — 点一下弹出窗，双击打开完整 dashboard（WKWebView + 原生毛玻璃） 限额追踪 — Claude Pro/Max、Codex Plus/Pro、Cursor、Gemini 的 Session/Weekly 限额百分比 + 重置倒计时 费用分析 — 70+ 模型定价表，按天/周/月/自定义区间看花费趋势、成本分解 GitHub 风格活动热力图 + 全球排行榜（可选加入） 年度报告 & 分享卡片 — 一键生成 Neon 风格年报图，发朋友圈 隐私 first — 只统计 token 计数，永远不读对话内容，数据先落本地再决定是否同步云端 !dashboard !widgets !leaderboard 和同类工具的差异 | | TokenTracker | ccusage | Agenton | ||||| | AI 工具覆盖 | 8 家 | 1 家（Claude） | 2 家 | | 菜单栏常驻 | ✅ | ❌ | ❌（独立窗口） | | 平台 | macOS | 任意 | Windows | | 排行榜 / 社交分享 | ✅ | ❌ | ❌ | | 开源 | ✅ MIT | ✅ | ❌ | 怎么用 bash 方式 1：npm 一条命令（跨平台 CLI） npx tokentrackercli 方式 2：macOS 菜单栏 App brew install cask mm7894215/tokentracker/tokentracker 第一次跑会走个极简向导：检测 CLI → 安装 hook → 打开 链接 GitHub: npm: 在线 Demo: 开源 MIT，欢迎 star / 提 issue / PR。有任何建议都可以在本帖回复 🙏",
-          "content": "重度用 Claude Code、Codex、Cursor、Gemini CLI 的朋友应该都有这个困扰：每个工具一个账单、一套 quota，想知道\"这个月我到底花了多少 token、哪个模型最贵、限额还剩多少\"几乎没法看全。\n\n于是做了 **TokenTracker**，一个 macOS 菜单栏小工具 + Web Dashboard，自动从本地日志里聚合 **8 家 AI CLI** 的 token 用量，不用接 API Key、不上传对话内容、一条命令就跑起来。\n\n![menubar demo](https://raw.githubusercontent.com/mm7894215/TokenTracker/main/docs/screenshots/menubar.gif)\n\n## 核心功能\n\n- **8 家 AI CLI 全支持** — Claude Code / Codex / Cursor / Gemini CLI / OpenCode / OpenClaw / Every Code / Kiro，自动检测已安装的工具并挂 hook\n- **菜单栏实时 token 数** — 点一下弹出窗，双击打开完整 dashboard（WKWebView + 原生毛玻璃）\n- **限额追踪** — Claude Pro/Max、Codex Plus/Pro、Cursor、Gemini 的 Session/Weekly 限额百分比 + 重置倒计时\n- **费用分析** — 70+ 模型定价表，按天/周/月/自定义区间看花费趋势、成本分解\n- **GitHub 风格活动热力图** + 全球排行榜（可选加入）\n- **年度报告 & 分享卡片** — 一键生成 Neon 风格年报图，发朋友圈\n- **隐私 first** — 只统计 token 计数，**永远不读对话内容**，数据先落本地再决定是否同步云端\n\n![dashboard](https://raw.githubusercontent.com/mm7894215/TokenTracker/main/docs/screenshots/dashboard-dark.png)\n\n![widgets](https://raw.githubusercontent.com/mm7894215/TokenTracker/main/docs/screenshots/widgets-overview.png)\n\n![leaderboard](https://raw.githubusercontent.com/mm7894215/TokenTracker/main/docs/screenshots/leaderboard.png)\n\n## 和同类工具的差异\n\n|  | TokenTracker | ccusage | Agenton |\n|---|---|---|---|\n| AI 工具覆盖 | 8 家 | 1 家（Claude） | 2 家 |\n| 菜单栏常驻 | ✅ | ❌ | ❌（独立窗口） |\n| 平台 | macOS | 任意 | Windows |\n| 排行榜 / 社交分享 | ✅ | ❌ | ❌ |\n| 开源 | ✅ MIT | ✅ | ❌ |\n\n## 怎么用\n\n```bash\n# 方式 1：npm 一条命令（跨平台 CLI）\nnpx tokentracker-cli\n\n# 方式 2：macOS 菜单栏 App\nbrew install --cask mm7894215/tokentracker/tokentracker\n```\n\n第一次跑会走个极简向导：检测 CLI → 安装 hook → 打开 http://localhost:7680\n\n## 链接\n\n- GitHub: https://github.com/mm7894215/TokenTracker\n- npm: https://www.npmjs.com/package/tokentracker-cli\n- 在线 Demo: https://token.rynn.me\n\n开源 MIT，欢迎 star / 提 issue / PR。有任何建议都可以在本帖回复 🙏\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "9627",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9627"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "[Self-promo] TokenTracker — macOS menu-bar dashboard for AI token usage & cost across 8 CLIs",
           "url": "https://raw.githubusercontent.com/mm7894215/TokenTracker/main/docs/screenshots/menubar.gif",
           "author": "xiufengsun",

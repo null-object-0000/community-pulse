@@ -109,25 +109,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】memo 是一个基于 CoALA 认知架构与最新现代认知科学实践的本地优先 AI Agent 记忆 SDK + CLI：原始对话可追溯，长期记忆可重建，Agent 可自动回忆，也可按需查证和迁移。",
-          "url": "https://github.com/cosin2077/memo",
-          "author": "cosin2077",
-          "authorUrl": "https://github.com/cosin2077",
-          "publishedAt": "2026-05-13T12:29:55Z",
-          "summary": "memo 是一个基于 CoALA 认知架构与最新现代认知科学实践的本地优先 AI Agent 记忆 SDK + CLI：原始对话可追溯，长期记忆可重建，Agent 可自动回忆，也可按需查证和迁移。 项目地址 简介 memo 为 AI Agent 提供可追溯、可重建、可检索、数据掌控的长期记忆能力。它把原始对话保存为 MessageLog，再通过异步 造梦💤 流程提取事件记忆、语义知识、冲突变化、信念修正和可选知识图谱。 SDK 提供极简 API：用 addMessages 写入单条/多条 message，用 search/hydrate 召回记忆；同时提供 lookupmessages / queryknowledgegraph tools，让 Agent 可以自主查证底层原文和知识关系。 CLI 则提供本地记忆操作台：可以导入 Claude Code / OpenAI 风格历史对话、触发 Dream 生成长期记忆、查看 Episodes / Knowledge、导出原始 MessageLog 备份，也可以生成给人类和其他 Agent 直接阅读的 MEMORY.md。 Features 极简接入 — pnpm add @memolabs/sdk，一行代码即可接入，无需部署服务 认知科学驱动设计 — 基于 CoALA 认知架构与最新现代认知科学实践，将认知模型落地为可运行的 Agent 记忆系统 CLI 本地记忆操作台 — memo info/import/dream/memories/export 覆盖导入、造梦、检查、备份和迁移 Claude Code 开箱即用 — 一行导入 Claude 工程历史并生成长期记忆：pnpm cli import claude all user claudecode dream Agentreadable MEMORY.md — memo export memory user claudecode output MEMORY.md，把长期记忆交给 OpenClaw、Codex、Claude Code 或其他 Agent 五层记忆架构 — MessageLog 全量可审计、可溯源、可重建，异步造梦固化语义知识 两层回忆 — hydrate 自动注入 + LLM Tools 按需深度检索 唯一真理源 + 可重建 — MessageLog 保存全部原始对话，下游数据均可从中重建 原始数据可迁移 — 导出 MessageLog JSON，导入新实例后通过 Dream 重建事件记忆、语义记忆和可选图谱索引 近期情境与记忆卡片 — <RECENT 总结当前专注事项，XML 记忆卡片描述用户/Agent 偏好、边界和上下文 证据分离水合 — verify 模式下原始证据与语义事实分开注入，可验证 Token 预算管理 — 贪婪装箱 + LLM 压缩，不浪费上下文窗口 惊奇度驱动更新 — 事实变更自动触发再造梦，记忆持续保鲜 Example Javascript import { MemoSDK } from \"@memolabs/sdk\"; const memo = await MemoSDK.create({ userId: \"userdemo001\" }); const session = await memo.startSession({ title: \"技术学习会话\" }); await session.addMessages([ { content: \"我想学习 TypeScript 高级类型\", role: \"user\" }, { content: \"TypeScript 高级类型包括条件类型、映射类型、模板字面量类型等，建议从泛型开始学习。\", role: \"assistant\" }, { content: \"请推荐一些学习资源\", role: \"user\" }, { content: \"推荐《TypeScript 深入浅出》，重点掌握第 35 章的泛型和条件类型。\", role: \"assistant\" }, //... ]); await session.dream(); const memoryContext = await session.search({ query: \"TypeScript 学习资源\", }); 项目地址",
-          "content": "> memo 是一个基于 CoALA 认知架构与最新现代认知科学实践的本地优先 AI Agent 记忆 SDK + CLI：原始对话可追溯，长期记忆可重建，Agent 可自动回忆，也可按需查证和迁移。\n\n### 项目地址\n[https://github.com/cosin2077/memo](https://github.com/cosin2077/memo)\n\n## 简介\n\nmemo 为 AI Agent 提供**可追溯**、**可重建**、**可检索**、**数据掌控**的长期记忆能力。它把原始对话保存为 `MessageLog`，再通过异步 造梦💤 流程提取**事件记忆**、**语义知识**、**冲突变化**、**信念修正**和可选知识图谱。\n\nSDK 提供极简 API：用 `addMessages` 写入单条/多条 message，用 `search/hydrate` 召回记忆；同时提供 `lookup_messages` / `query_knowledge_graph` tools，让 Agent 可以自主查证底层原文和知识关系。\n\nCLI 则提供本地记忆操作台：可以导入 Claude Code / OpenAI 风格历史对话、触发 Dream 生成长期记忆、查看 Episodes / Knowledge、导出原始 `MessageLog` 备份，也可以生成给人类和其他 Agent 直接阅读的 `MEMORY.md`。\n\n### Features\n\n- **极简接入** — `pnpm add @memo-labs/sdk`，一行代码即可接入，无需部署服务\n-  **认知科学驱动设计** — 基于 CoALA 认知架构与最新现代认知科学实践，将认知模型落地为可运行的 Agent 记忆系统\n- **CLI 本地记忆操作台** — `memo info/import/dream/memories/export` 覆盖导入、造梦、检查、备份和迁移\n- **Claude Code 开箱即用** — 一行导入 Claude 工程历史并生成长期记忆：`pnpm cli import --claude --all --user claude-code --dream`\n- **Agent-readable MEMORY.md** — `memo export memory --user claude-code --output MEMORY.md`，把长期记忆交给 OpenClaw、Codex、Claude Code 或其他 Agent\n- **五层记忆架构** — MessageLog 全量可审计、可溯源、可重建，异步造梦固化语义知识\n- **两层回忆** — hydrate 自动注入 + LLM Tools 按需深度检索\n- **唯一真理源 + 可重建** — MessageLog 保存全部原始对话，下游数据均可从中重建\n- **原始数据可迁移** — 导出 `MessageLog` JSON，导入新实例后通过 Dream 重建事件记忆、语义记忆和可选图谱索引\n- **近期情境与记忆卡片** — `<RECENT>` 总结当前专注事项，XML 记忆卡片描述用户/Agent 偏好、边界和上下文\n- **证据分离水合** — verify 模式下原始证据与语义事实分开注入，可验证\n- **Token 预算管理** — 贪婪装箱 + LLM 压缩，不浪费上下文窗口\n- **惊奇度驱动更新** — 事实变更自动触发再造梦，记忆持续保鲜\n\n### Example\n\n```Javascript\nimport { MemoSDK } from \"@memo-labs/sdk\";\nconst memo = await MemoSDK.create({ userId: \"user-demo-001\" });\nconst session = await memo.startSession({ title: \"技术学习会话\" });\nawait session.addMessages([\n    { content: \"我想学习 TypeScript 高级类型\", role: \"user\" },\n    { content: \"TypeScript 高级类型包括条件类型、映射类型、模板字面量类型等，建议从泛型开始学习。\", role: \"assistant\" },\n    { content: \"请推荐一些学习资源\", role: \"user\" },\n    { content: \"推荐《TypeScript 深入浅出》，重点掌握第 3-5 章的泛型和条件类型。\", role: \"assistant\" },\n    //...\n]);\nawait session.dream();\nconst memoryContext = await session.search({\n    query: \"TypeScript 学习资源\",\n});\n\n```\n\n### 项目地址\n\n[https://github.com/cosin2077/memo](https://github.com/cosin2077/memo)\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "9926",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9926"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】ClueArk-线索方舟,面向个人与团队的 AI 情报系统",
           "url": "https://github.com/lqomg/ClueArk",
           "author": "lqomg",
@@ -231,7 +212,12 @@
             "submission"
           ],
           "externalId": "3262",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3262"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3262",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

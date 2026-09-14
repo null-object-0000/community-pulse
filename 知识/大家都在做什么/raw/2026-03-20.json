@@ -296,7 +296,12 @@
             "submission"
           ],
           "externalId": "9327",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9327"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9327",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -667,25 +672,6 @@
           ],
           "externalId": "3183",
           "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3183"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] AgentBrief：给 AI 编程 Agent 装职业技能包的包管理器",
-          "url": "https://github.com/0xranx/agentbrief",
-          "author": "0xranx",
-          "authorUrl": "https://github.com/0xranx",
-          "publishedAt": "2026-03-20T12:39:16Z",
-          "summary": "项目地址 类别 人工智能 项目标题 给 AI 编程 Agent（Claude Code / Cursor / Codex）装可复用职业技能包的 CLI 工具 项目描述 AI 编程 Agent 是通才，但不是专才。每个新项目都要手写 CLAUDE.md 来教 Agent 怎么做事，很重复。AgentBrief 把领域知识、行为约束、技能包打包成可复用的 brief，一条命令安装，一条命令卸载，支持继承和组合。类比：eslintconfigairbnb 之于代码规范 = AgentBrief 之于 Agent 行为规范。 亮点 1. 装上 brief 前后对比惊人：同一句\"Review this code for issues\"，普通 Agent 说\"looks good\"，装了 securityauditor brief 后直接定位到 CWE89 SQL 注入并给出修复代码 2. 一条命令生效：npx agentbrief use securityauditor，Agent 立即具备安全审计能力 3. 引擎无关：同一个 brief 自动适配 Claude Code / Cursor / OpenCode / Codex 4. 可继承组合：brief 支持 extends，继承已有 brief 的全部能力后叠加自定义内容 5. 17 个官方职能包：全栈工程师、安全审计、产品经理、创业者、DevOps 等，含 89,000+ 生态 skill 兼容 示例代码 bash 一条命令，让 Agent 变成创业者 — 自带产品思维 + 安全意识 + 12 个按需触发的技能 npx agentbrief use startupfounder 叠加安全审计能力 npx agentbrief use securityauditor 查看已安装的 brief npx agentbrief list 一条命令卸载，恢复原样 npx agentbrief eject startupfounder 截图或演示视频 首页 — Make your AI agent actually good at its job： !hero 装 brief 前后对比 — 同样的问题，完全不同的回答： !beforeafter 17 个官方职能包，覆盖开发、产品、增长、运维： !catalog Brief 详情页 — startupfounder 包含 5 个继承 brief、13 个技能： !briefdetail",
-          "content": "### 项目地址\n\nhttps://github.com/0xranx/agentbrief\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n给 AI 编程 Agent（Claude Code / Cursor / Codex）装可复用职业技能包的 CLI 工具\n\n### 项目描述\n\nAI 编程 Agent 是通才，但不是专才。每个新项目都要手写 CLAUDE.md 来教 Agent 怎么做事，很重复。AgentBrief 把领域知识、行为约束、技能包打包成可复用的 brief，一条命令安装，一条命令卸载，支持继承和组合。类比：eslint-config-airbnb 之于代码规范 = AgentBrief 之于 Agent 行为规范。\n\n### 亮点\n\n1. **装上 brief 前后对比惊人**：同一句\"Review this code for issues\"，普通 Agent 说\"looks good\"，装了 security-auditor brief 后直接定位到 CWE-89 SQL 注入并给出修复代码\n2. **一条命令生效**：`npx agentbrief use security-auditor`，Agent 立即具备安全审计能力\n3. **引擎无关**：同一个 brief 自动适配 Claude Code / Cursor / OpenCode / Codex\n4. **可继承组合**：brief 支持 extends，继承已有 brief 的全部能力后叠加自定义内容\n5. **17 个官方职能包**：全栈工程师、安全审计、产品经理、创业者、DevOps 等，含 89,000+ 生态 skill 兼容\n\n### 示例代码\n\n```bash\n# 一条命令，让 Agent 变成创业者 — 自带产品思维 + 安全意识 + 12 个按需触发的技能\nnpx agentbrief use startup-founder\n\n# 叠加安全审计能力\nnpx agentbrief use security-auditor\n\n# 查看已安装的 brief\nnpx agentbrief list\n\n# 一条命令卸载，恢复原样\nnpx agentbrief eject startup-founder\n```\n\n### 截图或演示视频\n\n**首页 — Make your AI agent actually good at its job：**\n\n![hero](https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/hero.jpg)\n\n**装 brief 前后对比 — 同样的问题，完全不同的回答：**\n\n![before-after](https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/before-after.jpg)\n\n**17 个官方职能包，覆盖开发、产品、增长、运维：**\n\n![catalog](https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/engines.jpg)\n\n**Brief 详情页 — startup-founder 包含 5 个继承 brief、13 个技能：**\n\n![brief-detail](https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/brief-detail.jpg)",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3184",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3184"
         },
         {
           "sourceId": "hellogithub-issues",

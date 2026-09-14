@@ -167,7 +167,12 @@
             "submission"
           ],
           "externalId": "10668",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10668"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10668",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -207,25 +212,6 @@
           "externalId": "10670",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/10670",
           "siteLogo": "https://compressmp4.org/favicon.svg"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】usage：把 Claude Code / Codex 额度钉在 macOS 菜单栏（零 Token 消耗）",
-          "url": "https://github.com/aqua5230/usage",
-          "author": "aqua5230",
-          "authorUrl": "https://github.com/aqua5230",
-          "publishedAt": "2026-07-11T09:13:09Z",
-          "summary": "项目地址： 项目简介： 一个开源（AGPL3.0）的 macOS 菜单栏 app，把 Claude Code 和 Codex 的 5 小时 / 周额度实时钉在屏幕右上角，绿转红一眼看清，避免写到一半才发现撞墙。 亮点： 1. 零 Token 消耗、不碰密钥 — 完全不调用 Anthropic / OpenAI API、不读 Keychain。Claude Code 侧靠状态栏 hook 写本地 JSON，Codex 侧直接解析 ~/.codex/sessions 的会话日志，所有数字都来自本机文件。 2. 烧额速度预估 — 按当前消耗速度预估几点撞 5 小时 / 周限额。 3. 离线 HTML 深度报告 — 每日/每周 token 趋势、项目排行、成本估算、年度回顾热力图，一键导出 .html / .csv / .png。 4. 省 Token 小功能 — 菜单栏一键让 AI 回答更简短（长对话实测输出省约 40%）；开新会话自动把上次进度交接给 AI，省掉 /resume。 一行安装：brew install cask aqua5230/usage/usage（Releases 也有打包好的 .app） 适用人群：所有在终端用 Claude Code / Codex 的 macOS 开发者。 截图： !usage 菜单栏与面板",
-          "content": "项目地址：https://github.com/aqua5230/usage\n\n项目简介：\n一个开源（AGPL-3.0）的 macOS 菜单栏 app，把 Claude Code 和 Codex 的 5 小时 / 周额度实时钉在屏幕右上角，绿转红一眼看清，避免写到一半才发现撞墙。\n\n亮点：\n\n1. **零 Token 消耗、不碰密钥** — 完全不调用 Anthropic / OpenAI API、不读 Keychain。Claude Code 侧靠状态栏 hook 写本地 JSON，Codex 侧直接解析 ~/.codex/sessions 的会话日志，所有数字都来自本机文件。\n2. **烧额速度预估** — 按当前消耗速度预估几点撞 5 小时 / 周限额。\n3. **离线 HTML 深度报告** — 每日/每周 token 趋势、项目排行、成本估算、年度回顾热力图，一键导出 .html / .csv / .png。\n4. **省 Token 小功能** — 菜单栏一键让 AI 回答更简短（长对话实测输出省约 40%）；开新会话自动把上次进度交接给 AI，省掉 /resume。\n\n一行安装：`brew install --cask aqua5230/usage/usage`（Releases 也有打包好的 .app）\n\n适用人群：所有在终端用 Claude Code / Codex 的 macOS 开发者。\n\n截图：\n\n![usage 菜单栏与面板](https://raw.githubusercontent.com/aqua5230/usage/main/docs/showcase.en.png)\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10671",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10671"
         },
         {
           "sourceId": "weekly-issues",
@@ -279,25 +265,6 @@
       "items": [
         {
           "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] 录音上传后自动生成飞书智能纪要",
-          "url": "https://github.com/chenmozhe008/recording-inbox",
-          "author": "chenmozhe008",
-          "authorUrl": "https://github.com/chenmozhe008",
-          "publishedAt": "2026-07-11T07:25:23Z",
-          "summary": "项目地址 类别 人工智能 项目标题 录音上传后自动生成飞书智能纪要 项目描述 这是一个开源、可自部署的 AI 录音工作流。iPhone、Android 或电脑录音上传到飞书云盘后，Mac/Windows 自动在本地完成语音转文字，再生成包含摘要、主题、待办、章节和文字记录的智能纪要，归档到飞书并发送完成通知。适合大量会议、采访、课程和客户沟通录音。 亮点 FunASR / SenseVoice 本地转写，不消耗飞书妙记分钟数； 每条录音独立状态，支持断电续跑、幂等去重和失败重试； 支持会议、访谈、课程、项目沟通和自定义提示词； macOS、Windows 10/11 均有安装向导，也可让 Codex、Claude Code 或 Cursor 按 AGENTS.md 代装； 提供脱敏示例、验证矩阵、FAQ、跨平台 CI 和敏感信息检查。 截图或演示视频 !脱敏智能纪要示例 项目页：",
-          "content": "### 项目地址\n\nhttps://github.com/chenmozhe008/recording-inbox\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n录音上传后自动生成飞书智能纪要\n\n### 项目描述\n\n这是一个开源、可自部署的 AI 录音工作流。iPhone、Android 或电脑录音上传到飞书云盘后，Mac/Windows 自动在本地完成语音转文字，再生成包含摘要、主题、待办、章节和文字记录的智能纪要，归档到飞书并发送完成通知。适合大量会议、采访、课程和客户沟通录音。\n\n### 亮点\n\n- FunASR / SenseVoice 本地转写，不消耗飞书妙记分钟数；\n- 每条录音独立状态，支持断电续跑、幂等去重和失败重试；\n- 支持会议、访谈、课程、项目沟通和自定义提示词；\n- macOS、Windows 10/11 均有安装向导，也可让 Codex、Claude Code 或 Cursor 按 AGENTS.md 代装；\n- 提供脱敏示例、验证矩阵、FAQ、跨平台 CI 和敏感信息检查。\n\n### 截图或演示视频\n\n![脱敏智能纪要示例](https://raw.githubusercontent.com/chenmozhe008/recording-inbox/master/docs/assets/sample-minutes-preview.jpg)\n\n项目页：https://chenmozhe008.github.io/recording-inbox/\n",
-          "metrics": {
-            "comments": 2
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3431",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3431"
-        },
-        {
-          "sourceId": "hellogithub-issues",
           "title": "[开源推荐] NeuroBook：面向长篇小说创作的多 Agent 写作 IDE。",
           "url": "https://github.com/notnotype/neuro-book",
           "author": "notnotype",
@@ -332,7 +299,12 @@
             "submission"
           ],
           "externalId": "3433",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3433"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3433",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",

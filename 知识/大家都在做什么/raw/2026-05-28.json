@@ -232,25 +232,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Flipbook Canvas：AI 无穷画布，AI帮你画出内部图鉴",
-          "url": "https://github.com/imcuttle/flipbook-app",
-          "author": "imcuttle",
-          "authorUrl": "https://github.com/imcuttle",
-          "publishedAt": "2026-05-28T08:08:57Z",
-          "summary": "仓库： 一句话介绍：在 AI 生成的图片上任意位置长按 2 秒，AI 会推断你点的是什么，必要时联网查资料，然后生成一张子图并把它链回来 —— 一本可以\"点出来\"的可探索画册。 产品理念参考自 Flipbook.page 的\"可探索画册\"思路，用一套自己的开源实现把它跑通。 !Flipbook Canvas 演示 它解决什么问题 我自己用 AI 看科普 / 看架构图的时候，经常有这种感觉：图很漂亮，但图里那个东西到底是什么、它内部又长什么样，AI 不会主动告诉我，我也懒得复制粘贴去问下一轮。 Flipbook Canvas 把这件事做成了一个动作：长按图里你想知道的部位 2 秒，剩下的它来 —— 1. 后端先用一次大模型推断你点击的位置在语义上是什么（比如\"啄木鸟的舌部\"）； 2. 判断这个主题需不需要联网搜资料，需要就跑一次 web search 把权威来源喂给 planner； 3. 生成一张细致标注的子图（150–220 字图说 + 20–40 处图内文字注释，像儿童百科图鉴的风格）； 4. 用钻入动画把你带进去，就像翻进画册的下一层；再次点击同一区域会直接跳进去（空间 + 语义双重去重）。 下面是输入\"啄木鸟\"从零跑完整条流水线的样子： !从零生成一本\"啄木鸟\"画册 !画廊与画布 几个我自己挺喜欢的细节 节点级并发：同一张父图最多 4 个不同位置同时生成，每个进行中的点击会在热点上流式显示阶段：推断标签… → 搜索网络… → 生成图像…。达到上限后光标会变成 ⌛。 联网搜索增强：planner 之前先有一个\"决策再搜索\"的关卡，明显抽象 / 超时态的主题会跳过搜索，时效性强的主题才去查；查到的来源会以 📚 徽标的形式挂在面包屑旁边，鼠标移上去能看完整 source list。 预览分享：任意 canvas 可以一键生成只读 ?s=<token 链接，访客能浏览也能通过 SSE 实时看到作者还在生成的图片刷出来，但不能触发新的生成。 全屏投屏 / 移动端：⛶ 一键全屏，再切一下隐藏 UI 就剩一张图，适合投屏；移动端顶栏会自动收成图标、画廊变单列。 磁盘格式与静态站兼容：生成完的 canvas 可以直接喂给一个 skill 脚本导出成纯静态站，反过来把静态站文件夹丢回 server/data/canvases/ 重启服务也能被自动识别。 技术栈 Express + SSE + SQLite 后端，Vite + React + TS 前端。整条 AI 流水线（planner + 图像生成 + WebSearch）走 CodeBuddy CLI 子进程驱动，图像 provider 可插拔（默认 CodeBuddy；OpenAI / Nano Banana / Seedream 留好接口位；svg 兜底）。所以这个 repo 顺便也是一份 \"把 CodeBuddy 当作运行时依赖\" 的参考实现。 试用 bash git clone && cd flipbookapp npm install && npm run dev stub 模式，秒级响应、无大模型 ENABLECODEBUDDY=1 npm run dev:server 真实生成 打开 中英双语，欢迎开 issue。",
-          "content": "\n仓库：https://github.com/imcuttle/flipbook-app\n\n一句话介绍：**在 AI 生成的图片上任意位置长按 2 秒，AI 会推断你点的是什么，必要时联网查资料，然后生成一张子图并把它链回来 —— 一本可以\"点出来\"的可探索画册。** 产品理念参考自 [Flipbook.page](https://flipbook.page) 的\"可探索画册\"思路，用一套自己的开源实现把它跑通。\n\n![Flipbook Canvas 演示](https://raw.githubusercontent.com/imcuttle/flipbook-app/main/docs/assets/demo.gif)\n\n### 它解决什么问题\n\n我自己用 AI 看科普 / 看架构图的时候，经常有这种感觉：图很漂亮，但**图里那个东西到底是什么、它内部又长什么样**，AI 不会主动告诉我，我也懒得复制粘贴去问下一轮。\n\nFlipbook Canvas 把这件事做成了一个动作：**长按图里你想知道的部位 2 秒**，剩下的它来 ——\n\n1. 后端先用一次大模型推断你点击的位置在语义上是什么（比如\"啄木鸟的舌部\"）；\n2. 判断这个主题需不需要联网搜资料，需要就跑一次 web search 把权威来源喂给 planner；\n3. 生成一张细致标注的子图（150–220 字图说 + 20–40 处图内文字注释，像儿童百科图鉴的风格）；\n4. 用钻入动画把你带进去，就像翻进画册的下一层；再次点击同一区域会直接跳进去（空间 + 语义双重去重）。\n\n下面是输入\"啄木鸟\"从零跑完整条流水线的样子：\n\n![从零生成一本\"啄木鸟\"画册](https://raw.githubusercontent.com/imcuttle/flipbook-app/main/docs/assets/woodpecker.gif)\n\n![画廊与画布](https://raw.githubusercontent.com/imcuttle/flipbook-app/main/docs/assets/screenshot.png)\n\n### 几个我自己挺喜欢的细节\n\n- **节点级并发**：同一张父图最多 4 个不同位置同时生成，每个进行中的点击会在热点上流式显示阶段：`推断标签…` → `搜索网络…` → `生成图像…`。达到上限后光标会变成 ⌛。\n- **联网搜索增强**：planner 之前先有一个\"决策再搜索\"的关卡，明显抽象 / 超时态的主题会跳过搜索，时效性强的主题才去查；查到的来源会以 📚 徽标的形式挂在面包屑旁边，鼠标移上去能看完整 source list。\n- **预览分享**：任意 canvas 可以一键生成只读 `?s=<token>` 链接，访客能浏览也能通过 SSE 实时看到作者还在生成的图片刷出来，但不能触发新的生成。\n- **全屏投屏 / 移动端**：⛶ 一键全屏，再切一下隐藏 UI 就剩一张图，适合投屏；移动端顶栏会自动收成图标、画廊变单列。\n- **磁盘格式与静态站兼容**：生成完的 canvas 可以直接喂给一个 skill 脚本导出成纯静态站，反过来把静态站文件夹丢回 `server/data/canvases/` 重启服务也能被自动识别。\n\n### 技术栈\n\nExpress + SSE + SQLite 后端，Vite + React + TS 前端。整条 AI 流水线（planner + 图像生成 + WebSearch）走 [CodeBuddy CLI](https://cnb.cool/codebuddy/codebuddy-code) 子进程驱动，图像 provider 可插拔（默认 CodeBuddy；OpenAI / Nano Banana / Seedream 留好接口位；svg 兜底）。所以这个 repo 顺便也是一份 \"把 CodeBuddy 当作运行时依赖\" 的参考实现。\n\n### 试用\n\n```bash\ngit clone https://github.com/imcuttle/flipbook-app && cd flipbook-app\nnpm install && npm run dev                # stub 模式，秒级响应、无大模型\nENABLE_CODEBUDDY=1 npm run dev:server     # 真实生成\n```\n\n打开 http://127.0.0.1:5173，顶栏输入一个主题就开始。README 中英双语，欢迎开 issue。\n",
-          "metrics": {
-            "comments": 1
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10103",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10103"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【工具自荐】一个免费无需注册登录的拼图和切图网站",
           "url": "https://s3.bmp.ovh/2026/05/28/J3yLrh0V.jpg",
           "author": "pangxiaobin",
@@ -305,7 +286,12 @@
             "submission"
           ],
           "externalId": "10106",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10106"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10106",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID E09D:272D24:1ABE4A7:57DCC80:6A9E852D and timestamp 2026-09-07 09:34:37 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
@@ -336,26 +322,12 @@
             "submission"
           ],
           "externalId": "3305",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3305"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] md2wechat：面向 AI Agent 的微信公众号发布 CLI",
-          "url": "https://github.com/geekjourneyx/md2wechat-skill",
-          "author": "geekjourneyx",
-          "authorUrl": "https://github.com/geekjourneyx",
-          "publishedAt": "2026-05-28T15:50:17Z",
-          "summary": "推荐项目 项目地址 类别 Go 项目标题 面向 AI Agent 的微信公众号发布 CLI 项目描述 md2wechat 是一个 Go 编写的微信公众号创作与发布 CLI，适合经常用 Markdown 写技术文章的开发者。它能把本地 Markdown 转成微信可用 HTML，支持 40 个主题、43 个结构化排版模块、AI 配图、图片上传和一键推送草稿箱。 亮点 不只是 Markdown 转换器，而是写作、排版、配图、上传、草稿创建的一条命令链路。 面向 Claude Code、Codex、OpenClaw 等 AI Agent 使用，提供 JSON 输出、能力发现和自动化发布流程。 同一篇 Markdown 在 API 模式下可以稳定生成一致的微信排版，适合团队协作和高频发布。 项目使用 Go 编写，支持 Homebrew、npm、go install、安装脚本等多种安装方式。 示例代码 bash 安装 brew install geekjourneyx/tap/md2wechat 预览文章，不触发上传或草稿副作用 md2wechat preview article.md 转换并推送到微信公众号草稿箱 md2wechat convert article.md draft cover cover.jpg 截图或演示视频 项目演示： !md2wechat 演示 转换流程： !转换演示 主题效果： !主题效果",
-          "content": "## 推荐项目\n\n### 项目地址\n\nhttps://github.com/geekjourneyx/md2wechat-skill\n\n### 类别\n\nGo\n\n### 项目标题\n\n面向 AI Agent 的微信公众号发布 CLI\n\n### 项目描述\n\nmd2wechat 是一个 Go 编写的微信公众号创作与发布 CLI，适合经常用 Markdown 写技术文章的开发者。它能把本地 Markdown 转成微信可用 HTML，支持 40 个主题、43 个结构化排版模块、AI 配图、图片上传和一键推送草稿箱。\n\n### 亮点\n\n- 不只是 Markdown 转换器，而是写作、排版、配图、上传、草稿创建的一条命令链路。\n- 面向 Claude Code、Codex、OpenClaw 等 AI Agent 使用，提供 JSON 输出、能力发现和自动化发布流程。\n- 同一篇 Markdown 在 API 模式下可以稳定生成一致的微信排版，适合团队协作和高频发布。\n- 项目使用 Go 编写，支持 Homebrew、npm、go install、安装脚本等多种安装方式。\n\n### 示例代码\n\n```bash\n# 安装\nbrew install geekjourneyx/tap/md2wechat\n\n# 预览文章，不触发上传或草稿副作用\nmd2wechat preview article.md\n\n# 转换并推送到微信公众号草稿箱\nmd2wechat convert article.md --draft --cover cover.jpg\n```\n\n### 截图或演示视频\n\n项目演示：\n\n![md2wechat 演示](https://raw.githubusercontent.com/geekjourneyx/md2wechat-skill/main/assets/readme-header.gif)\n\n转换流程：\n\n![转换演示](https://raw.githubusercontent.com/geekjourneyx/md2wechat-skill/main/assets/transform.gif)\n\n主题效果：\n\n![主题效果](https://raw.githubusercontent.com/geekjourneyx/md2wechat-skill/main/assets/theme-showcase/theme-showcase-default.png)\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3305",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
           ],
-          "externalId": "3306",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3306"
+          "__mergedCount": 2
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID E09E:E6665:1B4001F:59A099B:6A9E852D and timestamp 2026-09-07 09:34:37 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"

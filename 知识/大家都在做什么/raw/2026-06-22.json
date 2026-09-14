@@ -188,7 +188,12 @@
             "submission"
           ],
           "externalId": "10411",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10411"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10411",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -314,27 +319,7 @@
     {
       "sourceId": "hellogithub-issues",
       "sourceName": "HelloGitHub·用户投稿",
-      "items": [
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] agenthatch：把任意 skill 编译成独立可运行的 AI Agent",
-          "url": "https://github.com/agenthatch/agenthatch",
-          "author": "EternalRights",
-          "authorUrl": "https://github.com/EternalRights",
-          "publishedAt": "2026-06-22T07:52:28Z",
-          "summary": "项目地址 类别 Python 项目标题 agenthatch：把任意 skill 编译成独立可运行的 AI Agent 项目描述 把 skill 当源码编译的命令行工具。通过三阶段管道（确定性解析→6 个 AI harness 推理→Jinja2 代码生成）将 skill 编译成带 pyproject.toml 的独立 Python 包。生成的 Agent 不依赖任何 AI 平台，能 import、能跑 CLI、能独立部署。pip install 即用。 亮点 所有人都觉得 \"Agent + skill\" 是最佳实践。这个项目反过来了：skill 的最佳实践不是给 Agent 当参考书翻，而是作为超级输入源用来孵化 Agent。 agenthatch 本质是一个超级智能体，吃进去 skill，吐出来新的 Agent。像编译器吃 .java 吐 .class 一样。 几个我觉得有意思的点： 1. 编译时校验而非运行时碰运气。skill 里的工具签名、触发词、MCP 配置在编译阶段就被 6 个 harness 交叉验证过了，typo 不会带到 runtime。 2. 6 个 AI harness 并行跑，不是串行。每个 harness 只负责一件事（身份提取、意图推理、接口设计、基类检测、装配校验、MCP 检测），有自己的 temperature 和模型等级。试过用一个超大 prompt 全搞定，输出质量不稳定。拆开之后好多了。 3. 生成的产物是真 Python 包，不是 prompt wrapper。有 pyproject.toml、Typer CLI 入口、类型标注的工具函数、PlanLayer 六状态机运行时。 4. 零锁定。生成的 Agent 不依赖 Claude Code 或任何特定平台，可以接入 DeepSeek、OpenAI、Anthropic 任一 provider。Agent 之间进程隔离，不共享上下文窗口。 示例代码 markdown pip install agenthatch agenthatch hatch myskill skill → 独立 agent agenthatch run myskill 运行编译后的 agent 截图或演示视频 <img width=\"4188\" height=\"3496\" alt=\"Image\" src=\" / <img width=\"3880\" height=\"1024\" alt=\"Image\" src=\" /",
-          "content": "### 项目地址\n\nhttps://github.com/agenthatch/agenthatch\n\n### 类别\n\nPython\n\n### 项目标题\n\nagenthatch：把任意 skill 编译成独立可运行的 AI Agent\n\n### 项目描述\n\n把 skill 当源码编译的命令行工具。通过三阶段管道（确定性解析→6 个 AI harness 推理→Jinja2 代码生成）将 skill 编译成带 pyproject.toml 的独立 Python 包。生成的 Agent 不依赖任何 AI 平台，能 import、能跑 CLI、能独立部署。pip install 即用。\n\n### 亮点\n\n所有人都觉得 \"Agent + skill\" 是最佳实践。这个项目反过来了：skill 的最佳实践不是给 Agent 当参考书翻，而是作为超级输入源用来孵化 Agent。\n\nagenthatch 本质是一个超级智能体，吃进去 skill，吐出来新的 Agent。像编译器吃 .java 吐 .class 一样。\n\n几个我觉得有意思的点：\n\n1. 编译时校验而非运行时碰运气。skill 里的工具签名、触发词、MCP 配置在编译阶段就被 6 个 harness 交叉验证过了，typo 不会带到 runtime。\n\n2. 6 个 AI harness 并行跑，不是串行。每个 harness 只负责一件事（身份提取、意图推理、接口设计、基类检测、装配校验、MCP 检测），有自己的 temperature 和模型等级。试过用一个超大 prompt 全搞定，输出质量不稳定。拆开之后好多了。\n\n3. 生成的产物是真 Python 包，不是 prompt wrapper。有 pyproject.toml、Typer CLI 入口、类型标注的工具函数、PlanLayer 六状态机运行时。\n\n4. 零锁定。生成的 Agent 不依赖 Claude Code 或任何特定平台，可以接入 DeepSeek、OpenAI、Anthropic 任一 provider。Agent 之间进程隔离，不共享上下文窗口。\n\n### 示例代码\n\n```markdown\npip install agenthatch\nagenthatch hatch my-skill    # skill → 独立 agent\nagenthatch run my-skill      # 运行编译后的 agent\n```\n\n### 截图或演示视频\n\n<img width=\"4188\" height=\"3496\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b330ed83-6ff8-4321-97cd-e158795b25b2\" />\n\n<img width=\"3880\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b0d5b58f-4970-44dc-98da-e41f7f239c17\" />",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3368",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3368"
-        }
-      ]
+      "items": []
     },
     {
       "sourceId": "hellogithub-issue",

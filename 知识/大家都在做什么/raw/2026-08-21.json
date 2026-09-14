@@ -150,25 +150,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】ccds-bridge：让 Claude 桌面端无缝接入 DeepSeek 并保持 99%+ 缓存命中率",
-          "url": "https://github.com/ls18166407597-design/claude-model-bridge",
-          "author": "ls18166407597-design",
-          "authorUrl": "https://github.com/ls18166407597-design",
-          "publishedAt": "2026-08-21T03:32:28Z",
-          "summary": "项目名称 ccdsbridge 项目地址 项目简介 ccdsbridge 是一个专为 Claude 桌面版（Code 模式）设计的本地桥接与缓存稳定化插件。 它可以让开发者无需登录官方账号，将 DeepSeek V4 / 小米 MiMO 等第三方高性价比大模型无缝接入 Claude Desktop 原生界面，完整驱动 87+ Agent 工具生态。 解决的痛点与技术亮点 1. 99%+ 物理级前缀缓存锁定：市面普通代理会导致多轮对话频繁击穿 KV Cache。本项目通过并发工具返回确定性排序、输入 JSON Schema 规范化、首日日期锁定与动态系统提醒剥离，实现了连续几十轮对话稳定保持 99%+ 缓存命中率，首字毫秒级响应，API 费用降低 90%！ 2. 完整思维链（Thinking）无损保留：客户端闲置或多轮折叠时，插件以无状态架构耗时 5ms 从本地底稿精准缝合回填 Thinking 块，绝不阉割思维链，模型推理深度 100% 保持。 3. 物理分界线驱动的上下文压缩：基于原生 compactboundary 物理事件精准截断，永不越界回填旧历史。 4. 纯本地无状态运行：零外部依赖，即插即用，安全透明，自带 /ccstatus 实时监控 HUD。",
-          "content": "## 项目名称\n**ccds-bridge**\n\n## 项目地址\nhttps://github.com/ls18166407597-design/claude-model-bridge\n\n## 项目简介\nccds-bridge 是一个专为 Claude 桌面版（Code 模式）设计的本地桥接与缓存稳定化插件。\n\n它可以让开发者无需登录官方账号，将 DeepSeek V4 / 小米 MiMO 等第三方高性价比大模型无缝接入 Claude Desktop 原生界面，完整驱动 87+ Agent 工具生态。\n\n## 解决的痛点与技术亮点\n1. **99%+ 物理级前缀缓存锁定**：市面普通代理会导致多轮对话频繁击穿 KV Cache。本项目通过并发工具返回确定性排序、输入 JSON Schema 规范化、首日日期锁定与动态系统提醒剥离，实现了连续几十轮对话稳定保持 99%+ 缓存命中率，首字毫秒级响应，API 费用降低 90%！\n2. **完整思维链（Thinking）无损保留**：客户端闲置或多轮折叠时，插件以无状态架构耗时 5ms 从本地底稿精准缝合回填 Thinking 块，绝不阉割思维链，模型推理深度 100% 保持。\n3. **物理分界线驱动的上下文压缩**：基于原生 `compact_boundary` 物理事件精准截断，永不越界回填旧历史。\n4. **纯本地无状态运行**：零外部依赖，即插即用，安全透明，自带 `/cc-status` 实时监控 HUD。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11293",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11293"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【工具自荐】还在为图片反色发愁？极简在线工具 Image Inverter 帮你一键搞定！",
           "url": "https://www.imageinverter.com/",
           "author": "saviel-videoai",
@@ -651,7 +632,12 @@
             "submission"
           ],
           "externalId": "3566",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3566"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3566",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",

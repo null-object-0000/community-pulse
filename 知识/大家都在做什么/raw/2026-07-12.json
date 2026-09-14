@@ -135,7 +135,12 @@
             "submission"
           ],
           "externalId": "10676",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10676"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10676",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -187,27 +192,7 @@
     {
       "sourceId": "hellogithub-issues",
       "sourceName": "HelloGitHub·用户投稿",
-      "items": [
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] LLM Wiki Agent Memory：本地 AI 编程记忆库",
-          "url": "https://github.com/miniLV/llm-wiki-agent-memory",
-          "author": "miniLV",
-          "authorUrl": "https://github.com/miniLV",
-          "publishedAt": "2026-07-12T03:06:55Z",
-          "summary": "项目地址 类别 人工智能 项目标题 把 Codex 和 Claude Code 会话变成本地工程记忆 项目描述 这是一个面向 AI 编程用户的本地工程记忆项目。它读取 Codex 和 Claude Code 的本机会话，经过确定性采集、每日整理和周期复核，生成可查询、可审计的 Obsidian 风格 Markdown Wiki，帮助 Agent 在后续任务中找回历史决策、调试过程和防踩坑经验。 亮点 本地优先：原始会话与 Wiki 均保留在本机，不上传私人开发记录。 纯 Markdown：无需向量数据库或托管 RAG 服务，内容可直接阅读和版本管理。 防止记忆污染：Capture、Daily、Reconcile、Retrieve 分层，未经复核的结论不会直接晋升为长期经验。 同时支持 Codex 与 Claude Code，并提供本地 Web 配置页面。 示例代码 bash git clone cd llmwikiagentmemory bash scripts/configui.sh open 如何使用 配置完成后，在任意业务 repo 里直接对 Codex 说： text 使用 $engineeringmemoryloader 查询： 上次 configui 的 8765 端口冲突是怎么解决的？ Codex 会从本地 Markdown Wiki 返回相关日期、结论和关键证据；没有记录时明确返回 NOMATCH。 !在 Codex 中查询工程记忆 截图或演示视频 !LLM Wiki Agent Memory 演示 !LLM Wiki Agent Memory 架构图",
-          "content": "### 项目地址\n\nhttps://github.com/miniLV/llm-wiki-agent-memory\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n把 Codex 和 Claude Code 会话变成本地工程记忆\n\n### 项目描述\n\n这是一个面向 AI 编程用户的本地工程记忆项目。它读取 Codex 和 Claude Code 的本机会话，经过确定性采集、每日整理和周期复核，生成可查询、可审计的 Obsidian 风格 Markdown Wiki，帮助 Agent 在后续任务中找回历史决策、调试过程和防踩坑经验。\n\n### 亮点\n\n- 本地优先：原始会话与 Wiki 均保留在本机，不上传私人开发记录。\n- 纯 Markdown：无需向量数据库或托管 RAG 服务，内容可直接阅读和版本管理。\n- 防止记忆污染：Capture、Daily、Reconcile、Retrieve 分层，未经复核的结论不会直接晋升为长期经验。\n- 同时支持 Codex 与 Claude Code，并提供本地 Web 配置页面。\n\n### 示例代码\n\n```bash\ngit clone https://github.com/miniLV/llm-wiki-agent-memory.git\ncd llm-wiki-agent-memory\nbash scripts/config-ui.sh --open\n```\n\n### 如何使用\n\n配置完成后，在任意业务 repo 里直接对 Codex 说：\n\n```text\n使用 $engineering-memory-loader 查询：\n上次 config-ui 的 8765 端口冲突是怎么解决的？\n```\n\nCodex 会从本地 Markdown Wiki 返回相关日期、结论和关键证据；没有记录时明确返回 `NO_MATCH`。\n\n![在 Codex 中查询工程记忆](https://raw.githubusercontent.com/miniLV/llm-wiki-agent-memory/master/docs/assets/codex-engineering-memory-example.png)\n\n### 截图或演示视频\n\n![LLM Wiki Agent Memory 演示](https://raw.githubusercontent.com/miniLV/llm-wiki-agent-memory/master/docs/assets/demo.gif)\n\n![LLM Wiki Agent Memory 架构图](https://raw.githubusercontent.com/miniLV/llm-wiki-agent-memory/master/docs/agent-memory-arch-sketch.png)",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3435",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3435"
-        }
-      ]
+      "items": []
     },
     {
       "sourceId": "hellogithub-issue",

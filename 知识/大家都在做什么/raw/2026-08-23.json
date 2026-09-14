@@ -184,7 +184,12 @@
             "submission"
           ],
           "externalId": "11319",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11319"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11319",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -281,7 +286,12 @@
             "submission"
           ],
           "externalId": "11324",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11324"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11324",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -312,46 +322,7 @@
     {
       "sourceId": "hellogithub-issues",
       "sourceName": "HelloGitHub·用户投稿",
-      "items": [
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "【开源自荐】FlowGuard：面向 AI / LLM 与微服务的高性能 Python 异步限流熔断库",
-          "url": "https://github.com/yangjinyu050618-hash/flowguard",
-          "author": "yangjinyu050618-hash",
-          "authorUrl": "https://github.com/yangjinyu050618-hash",
-          "publishedAt": "2026-08-23T09:52:10Z",
-          "summary": "项目介绍 项目名称：FlowGuard（PyPI: flowguardcore） 项目地址： 项目类别：Python / 开发者工具 / 后端中间件 / AI 基础设施 开源协议：MIT 为什么推荐这个项目？ 在调用 OpenAI、Anthropic、DeepSeek 等第三方大模型 API 或构建高并发微服务时，开发者经常面临频繁的 429 速率限制（RPM/TPM）、偶发 503 报错以及下游抖动导致的雪崩。 FlowGuard 是一个纯 Python 原生 asyncio 实现、零额外重依赖的现代化弹性编排库： 1. 严格 FIFO 令牌桶与滑动窗口：基于 Future 队列实现，彻底消除轮询开销与竞争倒置，保证严格公平排队。 2. 探针闸门熔断器：状态机驱动（Closed / Open / HalfOpen），引入半开探针并发硬上限，防止恢复瞬间积压流量砸向故障下游。 3. AWS 抖动退避重试：内置 Full Jitter、Equal Jitter 与 Decorrelated Jitter 重试策略。 4. LLM Native 适配器：针对 OpenAI 客户端提供 RPM/TPM 双轴限流保护与超时防挂死。 5. 高工程化质量：行测试覆盖率 92.76%，严格类型标注，内置 Prometheus / JSON 遥测监控。 一行代码快速上手 bash pip install flowguardcore from flowguard import guard @guard( name=\"llmservice\", ratepersec=20.0, 速率限制 20次/秒 burstcapacity=30.0, 突发容量 30次 maxretries=3, 自动重试 failurethreshold=5, 连续5次失败触发熔断 maxconcurrent=10, 隔板并发限制 10 ) async def callllm(prompt: str): return f\"Response: {prompt}\"",
-          "content": "### 项目介绍\n- **项目名称**：FlowGuard（PyPI: `flowguard-core`）\n- **项目地址**：https://github.com/yangjinyu050618-hash/flowguard\n- **项目类别**：Python / 开发者工具 / 后端中间件 / AI 基础设施\n- **开源协议**：MIT\n\n### 为什么推荐这个项目？\n在调用 OpenAI、Anthropic、DeepSeek 等第三方大模型 API 或构建高并发微服务时，开发者经常面临频繁的 429 速率限制（RPM/TPM）、偶发 503 报错以及下游抖动导致的雪崩。\n\nFlowGuard 是一个**纯 Python 原生 asyncio 实现、零额外重依赖**的现代化弹性编排库：\n1. **严格 FIFO 令牌桶与滑动窗口**：基于 Future 队列实现，彻底消除轮询开销与竞争倒置，保证严格公平排队。\n2. **探针闸门熔断器**：状态机驱动（Closed / Open / Half-Open），引入半开探针并发硬上限，防止恢复瞬间积压流量砸向故障下游。\n3. **AWS 抖动退避重试**：内置 Full Jitter、Equal Jitter 与 Decorrelated Jitter 重试策略。\n4. **LLM Native 适配器**：针对 OpenAI 客户端提供 RPM/TPM 双轴限流保护与超时防挂死。\n5. **高工程化质量**：行测试覆盖率 92.76%，严格类型标注，内置 Prometheus / JSON 遥测监控。\n\n### 一行代码快速上手\n```bash\npip install flowguard-core\n\nfrom flowguard import guard\n\n@guard(\n    name=\"llm-service\",\n    rate_per_sec=20.0,       # 速率限制 20次/秒\n    burst_capacity=30.0,     # 突发容量 30次\n    max_retries=3,           # 自动重试\n    failure_threshold=5,     # 连续5次失败触发熔断\n    max_concurrent=10,       # 隔板并发限制 10\n)\nasync def call_llm(prompt: str):\n    return f\"Response: {prompt}\"",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3571",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3571"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[Open Source] pisesh - TUI session manager for the Pi coding agent",
-          "url": "https://github.com/Blue-B/pisesh",
-          "author": "Blue-B",
-          "authorUrl": "https://github.com/Blue-B",
-          "publishedAt": "2026-08-23T14:40:51Z",
-          "summary": "Project URL Category JS Project Title pisesh TUI session manager for the Pi coding agent Project Description pisesh is a zerodependency terminal UI for Pi codingagent sessions: favorites, search, custom titles, a project view, and AI titles. Install with pi install npm:pisesh and run /sesh inside Pi. v0.3.0 switches sessions via Pi's ctx.switchSession() API. Highlights Singlefile Node script with zero runtime dependencies, CJKaware column alignment for Korean/Chinese/Japanese prompts, altscreen rendering like vim/less, and readonly session files (sidecar JSON only). Screenshots or Demo Videos !pisesh",
-          "content": "### Project URL\n\nhttps://github.com/Blue-B/pisesh\n\n### Category\n\nJS\n\n### Project Title\n\npisesh - TUI session manager for the Pi coding agent\n\n### Project Description\n\npisesh is a zero-dependency terminal UI for Pi coding-agent sessions: favorites, search, custom titles, a project view, and AI titles. Install with `pi install npm:pisesh` and run `/sesh` inside Pi. v0.3.0 switches sessions via Pi's ctx.switchSession() API.\n\n### Highlights\n\nSingle-file Node script with zero runtime dependencies, CJK-aware column alignment for Korean/Chinese/Japanese prompts, alt-screen rendering like vim/less, and read-only session files (sidecar JSON only).\n\n### Screenshots or Demo Videos\n\n![pisesh](https://raw.githubusercontent.com/Blue-B/pisesh/main/assets/screen-list.png)\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3572",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3572"
-        }
-      ]
+      "items": []
     },
     {
       "sourceId": "hellogithub-issue",

@@ -181,25 +181,6 @@
       "items": [
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Claude Pet — Claude Code 的桌面伙伴，本地图记忆 + 项目上下文注入 + GitHub 活动提醒",
-          "url": "https://github.com/nikhilagrima/claude-pet",
-          "author": "nikhilagrima",
-          "authorUrl": "https://github.com/nikhilagrima",
-          "publishedAt": "2026-07-17T18:28:04Z",
-          "summary": "Claude Pet Claude Pet 是一个开源（MIT 许可）的桌面伙伴，为 Claude Code 用户设计。它以卡通机器人形象浮现在屏幕右下角，实时响应 Claude Code 的每一个 hook 事件——11 种情绪 + 声音提示，让你在切换到浏览器或其他应用时也能一眼知道 Claude Code 正在做什么。 🔗 代码仓库： 🔗 官网： 主要功能 实时反馈 — 11 种情绪对应 Claude Code 的不同状态：阅读文件、编辑、bash 命令、成功、失败、等待输入等，每种都有专属动画和声音 每项目本地图记忆 — 用 SQLite 存储每个项目的决策、约定、修复、坑点；新会话开始时通过 SessionStart hook 自动注入不超过 800 tokens 的精炼上下文，Claude 无需重新读文件、跑 git log 就能理解项目 自动生成 SKILL.md — 出现两次以上的模式会自动提升为 Claude Code 的技能文件（写入 ~/.claude/skills/），跨项目共享经验 人体工程学教练 — 根据实际编码时间（不是挂机时间）在合适时机提示护眼、颈部、腕部微休息，宠物本身会演示动作 GitHub 仓库监听 — 监听任何仓库的新 commit、PR、code review、release、CI/deploy 状态，用 toast 弹窗即时提示，可直接点击跳转 100% 本地运行 — 无云端、无遥测、无账号；所有数据保存在本机 ~/.claude/claudepet/memory.sqlite 平台 macOS / Windows / Linux（PySide6 单代码库，二进制安装包已发布） 技术栈 Python 3.10+ · PySide6 (Qt) · SQLite (FTS5) · Flask · PyObjC (macOS 窗口置顶) · PyInstaller 开源协议 MIT",
-          "content": "# Claude Pet\n\nClaude Pet 是一个开源（MIT 许可）的桌面伙伴，为 Claude Code 用户设计。它以卡通机器人形象浮现在屏幕右下角，实时响应 Claude Code 的每一个 hook 事件——11 种情绪 + 声音提示，让你在切换到浏览器或其他应用时也能一眼知道 Claude Code 正在做什么。\n\n🔗 **代码仓库：** https://github.com/nikhilagrima/claude-pet\n🔗 **官网：** https://nikhilagrima.github.io/claude-pet\n\n## 主要功能\n\n- **实时反馈** — 11 种情绪对应 Claude Code 的不同状态：阅读文件、编辑、bash 命令、成功、失败、等待输入等，每种都有专属动画和声音\n- **每项目本地图记忆** — 用 SQLite 存储每个项目的决策、约定、修复、坑点；新会话开始时通过 SessionStart hook 自动注入不超过 800 tokens 的精炼上下文，Claude 无需重新读文件、跑 git log 就能理解项目\n- **自动生成 SKILL.md** — 出现两次以上的模式会自动提升为 Claude Code 的技能文件（写入 `~/.claude/skills/`），跨项目共享经验\n- **人体工程学教练** — 根据实际编码时间（不是挂机时间）在合适时机提示护眼、颈部、腕部微休息，宠物本身会演示动作\n- **GitHub 仓库监听** — 监听任何仓库的新 commit、PR、code review、release、CI/deploy 状态，用 toast 弹窗即时提示，可直接点击跳转\n- **100% 本地运行** — 无云端、无遥测、无账号；所有数据保存在本机 `~/.claude/claude-pet/memory.sqlite`\n\n## 平台\n\nmacOS / Windows / Linux（PySide6 单代码库，二进制安装包已发布）\n\n## 技术栈\n\nPython 3.10+ · PySide6 (Qt) · SQLite (FTS5) · Flask · PyObjC (macOS 窗口置顶) · PyInstaller\n\n## 开源协议\n\nMIT",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10779",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10779"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】Chaty：本地私有 AI 桌面应用（GGUF + 原生 MLX）",
           "url": "https://github.com/Fangyuan025/Chaty",
           "author": "Fangyuan025",
@@ -381,7 +362,12 @@
             "submission"
           ],
           "externalId": "3459",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3459"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3459",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

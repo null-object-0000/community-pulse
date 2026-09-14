@@ -39,23 +39,6 @@
           ],
           "externalId": "2026-01-30-TakeScreen-https://takescreen.com/",
           "siteLogo": "https://takescreen.com/favicon.ico"
-        },
-        {
-          "sourceId": "chinese-indie-dev",
-          "title": "US Address Generator",
-          "url": "https://usaddressgenerator.net",
-          "author": "Mickey",
-          "authorUrl": "",
-          "publishedAt": "2026-01-30T00:00:00+08:00",
-          "summary": "美国随机地址生成工具，支持一键生成包含街道、城市、州和邮编的真实格式地址，非常适合开发者进行系统测试或跨境业务模拟注册。",
-          "content": "美国随机地址生成工具，支持一键生成包含街道、城市、州和邮编的真实格式地址，非常适合开发者进行系统测试或跨境业务模拟注册。",
-          "metrics": {},
-          "tags": [
-            "indie-dev",
-            "已上线"
-          ],
-          "externalId": "2026-01-30-US Address Generator-https://usaddressgenerator.net",
-          "siteLogo": "https://usaddressgenerator.net/favicon.ico"
         }
       ]
     },
@@ -257,7 +240,12 @@
             "submission"
           ],
           "externalId": "8880",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/8880"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8880",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 685A:12FC19:377252E:B585248:6A9E864E and timestamp 2026-09-07 09:39:26 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
@@ -625,27 +613,7 @@
     {
       "sourceId": "hellogithub-issues",
       "sourceName": "HelloGitHub·用户投稿",
-      "items": [
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源自荐] LingFrame（灵珑）- 一个专为长运行遗留单体系统设计的 JVM 运行时治理框架",
-          "url": "https://github.com/LingFrame/LingFrame",
-          "author": "knight6236",
-          "authorUrl": "https://github.com/knight6236",
-          "publishedAt": "2026-01-30T13:36:01Z",
-          "summary": "项目地址 类别 Java 项目标题 JVM 长运行系统运行时治理框架：插件隔离 + 金丝雀发布 + 零信任治理，无需微服务重构 项目描述 核心功能：LingFrame（灵珑）是一个专为长运行遗留单体系统设计的 JVM 运行时治理框架。在不重写原有代码、不强制拆分为微服务的前提下，通过单进程内的插件隔离、金丝雀流量治理与零信任权限控制，实现对老系统的可控性、可演进性与安全性治理。 框架强调“在系统尚可理解时进行收拢与重整”，拒绝添加新功能或过度抽象，而是专注解决“长期运行后边界模糊、变更失控”的核心痛点。采用治理而非重构的哲学：插件在同一 JVM 内运行，但强制结构性与运行时隔离；所有操作需授权并全程审计；支持无重启的金丝雀发布与实时监控仪表盘，形成“边界清晰的运行时秩序”。 支持会话持久、实时仪表盘（多语言 SSE 推送）、权限模型重构，兼容主流 Spring Boot 环境。适用于银行、电商、企业级遗留系统等“改不动但不能停”的场景。 一句话总结：LingFrame（灵珑） 是遗留 Java 单体应用的“运行时救赎框架”——在无法重写时，仍能通过清晰边界与强治理，让老系统重获可控与可演进的能力。 Apache2.0 开源，欢迎 star & 试用反馈！ 亮点 主要特性 插件隔离（Plugin Isolation）：单 JVM 进程内实现插件的结构与运行时完全隔离，支持热插拔、动态加载/卸载/回滚 金丝雀发布（Canary Releases）：实时流量治理，支持灰度路由、版本权重控制，无需重启应用即可验证变更 零信任治理（ZeroTrust Governance）：所有插件操作需显式授权，全程调用链审计，防止越权与恶意行为 实时治理仪表盘（Dashboard）：监控插件状态、流量分布、金丝雀指标、审计日志；支持多语言（中英）、SSE 实时推送，界面暗黑主题简洁直观 兼容性强：JDK 21、Spring Boot 3.x（计划支持 JDK 8、 Spring Boot 2.x）；集成 SpringDoc/Knife4j 生成 API 文档 模块化设计：核心模块分离（api/core/dashboard/runtime 等），便于按需引入与扩展 拒绝银弹定位：不是微服务替代、不是模块化工具，仅专注运行时边界与可控性 企业级工作流 金丝雀部署流程：插件开发 → 打包 → 热加载 → 流量切分（canary） → 观察指标 → 全量或回滚 零信任操作审计：权限校验 → 调用链追踪 → 日志记录 → 异常阻断/告警 遗留系统治理路径：接入 LingFrame → 逐步插件化边界模块 → 通过仪表盘监控与收敛 → 实现“优雅老化”而非激进重构 实战快速验证：支持示例应用（lingframeexamples/lingframeexamplehostapp）一键启动，立即体验隔离与治理 示例代码 markdown git clone cd LingFrame/lingframeexamples/lingframeexamplehostapp mvn springboot:run 启动后访问仪表盘（默认端口），可实时 drop/load 插件、配置金丝雀流量、查看零信任审计日志。 截图或演示视频 <img width=\"2558\" height=\"1309\" alt=\"Image\" src=\" / （仪表盘预览：插件列表、状态监控、流量控制面板、Trace Logs 调用链、权限不足/绕过/成功日志等界面展示，支持实时 SSE 更新）",
-          "content": "### 项目地址\n\nhttps://github.com/LingFrame/LingFrame\n\n### 类别\n\nJava\n\n### 项目标题\n\nJVM 长运行系统运行时治理框架：插件隔离 + 金丝雀发布 + 零信任治理，无需微服务重构\n\n### 项目描述\n\n核心功能：LingFrame（灵珑）是一个专为**长运行遗留单体系统**设计的 JVM 运行时治理框架。在**不重写原有代码、不强制拆分为微服务**的前提下，通过单进程内的插件隔离、金丝雀流量治理与零信任权限控制，实现对老系统的**可控性、可演进性与安全性**治理。  \n\n框架强调“**在系统尚可理解时进行收拢与重整**”，拒绝添加新功能或过度抽象，而是专注解决“**长期运行后边界模糊、变更失控**”的核心痛点。采用**治理而非重构**的哲学：插件在同一 JVM 内运行，但强制结构性与运行时隔离；所有操作需授权并全程审计；支持无重启的金丝雀发布与实时监控仪表盘，形成“**边界清晰的运行时秩序**”。\n\n支持会话持久、实时仪表盘（多语言 SSE 推送）、权限模型重构，兼容主流 Spring Boot 环境。适用于银行、电商、企业级遗留系统等“**改不动但不能停**”的场景。\n\n一句话总结：**LingFrame（灵珑）** 是遗留 Java 单体应用的“**运行时救赎框架**”——在无法重写时，仍能通过清晰边界与强治理，让老系统重获可控与可演进的能力。\n\nApache-2.0 开源，欢迎 star & 试用反馈！\n\n### 亮点\n\n主要特性\n\n- **插件隔离（Plugin Isolation）**：单 JVM 进程内实现插件的结构与运行时完全隔离，支持热插拔、动态加载/卸载/回滚  \n- **金丝雀发布（Canary Releases）**：实时流量治理，支持灰度路由、版本权重控制，无需重启应用即可验证变更  \n- **零信任治理（Zero-Trust Governance）**：所有插件操作需显式授权，全程调用链审计，防止越权与恶意行为  \n- **实时治理仪表盘（Dashboard）**：监控插件状态、流量分布、金丝雀指标、审计日志；支持多语言（中英）、SSE 实时推送，界面暗黑主题简洁直观  \n- **兼容性强**：JDK 21、Spring Boot 3.x（计划支持 JDK 8、 Spring Boot 2.x）；集成 SpringDoc/Knife4j 生成 API 文档  \n- **模块化设计**：核心模块分离（api/core/dashboard/runtime 等），便于按需引入与扩展  \n- **拒绝银弹定位**：不是微服务替代、不是模块化工具，仅专注运行时边界与可控性  \n\n**企业级工作流**  \n- **金丝雀部署流程**：插件开发 → 打包 → 热加载 → 流量切分（canary） → 观察指标 → 全量或回滚  \n- **零信任操作审计**：权限校验 → 调用链追踪 → 日志记录 → 异常阻断/告警  \n- **遗留系统治理路径**：接入 LingFrame → 逐步插件化边界模块 → 通过仪表盘监控与收敛 → 实现“优雅老化”而非激进重构  \n- **实战快速验证**：支持示例应用（lingframe-examples/lingframe-example-host-app）一键启动，立即体验隔离与治理  \n\n\n### 示例代码\n\n```markdown\ngit clone https://github.com/LingFrame/LingFrame.git\n\ncd LingFrame/lingframe-examples/lingframe-example-host-app\n\nmvn spring-boot:run\n\n\n启动后访问仪表盘（默认端口），可实时 drop/load 插件、配置金丝雀流量、查看零信任审计日志。\n```\n\n### 截图或演示视频\n\n<img width=\"2558\" height=\"1309\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/fbf0efb2-eb89-4582-a3b7-c9fa0b4cd751\" />\n\n（仪表盘预览：插件列表、状态监控、流量控制面板、Trace Logs 调用链、权限不足/绕过/成功日志等界面展示，支持实时 SSE 更新）  ",
-          "metrics": {
-            "comments": 1
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3130",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3130"
-        }
-      ],
+      "items": [],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 685C:2987C2:246FB6D:76EA53F:6A9E864E and timestamp 2026-09-07 09:39:26 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
     },
     {

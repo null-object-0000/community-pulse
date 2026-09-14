@@ -253,25 +253,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】boss-zhipin-scraper —— 用 CDP 协议抓 BOSS直聘职位",
-          "url": "https://github.com/eatmoreduck/boss-zhipin-scraper",
-          "author": "eatmoreduck",
-          "authorUrl": "https://github.com/eatmoreduck",
-          "publishedAt": "2026-06-16T11:15:59Z",
-          "summary": "自荐一个开源小工具：bosszhipinscraper 它用 Chrome 的 DevTools Protocol（CDP）抓 BOSS直聘的职位数据。 没用 Selenium 那一套，而是直接连本地 Chrome 的 9222 调试端口， 通过页面内注入 JS 调搜索接口，拿到结构化的职位列表（含明文薪资）， 再抓详情页 JD 做技能词频分析。 技术上有两个我觉得还算有意思的点： 1. 不重新造浏览器自动化轮子，靠 CDP raw protocol 手写消息收发， 整个工具只依赖 requests 和 websocketclient。 2. 用一个隔离的 Chrome profile 存登录态，专门给抓取用， 不软链接、不复制主 Chrome 数据，避免影响日常浏览器里的其他账号。 用法很简单： python3 scripts/bosscdpraw.py setupchrome 启动隔离 Chrome，登录一次 python3 scripts/bosscdpraw.py check 自检环境 python3 scripts/bosscdpraw.py keyword \"AI Agent\" city 上海 pages 3 analysis 适合找工作时批量筛岗位、或者想学 CDP 协议怎么手撸的同学。",
-          "content": "自荐一个开源小工具：boss-zhipin-scraper\nhttps://github.com/eatmoreduck/boss-zhipin-scraper\n\n它用 Chrome 的 DevTools Protocol（CDP）抓 BOSS直聘的职位数据。\n没用 Selenium 那一套，而是直接连本地 Chrome 的 9222 调试端口，\n通过页面内注入 JS 调搜索接口，拿到结构化的职位列表（含明文薪资），\n再抓详情页 JD 做技能词频分析。\n\n技术上有两个我觉得还算有意思的点：\n1. 不重新造浏览器自动化轮子，靠 CDP raw protocol 手写消息收发，\n   整个工具只依赖 requests 和 websocket-client。\n2. 用一个隔离的 Chrome profile 存登录态，专门给抓取用，\n   不软链接、不复制主 Chrome 数据，避免影响日常浏览器里的其他账号。\n\n用法很简单：\npython3 scripts/boss_cdp_raw.py --setup-chrome   # 启动隔离 Chrome，登录一次\npython3 scripts/boss_cdp_raw.py --check          # 自检环境\npython3 scripts/boss_cdp_raw.py --keyword \"AI Agent\" --city 上海 --pages 3 --analysis\n\n适合找工作时批量筛岗位、或者想学 CDP 协议怎么手撸的同学。",
-          "metrics": {
-            "comments": 2
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10357",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10357"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】CoPet - 给 AI Agent 配一只会动的桌面宠物伙伴",
           "url": "https://github.com/ChanceYu/CoPet/raw/main/public/pet.png\"",
           "author": "ChanceYu",
@@ -355,7 +336,12 @@
             "submission"
           ],
           "externalId": "3355",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3355"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3355",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

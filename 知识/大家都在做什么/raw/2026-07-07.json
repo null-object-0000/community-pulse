@@ -32,49 +32,12 @@
     {
       "sourceId": "chinese-indie-dev",
       "sourceName": "中国独立开发者",
-      "items": [
-        {
-          "sourceId": "chinese-indie-dev",
-          "title": "Gptimage2",
-          "url": "https://gptimage2.asia/",
-          "author": "xianyu110",
-          "authorUrl": "",
-          "publishedAt": "2026-07-07T00:00:00+08:00",
-          "summary": "AI 图片生成工具",
-          "content": "AI 图片生成工具",
-          "metrics": {},
-          "tags": [
-            "indie-dev",
-            "已上线"
-          ],
-          "externalId": "2026-07-07-Gptimage2-https://gptimage2.asia/",
-          "siteLogo": "https://gptimage2.asia/apple-touch-icon.png"
-        }
-      ]
+      "items": []
     },
     {
       "sourceId": "weekly-issues",
       "sourceName": "阮一峰周刊·用户投稿",
       "items": [
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】tty7：纯 Rust 编写的 GPU 渲染终端，快且提示符好用",
-          "url": "https://github.com/l0ng-ai/tty7",
-          "author": "l0ng-ai",
-          "authorUrl": "https://github.com/l0ng-ai",
-          "publishedAt": "2026-07-07T02:42:57Z",
-          "summary": "项目地址： 开源协议：Apache2.0 !tty7 简介 tty7 是一个用纯 Rust 编写、GPU 渲染的终端，基于 Zed 的 gpui 框架和 Alacritty 的 VT 内核。目标很简单：渲染要快，提示符要真的帮上忙。 它把内联补全、语法高亮、历史记录和终端内搜索都做进了提示符，还内置了约 100 个常用命令的参数签名（git、kubectl、npm 等，数据来自 Fig 的语料）——敲下 git commit ，就能在终端里直接列出每个 flag 及其说明，不用装插件，也不用额外的 shell 框架。 性能实测 同一台机器、同一 155×40 网格（Apple M1 Pro）：11 MB 的 cat 只要约 95 ms，Alacritty / Ghostty / Kitty 为 179–239 ms；DOOMfire 跑到约 888 fps，它们在 485–617 之间。输出成批解析、脱离渲染路径，热路径全程无锁，所以大量输出不会卡在渲染上。基准脚本就在仓库里，欢迎自己复现、挑方法学的刺。 主要特性 增强提示符：内联补全、语法高亮、历史、终端内搜索，以及约 100 个命令的参数/子命令签名。 懂 shell：新标签页和分屏都开在当前目录，路径补全相对当前目录；zsh / bash / fish / PowerShell 开箱即用。 标签页（拖拽重排、双击重命名、数字键切换）、可拖动分屏、命令面板、点击打开链接、桌面通知、焦点随鼠标。 内置 8 套主题（系统标题栏明暗跟随），支持 CJK 与输入法组合输入。 macOS（签名 + 公证 DMG）、Windows、Linux 三平台原生构建，每个 release 一起打出。 使用场景 想要一个渲染够快、日常又顺手的终端，替代现有的 GPU 终端。 经常敲长命令、记不住 flag，希望在终端里直接看到参数说明。 需要跨平台、开箱即用、零配置的终端体验。 欢迎试用，也欢迎提 issue 和 PR。",
-          "content": "项目地址：https://github.com/l0ng-ai/tty7\n\n开源协议：Apache-2.0\n\n![tty7](https://raw.githubusercontent.com/l0ng-ai/tty7/main/docs/screenshot.jpg)\n\n## 简介\n\ntty7 是一个用纯 Rust 编写、GPU 渲染的终端，基于 Zed 的 gpui 框架和 Alacritty 的 VT 内核。目标很简单：渲染要快，提示符要真的帮上忙。\n\n它把内联补全、语法高亮、历史记录和终端内搜索都做进了提示符，还内置了约 100 个常用命令的参数签名（git、kubectl、npm 等，数据来自 Fig 的语料）——敲下 `git commit --`，就能在终端里直接列出每个 flag 及其说明，不用装插件，也不用额外的 shell 框架。\n\n## 性能实测\n\n同一台机器、同一 155×40 网格（Apple M1 Pro）：11 MB 的 `cat` 只要约 **95 ms**，Alacritty / Ghostty / Kitty 为 179–239 ms；DOOM-fire 跑到约 **888 fps**，它们在 485–617 之间。输出成批解析、脱离渲染路径，热路径全程无锁，所以大量输出不会卡在渲染上。基准脚本就在仓库里，欢迎自己复现、挑方法学的刺。\n\n## 主要特性\n\n- **增强提示符**：内联补全、语法高亮、历史、终端内搜索，以及约 100 个命令的参数/子命令签名。\n- **懂 shell**：新标签页和分屏都开在当前目录，路径补全相对当前目录；zsh / bash / fish / PowerShell 开箱即用。\n- 标签页（拖拽重排、双击重命名、数字键切换）、可拖动分屏、命令面板、点击打开链接、桌面通知、焦点随鼠标。\n- 内置 8 套主题（系统标题栏明暗跟随），支持 CJK 与输入法组合输入。\n- macOS（签名 + 公证 DMG）、Windows、Linux 三平台原生构建，每个 release 一起打出。\n\n## 使用场景\n\n- 想要一个渲染够快、日常又顺手的终端，替代现有的 GPU 终端。\n- 经常敲长命令、记不住 flag，希望在终端里直接看到参数说明。\n- 需要跨平台、开箱即用、零配置的终端体验。\n\n欢迎试用，也欢迎提 issue 和 PR。\n",
-          "metrics": {
-            "comments": 1
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10609",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10609"
-        },
         {
           "sourceId": "weekly-issues",
           "title": "【工具推荐】MSSH 轻量绿色的单文件 SSH 桌面客户端，可纯离线内网同步数据",
@@ -97,25 +60,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Agent Switchboard：本地切换 Claude Code、Codex CLI 和 OpenCode 配置",
-          "url": "https://github.com/xzulab/AgentSwitchboard",
-          "author": "xzulab",
-          "authorUrl": "https://github.com/xzulab",
-          "publishedAt": "2026-07-07T06:41:16Z",
-          "summary": "项目地址： 在线体验： 开源协议：MIT !Agent Switchboard 简介 Agent Switchboard 是一个本地优先的 AI 编程工具配置档案切换器，支持 Claude Code、Codex CLI 和 OpenCode。它把不同模型、API 网关、认证方式保存成命名档案，需要切换时直接选择并应用，不用反复手动编辑 ~/.claude/settings.json、~/.codex/config.toml、~/.codex/auth.json 或 OpenCode 配置文件。 项目是纯静态网页，没有后端、数据库或上传流程。浏览器只会读写用户主动授权选择的本地配置文件，档案保存在浏览器本地存储中，适合经常在不同 AI 编程工具、模型供应商、代理网关和认证方式之间切换的开发者。 主要特点 本地优先：配置档案保存在浏览器本地，静态托管服务不会接收用户配置。 多工具管理：分别管理 Claude Code、Codex CLI 和 OpenCode。 Codex 友好：支持 config.toml、authmode、auth.json、API Key 和 ChatGPT Session 相关配置。 写入前快照：应用档案前保存最近一次文件内容，便于回看和恢复。 静态部署：可以在 localhost 使用，也可以部署到任意 HTTPS 静态站点。 中英文界面：根据浏览器语言自动切换，也可以手动切换。 适合场景 同时使用 Claude Code、Codex CLI、OpenCode，需要分别维护配置。 经常在官方模型、自建网关、第三方 API、不同认证方式之间切换。 想减少手动编辑配置文件带来的误操作，同时又不希望把 API Key 或登录缓存交给第三方服务。 快速开始： bash git clone cd AgentSwitchboard python3 m http.server 5173 然后打开",
-          "content": "项目地址：https://github.com/xzulab/AgentSwitchboard\n\n在线体验：https://aisw.nouo.org\n\n开源协议：MIT\n\n![Agent Switchboard](https://raw.githubusercontent.com/xzulab/AgentSwitchboard/main/docs/guide_zh.png)\n\n## 简介\n\nAgent Switchboard 是一个本地优先的 AI 编程工具配置档案切换器，支持 Claude Code、Codex CLI 和 OpenCode。它把不同模型、API 网关、认证方式保存成命名档案，需要切换时直接选择并应用，不用反复手动编辑 `~/.claude/settings.json`、`~/.codex/config.toml`、`~/.codex/auth.json` 或 OpenCode 配置文件。\n\n项目是纯静态网页，没有后端、数据库或上传流程。浏览器只会读写用户主动授权选择的本地配置文件，档案保存在浏览器本地存储中，适合经常在不同 AI 编程工具、模型供应商、代理网关和认证方式之间切换的开发者。\n\n## 主要特点\n\n- **本地优先**：配置档案保存在浏览器本地，静态托管服务不会接收用户配置。\n- **多工具管理**：分别管理 Claude Code、Codex CLI 和 OpenCode。\n- **Codex 友好**：支持 `config.toml`、`auth_mode`、`auth.json`、API Key 和 ChatGPT Session 相关配置。\n- **写入前快照**：应用档案前保存最近一次文件内容，便于回看和恢复。\n- **静态部署**：可以在 `localhost` 使用，也可以部署到任意 HTTPS 静态站点。\n- **中英文界面**：根据浏览器语言自动切换，也可以手动切换。\n\n## 适合场景\n\n- 同时使用 Claude Code、Codex CLI、OpenCode，需要分别维护配置。\n- 经常在官方模型、自建网关、第三方 API、不同认证方式之间切换。\n- 想减少手动编辑配置文件带来的误操作，同时又不希望把 API Key 或登录缓存交给第三方服务。\n\n快速开始：\n\n```bash\ngit clone https://github.com/xzulab/AgentSwitchboard\ncd AgentSwitchboard\npython3 -m http.server 5173\n```\n\n然后打开 `http://localhost:5173/`，首次使用时绑定需要管理的本地配置文件即可。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10611",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10611"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "Submit Tool: Gptimage2",
           "url": "https://gptimage2.asia/",
           "author": "xianyu110",
@@ -132,7 +76,12 @@
           ],
           "externalId": "10612",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/10612",
-          "siteLogo": "https://gptimage2.asia/apple-touch-icon.png"
+          "siteLogo": "https://gptimage2.asia/apple-touch-icon.png",
+          "__mergedSources": [
+            "中国独立开发者",
+            "阮一峰周刊·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -373,7 +322,12 @@
             "submission"
           ],
           "externalId": "3421",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3421"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3421",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -411,7 +365,12 @@
             "submission"
           ],
           "externalId": "3423",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3423"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3423",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

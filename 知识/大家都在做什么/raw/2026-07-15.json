@@ -939,25 +939,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Timeline Studio —— 在浏览器本地运行 AI 的开源视频编辑器",
-          "url": "https://github.com/MartinDelophy/ai-video-editor",
-          "author": "MartinDelophy",
-          "authorUrl": "https://github.com/MartinDelophy",
-          "publishedAt": "2026-07-15T05:06:02Z",
-          "summary": "项目地址： 在线体验： Hugging Face Space： 一句话介绍 Timeline Studio 是一个 MIT 协议的开源浏览器 AI 视频编辑器：多轨时间线、自动字幕、多语言配音、人声与伴奏分离、背景移除、智能裁剪和数字人等核心工作流直接在用户设备上运行，不需要为了处理素材而上传到编辑后端。 !Timeline Studio 时间线与 AI 配音工作区 主要特点 本地优先：基于 ONNX Runtime Web、WebGPU、WebAssembly、WebCodecs 和 Web Audio API，核心 AI 推理与媒体处理在浏览器完成； 完整编辑工作区：支持图片、视频、音频导入，多轨时间线编辑、预览，以及 MP4/WebM 导出； 自动字幕：使用 Whisper small q8 ONNX，并根据源音频能量微调字幕片段边界，让字幕条更贴近波形； 多语言配音：中文及多语种使用浏览器 Piper/VITS，英文支持 Kokoro 82M ONNX； 音频处理：可从当前源音频中分离人声与伴奏，人声替换原片段，伴奏自动进入音乐轨； 视觉分析：使用 YOLOS tiny 与 MODNet 生成带时间戳的视频分析轨道，用于主体检测、背景移除、智能裁剪和字幕避让； 数字人：浏览器端运行 JoyVASA + LivePortrait；针对不兼容的 5D GridSample，将其改写为批量 4D GridSample 加线性深度插值，完整输出最大绝对误差为 7.90e6； PWA 与缓存：通过 Service Worker 缓存应用外壳、ONNX 模型和运行时资源，减少重复下载。 当前限制 首次使用部分 AI 功能需要下载较大的模型；浏览器内存与 WebGPU 支持因设备而异；Chrome / Edge 当前体验最好；512×512 数字人神经渲染在消费级浏览器 GPU 上仍然较慢。 项目代码、Hugging Face 模型和展示 Space 均已公开，欢迎试用、提交 Issue 或参与贡献。",
-          "content": "**项目地址**：https://github.com/MartinDelophy/ai-video-editor  \n**在线体验**：https://video-editor.ai-creator.top/  \n**Hugging Face Space**：https://huggingface.co/spaces/haixin/timeline-studio\n\n## 一句话介绍\n\nTimeline Studio 是一个 MIT 协议的开源浏览器 AI 视频编辑器：多轨时间线、自动字幕、多语言配音、人声与伴奏分离、背景移除、智能裁剪和数字人等核心工作流直接在用户设备上运行，不需要为了处理素材而上传到编辑后端。\n\n![Timeline Studio 时间线与 AI 配音工作区](https://raw.githubusercontent.com/MartinDelophy/ai-video-editor/main/docs/screenshots/editor-timeline.png)\n\n## 主要特点\n\n- **本地优先**：基于 ONNX Runtime Web、WebGPU、WebAssembly、WebCodecs 和 Web Audio API，核心 AI 推理与媒体处理在浏览器完成；\n- **完整编辑工作区**：支持图片、视频、音频导入，多轨时间线编辑、预览，以及 MP4/WebM 导出；\n- **自动字幕**：使用 Whisper small q8 ONNX，并根据源音频能量微调字幕片段边界，让字幕条更贴近波形；\n- **多语言配音**：中文及多语种使用浏览器 Piper/VITS，英文支持 Kokoro 82M ONNX；\n- **音频处理**：可从当前源音频中分离人声与伴奏，人声替换原片段，伴奏自动进入音乐轨；\n- **视觉分析**：使用 YOLOS tiny 与 MODNet 生成带时间戳的视频分析轨道，用于主体检测、背景移除、智能裁剪和字幕避让；\n- **数字人**：浏览器端运行 JoyVASA + LivePortrait；针对不兼容的 5D GridSample，将其改写为批量 4D GridSample 加线性深度插值，完整输出最大绝对误差为 7.90e-6；\n- **PWA 与缓存**：通过 Service Worker 缓存应用外壳、ONNX 模型和运行时资源，减少重复下载。\n\n## 当前限制\n\n首次使用部分 AI 功能需要下载较大的模型；浏览器内存与 WebGPU 支持因设备而异；Chrome / Edge 当前体验最好；512×512 数字人神经渲染在消费级浏览器 GPU 上仍然较慢。\n\n项目代码、Hugging Face 模型和展示 Space 均已公开，欢迎试用、提交 Issue 或参与贡献。",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10726",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10726"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源项目自荐】Aural：支持语音、聊天和视频的 AI 面试平台",
           "url": "https://github.com/1146345502/aural-oss",
           "author": "1146345502",
@@ -1030,7 +1011,12 @@
             "submission"
           ],
           "externalId": "10730",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10730"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10730",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -1107,25 +1093,6 @@
           ],
           "externalId": "10734",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/10734"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "Nimclip：本地优先的 macOS 剪贴板历史工具",
-          "url": "https://github.com/hukdoesn/Nimclip",
-          "author": "hukdoesn",
-          "authorUrl": "https://github.com/hukdoesn",
-          "publishedAt": "2026-07-15T10:56:36Z",
-          "summary": "项目名称：Nimclip Nimclip 是一款免费开源、原生且本地优先的 macOS 剪贴板历史工具。它常驻菜单栏，按下 ⌘ ⇧ V 即可快速查找和粘贴之前复制过的内容。 Nimclip 支持文字、链接、代码、图片和富文本历史，并提供搜索、类型筛选、收藏、标签、来源应用、纯文本粘贴和多条内容合并等功能。所有剪贴板数据只保存在当前 Mac，不需要账号，也不会上传到云端。 项目使用 Swift、SwiftUI 和 SwiftData 开发，采用 Apache2.0 许可证，支持 macOS 15.0 及以上系统。GitHub Releases 提供 Apple Silicon 和 Intel 安装包。 项目地址： 项目主页： 下载地址： 作者：@hukdoesn 项目截图\\n\\n",
-          "content": "项目名称：Nimclip\n\nNimclip 是一款免费开源、原生且本地优先的 macOS 剪贴板历史工具。它常驻菜单栏，按下 ⌘ ⇧ V 即可快速查找和粘贴之前复制过的内容。\n\nNimclip 支持文字、链接、代码、图片和富文本历史，并提供搜索、类型筛选、收藏、标签、来源应用、纯文本粘贴和多条内容合并等功能。所有剪贴板数据只保存在当前 Mac，不需要账号，也不会上传到云端。\n\n项目使用 Swift、SwiftUI 和 SwiftData 开发，采用 Apache-2.0 许可证，支持 macOS 15.0 及以上系统。GitHub Releases 提供 Apple Silicon 和 Intel 安装包。\n\n- 项目地址：https://github.com/hukdoesn/Nimclip\n- 项目主页：https://hukdoesn.github.io/Nimclip/\n- 下载地址：https://github.com/hukdoesn/Nimclip/releases/latest\n- 作者：@hukdoesn\n\n## 项目截图\\n\\n[![Nimclip 主题展示](https://raw.githubusercontent.com/hukdoesn/Nimclip/main/docs/images/nimclip-macbook-themes.png)](https://github.com/hukdoesn/Nimclip/blob/main/docs/images/nimclip-macbook-themes.png)",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10735",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10735"
         },
         {
           "sourceId": "weekly-issues",
@@ -1271,26 +1238,12 @@
             "submission"
           ],
           "externalId": "3444",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3444"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源自荐] 薪跳 PayDance：一款轻量且优雅的“实时工资”小软件",
-          "url": "https://github.com/MrBaoboer/PayDance",
-          "author": "MrBaoboer",
-          "authorUrl": "https://github.com/MrBaoboer",
-          "publishedAt": "2026-07-15T06:44:20Z",
-          "summary": "项目地址 类别 JS 项目标题 薪跳 PayDance：一款轻量且优雅的“实时工资”小软件 项目描述 薪跳 是一款轻量且优雅的“实时工资”小软件，可根据用户的薪资和上下班时间动态计算每一秒的收入增长，让劳动时间价值变得可视化。 薪跳提供网页版和 Windows 桌面版，可进行月薪、日薪、时薪换算，并支持午休剔除、跨零点夜班等真实工作场景。网页版已适配 PC 端与移动端，Windows 桌面版还提供迷你悬浮窗，方便工作时随时瞄一眼收入变化。 亮点 这款小软件会把上班时的每分每秒换算成持续跳动的收入数字。设置薪资和上下班时间后，它会自动计算实时入账、工作进度和预计收入，让你随时知道“截至目前已经赚了多少钱”。 项目基于 Tauri 和 Vue 开发，无需账号，不含广告与遥测，所有配置均保存在本地。适合想看见时间价值、增加工作获得感，或在摸鱼时获得一点精神续航的广大打工人使用。 截图或演示视频 <img width=\"2124\" height=\"1347\" alt=\"Image\" src=\" / <img width=\"806\" height=\"1346\" alt=\"Image\" src=\" /",
-          "content": "### 项目地址\n\nhttps://github.com/MrBaoboer/PayDance\n\n### 类别\n\nJS\n\n### 项目标题\n\n薪跳 PayDance：一款轻量且优雅的“实时工资”小软件\n\n### 项目描述\n\n薪跳 是一款轻量且优雅的“实时工资”小软件，可根据用户的薪资和上下班时间动态计算每一秒的收入增长，让劳动时间价值变得可视化。\n薪跳提供网页版和 Windows 桌面版，可进行月薪、日薪、时薪换算，并支持午休剔除、跨零点夜班等真实工作场景。网页版已适配 PC 端与移动端，Windows 桌面版还提供迷你悬浮窗，方便工作时随时瞄一眼收入变化。\n\n### 亮点\n\n这款小软件会把上班时的每分每秒换算成持续跳动的收入数字。设置薪资和上下班时间后，它会自动计算实时入账、工作进度和预计收入，让你随时知道“截至目前已经赚了多少钱”。\n项目基于 Tauri 和 Vue 开发，无需账号，不含广告与遥测，所有配置均保存在本地。适合想看见时间价值、增加工作获得感，或在摸鱼时获得一点精神续航的广大打工人使用。\n\n\n### 截图或演示视频\n\n<img width=\"2124\" height=\"1347\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/659e3d01-e3ce-42ec-a338-d187be0d944d\" />\n\n<img width=\"806\" height=\"1346\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5efba7c2-18a1-444f-82f8-c1d8b26623d6\" />",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3444",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
           ],
-          "externalId": "3445",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3445"
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -1309,7 +1262,12 @@
             "submission"
           ],
           "externalId": "3446",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3446"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3446",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

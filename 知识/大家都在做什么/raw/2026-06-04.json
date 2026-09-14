@@ -264,25 +264,6 @@
           "externalId": "10198",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/10198",
           "siteLogo": "https://vidcompress.com/icon.svg"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "〖开源自荐〗Agent Beacon：macOS 菜单栏里的 AI 编程任务状态灯",
-          "url": "https://github.com/XiaoLuoLYG/agent-beacon",
-          "author": "XiaoLuoLYG",
-          "authorUrl": "https://github.com/XiaoLuoLYG",
-          "publishedAt": "2026-06-04T15:27:29Z",
-          "summary": "项目地址： 演示 GIF： !Agent Beacon demo Agent Beacon 是一个 macOS 菜单栏小工具，用来显示本地 AI 编程任务的状态。它适合同时使用 Codex、Claude Code、Cursor、Gemini CLI 或本地脚本的人：你不用反复切回不同窗口确认任务有没有跑完，只要看菜单栏里的四个状态灯。 它目前区分四类状态： completed：已完成 needs review：需要用户确认、输入或查看 failed：失败或阻塞 running：仍在运行 主要特点： 常驻 macOS 菜单栏，点击展开任务列表。 通过本地 shim 追踪 CLI 启动的 Codex、Claude Code、Cursor、Gemini CLI 和普通命令。 支持 Codex 本地 session 元数据、Cursor 本地 composer 元数据，以及 ~/.agentbeacon/status.json 显式状态文件。 点击任务行可以跳回对应应用。 本地优先，不需要云服务；不展示聊天正文、源码、终端输出、prompt、模型回复或日志。 最新版本是 v0.1.0，提供 DMG 预览包：",
-          "content": "项目地址：https://github.com/XiaoLuoLYG/agent-beacon\n\n演示 GIF：\n\n![Agent Beacon demo](https://raw.githubusercontent.com/XiaoLuoLYG/agent-beacon/main/docs/assets/agent-beacon-demo.gif)\n\n\nAgent Beacon 是一个 macOS 菜单栏小工具，用来显示本地 AI 编程任务的状态。它适合同时使用 Codex、Claude Code、Cursor、Gemini CLI 或本地脚本的人：你不用反复切回不同窗口确认任务有没有跑完，只要看菜单栏里的四个状态灯。\n\n它目前区分四类状态：\n\n- completed：已完成\n- needs review：需要用户确认、输入或查看\n- failed：失败或阻塞\n- running：仍在运行\n\n主要特点：\n\n- 常驻 macOS 菜单栏，点击展开任务列表。\n- 通过本地 shim 追踪 CLI 启动的 Codex、Claude Code、Cursor、Gemini CLI 和普通命令。\n- 支持 Codex 本地 session 元数据、Cursor 本地 composer 元数据，以及 `~/.agent-beacon/status.json` 显式状态文件。\n- 点击任务行可以跳回对应应用。\n- 本地优先，不需要云服务；不展示聊天正文、源码、终端输出、prompt、模型回复或日志。\n\n最新版本是 v0.1.0，提供 DMG 预览包：\n\nhttps://github.com/XiaoLuoLYG/agent-beacon/releases/tag/v0.1.0",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10199",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10199"
         }
       ]
     },
@@ -335,25 +316,6 @@
         },
         {
           "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] Agent Beacon：macOS 菜单栏里的 AI Agent 状态灯",
-          "url": "https://github.com/XiaoLuoLYG/agent-beacon",
-          "author": "XiaoLuoLYG",
-          "authorUrl": "https://github.com/XiaoLuoLYG",
-          "publishedAt": "2026-06-04T15:22:59Z",
-          "summary": "项目地址 类别 Swift 项目标题 macOS 菜单栏里的 AI Agent 状态灯 项目描述 Agent Beacon 是一款本地优先的 macOS 菜单栏工具，用四个状态灯展示 Codex、Claude Code、Cursor、Gemini CLI 和本地脚本的运行、完成、待处理、失败状态，并支持点击回到对应应用。 亮点 1. 解决多 AI 编程工具并行时的注意力问题：不用反复切回每个窗口确认任务是否跑完。 2. 本地优先，不需要云服务，不展示聊天正文、源码、终端输出、prompt、模型回复或日志。 3. 支持本地 shim、显式 status.json、Codex 本地 session 元数据和 Cursor 本地 composer 元数据。 4. 自带 AgentBeaconStatus 和 agentbeaconrun，第三方脚本或普通命令也能接入状态灯。 5. Swift / SwiftUI / AppKit 实现，适合学习 macOS 菜单栏应用、本地 CLI 集成和隐私边界设计。 示例代码 markdown AgentBeaconStatus id tests name \"Run tests\" status running app Terminal AgentBeaconStatus id tests name \"Run tests\" status completed app Terminal 截图或演示视频 演示 GIF： 展开面板截图： Release 下载：",
-          "content": "### 项目地址\n\nhttps://github.com/XiaoLuoLYG/agent-beacon\n\n### 类别\n\nSwift\n\n### 项目标题\n\nmacOS 菜单栏里的 AI Agent 状态灯\n\n### 项目描述\n\nAgent Beacon 是一款本地优先的 macOS 菜单栏工具，用四个状态灯展示 Codex、Claude Code、Cursor、Gemini CLI 和本地脚本的运行、完成、待处理、失败状态，并支持点击回到对应应用。\n\n### 亮点\n\n1. 解决多 AI 编程工具并行时的注意力问题：不用反复切回每个窗口确认任务是否跑完。\n2. 本地优先，不需要云服务，不展示聊天正文、源码、终端输出、prompt、模型回复或日志。\n3. 支持本地 shim、显式 status.json、Codex 本地 session 元数据和 Cursor 本地 composer 元数据。\n4. 自带 `AgentBeaconStatus` 和 `agent-beacon-run`，第三方脚本或普通命令也能接入状态灯。\n5. Swift / SwiftUI / AppKit 实现，适合学习 macOS 菜单栏应用、本地 CLI 集成和隐私边界设计。\n\n### 示例代码\n\n```markdown\nAgentBeaconStatus --id tests --name \"Run tests\" --status running --app Terminal\nAgentBeaconStatus --id tests --name \"Run tests\" --status completed --app Terminal\n```\n\n### 截图或演示视频\n\n演示 GIF：\nhttps://raw.githubusercontent.com/XiaoLuoLYG/agent-beacon/main/docs/assets/agent-beacon-demo.gif\n\n展开面板截图：\nhttps://raw.githubusercontent.com/XiaoLuoLYG/agent-beacon/main/docs/assets/agent-beacon-hover-real.png\n\nRelease 下载：\nhttps://github.com/XiaoLuoLYG/agent-beacon/releases/tag/v0.1.0",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3324",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3324"
-        },
-        {
-          "sourceId": "hellogithub-issues",
           "title": "[开源自荐] GOD：可观察可干预的 AI Agent 社会实验控制台",
           "url": "https://github.com/XiaoLuoLYG/GOD",
           "author": "XiaoLuoLYG",
@@ -388,7 +350,12 @@
             "submission"
           ],
           "externalId": "3326",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3326"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3326",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

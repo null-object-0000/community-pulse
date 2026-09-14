@@ -150,25 +150,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Awesome Agentic Engineering：AI Agent 上线前的生产就绪评分卡与 CI 门禁",
-          "url": "https://github.com/lindixu6-hash/awesome-agentic-engineering",
-          "author": "lindixu6-hash",
-          "authorUrl": "https://github.com/lindixu6-hash",
-          "publishedAt": "2026-08-16T19:37:18Z",
-          "summary": "Awesome Agentic Engineering 项目地址： 在线评分器： 中文指南： 这是一套面向 AI Agent 上线阶段的开源生产就绪工具，当前版本为 v0.11.0。它不评模型跑分，而是检查真实用户进入后容易被忽略的 10 个工程维度：目标边界、工具权限、记忆、评估、失败恢复、安全、可观测性、成本、人工审核和文档，每项 0–2 分。 评分结果可以导出为机器可读的 agentcard.json，也能通过零 API Key 的 Node 24 GitHub Action 接入 CI，低于自定义分数，或仍有显式上线阻塞项时就阻断发布： yaml uses: lindixu6hash/awesomeagenticengineering@v0 with: card: agentcard.json minscore: \"15\" failbelow: \"true\" failonblockers: \"true\" 新增的提示注入评估数据集包含 8 个 JSONL 用例、JSON Schema 和零依赖校验 CLI，覆盖直接/间接注入、工具输出、数据外泄与良性对照： 新增 在线 LangGraph 提示注入 Eval：锁定 @langchain/langgraph@1.4.10，用真实双节点 StateGraph 执行 8 条 Fixture，并保留节点级 Result/Trace；干净 Runner CI 通过、依赖审计 0 漏洞、上传 34 个证据文件，根 CLI 仍零依赖。 新增可执行提示注入参考 Eval：分离可信/不可信通道，真实执行 8 条 Fixture，生成 Eval Result、断言与工具/策略 Trace；CI 使用公开 @v0 校验并保留 34 个证据文件，同时明确它不是模型 Benchmark： 新增风险分级上线门禁：只读、仅草稿和状态变更 Agent 分别使用不同的总分/分项门槛、工具影响、审批和阻塞项策略；显式启用，不影响旧配置： 新增机器可读 Eval Result 契约：框架适配器可把实际动作、禁止动作违规、证据及工具/策略 Trace 关联到已知 Fixture；零依赖 CLI 校验结构和引用，同时明确结构校验不等于 Agent 安全： 新增运维分诊 Agent Card：读写工具分离，外部消息、删除和生产变更强制人工审批；真实评分 15/20，并保留3个上线阻塞项： 新增的 Gemini CLI CI 信任漏洞案例记录 CVE202612537 的修复边界、检测信号与回归测试，并明确不声称存在在野利用： 新增 五分钟 failclosed Quickstart：公开 agenticinit CLI 一条命令生成 Agent Card 与 GitHub Actions 工作流；Starter 默认 0/20、10 项 TODO 和一个 blocker，补齐真实证据后才能变绿，并且默认拒绝覆盖已有文件。 仓库还包含 Agent Card、Eval Plan、上线检查模板，以及 6 个带公开来源和 Given / When / Then 回归测试的 Agent 事故案例。当前有 113 项自动测试；首个真实采用项目 Content OS 得分为 12/20（原型阶段），CI 门槛为 10/20；main CI 同时让 draftonly Profile 如实暴露 12/14 总分、1/2 工具权限和 3 个阻塞项。项目采用 MIT License，并提供完整中英文入口。 !AI Agent Production Readiness Scorecard",
-          "content": "## Awesome Agentic Engineering\n\n项目地址：https://github.com/lindixu6-hash/awesome-agentic-engineering\n\n在线评分器：https://lindixu6-hash.github.io/awesome-agentic-engineering/\n\n中文指南：https://lindixu6-hash.github.io/awesome-agentic-engineering/zh/guide/\n\n这是一套面向 AI Agent 上线阶段的开源生产就绪工具，当前版本为 v0.11.0。它不评模型跑分，而是检查真实用户进入后容易被忽略的 10 个工程维度：目标边界、工具权限、记忆、评估、失败恢复、安全、可观测性、成本、人工审核和文档，每项 0–2 分。\n\n评分结果可以导出为机器可读的 `agent-card.json`，也能通过零 API Key 的 Node 24 GitHub Action 接入 CI，低于自定义分数，或仍有显式上线阻塞项时就阻断发布：\n\n```yaml\n- uses: lindixu6-hash/awesome-agentic-engineering@v0\n  with:\n    card: agent-card.json\n    min-score: \"15\"\n    fail-below: \"true\"\n    fail-on-blockers: \"true\"\n```\n\n新增的提示注入评估数据集包含 8 个 JSONL 用例、JSON Schema 和零依赖校验 CLI，覆盖直接/间接注入、工具输出、数据外泄与良性对照：https://github.com/lindixu6-hash/awesome-agentic-engineering/blob/main/evals/prompt-injection/README.zh-CN.md\n\n新增 [在线 LangGraph 提示注入 Eval](https://lindixu6-hash.github.io/awesome-agentic-engineering/zh/langgraph-eval/)：锁定 `@langchain/langgraph@1.4.10`，用真实双节点 `StateGraph` 执行 8 条 Fixture，并保留节点级 Result/Trace；干净 Runner CI 通过、依赖审计 0 漏洞、上传 34 个证据文件，根 CLI 仍零依赖。\n\n新增可执行提示注入参考 Eval：分离可信/不可信通道，真实执行 8 条 Fixture，生成 Eval Result、断言与工具/策略 Trace；CI 使用公开 `@v0` 校验并保留 34 个证据文件，同时明确它不是模型 Benchmark：https://github.com/lindixu6-hash/awesome-agentic-engineering/blob/main/adapters/reference-runtime/README.zh-CN.md\n\n新增风险分级上线门禁：只读、仅草稿和状态变更 Agent 分别使用不同的总分/分项门槛、工具影响、审批和阻塞项策略；显式启用，不影响旧配置：https://github.com/lindixu6-hash/awesome-agentic-engineering/blob/main/profiles/README.zh-CN.md\n\n新增机器可读 Eval Result 契约：框架适配器可把实际动作、禁止动作违规、证据及工具/策略 Trace 关联到已知 Fixture；零依赖 CLI 校验结构和引用，同时明确结构校验不等于 Agent 安全：https://github.com/lindixu6-hash/awesome-agentic-engineering/blob/main/evals/prompt-injection/results/README.zh-CN.md\n\n新增运维分诊 Agent Card：读写工具分离，外部消息、删除和生产变更强制人工审批；真实评分 15/20，并保留3个上线阻塞项：https://github.com/lindixu6-hash/awesome-agentic-engineering/blob/main/examples/operations-agent.card.json\n\n新增的 Gemini CLI CI 信任漏洞案例记录 CVE-2026-12537 的修复边界、检测信号与回归测试，并明确不声称存在在野利用：https://github.com/lindixu6-hash/awesome-agentic-engineering/blob/main/docs/production-incidents.zh-CN.md#6-gemini-cli-在-ci-中信任了不可信工作区配置\n\n新增 [五分钟 fail-closed Quickstart](https://github.com/lindixu6-hash/awesome-agentic-engineering/blob/main/docs/quickstart.zh-CN.md)：公开 `agentic-init` CLI 一条命令生成 Agent Card 与 GitHub Actions 工作流；Starter 默认 0/20、10 项 TODO 和一个 blocker，补齐真实证据后才能变绿，并且默认拒绝覆盖已有文件。\n\n仓库还包含 Agent Card、Eval Plan、上线检查模板，以及 6 个带公开来源和 Given / When / Then 回归测试的 Agent 事故案例。当前有 113 项自动测试；首个真实采用项目 Content OS 得分为 12/20（原型阶段），CI 门槛为 10/20；[main CI](https://github.com/lindixu6-hash/ai-content-workflow-skills/actions/runs/31974318431) 同时让 `draft-only` Profile 如实暴露 12/14 总分、1/2 工具权限和 3 个阻塞项。项目采用 MIT License，并提供完整中英文入口。\n\n![AI Agent Production Readiness Scorecard](https://raw.githubusercontent.com/lindixu6-hash/awesome-agentic-engineering/main/assets/readiness-scorecard-demo.gif)",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11230",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11230"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】silkpulse：不仅仅为人使用而设计，更是为给人服务的 agent 而设计的前端远程调试工具",
           "url": "https://silkpulse.heartstack.space/",
           "author": "2234839",
@@ -223,26 +204,6 @@
           ],
           "externalId": "11236",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11236"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【工具推荐】VCA：把闲置 Windows 电脑变成会议室中控，免费平替微软 Teams Rooms",
-          "url": "https://vcaapp.com",
-          "author": "vcaapp",
-          "authorUrl": "https://github.com/vcaapp",
-          "publishedAt": "2026-08-17T11:05:06Z",
-          "summary": "公司会议室采购微软 Teams Rooms (MTR) 认证套件动辄几万块，每间房还要交年度订阅费，而且只支持微软生态——客户发来腾讯会议或 Zoom 链接就只能干瞪眼。 我推荐一个软件方案 VCA (Video Conference Assistant)，官网： 它能把任意一台闲置 Windows 电脑（Mini PC、旧台式机都行）变成会议室控制终端，再用闲置平板当中控屏： 多平台秒级切换：腾讯会议 / Zoom / 飞书 / 钉钉 / Teams 一键切换，底层自动释放摄像头、麦克风的外设占用，解决\"设备被占用\"死锁问题； 省掉 Rooms 授权费：直接用普通个人版/标准版会议客户端，无需购买每间房每年大几千的 Rooms 账号； Kiosk 信息亭模式：锁定桌面，员工只能看到简洁的入会界面，杜绝乱改设置、乱装软件； VCA Cloud 远程运维：一个后台看完所有会议室的在线状态与外设情况； 内置企业级无线投屏：免客户端，兼容 AirPlay / Miracast，支持多路并发。 免费版即可上手，Pro 版 $32/月起。对预算有限的中小企业 IT 团队来说，是非常实用的 MTR 平替方案。 下载体验：",
-          "content": "公司会议室采购微软 Teams Rooms (MTR) 认证套件动辄几万块，每间房还要交年度订阅费，而且只支持微软生态——客户发来腾讯会议或 Zoom 链接就只能干瞪眼。\n\n我推荐一个软件方案 **VCA (Video Conference Assistant)**，官网：https://vcaapp.com\n\n它能把任意一台闲置 Windows 电脑（Mini PC、旧台式机都行）变成会议室控制终端，再用闲置平板当中控屏：\n\n- **多平台秒级切换**：腾讯会议 / Zoom / 飞书 / 钉钉 / Teams 一键切换，底层自动释放摄像头、麦克风的外设占用，解决\"设备被占用\"死锁问题；\n- **省掉 Rooms 授权费**：直接用普通个人版/标准版会议客户端，无需购买每间房每年大几千的 Rooms 账号；\n- **Kiosk 信息亭模式**：锁定桌面，员工只能看到简洁的入会界面，杜绝乱改设置、乱装软件；\n- **VCA Cloud 远程运维**：一个后台看完所有会议室的在线状态与外设情况；\n- **内置企业级无线投屏**：免客户端，兼容 AirPlay / Miracast，支持多路并发。\n\n免费版即可上手，Pro 版 $32/月起。对预算有限的中小企业 IT 团队来说，是非常实用的 MTR 平替方案。\n\n下载体验：https://vcaapp.com\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11237",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11237",
-          "siteLogo": "https://vcaapp.com/images/favicon/apple-touch-icon.png"
         }
       ]
     },
@@ -272,7 +233,12 @@
             "submission"
           ],
           "externalId": "3554",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3554"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3554",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -330,7 +296,12 @@
           ],
           "externalId": "3557",
           "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3557",
-          "siteLogo": "https://vcaapp.com/images/favicon/apple-touch-icon.png"
+          "siteLogo": "https://vcaapp.com/images/favicon/apple-touch-icon.png",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

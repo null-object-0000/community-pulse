@@ -145,25 +145,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源推荐】FunASR：从本地语音识别到生产级部署的一站式工具箱",
-          "url": "https://github.com/modelscope/FunASR",
-          "author": "LauraGPT",
-          "authorUrl": "https://github.com/LauraGPT",
-          "publishedAt": "2026-05-24T11:14:03Z",
-          "summary": "项目地址 一句话介绍 FunASR 是一个开源语音识别工具箱，把 ASR、语音端点检测、标点恢复、时间戳和说话人能力放进统一接口，并提供从本地 Python 推理到 OpenAI 兼容服务、vLLM、llama.cpp 和原生 runtime 的部署路径。 为什么值得推荐 几行代码即可转写：AutoModel 可以按需组合识别、VAD、标点和说话人模型，适合会议记录、字幕、语音助手与批量音视频处理。 覆盖不同语音场景：Paraformer 面向高效中文识别；SenseVoiceSmall 支持普通话、粤语、英语、日语和韩语，并可识别情感与声音事件；FunASRNano 面向多语种语音理解和热词定制。 能从试用走到生产：官方部署矩阵包含 OpenAI 兼容的 /v1/audio/transcriptions、Docker Compose、Kubernetes、vLLM、llama.cpp/GGUF、TensorRT/Triton，以及流式和离线 runtime。 已有真实生态集成：RAGFlow、Dify、SGLang Omni、GPTSoVITS、Optimum Intel、Pipecat 等开源项目已经采用或接入相关能力。 可完全本地运行：模型和服务可以部署在自己的 CPU、GPU 或边缘设备上，音频不必发送给第三方云服务。 最小示例 bash pip install funasr python from funasr import AutoModel model = AutoModel( model=\"iic/SenseVoiceSmall\", vadmodel=\"fsmnvad\", device=\"cpu\", ) result = model.generate(input=\"meeting.wav\") print(result[0][\"text\"]) 需要作为现有应用的语音后端时，可以按照官网的部署向导启动 OpenAI 兼容接口，再用标准 OpenAI SDK 或 curl 调用。 链接 GitHub： 产品与部署文档： 工业部署矩阵： SenseVoice： FunASR：",
-          "content": "## 项目地址\n\nhttps://github.com/modelscope/FunASR\n\n## 一句话介绍\n\nFunASR 是一个开源语音识别工具箱，把 ASR、语音端点检测、标点恢复、时间戳和说话人能力放进统一接口，并提供从本地 Python 推理到 OpenAI 兼容服务、vLLM、llama.cpp 和原生 runtime 的部署路径。\n\n## 为什么值得推荐\n\n- **几行代码即可转写**：`AutoModel` 可以按需组合识别、VAD、标点和说话人模型，适合会议记录、字幕、语音助手与批量音视频处理。\n- **覆盖不同语音场景**：Paraformer 面向高效中文识别；SenseVoiceSmall 支持普通话、粤语、英语、日语和韩语，并可识别情感与声音事件；Fun-ASR-Nano 面向多语种语音理解和热词定制。\n- **能从试用走到生产**：官方部署矩阵包含 OpenAI 兼容的 `/v1/audio/transcriptions`、Docker Compose、Kubernetes、vLLM、llama.cpp/GGUF、TensorRT/Triton，以及流式和离线 runtime。\n- **已有真实生态集成**：RAGFlow、Dify、SGLang Omni、GPT-SoVITS、Optimum Intel、Pipecat 等开源项目已经采用或接入相关能力。\n- **可完全本地运行**：模型和服务可以部署在自己的 CPU、GPU 或边缘设备上，音频不必发送给第三方云服务。\n\n## 最小示例\n\n```bash\npip install funasr\n```\n\n```python\nfrom funasr import AutoModel\n\nmodel = AutoModel(\n    model=\"iic/SenseVoiceSmall\",\n    vad_model=\"fsmn-vad\",\n    device=\"cpu\",\n)\n\nresult = model.generate(input=\"meeting.wav\")\nprint(result[0][\"text\"])\n```\n\n需要作为现有应用的语音后端时，可以按照官网的部署向导启动 OpenAI 兼容接口，再用标准 OpenAI SDK 或 `curl` 调用。\n\n## 链接\n\n- GitHub：https://github.com/modelscope/FunASR\n- 产品与部署文档：https://www.funasr.com/\n- 工业部署矩阵：https://www.funasr.com/deploy/\n- SenseVoice：https://github.com/QwenAudio/SenseVoice\n- Fun-ASR：https://github.com/QwenAudio/Fun-ASR\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10056",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10056"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源推荐】FunClip — 用文字搜索视频片段，一键裁剪导出",
           "url": "https://github.com/modelscope/FunClip",
           "author": "LauraGPT",
@@ -344,7 +325,12 @@
             "submission"
           ],
           "externalId": "3296",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3296"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3296",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID E086:297193:1A68B5D:570B63C:6A9E852A and timestamp 2026-09-07 09:34:34 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"

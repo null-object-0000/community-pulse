@@ -319,25 +319,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Atrium — 本地优先的桌面 AI Agent 助手，用自己的密钥连任意模型",
-          "url": "https://github.com/lhz960904/atrium",
-          "author": "lhz960904",
-          "authorUrl": "https://github.com/lhz960904",
-          "publishedAt": "2026-07-08T12:49:30Z",
-          "summary": "Atrium 是一款本地优先的桌面 AI Agent 助手（macOS / Windows / Linux）。它不只是一个聊天窗口：对话、记忆、技能、定时任务全部跑在本地，模型用你自己的 API Key 接入，密钥经操作系统钥匙串加密保存，数据存在本地 SQLite，不经过任何中间服务器。 做这个项目最初只是想学习 Agent 开发，把 Agent 循环、工具调用这些机制亲手实现一遍。结果越做越复杂，支持的功能也越来越多——MCP、Skills、子代理、跨会话记忆、定时任务——基本覆盖了市面上常见的 Agent 能力，现在完全可以作为个人本地 AI 助手日常使用了。 开源地址： 下载安装包： 核心功能 多供应商接入：Anthropic、Google Gemini、任意 OpenAI 兼容端点、Ollama 本地模型；还可以把 Claude Code、Codex、Gemini CLI 这类 CLI Agent 作为外部 Agent 接进来。全部使用你自己的密钥，本地加密。 MCP：连接 Model Context Protocol 服务器（stdio / HTTP / SSE），在对话里直接使用第三方工具；支持从主流工具一键导入已有配置，支持 OAuth 授权。 Skills：把可复用流程打包成技能（SKILL.md），渐进式披露给 Agent；可直接读取 Claude Code、Codex 等多个数据源的已有技能，并按使用频率自动过滤。 Subagents：把大任务拆给专注的子 Agent，在隔离上下文中执行并汇报结果，不污染主对话的上下文。 浏览器接管：配合 Chrome 插件让 AI 直接在你已登录的浏览器里浏览和操作，也可以用独立实例公开浏览，在后台工作不抢占你的浏览器。 跨会话记忆：对话过程中自动写入记忆，区分全局记忆和项目域记忆；后台自动总结，保证记忆的长期质量。 定时任务：让 Agent 按计划自动执行重复性工作，例如每日报告、每周调研、每月分析。 演示 Agent 工作轨迹（技能调用 + 搜索/抓取工具链）： !Agent 工作轨迹 模型供应商： !模型供应商 定时任务： !定时任务 浏览器接管： !浏览器接管 架构 Electron + React + TypeScript；Agent 循环基于 Vercel AI SDK，配置走 tRPC over IPC、对话走本地 HTTP 流；本地存储用 SQLite（Drizzle ORM）。 <img src=\" alt=\"架构图\" / 项目在持续迭代中（目前 v0.10.x，MIT 协议），欢迎试用和反馈。",
-          "content": "Atrium 是一款本地优先的桌面 AI Agent 助手（macOS / Windows / Linux）。它不只是一个聊天窗口：对话、记忆、技能、定时任务全部跑在本地，模型用你自己的 API Key 接入，密钥经操作系统钥匙串加密保存，数据存在本地 SQLite，不经过任何中间服务器。\n\n做这个项目最初只是想学习 Agent 开发，把 Agent 循环、工具调用这些机制亲手实现一遍。结果越做越复杂，支持的功能也越来越多——MCP、Skills、子代理、跨会话记忆、定时任务——基本覆盖了市面上常见的 Agent 能力，现在完全可以作为个人本地 AI 助手日常使用了。\n\n开源地址：https://github.com/lhz960904/atrium\n下载安装包：https://github.com/lhz960904/atrium/releases/latest\n\n### 核心功能\n\n- **多供应商接入**：Anthropic、Google Gemini、任意 OpenAI 兼容端点、Ollama 本地模型；还可以把 Claude Code、Codex、Gemini CLI 这类 CLI Agent 作为外部 Agent 接进来。全部使用你自己的密钥，本地加密。\n- **MCP**：连接 Model Context Protocol 服务器（stdio / HTTP / SSE），在对话里直接使用第三方工具；支持从主流工具一键导入已有配置，支持 OAuth 授权。\n- **Skills**：把可复用流程打包成技能（SKILL.md），渐进式披露给 Agent；可直接读取 Claude Code、Codex 等多个数据源的已有技能，并按使用频率自动过滤。\n- **Subagents**：把大任务拆给专注的子 Agent，在隔离上下文中执行并汇报结果，不污染主对话的上下文。\n- **浏览器接管**：配合 Chrome 插件让 AI 直接在你已登录的浏览器里浏览和操作，也可以用独立实例公开浏览，在后台工作不抢占你的浏览器。\n- **跨会话记忆**：对话过程中自动写入记忆，区分全局记忆和项目域记忆；后台自动总结，保证记忆的长期质量。\n- **定时任务**：让 Agent 按计划自动执行重复性工作，例如每日报告、每周调研、每月分析。\n\n### 演示\n\nhttps://github.com/user-attachments/assets/49af7cb9-f11c-4cce-8fd8-c45e3dcbbd8f\n\nAgent 工作轨迹（技能调用 + 搜索/抓取工具链）：\n\n![Agent 工作轨迹](https://raw.githubusercontent.com/lhz960904/atrium/main/images/agent-trace.png)\n\n模型供应商：\n\n![模型供应商](https://raw.githubusercontent.com/lhz960904/atrium/main/images/providers.png)\n\n定时任务：\n\n![定时任务](https://raw.githubusercontent.com/lhz960904/atrium/main/images/scheduled.png)\n\n浏览器接管：\n\n![浏览器接管](https://raw.githubusercontent.com/lhz960904/atrium/main/images/browser.png)\n\n### 架构\n\nElectron + React + TypeScript；Agent 循环基于 Vercel AI SDK，配置走 tRPC over IPC、对话走本地 HTTP 流；本地存储用 SQLite（Drizzle ORM）。\n\n<img src=\"https://github.com/user-attachments/assets/111fa76c-c6d9-4b5a-a683-415b89dddd53\" alt=\"架构图\" />\n\n项目在持续迭代中（目前 v0.10.x，MIT 协议），欢迎试用和反馈。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10632",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10632"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】存储技术书，从结绳记事到动手实现一个异步文件系统",
           "url": "https://github.com/Lularible/storage-book",
           "author": "Lularible",
@@ -372,7 +353,12 @@
             "submission"
           ],
           "externalId": "10634",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10634"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10634",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -445,25 +431,6 @@
       "items": [
         {
           "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] OkkMax - AI 中转站点评与监测工具",
-          "url": "https://github.com/fanbidog/okkmax-web",
-          "author": "fanbidog",
-          "authorUrl": "https://github.com/fanbidog",
-          "publishedAt": "2026-07-08T13:35:25Z",
-          "summary": "项目地址 类别 人工智能 项目标题 一个 AI 中转站点评与监测工具 项目描述 主要用于展示不同 AI API 中转站的模型纯度、在线率、延迟、价格和用户口碑，帮助用户在使用或充值前判断站点是否靠谱。 亮点 项目特点： 1. 模型纯度检测 通过交叉验证方式，尽量判断站点提供的模型是否和标称模型一致。 2. 可用性监控 定时探测中转站接口可用性，展示在线率、延迟和最近检测时间。 3. 用户口碑 支持用户对中转站进行点评，方便其他人参考真实使用体验。 4. 福利活动整理 整理免费 API、注册赠金、试用额度、订阅优惠等和 AI API / 模型服务相关的活动。 示例代码 markdown 截图或演示视频 No response",
-          "content": "### 项目地址\n\nhttps://github.com/fanbidog/okkmax-web\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n一个 AI 中转站点评与监测工具\n\n### 项目描述\n\n主要用于展示不同 AI API 中转站的模型纯度、在线率、延迟、价格和用户口碑，帮助用户在使用或充值前判断站点是否靠谱。\n\n### 亮点\n\n项目特点：\n\n1. 模型纯度检测  \n通过交叉验证方式，尽量判断站点提供的模型是否和标称模型一致。\n\n2. 可用性监控  \n定时探测中转站接口可用性，展示在线率、延迟和最近检测时间。\n\n3. 用户口碑  \n支持用户对中转站进行点评，方便其他人参考真实使用体验。\n\n4. 福利活动整理  \n整理免费 API、注册赠金、试用额度、订阅优惠等和 AI API / 模型服务相关的活动。\n\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n_No response_",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3424",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3424"
-        },
-        {
-          "sourceId": "hellogithub-issues",
           "title": "[开源自荐] Atrium：本地优先的桌面 AI Agent 助手",
           "url": "https://github.com/lhz960904/atrium",
           "author": "lhz960904",
@@ -479,7 +446,12 @@
             "submission"
           ],
           "externalId": "3425",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3425"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3425",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",

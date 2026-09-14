@@ -376,25 +376,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Master-skill — 基于 CBETA 经典的汉传佛教祖师教学角色生成器",
-          "url": "https://github.com/xr843/Master-skill",
-          "author": "xr843",
-          "authorUrl": "https://github.com/xr843",
-          "publishedAt": "2026-04-16T06:18:35Z",
-          "summary": "GitHub: 浏览器体验: （左下角点「法师模式」） 项目简介 想学汉传佛教，常卡在第一步——不知从哪本书读起。《坛经》《法华》《华严》《成唯识论》《印光文钞》……每一本都像一道门，门后又是门。 Masterskill 把这道门槛换了个形式：直接和祖师对话。预置 8 位汉传祖师——玄奘（唯识）、鸠摩罗什（中观）、慧能（禅宗）、智顗（天台）、法藏（华严）、印光（净土）、蕅益（禅教律净融合）、虚云（参禅）——各自按宗派语气、判教立场、教义术语回答问题。 关键点是真经文校验：每个回答都通过 HARDGATE 比对 CBETA 电子佛典，没有原文支撑就拒绝生成，彻底拦住 LLM 幻觉引经文的老毛病。 核心能力 HARDGATE 经文校验：无 CBETA 命中则不出答，每 PR 在 CI 里跑 fidelity smoke 自动回归 8 位祖师人格：宗派语气、判教立场、核心术语各自对齐，不是换个名字的通用 LLM 多平台原生插件：Claude Code / Cursor / Codex / OpenCode / Gemini CLI 通用，一份 prebuilt 树 离线经文片段：打包 CBETA 核心段落，断网也能引原典 浏览器零安装：fojin.app/chat 选「法师模式」即可直接问，不懂技术的读者也能用 伦理边界明确：ETHICS.md 写明版权 Tier AD、教界禁止行为（不传戒、不印证开悟、不做修行诊断）、代码 MIT + 内容 CC BYNCSA 双轨授权 快速开始 \\\\\\bash 方式一：浏览器直接用（推荐给非开发者） → 点左下角「法师模式」 方式二：NPX 安装到 Claude Code npx masterskill install huineng zhiyi yinguang 方式三：多祖师对比 /comparemasters 什么是空性 masters kumarajiva,huineng \\\\\\ 技术栈 插件规范：遵循 Anthropic AgentSkills + Claude Code / Cursor plugin format 检索层：接入 FoJin（同作者另一个开源项目，三语 RAG，覆盖 CBETA 汉文 / SuttaCentral 巴利 / 84000 藏文英译） 许可证：代码 MIT，内容 CC BYNCSA 4.0 数据 v0.3.0 / 204 stars / 44 forks / MIT + CC BYNCSA 双轨授权 相关项目 FoJin — 本项目的数据底座，汉藏巴三语佛教数字人文平台 CBETA — 汉文大藏经数字化（本项目一切引证的源头）",
-          "content": "GitHub: https://github.com/xr843/Master-skill\n\n浏览器体验: https://fojin.app/chat （左下角点「法师模式」）\n\n## 项目简介\n\n想学汉传佛教，常卡在第一步——不知从哪本书读起。《坛经》《法华》《华严》《成唯识论》《印光文钞》……每一本都像一道门，门后又是门。\n\nMaster-skill 把这道门槛换了个形式：**直接和祖师对话**。预置 8 位汉传祖师——玄奘（唯识）、鸠摩罗什（中观）、慧能（禅宗）、智顗（天台）、法藏（华严）、印光（净土）、蕅益（禅教律净融合）、虚云（参禅）——各自按宗派语气、判教立场、教义术语回答问题。\n\n关键点是**真经文校验**：每个回答都通过 HARD-GATE 比对 CBETA 电子佛典，没有原文支撑就拒绝生成，彻底拦住 LLM 幻觉引经文的老毛病。\n\n## 核心能力\n\n- **HARD-GATE 经文校验**：无 CBETA 命中则不出答，每 PR 在 CI 里跑 fidelity smoke 自动回归\n- **8 位祖师人格**：宗派语气、判教立场、核心术语各自对齐，不是换个名字的通用 LLM\n- **多平台原生插件**：Claude Code / Cursor / Codex / OpenCode / Gemini CLI 通用，一份 prebuilt 树\n- **离线经文片段**：打包 CBETA 核心段落，断网也能引原典\n- **浏览器零安装**：fojin.app/chat 选「法师模式」即可直接问，不懂技术的读者也能用\n- **伦理边界明确**：ETHICS.md 写明版权 Tier A-D、教界禁止行为（不传戒、不印证开悟、不做修行诊断）、代码 MIT + 内容 CC BY-NC-SA 双轨授权\n\n## 快速开始\n\n\\`\\`\\`bash\n# 方式一：浏览器直接用（推荐给非开发者）\n# → https://fojin.app/chat 点左下角「法师模式」\n\n# 方式二：NPX 安装到 Claude Code\nnpx master-skill install huineng zhiyi yinguang\n\n# 方式三：多祖师对比\n/compare-masters 什么是空性 --masters kumarajiva,huineng\n\\`\\`\\`\n\n## 技术栈\n\n- 插件规范：遵循 Anthropic AgentSkills + Claude Code / Cursor plugin format\n- 检索层：接入 FoJin（同作者另一个开源项目，三语 RAG，覆盖 CBETA 汉文 / SuttaCentral 巴利 / 84000 藏文英译）\n- 许可证：代码 MIT，内容 CC BY-NC-SA 4.0\n\n## 数据\n\nv0.3.0 / 204 stars / 44 forks / MIT + CC BY-NC-SA 双轨授权\n\n## 相关项目\n\n- [FoJin](https://github.com/xr843/fojin) — 本项目的数据底座，汉藏巴三语佛教数字人文平台\n- [CBETA](https://cbeta.org) — 汉文大藏经数字化（本项目一切引证的源头）",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "9648",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9648"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【网站自荐】agent回答120道问题，测agent的MBTI，36种ABTI",
           "url": "https://abti.dev/",
           "author": "Koimiao-zz",
@@ -508,25 +489,6 @@
           ],
           "externalId": "9654",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9654"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】OpenVitamin 是一个本地优先的 AI 平台，统一承载模型推理、图片生成、工作流编排与智能体能力组合。",
-          "url": "https://github.com/fengzhizi715/OpenVitamin",
-          "author": "fengzhizi715",
-          "authorUrl": "https://github.com/fengzhizi715",
-          "publishedAt": "2026-04-16T13:54:25Z",
-          "summary": "你好，推荐一个我最近开源并持续维护的项目：OpenVitamin。 项目地址: OpenVitamin 大模型与智能体应用平台 本地优先的 AI 平台，统一承载模型推理、图片生成、工作流编排与智能体能力组合。 English README 项目简介 本地优先、隐私优先：面向个人与团队的可私有部署推理平台，统一承载模型推理、工作流执行与智能体能力编排，强调可观测、可审计、可扩展。 技术架构：采用 Vue 前端 + FastAPI 推理网关。网关统一接入多种推理后端（如 Ollama、LM Studio、本地 GGUF、OpenAI 兼容 API 等），并支持与 OpenClaw 进行后端集成；前端不直连模型与工具，所有调用通过网关统一出口。 分层角色： Web UI：控制台，负责界面与交互 推理网关：中枢，负责模型路由、请求编排与执行策略 Agent / Plugin：能力模块，以插件形式扩展（Skill、Tool、RAG、记忆等） 亮点 统一推理网关，覆盖 LLM、VLM、Embedding、ASR 与 Image Generation 本地模型与云端模型统一纳入一个控制面管理 文生图工作台支持异步任务、历史记录、缩略图、warmup 与取消 智能体系统支持 Intent Rules、Skill Discovery、Tool Calling 与 Direct Tool Result Workflow Control Plane 支持版本化、执行历史与分支 / 循环治理 内置知识库、RAG、记忆、日志、设置与备份能力 支持 OpenClaw 后端集成，可作为统一模型入口接入现有 Agent 运行环境 截图 !Chat !Images !Workflow !Agents !Models 适用场景 统一管理本地模型与云端模型 搭建多模态聊天与视觉能力 用 Agent + Skill + Tool 组织能力 用 Workflow 编排多步 AI 流程 管理知识库、RAG 与长期记忆 运行本地文生图模型并管理生成任务 将 OpenClaw 作为上游模型后端接入统一推理网关 核心能力 统一推理 API：LLM / VLM / Embedding / ASR / Image Generation 多后端模型管理：本地与云端统一接入 多模态聊天：文本、图像、视觉感知 文生图工作台：异步任务、历史、缩略图、取消、warmup、详情页 Agent 系统：PlanBased 执行、Skill 语义发现、Intent Rules、Tool 调用 Workflow Control Plane：版本化、执行记录、节点级状态、分支/循环治理 知识库与 RAG 备份与恢复：数据库备份、model.json 备份 系统设置、日志、监控与运行时治理 文生图支持 Qwen Image：MLX 路径 FLUX / FLUX.2 / SDXL：Diffusers 路径 当前文生图控制面已支持： POST /api/v1/images/generate job 查询 / 取消 / 删除 原图下载 / 缩略图 warmup 历史记录与详情页 技术栈 前端 Vue 3 TypeScript Vite Tailwind CSS 后端 Python 3.11+ FastAPI SQLAlchemy / ORM 抽象（默认使用 SQLite，可扩展至 MySQL / PostgreSQL） 运行时 / 模型侧 llama.cpp Ollama OpenAIcompatible API OpenClaw backend integration Torch MLX / mflux Diffusers 说明： 开源版本当前默认使用 SQLite 数据层按 ORM 抽象设计，后续可扩展到 MySQL / PostgreSQL 等关系型后端 系统架构 核心组件： Web UI：控制台 Inference Gateway：统一推理入口 Runtime Stabilization：模型实例、并发队列、资源治理 Agent System：Planner / Skill / Tool / RAG Workflow Control Plane：定义、版本、执行、治理 Image Generation Control Plane：图片任务、历史、文件落盘、warmup 详细设计见： docs/architecture/ARCHITECTURE.md docs/architecture/AGENTARCHITECTURE.md 整体架构 mermaid flowchart LR UI[\"Web UI<br/Vue 3 + Vite\"] API[\"Inference Gateway<br/FastAPI\"] API MODELS[\"Model Management\"] API AGENTS[\"Agent System\"] API WF[\"Workflow Control Plane\"] API IMG[\"Image Generation Control Plane\"] API KB[\"Knowledge Base / RAG\"] API SYS[\"Settings / Logs / Backup\"] MODELS RT[\"Runtime Layer<br/llama.cpp / Ollama / Torch / MLX / Diffusers / OpenAIcompatible\"] AGENTS TOOLS[\"Skill / Tool / Plugin\"] WF KERNEL[\"Execution Kernel\"] IMG RT KB DATA[\"ORM / Vector Search / Files\"] KERNEL DATA MODELS DATA AGENTS DATA SYS DATA 推理路径 mermaid flowchart LR USER[\"User Request\"] API[\"FastAPI API\"] API GW[\"Inference Gateway\"] GW ROUTER[\"Model Router\"] ROUTER ADAPTER[\"Provider Adapter\"] ADAPTER STAB[\"Runtime Stabilization\"] STAB QUEUE[\"Inference Queue\"] QUEUE RUNTIME[\"Model Runtime\"] RUNTIME RESP[\"Response / Stream\"] 智能体执行路径 mermaid flowchart TD USER[\"User Input\"] AGENT[\"Agent Runtime\"] AGENT PLANNER[\"Planner\"] PLANNER RULES[\"Intent Rules\"] PLANNER DISCOVERY[\"Skill Discovery\"] PLANNER PLAN[\"Plan / Tool Decision\"] PLAN SKILL[\"Skill Executor\"] SKILL TOOL[\"Tool Registry\"] SKILL LLM[\"Inference Gateway\"] TOOL IMG[\"Image Tool\"] TOOL RAG[\"RAG Tool\"] TOOL FILE[\"File / HTTP / Python / SQL\"] IMG API[\"Image Generation API\"] 文生图控制面 mermaid flowchart TD UI[\"/images\"] API[\"/api/v1/images/\"] API JOB[\"Job Manager\"] JOB QUEUE[\"Permodel Queue\"] QUEUE SELECT[\"Model Selector\"] SELECT RT1[\"MLX Runtime<br/Qwen Image\"] SELECT RT2[\"Diffusers Runtime<br/FLUX / SDXL\"] JOB STORE[\"Job Store / History\"] JOB FILES[\"Generated Images / Thumbnails\"] STORE DB[\"ORMbacked Store\"] FILES DB 快速开始 环境要求 Python 3.11+ Node.js 18+ Conda 1. 创建并激活 Conda 环境 bash conda create n aiinferenceplatform python=3.11 y conda activate aiinferenceplatform 2. 安装后端依赖 bash cd backend pip install r requirements.txt cd .. 3. 安装前端依赖 bash cd frontend npm install cd .. 4. 启动服务 bash ./runall.sh 或分别启动： bash ./runbackend.sh ./runfrontend.sh 默认地址： 前端： 后端： 快速体验 建议按以下路径快速体验： 1. 打开 /models，确认模型已扫描或已接入云端模型 2. 打开 /chat，验证基础聊天或多模态聊天 3. 打开 /images，提交一次文生图任务 4. 打开 /agents，创建并运行一个工具型 Agent 5. 打开 /workflow，执行一个简单工作流 已验证环境 当前项目已在以下环境中验证可运行： macOS + Apple Silicon Ubuntu Linux Conda 管理 Python 环境 本地模型目录按 model.json 规范组织 运行说明： macOS + Apple Silicon 下，MLX 与 MPS / 本地大模型会共享统一内存 Ubuntu 下可正常运行，文生图与推理路径更适合使用 Torch / Diffusers 等 Linux 常见运行时 同时加载大 LLM 与大文生图模型时，仍可能出现显存或内存压力 平台已实现图片模型切换时的资源回收，但仍建议根据机器资源选择合适模型规模 主要页面 /chat：聊天与多模态对话 /images：文生图工作台 /images/history：图片任务历史 /agents：智能体管理与运行 /workflow：工作流列表、编辑、运行 /models：模型管理 /knowledge：知识库 /settings：系统设置 /logs：系统日志",
-          "content": "你好，推荐一个我最近开源并持续维护的项目：OpenVitamin。\n项目地址: https://github.com/fengzhizi715/OpenVitamin\n\n# OpenVitamin 大模型与智能体应用平台\n\n> 本地优先的 AI 平台，统一承载模型推理、图片生成、工作流编排与智能体能力组合。\n\n[English README](README_EN.md)\n\n## 项目简介\n\n**本地优先、隐私优先**：面向个人与团队的可私有部署推理平台，统一承载模型推理、工作流执行与智能体能力编排，强调可观测、可审计、可扩展。\n**技术架构**：采用 **Vue 前端 + FastAPI 推理网关**。网关统一接入多种推理后端（如 Ollama、LM Studio、本地 GGUF、OpenAI 兼容 API 等），并支持与 OpenClaw 进行后端集成；前端不直连模型与工具，所有调用通过网关统一出口。\n\n**分层角色**：\n- **Web UI**：控制台，负责界面与交互\n- **推理网关**：中枢，负责模型路由、请求编排与执行策略\n- **Agent / Plugin**：能力模块，以插件形式扩展（Skill、Tool、RAG、记忆等）\n\n## 亮点\n\n- 统一推理网关，覆盖 `LLM`、`VLM`、`Embedding`、`ASR` 与 `Image Generation`\n- 本地模型与云端模型统一纳入一个控制面管理\n- 文生图工作台支持异步任务、历史记录、缩略图、warmup 与取消\n- 智能体系统支持 `Intent Rules`、`Skill Discovery`、`Tool Calling` 与 `Direct Tool Result`\n- Workflow Control Plane 支持版本化、执行历史与分支 / 循环治理\n- 内置知识库、RAG、记忆、日志、设置与备份能力\n- 支持 OpenClaw 后端集成，可作为统一模型入口接入现有 Agent 运行环境\n\n## 截图\n\n![Chat](https://raw.githubusercontent.com/fengzhizi715/OpenVitamin/refs/heads/main/images/chat.png)\n\n![Images](https://raw.githubusercontent.com/fengzhizi715/OpenVitamin/refs/heads/main/images/images.png)\n\n![Workflow](https://raw.githubusercontent.com/fengzhizi715/OpenVitamin/refs/heads/main/images/workflow.png)\n\n![Agents](https://raw.githubusercontent.com/fengzhizi715/OpenVitamin/refs/heads/main/images/agents.png)\n\n![Models](https://raw.githubusercontent.com/fengzhizi715/OpenVitamin/refs/heads/main/images/models.png)\n\n\n## 适用场景\n\n- 统一管理本地模型与云端模型\n- 搭建多模态聊天与视觉能力\n- 用 Agent + Skill + Tool 组织能力\n- 用 Workflow 编排多步 AI 流程\n- 管理知识库、RAG 与长期记忆\n- 运行本地文生图模型并管理生成任务\n- 将 OpenClaw 作为上游模型后端接入统一推理网关\n\n## 核心能力\n\n- 统一推理 API：LLM / VLM / Embedding / ASR / Image Generation\n- 多后端模型管理：本地与云端统一接入\n- 多模态聊天：文本、图像、视觉感知\n- 文生图工作台：异步任务、历史、缩略图、取消、warmup、详情页\n- Agent 系统：Plan-Based 执行、Skill 语义发现、Intent Rules、Tool 调用\n- Workflow Control Plane：版本化、执行记录、节点级状态、分支/循环治理\n- 知识库与 RAG\n- 备份与恢复：数据库备份、`model.json` 备份\n- 系统设置、日志、监控与运行时治理\n\n## 文生图支持\n\n- `Qwen Image`：MLX 路径\n- `FLUX / FLUX.2 / SDXL`：Diffusers 路径\n\n当前文生图控制面已支持：\n- `POST /api/v1/images/generate`\n- job 查询 / 取消 / 删除\n- 原图下载 / 缩略图\n- warmup\n- 历史记录与详情页\n\n## 技术栈\n\n**前端**\n- Vue 3\n- TypeScript\n- Vite\n- Tailwind CSS\n\n**后端**\n- Python 3.11+\n- FastAPI\n- SQLAlchemy / ORM 抽象（默认使用 SQLite，可扩展至 MySQL / PostgreSQL）\n\n**运行时 / 模型侧**\n- llama.cpp\n- Ollama\n- OpenAI-compatible API\n- OpenClaw backend integration\n- Torch\n- MLX / mflux\n- Diffusers\n\n说明：\n- 开源版本当前默认使用 SQLite\n- 数据层按 ORM 抽象设计，后续可扩展到 MySQL / PostgreSQL 等关系型后端\n\n## 系统架构\n\n核心组件：\n- Web UI：控制台\n- Inference Gateway：统一推理入口\n- Runtime Stabilization：模型实例、并发队列、资源治理\n- Agent System：Planner / Skill / Tool / RAG\n- Workflow Control Plane：定义、版本、执行、治理\n- Image Generation Control Plane：图片任务、历史、文件落盘、warmup\n\n详细设计见：\n- [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)\n- [docs/architecture/AGENT_ARCHITECTURE.md](docs/architecture/AGENT_ARCHITECTURE.md)\n\n### 整体架构\n\n```mermaid\nflowchart LR\n  UI[\"Web UI<br/>Vue 3 + Vite\"] --> API[\"Inference Gateway<br/>FastAPI\"]\n\n  API --> MODELS[\"Model Management\"]\n  API --> AGENTS[\"Agent System\"]\n  API --> WF[\"Workflow Control Plane\"]\n  API --> IMG[\"Image Generation Control Plane\"]\n  API --> KB[\"Knowledge Base / RAG\"]\n  API --> SYS[\"Settings / Logs / Backup\"]\n\n  MODELS --> RT[\"Runtime Layer<br/>llama.cpp / Ollama / Torch / MLX / Diffusers / OpenAI-compatible\"]\n  AGENTS --> TOOLS[\"Skill / Tool / Plugin\"]\n  WF --> KERNEL[\"Execution Kernel\"]\n  IMG --> RT\n  KB --> DATA[\"ORM / Vector Search / Files\"]\n\n  KERNEL --> DATA\n  MODELS --> DATA\n  AGENTS --> DATA\n  SYS --> DATA\n```\n\n### 推理路径\n\n```mermaid\nflowchart LR\n  USER[\"User Request\"] --> API[\"FastAPI API\"]\n  API --> GW[\"Inference Gateway\"]\n  GW --> ROUTER[\"Model Router\"]\n  ROUTER --> ADAPTER[\"Provider Adapter\"]\n  ADAPTER --> STAB[\"Runtime Stabilization\"]\n  STAB --> QUEUE[\"Inference Queue\"]\n  QUEUE --> RUNTIME[\"Model Runtime\"]\n  RUNTIME --> RESP[\"Response / Stream\"]\n```\n\n### 智能体执行路径\n\n```mermaid\nflowchart TD\n  USER[\"User Input\"] --> AGENT[\"Agent Runtime\"]\n  AGENT --> PLANNER[\"Planner\"]\n  PLANNER --> RULES[\"Intent Rules\"]\n  PLANNER --> DISCOVERY[\"Skill Discovery\"]\n  PLANNER --> PLAN[\"Plan / Tool Decision\"]\n\n  PLAN --> SKILL[\"Skill Executor\"]\n  SKILL --> TOOL[\"Tool Registry\"]\n  SKILL --> LLM[\"Inference Gateway\"]\n\n  TOOL --> IMG[\"Image Tool\"]\n  TOOL --> RAG[\"RAG Tool\"]\n  TOOL --> FILE[\"File / HTTP / Python / SQL\"]\n\n  IMG --> API[\"Image Generation API\"]\n```\n\n### 文生图控制面\n\n```mermaid\nflowchart TD\n  UI[\"/images\"] --> API[\"/api/v1/images/*\"]\n  API --> JOB[\"Job Manager\"]\n  JOB --> QUEUE[\"Per-model Queue\"]\n  QUEUE --> SELECT[\"Model Selector\"]\n  SELECT --> RT1[\"MLX Runtime<br/>Qwen Image\"]\n  SELECT --> RT2[\"Diffusers Runtime<br/>FLUX / SDXL\"]\n\n  JOB --> STORE[\"Job Store / History\"]\n  JOB --> FILES[\"Generated Images / Thumbnails\"]\n  STORE --> DB[\"ORM-backed Store\"]\n  FILES --> DB\n```\n\n## 快速开始\n\n### 环境要求\n\n- Python 3.11+\n- Node.js 18+\n- Conda\n\n### 1. 创建并激活 Conda 环境\n\n```bash\nconda create -n ai-inference-platform python=3.11 -y\nconda activate ai-inference-platform\n```\n\n### 2. 安装后端依赖\n\n```bash\ncd backend\npip install -r requirements.txt\ncd ..\n```\n\n### 3. 安装前端依赖\n\n```bash\ncd frontend\nnpm install\ncd ..\n```\n\n### 4. 启动服务\n\n```bash\n./run-all.sh\n```\n\n或分别启动：\n\n```bash\n./run-backend.sh\n./run-frontend.sh\n```\n\n默认地址：\n- 前端：[http://localhost:5173](http://localhost:5173)\n- 后端：[http://localhost:8000](http://localhost:8000)\n\n## 快速体验\n\n建议按以下路径快速体验：\n\n1. 打开 `/models`，确认模型已扫描或已接入云端模型\n2. 打开 `/chat`，验证基础聊天或多模态聊天\n3. 打开 `/images`，提交一次文生图任务\n4. 打开 `/agents`，创建并运行一个工具型 Agent\n5. 打开 `/workflow`，执行一个简单工作流\n\n## 已验证环境\n\n当前项目已在以下环境中验证可运行：\n- macOS + Apple Silicon\n- Ubuntu Linux\n- Conda 管理 Python 环境\n- 本地模型目录按 `model.json` 规范组织\n\n运行说明：\n- macOS + Apple Silicon 下，`MLX` 与 `MPS` / 本地大模型会共享统一内存\n- Ubuntu 下可正常运行，文生图与推理路径更适合使用 `Torch / Diffusers` 等 Linux 常见运行时\n- 同时加载大 LLM 与大文生图模型时，仍可能出现显存或内存压力\n- 平台已实现图片模型切换时的资源回收，但仍建议根据机器资源选择合适模型规模\n\n## 主要页面\n\n- `/chat`：聊天与多模态对话\n- `/images`：文生图工作台\n- `/images/history`：图片任务历史\n- `/agents`：智能体管理与运行\n- `/workflow`：工作流列表、编辑、运行\n- `/models`：模型管理\n- `/knowledge`：知识库\n- `/settings`：系统设置\n- `/logs`：系统日志\n\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "9655",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9655"
         }
       ]
     },
@@ -556,7 +518,12 @@
             "submission"
           ],
           "externalId": "3221",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3221"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3221",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -575,7 +542,12 @@
             "submission"
           ],
           "externalId": "3222",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3222"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3222",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

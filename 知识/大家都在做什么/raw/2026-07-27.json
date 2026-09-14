@@ -171,7 +171,12 @@
             "submission"
           ],
           "externalId": "10901",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10901"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10901",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -326,7 +331,12 @@
             "submission"
           ],
           "externalId": "10910",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10910"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10910",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },
@@ -357,44 +367,6 @@
           ],
           "externalId": "3490",
           "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3490"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] Rust 写的开源多协议下载管理器，IDM 的免费替代品",
-          "url": "https://github.com/zerx-lab/FluxDown",
-          "author": "zerx-lab",
-          "authorUrl": "https://github.com/zerx-lab",
-          "publishedAt": "2026-07-27T02:30:26Z",
-          "summary": "项目地址 类别 Rust 项目标题 Rust 写的开源多协议下载管理器，IDM 的免费替代品 项目描述 FluxDown 用 Rust + Tokio 写下载引擎、Flutter 做界面，把 HTTP/FTP、BitTorrent 磁力、eD2K/Kad、HLS 与 DASH 收进同一个任务队列。它做 IDM 式动态分段：不是启动时开固定线程数，而是在下载过程中把还没下完的区间继续切开分给空闲连接，慢速节点不会拖住整条任务的收尾。装上浏览器扩展后网页里的下载会被自动接管，断点续传落在 SQLite WAL 上，进程被杀也不丢进度。 亮点 1. 分段策略是 IDM 那套「运行时再切分」，不是常见的固定 x N 连接数，慢节点不拖累整体收尾速度； 2. 引擎是零 FFI 的纯 Rust crate，Flutter 通过 Rinf signals 与它通信，既不走 dart:ffi 也不额外起子进程； 3. 兼容 aria2 JSONRPC，覆盖 aria2 官方 36 个方法全集、其中 27 个是真实映射到引擎的实现，可以直连 AriaNg，各种「发送到 aria2」的油猴脚本也能直接把它当后端； 4. 内置 MCP server（Streamable HTTP，12 个工具），Claude Desktop / Cursor 这类 AI 客户端能直接管理下载任务，默认只监听 127.0.0.1 并要求管理 token； 5. 同一套代码跑桌面（Windows / macOS / Linux）、Android，以及 headless 服务端（自带 Web UI，支持群晖 spk、QNAP qpkg、OpenWrt ipk、Unraid、CasaOS）。 补充说明 协议：AGPL3.0，永久免费、无广告。 文档：README 含项目介绍、特性、快速开始、从源码构建与协议声明，另有中文版 README.zhCN.md；更新日志在 。 官网： 已在 搜索过，未被收录过。",
-          "content": "### 项目地址\n\nhttps://github.com/zerx-lab/FluxDown\n\n### 类别\n\nRust\n\n### 项目标题\n\nRust 写的开源多协议下载管理器，IDM 的免费替代品\n\n### 项目描述\n\nFluxDown 用 Rust + Tokio 写下载引擎、Flutter 做界面，把 HTTP/FTP、BitTorrent 磁力、eD2K/Kad、HLS 与 DASH 收进同一个任务队列。它做 IDM 式动态分段：不是启动时开固定线程数，而是在下载过程中把还没下完的区间继续切开分给空闲连接，慢速节点不会拖住整条任务的收尾。装上浏览器扩展后网页里的下载会被自动接管，断点续传落在 SQLite WAL 上，进程被杀也不丢进度。\n\n### 亮点\n\n1. 分段策略是 IDM 那套「运行时再切分」，不是常见的固定 `-x N` 连接数，慢节点不拖累整体收尾速度；\n2. 引擎是零 FFI 的纯 Rust crate，Flutter 通过 Rinf signals 与它通信，既不走 dart:ffi 也不额外起子进程；\n3. 兼容 aria2 JSON-RPC，覆盖 aria2 官方 36 个方法全集、其中 27 个是真实映射到引擎的实现，可以直连 AriaNg，各种「发送到 aria2」的油猴脚本也能直接把它当后端；\n4. 内置 MCP server（Streamable HTTP，12 个工具），Claude Desktop / Cursor 这类 AI 客户端能直接管理下载任务，默认只监听 127.0.0.1 并要求管理 token；\n5. 同一套代码跑桌面（Windows / macOS / Linux）、Android，以及 headless 服务端（自带 Web UI，支持群晖 spk、QNAP qpkg、OpenWrt ipk、Unraid、CasaOS）。\n\n### 补充说明\n\n- 协议：AGPL-3.0，永久免费、无广告。\n- 文档：README 含项目介绍、特性、快速开始、从源码构建与协议声明，另有中文版 README.zh-CN.md；更新日志在 https://fluxdown.zerx.dev/changelog 。\n- 官网：https://fluxdown.zerx.dev\n- 已在 https://hellogithub.com 搜索过，未被收录过。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3491",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3491"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] HimitsuShell: Shell 脚本保护工具 (混淆, 内置解释器, DRM) - linux, IoT",
-          "url": "https://github.com/HimitsuShell/HimitsuShell",
-          "author": "MushStory",
-          "authorUrl": "https://github.com/MushStory",
-          "publishedAt": "2026-07-27T15:29:21Z",
-          "summary": "项目地址 类别 其它 项目标题 将 Shell 脚本转换为内置解释器的二进制文件, 具备混淆和反调试保护功能 (shc 的替代方案). 项目描述 保护 Shell 脚本免受泄露, 篡改和未经授权的使用。 操作系统级日志记录与 Hook 防护 内置自己的 Shell 解释器，无需依赖系统 Shell，从而降低暴露于操作系统级日志记录和 Hook 的风险 (例如: auditd, bpftrace). 字符串与常量加密 二进制文件中的所有字符串和常量都会被加密，使静态分析更加困难 (例如: IDA, Ghidra). 调试器检测 在运行过程中持续检测调试器，使动态分析更加困难 (例如: gdb, ptrace, strace). 高级混淆技术 包含指令替换, 间接调用, 间接跳转, 基本块拆分以及伪控制流等混淆技术. 许可证验证 (计划中) 仅允许持有有效许可证密钥的用户执行 Shell 脚本. 亮点 与 shc (shell 脚本编译器) 的对比 | | HimitsuShell | shc | |||| | 操作系统级日志记录与 Hook 防护 | ✓ | | | 动态库 Hook 防护 | ✓ | | | 字符串与常量加密 | ✓ | | | 调试器检测 | ✓ | ✓ | | 高级混淆技术 | ✓ | | 示例代码 markdown 1. 下载 Docker 镜像 curl LO 2. 加载 Docker 镜像 docker load i himitsucorev1.2.0.tar.gz 3. 启动容器 docker run name himitsucore d it himitsucore:v1.2.0 4. 上传你的 Shell 脚本(文件名必须为 launcher.sh) docker cp launcher.sh himitsucore:/var/work/ 5. 编译生成二进制文件(大约需要 10–20 秒) docker exec himitsucore /var/work/compile.sh 6. 下载生成的二进制文件 docker cp himitsucore:/var/work/safeLauncher . 截图或演示视频 <img width=\"789\" height=\"852\" alt=\"Image\" src=\" /",
-          "content": "### 项目地址\n\nhttps://github.com/HimitsuShell/HimitsuShell\n\n### 类别\n\n其它\n\n### 项目标题\n\n将 Shell 脚本转换为内置解释器的二进制文件, 具备混淆和反调试保护功能 (shc 的替代方案).\n\n### 项目描述\n\n保护 Shell 脚本免受泄露, 篡改和未经授权的使用。\n\n- **操作系统级日志记录与 Hook 防护**\n  内置自己的 Shell 解释器，无需依赖系统 Shell，从而降低暴露于操作系统级日志记录和 Hook 的风险 (例如: auditd, bpftrace).\n\n- **字符串与常量加密**\n  二进制文件中的所有字符串和常量都会被加密，使静态分析更加困难 (例如: IDA, Ghidra).\n\n- **调试器检测**\n  在运行过程中持续检测调试器，使动态分析更加困难 (例如: gdb, ptrace, strace).\n\n- **高级混淆技术**\n  包含指令替换, 间接调用, 间接跳转, 基本块拆分以及伪控制流等混淆技术.\n\n- **许可证验证 (计划中)**\n  仅允许持有有效许可证密钥的用户执行 Shell 脚本.\n\n### 亮点\n\n与 shc (shell 脚本编译器) 的对比\n| | HimitsuShell | shc |\n|-|-|-|\n| 操作系统级日志记录与 Hook 防护 | ✓ | |\n| 动态库 Hook 防护 | ✓ | |\n| 字符串与常量加密 | ✓ | |\n| 调试器检测 | ✓ | ✓ |\n| 高级混淆技术 | ✓ | |\n\n### 示例代码\n\n```markdown\n# 1. 下载 Docker 镜像\ncurl -LO https://github.com/HimitsuShell/Himitsu/releases/download/v1.2.0/himitsu_core_v1.2.0.tar.gz\n\n# 2. 加载 Docker 镜像\ndocker load -i himitsu_core_v1.2.0.tar.gz\n\n# 3. 启动容器\ndocker run --name himitsu_core -d -it himitsu_core:v1.2.0\n\n# 4. 上传你的 Shell 脚本(文件名必须为 launcher.sh)\ndocker cp launcher.sh himitsu_core:/var/work/\n\n# 5. 编译生成二进制文件(大约需要 10–20 秒)\ndocker exec himitsu_core /var/work/compile.sh\n\n# 6. 下载生成的二进制文件\ndocker cp himitsu_core:/var/work/safeLauncher .\n```\n\n### 截图或演示视频\n\n<img width=\"789\" height=\"852\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c2f7d55e-d924-4f6d-ab19-78bdc094cb07\" />",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3493",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3493"
         }
       ]
     },

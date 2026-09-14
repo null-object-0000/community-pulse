@@ -193,25 +193,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】magpie：本地优先的 Spotlight 式启动器，找回 star 过就忘的项目、文件、图片和书签",
-          "url": "https://github.com/newdee/magpie",
-          "author": "newdee",
-          "authorUrl": "https://github.com/newdee",
-          "publishedAt": "2026-08-22T07:35:18Z",
-          "summary": "项目地址： magpie 是一个开源（MIT）的桌面启动器（Tauri + Rust），按下 Alt+Space 唤出一个 Spotlight 式搜索框，专门找回三类「存过就忘」的东西： GitHub Stars：同步全部 star，连 README 全文一起分块嵌入——star 上千之后 GitHub 自带搜索只搜标题描述，magpie 用中文也能命中英文 README 里的内容，结果可按相关度 / 收藏时间 / 星数排序； 本地文件：只索引你显式添加的文件夹，近 80 种文本/代码格式全文检索，PDF / Word / Excel / PPT 解析成文本，命中段落高亮显示；图片经 SigLIP 2 嵌入，支持任何语言的文字搜图和以图搜图（拖拽 / 粘贴 / 选文件），并显示相似度百分比； 浏览器书签：任意 Chromium 内核浏览器（包括各种小众分支，按磁盘 profile 结构自动发现）外加 Firefox，直读本地存储，不走任何 API。 检索是 SQLite FTS5（BM25）关键词 + 本地语义向量（multilinguale5small）的混合排名，中英跨语言。顺手还能当快捷浏览器入口：输入网址或搜索词按 Ctrl+Enter，直接交给默认浏览器。 隐私靠架构保证：永不全盘扫描，只读显式添加的文件夹；嵌入模型经 ONNX 本地推理，首次下载后完全离线，数据不出本机。国内网络可在设置里一键切换 hfmirror.com 镜像下载模型（断点续传、实时进度）。 支持 Windows / macOS (Apple Silicon) / Linux。 !检索 GitHub stars !以图搜图",
-          "content": "项目地址：https://github.com/newdee/magpie\n\nmagpie 是一个开源（MIT）的桌面启动器（Tauri + Rust），按下 Alt+Space 唤出一个 Spotlight 式搜索框，专门找回三类「存过就忘」的东西：\n\n- **GitHub Stars**：同步全部 star，连 README 全文一起分块嵌入——star 上千之后 GitHub 自带搜索只搜标题描述，magpie 用中文也能命中英文 README 里的内容，结果可按相关度 / 收藏时间 / 星数排序；\n- **本地文件**：只索引你显式添加的文件夹，近 80 种文本/代码格式全文检索，PDF / Word / Excel / PPT 解析成文本，命中段落高亮显示；图片经 SigLIP 2 嵌入，支持任何语言的文字搜图和以图搜图（拖拽 / 粘贴 / 选文件），并显示相似度百分比；\n- **浏览器书签**：任意 Chromium 内核浏览器（包括各种小众分支，按磁盘 profile 结构自动发现）外加 Firefox，直读本地存储，不走任何 API。\n\n检索是 SQLite FTS5（BM25）关键词 + 本地语义向量（multilingual-e5-small）的混合排名，中英跨语言。顺手还能当快捷浏览器入口：输入网址或搜索词按 Ctrl+Enter，直接交给默认浏览器。\n\n隐私靠架构保证：永不全盘扫描，只读显式添加的文件夹；嵌入模型经 ONNX 本地推理，首次下载后完全离线，数据不出本机。国内网络可在设置里一键切换 hf-mirror.com 镜像下载模型（断点续传、实时进度）。\n\n支持 Windows / macOS (Apple Silicon) / Linux。\n\n![检索 GitHub stars](https://raw.githubusercontent.com/newdee/magpie/main/docs/img/palette-stars.jpeg)\n\n![以图搜图](https://raw.githubusercontent.com/newdee/magpie/main/docs/img/image-similarity.jpeg)",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11305",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11305"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【工具自荐】SSE DevTools Panel：AI 对话流式联调，把思考 / 正文 / 工具调用拆开看",
           "url": "https://github.com/FatMii/sse-devtools-panel",
           "author": "FatMii",
@@ -228,25 +209,6 @@
           ],
           "externalId": "11306",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11306"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】pi-custom-packages：给 pi 编程 agent 的 10 个扩展，WSL 里操作 Windows 桌面 + 会话瘦身",
-          "url": "https://github.com/Blue-B/pi-custom-packages",
-          "author": "Blue-B",
-          "authorUrl": "https://github.com/Blue-B",
-          "publishedAt": "2026-08-22T13:01:33Z",
-          "summary": "项目地址： pi 是一个终端里的 AI 编程 agent（pi.dev）。这是我自己日常在 WSL 上用的 10 个扩展，攒到一个仓库里，MIT。 一条命令装全部： pi install git:github.com/BlueB/picustompackages 也可以 clone 下来只装其中一个。 大致分三类： 会话守护。pi 的 bash 超时单位是秒，模型却总是传毫秒，120000 就变成了 33 小时，这个扩展把它改回 120。另外模型切换之后，新模型会照着上下文里的旧名字自报家门，所以每次切换重新注入一次真实的模型 ID。 上下文治理。pi 每一轮都会把整个对话重发一遍，图片也不例外，截图攒到二十张就是二十份 base64。一个扩展负责把出站请求里的旧图片换成文字占位符，另一个负责给磁盘上已经撑大的会话文件瘦身。 WSL 里操作 Windows 桌面。pi 跑在 WSL 里看不到宿主机的桌面，所以补了截屏、鼠标键盘、录屏三件套。截屏用 PrintWindow，被别的窗口挡住也能抓到，发给模型之前可以把敏感区域打码。 原本有 16 个，删掉了 6 个。其中 3 个是因为 pi 自己把功能做进去了，不再需要——比如给工具返回的图片做缩放这件事，起因是我提的一个 issue（5369），后来合并成了 7330。 在 pi 0.84 上测试过，每个包都有各自的 README。",
-          "content": "项目地址：https://github.com/Blue-B/pi-custom-packages\n\npi 是一个终端里的 AI 编程 agent（pi.dev）。这是我自己日常在 WSL 上用的 10 个扩展，攒到一个仓库里，MIT。\n\n一条命令装全部：\n\n```\npi install git:github.com/Blue-B/pi-custom-packages\n```\n\n也可以 clone 下来只装其中一个。\n\n大致分三类：\n\n- **会话守护**。pi 的 bash 超时单位是秒，模型却总是传毫秒，`120000` 就变成了 33 小时，这个扩展把它改回 120。另外模型切换之后，新模型会照着上下文里的旧名字自报家门，所以每次切换重新注入一次真实的模型 ID。\n- **上下文治理**。pi 每一轮都会把整个对话重发一遍，图片也不例外，截图攒到二十张就是二十份 base64。一个扩展负责把出站请求里的旧图片换成文字占位符，另一个负责给磁盘上已经撑大的会话文件瘦身。\n- **WSL 里操作 Windows 桌面**。pi 跑在 WSL 里看不到宿主机的桌面，所以补了截屏、鼠标键盘、录屏三件套。截屏用 PrintWindow，被别的窗口挡住也能抓到，发给模型之前可以把敏感区域打码。\n\n原本有 16 个，删掉了 6 个。其中 3 个是因为 pi 自己把功能做进去了，不再需要——比如给工具返回的图片做缩放这件事，起因是我提的一个 issue（[#5369](https://github.com/earendil-works/pi/issues/5369)），后来合并成了 [#7330](https://github.com/earendil-works/pi/pull/7330)。\n\n在 pi 0.84 上测试过，每个包都有各自的 README。",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11307",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11307"
         },
         {
           "sourceId": "weekly-issues",
@@ -316,7 +278,12 @@
             "submission"
           ],
           "externalId": "3568",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3568"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3568",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -335,7 +302,12 @@
             "submission"
           ],
           "externalId": "3569",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3569"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3569",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",

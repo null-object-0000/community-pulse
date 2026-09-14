@@ -150,25 +150,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】Headless Guard：安全清理卡住 Mac 的遗留无头浏览器",
-          "url": "https://github.com/study8677/HeadlessGuard",
-          "author": "study8677",
-          "authorUrl": "https://github.com/study8677",
-          "publishedAt": "2026-08-02T14:10:29Z",
-          "summary": "项目地址： 下载地址： !Headless Guard 检测界面 Headless Guard 是一款原生 macOS 菜单栏工具，专门处理 Playwright、Puppeteer 等自动化任务异常退出后留下的无头浏览器。此类残留进程可能持续占用内存，也可能接走系统的浏览器打开请求，表现为“Chrome 明明在运行，却没有正常窗口”。 为什么做这个项目 项目来自一次真实故障排查：一组 Playwright daemon 和无头 Chrome 已脱离父任务、持续运行 2 天 8 小时。Headless Guard 在清理前识别到 1 个自动化会话、7 个相关进程；清理后释放约 365.3 MB，原本正在使用的普通 Chrome PID 保持不变，随后 15 秒持续复查也没有重新拉起。 它怎样避免误伤正常浏览器 不因进程名称里出现 Chrome 就结束它，而是组合判断 headless 参数、临时自动化 Profile、远程调试、启动器祖先关系、存活时间等证据。 普通浏览器 Profile 和日常 Chrome 会话受到硬保护；只处理当前用户的进程。 执行前重新扫描，只停止精确匹配的自动化进程树；先发 TERM，再校验仍存活进程的命令指纹，最后才对匹配者使用 KILL。 默认仅观察，不会自动清理；自动清理和登录启动都需要用户主动开启。 项目用 Swift / SwiftUI + AppKit 编写，不依赖 Electron，不需要管理员权限，没有遥测，也不上传进程信息。除了原生图形界面，还提供 scan、rescue、watch、doctor 等 CLI 命令，并包含针对普通 Chrome 保护、误报边界和进程复用的测试。 当前 v0.1.0 支持 macOS 13+ 和 Apple Silicon。首版采用 adhoc 签名、尚未经过 Apple 公证，因此首次打开可能需要在 Finder 中右键选择“打开”；这一限制已在 Release 和 README 中明确说明。",
-          "content": "项目地址：https://github.com/study8677/HeadlessGuard  \n下载地址：https://github.com/study8677/HeadlessGuard/releases/latest\n\n![Headless Guard 检测界面](https://raw.githubusercontent.com/study8677/HeadlessGuard/main/docs/images/dashboard-detected.png)\n\nHeadless Guard 是一款原生 macOS 菜单栏工具，专门处理 Playwright、Puppeteer 等自动化任务异常退出后留下的无头浏览器。此类残留进程可能持续占用内存，也可能接走系统的浏览器打开请求，表现为“Chrome 明明在运行，却没有正常窗口”。\n\n## 为什么做这个项目\n\n项目来自一次真实故障排查：一组 Playwright daemon 和无头 Chrome 已脱离父任务、持续运行 2 天 8 小时。Headless Guard 在清理前识别到 1 个自动化会话、7 个相关进程；清理后释放约 365.3 MB，原本正在使用的普通 Chrome PID 保持不变，随后 15 秒持续复查也没有重新拉起。\n\n## 它怎样避免误伤正常浏览器\n\n- 不因进程名称里出现 `Chrome` 就结束它，而是组合判断 headless 参数、临时自动化 Profile、远程调试、启动器祖先关系、存活时间等证据。\n- 普通浏览器 Profile 和日常 Chrome 会话受到硬保护；只处理当前用户的进程。\n- 执行前重新扫描，只停止精确匹配的自动化进程树；先发 TERM，再校验仍存活进程的命令指纹，最后才对匹配者使用 KILL。\n- 默认仅观察，不会自动清理；自动清理和登录启动都需要用户主动开启。\n\n项目用 Swift / SwiftUI + AppKit 编写，不依赖 Electron，不需要管理员权限，没有遥测，也不上传进程信息。除了原生图形界面，还提供 `scan`、`rescue`、`watch`、`doctor` 等 CLI 命令，并包含针对普通 Chrome 保护、误报边界和进程复用的测试。\n\n当前 v0.1.0 支持 macOS 13+ 和 Apple Silicon。首版采用 ad-hoc 签名、尚未经过 Apple 公证，因此首次打开可能需要在 Finder 中右键选择“打开”；这一限制已在 Release 和 README 中明确说明。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10990",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10990"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】NetAge Badge：把你的 X / Reddit \"账号年龄\" 变成复古 QQ 等级太阳月亮星星",
           "url": "https://github.com/shaozhengmao/netage-badge",
           "author": "shaozhengmao",
@@ -233,7 +214,12 @@
             "submission"
           ],
           "externalId": "3507",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3507"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3507",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

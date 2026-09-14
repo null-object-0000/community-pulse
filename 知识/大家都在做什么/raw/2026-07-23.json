@@ -380,25 +380,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】whatbroke：给 AI Agent 行为做 git diff 的命令行工具",
-          "url": "https://github.com/arthi-arumugam-git/whatbroke",
-          "author": "arthi-arumugam-git",
-          "authorUrl": "https://github.com/arthi-arumugam-git",
-          "publishedAt": "2026-07-23T07:10:06Z",
-          "summary": "whatbroke 是一个开源 CLI，用来对比 AI Agent 两次运行之间的行为差异：哪些工具调用被新增、丢弃或重排，以及参数、成本、延迟的变化。每个版本跑多次采样后，结果以比率呈现（如 6/9 的运行对比中出现），基线本身就不稳定的行为会被自动降级为噪音，避免把原有的抖动误判为回归。 换模型或改提示词之前跑一次 diff，就能看到\"回复文本看起来没变，但行为已经变了\"的部分。仓库里有一个可以在笔记本上免费复现的案例：把 llama3.2:3b 换成 1b 之后，小模型在 6/9 的运行对比中把工具的 JSON schema 原样当作参数传给了工具，而回复文本依然是一段正常的客服话术。 仓库： 安装：npm install g whatbrokecli MIT 协议，TypeScript，本地运行，trace 不离开你的机器 （中文由机器翻译润色，欢迎指正。English: whatbroke is an open source CLI that diffs an AI agent's behavior between two runs: tool calls added, dropped or reordered, plus argument, cost and latency changes, with multisample flake detection. A reproducible case study is in the repo.）",
-          "content": "whatbroke 是一个开源 CLI，用来对比 AI Agent 两次运行之间的行为差异：哪些工具调用被新增、丢弃或重排，以及参数、成本、延迟的变化。每个版本跑多次采样后，结果以比率呈现（如 6/9 的运行对比中出现），基线本身就不稳定的行为会被自动降级为噪音，避免把原有的抖动误判为回归。\n\n换模型或改提示词之前跑一次 diff，就能看到\"回复文本看起来没变，但行为已经变了\"的部分。仓库里有一个可以在笔记本上免费复现的案例：把 llama3.2:3b 换成 1b 之后，小模型在 6/9 的运行对比中把工具的 JSON schema 原样当作参数传给了工具，而回复文本依然是一段正常的客服话术。\n\n- 仓库：https://github.com/arthi-arumugam-git/whatbroke\n- 安装：`npm install -g whatbroke-cli`\n- MIT 协议，TypeScript，本地运行，trace 不离开你的机器\n\n（中文由机器翻译润色，欢迎指正。English: whatbroke is an open source CLI that diffs an AI agent's behavior between two runs: tool calls added, dropped or reordered, plus argument, cost and latency changes, with multi-sample flake detection. A reproducible case study is in the repo.）",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10840",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10840"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【网站自荐】VibeHub 帮助用户更好的向 AI 表达需求，用可视化的方式学习 Vibe Coding 术语",
           "url": "https://vibe-hub.org",
           "author": "oil-oil",
@@ -455,25 +436,6 @@
           "externalId": "10843",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/10843",
           "siteLogo": "https://www.tuberepeat.ai/apple-icon.png"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】AOHP：让 Android 通过 Agent 主动适应用户（开源 OS-level Agent Harness）",
-          "url": "https://github.com/aohp-os/aohp",
-          "author": "zhaoshanhui",
-          "authorUrl": "https://github.com/zhaoshanhui",
-          "publishedAt": "2026-07-23T09:34:16Z",
-          "summary": "项目信息 项目名称：AOHP（Android Open Harness Project） GitHub： 论文： 中文文档： 开发指南： 微信公众号推文： 许可证：Apache License 2.0 一句话：让操作系统借助智能体式 AI（agentic AI）主动适应用户——引入用户定义应用（userdefined apps），由 OS 级 Agent Harness 实现个性化、高效且安全的交互。 项目简介 传统操作系统以应用为中心：用户必须在开发者定义的应用界面里完成所有操作，过程繁琐且容易分心。 AOHP 把操作系统推向更深的个性化。它引入用户定义应用（userdefined apps）：根据用户真实需求生成，底层由 AI 智能体支撑；智能体在后台调用系统 API、CLI 与 GUI 应用，组合出真正可用的服务。 为了让这种体验可行、高效且安全，系统层与框架层需要重新设计——但并非全部重写。因此我们推出 AOHP：一个操作系统级智能体承载框架（OSlevel agent harness）。 !传统 Android 与 AOHP 架构对比 | 维度 | 原生 Android | AOHP | | | | | | 交互模型 | 用户直接操作应用定义的工作流 | 智能体作为 OS 原生执行主体，按用户意图行动 | | 交互界面 | 开发者定义的固定应用 GUI | 由智能体协调的个性化服务入口 | | 进程执行 | 受物理屏幕约束的单租户前台执行 | 与屏幕解耦的并行后台交互 | | 系统记忆 | 碎片化、封闭在各个应用内部 | OS 管理的跨应用记忆，服务任务个性化 | | 安全与隐私 | 粗粒度应用权限与不透明数据流 | 细粒度数据流追踪与敏感值沙箱化 | !AOHP 系统架构 演示：用户定义应用 给定自然语言提示，AOHP 即可生成功能完整的应用（前端 UI + 由智能体支撑的后台逻辑）。录屏来自编译后的 AOSP 系统镜像。 | Health Hub | Gift Picker | Python Learning Assistant | | | | | | !Health Hub | !Gift Picker | !Python Learning Assistant | | 聚合多 App 的健身、睡眠与体重记录 | 纪念日礼物挑选，跨购物 App 检索 | 儿童 Python 学习：课程、练习、每日汇报 | 智能体执行能力 | UI 微操作 | 文件处理 | 事件捕获 | | | | | | !UI | !文件 | !事件 | 评测亮点 使用 OpenClaw 在 AOHP 与原生 Android 上评测，基准含 30 项真实移动端任务。 | 配置 | 完成率 | 完全解决 | | | | | | 原生 Android 上的 OpenClaw | 54.44% | 13 / 30 | | AOHP 上的 OpenClaw | 75.56% | 20 / 30 | | 提升 | +21.12% | +7 项任务 | 双方都能完整完成的 11 项任务上：工具调用 44.64%、耗时 44.21%、Token 51.55%、LLM 请求 47.62%。信息流安全五项策略用例全部通过。 快速上手 bash git clone cd aohp 完整构建与 Cuttlefish 启动见开发指南 开发指南： 适合关注 Mobile Agent / Agent OS / AOSP / Agent 安全 的同学。欢迎 Star、提 Issue，或加入 微信交流群 / Discord。 感谢阮老师与周刊读者们！",
-          "content": "## 项目信息\n\n- **项目名称**：AOHP（Android Open Harness Project）\n- **GitHub**：https://github.com/aohp-os/aohp\n- **论文**：https://arxiv.org/abs/2606.23449\n- **中文文档**：https://github.com/aohp-os/aohp/blob/main/docs/README.zh-CN.md\n- **开发指南**：https://github.com/aohp-os/aohp/blob/main/docs/DEVELOPMENT.zh-CN.md\n- **微信公众号推文**：https://mp.weixin.qq.com/s/7E-LWv8bdKr8dG81xBl7yQ\n- **许可证**：Apache License 2.0\n- **一句话**：让操作系统借助智能体式 AI（agentic AI）主动适应用户——引入用户定义应用（user-defined apps），由 OS 级 Agent Harness 实现个性化、高效且安全的交互。\n\n---\n\n## 项目简介\n\n传统操作系统以应用为中心：用户必须在**开发者定义的应用界面**里完成所有操作，过程繁琐且容易分心。\n\n**AOHP** 把操作系统推向更深的个性化。它引入**用户定义应用（user-defined apps）**：根据用户真实需求生成，底层由 AI 智能体支撑；智能体在后台调用系统 **API、CLI 与 GUI 应用**，组合出真正可用的服务。\n\n为了让这种体验**可行、高效且安全**，系统层与框架层需要重新设计——但并非全部重写。因此我们推出 **AOHP：一个操作系统级智能体承载框架（OS-level agent harness）**。\n\n![传统 Android 与 AOHP 架构对比](https://raw.githubusercontent.com/aohp-os/aohp/main/images/comparison.png)\n\n| 维度 | 原生 Android | AOHP |\n| --- | --- | --- |\n| **交互模型** | 用户直接操作应用定义的工作流 | 智能体作为 OS 原生执行主体，按用户意图行动 |\n| **交互界面** | 开发者定义的固定应用 GUI | 由智能体协调的个性化服务入口 |\n| **进程执行** | 受物理屏幕约束的单租户前台执行 | 与屏幕解耦的并行后台交互 |\n| **系统记忆** | 碎片化、封闭在各个应用内部 | OS 管理的跨应用记忆，服务任务个性化 |\n| **安全与隐私** | 粗粒度应用权限与不透明数据流 | 细粒度数据流追踪与敏感值沙箱化 |\n\n![AOHP 系统架构](https://raw.githubusercontent.com/aohp-os/aohp/main/images/overview.png)\n\n---\n\n## 演示：用户定义应用\n\n给定自然语言提示，AOHP 即可生成功能完整的应用（前端 UI + 由智能体支撑的后台逻辑）。录屏来自编译后的 AOSP 系统镜像。\n\n| Health Hub | Gift Picker | Python Learning Assistant |\n| --- | --- | --- |\n| ![Health Hub](https://raw.githubusercontent.com/aohp-os/aohp/main/demos/uda/health_hub_demo.gif) | ![Gift Picker](https://raw.githubusercontent.com/aohp-os/aohp/main/demos/uda/gift_picker_demo.gif) | ![Python Learning Assistant](https://raw.githubusercontent.com/aohp-os/aohp/main/demos/uda/python_learning_assistant_demo.gif) |\n| 聚合多 App 的健身、睡眠与体重记录 | 纪念日礼物挑选，跨购物 App 检索 | 儿童 Python 学习：课程、练习、每日汇报 |\n\n### 智能体执行能力\n\n| UI 微操作 | 文件处理 | 事件捕获 |\n| --- | --- | --- |\n| ![UI](https://raw.githubusercontent.com/aohp-os/aohp/main/demos/agent/gallery_brightness.gif) | ![文件](https://raw.githubusercontent.com/aohp-os/aohp/main/demos/agent/cloud_file_markor.gif) | ![事件](https://raw.githubusercontent.com/aohp-os/aohp/main/demos/agent/event_capture.gif) |\n\n---\n\n## 评测亮点\n\n使用 [OpenClaw](https://github.com/openclaw/openclaw) 在 AOHP 与原生 Android 上评测，基准含 **30 项真实移动端任务**。\n\n| 配置 | 完成率 | 完全解决 |\n| --- | --- | --- |\n| 原生 Android 上的 OpenClaw | 54.44% | 13 / 30 |\n| **AOHP 上的 OpenClaw** | **75.56%** | **20 / 30** |\n| 提升 | **+21.12%** | **+7 项任务** |\n\n双方都能完整完成的 11 项任务上：工具调用 **-44.64%**、耗时 **-44.21%**、Token **-51.55%**、LLM 请求 **-47.62%**。信息流安全五项策略用例全部通过。\n\n---\n\n## 快速上手\n\n```bash\ngit clone https://github.com/aohp-os/aohp.git\ncd aohp\n# 完整构建与 Cuttlefish 启动见开发指南\n```\n\n开发指南：https://github.com/aohp-os/aohp/blob/main/docs/DEVELOPMENT.zh-CN.md\n\n适合关注 **Mobile Agent / Agent OS / AOSP / Agent 安全** 的同学。欢迎 Star、提 Issue，或加入 [微信交流群](https://github.com/MobileLLM/lab-contact) / [Discord](https://discord.gg/3bhPrAarW)。\n\n感谢阮老师与周刊读者们！\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10844",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10844"
         },
         {
           "sourceId": "weekly-issues",
@@ -580,7 +542,12 @@
             "submission"
           ],
           "externalId": "3474",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3474"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3474",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -618,7 +585,12 @@
             "submission"
           ],
           "externalId": "3476",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3476"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3476",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",

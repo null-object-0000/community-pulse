@@ -225,25 +225,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】handsets - 高性能 Android 自动化控制 CLI",
-          "url": "https://github.com/elliotgao2/handsets>",
-          "author": "elliotgao2",
-          "authorUrl": "https://github.com/elliotgao2",
-          "publishedAt": "2026-05-23T13:53:39Z",
-          "summary": "Drive Android from the shell, in milliseconds. One jar; no app, no root. 项目地址 GitHub: < 文档站: < PyPI: < License: MIT 一键安装: curl fsSL | bash 介绍 handsets（命令叫 hs）是一个用 Rust 写的 Android UI 自动化 CLI，专门为 LLM agent 设计了 verbled 的输出格式。不需要 root、不需要装 APK，单二进制 + 一个 jar 通过 adb forward 跑在设备 shell UID 下即可工作。 跟 adb shell / uiautomator2 / Appium 的区别： | | handsets | adb shell | uiautomator2 | Appium | | | | | | | | 单次调用延迟 | 2–7ms | 40–700ms | 30–100ms | 100–500ms | | 按 label 查找 | 是 | 否 | 是 | 是 | | 设备端安装 | 一个 ~几百 KB 的 jar | 无 | 两个 APK + atxagent | driver APK + Node 服务 | 它能做什么：典型用法 驱动登录的完整流程： bash hs use 连设备、起 daemon hs ui agent 看一眼当前屏幕 hs fill 手机 13800138000 自动找到手机号 EditText hs tap 获取验证码 自动走 ACTIONCLICK hs fill 验证码 123456 hs tap 登录 hs ui 的输出是给 LLM 看的 verbled 表格 —— 每一行直接告诉 agent 该用哪个动词、目标 selector 是什么、坐标在哪： tap ImageButton \"返回\" 98,243 fill EditText \"请输入手机号码\" aliuserloginmobileet 720,1059 tap Button \"获取验证码\" aliuserloginsendsmscodebtn 1202,1255 tap Button \"登录\" aliuserloginloginbtn 720,1521 Claude / GPT 直接读这张表，下一步发什么命令一目了然，token 占用比 XML accessibility dump 少一个数量级。 特性 给 LLM 看的输出：hs ui 是 verbled 表格，不是 XML dump，token 友好。 CSSlike + Playwright 风格 selector：Button:hastext(\"Sign in\") / EditText:below(TextView[text=Email]) / Button:near(ImageView, 200)，习惯 web 自动化的人零成本迁移。 毫秒级延迟：单次 tap typical ~80ms。最近把 tap 从「注入 MotionEvent」改成走 AccessibilityNodeInfo.ACTIONCLICK，绕开 InputDispatcher，p99 从 600ms+ 压到 ~50ms。 动作齐全：tap、type、fill（atomic ACTIONSETTEXT，绕过输入法）、swipe、wait、submit、paste、screenshot、screen mirror，还有 hs run 批处理脚本和 hs act tap … until … tapthenassert 组合。 Python 绑定：pip install handsets，from handsets import Session。 无 root、无 APK：daemon 是个 jar 通过 appprocess 跑在 shell UID 下，权限够用。",
-          "content": "> Drive Android from the shell, in milliseconds. One jar; no app, no root.\n\n## 项目地址\n\n- GitHub: <https://github.com/elliotgao2/handsets>\n- 文档站: <https://elliotgao2.github.io/handsets/>\n- PyPI: <https://pypi.org/project/handsets/>\n- License: MIT\n- 一键安装: `curl -fsSL https://raw.githubusercontent.com/elliotgao2/handsets/main/install.sh | bash`\n\n## 介绍\n\nhandsets（命令叫 `hs`）是一个用 Rust 写的 Android UI 自动化 CLI，专门为 LLM agent 设计了 verb-led 的输出格式。不需要 root、不需要装 APK，单二进制 + 一个 jar 通过 `adb forward` 跑在设备 shell UID 下即可工作。\n\n跟 adb shell / uiautomator2 / Appium 的区别：\n\n|                  | handsets       | adb shell  | uiautomator2 | Appium    |\n| ---------------- | -------------- | ---------- | ------------ | --------- |\n| 单次调用延迟     | 2–7ms          | 40–700ms   | 30–100ms     | 100–500ms |\n| 按 label 查找    | 是             | 否         | 是           | 是        |\n| 设备端安装       | 一个 ~几百 KB 的 jar | 无    | 两个 APK + atx-agent | driver APK + Node 服务 |\n\n## 它能做什么：典型用法\n\n驱动登录的完整流程：\n\n```bash\nhs use                              # 连设备、起 daemon\nhs ui                               # agent 看一眼当前屏幕\nhs fill 手机 13800138000            # 自动找到手机号 EditText\nhs tap 获取验证码                    # 自动走 ACTION_CLICK\nhs fill 验证码 123456\nhs tap 登录\n```\n\n`hs ui` 的输出是给 LLM 看的 verb-led 表格 —— 每一行直接告诉 agent 该用哪个动词、目标 selector 是什么、坐标在哪：\n\n```\ntap   ImageButton  \"返回\"   98,243\nfill  EditText     \"请输入手机号码\"  #aliuser_login_mobile_et  720,1059\ntap   Button       \"获取验证码\"  #aliuser_login_send_smscode_btn  1202,1255\ntap   Button       \"登录\"   #aliuser_login_login_btn  720,1521\n```\n\nClaude / GPT 直接读这张表，下一步发什么命令一目了然，token 占用比 XML accessibility dump 少一个数量级。\n\n## 特性\n\n- **给 LLM 看的输出**：`hs ui` 是 verb-led 表格，不是 XML dump，token 友好。\n- **CSS-like + Playwright 风格 selector**：`Button:has-text(\"Sign in\")` / `EditText:below(TextView[text=Email])` / `Button:near(ImageView, 200)`，习惯 web 自动化的人零成本迁移。\n- **毫秒级延迟**：单次 tap typical ~80ms。最近把 tap 从「注入 MotionEvent」改成走 `AccessibilityNodeInfo.ACTION_CLICK`，绕开 InputDispatcher，p99 从 600ms+ 压到 ~50ms。\n- **动作齐全**：tap、type、fill（atomic ACTION_SET_TEXT，绕过输入法）、swipe、wait、submit、paste、screenshot、screen mirror，还有 `hs run` 批处理脚本和 `hs act --tap … --until …` tap-then-assert 组合。\n- **Python 绑定**：`pip install handsets`，`from handsets import Session`。\n- **无 root、无 APK**：daemon 是个 jar 通过 `app_process` 跑在 shell UID 下，权限够用。",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "10046",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10046"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【工具自建】AI 图片编辑工具 PixelMax",
           "url": "https://pixelmax.art",
           "author": "LiveMediaTools",
@@ -368,7 +349,12 @@
             "submission"
           ],
           "externalId": "3294",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3294"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3294",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID E080:12C21D:1ACCF30:583641B:6A9E8529 and timestamp 2026-09-07 09:34:33 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"

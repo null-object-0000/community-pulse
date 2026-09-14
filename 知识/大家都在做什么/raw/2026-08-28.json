@@ -115,7 +115,12 @@
             "submission"
           ],
           "externalId": "11394",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11394"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11394",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -752,25 +757,6 @@
       "sourceId": "hellogithub-issues",
       "sourceName": "HelloGitHub·用户投稿",
       "items": [
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] GigaMail",
-          "url": "https://github.com/adecubed/gigamail",
-          "author": "adecubed",
-          "authorUrl": "https://github.com/adecubed",
-          "publishedAt": "2026-08-27T20:38:02Z",
-          "summary": "项目地址 类别 人工智能 项目标题 让 AI 代理安全接管你邮箱的 MCP 服务器 项目描述 GigaMail 是一个本地运行的 MCP 服务器，让你的 AI 代理（Claude、Codex、OpenClaw、Hermes 或任何兼容 MCP 的客户端）访问真实邮箱（Microsoft 365/IMAP）和日历：读信、搜索、起草自由，而发送、删除等危险操作必须由人在 Windows Hello/Touch ID 背后带外批准，代理无法批准自己。0.2 版加入带栅栏的自动回复：规则只能由人创建，回复只发给通过验证的发件人，草稿可在 Telegram 或桌面通知中一键批准、拒绝或要求修改。 亮点 代理从构造上无法自我批准：危险工具只返回一个惰性请求 id，批准需要操作系统级验证（人脸/指纹/PIN），任何进程都能弹出验证框却无法通过它。不内置 LLM——起草由用户自己的代理完成，数据全部留在本机。是否回复由确定性栅栏决定（DMARC 未通过永不自动、RFC 3834 自动邮件一律不回、短时爆发自动暂停规则），而不是交给模型判断。安全模型公开在 SECURITY.md，多个漏洞由 Reddit 社区红队发现并在 changelog 中署名。README 与控制台界面均提供中文（界面为作者初翻，欢迎帮我们打磨：console/i18n.js，PR welcome）。 示例代码 markdown pip install \"gigamail[all]\" 截图或演示视频",
-          "content": "### 项目地址\n\nhttps://github.com/adecubed/gigamail\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n让 AI 代理安全接管你邮箱的 MCP 服务器\n\n### 项目描述\n\nGigaMail 是一个本地运行的 MCP 服务器，让你的 AI 代理（Claude、Codex、OpenClaw、Hermes 或任何兼容 MCP 的客户端）访问真实邮箱（Microsoft 365/IMAP）和日历：读信、搜索、起草自由，而发送、删除等危险操作必须由人在 Windows Hello/Touch ID 背后带外批准，代理无法批准自己。0.2 版加入带栅栏的自动回复：规则只能由人创建，回复只发给通过验证的发件人，草稿可在 Telegram 或桌面通知中一键批准、拒绝或要求修改。\n\n### 亮点\n\n代理从构造上无法自我批准：危险工具只返回一个惰性请求 id，批准需要操作系统级验证（人脸/指纹/PIN），任何进程都能弹出验证框却无法通过它。不内置 LLM——起草由用户自己的代理完成，数据全部留在本机。是否回复由确定性栅栏决定（DMARC 未通过永不自动、RFC 3834 自动邮件一律不回、短时爆发自动暂停规则），而不是交给模型判断。安全模型公开在 SECURITY.md，多个漏洞由 Reddit 社区红队发现并在 changelog 中署名。README 与控制台界面均提供中文（界面为作者初翻，欢迎帮我们打磨：console/i18n.js，PR welcome）。\n\n### 示例代码\n\n```markdown\npip install \"gigamail[all]\"\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/adecubed/gigamail/main/docs/console-draft.png",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3604",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3604"
-        },
         {
           "sourceId": "hellogithub-issues",
           "title": "[开源推荐] ERD Online：开源数据库建模，版本+协作，可选 MCP",

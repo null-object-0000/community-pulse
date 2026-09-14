@@ -30,25 +30,6 @@
       "items": [
         {
           "sourceId": "weekly-issues",
-          "title": "自荐开源项目：wsl-command —— 专为 WSL2 打造的零依赖极简控制台与进程管理工具",
-          "url": "https://github.com/kongaiyi917-source/wsl-command",
-          "author": "kongaiyi917-source",
-          "authorUrl": "https://github.com/kongaiyi917-source",
-          "publishedAt": "2026-08-19T16:18:31Z",
-          "summary": "项目名称 WSL Command (WSL 指挥中心) 项目地址 项目简介 一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，零外部第三方依赖，常驻内存仅约 20MB。 解决的痛点 在 WSL2 下做开发时，经常遇到以下烦恼： 1. Docker Desktop 过于笨重：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。 2. 多项目进程难以直观管理：在终端里开多个 dev server，往往需要频繁 ps ef | grep 或 lsof i 查端口、杀僵尸进程。 3. WSL 与 Windows 切换繁琐：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。 核心亮点 ⚡ 极致轻量与零依赖：后端纯 Python 标准库，前端原生现代 JS，无需 pip install 或 npm install 任何依赖，拉下来就能跑。 📊 可视化仪表盘：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。 🚀 进程智能识别与一键启停：自动识别 npm / Python / Dockercompose 等服务，支持快捷卡片置顶与进程树级优雅管理。 🌐 原生双语支持：内置完善的中/英文动态切换。 欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐",
-          "content": "### 项目名称\n**WSL Command (WSL 指挥中心)**\n\n### 项目地址\nhttps://github.com/kongaiyi917-source/wsl-command\n\n### 项目简介\n一个专为 Windows + WSL2 开发者打造的轻量级可视化控制台与进程编排工具。基于纯 Python 标准库与原生 ES Modules 开发，**零外部第三方依赖**，常驻内存仅约 20MB。\n\n### 解决的痛点\n在 WSL2 下做开发时，经常遇到以下烦恼：\n1. **Docker Desktop 过于笨重**：日常开发仅仅为了看几个容器或端口，却要承受动辄 2GB~4GB 的内存开销和卡顿。\n2. **多项目进程难以直观管理**：在终端里开多个 dev server，往往需要频繁 `ps -ef | grep` 或 `lsof -i` 查端口、杀僵尸进程。\n3. **WSL 与 Windows 切换繁琐**：缺少一个轻量快速的统一入口来监控系统负载、管理项目一键启停。\n\n### 核心亮点\n- **⚡ 极致轻量与零依赖**：后端纯 Python 标准库，前端原生现代 JS，无需 `pip install` 或 `npm install` 任何依赖，拉下来就能跑。\n- **📊 可视化仪表盘**：实时展示 WSL CPU/内存负载、网络状态、运行中项目与端口映射。\n- **🚀 进程智能识别与一键启停**：自动识别 npm / Python / Docker-compose 等服务，支持快捷卡片置顶与进程树级优雅管理。\n- **🌐 原生双语支持**：内置完善的中/英文动态切换。\n\n欢迎各位 WSL2 开发者试用和交流！如果觉得对你有帮助，欢迎在 GitHub 点个 Star 支持一下 ⭐",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11271",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11271"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】SandBase CLI：一条命令连接 25 个 AI 客户端与 2,000+ 模型/API",
           "url": "https://github.com/sandbaseai/cli",
           "author": "denial123789",
@@ -64,7 +45,12 @@
             "submission"
           ],
           "externalId": "11272",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11272"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11272",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -463,26 +449,12 @@
             "submission"
           ],
           "externalId": "3563",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3563"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] SandBase CLI：一条命令连接 25 个 AI 客户端与 2,000+ 模型/API",
-          "url": "https://github.com/sandbaseai/cli",
-          "author": "denial123789",
-          "authorUrl": "https://github.com/denial123789",
-          "publishedAt": "2026-08-19T17:35:12Z",
-          "summary": "项目地址 类别 人工智能 项目标题 一条命令连接 25 个 AI 客户端与 2,000+ 模型/API 项目描述 SandBase CLI 是一个 Apache2.0 开源的命令行工具和本地 MCP 桥接器。它自动检测本机的 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 AI 客户端，通过统一流程完成 OAuth 授权和 MCP 配置，让这些客户端可以发现并调用 2,000+ AI 模型与 API。 项目重点处理手工配置最容易出错的部分：修改前验证目标客户端、保留原配置、限制敏感文件权限，出现问题时提供 doctor 诊断和回滚能力。用户也可以先运行只读的 catalog json 查看 25 个支持目标，不登录、不修改任何文件。 亮点 一套命令覆盖 25 个 AI 客户端目标，减少为每个工具分别查找配置路径和字段格式的重复工作。 本地 MCP Bridge 提供模型发现、能力检查、任务运行和运行记录查询等 6 个工具。 OAuth 引导代替手工复制多组 API Key；配置更新包含备份、校验和回滚。 提供中文、英文、日文、韩文、西班牙文等多语言 README。 发布页提供不可变安装包与 SHA256 校验值，客户端支持范围由可机器读取的 src/catalog.ts 维护。 示例代码 连接已检测到的客户端： bash npx y connect 只读查看支持的客户端： bash npx y catalog json 截图或演示视频 中文说明： 说明：npm 的 latest 当前仍落后于 GitHub Release，因此示例暂时使用不可变的 v0.1.17 Release 安装包。",
-          "content": "### 项目地址\n\nhttps://github.com/sandbaseai/cli\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n一条命令连接 25 个 AI 客户端与 2,000+ 模型/API\n\n### 项目描述\n\nSandBase CLI 是一个 Apache-2.0 开源的命令行工具和本地 MCP 桥接器。它自动检测本机的 Claude Desktop、Claude Code、Codex、Cursor、Gemini CLI、OpenCode、Windsurf 等 AI 客户端，通过统一流程完成 OAuth 授权和 MCP 配置，让这些客户端可以发现并调用 2,000+ AI 模型与 API。\n\n项目重点处理手工配置最容易出错的部分：修改前验证目标客户端、保留原配置、限制敏感文件权限，出现问题时提供 `doctor` 诊断和回滚能力。用户也可以先运行只读的 `catalog --json` 查看 25 个支持目标，不登录、不修改任何文件。\n\n### 亮点\n\n- 一套命令覆盖 25 个 AI 客户端目标，减少为每个工具分别查找配置路径和字段格式的重复工作。\n- 本地 MCP Bridge 提供模型发现、能力检查、任务运行和运行记录查询等 6 个工具。\n- OAuth 引导代替手工复制多组 API Key；配置更新包含备份、校验和回滚。\n- 提供中文、英文、日文、韩文、西班牙文等多语言 README。\n- 发布页提供不可变安装包与 SHA-256 校验值，客户端支持范围由可机器读取的 `src/catalog.ts` 维护。\n\n### 示例代码\n\n连接已检测到的客户端：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz connect\n```\n\n只读查看支持的客户端：\n\n```bash\nnpx -y https://github.com/sandbaseai/cli/releases/download/v0.1.17/sandbaseai-cli-0.1.17.tgz catalog --json\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/sandbaseai/cli/main/.github/assets/sandbase-cli-hero.webp\n\n中文说明：https://github.com/sandbaseai/cli/blob/main/README.zh-CN.md\n\n说明：npm 的 `latest` 当前仍落后于 GitHub Release，因此示例暂时使用不可变的 v0.1.17 Release 安装包。\n",
-          "metrics": {
-            "comments": 1
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3563",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
           ],
-          "externalId": "3564",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3564"
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",

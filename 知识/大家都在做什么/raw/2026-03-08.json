@@ -1,1 +1,634 @@
-{"fetchedAt":"2026-09-07T09:27:27.369Z","date":"2026-03-08","results":[{"sourceId":"chinese-indie-dev","sourceName":"中国独立开发者","items":[]},{"sourceId":"weekly-issues","sourceName":"阮一峰周刊·用户投稿","items":[{"sourceId":"weekly-issues","title":"【工具自荐】JsonStudio - 开源跨平台 JSON 桌面工具","url":"https://jsonstudio.js.org","author":"sundegan","authorUrl":"https://github.com/sundegan","publishedAt":"2026-03-07T16:06:50Z","summary":"JsonStudio 开源跨平台 JSON 桌面工具 JsonStudio 是一款基于 Rust + Tauri 2.0 开发的开源 JSON 桌面应用，专为开发者日常 JSON 处理需求设计。与在线工具相比，它提供了更快的速度、更好的隐私保护和更强大的功能。 官网与下载 官网： 下载： 源码： 应用截图 JSON 编辑器主界面 !JSON 编辑器 基于 Monaco Editor（VS Code 同款引擎），提供专业级编辑体验： 语法高亮与括号配对着色 代码折叠、小地图、查找替换 多标签编辑，支持拖拽排序 粘贴时自动美化 10+ 配色主题（Dracula、Nord、One Dark 等） 树形视图 + JMESPath 查询 !树形视图 可折叠的交互式树形结构 点击节点跳转到编辑器对应位置 一键复制路径和值 完整的 JMESPath 查询支持，实时高亮结果 JSON Diff 并排对比 !JSON Diff 并排显示两个 JSON 文件 实时高亮差异部分 状态栏显示修改统计（新增/删除/修改行数） 格式转换 + 代码生成 !格式转换 格式转换：JSON ↔ YAML、XML、TOML、CSV 双向转换 代码生成：生成 TypeScript、Go、Python、Java、Rust 等语言的类型定义 反向转换：粘贴代码提取 JSON 结构 JSON Schema 生成与验证 !JSON Schema 从 JSON 数据一键生成 Schema 实时验证 JSON 数据，详细错误报告 专用的 Schema 编辑页面 设置与快捷键 !设置 全局快捷键：一键唤起应用 粘贴美化：一键粘贴并自动格式化 窗口置顶：多任务处理更方便 所有快捷键可自定义 核心功能 1. JSON 编辑与美化 基于 Monaco Editor，提供 VS Code 级别的编辑体验 自动美化、语法高亮、智能补全 多标签编辑，拖拽排序 支持超大 JSON 文件（MB 级别） 2. JSON 压缩与转义 一键压缩（Minify）：去除空格和换行 转义/反转义（Escape/Unescape）：处理嵌套 JSON 字符串 JSON 修复：自动修复常见格式错误（缺引号、多余逗号等） 3. JSON Diff 对比 并排显示两个 JSON 文件 实时高亮新增、删除、修改的内容 状态栏显示详细统计信息 4. 格式转换 JSON ↔ YAML：双向转换 JSON ↔ XML：支持属性和元素模式 JSON ↔ TOML：配置文件格式 JSON ↔ CSV：表格数据，支持彩虹列高亮 5. JSON Schema 从 JSON 数据自动生成 Schema 根据 Schema 验证 JSON 数据 详细的验证错误报告 6. 代码生成 支持语言：TypeScript、Go、Python、Java、Rust、C、Swift、Kotlin 等 生成类型安全的数据结构 反向功能：粘贴代码提取 JSON 7. 树形视图与查询 可视化 JSON 结构 JMESPath 查询语言支持 点击节点定位到编辑器 复制路径和值 特色优势 性能与体验 极速启动：不到 1 秒启动，无加载等待 高性能：Rust 后端，处理大型 JSON 流畅 轻量级：安装包小（约 1020MB），内存占用低 跨平台：macOS、Windows、Linux 原生支持 隐私与安全 100% 离线：所有数据本地处理，不上传服务器 无广告：纯净的使用体验 开源透明：代码完全开源，可审计 效率工具 全局快捷键：系统级快捷键，随时唤起应用 一键粘贴美化：从剪贴板粘贴并自动格式化 窗口置顶：多任务处理时保持可见 文件关联：双击 .json 文件直接打开 拖拽打开：拖拽 JSON 文件到窗口即可打开 个性化 10+ 主题：Dracula、Nord、One Dark、Solarized 等 明暗模式：一键切换 自定义快捷键：所有编辑器快捷键可配置 字体、字号、缩进：完全可定制 技术栈 Rust：高性能后端处理 Tauri 2.0：现代桌面应用框架，体积小、速度快 Svelte 5：响应式前端框架 Monaco Editor：VS Code 同款编辑器引擎 Tailwind CSS：现代化 UI 设计 安装与使用 下载安装 访问 Releases 页面 下载对应平台的安装包： macOS：.dmg 文件 Windows：.msi 或 .exe 安装包 Linux：.deb、.rpm 或 .AppImage 与在线工具对比 | 功能 | 在线工具 | JsonStudio | |||| | 离线使用 | ❌ | ✅ | | 数据隐私 | ❌ | ✅ 100% 本地 | | 大文件性能 | ❌ 卡顿 | ✅ 流畅 | | 多标签编辑 | ❌ | ✅ | | 全局快捷键 | ❌ | ✅ | | 文件关联 | ❌ | ✅ | | 无广告 | ❌ | ✅ | | 启动速度 | 需要网络 | < 1 秒 | 作为一名开发者，我经常需要处理 JSON 数据，但在线工具通常广告很多、页面老旧且功能有限。因此开发了 JsonStudio，希望能为同样有需求的开发者提供一个快速、安全、功能全面的本地工具。欢迎试用和反馈！","content":"## JsonStudio - 开源跨平台 JSON 桌面工具\n\n**JsonStudio** 是一款基于 Rust + Tauri 2.0 开发的开源 JSON 桌面应用，专为开发者日常 JSON 处理需求设计。与在线工具相比，它提供了更快的速度、更好的隐私保护和更强大的功能。\n\n### 官网与下载\n- 官网：https://jsonstudio.js.org\n- 下载：https://github.com/sundegan/JsonStudio/releases\n- 源码：https://github.com/sundegan/JsonStudio\n\n---\n\n## 应用截图\n\n### JSON 编辑器主界面\n![JSON 编辑器](https://jsonstudio.js.org/images_zh/editor_dark.png)\n基于 Monaco Editor（VS Code 同款引擎），提供专业级编辑体验：\n- 语法高亮与括号配对着色\n- 代码折叠、小地图、查找替换\n- 多标签编辑，支持拖拽排序\n- 粘贴时自动美化\n- 10+ 配色主题（Dracula、Nord、One Dark 等）\n\n### 树形视图 + JMESPath 查询\n![树形视图](https://jsonstudio.js.org/images_zh/tree_view_dark.png)\n- 可折叠的交互式树形结构\n- 点击节点跳转到编辑器对应位置\n- 一键复制路径和值\n- 完整的 JMESPath 查询支持，实时高亮结果\n\n### JSON Diff - 并排对比\n![JSON Diff](https://jsonstudio.js.org/images_zh/json_diff_dark.png)\n- 并排显示两个 JSON 文件\n- 实时高亮差异部分\n- 状态栏显示修改统计（新增/删除/修改行数）\n\n### 格式转换 + 代码生成\n![格式转换](https://jsonstudio.js.org/images_zh/convert_dark.png)\n- **格式转换**：JSON ↔ YAML、XML、TOML、CSV 双向转换\n- **代码生成**：生成 TypeScript、Go、Python、Java、Rust 等语言的类型定义\n- **反向转换**：粘贴代码提取 JSON 结构\n\n### JSON Schema 生成与验证\n![JSON Schema](https://jsonstudio.js.org/images_zh/json_schema_dark.png)\n- 从 JSON 数据一键生成 Schema\n- 实时验证 JSON 数据，详细错误报告\n- 专用的 Schema 编辑页面\n\n### 设置与快捷键\n![设置](https://jsonstudio.js.org/images_zh/settings_dark.png)\n- 全局快捷键：一键唤起应用\n- 粘贴美化：一键粘贴并自动格式化\n- 窗口置顶：多任务处理更方便\n- 所有快捷键可自定义\n\n---\n\n## 核心功能\n\n### 1. JSON 编辑与美化\n- 基于 Monaco Editor，提供 VS Code 级别的编辑体验\n- 自动美化、语法高亮、智能补全\n- 多标签编辑，拖拽排序\n- 支持超大 JSON 文件（MB 级别）\n\n### 2. JSON 压缩与转义\n- 一键压缩（Minify）：去除空格和换行\n- 转义/反转义（Escape/Unescape）：处理嵌套 JSON 字符串\n- JSON 修复：自动修复常见格式错误（缺引号、多余逗号等）\n\n### 3. JSON Diff 对比\n- 并排显示两个 JSON 文件\n- 实时高亮新增、删除、修改的内容\n- 状态栏显示详细统计信息\n\n### 4. 格式转换\n- **JSON ↔ YAML**：双向转换\n- **JSON ↔ XML**：支持属性和元素模式\n- **JSON ↔ TOML**：配置文件格式\n- **JSON ↔ CSV**：表格数据，支持彩虹列高亮\n\n### 5. JSON Schema\n- 从 JSON 数据自动生成 Schema\n- 根据 Schema 验证 JSON 数据\n- 详细的验证错误报告\n\n### 6. 代码生成\n- 支持语言：TypeScript、Go、Python、Java、Rust、C#、Swift、Kotlin 等\n- 生成类型安全的数据结构\n- 反向功能：粘贴代码提取 JSON\n\n### 7. 树形视图与查询\n- 可视化 JSON 结构\n- JMESPath 查询语言支持\n- 点击节点定位到编辑器\n- 复制路径和值\n\n---\n\n## 特色优势\n\n### 性能与体验\n- **极速启动**：不到 1 秒启动，无加载等待\n- **高性能**：Rust 后端，处理大型 JSON 流畅\n- **轻量级**：安装包小（约 10-20MB），内存占用低\n- **跨平台**：macOS、Windows、Linux 原生支持\n\n### 隐私与安全\n- **100% 离线**：所有数据本地处理，不上传服务器\n- **无广告**：纯净的使用体验\n- **开源透明**：代码完全开源，可审计\n\n### 效率工具\n- **全局快捷键**：系统级快捷键，随时唤起应用\n- **一键粘贴美化**：从剪贴板粘贴并自动格式化\n- **窗口置顶**：多任务处理时保持可见\n- **文件关联**：双击 .json 文件直接打开\n- **拖拽打开**：拖拽 JSON 文件到窗口即可打开\n\n### 个性化\n- **10+ 主题**：Dracula、Nord、One Dark、Solarized 等\n- **明暗模式**：一键切换\n- **自定义快捷键**：所有编辑器快捷键可配置\n- **字体、字号、缩进**：完全可定制\n\n---\n\n## 技术栈\n\n- **Rust**：高性能后端处理\n- **Tauri 2.0**：现代桌面应用框架，体积小、速度快\n- **Svelte 5**：响应式前端框架\n- **Monaco Editor**：VS Code 同款编辑器引擎\n- **Tailwind CSS**：现代化 UI 设计\n\n---\n\n## 安装与使用\n\n### 下载安装\n访问 [Releases 页面](https://github.com/sundegan/JsonStudio/releases) 下载对应平台的安装包：\n- **macOS**：.dmg 文件\n- **Windows**：.msi 或 .exe 安装包\n- **Linux**：.deb、.rpm 或 .AppImage\n\n---\n\n## 与在线工具对比\n\n| 功能 | 在线工具 | JsonStudio |\n|------|---------|-----------|\n| 离线使用 | ❌ | ✅ |\n| 数据隐私 | ❌ | ✅ 100% 本地 |\n| 大文件性能 | ❌ 卡顿 | ✅ 流畅 |\n| 多标签编辑 | ❌ | ✅ |\n| 全局快捷键 | ❌ | ✅ |\n| 文件关联 | ❌ | ✅ |\n| 无广告 | ❌ | ✅ |\n| 启动速度 | 需要网络 | < 1 秒 |\n\n---\n\n作为一名开发者，我经常需要处理 JSON 数据，但在线工具通常广告很多、页面老旧且功能有限。因此开发了 JsonStudio，希望能为同样有需求的开发者提供一个快速、安全、功能全面的本地工具。欢迎试用和反馈！","metrics":{"comments":1},"tags":["ruanyf-weekly","submission"],"externalId":"9175","issueUrl":"https://github.com/ruanyf/weekly/issues/9175"},{"sourceId":"weekly-issues","title":"【工具自荐】App Store 优化 (ASO) 与 App 冷启动增长权威指南（开源）","url":"https://github.com/Gingiris/gingiris-aso-growth","author":"Gingiris","authorUrl":"https://github.com/Gingiris","publishedAt":"2026-03-07T17:09:29Z","summary":"推荐工具 项目名称：ASO & App Cold Start Growth Playbook GitHub 地址： 简介： 这是一份详尽的 App Store 优化（ASO）和 App 冷启动增长指南，旨在帮助移动应用开发者获取最初的用户。内容覆盖苹果 App Store 和 Google Play 两大平台，从关键词研究到 A/B 测试，提供完整的可操作方法论。 核心内容包括： 关键词研究：如何为你的 App 找到并定位正确的高流量关键词 元数据优化：关于 App 标题、副标题、描述和截图的最佳实践 多平台内容策略：如何利用用户生成内容（UGC）并为不同平台创作内容以吸引流量 A/B 测试：如何对你的商店页面进行 A/B 测试以提高下载转化率 冷启动策略：从 0 到第一批种子用户的完整路径 适合人群：独立开发者、移动应用团队、增长运营人员 开源协议：MIT 感谢阮老师的周刊，希望这份 Playbook 能帮助到更多独立开发者！","content":"## 推荐工具\n\n**项目名称**：ASO & App Cold Start Growth Playbook\n\n**GitHub 地址**：https://github.com/Gingiris/gingiris-aso-growth\n\n**简介**：\n这是一份详尽的 App Store 优化（ASO）和 App 冷启动增长指南，旨在帮助移动应用开发者获取最初的用户。内容覆盖苹果 App Store 和 Google Play 两大平台，从关键词研究到 A/B 测试，提供完整的可操作方法论。\n\n**核心内容包括**：\n- **关键词研究**：如何为你的 App 找到并定位正确的高流量关键词\n- **元数据优化**：关于 App 标题、副标题、描述和截图的最佳实践\n- **多平台内容策略**：如何利用用户生成内容（UGC）并为不同平台创作内容以吸引流量\n- **A/B 测试**：如何对你的商店页面进行 A/B 测试以提高下载转化率\n- **冷启动策略**：从 0 到第一批种子用户的完整路径\n\n**适合人群**：独立开发者、移动应用团队、增长运营人员\n\n**开源协议**：MIT\n\n---\n感谢阮老师的周刊，希望这份 Playbook 能帮助到更多独立开发者！","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9176","issueUrl":"https://github.com/ruanyf/weekly/issues/9176"},{"sourceId":"weekly-issues","title":"【工具自荐】App Store 优化 (ASO) 与 App 冷启动增长权威指南（开源）","url":"https://github.com/Gingiris/gingiris-aso-growth","author":"Gingiris","authorUrl":"https://github.com/Gingiris","publishedAt":"2026-03-07T17:09:41Z","summary":"项目名称：ASO & App Cold Start Growth Playbook GitHub 地址： 简介：这是一份详尽的 App Store 优化（ASO）和 App 冷启动增长指南，覆盖苹果 App Store 和 Google Play 两大平台，从关键词研究到 A/B 测试，提供完整的可操作方法论。 核心内容：关键词研究、元数据优化（标题/描述/截图）、UGC 多平台内容策略、A/B 测试、冷启动策略（0→1000用户）。 适合人群：独立开发者、移动应用团队、增长运营人员。MIT 协议开源。","content":"**项目名称**：ASO & App Cold Start Growth Playbook\n\n**GitHub 地址**：https://github.com/Gingiris/gingiris-aso-growth\n\n**简介**：这是一份详尽的 App Store 优化（ASO）和 App 冷启动增长指南，覆盖苹果 App Store 和 Google Play 两大平台，从关键词研究到 A/B 测试，提供完整的可操作方法论。\n\n**核心内容**：关键词研究、元数据优化（标题/描述/截图）、UGC 多平台内容策略、A/B 测试、冷启动策略（0→1000用户）。\n\n**适合人群**：独立开发者、移动应用团队、增长运营人员。MIT 协议开源。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9177","issueUrl":"https://github.com/ruanyf/weekly/issues/9177"},{"sourceId":"weekly-issues","title":"【工具自荐】XFolder - 现代化的macOS文件管理器","url":"https://github.com/zebrapixel/XFolder/","author":"zebrapixel","authorUrl":"https://github.com/zebrapixel","publishedAt":"2026-03-08T03:15:09Z","summary":"从windows切换到macOS，Finder使用很不顺手。由于自己的工作需要长期处理大量文件，于是就自己花时间从0开始打造了一款文件管理器，自己用着还行，主要功能特性如下： 多窗格布局 支持水平、垂直及混合布局，灵活管理文件 多标签页管理 在每个窗格中打开多个文件夹 目录树视图 通过内置的目录树导航文件夹层级 快捷访问 将常用文件夹（如桌面、文档、下载）固定到侧边栏，实现快速访问 面包屑路径导航 直观的面包屑路径导航栏，显示完整目录层级，支持点击切换 github链接 <img width=\"1421\" height=\"822\" alt=\"Image\" src=\" /","content":"从windows切换到macOS，Finder使用很不顺手。由于自己的工作需要长期处理大量文件，于是就自己花时间从0开始打造了一款文件管理器，自己用着还行，主要功能特性如下：\n*   **多窗格布局** - 支持水平、垂直及混合布局，灵活管理文件\n*   **多标签页管理** - 在每个窗格中打开多个文件夹\n*   **目录树视图** - 通过内置的目录树导航文件夹层级\n*   **快捷访问** - 将常用文件夹（如桌面、文档、下载）固定到侧边栏，实现快速访问\n*   **面包屑路径导航** - 直观的面包屑路径导航栏，显示完整目录层级，支持点击切换\n\ngithub链接 https://github.com/zebrapixel/XFolder/\n\n<img width=\"1421\" height=\"822\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9bf5dfb7-3e9d-4f3e-896e-6f1769134e4a\" />\n\n\n","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9178","issueUrl":"https://github.com/ruanyf/weekly/issues/9178"},{"sourceId":"weekly-issues","title":"【开源自荐】OpenWeChat-Claw 为 OpenClaw 提供类微信 IM SKILL：开源、AI 原生，支持自然语言注册/好友/收发消息/发现/拉黑","url":"https://github.com/user-attachments/assets/41fee01a-260d-4650-914a-8c8c86bf3807\"","author":"Zhaobudaoyuema","authorUrl":"https://github.com/Zhaobudaoyuema","publishedAt":"2026-03-08T11:07:46Z","summary":"<img width=\"980\" height=\"578\" alt=\"Image\" src=\" / 是什么 OpenWeChatClaw 为 OpenClaw 生态提供一层类微信的 IM：Agent 可以注册账号、加好友、收发消息、拉收件箱、发现用户、拉黑解黑，和人在微信里的用法一致，只是操作方是 Agent。协议从设计上就为 Agent 服务（HTTP + 纯文本，大模型好解析），即AI 原生；完全开源（MIT），服务端和 Skill 代码都在仓库里。 仓库： ClawHub Skill： 怎么快速体验（AI 原生：只加载 Skill，自然语言对话即可） AI 原生：不用手写调 API，只要加载 Skill，用自然语言跟 Agent 说「帮我注册」「发现用户」「给 xxx 发消息」「看收件箱」等，Agent 会按你的话去调接口、写配置、收发消息。 1. 加载 Skill：从 ClawHub 或 GitHub 下载 openwechatimclient，解压后作为 Skill 加到OpenClaw（或其它支持 Skill 的环境）。 2. 注册：用自然语言对 Agent 说「帮我注册 OpenWeChatClaw」或「注册一下」→ Agent 会调服务端 POST /register，拿到 ID、名称、Token 并写入本地配置（Token 只返回一次，Agent 会替你保存）。 3. 之后：继续用自然语言即可，例如「发现可以加的好友」「给 [某用户] 发一条消息」「拉一下收件箱」「谁是我好友」等，Agent 按你的意图操作。 流程概括：加载 Skill → 说「帮我注册」→ 用自然语言发消息/加好友/看收件箱。详见仓库 README。","content":"<img width=\"980\" height=\"578\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/41fee01a-260d-4650-914a-8c8c86bf3807\" />\n\n## 是什么\n\n**OpenWeChat-Claw** 为 OpenClaw 生态提供一层**类微信的 IM**：Agent 可以注册账号、加好友、收发消息、拉收件箱、发现用户、拉黑解黑，和人在微信里的用法一致，只是操作方是 Agent。协议从设计上就为 Agent 服务（HTTP + 纯文本，大模型好解析），即**AI 原生**；**完全开源**（MIT），服务端和 Skill 代码都在仓库里。\n\n- 仓库：https://github.com/Zhaobudaoyuema/openwechat-claw  \n- ClawHub Skill：https://clawhub.ai/Zhaobudaoyuema/openwechat-im-client  \n\n## 怎么快速体验（AI 原生：只加载 Skill，自然语言对话即可）\n\n**AI 原生**：不用手写调 API，只要加载 Skill，用自然语言跟 Agent 说「帮我注册」「发现用户」「给 xxx 发消息」「看收件箱」等，Agent 会按你的话去调接口、写配置、收发消息。\n\n1. **加载 Skill**：从 ClawHub 或 GitHub 下载 `openwechat-im-client`，解压后作为 Skill 加到OpenClaw（或其它支持 Skill 的环境）。\n2. **注册**：用自然语言对 Agent 说「帮我注册 OpenWeChat-Claw」或「注册一下」→ Agent 会调服务端 `POST /register`，拿到 ID、名称、Token 并写入本地配置（Token 只返回一次，Agent 会替你保存）。\n3. **之后**：继续用自然语言即可，例如「发现可以加的好友」「给 [某用户] 发一条消息」「拉一下收件箱」「谁是我好友」等，Agent 按你的意图操作。\n\n流程概括：**加载 Skill → 说「帮我注册」→ 用自然语言发消息/加好友/看收件箱**。详见仓库 README。","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9179","issueUrl":"https://github.com/ruanyf/weekly/issues/9179"},{"sourceId":"weekly-issues","title":"【开源自荐】基于视觉大模型的前端(Umi+Antd)全自动 CRUD 代码生成器","url":"https://github.com/yorha2b-lab/auto-crud-copilot","author":"yorha2b-lab","authorUrl":"https://github.com/yorha2b-lab","publishedAt":"2026-03-08T11:22:52Z","summary":"告别手写 Table/Form：截图即代码，提升你的开发效率，告别烦人的复制粘贴。 拒绝接口联调痛苦：自动读取 Swagger，AI 帮你抹平前后端字段命名差异。 架构解耦：核心逻辑与 UI 框架分离，React/Vue/Angular 均可适配。 项目地址：","content":"告别手写 Table/Form：截图即代码，提升你的开发效率，告别烦人的复制粘贴。 \n拒绝接口联调痛苦：自动读取 Swagger，AI 帮你抹平前后端字段命名差异。 \n架构解耦：核心逻辑与 UI 框架分离，React/Vue/Angular 均可适配。\n项目地址：https://github.com/yorha2b-lab/auto-crud-copilot","metrics":{"comments":0},"tags":["ruanyf-weekly","submission"],"externalId":"9180","issueUrl":"https://github.com/ruanyf/weekly/issues/9180"}]},{"sourceId":"weekly-issue","sourceName":"阮一峰周刊·正刊推荐","items":[]},{"sourceId":"hellogithub-issues","sourceName":"HelloGitHub·用户投稿","items":[{"sourceId":"hellogithub-issues","title":"[开源自荐] GolemBot：让 Coding Agent 逃离终端，变成团队的 7×24 AI 队友","url":"https://github.com/0xranx/golembot","author":"0xranx","authorUrl":"https://github.com/0xranx","publishedAt":"2026-03-08T14:37:54Z","summary":"项目地址 类别 人工智能 项目标题 让 Coding Agent 逃离终端，变成团队的 7×24 AI 队友 项目描述 Claude Code、Cursor、Codex 这些 Coding Agent 已经能写代码、跑测试、分析数据了，但它们被困在一个人的终端窗口里——队友用不了，也没法当服务跑。 我不想用 LangChain 重新造一个 AI 应用，因为 Agent 本身已经够强了，缺的只是一个\"身体\"。所以我做了 GolemBot：一条命令把你已有的 Coding Agent 接入 Slack、Telegram、Discord、飞书、钉钉、企业微信，或者 5 行代码嵌入到自己的 Node.js 产品里。Agent 是大脑，GolemBot 是泥土之躯。 亮点 1. 不重新发明 AI — 底层直接调用 Claude Code / Cursor / OpenCode / Codex 的 CLI，不是 API wrapper。Agent 升级，助手自动变强，零代码改动。 2. 一行换引擎 — golem.yaml 改一行 engine 字段就能在四个引擎之间切换，StreamEvent 接口完全一致，IM 连接和 Skill 技能无需改动。 3. 零公网 IP — 所有 6 种内置 IM 适配器（Slack Socket Mode / Telegram LongPolling / Discord Gateway / 飞书 WebSocket / 钉钉 Stream / 企微 Webhook）均不需要暴露公网端口。 4. 目录即助手 — 技能、记忆、配置全在一个目录里，ls 一下就知道助手会什么、记住了什么，完全可 git 版本管理。 5. onboard 向导 — 一条命令交互式完成引擎选择 → Skill 模板 → IM 通道连接 → 启动服务，2 分钟从零到可用。 6. 13,000+ 社区技能 — 与 OpenClaw/ClawHub 生态 100% 兼容，一条命令搜索安装。 示例代码 bash npm install g golembot mkdir mybot && cd mybot golembot onboard 交互式引导，2 分钟启动 golembot gateway 启动 IM + HTTP 服务 + Dashboard 嵌入到产品中： typescript import { createAssistant } from 'golembot' const bot = createAssistant({ dir: './mybot' }) for await (const ev of bot.chat('分析上月销售数据')) if (ev.type === 'text') process.stdout.write(ev.content) 截图或演示视频","content":"### 项目地址\n\nhttps://github.com/0xranx/golembot\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n让 Coding Agent 逃离终端，变成团队的 7×24 AI 队友\n\n### 项目描述\n\nClaude Code、Cursor、Codex 这些 Coding Agent 已经能写代码、跑测试、分析数据了，但它们被困在一个人的终端窗口里——队友用不了，也没法当服务跑。\n\n我不想用 LangChain 重新造一个 AI 应用，因为 Agent 本身已经够强了，缺的只是一个\"身体\"。所以我做了 GolemBot：一条命令把你已有的 Coding Agent 接入 Slack、Telegram、Discord、飞书、钉钉、企业微信，或者 5 行代码嵌入到自己的 Node.js 产品里。Agent 是大脑，GolemBot 是泥土之躯。\n\n### 亮点\n\n1. **不重新发明 AI** — 底层直接调用 Claude Code / Cursor / OpenCode / Codex 的 CLI，不是 API wrapper。Agent 升级，助手自动变强，零代码改动。\n2. **一行换引擎** — golem.yaml 改一行 engine 字段就能在四个引擎之间切换，StreamEvent 接口完全一致，IM 连接和 Skill 技能无需改动。\n3. **零公网 IP** — 所有 6 种内置 IM 适配器（Slack Socket Mode / Telegram Long-Polling / Discord Gateway / 飞书 WebSocket / 钉钉 Stream / 企微 Webhook）均不需要暴露公网端口。\n4. **目录即助手** — 技能、记忆、配置全在一个目录里，ls 一下就知道助手会什么、记住了什么，完全可 git 版本管理。\n5. **onboard 向导** — 一条命令交互式完成引擎选择 → Skill 模板 → IM 通道连接 → 启动服务，2 分钟从零到可用。\n6. **13,000+ 社区技能** — 与 OpenClaw/ClawHub 生态 100% 兼容，一条命令搜索安装。\n\n### 示例代码\n\n```bash\nnpm install -g golembot\nmkdir my-bot && cd my-bot\ngolembot onboard          # 交互式引导，2 分钟启动\ngolembot gateway          # 启动 IM + HTTP 服务 + Dashboard\n```\n\n嵌入到产品中：\n\n```typescript\nimport { createAssistant } from 'golembot'\nconst bot = createAssistant({ dir: './my-bot' })\n\nfor await (const ev of bot.chat('分析上月销售数据'))\n  if (ev.type === 'text') process.stdout.write(ev.content)\n```\n\n### 截图或演示视频\n\nhttps://github.com/user-attachments/assets/7abddbd6-56c8-4ae3-8e5b-72e6f0104257","metrics":{"comments":0},"tags":["hellogithub","submission"],"externalId":"3167","issueUrl":"https://github.com/521xueweihan/HelloGitHub/issues/3167"}]},{"sourceId":"hellogithub-issue","sourceName":"HelloGitHub·月刊推荐","items":[]},{"sourceId":"producthunt","sourceName":"Product Hunt 新品","items":[{"sourceId":"producthunt","title":"Funsisity – AI Background Remover","url":"https://www.producthunt.com/products/funsisity-ai-background-remover/launches/funsisity-ai-background-remover?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T12:01:00Z","summary":"Remove image backgrounds instantly with AI","content":"Funsisity is an AI-powered background remover that helps you remove image backgrounds instantly. Just upload your photo and get a clean transparent background in seconds — no design skills required. Perfect for: • eCommerce product photos • Social media content • Marketing visuals • Creators and designers Fast, simple, and powered by AI.","metrics":{},"tags":["producthunt","new"],"externalId":"1091985","logo":"https://ph-files.imgix.net/a98d18ae-f7cd-4698-869d-9d667f433f25.svg?auto=format","images":["https://ph-files.imgix.net/bcb1994f-40fb-4a52-a3fc-aba4655f5411.png?auto=format","https://ph-files.imgix.net/a861c72e-ab1c-492a-bdad-84574e615326.png?auto=format","https://ph-files.imgix.net/66480e17-6b0f-4894-b603-66b05271eea1.png?auto=format"],"image":"https://ph-files.imgix.net/bcb1994f-40fb-4a52-a3fc-aba4655f5411.png?auto=format"},{"sourceId":"producthunt","title":"Aligno","url":"https://www.producthunt.com/products/aligno/launches/aligno?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Real momentum starts with the right group","content":"Aligno is a group-first social app built for real momentum. Instead of chasing followers, users join intentional groups to connect, share posts, chat, create events, and stay accountable with people on a similar path. What makes it different is the focus on shared progress over passive scrolling—designed to help communities build consistency, connection, and growth together.","metrics":{},"tags":["producthunt","new"],"externalId":"1092346","logo":"https://ph-files.imgix.net/5c25ff94-5a8d-46fb-8048-b6b68c4a0d85.png?auto=format","images":["https://ph-files.imgix.net/85796396-1cc3-4814-ad93-98930f430938.png?auto=format","https://ph-files.imgix.net/e2f580d7-6bfb-4e41-90c4-1423e1cf3b00.png?auto=format","https://ph-files.imgix.net/4e9ca497-6722-4cfa-a1e4-377104e77616.png?auto=format","https://ph-files.imgix.net/1ca2b369-d5ef-4903-b4fc-05a934c0d985.png?auto=format","https://ph-files.imgix.net/3a449ea3-08d7-4b17-ac9d-eb0444bfa4d0.png?auto=format","https://ph-files.imgix.net/919abda7-4d80-45ac-921b-a8e9d77d4eb5.png?auto=format"],"image":"https://ph-files.imgix.net/85796396-1cc3-4814-ad93-98930f430938.png?auto=format"},{"sourceId":"producthunt","title":"SpendNode","url":"https://www.producthunt.com/products/spendnode/launches/spendnode?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"The comparison engine for crypto cards","content":"SpendNode calculates outcomes, not just fees. Break-even tables at your spend level, 108 country pages with local tax strategies and geo-bans, head-to-head comparisons with real verdicts, persona-specific picks. 34 vendors, 70+ cards. Every number verified against live issuer docs. When a vendor changes terms, every affected page updates in hours: scenarios, verdicts, country guides. This level of depth, accuracy, and coverage was not possible before AI.","metrics":{},"tags":["producthunt","new"],"externalId":"1092180","logo":"https://ph-files.imgix.net/5d5b9372-eec5-4306-8ec1-abf9ca58780d.png?auto=format","images":["https://ph-files.imgix.net/a4e490f0-46ce-4068-a286-b31fc2633c74.png?auto=format","https://ph-files.imgix.net/5632ee64-4d32-4fde-896a-50c2151f9876.png?auto=format","https://ph-files.imgix.net/72bf1c2f-5abb-4e11-9a05-51e25b78f04a.png?auto=format","https://ph-files.imgix.net/5d9fd2a7-7bb5-4939-8df8-73f4b82e3b82.png?auto=format"],"image":"https://ph-files.imgix.net/a4e490f0-46ce-4068-a286-b31fc2633c74.png?auto=format"},{"sourceId":"producthunt","title":"LideraAI","url":"https://www.producthunt.com/products/lideraai/launches/lideraai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"AI platform to organize and manage political campaigns","content":"LideraAI is an AI-powered platform built to help political campaigns stay organized and efficient. Manage supporters, track voter demands, coordinate campaign teams, and centralize campaign data in one place. Designed for modern campaigns that want better organization, clearer insights, and smarter decision-making. LideraAI is currently being used in Brazil, where political campaigns involve thousands of supporters and complex grassroots organization.","metrics":{},"tags":["producthunt","new"],"externalId":"1091978","logo":"https://ph-files.imgix.net/0f1878e4-8d1d-4315-aab3-fb17e144ecaf.png?auto=format","images":["https://ph-files.imgix.net/5fb4088e-29bf-4624-b796-93840195e0fa.png?auto=format","https://ph-files.imgix.net/eb930396-8bca-4723-a4a0-0a13a60dfae2.png?auto=format","https://ph-files.imgix.net/9a71baa7-94ab-48b3-b1b6-d8f8e0292d88.png?auto=format","https://ph-files.imgix.net/c9a92e14-ab0e-4af4-b564-978bef0a7638.webp?auto=format","https://ph-files.imgix.net/6568eea4-3a15-442c-aa81-68c66d917095.webp?auto=format","https://ph-files.imgix.net/4f7d391f-df97-4a58-a698-7b39363c5f99.webp?auto=format","https://ph-files.imgix.net/486aac6a-83fd-4e4d-b2cd-220bb128d8f9.webp?auto=format"],"image":"https://ph-files.imgix.net/5fb4088e-29bf-4624-b796-93840195e0fa.png?auto=format"},{"sourceId":"producthunt","title":"Acquisity","url":"https://www.producthunt.com/products/acquisity/launches/acquisity?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"The AI Operating System for B2B Growth","content":"AI-powered Growth System That Gets You B2B Clients","metrics":{},"tags":["producthunt","new"],"externalId":"1091946","logo":"https://ph-files.imgix.net/f61253fd-acf6-4b17-8076-27657391188b.png?auto=format","images":["https://ph-files.imgix.net/3475a589-14cd-419c-a265-2c23d8b3d002.png?auto=format","https://ph-files.imgix.net/c93d9c06-fa62-40a7-bf36-e80fedd830ab.png?auto=format","https://ph-files.imgix.net/970342f1-7e3e-4700-95fd-a147fa115468.png?auto=format"],"image":"https://ph-files.imgix.net/3475a589-14cd-419c-a265-2c23d8b3d002.png?auto=format"},{"sourceId":"producthunt","title":"AutoSynthetix","url":"https://www.producthunt.com/products/autosynthetix/launches/autosynthetix?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"The Autonomous AI Agent Marketing Exchange Platform","content":"AutoSynthetix is the first marketplace built for AI agents, not humans. Stop fighting CAPTCHAs and complex UIs—let your bots buy, sell, and discover marketing services via our high-speed, machine-ready API.","metrics":{},"tags":["producthunt","new"],"externalId":"1092422","logo":"https://ph-files.imgix.net/95292f42-4fbc-4348-a1c2-33fa390246b0.png?auto=format","images":["https://ph-files.imgix.net/27ec6aa6-2d15-48c2-8942-e8a566a490e1.png?auto=format","https://ph-files.imgix.net/16101ff9-479f-4dcc-a806-fd4cabdb284f.png?auto=format","https://ph-files.imgix.net/35bb173b-7d55-416f-9ca4-34aebefbe7fb.jpeg?auto=format"],"image":"https://ph-files.imgix.net/27ec6aa6-2d15-48c2-8942-e8a566a490e1.png?auto=format"},{"sourceId":"producthunt","title":"Custom Mobile Cases","url":"https://www.producthunt.com/products/custom-mobile-covers/launches/custom-mobile-cases?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Premium Quality Customize Mobile Covers Printing Online","content":"Customize Mobile Back Covers Online in India with Your Photo! Print Any Image on Premium Phone Back Covers. Fast Delivery, Perfect Fit for All Models.","metrics":{},"tags":["producthunt","new"],"externalId":"1092045","logo":"https://ph-files.imgix.net/86747738-3356-4113-aa7d-169871047d34.png?auto=format","images":["https://ph-files.imgix.net/2cdb0b80-4f7a-4e3e-9113-f2efb849679e.png?auto=format"],"image":"https://ph-files.imgix.net/2cdb0b80-4f7a-4e3e-9113-f2efb849679e.png?auto=format"},{"sourceId":"producthunt","title":"Samsung S25 Ultra Back Covers","url":"https://www.producthunt.com/products/custom-mobile-covers/launches/samsung-s25-ultra-back-covers?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Premium Quality Samsung S25 Ultra Back Covers Online","content":"Explore Premium Samsung S25 Ultra Back Covers at Sirphire. Shop Stylish, Original Transparent & Camera Protected Back Cases for Girls & Boys. Free Shipping on All Orders.","metrics":{},"tags":["producthunt","new"],"externalId":"1092047","logo":"https://ph-files.imgix.net/66c5568c-c271-4fc2-8602-73c00fdd683d.png?auto=format","images":["https://ph-files.imgix.net/fd59007d-e62e-4351-bfda-aeaa55969473.webp?auto=format"],"image":"https://ph-files.imgix.net/fd59007d-e62e-4351-bfda-aeaa55969473.webp?auto=format"},{"sourceId":"producthunt","title":"CyScan.io - cyberscanner","url":"https://www.producthunt.com/products/cyscan-io-cyberscanner/launches/cyscan-io-cyberscanner?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Website security scanner for redirects, assets and SSL check","content":"CyScan.io is a website security scanner and analyzer that helps you inspect redirects, loaded assets, security headers, SSL/TLS setup, cookies, and tech stack in seconds.","metrics":{},"tags":["producthunt","new"],"externalId":"1092274","logo":"https://ph-files.imgix.net/14a526f3-3182-477a-b942-536939b5d023.svg?auto=format","images":["https://ph-files.imgix.net/12f4bd77-2951-4587-aa1e-c093d26ea882.png?auto=format","https://ph-files.imgix.net/853ac1c9-4be5-44dd-921f-ab3bd07218db.png?auto=format","https://ph-files.imgix.net/65436e0e-b982-4b48-ad84-16a84ff0d7a4.png?auto=format"],"image":"https://ph-files.imgix.net/12f4bd77-2951-4587-aa1e-c093d26ea882.png?auto=format"},{"sourceId":"producthunt","title":"Portara","url":"https://www.producthunt.com/products/portara/launches/portara?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"A new tab page you'll actually love","content":"Portara replaces your browser's new tab with a beautiful, customizable dashboard. Add clocks, weather, bookmarks, stocks, RSS feeds, sticky notes, and more — all wrapped in a stunning liquid glass UI with wallpaper backgrounds. Arrange cards exactly how you want, on desktop and mobile. It's the start page you've always wished your browser came with.","metrics":{},"tags":["producthunt","new"],"externalId":"1092221","logo":"https://ph-files.imgix.net/f427cc9f-a496-4d0f-8735-6501f8e34414.png?auto=format","images":["https://ph-files.imgix.net/a97352f2-9323-49a5-9b2a-142da2e44351.png?auto=format","https://ph-files.imgix.net/4e06858d-b5df-41ce-a3d3-4eae91bc8494.png?auto=format","https://ph-files.imgix.net/7a9e016a-984a-4674-81a8-c19cf6ad81b0.png?auto=format","https://ph-files.imgix.net/ac2f158a-8557-429f-9ac7-3c36ae0ca25a.png?auto=format","https://ph-files.imgix.net/4707356c-96c8-4a88-a990-8330b5a69baf.png?auto=format","https://ph-files.imgix.net/01a95b6c-2610-44a5-8a4e-957e0f433655.png?auto=format"],"image":"https://ph-files.imgix.net/a97352f2-9323-49a5-9b2a-142da2e44351.png?auto=format"},{"sourceId":"producthunt","title":"WhoDrewWho","url":"https://www.producthunt.com/products/whodrewwho/launches/whodrewwho?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Draw and guess in a social multiplayer drawing game","content":"Play WhoDrewWho - A hilarious multiplayer drawing game where artists sketch their friends and detectives guess who's who! Free online party game for 4-10 players.","metrics":{},"tags":["producthunt","new"],"externalId":"1092159","logo":"https://ph-files.imgix.net/18a1e102-e614-4ab3-8987-01935cecc99a.svg?auto=format","images":["https://ph-files.imgix.net/59cd5873-09d5-4975-ab90-d0e421f1b12a.png?auto=format","https://ph-files.imgix.net/862dbd25-31d3-4f31-8611-dedb271f3344.png?auto=format","https://ph-files.imgix.net/54065712-38d0-4071-a724-6df0dab4ea75.png?auto=format"],"image":"https://ph-files.imgix.net/59cd5873-09d5-4975-ab90-d0e421f1b12a.png?auto=format"},{"sourceId":"producthunt","title":"Linklay","url":"https://www.producthunt.com/products/linklay-2/launches/linklay-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"The Smarter Link In Bio","content":"Turn clicks into customers. Linklay gives you live visitor tracking, smart link ordering, and analytics that show who's clicking. Start free, go Pro anytime.","metrics":{},"tags":["producthunt","new"],"externalId":"1092483","logo":"https://ph-files.imgix.net/f92f2921-eed3-4f4d-8ad6-c7a3bc5818e9.png?auto=format","images":["https://ph-files.imgix.net/b009bf46-5457-4204-a8ca-8f68d9127669.png?auto=format","https://ph-files.imgix.net/88f3316c-d735-4512-91f2-811343172da7.png?auto=format","https://ph-files.imgix.net/0401d03b-fdea-436c-88b2-990b9ac35e51.png?auto=format"],"image":"https://ph-files.imgix.net/b009bf46-5457-4204-a8ca-8f68d9127669.png?auto=format"},{"sourceId":"producthunt","title":"BasicFit - Gym Workout Tracker ","url":"https://www.producthunt.com/products/basicfit-gym-workout-tracker/launches/basicfit-gym-workout-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Track your gains with science — 100% offline, zero fluff","content":"Most workout apps are bloated with features you'll never use. BasicFit is different — it tracks what actually matters: progressive overload. Using the POF (Progressive Overload Factor) method, it measures your real progress through weight, reps, and intensity across every session. • 280+ exercises with video demos • Custom routines (PPL, Upper/Lower, etc) • Rest timer with audio/vibration cues • Progress charts and frequency calendar • 100% offline — works anywhere, even at the gym basement","metrics":{},"tags":["producthunt","new"],"externalId":"1092133","logo":"https://ph-files.imgix.net/726ff7cd-64fd-4f55-9125-dc5092264036.png?auto=format","images":["https://ph-files.imgix.net/da40e103-ec72-499e-8289-63af2baa4eb9.jpeg?auto=format","https://ph-files.imgix.net/bc7a5101-7e38-4fc6-afa9-eb97a1ddd7e0.jpeg?auto=format","https://ph-files.imgix.net/232b5e4d-2814-4ddc-b565-e780b567f3c6.jpeg?auto=format","https://ph-files.imgix.net/1997dc8c-17f0-47e7-8b18-0e211e5d2ef9.jpeg?auto=format","https://ph-files.imgix.net/3e68f2a6-7d8c-46d8-b20b-798c0ed44268.jpeg?auto=format","https://ph-files.imgix.net/fc035216-6c45-49d1-90f2-00758de9ca1a.jpeg?auto=format"],"image":"https://ph-files.imgix.net/da40e103-ec72-499e-8289-63af2baa4eb9.jpeg?auto=format"},{"sourceId":"producthunt","title":"Shuffya - Recipe Collection ","url":"https://www.producthunt.com/products/shuffya-recipe-collection/launches/shuffya-recipe-collection?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Shuffya: Your personal recipe planner.","content":"Tired of \"What should I cook?\" Shuffya makes meal planning effortless! Save recipes, shuffle for inspiration, and organize your week with meal planning, shopping lists, and finance tracking. Perfect for busy home cooks and meal prep enthusiasts. Key Features: 📱 Save recipes 🎲 Shuffle function 📅 Weekly meal planner 🛒 Shopping lists 💰 Finance planner 🍳 iOS exclusive Stop meal planning stress. Enjoy cooking again!","metrics":{},"tags":["producthunt","new"],"externalId":"1092140","logo":"https://ph-files.imgix.net/2d6d962c-4762-41b6-9920-093c0ee0f963.png?auto=format","images":["https://ph-files.imgix.net/845aa9e8-1ff5-4f27-afb7-7ddb72b20912.png?auto=format","https://ph-files.imgix.net/c1a9cb03-68b1-4376-a9d6-c30d11077fe6.png?auto=format","https://ph-files.imgix.net/046f9db6-8cbd-46b4-a78b-189af23d5345.png?auto=format","https://ph-files.imgix.net/df405268-a530-469f-8049-ecfc2cc4fdd4.png?auto=format","https://ph-files.imgix.net/1aa36019-eeab-4d5f-ba0b-27ae9dfe7d23.png?auto=format","https://ph-files.imgix.net/2fded34b-757e-480c-b3a8-3f09ae416d86.png?auto=format","https://ph-files.imgix.net/bc37b93c-4eb2-41ec-b6cc-4def4c5ea87b.png?auto=format","https://ph-files.imgix.net/7664211d-67ca-485e-8b71-926bde571642.png?auto=format","https://ph-files.imgix.net/927fc42d-13b1-438e-a032-9ecf9404b744.png?auto=format"],"image":"https://ph-files.imgix.net/845aa9e8-1ff5-4f27-afb7-7ddb72b20912.png?auto=format"},{"sourceId":"producthunt","title":"TAGT","url":"https://www.producthunt.com/products/tagt/launches/tagt?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"AI-powered platform for PG & co-living management","content":"TAGT helps PG, hostel, and co-living operators manage tenants, beds, billing, payments, and maintenance in one platform. It replaces spreadsheets with automation and real-time insights into occupancy, revenue, and tenant activity.","metrics":{},"tags":["producthunt","new"],"externalId":"1092285","logo":"https://ph-files.imgix.net/692a6f25-cd97-4263-b381-2dc88bb46507.png?auto=format","images":["https://ph-files.imgix.net/b251c556-b7e2-4c60-9a8a-fbc2b09f9bbc.gif?auto=format","https://ph-files.imgix.net/9603a33c-7f8f-41d6-b31f-8d33fbf3aec3.png?auto=format","https://ph-files.imgix.net/a35f121e-cc21-4e03-82aa-333bf8bb84d8.png?auto=format","https://ph-files.imgix.net/e0c44929-f31b-4216-84a4-e6f6c099b38b.png?auto=format","https://ph-files.imgix.net/377c49a4-38db-445b-b90a-4049f72a1d7e.png?auto=format"],"image":"https://ph-files.imgix.net/b251c556-b7e2-4c60-9a8a-fbc2b09f9bbc.gif?auto=format"},{"sourceId":"producthunt","title":"Kloseit","url":"https://www.producthunt.com/products/kloseit/launches/kloseit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Your AI copilot for winning sales calls.","content":"KloseIt is an AI copilot for sales calls that gives reps instant answers from their company knowledge base while they’re talking to prospects. Instead of saying “I’ll get back to you,” reps get real-time answers, objection handling, and follow-ups. It also builds memory across calls with pre-call briefs and post-call insights.","metrics":{},"tags":["producthunt","new"],"externalId":"1092243","logo":"https://ph-files.imgix.net/633fb142-47f3-459b-bc92-3b4d2659a482.png?auto=format","images":["https://ph-files.imgix.net/aa536c43-24cb-49d1-ab78-ff030b7df470.png?auto=format","https://ph-files.imgix.net/805fc9e8-50a5-4f61-96a9-53ebfdf3235a.png?auto=format","https://ph-files.imgix.net/d3d2447a-0a38-49ad-8336-30fc33f7a7a0.png?auto=format","https://ph-files.imgix.net/0bd7f12e-d3fd-47ad-ae5d-48b0ae73da5d.png?auto=format","https://ph-files.imgix.net/855e28b3-9dbc-47cd-bb54-4360ca00f7f1.png?auto=format","https://ph-files.imgix.net/21795b43-b422-4778-b8c2-95d107b2f0a2.png?auto=format"],"image":"https://ph-files.imgix.net/aa536c43-24cb-49d1-ab78-ff030b7df470.png?auto=format"},{"sourceId":"producthunt","title":"interiorstaging","url":"https://www.producthunt.com/products/interiorstaging/launches/interiorstaging?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Virtual home Staging","content":"Transform empty rooms into beautifully furnished spaces with AI. Mobile for capture, desktop for production. Perfect for real estate agents and home sellers.","metrics":{},"tags":["producthunt","new"],"externalId":"1088827","logo":"https://ph-files.imgix.net/a9837e85-a4e8-4554-b66a-214d23bfebb0.vnd.microsoft.icon?auto=format","images":["https://ph-files.imgix.net/04567b9d-2a8b-4461-942f-41aadf8373c0.png?auto=format","https://ph-files.imgix.net/2a9b98ff-6756-4c7d-a493-4a2ca42be435.png?auto=format","https://ph-files.imgix.net/e20649cc-3819-4220-a08d-04b616a2743e.png?auto=format"],"image":"https://ph-files.imgix.net/04567b9d-2a8b-4461-942f-41aadf8373c0.png?auto=format"},{"sourceId":"producthunt","title":"Meri Shiksha","url":"https://www.producthunt.com/products/meri-shiksha/launches/meri-shiksha?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Meri Shiksha — Find Top Colleges & Universities in India","content":"Meri Shiksha empowers educational institutions and students. Find Top Colleges, Online Courses, and Study Materials. Admission Open for 2026! Covering Bihar Student Credit Card (DRCC) and more.","metrics":{},"tags":["producthunt","new"],"externalId":"1092238","logo":"https://ph-files.imgix.net/16519a62-d41d-43e5-9efb-4aeb2fe7c1e8.png?auto=format","images":["https://ph-files.imgix.net/8abf3cc1-cf7e-4f15-a9c5-3942a4ca59e5.jpeg?auto=format","https://ph-files.imgix.net/3e6327f8-2d11-455f-a64d-5da6fce6f444.png?auto=format"],"image":"https://ph-files.imgix.net/8abf3cc1-cf7e-4f15-a9c5-3942a4ca59e5.jpeg?auto=format"},{"sourceId":"producthunt","title":"iimpro","url":"https://www.producthunt.com/products/iimpro/launches/iimpro?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Shop live, sell live","content":"The video commerce platform for jewellery, fashion, and skincare brands.","metrics":{},"tags":["producthunt","new"],"externalId":"1091971","logo":"https://ph-files.imgix.net/ba0fe995-7e6d-4de4-88bb-ae6ee27d3c9a.png?auto=format","images":["https://ph-files.imgix.net/b5fd0c97-37fb-457b-82d0-6ac06a3dc8a4.png?auto=format"],"image":"https://ph-files.imgix.net/b5fd0c97-37fb-457b-82d0-6ac06a3dc8a4.png?auto=format"},{"sourceId":"producthunt","title":"Happy2Purchase","url":"https://www.producthunt.com/products/happy2purchase/launches/happy2purchase?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29","author":"","authorUrl":"","publishedAt":"2026-03-08T08:01:00Z","summary":"Track Amazon prices, get alerts, and compare stores","content":"Happy2Purchase is a smart shopping assistant for Amazon. While most price trackers only show when the price changes, Happy2Purchase goes a step further. With the browser extension, you can compare prices across other online stores directly on the Amazon product page. You can also set target price alerts and receive notifications via email or WhatsApp when prices drop. A clean dashboard keeps your tracked products organized and makes it easy to manage alerts in one place.","metrics":{},"tags":["producthunt","new"],"externalId":"1092247","logo":"https://ph-files.imgix.net/45e707b2-d1ba-4203-a371-51e502d6dc14.png?auto=format","images":["https://ph-files.imgix.net/b6ff74d7-ffb1-4eff-8b64-608ba8568bfb.png?auto=format","https://ph-files.imgix.net/a9a69843-8b0b-4f41-8cc3-319082adbbe0.png?auto=format","https://ph-files.imgix.net/b5b0d389-9c99-484f-8457-43fcbce39f80.png?auto=format","https://ph-files.imgix.net/ddd3c54b-030a-4dc6-b430-51d0e5b2a1dc.png?auto=format","https://ph-files.imgix.net/4ad14b65-d8d2-44a0-bcb7-c0056f13c62e.png?auto=format","https://ph-files.imgix.net/008bd492-428a-446d-9904-13ec267cefff.jpeg?auto=format"],"image":"https://ph-files.imgix.net/b6ff74d7-ffb1-4eff-8b64-608ba8568bfb.png?auto=format"}]}]}
+{
+  "fetchedAt": "2026-09-07T09:27:27.369Z",
+  "date": "2026-03-08",
+  "results": [
+    {
+      "sourceId": "chinese-indie-dev",
+      "sourceName": "中国独立开发者",
+      "items": []
+    },
+    {
+      "sourceId": "weekly-issues",
+      "sourceName": "阮一峰周刊·用户投稿",
+      "items": [
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】JsonStudio - 开源跨平台 JSON 桌面工具",
+          "url": "https://jsonstudio.js.org",
+          "author": "sundegan",
+          "authorUrl": "https://github.com/sundegan",
+          "publishedAt": "2026-03-07T16:06:50Z",
+          "summary": "JsonStudio 开源跨平台 JSON 桌面工具 JsonStudio 是一款基于 Rust + Tauri 2.0 开发的开源 JSON 桌面应用，专为开发者日常 JSON 处理需求设计。与在线工具相比，它提供了更快的速度、更好的隐私保护和更强大的功能。 官网与下载 官网： 下载： 源码： 应用截图 JSON 编辑器主界面 !JSON 编辑器 基于 Monaco Editor（VS Code 同款引擎），提供专业级编辑体验： 语法高亮与括号配对着色 代码折叠、小地图、查找替换 多标签编辑，支持拖拽排序 粘贴时自动美化 10+ 配色主题（Dracula、Nord、One Dark 等） 树形视图 + JMESPath 查询 !树形视图 可折叠的交互式树形结构 点击节点跳转到编辑器对应位置 一键复制路径和值 完整的 JMESPath 查询支持，实时高亮结果 JSON Diff 并排对比 !JSON Diff 并排显示两个 JSON 文件 实时高亮差异部分 状态栏显示修改统计（新增/删除/修改行数） 格式转换 + 代码生成 !格式转换 格式转换：JSON ↔ YAML、XML、TOML、CSV 双向转换 代码生成：生成 TypeScript、Go、Python、Java、Rust 等语言的类型定义 反向转换：粘贴代码提取 JSON 结构 JSON Schema 生成与验证 !JSON Schema 从 JSON 数据一键生成 Schema 实时验证 JSON 数据，详细错误报告 专用的 Schema 编辑页面 设置与快捷键 !设置 全局快捷键：一键唤起应用 粘贴美化：一键粘贴并自动格式化 窗口置顶：多任务处理更方便 所有快捷键可自定义 核心功能 1. JSON 编辑与美化 基于 Monaco Editor，提供 VS Code 级别的编辑体验 自动美化、语法高亮、智能补全 多标签编辑，拖拽排序 支持超大 JSON 文件（MB 级别） 2. JSON 压缩与转义 一键压缩（Minify）：去除空格和换行 转义/反转义（Escape/Unescape）：处理嵌套 JSON 字符串 JSON 修复：自动修复常见格式错误（缺引号、多余逗号等） 3. JSON Diff 对比 并排显示两个 JSON 文件 实时高亮新增、删除、修改的内容 状态栏显示详细统计信息 4. 格式转换 JSON ↔ YAML：双向转换 JSON ↔ XML：支持属性和元素模式 JSON ↔ TOML：配置文件格式 JSON ↔ CSV：表格数据，支持彩虹列高亮 5. JSON Schema 从 JSON 数据自动生成 Schema 根据 Schema 验证 JSON 数据 详细的验证错误报告 6. 代码生成 支持语言：TypeScript、Go、Python、Java、Rust、C、Swift、Kotlin 等 生成类型安全的数据结构 反向功能：粘贴代码提取 JSON 7. 树形视图与查询 可视化 JSON 结构 JMESPath 查询语言支持 点击节点定位到编辑器 复制路径和值 特色优势 性能与体验 极速启动：不到 1 秒启动，无加载等待 高性能：Rust 后端，处理大型 JSON 流畅 轻量级：安装包小（约 1020MB），内存占用低 跨平台：macOS、Windows、Linux 原生支持 隐私与安全 100% 离线：所有数据本地处理，不上传服务器 无广告：纯净的使用体验 开源透明：代码完全开源，可审计 效率工具 全局快捷键：系统级快捷键，随时唤起应用 一键粘贴美化：从剪贴板粘贴并自动格式化 窗口置顶：多任务处理时保持可见 文件关联：双击 .json 文件直接打开 拖拽打开：拖拽 JSON 文件到窗口即可打开 个性化 10+ 主题：Dracula、Nord、One Dark、Solarized 等 明暗模式：一键切换 自定义快捷键：所有编辑器快捷键可配置 字体、字号、缩进：完全可定制 技术栈 Rust：高性能后端处理 Tauri 2.0：现代桌面应用框架，体积小、速度快 Svelte 5：响应式前端框架 Monaco Editor：VS Code 同款编辑器引擎 Tailwind CSS：现代化 UI 设计 安装与使用 下载安装 访问 Releases 页面 下载对应平台的安装包： macOS：.dmg 文件 Windows：.msi 或 .exe 安装包 Linux：.deb、.rpm 或 .AppImage 与在线工具对比 | 功能 | 在线工具 | JsonStudio | |||| | 离线使用 | ❌ | ✅ | | 数据隐私 | ❌ | ✅ 100% 本地 | | 大文件性能 | ❌ 卡顿 | ✅ 流畅 | | 多标签编辑 | ❌ | ✅ | | 全局快捷键 | ❌ | ✅ | | 文件关联 | ❌ | ✅ | | 无广告 | ❌ | ✅ | | 启动速度 | 需要网络 | < 1 秒 | 作为一名开发者，我经常需要处理 JSON 数据，但在线工具通常广告很多、页面老旧且功能有限。因此开发了 JsonStudio，希望能为同样有需求的开发者提供一个快速、安全、功能全面的本地工具。欢迎试用和反馈！",
+          "content": "## JsonStudio - 开源跨平台 JSON 桌面工具\n\n**JsonStudio** 是一款基于 Rust + Tauri 2.0 开发的开源 JSON 桌面应用，专为开发者日常 JSON 处理需求设计。与在线工具相比，它提供了更快的速度、更好的隐私保护和更强大的功能。\n\n### 官网与下载\n- 官网：https://jsonstudio.js.org\n- 下载：https://github.com/sundegan/JsonStudio/releases\n- 源码：https://github.com/sundegan/JsonStudio\n\n---\n\n## 应用截图\n\n### JSON 编辑器主界面\n![JSON 编辑器](https://jsonstudio.js.org/images_zh/editor_dark.png)\n基于 Monaco Editor（VS Code 同款引擎），提供专业级编辑体验：\n- 语法高亮与括号配对着色\n- 代码折叠、小地图、查找替换\n- 多标签编辑，支持拖拽排序\n- 粘贴时自动美化\n- 10+ 配色主题（Dracula、Nord、One Dark 等）\n\n### 树形视图 + JMESPath 查询\n![树形视图](https://jsonstudio.js.org/images_zh/tree_view_dark.png)\n- 可折叠的交互式树形结构\n- 点击节点跳转到编辑器对应位置\n- 一键复制路径和值\n- 完整的 JMESPath 查询支持，实时高亮结果\n\n### JSON Diff - 并排对比\n![JSON Diff](https://jsonstudio.js.org/images_zh/json_diff_dark.png)\n- 并排显示两个 JSON 文件\n- 实时高亮差异部分\n- 状态栏显示修改统计（新增/删除/修改行数）\n\n### 格式转换 + 代码生成\n![格式转换](https://jsonstudio.js.org/images_zh/convert_dark.png)\n- **格式转换**：JSON ↔ YAML、XML、TOML、CSV 双向转换\n- **代码生成**：生成 TypeScript、Go、Python、Java、Rust 等语言的类型定义\n- **反向转换**：粘贴代码提取 JSON 结构\n\n### JSON Schema 生成与验证\n![JSON Schema](https://jsonstudio.js.org/images_zh/json_schema_dark.png)\n- 从 JSON 数据一键生成 Schema\n- 实时验证 JSON 数据，详细错误报告\n- 专用的 Schema 编辑页面\n\n### 设置与快捷键\n![设置](https://jsonstudio.js.org/images_zh/settings_dark.png)\n- 全局快捷键：一键唤起应用\n- 粘贴美化：一键粘贴并自动格式化\n- 窗口置顶：多任务处理更方便\n- 所有快捷键可自定义\n\n---\n\n## 核心功能\n\n### 1. JSON 编辑与美化\n- 基于 Monaco Editor，提供 VS Code 级别的编辑体验\n- 自动美化、语法高亮、智能补全\n- 多标签编辑，拖拽排序\n- 支持超大 JSON 文件（MB 级别）\n\n### 2. JSON 压缩与转义\n- 一键压缩（Minify）：去除空格和换行\n- 转义/反转义（Escape/Unescape）：处理嵌套 JSON 字符串\n- JSON 修复：自动修复常见格式错误（缺引号、多余逗号等）\n\n### 3. JSON Diff 对比\n- 并排显示两个 JSON 文件\n- 实时高亮新增、删除、修改的内容\n- 状态栏显示详细统计信息\n\n### 4. 格式转换\n- **JSON ↔ YAML**：双向转换\n- **JSON ↔ XML**：支持属性和元素模式\n- **JSON ↔ TOML**：配置文件格式\n- **JSON ↔ CSV**：表格数据，支持彩虹列高亮\n\n### 5. JSON Schema\n- 从 JSON 数据自动生成 Schema\n- 根据 Schema 验证 JSON 数据\n- 详细的验证错误报告\n\n### 6. 代码生成\n- 支持语言：TypeScript、Go、Python、Java、Rust、C#、Swift、Kotlin 等\n- 生成类型安全的数据结构\n- 反向功能：粘贴代码提取 JSON\n\n### 7. 树形视图与查询\n- 可视化 JSON 结构\n- JMESPath 查询语言支持\n- 点击节点定位到编辑器\n- 复制路径和值\n\n---\n\n## 特色优势\n\n### 性能与体验\n- **极速启动**：不到 1 秒启动，无加载等待\n- **高性能**：Rust 后端，处理大型 JSON 流畅\n- **轻量级**：安装包小（约 10-20MB），内存占用低\n- **跨平台**：macOS、Windows、Linux 原生支持\n\n### 隐私与安全\n- **100% 离线**：所有数据本地处理，不上传服务器\n- **无广告**：纯净的使用体验\n- **开源透明**：代码完全开源，可审计\n\n### 效率工具\n- **全局快捷键**：系统级快捷键，随时唤起应用\n- **一键粘贴美化**：从剪贴板粘贴并自动格式化\n- **窗口置顶**：多任务处理时保持可见\n- **文件关联**：双击 .json 文件直接打开\n- **拖拽打开**：拖拽 JSON 文件到窗口即可打开\n\n### 个性化\n- **10+ 主题**：Dracula、Nord、One Dark、Solarized 等\n- **明暗模式**：一键切换\n- **自定义快捷键**：所有编辑器快捷键可配置\n- **字体、字号、缩进**：完全可定制\n\n---\n\n## 技术栈\n\n- **Rust**：高性能后端处理\n- **Tauri 2.0**：现代桌面应用框架，体积小、速度快\n- **Svelte 5**：响应式前端框架\n- **Monaco Editor**：VS Code 同款编辑器引擎\n- **Tailwind CSS**：现代化 UI 设计\n\n---\n\n## 安装与使用\n\n### 下载安装\n访问 [Releases 页面](https://github.com/sundegan/JsonStudio/releases) 下载对应平台的安装包：\n- **macOS**：.dmg 文件\n- **Windows**：.msi 或 .exe 安装包\n- **Linux**：.deb、.rpm 或 .AppImage\n\n---\n\n## 与在线工具对比\n\n| 功能 | 在线工具 | JsonStudio |\n|------|---------|-----------|\n| 离线使用 | ❌ | ✅ |\n| 数据隐私 | ❌ | ✅ 100% 本地 |\n| 大文件性能 | ❌ 卡顿 | ✅ 流畅 |\n| 多标签编辑 | ❌ | ✅ |\n| 全局快捷键 | ❌ | ✅ |\n| 文件关联 | ❌ | ✅ |\n| 无广告 | ❌ | ✅ |\n| 启动速度 | 需要网络 | < 1 秒 |\n\n---\n\n作为一名开发者，我经常需要处理 JSON 数据，但在线工具通常广告很多、页面老旧且功能有限。因此开发了 JsonStudio，希望能为同样有需求的开发者提供一个快速、安全、功能全面的本地工具。欢迎试用和反馈！",
+          "metrics": {
+            "comments": 1
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9175",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9175"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】App Store 优化 (ASO) 与 App 冷启动增长权威指南（开源）",
+          "url": "https://github.com/Gingiris/gingiris-aso-growth",
+          "author": "Gingiris",
+          "authorUrl": "https://github.com/Gingiris",
+          "publishedAt": "2026-03-07T17:09:41Z",
+          "summary": "项目名称：ASO & App Cold Start Growth Playbook GitHub 地址： 简介：这是一份详尽的 App Store 优化（ASO）和 App 冷启动增长指南，覆盖苹果 App Store 和 Google Play 两大平台，从关键词研究到 A/B 测试，提供完整的可操作方法论。 核心内容：关键词研究、元数据优化（标题/描述/截图）、UGC 多平台内容策略、A/B 测试、冷启动策略（0→1000用户）。 适合人群：独立开发者、移动应用团队、增长运营人员。MIT 协议开源。",
+          "content": "**项目名称**：ASO & App Cold Start Growth Playbook\n\n**GitHub 地址**：https://github.com/Gingiris/gingiris-aso-growth\n\n**简介**：这是一份详尽的 App Store 优化（ASO）和 App 冷启动增长指南，覆盖苹果 App Store 和 Google Play 两大平台，从关键词研究到 A/B 测试，提供完整的可操作方法论。\n\n**核心内容**：关键词研究、元数据优化（标题/描述/截图）、UGC 多平台内容策略、A/B 测试、冷启动策略（0→1000用户）。\n\n**适合人群**：独立开发者、移动应用团队、增长运营人员。MIT 协议开源。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9177",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9177"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【工具自荐】XFolder - 现代化的macOS文件管理器",
+          "url": "https://github.com/zebrapixel/XFolder/",
+          "author": "zebrapixel",
+          "authorUrl": "https://github.com/zebrapixel",
+          "publishedAt": "2026-03-08T03:15:09Z",
+          "summary": "从windows切换到macOS，Finder使用很不顺手。由于自己的工作需要长期处理大量文件，于是就自己花时间从0开始打造了一款文件管理器，自己用着还行，主要功能特性如下： 多窗格布局 支持水平、垂直及混合布局，灵活管理文件 多标签页管理 在每个窗格中打开多个文件夹 目录树视图 通过内置的目录树导航文件夹层级 快捷访问 将常用文件夹（如桌面、文档、下载）固定到侧边栏，实现快速访问 面包屑路径导航 直观的面包屑路径导航栏，显示完整目录层级，支持点击切换 github链接 <img width=\"1421\" height=\"822\" alt=\"Image\" src=\" /",
+          "content": "从windows切换到macOS，Finder使用很不顺手。由于自己的工作需要长期处理大量文件，于是就自己花时间从0开始打造了一款文件管理器，自己用着还行，主要功能特性如下：\n*   **多窗格布局** - 支持水平、垂直及混合布局，灵活管理文件\n*   **多标签页管理** - 在每个窗格中打开多个文件夹\n*   **目录树视图** - 通过内置的目录树导航文件夹层级\n*   **快捷访问** - 将常用文件夹（如桌面、文档、下载）固定到侧边栏，实现快速访问\n*   **面包屑路径导航** - 直观的面包屑路径导航栏，显示完整目录层级，支持点击切换\n\ngithub链接 https://github.com/zebrapixel/XFolder/\n\n<img width=\"1421\" height=\"822\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9bf5dfb7-3e9d-4f3e-896e-6f1769134e4a\" />\n\n\n",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9178",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9178"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】OpenWeChat-Claw 为 OpenClaw 提供类微信 IM SKILL：开源、AI 原生，支持自然语言注册/好友/收发消息/发现/拉黑",
+          "url": "https://github.com/user-attachments/assets/41fee01a-260d-4650-914a-8c8c86bf3807\"",
+          "author": "Zhaobudaoyuema",
+          "authorUrl": "https://github.com/Zhaobudaoyuema",
+          "publishedAt": "2026-03-08T11:07:46Z",
+          "summary": "<img width=\"980\" height=\"578\" alt=\"Image\" src=\" / 是什么 OpenWeChatClaw 为 OpenClaw 生态提供一层类微信的 IM：Agent 可以注册账号、加好友、收发消息、拉收件箱、发现用户、拉黑解黑，和人在微信里的用法一致，只是操作方是 Agent。协议从设计上就为 Agent 服务（HTTP + 纯文本，大模型好解析），即AI 原生；完全开源（MIT），服务端和 Skill 代码都在仓库里。 仓库： ClawHub Skill： 怎么快速体验（AI 原生：只加载 Skill，自然语言对话即可） AI 原生：不用手写调 API，只要加载 Skill，用自然语言跟 Agent 说「帮我注册」「发现用户」「给 xxx 发消息」「看收件箱」等，Agent 会按你的话去调接口、写配置、收发消息。 1. 加载 Skill：从 ClawHub 或 GitHub 下载 openwechatimclient，解压后作为 Skill 加到OpenClaw（或其它支持 Skill 的环境）。 2. 注册：用自然语言对 Agent 说「帮我注册 OpenWeChatClaw」或「注册一下」→ Agent 会调服务端 POST /register，拿到 ID、名称、Token 并写入本地配置（Token 只返回一次，Agent 会替你保存）。 3. 之后：继续用自然语言即可，例如「发现可以加的好友」「给 [某用户] 发一条消息」「拉一下收件箱」「谁是我好友」等，Agent 按你的意图操作。 流程概括：加载 Skill → 说「帮我注册」→ 用自然语言发消息/加好友/看收件箱。详见仓库 README。",
+          "content": "<img width=\"980\" height=\"578\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/41fee01a-260d-4650-914a-8c8c86bf3807\" />\n\n## 是什么\n\n**OpenWeChat-Claw** 为 OpenClaw 生态提供一层**类微信的 IM**：Agent 可以注册账号、加好友、收发消息、拉收件箱、发现用户、拉黑解黑，和人在微信里的用法一致，只是操作方是 Agent。协议从设计上就为 Agent 服务（HTTP + 纯文本，大模型好解析），即**AI 原生**；**完全开源**（MIT），服务端和 Skill 代码都在仓库里。\n\n- 仓库：https://github.com/Zhaobudaoyuema/openwechat-claw  \n- ClawHub Skill：https://clawhub.ai/Zhaobudaoyuema/openwechat-im-client  \n\n## 怎么快速体验（AI 原生：只加载 Skill，自然语言对话即可）\n\n**AI 原生**：不用手写调 API，只要加载 Skill，用自然语言跟 Agent 说「帮我注册」「发现用户」「给 xxx 发消息」「看收件箱」等，Agent 会按你的话去调接口、写配置、收发消息。\n\n1. **加载 Skill**：从 ClawHub 或 GitHub 下载 `openwechat-im-client`，解压后作为 Skill 加到OpenClaw（或其它支持 Skill 的环境）。\n2. **注册**：用自然语言对 Agent 说「帮我注册 OpenWeChat-Claw」或「注册一下」→ Agent 会调服务端 `POST /register`，拿到 ID、名称、Token 并写入本地配置（Token 只返回一次，Agent 会替你保存）。\n3. **之后**：继续用自然语言即可，例如「发现可以加的好友」「给 [某用户] 发一条消息」「拉一下收件箱」「谁是我好友」等，Agent 按你的意图操作。\n\n流程概括：**加载 Skill → 说「帮我注册」→ 用自然语言发消息/加好友/看收件箱**。详见仓库 README。",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9179",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9179"
+        },
+        {
+          "sourceId": "weekly-issues",
+          "title": "【开源自荐】基于视觉大模型的前端(Umi+Antd)全自动 CRUD 代码生成器",
+          "url": "https://github.com/yorha2b-lab/auto-crud-copilot",
+          "author": "yorha2b-lab",
+          "authorUrl": "https://github.com/yorha2b-lab",
+          "publishedAt": "2026-03-08T11:22:52Z",
+          "summary": "告别手写 Table/Form：截图即代码，提升你的开发效率，告别烦人的复制粘贴。 拒绝接口联调痛苦：自动读取 Swagger，AI 帮你抹平前后端字段命名差异。 架构解耦：核心逻辑与 UI 框架分离，React/Vue/Angular 均可适配。 项目地址：",
+          "content": "告别手写 Table/Form：截图即代码，提升你的开发效率，告别烦人的复制粘贴。 \n拒绝接口联调痛苦：自动读取 Swagger，AI 帮你抹平前后端字段命名差异。 \n架构解耦：核心逻辑与 UI 框架分离，React/Vue/Angular 均可适配。\n项目地址：https://github.com/yorha2b-lab/auto-crud-copilot",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "ruanyf-weekly",
+            "submission"
+          ],
+          "externalId": "9180",
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9180"
+        }
+      ]
+    },
+    {
+      "sourceId": "weekly-issue",
+      "sourceName": "阮一峰周刊·正刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "hellogithub-issues",
+      "sourceName": "HelloGitHub·用户投稿",
+      "items": [
+        {
+          "sourceId": "hellogithub-issues",
+          "title": "[开源自荐] GolemBot：让 Coding Agent 逃离终端，变成团队的 7×24 AI 队友",
+          "url": "https://github.com/0xranx/golembot",
+          "author": "0xranx",
+          "authorUrl": "https://github.com/0xranx",
+          "publishedAt": "2026-03-08T14:37:54Z",
+          "summary": "项目地址 类别 人工智能 项目标题 让 Coding Agent 逃离终端，变成团队的 7×24 AI 队友 项目描述 Claude Code、Cursor、Codex 这些 Coding Agent 已经能写代码、跑测试、分析数据了，但它们被困在一个人的终端窗口里——队友用不了，也没法当服务跑。 我不想用 LangChain 重新造一个 AI 应用，因为 Agent 本身已经够强了，缺的只是一个\"身体\"。所以我做了 GolemBot：一条命令把你已有的 Coding Agent 接入 Slack、Telegram、Discord、飞书、钉钉、企业微信，或者 5 行代码嵌入到自己的 Node.js 产品里。Agent 是大脑，GolemBot 是泥土之躯。 亮点 1. 不重新发明 AI — 底层直接调用 Claude Code / Cursor / OpenCode / Codex 的 CLI，不是 API wrapper。Agent 升级，助手自动变强，零代码改动。 2. 一行换引擎 — golem.yaml 改一行 engine 字段就能在四个引擎之间切换，StreamEvent 接口完全一致，IM 连接和 Skill 技能无需改动。 3. 零公网 IP — 所有 6 种内置 IM 适配器（Slack Socket Mode / Telegram LongPolling / Discord Gateway / 飞书 WebSocket / 钉钉 Stream / 企微 Webhook）均不需要暴露公网端口。 4. 目录即助手 — 技能、记忆、配置全在一个目录里，ls 一下就知道助手会什么、记住了什么，完全可 git 版本管理。 5. onboard 向导 — 一条命令交互式完成引擎选择 → Skill 模板 → IM 通道连接 → 启动服务，2 分钟从零到可用。 6. 13,000+ 社区技能 — 与 OpenClaw/ClawHub 生态 100% 兼容，一条命令搜索安装。 示例代码 bash npm install g golembot mkdir mybot && cd mybot golembot onboard 交互式引导，2 分钟启动 golembot gateway 启动 IM + HTTP 服务 + Dashboard 嵌入到产品中： typescript import { createAssistant } from 'golembot' const bot = createAssistant({ dir: './mybot' }) for await (const ev of bot.chat('分析上月销售数据')) if (ev.type === 'text') process.stdout.write(ev.content) 截图或演示视频",
+          "content": "### 项目地址\n\nhttps://github.com/0xranx/golembot\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n让 Coding Agent 逃离终端，变成团队的 7×24 AI 队友\n\n### 项目描述\n\nClaude Code、Cursor、Codex 这些 Coding Agent 已经能写代码、跑测试、分析数据了，但它们被困在一个人的终端窗口里——队友用不了，也没法当服务跑。\n\n我不想用 LangChain 重新造一个 AI 应用，因为 Agent 本身已经够强了，缺的只是一个\"身体\"。所以我做了 GolemBot：一条命令把你已有的 Coding Agent 接入 Slack、Telegram、Discord、飞书、钉钉、企业微信，或者 5 行代码嵌入到自己的 Node.js 产品里。Agent 是大脑，GolemBot 是泥土之躯。\n\n### 亮点\n\n1. **不重新发明 AI** — 底层直接调用 Claude Code / Cursor / OpenCode / Codex 的 CLI，不是 API wrapper。Agent 升级，助手自动变强，零代码改动。\n2. **一行换引擎** — golem.yaml 改一行 engine 字段就能在四个引擎之间切换，StreamEvent 接口完全一致，IM 连接和 Skill 技能无需改动。\n3. **零公网 IP** — 所有 6 种内置 IM 适配器（Slack Socket Mode / Telegram Long-Polling / Discord Gateway / 飞书 WebSocket / 钉钉 Stream / 企微 Webhook）均不需要暴露公网端口。\n4. **目录即助手** — 技能、记忆、配置全在一个目录里，ls 一下就知道助手会什么、记住了什么，完全可 git 版本管理。\n5. **onboard 向导** — 一条命令交互式完成引擎选择 → Skill 模板 → IM 通道连接 → 启动服务，2 分钟从零到可用。\n6. **13,000+ 社区技能** — 与 OpenClaw/ClawHub 生态 100% 兼容，一条命令搜索安装。\n\n### 示例代码\n\n```bash\nnpm install -g golembot\nmkdir my-bot && cd my-bot\ngolembot onboard          # 交互式引导，2 分钟启动\ngolembot gateway          # 启动 IM + HTTP 服务 + Dashboard\n```\n\n嵌入到产品中：\n\n```typescript\nimport { createAssistant } from 'golembot'\nconst bot = createAssistant({ dir: './my-bot' })\n\nfor await (const ev of bot.chat('分析上月销售数据'))\n  if (ev.type === 'text') process.stdout.write(ev.content)\n```\n\n### 截图或演示视频\n\nhttps://github.com/user-attachments/assets/7abddbd6-56c8-4ae3-8e5b-72e6f0104257",
+          "metrics": {
+            "comments": 0
+          },
+          "tags": [
+            "hellogithub",
+            "submission"
+          ],
+          "externalId": "3167",
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3167"
+        }
+      ]
+    },
+    {
+      "sourceId": "hellogithub-issue",
+      "sourceName": "HelloGitHub·月刊推荐",
+      "items": []
+    },
+    {
+      "sourceId": "producthunt",
+      "sourceName": "Product Hunt 新品",
+      "items": [
+        {
+          "sourceId": "producthunt",
+          "title": "Funsisity – AI Background Remover",
+          "url": "https://www.producthunt.com/products/funsisity-ai-background-remover/launches/funsisity-ai-background-remover?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T12:01:00Z",
+          "summary": "Remove image backgrounds instantly with AI",
+          "content": "Funsisity is an AI-powered background remover that helps you remove image backgrounds instantly. Just upload your photo and get a clean transparent background in seconds — no design skills required. Perfect for: • eCommerce product photos • Social media content • Marketing visuals • Creators and designers Fast, simple, and powered by AI.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1091985",
+          "logo": "https://ph-files.imgix.net/a98d18ae-f7cd-4698-869d-9d667f433f25.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/bcb1994f-40fb-4a52-a3fc-aba4655f5411.png?auto=format",
+            "https://ph-files.imgix.net/a861c72e-ab1c-492a-bdad-84574e615326.png?auto=format",
+            "https://ph-files.imgix.net/66480e17-6b0f-4894-b603-66b05271eea1.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/bcb1994f-40fb-4a52-a3fc-aba4655f5411.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Aligno",
+          "url": "https://www.producthunt.com/products/aligno/launches/aligno?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Real momentum starts with the right group",
+          "content": "Aligno is a group-first social app built for real momentum. Instead of chasing followers, users join intentional groups to connect, share posts, chat, create events, and stay accountable with people on a similar path. What makes it different is the focus on shared progress over passive scrolling—designed to help communities build consistency, connection, and growth together.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092346",
+          "logo": "https://ph-files.imgix.net/5c25ff94-5a8d-46fb-8048-b6b68c4a0d85.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/85796396-1cc3-4814-ad93-98930f430938.png?auto=format",
+            "https://ph-files.imgix.net/e2f580d7-6bfb-4e41-90c4-1423e1cf3b00.png?auto=format",
+            "https://ph-files.imgix.net/4e9ca497-6722-4cfa-a1e4-377104e77616.png?auto=format",
+            "https://ph-files.imgix.net/1ca2b369-d5ef-4903-b4fc-05a934c0d985.png?auto=format",
+            "https://ph-files.imgix.net/3a449ea3-08d7-4b17-ac9d-eb0444bfa4d0.png?auto=format",
+            "https://ph-files.imgix.net/919abda7-4d80-45ac-921b-a8e9d77d4eb5.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/85796396-1cc3-4814-ad93-98930f430938.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "SpendNode",
+          "url": "https://www.producthunt.com/products/spendnode/launches/spendnode?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "The comparison engine for crypto cards",
+          "content": "SpendNode calculates outcomes, not just fees. Break-even tables at your spend level, 108 country pages with local tax strategies and geo-bans, head-to-head comparisons with real verdicts, persona-specific picks. 34 vendors, 70+ cards. Every number verified against live issuer docs. When a vendor changes terms, every affected page updates in hours: scenarios, verdicts, country guides. This level of depth, accuracy, and coverage was not possible before AI.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092180",
+          "logo": "https://ph-files.imgix.net/5d5b9372-eec5-4306-8ec1-abf9ca58780d.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a4e490f0-46ce-4068-a286-b31fc2633c74.png?auto=format",
+            "https://ph-files.imgix.net/5632ee64-4d32-4fde-896a-50c2151f9876.png?auto=format",
+            "https://ph-files.imgix.net/72bf1c2f-5abb-4e11-9a05-51e25b78f04a.png?auto=format",
+            "https://ph-files.imgix.net/5d9fd2a7-7bb5-4939-8df8-73f4b82e3b82.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a4e490f0-46ce-4068-a286-b31fc2633c74.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "LideraAI",
+          "url": "https://www.producthunt.com/products/lideraai/launches/lideraai?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "AI platform to organize and manage political campaigns",
+          "content": "LideraAI is an AI-powered platform built to help political campaigns stay organized and efficient. Manage supporters, track voter demands, coordinate campaign teams, and centralize campaign data in one place. Designed for modern campaigns that want better organization, clearer insights, and smarter decision-making. LideraAI is currently being used in Brazil, where political campaigns involve thousands of supporters and complex grassroots organization.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1091978",
+          "logo": "https://ph-files.imgix.net/0f1878e4-8d1d-4315-aab3-fb17e144ecaf.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/5fb4088e-29bf-4624-b796-93840195e0fa.png?auto=format",
+            "https://ph-files.imgix.net/eb930396-8bca-4723-a4a0-0a13a60dfae2.png?auto=format",
+            "https://ph-files.imgix.net/9a71baa7-94ab-48b3-b1b6-d8f8e0292d88.png?auto=format",
+            "https://ph-files.imgix.net/c9a92e14-ab0e-4af4-b564-978bef0a7638.webp?auto=format",
+            "https://ph-files.imgix.net/6568eea4-3a15-442c-aa81-68c66d917095.webp?auto=format",
+            "https://ph-files.imgix.net/4f7d391f-df97-4a58-a698-7b39363c5f99.webp?auto=format",
+            "https://ph-files.imgix.net/486aac6a-83fd-4e4d-b2cd-220bb128d8f9.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/5fb4088e-29bf-4624-b796-93840195e0fa.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Acquisity",
+          "url": "https://www.producthunt.com/products/acquisity/launches/acquisity?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "The AI Operating System for B2B Growth",
+          "content": "AI-powered Growth System That Gets You B2B Clients",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1091946",
+          "logo": "https://ph-files.imgix.net/f61253fd-acf6-4b17-8076-27657391188b.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/3475a589-14cd-419c-a265-2c23d8b3d002.png?auto=format",
+            "https://ph-files.imgix.net/c93d9c06-fa62-40a7-bf36-e80fedd830ab.png?auto=format",
+            "https://ph-files.imgix.net/970342f1-7e3e-4700-95fd-a147fa115468.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/3475a589-14cd-419c-a265-2c23d8b3d002.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "AutoSynthetix",
+          "url": "https://www.producthunt.com/products/autosynthetix/launches/autosynthetix?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "The Autonomous AI Agent Marketing Exchange Platform",
+          "content": "AutoSynthetix is the first marketplace built for AI agents, not humans. Stop fighting CAPTCHAs and complex UIs—let your bots buy, sell, and discover marketing services via our high-speed, machine-ready API.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092422",
+          "logo": "https://ph-files.imgix.net/95292f42-4fbc-4348-a1c2-33fa390246b0.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/27ec6aa6-2d15-48c2-8942-e8a566a490e1.png?auto=format",
+            "https://ph-files.imgix.net/16101ff9-479f-4dcc-a806-fd4cabdb284f.png?auto=format",
+            "https://ph-files.imgix.net/35bb173b-7d55-416f-9ca4-34aebefbe7fb.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/27ec6aa6-2d15-48c2-8942-e8a566a490e1.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Custom Mobile Cases",
+          "url": "https://www.producthunt.com/products/custom-mobile-covers/launches/custom-mobile-cases?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Premium Quality Customize Mobile Covers Printing Online",
+          "content": "Customize Mobile Back Covers Online in India with Your Photo! Print Any Image on Premium Phone Back Covers. Fast Delivery, Perfect Fit for All Models.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092045",
+          "logo": "https://ph-files.imgix.net/86747738-3356-4113-aa7d-169871047d34.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/2cdb0b80-4f7a-4e3e-9113-f2efb849679e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/2cdb0b80-4f7a-4e3e-9113-f2efb849679e.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Samsung S25 Ultra Back Covers",
+          "url": "https://www.producthunt.com/products/custom-mobile-covers/launches/samsung-s25-ultra-back-covers?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Premium Quality Samsung S25 Ultra Back Covers Online",
+          "content": "Explore Premium Samsung S25 Ultra Back Covers at Sirphire. Shop Stylish, Original Transparent & Camera Protected Back Cases for Girls & Boys. Free Shipping on All Orders.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092047",
+          "logo": "https://ph-files.imgix.net/66c5568c-c271-4fc2-8602-73c00fdd683d.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/fd59007d-e62e-4351-bfda-aeaa55969473.webp?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/fd59007d-e62e-4351-bfda-aeaa55969473.webp?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "CyScan.io - cyberscanner",
+          "url": "https://www.producthunt.com/products/cyscan-io-cyberscanner/launches/cyscan-io-cyberscanner?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Website security scanner for redirects, assets and SSL check",
+          "content": "CyScan.io is a website security scanner and analyzer that helps you inspect redirects, loaded assets, security headers, SSL/TLS setup, cookies, and tech stack in seconds.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092274",
+          "logo": "https://ph-files.imgix.net/14a526f3-3182-477a-b942-536939b5d023.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/12f4bd77-2951-4587-aa1e-c093d26ea882.png?auto=format",
+            "https://ph-files.imgix.net/853ac1c9-4be5-44dd-921f-ab3bd07218db.png?auto=format",
+            "https://ph-files.imgix.net/65436e0e-b982-4b48-ad84-16a84ff0d7a4.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/12f4bd77-2951-4587-aa1e-c093d26ea882.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Portara",
+          "url": "https://www.producthunt.com/products/portara/launches/portara?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "A new tab page you'll actually love",
+          "content": "Portara replaces your browser's new tab with a beautiful, customizable dashboard. Add clocks, weather, bookmarks, stocks, RSS feeds, sticky notes, and more — all wrapped in a stunning liquid glass UI with wallpaper backgrounds. Arrange cards exactly how you want, on desktop and mobile. It's the start page you've always wished your browser came with.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092221",
+          "logo": "https://ph-files.imgix.net/f427cc9f-a496-4d0f-8735-6501f8e34414.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/a97352f2-9323-49a5-9b2a-142da2e44351.png?auto=format",
+            "https://ph-files.imgix.net/4e06858d-b5df-41ce-a3d3-4eae91bc8494.png?auto=format",
+            "https://ph-files.imgix.net/7a9e016a-984a-4674-81a8-c19cf6ad81b0.png?auto=format",
+            "https://ph-files.imgix.net/ac2f158a-8557-429f-9ac7-3c36ae0ca25a.png?auto=format",
+            "https://ph-files.imgix.net/4707356c-96c8-4a88-a990-8330b5a69baf.png?auto=format",
+            "https://ph-files.imgix.net/01a95b6c-2610-44a5-8a4e-957e0f433655.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/a97352f2-9323-49a5-9b2a-142da2e44351.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "WhoDrewWho",
+          "url": "https://www.producthunt.com/products/whodrewwho/launches/whodrewwho?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Draw and guess in a social multiplayer drawing game",
+          "content": "Play WhoDrewWho - A hilarious multiplayer drawing game where artists sketch their friends and detectives guess who's who! Free online party game for 4-10 players.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092159",
+          "logo": "https://ph-files.imgix.net/18a1e102-e614-4ab3-8987-01935cecc99a.svg?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/59cd5873-09d5-4975-ab90-d0e421f1b12a.png?auto=format",
+            "https://ph-files.imgix.net/862dbd25-31d3-4f31-8611-dedb271f3344.png?auto=format",
+            "https://ph-files.imgix.net/54065712-38d0-4071-a724-6df0dab4ea75.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/59cd5873-09d5-4975-ab90-d0e421f1b12a.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Linklay",
+          "url": "https://www.producthunt.com/products/linklay-2/launches/linklay-2?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "The Smarter Link In Bio",
+          "content": "Turn clicks into customers. Linklay gives you live visitor tracking, smart link ordering, and analytics that show who's clicking. Start free, go Pro anytime.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092483",
+          "logo": "https://ph-files.imgix.net/f92f2921-eed3-4f4d-8ad6-c7a3bc5818e9.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b009bf46-5457-4204-a8ca-8f68d9127669.png?auto=format",
+            "https://ph-files.imgix.net/88f3316c-d735-4512-91f2-811343172da7.png?auto=format",
+            "https://ph-files.imgix.net/0401d03b-fdea-436c-88b2-990b9ac35e51.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b009bf46-5457-4204-a8ca-8f68d9127669.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "BasicFit - Gym Workout Tracker ",
+          "url": "https://www.producthunt.com/products/basicfit-gym-workout-tracker/launches/basicfit-gym-workout-tracker?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Track your gains with science — 100% offline, zero fluff",
+          "content": "Most workout apps are bloated with features you'll never use. BasicFit is different — it tracks what actually matters: progressive overload. Using the POF (Progressive Overload Factor) method, it measures your real progress through weight, reps, and intensity across every session. • 280+ exercises with video demos • Custom routines (PPL, Upper/Lower, etc) • Rest timer with audio/vibration cues • Progress charts and frequency calendar • 100% offline — works anywhere, even at the gym basement",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092133",
+          "logo": "https://ph-files.imgix.net/726ff7cd-64fd-4f55-9125-dc5092264036.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/da40e103-ec72-499e-8289-63af2baa4eb9.jpeg?auto=format",
+            "https://ph-files.imgix.net/bc7a5101-7e38-4fc6-afa9-eb97a1ddd7e0.jpeg?auto=format",
+            "https://ph-files.imgix.net/232b5e4d-2814-4ddc-b565-e780b567f3c6.jpeg?auto=format",
+            "https://ph-files.imgix.net/1997dc8c-17f0-47e7-8b18-0e211e5d2ef9.jpeg?auto=format",
+            "https://ph-files.imgix.net/3e68f2a6-7d8c-46d8-b20b-798c0ed44268.jpeg?auto=format",
+            "https://ph-files.imgix.net/fc035216-6c45-49d1-90f2-00758de9ca1a.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/da40e103-ec72-499e-8289-63af2baa4eb9.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Shuffya - Recipe Collection ",
+          "url": "https://www.producthunt.com/products/shuffya-recipe-collection/launches/shuffya-recipe-collection?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Shuffya: Your personal recipe planner.",
+          "content": "Tired of \"What should I cook?\" Shuffya makes meal planning effortless! Save recipes, shuffle for inspiration, and organize your week with meal planning, shopping lists, and finance tracking. Perfect for busy home cooks and meal prep enthusiasts. Key Features: 📱 Save recipes 🎲 Shuffle function 📅 Weekly meal planner 🛒 Shopping lists 💰 Finance planner 🍳 iOS exclusive Stop meal planning stress. Enjoy cooking again!",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092140",
+          "logo": "https://ph-files.imgix.net/2d6d962c-4762-41b6-9920-093c0ee0f963.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/845aa9e8-1ff5-4f27-afb7-7ddb72b20912.png?auto=format",
+            "https://ph-files.imgix.net/c1a9cb03-68b1-4376-a9d6-c30d11077fe6.png?auto=format",
+            "https://ph-files.imgix.net/046f9db6-8cbd-46b4-a78b-189af23d5345.png?auto=format",
+            "https://ph-files.imgix.net/df405268-a530-469f-8049-ecfc2cc4fdd4.png?auto=format",
+            "https://ph-files.imgix.net/1aa36019-eeab-4d5f-ba0b-27ae9dfe7d23.png?auto=format",
+            "https://ph-files.imgix.net/2fded34b-757e-480c-b3a8-3f09ae416d86.png?auto=format",
+            "https://ph-files.imgix.net/bc37b93c-4eb2-41ec-b6cc-4def4c5ea87b.png?auto=format",
+            "https://ph-files.imgix.net/7664211d-67ca-485e-8b71-926bde571642.png?auto=format",
+            "https://ph-files.imgix.net/927fc42d-13b1-438e-a032-9ecf9404b744.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/845aa9e8-1ff5-4f27-afb7-7ddb72b20912.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "TAGT",
+          "url": "https://www.producthunt.com/products/tagt/launches/tagt?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "AI-powered platform for PG & co-living management",
+          "content": "TAGT helps PG, hostel, and co-living operators manage tenants, beds, billing, payments, and maintenance in one platform. It replaces spreadsheets with automation and real-time insights into occupancy, revenue, and tenant activity.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092285",
+          "logo": "https://ph-files.imgix.net/692a6f25-cd97-4263-b381-2dc88bb46507.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b251c556-b7e2-4c60-9a8a-fbc2b09f9bbc.gif?auto=format",
+            "https://ph-files.imgix.net/9603a33c-7f8f-41d6-b31f-8d33fbf3aec3.png?auto=format",
+            "https://ph-files.imgix.net/a35f121e-cc21-4e03-82aa-333bf8bb84d8.png?auto=format",
+            "https://ph-files.imgix.net/e0c44929-f31b-4216-84a4-e6f6c099b38b.png?auto=format",
+            "https://ph-files.imgix.net/377c49a4-38db-445b-b90a-4049f72a1d7e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b251c556-b7e2-4c60-9a8a-fbc2b09f9bbc.gif?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Kloseit",
+          "url": "https://www.producthunt.com/products/kloseit/launches/kloseit?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Your AI copilot for winning sales calls.",
+          "content": "KloseIt is an AI copilot for sales calls that gives reps instant answers from their company knowledge base while they’re talking to prospects. Instead of saying “I’ll get back to you,” reps get real-time answers, objection handling, and follow-ups. It also builds memory across calls with pre-call briefs and post-call insights.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092243",
+          "logo": "https://ph-files.imgix.net/633fb142-47f3-459b-bc92-3b4d2659a482.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/aa536c43-24cb-49d1-ab78-ff030b7df470.png?auto=format",
+            "https://ph-files.imgix.net/805fc9e8-50a5-4f61-96a9-53ebfdf3235a.png?auto=format",
+            "https://ph-files.imgix.net/d3d2447a-0a38-49ad-8336-30fc33f7a7a0.png?auto=format",
+            "https://ph-files.imgix.net/0bd7f12e-d3fd-47ad-ae5d-48b0ae73da5d.png?auto=format",
+            "https://ph-files.imgix.net/855e28b3-9dbc-47cd-bb54-4360ca00f7f1.png?auto=format",
+            "https://ph-files.imgix.net/21795b43-b422-4778-b8c2-95d107b2f0a2.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/aa536c43-24cb-49d1-ab78-ff030b7df470.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "interiorstaging",
+          "url": "https://www.producthunt.com/products/interiorstaging/launches/interiorstaging?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Virtual home Staging",
+          "content": "Transform empty rooms into beautifully furnished spaces with AI. Mobile for capture, desktop for production. Perfect for real estate agents and home sellers.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1088827",
+          "logo": "https://ph-files.imgix.net/a9837e85-a4e8-4554-b66a-214d23bfebb0.vnd.microsoft.icon?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/04567b9d-2a8b-4461-942f-41aadf8373c0.png?auto=format",
+            "https://ph-files.imgix.net/2a9b98ff-6756-4c7d-a493-4a2ca42be435.png?auto=format",
+            "https://ph-files.imgix.net/e20649cc-3819-4220-a08d-04b616a2743e.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/04567b9d-2a8b-4461-942f-41aadf8373c0.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Meri Shiksha",
+          "url": "https://www.producthunt.com/products/meri-shiksha/launches/meri-shiksha?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Meri Shiksha — Find Top Colleges & Universities in India",
+          "content": "Meri Shiksha empowers educational institutions and students. Find Top Colleges, Online Courses, and Study Materials. Admission Open for 2026! Covering Bihar Student Credit Card (DRCC) and more.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092238",
+          "logo": "https://ph-files.imgix.net/16519a62-d41d-43e5-9efb-4aeb2fe7c1e8.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/8abf3cc1-cf7e-4f15-a9c5-3942a4ca59e5.jpeg?auto=format",
+            "https://ph-files.imgix.net/3e6327f8-2d11-455f-a64d-5da6fce6f444.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/8abf3cc1-cf7e-4f15-a9c5-3942a4ca59e5.jpeg?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "iimpro",
+          "url": "https://www.producthunt.com/products/iimpro/launches/iimpro?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Shop live, sell live",
+          "content": "The video commerce platform for jewellery, fashion, and skincare brands.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1091971",
+          "logo": "https://ph-files.imgix.net/ba0fe995-7e6d-4de4-88bb-ae6ee27d3c9a.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b5fd0c97-37fb-457b-82d0-6ac06a3dc8a4.png?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b5fd0c97-37fb-457b-82d0-6ac06a3dc8a4.png?auto=format"
+        },
+        {
+          "sourceId": "producthunt",
+          "title": "Happy2Purchase",
+          "url": "https://www.producthunt.com/products/happy2purchase/launches/happy2purchase?utm_campaign=producthunt-api&utm_medium=api-v2&utm_source=Application%3A+community-pulse+%28ID%3A+298480%29",
+          "author": "",
+          "authorUrl": "",
+          "publishedAt": "2026-03-08T08:01:00Z",
+          "summary": "Track Amazon prices, get alerts, and compare stores",
+          "content": "Happy2Purchase is a smart shopping assistant for Amazon. While most price trackers only show when the price changes, Happy2Purchase goes a step further. With the browser extension, you can compare prices across other online stores directly on the Amazon product page. You can also set target price alerts and receive notifications via email or WhatsApp when prices drop. A clean dashboard keeps your tracked products organized and makes it easy to manage alerts in one place.",
+          "metrics": {},
+          "tags": [
+            "producthunt",
+            "new"
+          ],
+          "externalId": "1092247",
+          "logo": "https://ph-files.imgix.net/45e707b2-d1ba-4203-a371-51e502d6dc14.png?auto=format",
+          "images": [
+            "https://ph-files.imgix.net/b6ff74d7-ffb1-4eff-8b64-608ba8568bfb.png?auto=format",
+            "https://ph-files.imgix.net/a9a69843-8b0b-4f41-8cc3-319082adbbe0.png?auto=format",
+            "https://ph-files.imgix.net/b5b0d389-9c99-484f-8457-43fcbce39f80.png?auto=format",
+            "https://ph-files.imgix.net/ddd3c54b-030a-4dc6-b430-51d0e5b2a1dc.png?auto=format",
+            "https://ph-files.imgix.net/4ad14b65-d8d2-44a0-bcb7-c0056f13c62e.png?auto=format",
+            "https://ph-files.imgix.net/008bd492-428a-446d-9904-13ec267cefff.jpeg?auto=format"
+          ],
+          "image": "https://ph-files.imgix.net/b6ff74d7-ffb1-4eff-8b64-608ba8568bfb.png?auto=format"
+        }
+      ]
+    }
+  ]
+}

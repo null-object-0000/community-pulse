@@ -214,45 +214,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】低延迟、支持漫游、不会掉线的 ssh",
-          "url": "https://github.com/trzsz/tsshd",
-          "author": "lonnywong",
-          "authorUrl": "https://github.com/lonnywong",
-          "publishedAt": "2026-01-19T07:10:06Z",
-          "summary": "项目地址： 项目简介：tsshd 是一个 ssh 服务端程序，灵感来源于 mosh（ 类似于 moshserver ），相当于 OpenSSH 的 sshd。 核心优势：tsshd 特别适用于在弱网环境（4G）或跨国网络中使用 ssh 的场景： 使用 tsshd ，你的 ssh 可以避免掉线（从此告别 ssh 在弱网环境下经常掉线的苦恼，无需经常重新登录） 使用 tsshd ，你的 ssh 可以支持漫游（举例：你的笔记本在公司 ssh 登录后，带回到家还可以保持连接） 使用 tsshd ，你的 ssh 可以获得低延迟（避免 ssh 按键不跟手的情况，特别是使用 KCP 协议时延迟更低更稳定） 项目对比：tsshd 相比 mosh，支持更多更完善的 ssh 功能，解决了 mosh 长时间未解决的痛点，详见 README 功能对比。 技术原理：tsshd 类似 mosh 的原理，详见 README 原理简介。 安全保障：tsshd 作为 ssh 服务端程序，特别注重安全，详见 README 安全保障。 使用简单： 1. 在客户端（本地电脑）上安装 tssh。 2. 在服务端（远程机器）上安装 tsshd。 3. 使用 tssh udp xxx 登录服务器（参考 README 配置说明 配置后，可省略 udp 参数）。 特别说明（新用户首次使用需关注）： 1. tsshd 随机监听 6100161999 的 UDP 端口，防火墙要放开相应策略。可通过配置项 TsshdPort，或命令行参数 tsshdport 自定义。 2. tssh 登录时，要在服务器的 $PATH 路径下找到 tsshd 并运行。可通过配置项 TsshdPath，或命令行参数 tsshdpath 指定路径。",
-          "content": "项目地址：https://github.com/trzsz/tsshd\n\n项目简介：`tsshd` 是一个 `ssh` 服务端程序，灵感来源于 [mosh](https://github.com/mobile-shell/mosh)（ 类似于 `mosh-server` ），相当于 OpenSSH 的 `sshd`。\n\n核心优势：`tsshd` 特别适用于在弱网环境（`4G`）或跨国网络中使用 `ssh` 的场景：\n - 使用 `tsshd` ，你的 `ssh` 可以避免掉线（从此告别 `ssh` 在弱网环境下经常掉线的苦恼，无需经常重新登录）\n - 使用 `tsshd` ，你的 `ssh` 可以支持漫游（举例：你的笔记本在公司 `ssh` 登录后，带回到家还可以保持连接）\n - 使用 `tsshd` ，你的 `ssh` 可以获得低延迟（避免 `ssh` 按键不跟手的情况，特别是使用 `KCP` 协议时延迟更低更稳定）\n\n项目对比：`tsshd` 相比 `mosh`，支持更多更完善的 `ssh` 功能，解决了 `mosh` 长时间未解决的痛点，详见 [README 功能对比](https://github.com/trzsz/tsshd/blob/main/README.cn.md#%E5%8A%9F%E8%83%BD%E5%AF%B9%E6%AF%94)。\n\n技术原理：`tsshd` 类似 `mosh` 的原理，详见 [README 原理简介](https://github.com/trzsz/tsshd/blob/main/README.cn.md#%E5%8E%9F%E7%90%86%E7%AE%80%E4%BB%8B)。\n\n安全保障：`tsshd` 作为 `ssh` 服务端程序，特别注重安全，详见 [README 安全保障](https://github.com/trzsz/tsshd/blob/main/README.cn.md#%E5%AE%89%E5%85%A8%E4%BF%9D%E9%9A%9C)。\n\n使用简单：\n  1. 在客户端（本地电脑）上安装 [tssh](https://github.com/trzsz/trzsz-ssh?tab=readme-ov-file#installation)。\n\n  2. 在服务端（远程机器）上安装 [tsshd](https://github.com/trzsz/tsshd?tab=readme-ov-file#installation)。\n\n  3. 使用 `tssh --udp xxx` 登录服务器（参考 [README 配置说明](https://github.com/trzsz/tsshd/blob/main/README.cn.md#%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E) 配置后，可省略 `--udp` 参数）。\n\n特别说明（新用户首次使用需关注）：\n  1. `tsshd` 随机监听 `61001-61999` 的 UDP 端口，防火墙要放开相应策略。可通过配置项 `TsshdPort`，或命令行参数 `--tsshd-port` 自定义。\n  2. `tssh` 登录时，要在服务器的 `$PATH` 路径下找到 `tsshd` 并运行。可通过配置项 `TsshdPath`，或命令行参数 `--tsshd-path` 指定路径。",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "8751",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/8751"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【工具自荐】Cowork Skills - Claude Cowork Workflows",
-          "url": "https://www.cowork-skills.com",
-          "author": "Benury",
-          "authorUrl": "https://github.com/Benury",
-          "publishedAt": "2026-01-19T08:50:35Z",
-          "summary": "[AI] Cowork Skills Claude Cowork Workflows Links Website: Introduction A curated library of Claude Cowork (Computer Use) workflows with copypaste prompt templates, covering file organization, data extraction, and code automation with safety guidance. Tech Stack: Next.js 14 + Tailwind CSS + Contentlayer Key Features Prompt Library: Readytouse workflows for Claude Cowork tasks File Organization: Prompts for cleaning and structuring download folders Data Extraction: Extract structured data from PDFs and screenshots Code Automation: Generate tests and refactor code with guided prompts Safety Guide: Practical guardrails for sandboxing and permissions Preview !Cowork Skills Claude Cowork Workflows",
-          "content": "**[AI]** Cowork Skills - Claude Cowork Workflows\n\n**Links**\n\nWebsite: https://www.cowork-skills.com\n\n**Introduction**\n\nA curated library of Claude Cowork (Computer Use) workflows with copy-paste prompt templates, covering file organization, data extraction, and code automation with safety guidance.\n\nTech Stack: Next.js 14 + Tailwind CSS + Contentlayer\n\n**Key Features**\n\n- **Prompt Library**: Ready-to-use workflows for Claude Cowork tasks\n- **File Organization**: Prompts for cleaning and structuring download folders\n- **Data Extraction**: Extract structured data from PDFs and screenshots\n- **Code Automation**: Generate tests and refactor code with guided prompts\n- **Safety Guide**: Practical guardrails for sandboxing and permissions\n\n**Preview**\n\n![Cowork Skills - Claude Cowork Workflows](https://www.cowork-skills.com/og-image.png)\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "8752",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/8752",
-          "siteLogo": "https://www.cowork-skills.com/icon.svg"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【工具自荐】Cowork Skills - Claude Cowork Workflows",
           "url": "https://www.cowork-skills.com",
           "author": "Benury",
@@ -416,7 +377,12 @@
             "submission"
           ],
           "externalId": "3119",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3119"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3119",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 684F:159DE5:23A41EC:74A6FA5:6A9E8646 and timestamp 2026-09-07 09:39:18 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"

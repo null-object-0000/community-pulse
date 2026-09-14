@@ -122,25 +122,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】从作家写作的视角蒸馏一本书的skill（区别于仓颉 ）",
-          "url": "https://github.com/masterball-w/A-writer-should-do",
-          "author": "masterball-w",
-          "authorUrl": "https://github.com/masterball-w",
-          "publishedAt": "2026-08-07T06:18:10Z",
-          "summary": "Awritershoulddo 自荐 书籍写作特征蒸馏 — 从单本图书文本中逐层抽取作者写作特征，转译为可执行的写作指导规则，产出可独立调用的派生 Skill 文件集。 地址： 本 Skill 名为【书籍写作特征蒸馏】，职责在于从单本图书的完整文本中逐层抽取作者的写作特征，将这些特征转译为可执行的写作指导规则，最终产出一套可独立调用的派生 Skill 文件集。 与同类工具的差异 市面上的风格分析工具多停留在形容词层面的概括——给出\"冷峻克制\"\"幽默诙谐\"一类的标签便草草收场，写作者拿到标签后仍无从落笔。本 Skill 的差异在于： 频次验证：每一条特征都须通过频次验证（全书出现≥3处方可判定为核心特征） 原文锚定：每一条规则都须附注原文例证作为示范样本 可执行指令：每一条指令都须给出可量化的标准（句长区间、篇幅占比、段落粒度）或可对照的具体范式，拒收\"注意文风\"\"把握节奏\"一类无法执行的模糊表述 反AI特征检测机制 另一重区分在于内置的反AI特征检测机制。普通风格仿写工具生成的文本，即便形似原作者，仍会被AI检测器识别——原因在于AI遵循规则时仍然选择最高概率的词汇，产出的句子过于工整、过于平滑、过于均匀。本 Skill 在提取作者特征的同时，同步扫描作者写作中天然对抗AI生成模式的特征（不规则句长分布、非工整论证结构、未经打磨的粗糙用词、碎片化段落节奏），将这些反AI特征优先转化为硬性规则，并进一步以「种子文本改写法」从根本改变生成方式。 人写文本本身携带真实的统计指纹（困惑度、突发性），以之为模板改写时，AI的职责从\"创造\"降格为\"局部替换\"，产出的文本天然继承原文的统计特性。 八维度蒸馏流程 整套蒸馏流程遵循「宏观→中观→微观→深层」的递进顺序，覆盖八个维度： | 维度 | 提取方向 | ||| | 1 整体写作风格与人格底色 | 文风调性、言说立场、文字人格、情绪基调 | | 2 写作框架与谋篇布局 | 结构范式、起承转合、详略排布、线索锚点 | | 3 主题取向与内容选择偏好 | 核心母题、素材偏好、对象选择、取舍倾向 | | 4 叙事/论证节奏与信息密度 | 单元粒度、信息释放、切换频率、留白度 | | 5 行文逻辑与内容肌理 | 推理路径、论证严密性、句段衔接 | | 6 词句习惯与语言惯性 | 词汇层、句式层、情绪状态层、语气层、人物语域分化层 | | 7 修辞策略与表达技法 | 修辞偏好、审美取向、感官意象、技法辨识度 | | 8 认知模式与价值底色 | 思维路径、价值立场、辩证程度、认知边界 | 其中第六维度（词句习惯）细分为词汇层、句式层、情绪与状态表达层、语气层、人物语域分化层五个子项，逐项给出频次统计与原文例证，杜绝\"语言平实\"\"句式灵活\"一类笼统概括。流程中另设主动降噪环节，强制区分作者个人特征与文体格式、题材要求、时代语言、译者风格、汇编内容等非作者因素，防止将外部干扰误判为个人风格。 母子架构与已收录实例 本 Skill 采用母子两层架构： 母 Skill：负责从书中蒸馏特征并生成指导规则，本身仅承载方法论，未收录任何具体作者的写作规则 子 Skill：每输入一本新书，母 Skill 即产出一个对应的 writelike{作者} 子 Skill，各子 Skill 相互独立、可单独调用 仓库内已收录五个实例：pha、刘震云、余华（含小说专版共两版）、周国平，横跨虚构与非虚构两类文体。输入端支持纯文本与 EPUB/MOBI/AZW3 三种电子书格式，后者由配套脚本自动剥离非正文元素、按阅读顺序拼接为纯正文并生成索引式目录，蒸馏全程无须人工预处理。 写作产出约束 写作产出同样受规则约束：成稿须以 Markdown 文件保存到当前工作目录，禁止仅在对话中输出；初稿完成后须执行独立的叙事逻辑自检（称谓辈分、对话因果、设定一致性、时间数字），风格校验与逻辑校验双线并行，各司其职。 立足点 若以一句话概括本 Skill 的立足点：它把\"模仿一个作者的文风\"这件历来依赖语感与经验的事情，拆解为可验证、可执行、可追溯的工程化流程，同时在流程底层埋入反AI检测的统计性保障——让仿写产物既能复刻原作者的辨识度，又能通过AI文本检测。 这无异于将风格传授从师徒口耳相传推进到可批量复制的工程范式。",
-          "content": "# A-writer-should-do 自荐\n\n> 书籍写作特征蒸馏 — 从单本图书文本中逐层抽取作者写作特征，转译为可执行的写作指导规则，产出可独立调用的派生 Skill 文件集。\n\n地址：https://github.com/masterball-w/A-writer-should-do\n\n本 Skill 名为【书籍写作特征蒸馏】，职责在于从单本图书的完整文本中逐层抽取作者的写作特征，将这些特征转译为可执行的写作指导规则，最终产出一套可独立调用的派生 Skill 文件集。\n\n## 与同类工具的差异\n\n市面上的风格分析工具多停留在形容词层面的概括——给出\"冷峻克制\"\"幽默诙谐\"一类的标签便草草收场，写作者拿到标签后仍无从落笔。本 Skill 的差异在于：\n\n- **频次验证**：每一条特征都须通过频次验证（全书出现≥3处方可判定为核心特征）\n- **原文锚定**：每一条规则都须附注原文例证作为示范样本\n- **可执行指令**：每一条指令都须给出可量化的标准（句长区间、篇幅占比、段落粒度）或可对照的具体范式，拒收\"注意文风\"\"把握节奏\"一类无法执行的模糊表述\n\n## 反AI特征检测机制\n\n另一重区分在于内置的反AI特征检测机制。普通风格仿写工具生成的文本，即便形似原作者，仍会被AI检测器识别——原因在于AI遵循规则时仍然选择最高概率的词汇，产出的句子过于工整、过于平滑、过于均匀。本 Skill 在提取作者特征的同时，同步扫描作者写作中天然对抗AI生成模式的特征（不规则句长分布、非工整论证结构、未经打磨的粗糙用词、碎片化段落节奏），将这些反AI特征优先转化为硬性规则，并进一步以「种子文本改写法」从根本改变生成方式。\n\n人写文本本身携带真实的统计指纹（困惑度、突发性），以之为模板改写时，AI的职责从\"创造\"降格为\"局部替换\"，产出的文本天然继承原文的统计特性。\n\n## 八维度蒸馏流程\n\n整套蒸馏流程遵循「宏观→中观→微观→深层」的递进顺序，覆盖八个维度：\n\n| 维度 | 提取方向 |\n|---|---|\n| 1 整体写作风格与人格底色 | 文风调性、言说立场、文字人格、情绪基调 |\n| 2 写作框架与谋篇布局 | 结构范式、起承转合、详略排布、线索锚点 |\n| 3 主题取向与内容选择偏好 | 核心母题、素材偏好、对象选择、取舍倾向 |\n| 4 叙事/论证节奏与信息密度 | 单元粒度、信息释放、切换频率、留白度 |\n| 5 行文逻辑与内容肌理 | 推理路径、论证严密性、句段衔接 |\n| 6 词句习惯与语言惯性 | 词汇层、句式层、情绪状态层、语气层、人物语域分化层 |\n| 7 修辞策略与表达技法 | 修辞偏好、审美取向、感官意象、技法辨识度 |\n| 8 认知模式与价值底色 | 思维路径、价值立场、辩证程度、认知边界 |\n\n其中第六维度（词句习惯）细分为**词汇层、句式层、情绪与状态表达层、语气层、人物语域分化层**五个子项，逐项给出频次统计与原文例证，杜绝\"语言平实\"\"句式灵活\"一类笼统概括。流程中另设主动降噪环节，强制区分作者个人特征与文体格式、题材要求、时代语言、译者风格、汇编内容等非作者因素，防止将外部干扰误判为个人风格。\n\n## 母子架构与已收录实例\n\n本 Skill 采用母子两层架构：\n\n- **母 Skill**：负责从书中蒸馏特征并生成指导规则，本身仅承载方法论，未收录任何具体作者的写作规则\n- **子 Skill**：每输入一本新书，母 Skill 即产出一个对应的 `write-like-{作者}` 子 Skill，各子 Skill 相互独立、可单独调用\n\n仓库内已收录五个实例：pha、刘震云、余华（含小说专版共两版）、周国平，横跨虚构与非虚构两类文体。输入端支持纯文本与 `EPUB`/`MOBI`/`AZW3` 三种电子书格式，后者由配套脚本自动剥离非正文元素、按阅读顺序拼接为纯正文并生成索引式目录，蒸馏全程无须人工预处理。\n\n## 写作产出约束\n\n写作产出同样受规则约束：成稿须以 Markdown 文件保存到当前工作目录，禁止仅在对话中输出；初稿完成后须执行独立的叙事逻辑自检（称谓辈分、对话因果、设定一致性、时间数字），风格校验与逻辑校验双线并行，各司其职。\n\n## 立足点\n\n若以一句话概括本 Skill 的立足点：它把\"模仿一个作者的文风\"这件历来依赖语感与经验的事情，拆解为可验证、可执行、可追溯的工程化流程，同时在流程底层埋入反AI检测的统计性保障——让仿写产物既能复刻原作者的辨识度，又能通过AI文本检测。\n\n> 这无异于将风格传授从师徒口耳相传推进到可批量复制的工程范式。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11058",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11058"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【文章链接异常】文章里面的浏览器指纹的url，被指向了赌场链接",
           "url": "https://github.com/ruanyf/weekly/blob/master/docs/issue-359.md",
           "author": "JayF211",
@@ -232,7 +213,12 @@
             "submission"
           ],
           "externalId": "11063",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11063"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11063",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -291,25 +277,6 @@
           ],
           "externalId": "11066",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11066"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】面向 Ant Design 的配置化 RESTful 数据组件库",
-          "url": "https://github.com/skylerhu/antd-restful",
-          "author": "skylerhu",
-          "authorUrl": "https://github.com/skylerhu",
-          "publishedAt": "2026-08-07T09:26:30Z",
-          "summary": "仓库： 使用文档： 该库基于 React + Ant Design，围绕 RESTful 接口封装了开箱即用的数据驱动组件体系，覆盖表格与列表展示、筛选表单联动、分页排序、路由参数双向同步、请求取消与错误提示等高频能力。通过声明式配置即可完成接口对接与交互编排，并提供字段解析、格式化、校验及多种表单子组件，兼顾 antd4/5 时间库差异，适合后台管理、运营系统与动态 JSON 配置场景。 <p align=\"center\" <video src=\" autoplay loop muted playsinline width=\"100%\"</video </p 一. 安装 npm install antdrestful 还需要安装库自身的依赖： npm install react reactdom antd @antdesign/icons axios 可选依赖（按 antd 版本选择安装，建议安装其一）： antd v5/v6 推荐 npm install dayjs antd v4 推荐 npm install moment 使用示例： jsx // 推荐：ESM 默认导入 import antdRestful from \"antdrestful\"; const { GridForm, RestTable, request, formitems: { RestSelect }, apiTools: { useSafeRequest }, constants: { FieldType }, typeTools: { isEmpty }, } = antdRestful; 若在 CommonJS 环境（require）下使用： js const antdRestful = require(\"antdrestful\").default; 最常见的用法——直接在 RestTable 中配置 restful： jsx import antdRestful from \"antdrestful\"; const { RestTable } = antdRestful; function UserList() { return ( <RestTable restful=\"/api/users/\" columns={[{ title: \"名称\", dataIndex: \"name\" }]} rowKey=\"id\" / ); } 二. 使用(Usage) 需要注意的是：组件中远程请求，内部关于 query 序列化的处理，使用的是 querystring 库，设置了 { arrayFormat: \"comma\", skipNull: true, skipEmptyString: true } 等参数。 若是需要调整请求参数的序列化，或者 DRF 相关的默认配置字段，可以在入口中修改： jsx import antdRestful from \"antdrestful\"; const { setGlobalConfig, setRestOptions } = antdRestful; // 修改 querystring 的序列化/反序列化处理方式 setGlobalConfig({ queryStringify: (params) = Qs.stringify(params, {arrayFormat: 'brackets'}), queryParse: (string) = Qs.parse(string, {arrayFormat: 'brackets'}), }); // 修改组件相关的默认请求参数（如分页参数等），主要对照后端接口（如 Django REST framework 等） setRestOptions({ fieldPage: \"current\", // 默认是 \"page\" fieldPageSize: \"pageSize\", // 默认是 \"pagesize\" parseRowsPath: \"data.list\", // 默认是 \"results\" parseTotalPath: \"data.total\", // 默认是 \"count\" }); 常见组件说明（简要）： RestTable：远程表格组件，支持分页、排序、筛选、高级搜索、列设置等常见后台表格能力。 RestList：远程列表组件，适合卡片流或信息列表展示，支持分页与加载更多模式。 GridForm：栅格表单容器，负责统一布局与字段编排，可配合各类 formitems 使用。 RouteBaseTable：将筛选状态与 URL 参数联动，适合需要可分享链接和刷新保留状态的页面。 RestSelect / RestTreeSelect / RestCascader：远程选择类组件，覆盖下拉、树形和级联选择场景。 DateStrPicker / RangeStrPicker / NumberRange：常用范围输入组件，适合时间范围、日期范围与数值区间筛选。 UploadView：文件上传组件，支持拖拽、大小/数量限制、只读回显与上传结果处理。 CompareEdit：历史值对比编辑组件，用于展示变更前后差异并支持只读对比视图。 更多组件能力、表单项示例、工具函数与完整 API，请访问在线文档： 三、应用场景 依赖restful接口的表格数据展示 依赖restful接口的列表数据展示 动态表单中的应用 支持路由参数同步的 RouteTable 表格应用",
-          "content": "仓库：https://github.com/skylerhu/antd-restful\n\n使用文档：https://skylerhu.github.io/antd-restful/\n\n该库基于 React + Ant Design，围绕 RESTful 接口封装了开箱即用的数据驱动组件体系，覆盖表格与列表展示、筛选表单联动、分页排序、路由参数双向同步、请求取消与错误提示等高频能力。通过声明式配置即可完成接口对接与交互编排，并提供字段解析、格式化、校验及多种表单子组件，兼顾 antd4/5 时间库差异，适合后台管理、运营系统与动态 JSON 配置场景。\n\n<p align=\"center\">\n  <video src=\"https://github.com/user-attachments/assets/d22d1a71-271b-4ad7-bfe3-83ab48b83b27\" autoplay loop muted playsinline width=\"100%\"></video>\n</p>\n\n## 一. 安装\n\n```\nnpm install antd-restful\n```\n\n还需要安装库自身的依赖：\n\n```\nnpm install react react-dom antd @ant-design/icons axios\n```\n\n可选依赖（按 `antd` 版本选择安装，建议安装其一）：\n\n```\n# antd v5/v6 推荐\nnpm install dayjs\n\n# antd v4 推荐\nnpm install moment\n```\n\n使用示例：\n\n```jsx\n// 推荐：ESM 默认导入\nimport antdRestful from \"antd-restful\";\n\nconst {\n  GridForm, RestTable,\n  request,\n  formitems: { RestSelect },\n  apiTools: { useSafeRequest },\n  constants: { FieldType },\n  typeTools: { isEmpty },\n} = antdRestful;\n```\n\n若在 CommonJS 环境（`require`）下使用：\n\n```js\nconst antdRestful = require(\"antd-restful\").default;\n```\n\n最常见的用法——直接在 `RestTable` 中配置 `restful`：\n\n```jsx\nimport antdRestful from \"antd-restful\";\nconst { RestTable } = antdRestful;\n\nfunction UserList() {\n  return (\n    <RestTable\n      restful=\"/api/users/\"\n      columns={[{ title: \"名称\", dataIndex: \"name\" }]}\n      rowKey=\"id\"\n    />\n  );\n}\n```\n\n## 二. 使用(Usage)\n\n需要注意的是：组件中远程请求，内部关于 `query` 序列化的处理，使用的是 `query-string` 库，设置了 `{ arrayFormat: \"comma\", skipNull: true, skipEmptyString: true }` 等参数。\n\n若是需要调整请求参数的序列化，或者 DRF 相关的默认配置字段，可以在入口中修改：\n\n```jsx\nimport antdRestful from \"antd-restful\";\n\nconst { setGlobalConfig, setRestOptions } = antdRestful;\n\n// 修改 query-string 的序列化/反序列化处理方式\nsetGlobalConfig({\n    queryStringify: (params) => Qs.stringify(params, {arrayFormat: 'brackets'}),\n    queryParse: (string) => Qs.parse(string, {arrayFormat: 'brackets'}),\n});\n\n// 修改组件相关的默认请求参数（如分页参数等），主要对照后端接口（如 Django REST framework 等）\nsetRestOptions({\n    fieldPage: \"current\",          // 默认是 \"page\"\n    fieldPageSize: \"pageSize\",     // 默认是 \"page_size\"\n    parseRowsPath: \"data.list\",    // 默认是 \"results\"\n    parseTotalPath: \"data.total\",  // 默认是 \"count\"\n});\n```\n\n常见组件说明（简要）：\n\n- RestTable：远程表格组件，支持分页、排序、筛选、高级搜索、列设置等常见后台表格能力。\n- RestList：远程列表组件，适合卡片流或信息列表展示，支持分页与加载更多模式。\n- GridForm：栅格表单容器，负责统一布局与字段编排，可配合各类 formitems 使用。\n- RouteBaseTable：将筛选状态与 URL 参数联动，适合需要可分享链接和刷新保留状态的页面。\n- RestSelect / RestTreeSelect / RestCascader：远程选择类组件，覆盖下拉、树形和级联选择场景。\n- DateStrPicker / RangeStrPicker / NumberRange：常用范围输入组件，适合时间范围、日期范围与数值区间筛选。\n- UploadView：文件上传组件，支持拖拽、大小/数量限制、只读回显与上传结果处理。\n- CompareEdit：历史值对比编辑组件，用于展示变更前后差异并支持只读对比视图。\n\n更多组件能力、表单项示例、工具函数与完整 API，请访问在线文档：\n\n- [https://skylerhu.github.io/antd-restful/](https://skylerhu.github.io/antd-restful/)\n\n## 三、应用场景\n- [依赖restful接口的表格数据展示](https://github.com/skylerhu/antd-restful/blob/master/demo/views/TableDemo.jsx)\n- [依赖restful接口的列表数据展示](https://github.com/skylerhu/antd-restful/blob/master/demo/views/ListDemo.jsx)\n- [动态表单中的应用](https://github.com/skylerhu/antd-restful/blob/master/demo/views/JSONForm.jsx)\n- [支持路由参数同步的 RouteTable 表格应用](https://github.com/skylerhu/antd-restful/blob/master/demo/views/RouteTable.jsx)\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11067",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11067"
         },
         {
           "sourceId": "weekly-issues",
@@ -596,31 +563,6 @@
         },
         {
           "sourceId": "weekly-issue",
-          "title": "rime vim",
-          "url": "https://github.com/TSalmon3/rime.vim",
-          "author": "TSalmon3",
-          "authorUrl": "https://github.com/TSalmon3",
-          "publishedAt": "2026-08-07T00:00:00+08:00",
-          "summary": "Vim/Neovim 的一个插件，能够直接输入中文，不依赖系统的中文输入法，从而可以自动补全。",
-          "content": "Vim/Neovim 的一个插件，能够直接输入中文，不依赖系统的中文输入法，从而可以自动补全。",
-          "metrics": {},
-          "tags": [
-            "ruanyf-weekly",
-            "official",
-            "工具"
-          ],
-          "section": "工具",
-          "externalId": "407-rime vim-https://github.com/TSalmon3/rime.vim",
-          "relatedIssue": "https://github.com/ruanyf/weekly/issues/11053",
-          "issue": "407",
-          "githubUrl": "https://github.com/TSalmon3/rime.vim",
-          "github": {
-            "url": "https://github.com/TSalmon3/rime.vim",
-            "language": "C++"
-          }
-        },
-        {
-          "sourceId": "weekly-issue",
           "title": "history4feed",
           "url": "https://github.com/muchdogesec/history4feed",
           "author": "",
@@ -750,26 +692,12 @@
             "submission"
           ],
           "externalId": "3517",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3517"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] 基于VeOps CMDB二开集成Ansible+Jumpserve+Agent的CMDB",
-          "url": "https://github.com/advwei/JW-CMDB",
-          "author": "advwei",
-          "authorUrl": "https://github.com/advwei",
-          "publishedAt": "2026-08-07T07:26:07Z",
-          "summary": "项目地址 类别 Python 项目标题 基于VeOps CMDB二开集成Ansible+Jumpserve+Agent的CMDB 项目描述 本项目是用AI agent基于维易CMDB开源项目进行二开，增加了以下功能： 1、新增Jumpserve资产同步 2、新增IPAM Agent 及同步服务 3、新增Ansible对接中间件及playbooks 4、新增Ansible执行日志板块 5、新增两个固定资产模型 6、新增回收资源显示板块 7、新增配置中心 亮点 1、集成Jumpserve：支持将记录的资产单独或批量推送到Jumpserve堡垒机，回收时自动删除Jumpserve对应资产。 2、集成Ansible：支持动态生成inventory，自定义选择执行playbook，前端自定义输入额外参数。 3、新增IPAM Agent：支持子网单次全量扫描（UI 右键触发），Agent增加HTTP服务与docker后端交互。 资产模型：增加vmserver模型记录资产，delserver模型用于记录回收资产，其他模型依旧支持自定义。 4、Ansible执行日志：前端可视化查看Ansible任务的成功/失败执行情况，详细查看具体主机信息及Ansible执行的标准及错误输出。 5、支持一键批量回收资源，支持三维度统计回收资源概览视图（CPU、内存、硬盘）。 6、配置中心：集中管理，集成Jumpserve、ansible、agent、资产模型IP配置页面。 示例代码 markdown 截图或演示视频 <img width=\"1879\" height=\"879\" alt=\"Image\" src=\" / <img width=\"1877\" height=\"813\" alt=\"Image\" src=\" / <img width=\"1846\" height=\"910\" alt=\"Image\" src=\" / <img width=\"1863\" height=\"743\" alt=\"Image\" src=\" / <img width=\"1515\" height=\"727\" alt=\"Image\" src=\" / <img width=\"1654\" height=\"694\" alt=\"Image\" src=\" / <img width=\"1646\" height=\"836\" alt=\"Image\" src=\" / <img width=\"1852\" height=\"674\" alt=\"Image\" src=\" /",
-          "content": "### 项目地址\n\nhttps://github.com/advwei/JW-CMDB\n\n### 类别\n\nPython\n\n### 项目标题\n\n基于VeOps CMDB二开集成Ansible+Jumpserve+Agent的CMDB\n\n### 项目描述\n\n本项目是用AI agent基于维易CMDB开源项目进行二开，增加了以下功能：\n1、新增Jumpserve资产同步\n2、新增IPAM Agent 及同步服务\n3、新增Ansible对接中间件及playbooks\n4、新增Ansible执行日志板块\n5、新增两个固定资产模型\n6、新增回收资源显示板块\n7、新增配置中心\n\n### 亮点\n\n1、集成Jumpserve：支持将记录的资产单独或批量推送到Jumpserve堡垒机，回收时自动删除Jumpserve对应资产。\n2、集成Ansible：支持动态生成inventory，自定义选择执行playbook，前端自定义输入额外参数。\n3、新增IPAM Agent：支持子网单次全量扫描（UI 右键触发），Agent增加HTTP服务与docker后端交互。\n资产模型：增加vmserver模型记录资产，delserver模型用于记录回收资产，其他模型依旧支持自定义。\n4、Ansible执行日志：前端可视化查看Ansible任务的成功/失败执行情况，详细查看具体主机信息及Ansible执行的标准及错误输出。\n5、支持一键批量回收资源，支持三维度统计回收资源概览视图（CPU、内存、硬盘）。\n6、配置中心：集中管理，集成Jumpserve、ansible、agent、资产模型IP配置页面。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"1879\" height=\"879\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/afc89f6a-4d01-4281-b7f5-a66b4838bdaa\" />\n<img width=\"1877\" height=\"813\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ab5b229b-9696-469d-af05-50ae9000c819\" />\n<img width=\"1846\" height=\"910\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/05d5c1aa-5e46-411b-a40f-19c5d634e653\" />\n<img width=\"1863\" height=\"743\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a2747c1b-90a2-4250-bfe6-abf1e0425ac5\" />\n<img width=\"1515\" height=\"727\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c6172acc-9787-4f1c-87c3-399424808672\" />\n<img width=\"1654\" height=\"694\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cb50f4ca-493e-4a46-a7ee-c52dd62b2fe2\" />\n<img width=\"1646\" height=\"836\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/186d1fa9-60af-4d83-910f-48a9448ee17c\" />\n<img width=\"1852\" height=\"674\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/782466e1-f7f2-4e71-9de5-55b78adb9776\" />",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3517",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
           ],
-          "externalId": "3518",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3518"
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -788,7 +716,12 @@
             "submission"
           ],
           "externalId": "3519",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3519"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3519",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -807,7 +740,12 @@
             "submission"
           ],
           "externalId": "3520",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3520"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3520",
+          "__mergedSources": [
+            "阮一峰周刊·正刊推荐",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         }
       ]
     },

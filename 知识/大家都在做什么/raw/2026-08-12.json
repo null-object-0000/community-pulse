@@ -166,44 +166,6 @@
         },
         {
           "sourceId": "weekly-issues",
-          "title": "【开源自荐】ZKE：把 Kubernetes 多集群控制台做成 macOS 风格的 Web Desktop",
-          "url": "https://github.com/togettoyou/zke",
-          "author": "togettoyou",
-          "authorUrl": "https://github.com/togettoyou",
-          "publishedAt": "2026-08-12T02:04:33Z",
-          "summary": "项目开源地址： 项目主页附有在线体验地址，欢迎体验 ZKE（Z Kubernetes Engine）是一款面向私有网络与混合云环境的开源 Kubernetes 多集群管理平台。每个集群中的 Agent 通过 QUIC/mTLS 主动连接 Server；浏览器端 Console 采用 macOS 风格的桌面式交互，将资源管理、终端、权限与审计组织在同一个工作空间中。 <img width=\"2880\" height=\"1530\" alt=\"Image\" src=\" / 为什么选择 ZKE 桌面式交互： 以窗口、Dock 和应用分区组织管理能力，在同一工作空间中切换集群管理、容器服务、终端与安全审计。 适应私有网络： Agent 通过 QUIC/mTLS 主动连接 Server，适合具有独立网络边界的数据中心、私有云、混合云和边缘集群。 多集群不混淆： 提供全局视图，但所有查询和操作都携带明确的 Cluster、Namespace 与资源身份，避免跨集群误操作。 敏感操作受控： 使用 Tenant、Project 和 RBAC 限定权限范围，并通过 DryRun、差异确认、幂等保护与审计降低变更风险。 演示 工作负载诊断能力： <img width=\"2880\" height=\"1530\" alt=\"Image\" src=\" / 工作负载安全更新： <img width=\"2880\" height=\"1530\" alt=\"Image\" src=\" / 角色权限控制： <img width=\"2880\" height=\"1530\" alt=\"Image\" src=\" / ZKE 接下来会做什么 ZKE 当前已经完成平台基础、集群接入与容器服务的主要链路。后续规划集中在两个方向： 多集群可观测性，计划整合指标、日志、事件、告警和资源对比； AI 运维与排障助手（Copilot），计划结合资源状态、事件、日志和指标辅助分析问题，并继续遵守原有权限、确认和审计边界。",
-          "content": "## 项目开源地址：https://github.com/togettoyou/zke\n\n> 项目主页附有在线体验地址，欢迎体验\n\nZKE（Z Kubernetes Engine）是一款面向私有网络与混合云环境的开源 Kubernetes 多集群管理平台。每个集群中的 Agent 通过 QUIC/mTLS 主动连接 Server；浏览器端 Console 采用 macOS 风格的桌面式交互，将资源管理、终端、权限与审计组织在同一个工作空间中。\n\n<img width=\"2880\" height=\"1530\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/45f2cb24-eaf8-4259-9b56-7870ecf7ffaf\" />\n\n## 为什么选择 ZKE\n\n- **桌面式交互：** 以窗口、Dock 和应用分区组织管理能力，在同一工作空间中切换集群管理、容器服务、终端与安全审计。\n- **适应私有网络：** Agent 通过 QUIC/mTLS 主动连接 Server，适合具有独立网络边界的数据中心、私有云、混合云和边缘集群。\n- **多集群不混淆：** 提供全局视图，但所有查询和操作都携带明确的 Cluster、Namespace 与资源身份，避免跨集群误操作。\n- **敏感操作受控：** 使用 Tenant、Project 和 RBAC 限定权限范围，并通过 DryRun、差异确认、幂等保护与审计降低变更风险。\n\n## 演示\n\n工作负载诊断能力：\n\n<img width=\"2880\" height=\"1530\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/23a3f365-e4f3-4672-a24c-d57db4b45a28\" />\n\n工作负载安全更新：\n\n<img width=\"2880\" height=\"1530\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/84c18719-b7ed-47fa-a709-332ad081e526\" />\n\n角色权限控制：\n\n<img width=\"2880\" height=\"1530\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8684e103-5208-4ec8-aef0-8b1640b938ae\" />\n\n## ZKE 接下来会做什么\n\nZKE 当前已经完成平台基础、集群接入与容器服务的主要链路。后续规划集中在两个方向：\n\n- 多集群可观测性，计划整合指标、日志、事件、告警和资源对比；\n- AI 运维与排障助手（Copilot），计划结合资源状态、事件、日志和指标辅助分析问题，并继续遵守原有权限、确认和审计边界。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11134",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11134"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】昆虫世界：60 种昆虫的 3D 图鉴，每一只都是代码实时生成的，仓库里没有模型文件",
-          "url": "https://github.com/xr843/insect-world",
-          "author": "xr843",
-          "authorUrl": "https://github.com/xr843",
-          "publishedAt": "2026-08-12T02:21:06Z",
-          "summary": "项目开源地址： （MIT） 在线体验： （English： ） 可交互的 3D 昆虫图鉴 —— 旋转、缩放、点击模型上的彩色标注点，看 60 种昆虫的身体构造、生活史与生态角色。60 个物种覆盖 14 个目。 每一只虫的几何体都是 TypeScript 在浏览器里实时算出来的，仓库里没有一个 .glb／.gltf，也没有一张贴图。 <img width=\"1400\" alt=\"60 种 / 14 个目的图鉴总览\" src=\" / 为什么不用现成模型 同类的解剖类站点，每个器官是一份约 3.2 MB 的 GLB 资产，属于采购或扫描来的素材。昆虫没有对应的现成资产可买，所以换了条路：把昆虫形态参数化 —— 体分头／胸／腹三段，胸部生三对足、两对翅，附肢是分节的锥管，翅面由放射状翅脉支撑。这些写成参数以后，加一个物种只需要写一份尺寸与配色的描述，而不是再买一个模型。 代价是写实度不如三维扫描，换来的是零资产依赖、任意可扩展，以及每处形态都能在代码里追溯到形态学依据。 单个物种 1.4 万~3.6 万三角面（最小蠼螋 14,420，最大柞蚕蛾 35,732），浏览器里构建耗时 30~90 ms 首屏 JS gzip 约 424 KB；物种代码按需分包，点到谁才下载谁；桌面后期管线 103 KB 懒加载，手机不下载 表面微观（刻点／沟纹／绒面／蜂窝复眼）由程序贴图在运行时生成 交互 每个控件都有真实响应，不留只有样子的按钮： 分步讲解分 3~4 步，每翻一步，3D 镜头自己移到讲到的那个部位上 小测真能作答：判对错、给解释、统计得分 剖切用裁剪平面真的切开模型，分层让外骨骼半透明，对比在展台底部浮出对照条并可换对照物种 <img width=\"1400\" alt=\"分步讲解 —— 讲到哪一步，镜头就移到哪个部位\" src=\" / 双主题，同一个馆的日与夜： | 浅色「标本台」 | 暗色「博物馆之夜」 | | | | | <img width=\"700\" alt=\"标本台\" src=\" / | <img width=\"700\" alt=\"博物馆之夜\" src=\" / | 需要事先说明的 60 种昆虫的讲解文案由 AI 撰写，没有经过昆虫学文献或专业人士逐条核校，适合当作「看着好玩、顺便认个形态」的读物，不适合作为学术或教学的引用来源。英文版同样是 AI 翻译、未经母语者校订；学名（拉丁二名法）两版一致，那是唯一可靠的对照锚点。发现错处欢迎开 issue。 技术栈：React 19 + Three.js + reactthreefiber + TypeScript + Vite，静态托管在 Cloudflare Pages，无后端。仓库含 4030 个测试，README 里记了一份「踩过的坑」，都是只有真跑起来才会撞上、类型检查抓不到的问题。",
-          "content": "## 项目开源地址：https://github.com/xr843/insect-world （MIT）\n\n## 在线体验：https://insect-world.pages.dev （English：https://insect-world.pages.dev/en/ ）\n\n可交互的 3D 昆虫图鉴 —— 旋转、缩放、点击模型上的彩色标注点，看 60 种昆虫的身体构造、生活史与生态角色。60 个物种覆盖 14 个目。\n\n**每一只虫的几何体都是 TypeScript 在浏览器里实时算出来的，仓库里没有一个 `.glb`／`.gltf`，也没有一张贴图。**\n\n<img width=\"1400\" alt=\"60 种 / 14 个目的图鉴总览\" src=\"https://raw.githubusercontent.com/xr843/insect-world/master/docs/screenshots/05-gallery.jpg\" />\n\n## 为什么不用现成模型\n\n同类的解剖类站点，每个器官是一份约 3.2 MB 的 GLB 资产，属于采购或扫描来的素材。昆虫没有对应的现成资产可买，所以换了条路：把昆虫形态参数化 —— 体分头／胸／腹三段，胸部生三对足、两对翅，附肢是分节的锥管，翅面由放射状翅脉支撑。这些写成参数以后，加一个物种只需要写一份尺寸与配色的描述，而不是再买一个模型。\n\n代价是写实度不如三维扫描，换来的是零资产依赖、任意可扩展，以及每处形态都能在代码里追溯到形态学依据。\n\n- 单个物种 1.4 万~3.6 万三角面（最小蠼螋 14,420，最大柞蚕蛾 35,732），浏览器里构建耗时 30~90 ms\n- 首屏 JS gzip 约 424 KB；物种代码按需分包，点到谁才下载谁；桌面后期管线 103 KB 懒加载，手机不下载\n- 表面微观（刻点／沟纹／绒面／蜂窝复眼）由程序贴图在运行时生成\n\n## 交互\n\n每个控件都有真实响应，不留只有样子的按钮：\n\n- **分步讲解**分 3~4 步，每翻一步，3D 镜头自己移到讲到的那个部位上\n- **小测**真能作答：判对错、给解释、统计得分\n- **剖切**用裁剪平面真的切开模型，**分层**让外骨骼半透明，**对比**在展台底部浮出对照条并可换对照物种\n\n<img width=\"1400\" alt=\"分步讲解 —— 讲到哪一步，镜头就移到哪个部位\" src=\"https://raw.githubusercontent.com/xr843/insect-world/master/docs/screenshots/06-lesson.jpg\" />\n\n双主题，同一个馆的日与夜：\n\n| 浅色「标本台」 | 暗色「博物馆之夜」 |\n| --- | --- |\n| <img width=\"700\" alt=\"标本台\" src=\"https://raw.githubusercontent.com/xr843/insect-world/master/docs/screenshots/02-beetle-closeup.jpg\" /> | <img width=\"700\" alt=\"博物馆之夜\" src=\"https://raw.githubusercontent.com/xr843/insect-world/master/docs/screenshots/03-dark-stage.jpg\" /> |\n\n## 需要事先说明的\n\n**60 种昆虫的讲解文案由 AI 撰写，没有经过昆虫学文献或专业人士逐条核校**，适合当作「看着好玩、顺便认个形态」的读物，不适合作为学术或教学的引用来源。英文版同样是 AI 翻译、未经母语者校订；学名（拉丁二名法）两版一致，那是唯一可靠的对照锚点。发现错处欢迎开 issue。\n\n技术栈：React 19 + Three.js + react-three-fiber + TypeScript + Vite，静态托管在 Cloudflare Pages，无后端。仓库含 4030 个测试，README 里记了一份「踩过的坑」，都是只有真跑起来才会撞上、类型检查抓不到的问题。\n",
-          "metrics": {
-            "comments": 3
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11135",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11135"
-        },
-        {
-          "sourceId": "weekly-issues",
           "title": "【开源自荐】2026 8.12 日全食 3D 模拟器",
           "url": "https://github.com/DophinL/solar-eclipse-2026-simulator",
           "author": "DophinL",
@@ -220,25 +182,6 @@
           ],
           "externalId": "11136",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11136"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】Motion Lexicon：可直接安装的 React 动效组件与基础动作库",
-          "url": "https://github.com/Ryan-yang125/motion-lexicon",
-          "author": "Ryan-yang125",
-          "authorUrl": "https://github.com/Ryan-yang125",
-          "publishedAt": "2026-08-12T02:55:16Z",
-          "summary": "项目地址： 在线体验： 项目简介 Motion Lexicon 是一个开源的 React 动效组件与原子动效库，帮助开发者从真实产品场景出发，预览交互、理解动效规则，并通过 shadcn Registry 把完整实现直接安装到项目中。 特点 提供 48 个完整产品与网站组件，覆盖 Motion、GSAP、Three.js、原生 WebGL、SVG 和 CSS。 收录 44 个原子动效，其中 40 个可以直接运行和安装，另外 4 个用于讲解动效设计规则。 每个条目包含真实交互预览、TypeScript 源码、实际依赖、相关动效说明和减弱动效方案。 支持 shadcn Registry，可以把单个组件或原子动效直接安装进现有 React 项目。 附带 Agent Skill，支持构建页面、推荐、编排、实现、审查和贡献六种工作模式。 中英文页面均已静态预渲染，代码采用 MIT 许可证。 安装示例 bash npx shadcn@latest add npx shadcn@latest add 截图 !Motion Lexicon 组件目录 !Motion Lexicon 组件详情",
-          "content": "项目地址：https://github.com/Ryan-yang125/motion-lexicon\n\n在线体验：https://motion-lexicon.pages.dev/zh/\n\n### 项目简介\n\nMotion Lexicon 是一个开源的 React 动效组件与原子动效库，帮助开发者从真实产品场景出发，预览交互、理解动效规则，并通过 shadcn Registry 把完整实现直接安装到项目中。\n\n### 特点\n\n- 提供 48 个完整产品与网站组件，覆盖 Motion、GSAP、Three.js、原生 WebGL、SVG 和 CSS。\n- 收录 44 个原子动效，其中 40 个可以直接运行和安装，另外 4 个用于讲解动效设计规则。\n- 每个条目包含真实交互预览、TypeScript 源码、实际依赖、相关动效说明和减弱动效方案。\n- 支持 shadcn Registry，可以把单个组件或原子动效直接安装进现有 React 项目。\n- 附带 Agent Skill，支持构建页面、推荐、编排、实现、审查和贡献六种工作模式。\n- 中英文页面均已静态预渲染，代码采用 MIT 许可证。\n\n### 安装示例\n\n```bash\nnpx shadcn@latest add https://motion-lexicon.pages.dev/r/copy-button.json\nnpx shadcn@latest add https://motion-lexicon.pages.dev/r/primitive-slide-in.json\n```\n\n### 截图\n\n![Motion Lexicon 组件目录](https://raw.githubusercontent.com/Ryan-yang125/motion-lexicon/main/docs/assets/readme-v4-components.png)\n\n![Motion Lexicon 组件详情](https://raw.githubusercontent.com/Ryan-yang125/motion-lexicon/main/docs/assets/readme-v4-component.png)\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11137",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11137"
         },
         {
           "sourceId": "weekly-issues",
@@ -298,25 +241,6 @@
           "externalId": "11140",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11140",
           "siteLogo": "https://www.aigardendesign.io/apple-touch-icon.png"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "LinkSense 寻找 DevRel / 开源社区合作伙伴",
-          "url": "https://github.com/ruanyf/weekly/issues/11141",
-          "author": "Bo-infocare",
-          "authorUrl": "https://github.com/Bo-infocare",
-          "publishedAt": "2026-08-12T03:29:41Z",
-          "summary": "LinkSense，一个面向组织的开源 AI 平台。 现在很多人已经在用 Codex、Claude Code 等工具，并开始创建自己的 Skills 和 AI 工作流。但到了组织层面，一个很现实的问题是：这些个人积累下来的 AI 能力，怎么共享、复用、管理，并持续沉淀下来？ LinkSense 想解决的，就是如何把个人 AI 能力变成组织能力。 LinkSense 正在准备开源发布。我们希望找到一位真正懂开源、懂开发者的伙伴，有实战经验的人一起把这件事做好。 你会参与： 设计 OSS Launch 和 DevRel 策略 打磨 GitHub、README、Docs 和开发者体验 找到并连接早期用户、AI Builders 和 Contributors 推动项目在国内外开发者社区的传播 探索 Skills 生态和开发者激励机制 我们不太在意标准的岗位背景，我们更看重你是否真正参与过开源项目、理解开发者社区，并对 AI Coding / Agent / Skills 生态有自己的判断。 这不是一个单纯做内容或社区运营的岗位。我们希望找到一个愿意和我们一起思考、实验，并长期参与 LinkSense 开源生态建设的伙伴。 合作方式：全职或远程均可，时间灵活 LinkSense 由 Infocare 发起并孵化。Infocare 是一家专注于教育数字化与 AI 的技术公司。 联系方式： bozhang@linksense.org.cn 邮件标题请注明「LinkSense DevRel」，简单介绍自己并附上 GitHub / LinkedIn / 参与过的开源项目即可，无需正式简历。 Infocare： www.infocare.org.cn",
-          "content": "**LinkSense，一个面向组织的开源 AI 平台。**\n\n现在很多人已经在用 Codex、Claude Code 等工具，并开始创建自己的 Skills 和 AI 工作流。但到了组织层面，一个很现实的问题是：这些个人积累下来的 AI 能力，怎么共享、复用、管理，并持续沉淀下来？\n\n**LinkSense 想解决的，就是如何把个人 AI 能力变成组织能力。**\n\nLinkSense 正在准备开源发布。我们希望找到一位真正懂开源、懂开发者的伙伴，有实战经验的人一起把这件事做好。\n\n你会参与：\n* 设计 OSS Launch 和 DevRel 策略\n* 打磨 GitHub、README、Docs 和开发者体验\n* 找到并连接早期用户、AI Builders 和 Contributors\n* 推动项目在国内外开发者社区的传播\n* 探索 Skills 生态和开发者激励机制\n\n我们不太在意标准的岗位背景，我们更看重你是否真正参与过开源项目、理解开发者社区，并对 AI Coding / Agent / Skills 生态有自己的判断。\n\n这不是一个单纯做内容或社区运营的岗位。我们希望找到一个愿意和我们一起思考、实验，并长期参与 LinkSense 开源生态建设的伙伴。\n\n合作方式：全职或远程均可，时间灵活\n\n_LinkSense 由 Infocare 发起并孵化。Infocare 是一家专注于教育数字化与 AI 的技术公司。\n联系方式： bozhang@linksense.org.cn\n邮件标题请注明「LinkSense DevRel」，简单介绍自己并附上 GitHub / LinkedIn / 参与过的开源项目即可，无需正式简历。\nInfocare： www.infocare.org.cn_",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11141",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11141"
         },
         {
           "sourceId": "weekly-issues",
@@ -434,25 +358,6 @@
           "externalId": "11147",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11147",
           "siteLogo": "https://ai-price-compare.konata9.cc/apple-touch-icon.png"
-        },
-        {
-          "sourceId": "weekly-issues",
-          "title": "【开源自荐】PinShell：把任意本地 HTML 钉成全局置顶的 macOS 悬浮窗，直播/录屏角标专用",
-          "url": "https://github.com/niyongsheng/PinShell",
-          "author": "niyongsheng",
-          "authorUrl": "https://github.com/niyongsheng",
-          "publishedAt": "2026-08-12T08:32:43Z",
-          "summary": "项目开源地址： PinShell 是一个轻量级 macOS 悬浮窗工具：把任意本地 HTML 文件变成全局置顶、支持点击穿透的悬浮窗口，专为直播和录屏场景设计——在 OBS、Cap、QuickTime 录制时，把直播角标、水印时钟、状态提示钉在画面角落。 所有 UI、轮播和动画都写在 HTML/CSS/JS 里，PinShell 只是一个极薄的本地外壳（NSPanel + WKWebView），不内置任何业务逻辑；改完 HTML 按 ⌘R 立即生效，无需重新编译。 !PinShell 预览 内置 4 个模板 | 模板 | 说明 | ||| | 社交徽章轮播 | X / WeChat / Bilibili 徽章 5 秒轮播 | | LIVE 状态点 | 脉冲动画的录制状态胶囊 | | 社交胶囊栏 | 一排账号胶囊 | | 水印角标 | 低对比度时钟 + 日期 + 联系方式 | !Badge Carousel !Social Rail !Watermark 特点 HTML 即产品：模板 / 轮播 / 动效全在 HTML 里，编辑后 ⌘R 重载即可，不动原生代码 点击穿透：鼠标事件直接穿透到下层窗口，不遮挡操作 CLI 加载：PinShell ./overlay.html 或 open a PinShell examples/badgecarousel.html 跨桌面置顶：所有桌面空间全局置顶，无 Dock 图标，常驻菜单栏 自更新：24h 静默检查 GitHub Releases 新版本 适用场景 直播 / OBS 角标：LIVE 状态点、社交账号胶囊、水印时钟 录屏提示：快捷键说明、流程步骤贴在画面角落 桌面小组件：倒计时、股价、天气——任意 HTML 都能钉上去 Apache 2.0 开源，macOS 13+。",
-          "content": "## 项目开源地址：https://github.com/niyongsheng/PinShell\n\nPinShell 是一个轻量级 macOS 悬浮窗工具：把任意本地 HTML 文件变成全局置顶、支持点击穿透的悬浮窗口，专为直播和录屏场景设计——在 OBS、Cap、QuickTime 录制时，把直播角标、水印时钟、状态提示钉在画面角落。\n\n所有 UI、轮播和动画都写在 HTML/CSS/JS 里，PinShell 只是一个极薄的本地外壳（NSPanel + WKWebView），不内置任何业务逻辑；改完 HTML 按 ⌘R 立即生效，无需重新编译。\n\n![PinShell 预览](https://raw.githubusercontent.com/niyongsheng/PinShell/main/screenshots/preview.png)\n\n### 内置 4 个模板\n\n| 模板 | 说明 |\n|---|---|\n| 社交徽章轮播 | X / WeChat / Bilibili 徽章 5 秒轮播 |\n| LIVE 状态点 | 脉冲动画的录制状态胶囊 |\n| 社交胶囊栏 | 一排账号胶囊 |\n| 水印角标 | 低对比度时钟 + 日期 + 联系方式 |\n\n![Badge Carousel](https://raw.githubusercontent.com/niyongsheng/PinShell/main/screenshots/template-badge-carousel.png) ![Social Rail](https://raw.githubusercontent.com/niyongsheng/PinShell/main/screenshots/template-social-rail.png) ![Watermark](https://raw.githubusercontent.com/niyongsheng/PinShell/main/screenshots/template-watermark.png)\n\n### 特点\n\n- **HTML 即产品**：模板 / 轮播 / 动效全在 HTML 里，编辑后 ⌘R 重载即可，不动原生代码\n- **点击穿透**：鼠标事件直接穿透到下层窗口，不遮挡操作\n- **CLI 加载**：`PinShell ./overlay.html` 或 `open -a PinShell examples/badge-carousel.html`\n- **跨桌面置顶**：所有桌面空间全局置顶，无 Dock 图标，常驻菜单栏\n- **自更新**：24h 静默检查 GitHub Releases 新版本\n\n### 适用场景\n\n- 直播 / OBS 角标：LIVE 状态点、社交账号胶囊、水印时钟\n- 录屏提示：快捷键说明、流程步骤贴在画面角落\n- 桌面小组件：倒计时、股价、天气——任意 HTML 都能钉上去\n\nApache 2.0 开源，macOS 13+。\n",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "ruanyf-weekly",
-            "submission"
-          ],
-          "externalId": "11148",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11148"
         },
         {
           "sourceId": "weekly-issues",
@@ -598,7 +503,12 @@
             "submission"
           ],
           "externalId": "3529",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3529"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3529",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -617,7 +527,12 @@
             "submission"
           ],
           "externalId": "3530",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3530"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3530",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -636,7 +551,12 @@
             "submission"
           ],
           "externalId": "3531",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3531"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3531",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",
@@ -655,7 +575,12 @@
             "submission"
           ],
           "externalId": "3532",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3532"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3532",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "hellogithub-issues",

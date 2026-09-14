@@ -65,7 +65,12 @@
             "submission"
           ],
           "externalId": "11252",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11252"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11252",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -256,7 +261,12 @@
             "submission"
           ],
           "externalId": "11263",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11263"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11263",
+          "__mergedSources": [
+            "阮一峰周刊·用户投稿",
+            "HelloGitHub·用户投稿"
+          ],
+          "__mergedCount": 2
         },
         {
           "sourceId": "weekly-issues",
@@ -347,25 +357,6 @@
       "items": [
         {
           "sourceId": "hellogithub-issues",
-          "title": "[Open Source] termagitchi: give every AI coding agent its own terminal pet",
-          "url": "https://github.com/TevvvB/termagitchi",
-          "author": "TevvvB",
-          "authorUrl": "https://github.com/TevvvB",
-          "publishedAt": "2026-08-18T21:10:41Z",
-          "summary": "Project URL Category Go Project Title Give every AI coding agent its own terminal pet Project Description A Go CLI that gives every AI coding agent session its own creature in the terminal status line, with one den per git worktree. Its mood tracks how tidy that worktree is, so six agents at once are six pets you can tell apart. Highlights Most terminal pets belong to you: one creature, nurtured over time. This one belongs to the agent, which is what makes it useful rather than decorative. When six Claude Code or Codex sessions are running across six worktrees, the status line tells you which session you are looking at and which one is in trouble, because the creature is derived from the session and its mood is derived from the worktree's tidiness. 41 species across 5 rarity bands, plus shiny variants, and 16 cities that name the dens. pets den shows the collection: which species you have found and which places you have worked in. A creature is a hash, not a record. Nothing is persisted to decide identity, so there is no state to migrate or corrupt. The statusline path runs once a second in every open session, so it reads two small cache files and nothing else: no git, no network. The expensive work happens in a throttled background probe. Verified end to end against Claude Code. The Codex hooks are written but have not been tested against a real Codex, and the README says so. The tmux and shellprompt modes need nothing from the agent at all, so they work with Aider, Amp, Gemini CLI or anything else. Installs itself into whichever agents you actually have, backs up every config it touches, and leaves your other hooks alone. pets uninstall reverses it. Single static binary, MIT, no runtime dependencies. Example Code markdown install, then wire into whichever agents are present curl fsSL | sh pets install one line per live session, across every worktree pets party the collection: species found, and cities worked in pets den Screenshots or Demo Videos !six worktrees, six creatures",
-          "content": "### Project URL\n\nhttps://github.com/TevvvB/termagitchi\n\n### Category\n\nGo\n\n### Project Title\n\nGive every AI coding agent its own terminal pet\n\n### Project Description\n\nA Go CLI that gives every AI coding agent session its own creature in the terminal status line, with one den per git worktree. Its mood tracks how tidy that worktree is, so six agents at once are six pets you can tell apart.\n\n### Highlights\n\nMost terminal pets belong to you: one creature, nurtured over time. This one belongs to the agent, which is what makes it useful rather than decorative. When six Claude Code or Codex sessions are running across six worktrees, the status line tells you which session you are looking at and which one is in trouble, because the creature is derived from the session and its mood is derived from the worktree's tidiness.\n\n- 41 species across 5 rarity bands, plus shiny variants, and 16 cities that name the dens. `pets den` shows the collection: which species you have found and which places you have worked in.\n- A creature is a hash, not a record. Nothing is persisted to decide identity, so there is no state to migrate or corrupt.\n- The status-line path runs once a second in every open session, so it reads two small cache files and nothing else: no git, no network. The expensive work happens in a throttled background probe.\n- Verified end to end against Claude Code. The Codex hooks are written but have not been tested against a real Codex, and the README says so. The tmux and shell-prompt modes need nothing from the agent at all, so they work with Aider, Amp, Gemini CLI or anything else.\n- Installs itself into whichever agents you actually have, backs up every config it touches, and leaves your other hooks alone. `pets uninstall` reverses it.\n- Single static binary, MIT, no runtime dependencies.\n\n### Example Code\n\n```markdown\n# install, then wire into whichever agents are present\ncurl -fsSL https://raw.githubusercontent.com/TevvvB/termagitchi/main/install.sh | sh\npets install\n\n# one line per live session, across every worktree\npets party\n\n# the collection: species found, and cities worked in\npets den\n```\n\n### Screenshots or Demo Videos\n\n![six worktrees, six creatures](https://raw.githubusercontent.com/TevvvB/termagitchi/main/docs/demo.gif)\n",
-          "metrics": {
-            "comments": 1
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3560",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3560"
-        },
-        {
-          "sourceId": "hellogithub-issues",
           "title": "[开源自荐] 优派简历: 一款高颜值 免费的AI在线简历生成器",
           "url": "https://github.com/oopooa/opresume",
           "author": "oopooa",
@@ -382,25 +373,6 @@
           ],
           "externalId": "3561",
           "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3561"
-        },
-        {
-          "sourceId": "hellogithub-issues",
-          "title": "[开源推荐] repo-cover",
-          "url": "https://github.com/sjh9714/repo-cover",
-          "author": "sjh9714",
-          "authorUrl": "https://github.com/sjh9714",
-          "publishedAt": "2026-08-19T11:18:42Z",
-          "summary": "项目地址 类别 人工智能 项目标题 让编程智能体为仓库设计社交预览图的 Agent 技能 项目描述 repocover 是一个 Agent 技能，让 Claude Code、Codex 等编程智能体为 GitHub 仓库设计社交预览图（og:image）。不调用图像模型，智能体直接写出一个自包含的 1280x640 HTML 文件，配套的 Python 检查器对对比度、文本溢出和中日韩换行做确定性校验，最后用本地 Chrome 导出 PNG。 亮点 设计品味不是靠提示词，而是写成模型无法偏离的数字约束（4px 网格、单强调色自动加深到 WCAG 对比度、按名称长度分级的字号）。中文排版是一等公民，使用 Noto Sans SC 和正确的换行规则，检查器会把排版破坏判为失败。四种风格由仓库的语言颜色和名称哈希派生，不会有两张相同的卡片。在线画廊可直接查看每张卡片的源码。 示例代码 markdown 截图或演示视频",
-          "content": "### 项目地址\n\nhttps://github.com/sjh9714/repo-cover\n\n### 类别\n\n人工智能\n\n### 项目标题\n\n让编程智能体为仓库设计社交预览图的 Agent 技能\n\n### 项目描述\n\nrepo-cover 是一个 Agent 技能，让 Claude Code、Codex 等编程智能体为 GitHub 仓库设计社交预览图（og:image）。不调用图像模型，智能体直接写出一个自包含的 1280x640 HTML 文件，配套的 Python 检查器对对比度、文本溢出和中日韩换行做确定性校验，最后用本地 Chrome 导出 PNG。\n\n### 亮点\n\n设计品味不是靠提示词，而是写成模型无法偏离的数字约束（4px 网格、单强调色自动加深到 WCAG 对比度、按名称长度分级的字号）。中文排版是一等公民，使用 Noto Sans SC 和正确的换行规则，检查器会把排版破坏判为失败。四种风格由仓库的语言颜色和名称哈希派生，不会有两张相同的卡片。在线画廊可直接查看每张卡片的源码。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\nhttps://raw.githubusercontent.com/sjh9714/repo-cover/main/docs/hero.png\n\nhttps://sjh9714.github.io/repo-cover/",
-          "metrics": {
-            "comments": 0
-          },
-          "tags": [
-            "hellogithub",
-            "submission"
-          ],
-          "externalId": "3562",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3562"
         }
       ]
     },
