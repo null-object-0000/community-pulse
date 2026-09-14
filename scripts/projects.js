@@ -84,7 +84,7 @@ function projectPage(project, locale) {
   const initials = e(project.name.replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
   const seenTags = new Set();
   const detailTags = [
-    ...D.taxonomyTags(item, locale, 8).map(label => ({ label, origin: 'devtrends' })),
+    ...D.taxonomyTagEntries(item, locale, 8).map(entry => ({ label: entry.label, origin: 'devtrends', path: entry.path })),
     ...(language ? [{ label: language, origin: 'language' }] : []),
     ...project.topics.map(label => ({ label, origin: 'source' })),
   ].filter(tag => { const key = String(tag.label).toLowerCase(); if (!key || seenTags.has(key)) return false; seenTags.add(key); return true; }).slice(0, 12);

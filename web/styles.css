@@ -173,6 +173,15 @@ h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.3; margin: 0; lette
 .trend-card li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; min-width: 0; }
 .trend-card li a { min-width: 0; overflow: hidden; font-size: .9rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
 .trend-card li a span { margin-left: 5px; color: var(--accent); }
+/* A top-level topic lists the sub-topics published this period; the same chip row also sits between a
+   category page heading and its range control when the topic has children. The number stays visible so
+   a rolled-up parent is never mistaken for a topic that grew on its own. */
+.trend-subtopics { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 0 0 16px; color: var(--muted); font-size: .78rem; }
+.trend-subtopics > span { font-weight: 650; }
+.trend-subtopics a { display: inline-flex; align-items: baseline; gap: 6px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); text-decoration: none; }
+.trend-subtopics a:hover { border-color: var(--accent); color: var(--accent); }
+.trend-subtopics em { color: var(--faint); font-style: normal; font-variant-numeric: tabular-nums; }
+.trend-subtopics-page { margin: -10px 0 22px; }
 
 /* A neutral interface still needs a restrained data ink on the trends page. Keep this separate
    from both the fixed brand blue and the visitor-selected interaction accent. */
@@ -566,22 +575,25 @@ body[data-view="cards"] { visibility: hidden; }
 /* Product screenshots belong to project detail pages; the discovery feed stays one dense text row. */
 .item-gallery { display: none; align-items: center; gap: 5px; margin-top: 8px; }
 
-/* Repositories that remain on GitHub Trending are useful context, but not new discoveries. Keep
-   three compact highlights collapsed below the feed instead of repeating full project cards. */
+/* Repositories that remain on GitHub Trending are useful context, but not new discoveries. They stay
+   collapsed below the feed and keep the shape of a feed row — description, mark, tags, project link —
+   because that is what makes them worth opening. Only the source and total-star columns give way:
+   for a repository we have already shown, today's stars and how often it appeared say everything. */
 .trending-continuation { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .trending-continuation summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 16px; cursor: pointer; list-style: none; }
 .trending-continuation summary::-webkit-details-marker { display: none; }
 .trending-continuation summary > span { display: inline-flex; align-items: center; gap: 8px; }
 .trending-continuation summary svg { width: 18px; height: 18px; color: var(--muted); }
-.trending-continuation summary small, .trending-continuation > p, .trending-continuation li small { color: var(--muted); }
+.trending-continuation summary small, .trending-continuation > p, .trending-continuation .item-continuation { color: var(--muted); }
 .trending-continuation[open] summary small { transform: rotate(180deg); }
-.trending-continuation > p { margin: 0; padding: 0 16px 10px; font-size: .8125rem; }
-.trending-continuation ul { margin: 0; padding: 0 16px 12px; list-style: none; }
-.trending-continuation li + li { border-top: 1px solid var(--line); }
-.trending-continuation li a, .trending-continuation li:not(:has(a)) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 12px; padding: 9px 0; }
-.trending-continuation li b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.trending-continuation li small { grid-column: 1; font-size: .75rem; }
-.trending-continuation li a > span { grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--muted); }
+.trending-continuation > p { margin: 0; padding: 0 16px 12px; font-size: .8125rem; }
+.trending-continuation .feed { padding: 0 16px 8px; }
+.trending-continuation .feed-item { min-height: 0; padding: 13px 0; }
+.trending-continuation .feed-item:first-child { border-top: 1px solid var(--line); }
+/* The source and score tracks stay in place so a continuation row lines up with the feed above it;
+   the continuation line spans both. */
+.trending-continuation .item-continuation { display: flex; align-items: center; justify-content: flex-end; grid-column: 4 / -1; font-size: .75rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 600px) { .trending-continuation .feed-item { grid-template-columns: 42px minmax(0, 1fr); }.trending-continuation .item-continuation { grid-column: 2 / -1; grid-row: 2; justify-content: flex-start; white-space: normal; } }
 .panel .item-gallery { display: flex; }
 .gallery-thumb { flex: 0 0 auto; width: 54px; height: 34px; padding: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: var(--subtle); }
 .gallery-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }

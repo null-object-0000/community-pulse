@@ -33,7 +33,7 @@
       trendsLangUnavailable: '编程语言视角暂不可用：语言信息来自 GitHub 仓库快照，而「{label}」窗口内共 {eligible} 天含 GitHub 项目、其中仅 {covered} 天已解析出语言，增长率会被「数据从缺失变为可得」放大，因此不作为趋势展示。',
       trendsRange: '收录范围', trendsRangeRecent: '本周期', trendsRange4Weeks: '近 4 周', trendsRange12Weeks: '近 12 周', trendsRangeAll: '全部历史',
       trendsRangeSpan: '{start} – {end} 内首次发现 {n} 个项目', trendsLibrarySpan: '共收录 {n} 个项目 · 最早 {first} · 最近 {last}',
-      trendsLoadMore: '显示更多（还有 {n} 个项目）', tagDevTrends: 'DT', tagSource: '原始', tagLanguage: '语言', tagDevTrendsTitle: 'DevTrends 归类', tagSourceTitle: '项目或来源原始标签', tagLanguageTitle: '编程语言',
+      trendsLoadMore: '显示更多（还有 {n} 个项目）', trendsSubTopics: '子主题', trendsSubTopicOf: '{parent}的子主题', tagDevTrends: 'DT', tagSource: '原始', tagLanguage: '语言', tagDevTrendsTitle: 'DevTrends 归类', tagSourceTitle: '项目或来源原始标签', tagLanguageTitle: '编程语言',
     },
     en: {
       discover: 'Discover', trends: 'Trends', archive: 'Archive', slogan: 'What developers are building',
@@ -62,19 +62,21 @@
       trendsLangUnavailable: 'The programming-language lens is unavailable: language comes from the GitHub repository snapshot, and of the {eligible} days in the “{label}” window that carry GitHub projects only {covered} have a resolved language. The growth rate would measure the data arriving rather than adoption, so it is not shown as a trend.',
       trendsRange: 'Time range', trendsRangeRecent: 'This period', trendsRange4Weeks: '4 weeks', trendsRange12Weeks: '12 weeks', trendsRangeAll: 'All time',
       trendsRangeSpan: '{n} projects first discovered {start} – {end}', trendsLibrarySpan: 'Total {n} projects · first {first} · latest {last}',
-      trendsLoadMore: 'Show more ({n} remaining)', tagDevTrends: 'DT', tagSource: 'Original', tagLanguage: 'Language', tagDevTrendsTitle: 'DevTrends classification', tagSourceTitle: 'Original project or source tag', tagLanguageTitle: 'Programming language',
+      trendsLoadMore: 'Show more ({n} remaining)', trendsSubTopics: 'Sub-topics', trendsSubTopicOf: 'Sub-topic of {parent}', tagDevTrends: 'DT', tagSource: 'Original', tagLanguage: 'Language', tagDevTrendsTitle: 'DevTrends classification', tagSourceTitle: 'Original project or source tag', tagLanguageTitle: 'Programming language',
     },
   };
   const sourceLabels = {
     vibecafe: ['VibeCafé', 'VibeCafé'], 'chinese-indie-dev': ['中文独立开发者', 'Chinese Indie Developers'],
     'chinese-indie-dev-programmer': ['中文独立开发者·程序员版', 'Indie Dev · Programmers'],
     'chinese-indie-dev-game': ['中文独立开发者·游戏版', 'Indie Dev · Games'],
-    // List rows give a source name one 172px column; a literal translation no longer fits there.
+    // List rows give a source name one 150px column（12px 字号下，扣掉 28px 徽标与 8px 间距只剩 114px）；
+    // 名字超过这个宽度就会被省略号截断，翻译和全称都放不下。
     'weekly-issues': ['科技爱好者周刊投稿', 'Weekly Submissions'], 'weekly-issue': ['科技爱好者周刊', 'Tech Enthusiast Weekly'],
     'hellogithub-issues': ['HelloGitHub 投稿', 'HelloGitHub Submissions'], 'hellogithub-issue': ['HelloGitHub 月刊', 'HelloGitHub Monthly Picks'],
     'github-trending': ['GitHub Trending', 'GitHub Trending'], 'github-trending-cn': ['GitHub 中文趋势', 'GitHub Trending China'],
     producthunt: ['Product Hunt', 'Product Hunt'],
-    showhn: ['Hacker News·Show HN', 'Hacker News · Show HN'], v2ex: ['V2EX·分享创造', 'V2EX · I Made This'],
+    // Show HN 只是 HN 的投稿渠道，不是整个 HN 热榜；徽标已是 HN 图标，名字不必再背一遍品牌（原名宽 136px，行内必被截断）。
+    showhn: ['Show HN', 'Show HN'], v2ex: ['V2EX·分享创造', 'V2EX · I Made This'],
   };
   const sourceDirectory = {
     vibecafe: { url: 'https://vibecafe.ai/', logo: '/source-vibecafe.svg' },
@@ -135,6 +137,15 @@
       ['deepseek-harness', 'DeepSeek Harness', 'DeepSeek Harness'], ['openclaw', 'OpenClaw', 'OpenClaw'], ['cursor', 'Cursor', 'Cursor'],
     ],
   };
+  // Second-level topics. A narrow scene belongs to exactly one top-level use case — novel writing is a
+  // kind of content creation, and the travel scene expects narrower topics such as travel imagery.
+  // Items are classified with the narrowest id only (`normalizeTaxonomy` drops a parent whose child is
+  // also present, and the model is told to do the same), while readers roll every child back up into
+  // its parent, so one project is never counted twice inside a single facet and a top-level topic's
+  // numbers stay the sum of its direct hits plus its sub-topics.
+  const taxonomyParents = {
+    useCases: { 'novel-writing': 'content-creation' },
+  };
   // The trend page treats the primary implementation language as a third analytical lens. Keep it
   // deterministic and separate from editorial taxonomy so old reports participate immediately and
   // a model cannot turn synonymous spellings into incompatible time-series buckets.
@@ -150,7 +161,11 @@
     const result = { version: 1 };
     for (const [name, index] of Object.entries(facetIndex)) {
       const limit = name === 'integrations' ? 5 : (name === 'platforms' ? 3 : 2);
-      result[name] = [...new Set((Array.isArray(value?.[name]) ? value[name] : []).map(String).filter(id => index.has(id)))].slice(0, limit);
+      const ids = [...new Set((Array.isArray(value?.[name]) ? value[name] : []).map(String).filter(id => index.has(id)))];
+      // A sub-topic implies its parent, so an explicit pair would count the same project twice once
+      // the parent rolls its children up. Keep the narrowest id; readers re-derive the parent.
+      const narrowest = ids.filter(id => !ids.some(other => other !== id && facetAncestors(name, other).includes(id)));
+      result[name] = narrowest.slice(0, limit);
     }
     return result;
   }
@@ -162,6 +177,21 @@
     const entry = facetIndex[name]?.get(id) || (name === 'languages' ? languageIndex.get(id) : null);
     return entry ? (locale === 'en' ? entry.labelEn : entry.labelZh) : id;
   };
+  // Hierarchy helpers shared by the trend model, the renderer, and the browser. `facetAncestors`
+  // walks up (nearest first) and is what an item's own ids imply; `facetDescendants` walks down and is
+  // what one cluster covers, i.e. itself plus every nested sub-topic.
+  const facetParent = (name, id) => taxonomyParents[name]?.[id] || null;
+  const facetChildren = (name, id) => Object.entries(taxonomyParents[name] || {}).filter(([, parent]) => parent === id).map(([child]) => child);
+  const facetAncestors = (name, id) => {
+    const chain = [];
+    for (let current = facetParent(name, id); current; current = facetParent(name, current)) chain.push(current);
+    return chain;
+  };
+  const facetDescendants = (name, id) => [id, ...facetChildren(name, id).flatMap(child => facetDescendants(name, child))];
+  const facetLineage = (name, id) => [...facetAncestors(name, id).reverse(), id];
+  // "内容创作 › 小说创作" — the flat label is still what chips show; this is for places that have room
+  // to state where a sub-topic sits (trend cards, breadcrumbs, tag tooltips, JSON-LD item names).
+  const facetPathLabel = (name, id, locale = 'zh-CN') => facetLineage(name, id).map(value => facetLabel(name, value, locale)).join(' › ');
   function itemLanguages(item = {}) {
     const raw = String(item.github?.language || item.language || '').trim().toLowerCase();
     const aliases = {
@@ -230,18 +260,23 @@
     if (inferred.useCases.includes('travel-mobility') && !explicit.useCases.includes('travel-mobility')) {
       explicit.useCases = ['travel-mobility', ...explicit.useCases.filter(id => id !== 'lifestyle-entertainment')].slice(0, 2);
     }
-    return explicit;
+    return normalizeTaxonomy(explicit);
   }
-  function taxonomyTags(item, locale = 'zh-CN', limit = 3) {
+  // Facet tags carry the id and its hierarchy so a caller can label a sub-topic and still say what it
+  // belongs to. `taxonomyTags` keeps returning plain labels for list rows, where there is no room.
+  function taxonomyTagEntries(item, locale = 'zh-CN', limit = 3) {
     const taxonomy = itemTaxonomy(item), ordered = ['useCases', 'agentRoles', 'productForms', 'platforms', 'integrations'];
-    const tags = [];
+    const entries = [];
     for (const name of ordered) for (const id of taxonomy[name]) {
       const label = facetLabel(name, id, locale);
-      if (!tags.includes(label)) tags.push(label);
-      if (tags.length >= limit) return tags;
+      if (entries.some(entry => entry.label === label)) continue;
+      const parent = facetParent(name, id);
+      entries.push({ name, id, label, path: parent ? facetPathLabel(name, id, locale) : '' });
+      if (entries.length >= limit) return entries;
     }
-    return tags;
+    return entries;
   }
+  const taxonomyTags = (item, locale = 'zh-CN', limit = 3) => taxonomyTagEntries(item, locale, limit).map(entry => entry.label);
   const t = (locale, key, args = {}) => String(messages[locale]?.[key] ?? messages['zh-CN'][key] ?? key)
     .replace(/\{(\w+)\}/g, (_, name) => args[name] ?? '');
   const escapeHtml = (value = '') => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -528,7 +563,7 @@
     const taxonomy = itemTaxonomy(item);
     const semanticIds = new Set(Object.values(taxonomy).flat().map(value => String(value).toLowerCase()));
     if (semanticIds.has('mcp-service')) semanticIds.add('mcp');
-    const facetTags = taxonomyTags({ ...item, taxonomy }, locale);
+    const facetTags = taxonomyTagEntries({ ...item, taxonomy }, locale);
     const originalTags = [];
     for (const tag of [...(item.github?.topics || []), ...(item.tags || [])]) {
       const key = String(tag).trim().toLowerCase();
@@ -540,11 +575,11 @@
     // When the project supplies a meaningful original label, reserve one of the three visible
     // slots for it so the provenance marker is useful rather than merely theoretical.
     const devtrendsLimit = Math.max(0, limit - Math.min(1, originalTags.length));
-    for (const tag of facetTags) {
-      const key = String(tag).trim().toLowerCase();
+    for (const entry of facetTags) {
+      const key = String(entry.label).trim().toLowerCase();
       if (!key || seen.has(key)) continue;
       seen.add(key);
-      tags.push({ label: tag, origin: 'devtrends' });
+      tags.push({ label: entry.label, origin: 'devtrends', path: entry.path });
       if (tags.length === devtrendsLimit) break;
     }
     tags.push(...originalTags.slice(0, limit - tags.length));
@@ -555,9 +590,25 @@
     const origin = tag.origin === 'source' ? 'source' : tag.origin === 'language' ? 'language' : 'devtrends';
     const marker = origin === 'source' ? t(locale, 'tagSource') : origin === 'language' ? t(locale, 'tagLanguage') : t(locale, 'tagDevTrends');
     const title = origin === 'source' ? t(locale, 'tagSourceTitle') : origin === 'language' ? t(locale, 'tagLanguageTitle') : t(locale, 'tagDevTrendsTitle');
-    return `<span class="tag tag-${origin}" data-tag-origin="${origin}" data-tag-label="${escapeHtml(tag.label)}" title="${escapeHtml(title)}"><small>${escapeHtml(marker)}</small>${escapeHtml(tag.label)}</span>`;
+    // A sub-topic says what it belongs to in the tooltip, so the chip can stay one or two words.
+    return `<span class="tag tag-${origin}" data-tag-origin="${origin}" data-tag-label="${escapeHtml(tag.label)}"${tag.path ? ` data-tag-path="${escapeHtml(tag.path)}"` : ''} title="${escapeHtml(tag.path ? `${title} · ${tag.path}` : title)}"><small>${escapeHtml(marker)}</small>${escapeHtml(tag.label)}</span>`;
   }
-  function renderItem(item, locale, { date = '', index = 0, showDate = false } = {}) {
+  // A repository that is still on GitHub Trending is not a new discovery: its source never changes
+  // and its total-star column restates the ranking it was already published in. A continuation row
+  // trades both for the one line that explains why it is here — today's stars and how many of the
+  // cooldown reports already showed it. Both numbers ride on the item (`trendingPolicy.continuedItems`
+  // in collect.js) so the row still explains itself once the policy object is gone.
+  function continuationMeta(item, locale) {
+    const today = Number(item.metrics?.today || 0);
+    const continuation = item.trendingContinuation || {};
+    const appearances = Math.max(1, Number(continuation.recentAppearances) || 1);
+    const window = Math.max(appearances, Number(continuation.cooldownDays) || 3);
+    return [
+      today > 0 ? (locale === 'en' ? `+${compact(today, locale)} stars today` : `今日 +${compact(today, locale)} stars`) : '',
+      locale === 'en' ? `seen in ${appearances} of the last ${window} reports` : `近 ${window} 期出现 ${appearances} 次`,
+    ].filter(Boolean).join(' · ');
+  }
+  function renderItem(item, locale, { date = '', index = 0, showDate = false, continuation = false } = {}) {
     const repo = repository(item), projectPath = item.projectPath;
     const links = itemLinks(item), primary = safeUrl(item.websiteUrl || item.url) || repo?.url;
     const source = sourceInfo(item);
@@ -579,12 +630,15 @@
     const discoveryDate = showDate && date ? `<time class="tag tag-date item-discovery-date" datetime="${escapeHtml(date)}">${escapeHtml(dateLabel(date, locale))}</time>` : '';
     // Every row already belongs to the report date in the selector, and an item's own publishedAt
     // (UTC, per source) only contradicted it, so the row carries no date of its own.
-    return `<article class="feed-item" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
+    const trailing = continuation
+      ? `<div class="item-continuation">${escapeHtml(continuationMeta(item, locale))}</div>`
+      : `<div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="${escapeHtml(sourceName(item, locale))}" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a class="source-label" href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span class="source-label" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
+      <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div>`;
+    return `<article class="feed-item${continuation ? ' is-continuation' : ''}" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
       <span class="item-avatar avatar-${index % 5}${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
       <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="item-tags${discoveryDate ? ' has-date' : ''}">${discoveryDate}${language ? tagHtml({ label: language, origin: 'language' }, locale) : ''}${tags.map(tag => tagHtml(tag, locale)).join('')}</div></div>
-      <div class="item-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="${escapeHtml(sourceName(item, locale))}" loading="lazy" />` : sourceMark(item)}</span>${sourceUrl ? `<a class="source-label" href="${escapeHtml(trackedUrl(sourceUrl, item, date))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</a>` : `<span class="source-label" title="${escapeHtml(sourceName(item, locale))}">${escapeHtml(sourceName(item, locale))}</span>`}</div>
-      <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div></article>`;
+      ${trailing}</article>`;
   }
   // Mobile card deck. Stacked cards are what makes the gesture read as "the content is moving":
   // the card under the top one rises to full size as the top card leaves, so a drag always shows
@@ -689,5 +743,5 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, taxonomyFacets, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

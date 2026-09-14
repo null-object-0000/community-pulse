@@ -30,7 +30,11 @@ function buildWeeklySeries(entities, type, id, latest, weeks = 12) {
   for (const entity of entities) {
     if (entity.firstSeen < start || entity.firstSeen > latest) continue;
     const memberships = type === 'languages' ? D.itemLanguages(entity.item) : D.itemTaxonomy(entity.item)[type];
-    if (!memberships?.includes(id)) continue;
+    if (!memberships?.length) continue;
+    // A top-level topic's series is the sum of its direct hits and its sub-topics, exactly like its
+    // counts and its category library — the sparkline must not contradict the heading.
+    const scope = new Set(D.facetDescendants(type, id));
+    if (!memberships.some(value => scope.has(value))) continue;
     const index = Math.floor((Date.parse(`${entity.firstSeen}T00:00:00Z`) - startTime) / 604800000);
     if (buckets[index]) buckets[index].count++;
   }
@@ -61,13 +65,23 @@ function buildEntityIndex(reports) {
   return entities;
 }
 
+// Every cluster an entity belongs to, including the ancestors a sub-topic rolls up into. The trend
+// model, the per-range stats and the category library all read this one function, so a project an
+// item reaches only through a sub-topic still appears on the parent topic's page and counts there.
 function clusterMemberships(entity) {
   const taxonomy = D.itemTaxonomy(entity.item);
-  return [
-    ...taxonomy.useCases.map(id => ['useCases', id]),
-    ...taxonomy.agentRoles.map(id => ['agentRoles', id]),
-    ...D.itemLanguages(entity.item).map(id => ['languages', id]),
-  ];
+  const memberships = [];
+  const push = (type, id) => {
+    // An item tagged with a sub-topic also belongs to its parent, so the parent's page and counts stay
+    // the sum of its direct hits plus everything nested under it.
+    for (const value of [id, ...D.facetAncestors(type, id)]) {
+      if (!memberships.some(([knownType, knownId]) => knownType === type && knownId === value)) memberships.push([type, value]);
+    }
+  };
+  for (const id of taxonomy.useCases) push('useCases', id);
+  for (const id of taxonomy.agentRoles) push('agentRoles', id);
+  for (const id of D.itemLanguages(entity.item)) push('languages', id);
+  return memberships;
 }
 
 function rangeStats(list, latest) {

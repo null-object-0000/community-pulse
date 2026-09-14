@@ -143,13 +143,18 @@ async function localize(item) {
     ? '同时生成自然、简洁的英文标题；保留已有英文品牌名、仓库名、型号和人名，翻译中文说明部分。'
     : '';
   const categoryRules = D.categories.map(category => `- ${category.id}: ${category.description}`).join('\n');
-  const facetRules = Object.entries(D.taxonomyFacets).map(([name, values]) => `${name}: ${values.map(([id, zh]) => `${id}（${zh}）`).join('、')}`).join('\n');
+  // Sub-topics are spelled out with their parent so the model picks the narrowest id instead of
+  // emitting both levels (which `normalizeTaxonomy` would collapse anyway, but silently).
+  const facetRules = Object.entries(D.taxonomyFacets).map(([name, values]) => `${name}: ${values.map(([id, zh]) => {
+    const parent = D.facetParent(name, id);
+    return `${id}（${zh}${parent ? `，${D.facetLabel(name, parent, 'zh-CN')}的二级主题` : ''}）`;
+  }).join('、')}`).join('\n');
   const prompt = `为 DevTrends 翻译并归类一条内容。${sourceNote}${direction}${titleRule}
 从下面的固定分类中选择一个最能描述项目主要用途和目标用户的分类。必须只选一个。按产品解决的问题归类，不按来源、开源状态或作者身份归类；AI、React、自托管等只是实现或次要功能时，不要据此归类；确实无法判断才选 other。
 ${categoryRules}
 再从以下受控分面中选择标签，只能使用列出的 ID：
 ${facetRules}
-useCases 表示项目解决的业务场景，必须选 1–2 个；agentRoles 只在项目属于 Agent 生态时选 0–2 个，并区分垂直 Agent、能力扩展、管理编排、可观测性、评测安全和运行时；productForms 选 0–2 个；platforms 选 0–3 个；integrations 选 0–5 个。编程语言不是运行平台，不要把 Python、TypeScript 等填进 platforms。没有可靠证据的可选分面返回空数组。
+useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二级主题的必须先看二级主题，命中就只写那个最细的 ID，不要再写它的上级（例如小说创作只写 novel-writing，不要同时写 content-creation）；agentRoles 只在项目属于 Agent 生态时选 0–2 个，并区分垂直 Agent、能力扩展、管理编排、可观测性、评测安全和运行时；productForms 选 0–2 个；platforms 选 0–3 个；integrations 选 0–5 个。编程语言不是运行平台，不要把 Python、TypeScript 等填进 platforms。没有可靠证据的可选分面返回空数组。
 描述来自社区投稿，可能混着投稿模板的字段名（「项目地址」「项目标题」「项目描述」「必写」「类别」等）、空字段占位（「No response」「暂无」「待补充」）、残缺标签（「官网有演示：」）或 markdown 链接语法。摘要只写项目本身：不要出现这些字段名、占位符、模板残句和链接语法。
 不添加原文没有的信息，不输出宣传套话或解释。只输出严格 JSON：{${requested}}
 

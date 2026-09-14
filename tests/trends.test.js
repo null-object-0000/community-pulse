@@ -1,7 +1,8 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const D = require('../web/shared.js');
-const { buildTrends, trendIdentity, trendPath } = require('../scripts/trends.js');
+const { buildTrends, buildEntityIndex, buildClusterLibrary, trendIdentity, trendPath } = require('../scripts/trends.js');
+const R = require('../scripts/render-site.js');
 
 const item = (title, summary, sourceId, url, taxonomy, language) => ({ title, summary, sourceId, url, taxonomy, ...(language ? { github: { language } } : {}) });
 const report = (date, items) => ({ date, results: [{ sourceId: 'feed', items }] });
@@ -83,8 +84,101 @@ test('trend model counts unique first-seen products and applies project/source t
   }
 });
 
-test('programming languages are deterministic families with stable routes', () => {
-  assert.deepEqual(D.itemLanguages({ github: { language: 'TypeScript' } }), ['typescript']);
+test('sub-topics stay narrowest on an item and roll up into their parent topic', () => {
+  // novel-writing is a second-level topic of content-creation. An item is stored with the narrowest id
+  // only, and every reader re-derives the parent, so one project is never counted twice inside a facet.
+  assert.equal(D.facetParent('useCases', 'novel-writing'), 'content-creation');
+  assert.equal(D.facetParent('useCases', 'content-creation'), null);
+  assert.deepEqual(D.facetChildren('useCases', 'content-creation'), ['novel-writing']);
+  assert.deepEqual(D.facetAncestors('useCases', 'novel-writing'), ['content-creation']);
+  assert.deepEqual(D.facetDescendants('useCases', 'content-creation'), ['content-creation', 'novel-writing']);
+  assert.deepEqual(D.facetDescendants('useCases', 'novel-writing'), ['novel-writing']);
+  assert.deepEqual(D.facetDescendants('useCases', 'travel-mobility'), ['travel-mobility']);
+  assert.equal(D.facetPathLabel('useCases', 'novel-writing', 'zh-CN'), '内容创作 › 小说创作');
+  assert.equal(D.facetPathLabel('useCases', 'novel-writing', 'en'), 'Content creation › Novel writing');
+  assert.equal(D.facetPathLabel('useCases', 'travel-mobility', 'zh-CN'), '旅行与出行');
+  // An explicit parent + child pair collapses to the child, whatever order it arrives in.
+  assert.deepEqual(D.normalizeTaxonomy({ useCases: ['content-creation', 'novel-writing'] }).useCases, ['novel-writing']);
+  assert.deepEqual(D.normalizeTaxonomy({ useCases: ['novel-writing', 'content-creation'] }).useCases, ['novel-writing']);
+  // Historical rules do the same: a title matching both patterns carries only the sub-topic.
+  assert.deepEqual(D.inferTaxonomy({ title: 'Novel Studio', summary: '小说创作与写作助手' }).useCases, ['novel-writing']);
+  // The chip stays short; the hierarchy rides along for tooltips and for the category pages.
+  assert.deepEqual(D.taxonomyTagEntries({ taxonomy: { useCases: ['novel-writing'] } }, 'zh-CN').map(entry => [entry.label, entry.path]),
+    [['小说创作', '内容创作 › 小说创作']]);
+  const html = D.renderItem({ title: 'Novel Studio', sourceId: 'weekly-issues', taxonomy: { useCases: ['novel-writing'] } }, 'zh-CN');
+  assert.match(html, /data-tag-label="小说创作" data-tag-path="内容创作 › 小说创作"/);
+  assert.match(html, /title="DevTrends 归类 · 内容创作 › 小说创作"/);
+});
+
+test('a parent topic owns its sub-topics in counts, ranges, library, and weekly series', () => {
+  const content = { useCases: ['content-creation'], agentRoles: [], productForms: [], platforms: [], integrations: [] };
+  const novel = { useCases: ['novel-writing'], agentRoles: [], productForms: [], platforms: [], integrations: [] };
+  const reports = [
+    report('2026-08-12', [item('Old copy tool', 'old', 'archive', 'https://old-copy.example/', content)]),
+    report('2026-09-08', [item('Copy One', 'copy', 'vibecafe', 'https://copy-one.example/', content)]),
+    report('2026-09-09', [item('Copy Two', 'copy', 'weekly-issues', 'https://copy-two.example/', content)]),
+    report('2026-09-10', [item('Novel One', 'novel', 'weekly-issues', 'https://novel-one.example/', novel)]),
+    report('2026-09-11', [item('Novel Two', 'novel', 'producthunt', 'https://novel-two.example/', novel)]),
+    report('2026-09-12', [item('Novel Three', 'novel', 'github-trending', 'https://novel-three.example/', novel)]),
+  ];
+  const entities = buildEntityIndex(reports);
+  const model = buildTrends(reports, '2026-09-13', { entities });
+  const parent = model.clusters.find(cluster => cluster.key === 'useCases:content-creation');
+  const child = model.clusters.find(cluster => cluster.key === 'useCases:novel-writing');
+  assert.ok(parent, 'the parent topic reaches the thresholds on its own hits plus its sub-topic');
+  assert.ok(child, 'a sub-topic is published as its own cluster too');
+  assert.equal(child.recentCount, 3);
+  assert.equal(child.baselineCount, 0);
+  assert.equal(parent.recentCount, 5, 'two direct hits plus the three sub-topic projects');
+  assert.equal(parent.baselineCount, 1);
+  assert.equal(parent.ranges.recent.count, 5);
+  assert.equal(parent.ranges.all.count, 6);
+  // The sparkline must agree with the heading rather than quietly dropping the sub-topic.
+  assert.equal(child.weekly.reduce((total, point) => total + point.count, 0), 3);
+  assert.equal(parent.weekly.reduce((total, point) => total + point.count, 0), 6);
+  // Browsing the parent shows both levels; browsing the child stays narrow.
+  const parentLibrary = buildClusterLibrary(entities, parent, model.latest);
+  const childLibrary = buildClusterLibrary(entities, child, model.latest);
+  assert.equal(parentLibrary.projects.length, 6);
+  assert.equal(childLibrary.projects.length, 3);
+  assert.deepEqual(parentLibrary.projects.map(row => D.itemTaxonomy(row).useCases[0]).sort(),
+    ['content-creation', 'content-creation', 'content-creation', 'novel-writing', 'novel-writing', 'novel-writing']);
+});
+
+test('the trends page and category pages state the parent/sub-topic relationship', () => {
+  const content = { useCases: ['content-creation'], agentRoles: [], productForms: [], platforms: [], integrations: [] };
+  const novel = { useCases: ['novel-writing'], agentRoles: [], productForms: [], platforms: [], integrations: [] };
+  const reports = [
+    report('2026-09-08', [item('Copy One', 'copy', 'vibecafe', 'https://copy-one.example/', content)]),
+    report('2026-09-09', [item('Copy Two', 'copy', 'weekly-issues', 'https://copy-two.example/', content)]),
+    report('2026-09-10', [item('Novel One', 'novel', 'weekly-issues', 'https://novel-one.example/', novel)]),
+    report('2026-09-11', [item('Novel Two', 'novel', 'producthunt', 'https://novel-two.example/', novel)]),
+    report('2026-09-12', [item('Novel Three', 'novel', 'github-trending', 'https://novel-three.example/', novel)]),
+  ];
+  const model = buildTrends(reports, '2026-09-13', { entities: buildEntityIndex(reports) });
+  const parent = model.clusters.find(cluster => cluster.key === 'useCases:content-creation');
+  const child = model.clusters.find(cluster => cluster.key === 'useCases:novel-writing');
+  const page = R.trendsPage(model, 'zh-CN');
+  // The child card names its parent; the parent card links the published sub-topic with its count.
+  assert.match(page, /业务场景 · 内容创作的子主题/);
+  assert.match(page, /class="trend-card is-subtopic"/);
+  assert.match(page, /class="trend-subtopics"><span>子主题<\/span><a href="\/trends\/use-cases\/novel-writing\/">小说创作<em>3<\/em><\/a>/);
+  assert.match(page, /"name":"内容创作 › 小说创作"/, 'structured data keeps the path');
+  const en = R.trendsPage(model, 'en');
+  assert.match(en, /Sub-topic of Content creation/);
+  assert.match(en, /href="\/en\/trends\/use-cases\/novel-writing\/">Novel writing<em>3<\/em>/);
+  const parentPage = R.trendClusterPage(model, parent, 'zh-CN');
+  assert.match(parentPage, /<h1>业务场景 · 内容创作<\/h1>/);
+  assert.match(parentPage, /trend-subtopics-page[\s\S]*?href="\/trends\/use-cases\/novel-writing\/"/);
+  const childPage = R.trendClusterPage(model, child, 'zh-CN');
+  assert.match(childPage, /<h1>业务场景 · 内容创作 › 小说创作<\/h1>/);
+  // The trail is a real link, and the structured breadcrumb grows a level with it.
+  assert.match(childPage, /面包屑导航"><a href="\/trends\/">大家正在集中做什么<\/a><span>\/<\/span><a href="\/trends\/use-cases\/content-creation\/">内容创作<\/a><span>\/<\/span><span>小说创作<\/span>/);
+  assert.match(childPage, /"position":3,"name":"小说创作","item":"https:\/\/devtrends.site\/trends\/use-cases\/novel-writing\/"/);
+  assert.match(childPage, /<title>业务场景 · 内容创作 › 小说创作 \| DevTrends<\/title>/);
+});
+
+test('programming languages are deterministic families with stable routes', () => {  assert.deepEqual(D.itemLanguages({ github: { language: 'TypeScript' } }), ['typescript']);
   assert.deepEqual(D.itemLanguages({ language: 'Kotlin' }), ['java-kotlin']);
   assert.deepEqual(D.itemLanguages({ github: { language: 'C++' } }), ['c-cpp']);
   assert.deepEqual(D.itemLanguages({ github: { language: 'HTML' } }), []);

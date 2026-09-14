@@ -620,6 +620,19 @@ test('every emitted project, report, and sitemap entry has a real static page an
   assert.equal((clusterPage.match(/class="feed-item"/g) || []).length, contentCreation.recentCount);
   assert.match(clusterPage, /data-tag-origin="devtrends"/);
   assert.match(clusterPage, /class="tag tag-date item-discovery-date" datetime="2026-09-/);
+  // A published sub-topic must be reachable from its parent and route back: novel-writing sits under
+  // content-creation (see web/shared.js `taxonomyParents`). The sub-topic itself is data-gated, so these
+  // assertions only run while the window carries enough novel-writing projects.
+  const novel = trends.clusters.find(cluster => cluster.key === 'useCases:novel-writing');
+  if (novel) {
+    assert.ok(fs.existsSync(path.join(dist, novel.path.replace(/^\//, ''), 'index.html')));
+    assert.ok(clusterPage.includes(`href="${novel.path}"`), 'the parent topic links its published sub-topic');
+    assert.match(clusterPage, /class="trend-subtopics trend-subtopics-page"/);
+    const novelPage = fs.readFileSync(path.join(dist, novel.path.replace(/^\//, ''), 'index.html'), 'utf8');
+    assert.match(novelPage, /业务场景 · 内容创作 › 小说创作/);
+    assert.ok(novelPage.includes(`href="${contentCreation.path}"`), 'the sub-topic links back to its parent');
+    assert.match(novelPage, /"position":3,"name":"小说创作"/);
+  }
   const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, urls.length);

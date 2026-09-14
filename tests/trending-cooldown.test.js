@@ -102,9 +102,38 @@ test('report pages keep continuation highlights collapsed outside the discovery 
       }],
     },
   };
-  const html = R.reportPage(report, '2026-09-13', 'zh-CN');
+  // The report only carries identity and today's stars; description, mark and project link come from
+  // the same project catalog the detail pages are built from.
+  const projectIndex = new Map([['acme/still-hot', {
+    item: { title: 'Acme/Still-Hot', githubUrl: 'https://github.com/acme/still-hot', projectPath: '/projects/acme/still-hot/', summary: '一个仍在热榜的项目', metrics: { lang: 'Rust', stars: 9000 } },
+  }]]);
+  const html = R.reportPage(report, '2026-09-13', 'zh-CN', false, false, '2026-09-13', 1, false, projectIndex);
   assert.match(html, /<details class="trending-continuation">/);
   assert.match(html, /7 个仓库已在最近 3 期日报出现/);
   assert.match(html, /acme\/still-hot/);
-  assert.equal((html.match(/class="feed-item"/g) || []).length, 1);
+  // A continuation row is a feed row: description, language chip and the internal project link.
+  const panel = html.slice(html.indexOf('<details class="trending-continuation">'));
+  assert.match(panel, /class="feed-item is-continuation"/);
+  assert.match(panel, /一个仍在热榜的项目/);
+  assert.match(panel, /href="\/projects\/acme\/still-hot\/"/);
+  // Source and total-star columns give way to today's stars and how often we already showed it.
+  assert.match(panel, /<div class="item-continuation">今日 \+1234 stars · 近 3 期出现 2 次<\/div>/);
+  assert.ok(!panel.includes('item-source'), 'the continuation row does not restate its source');
+  assert.ok(!panel.includes('item-score'), 'the continuation row does not restate total stars');
+  // It stays outside the feed, which keeps rendering only that day's new discoveries.
+  assert.equal((html.slice(0, html.indexOf('<details class="trending-continuation">')).match(/class="feed-item"/g) || []).length, 1);
+});
+
+test('a continuation row without a catalog match still renders its own identity', () => {
+  const report = {
+    results: [],
+    trendingPolicy: {
+      cooldownDays: 3,
+      suppressedCount: 1,
+      continuedItems: [{ ...item('acme/orphan', 42), trendingContinuation: { cooldownDays: 3, recentAppearances: 1 } }],
+    },
+  };
+  const html = R.reportPage(report, '2026-09-13', 'en', false, false, '2026-09-13', 0, false);
+  assert.match(html, /class="feed-item is-continuation"/);
+  assert.match(html, /\+42 stars today · seen in 1 of the last 3 reports/);
 });

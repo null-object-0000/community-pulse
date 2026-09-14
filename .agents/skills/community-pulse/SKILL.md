@@ -53,7 +53,7 @@ node scripts/collect.js --strict --require-github-repositories --date 2026-09-07
 | github-trending | GitHub Trending 每日热榜 | 完整 HTML 无损压缩快照 | ⚪ 只有实际观察日 |
 | github-trending-cn | GitHub Trending 中文圈 | 完整 HTML 无损压缩快照 | ⚪ 只有实际观察日 |
 | producthunt | Product Hunt 新品 | GraphQL 全量分页 + 官方精选子集 | ✅ 按 createdAt 北京日归档 |
-| showhn | Hacker News · Show HN | Algolia 搜索 API 按北京日区间取全量（`created_at_i` 范围） | ✅ 可按北京日回溯到 2025-01 |
+| showhn | Show HN | Algolia 搜索 API 按北京日区间取全量（`created_at_i` 范围） | ✅ 可按北京日回溯到 2025-01 |
 | v2ex | V2EX · 分享创造 | 官方公开 API（`/api/topics/show.json?node_name=create`）当前 10 条 | ⚪ 只有实际观察日，无历史接口 |
 
 所有来源中只要能从结构化字段、产品详情或正文识别出 `github.com/owner/repo`，就由 `capture_github_repositories_raw.js` 统一请求 GitHub Repository API，将原始仓库对象落在 `source-raw/github-repositories/YYYY-MM-DD.json`。`collect.js` 只离线合并 star、fork、语言、许可证、创建/更新时间等字段。

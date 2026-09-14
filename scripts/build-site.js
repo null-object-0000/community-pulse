@@ -45,6 +45,9 @@ images.copyImages(outputDir, imageManifest);
 if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
 // Project catalog is built before rendering so report links point only to generated pages.
 const projects = require('./projects.js').buildProjects(reports);
+// The trending-continuation panel renders feed rows, so it needs the same project snapshots the
+// detail pages use: the report's own `continuedItems` only keep identity and today's stars.
+const projectIndex = new Map(projects.map(project => [project.key, project]));
 const latest = dates[0] || null;
 const latestTotal = D.reportItems(reports[0] || { results: [] }).length;
 // The entity index is shared by the trend model and the per-category libraries so both see the
@@ -57,10 +60,10 @@ for (const cluster of trends.clusters) {
 }
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
-  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown, latest, latestTotal, Boolean(trends.latest)));
+  for (const locale of ['zh-CN', 'en']) writePage(D.localPath(`/reports/${report.date}/`, locale), R.reportPage(report, report.date, locale, false, report.hasMarkdown, latest, latestTotal, Boolean(trends.latest), projectIndex));
 }
 for (const locale of ['zh-CN', 'en']) {
-  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown, latest, latestTotal, Boolean(trends.latest)));
+  writePage(D.localPath('/', locale), R.reportPage(reports[0] || { results: [] }, latest, locale, true, reports[0]?.hasMarkdown, latest, latestTotal, Boolean(trends.latest), projectIndex));
   writePage(D.localPath('/cards/', locale), R.cardsPage(reports[0] || { results: [] }, latest, locale));
   writePage(D.localPath('/trends/', locale), R.trendsPage(trends, locale));
   writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale, commentCounts));
