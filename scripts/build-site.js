@@ -54,7 +54,8 @@ const latestTotal = D.reportItems(reports[0] || { results: [] }).length;
 // same first-seen dates, deduplication keys, and "richer observation" item replacements.
 const entities = latest ? buildEntityIndex(reports) : new Map();
 const trends = latest ? buildTrends(reports, latest, { entities }) : { schemaVersion: 1, latest: null, recent: {}, baseline: {}, thresholds: { minProjects: 3, minSources: 2, minGrowthPercent: 25 }, clusters: [] };
-for (const cluster of trends.clusters) {
+const catalogClusters = trends.catalogClusters || trends.clusters;
+for (const cluster of catalogClusters) {
   if (!cluster.dataPath) continue;
   write(cluster.dataPath.replace(/^\//, ''), D.json(buildClusterLibrary(entities, cluster, latest)));
 }
@@ -67,7 +68,8 @@ for (const locale of ['zh-CN', 'en']) {
   writePage(D.localPath('/cards/', locale), R.cardsPage(reports[0] || { results: [] }, latest, locale));
   writePage(D.localPath('/trends/', locale), R.trendsPage(trends, locale));
   writePage(D.localPath('/reports/', locale), R.archivePage(reports, locale, commentCounts));
-  for (const cluster of trends.clusters) writePage(D.localPath(cluster.path, locale), R.trendClusterPage(trends, cluster, locale));
+  const catalogModel = { ...trends, clusters: catalogClusters };
+  for (const cluster of catalogClusters) writePage(D.localPath(cluster.path, locale), R.trendClusterPage(catalogModel, cluster, locale));
 }
 write('404.html', R.notFoundPage('zh-CN'));
 write('en/404.html', R.notFoundPage('en'));
@@ -76,7 +78,7 @@ writePage('/en/404/', R.notFoundPage('en'));
 if (projects.length) require('./projects.js').writeProjects(projects, { write, writePage });
 write('data/projects.json', D.json(Object.fromEntries(projects.map(project => [project.key, project.path]))));
 write('data/trends.json', D.json(trends));
-write('data/index.json', JSON.stringify({ latest, dates, projectCount: projects.length, trendCount: trends.clusters.length, generatedAt: new Date().toISOString() }, null, 2));
+write('data/index.json', JSON.stringify({ latest, dates, projectCount: projects.length, trendCount: trends.clusters.length, categoryCount: catalogClusters.length, generatedAt: new Date().toISOString() }, null, 2));
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${D.origin}/sitemap.xml\nSitemap: ${D.origin}/sitemap-baidu.xml\n`);
 function feedXml(locale) {
   const en = locale === 'en', feedPath = D.localPath('/feed.xml', locale), homePath = D.localPath('/', locale);
@@ -96,7 +98,7 @@ write('feed.xml', feedXml('zh-CN'));
 write('en/feed.xml', feedXml('en'));
 const pagePairs = [
   { route: '/', date: latest }, { route: '/trends/', date: latest }, { route: '/reports/', date: latest },
-  ...trends.clusters.map(cluster => ({ route: cluster.path, date: latest })),
+  ...catalogClusters.map(cluster => ({ route: cluster.path, date: latest })),
   ...dates.map(date => ({ route: `/reports/${date}/`, date })),
   ...projects.map(project => ({ route: project.path, date: project.lastSeen })),
 ];

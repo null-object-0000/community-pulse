@@ -399,14 +399,38 @@
     const percent = value => new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN', {
       style: 'percent', maximumFractionDigits: 1,
     }).format(value);
-    function catalogCard(row) {
+    const localTrendPath = path => {
+      const local = locale === 'en' ? `/en${path}` : path;
+      if (!catalogSources.length || selectedSources.size === catalogSources.length) return local;
+      const target = new URL(local, location.origin);
+      target.searchParams.set('sources', [...selectedSources].sort().join(','));
+      return `${target.pathname}${target.search}`;
+    };
+    function catalogCard(row, rows) {
       const label = locale === 'en' ? row.labelEn : row.labelZh;
       const parentLabel = row.parentId ? D.facetLabel(activeFacet, row.parentId, locale) : '';
       const parent = parentLabel ? (locale === 'en' ? `SUBTOPIC · ${parentLabel}` : `子主题 · ${parentLabel}`) : '';
+      const href = row.path ? localTrendPath(row.path) : '';
+      const title = href ? `<a href="${D.escapeHtml(href)}">${D.escapeHtml(label)}</a>` : D.escapeHtml(label);
       const change = row.isNew
         ? `<strong class="trend-change is-new">${locale === 'en' ? 'NEW' : '新出现'}</strong>`
         : `<strong class="trend-change${row.growth < 0 ? ' is-down' : ''}">${row.growth >= 0 ? '+' : ''}${percent(row.growth)}</strong>`;
-      return `<article class="trend-card${row.parentId ? ' is-subtopic' : ''}" data-catalog-trend-id="${D.escapeHtml(row.id)}"><header><div><span class="trend-kind">${D.escapeHtml(parent || (locale === 'en' ? 'FULL CATALOG' : '全量产品库'))}</span><h2>${D.escapeHtml(label)}</h2></div>${change}</header><div class="trend-metrics"><b>${locale === 'en' ? `${number(row.currentCount)} products` : `${number(row.currentCount)} 个产品`}</b><span>${locale === 'en' ? 'Share' : '占比'} ${percent(row.share)}</span><span>${locale === 'en' ? 'Previous' : '上一周期'} ${number(row.previousCount)}</span></div></article>`;
+      const weekly = row.weekly || [];
+      const peak = Math.max(1, ...weekly.map(point => point.count));
+      const bars = weekly.map((point, index) => {
+        const range = `${D.dateLabel(point.start, locale)} – ${D.dateLabel(point.end, locale)}`;
+        const description = locale === 'en' ? `${range}: ${number(point.count)} products` : `${range}：${number(point.count)} 个产品`;
+        const height = point.count ? Math.max(8, Math.round(point.count / peak * 100)) : 3;
+        return `<span class="trend-bar" data-trend-week="${index}" title="${D.escapeHtml(description)}" aria-label="${D.escapeHtml(description)}"><i style="height:${height}%"></i></span>`;
+      }).join('');
+      const starts = [4, 8, 12].map(weeks => `${weeks}:${weekly[Math.max(0, weekly.length - weeks)]?.start || ''}`).join(';');
+      const spark = weekly.length ? `<div class="trend-spark" aria-label="${locale === 'en' ? 'Weekly new products' : '每周新增产品'}"><div class="trend-spark-heading"><span>${locale === 'en' ? 'Weekly new products' : '每周新增产品'}</span></div><div class="trend-bars">${bars}</div><div class="trend-axis"><time class="trend-axis-start" data-trend-starts="${D.escapeHtml(starts)}">${D.escapeHtml(D.dateLabel(weekly[0].start, locale))}</time><time>${D.escapeHtml(D.dateLabel(weekly.at(-1).end, locale))}</time></div></div>` : '';
+      const examples = (row.examples || []).map(example => `<li>${example.url ? `<a href="${D.escapeHtml(example.url)}" target="_blank" rel="noopener noreferrer">${D.escapeHtml(example.title)}<span aria-hidden="true">↗</span></a>` : `<span>${D.escapeHtml(example.title)}</span>`}<time datetime="${D.escapeHtml(example.date)}">${D.escapeHtml(D.dateLabel(example.date, locale))}</time></li>`).join('');
+      const children = rows.filter(candidate => candidate.parentId === row.id && candidate.currentCount > 0);
+      const subtopics = children.length ? `<p class="trend-subtopics"><span>${locale === 'en' ? 'Subtopics' : '子主题'}</span>${children.map(child => `<a href="${D.escapeHtml(localTrendPath(child.path))}">${D.escapeHtml(locale === 'en' ? child.labelEn : child.labelZh)}<em>${number(child.currentCount)}</em></a>`).join('')}</p>` : '';
+      const count = locale === 'en' ? `${number(row.currentCount)} products` : `${number(row.currentCount)} 个产品`;
+      const countHtml = href ? `<a href="${D.escapeHtml(href)}">${count} →</a>` : count;
+      return `<article class="trend-card${row.parentId ? ' is-subtopic' : ''}" data-catalog-trend-id="${D.escapeHtml(row.id)}"><header><div><span class="trend-kind">${D.escapeHtml(parent || (locale === 'en' ? 'FULL CATALOG' : '全量产品库'))}</span><h2>${title}</h2></div>${change}</header><div class="trend-metrics"><b>${countHtml}</b><span>${locale === 'en' ? `${number(row.sourceCount)} sources` : `${number(row.sourceCount)} 个来源`}</span><span>${locale === 'en' ? 'Baseline' : '基线'} ${number(row.previousCount)}</span></div>${spark}${subtopics}${examples ? `<h3>${locale === 'en' ? 'Recent examples' : '近期代表'}</h3><ul>${examples}</ul>` : ''}</article>`;
     }
     function updateSourceUrl() {
       const url = new URL(location.href);
@@ -433,7 +457,7 @@
         if (requestId !== trendRequest) return;
         const rows = data.results.filter(row => row.currentCount > 0);
         if (panel) panel.innerHTML = rows.length
-          ? rows.map(catalogCard).join('')
+          ? rows.map(row => catalogCard(row, data.results)).join('')
           : `<p class="trend-empty">${locale === 'en' ? 'No matching products in this period.' : '当前周期没有符合条件的产品。'}</p>`;
         const currentWindow = document.querySelector('[data-trend-current-window]');
         const baselineWindow = document.querySelector('[data-trend-baseline-window]');
@@ -447,7 +471,8 @@
           ? `${selectedSources.size} of ${catalogSources.length} sources participate in this result.`
           : `${catalogSources.length} 个来源中有 ${selectedSources.size} 个参与本次计算。`;
         const period = document.querySelector('.trend-period');
-        if (period) period.hidden = true;
+        if (period) period.hidden = false;
+        period?.querySelector('[data-trend-weeks][aria-pressed="true"]')?.click();
       } catch (_) {
         if (requestId === trendRequest && sourceStatus) sourceStatus.textContent = locale === 'en'
           ? 'The full-catalog query is temporarily unavailable; showing the static fallback.'
@@ -613,6 +638,7 @@
     const dataPath = cluster.dataPath;
     let range = ['4w', '12w', 'all'].includes(params.get('range')) ? params.get('range') : 'recent';
     let library = null;
+    let catalogRecent = null;
     const statsEl = document.getElementById('cluster-range-stats');
     const countEl = document.getElementById('cluster-count');
     const sourcesEl = document.getElementById('cluster-sources');
@@ -640,8 +666,8 @@
       paintRangeStats();
       syncRangeUrl();
       if (range === 'recent') {
-        chunkSize = 0;
-        items = D.reportItems(page.report);
+        chunkSize = catalogRecent ? 60 : 0;
+        items = catalogRecent || D.reportItems(page.report);
         renderFeed();
         return;
       }
@@ -673,6 +699,23 @@
       activateRange();
     });
     loadMoreButton?.addEventListener('click', () => { chunkShown++; renderFeed(false); });
+    async function loadCatalogRecent() {
+      const query = new URLSearchParams({ facet: cluster.type, term: cluster.id });
+      if (params.get('sources')) query.set('sources', params.get('sources'));
+      try {
+        const response = await fetch(`/api/v1/products?${query}`, { headers: { accept: 'application/json' } });
+        if (!response.ok) throw new Error(`catalog ${response.status}`);
+        const data = await response.json();
+        catalogRecent = data.products || [];
+        ranges.recent = { start: data.filters.from, end: data.filters.to, count: data.count, sources: data.sourceCount };
+        const recentButton = clusterRange.querySelector('[data-range="recent"] em');
+        if (recentButton) recentButton.textContent = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN').format(data.count);
+        if (range === 'recent') activateRange();
+      } catch (_) {
+        // The server-rendered report projection remains a usable fallback.
+      }
+    }
+    loadCatalogRecent();
     if (range !== 'recent') activateRange();
   }
   if (feed) { paintFilter(); renderFeed(); updateFilterUrl(); }

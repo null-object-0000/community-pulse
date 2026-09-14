@@ -72,7 +72,7 @@ test('trend query recomputes first-seen within the selected source set', async (
       ('p1','useCases','novel-writing','rule','test'),
       ('p2','useCases','content-creation','rule','test');
   `);
-  const { queryTrends } = await import('../worker/catalog-api.mjs');
+  const { queryTrends, queryProducts } = await import('../worker/catalog-api.mjs');
   const base = {
     from: '2026-09-08', to: '2026-09-14', days: 7, facet: 'useCases',
     previousFrom: '2026-09-01', previousTo: '2026-09-07',
@@ -86,6 +86,15 @@ test('trend query recomputes first-seen within the selected source set', async (
   assert.equal(showHn.results.find((row) => row.id === 'novel-writing').currentCount, 1);
   assert.equal(showHn.results.find((row) => row.id === 'content-creation').currentCount, 2);
   assert.equal(showHn.results.find((row) => row.id === 'novel-writing').share, 0.5);
+  const content = showHn.results.find((row) => row.id === 'content-creation');
+  assert.equal(content.sourceCount, 1);
+  assert.equal(content.path, '/trends/use-cases/content-creation/');
+  assert.equal(content.weekly.length, 12);
+  assert.deepEqual(content.examples.map((example) => example.title), ['Two', 'One']);
+  const products = await queryProducts(new QueryAdapter(db), { ...base, sources: ['showhn'] }, 'content-creation');
+  assert.equal(products.count, 2);
+  assert.equal(products.sourceCount, 1);
+  assert.deepEqual(products.products.map((product) => product.title), ['Two', 'One']);
   db.close();
   fs.rmSync(directory, { recursive: true, force: true });
 });
@@ -158,4 +167,14 @@ test('daily catalog upload writes the MySQL projection in one blocking step', ()
   assert.match(workflow, /node scripts\/catalog\/export-mysql\.js --database data\/catalog\/daily\.sqlite --profile trends\s+node scripts\/catalog\/upload-mysql\.js/);
   assert.doesNotMatch(workflow, /export-d1|upload-d1/);
   assert.match(workflow, /run: npm ci/);
+});
+
+test('dynamic trend cards retain charts, examples and category links', () => {
+  const app = fs.readFileSync(path.join(__dirname, '..', 'web', 'app.js'), 'utf8');
+  assert.match(app, /row\.weekly/);
+  assert.match(app, /row\.examples/);
+  assert.match(app, /localTrendPath\(row\.path\)/);
+  assert.match(app, /class="trend-bar" data-trend-week/);
+  assert.match(app, /\/api\/v1\/products\?/);
+  assert.doesNotMatch(app, /if \(period\) period\.hidden = true/);
 });

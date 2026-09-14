@@ -250,11 +250,44 @@ function buildTrends(reports, latest, options = {}) {
     return typeOrder || b.recentCount - a.recentCount || (b.growthPercent ?? 9999) - (a.growthPercent ?? 9999) || a.key.localeCompare(b.key);
   });
 
+  // Source filtering can surface a category that is not a global trend this week.
+  // Publish a stable category-library route for every classified facet so dynamic
+  // MySQL cards always have a real product-list destination instead of a 404.
+  const catalogGroups = new Map();
+  for (const entity of entityList) {
+    for (const [type, id] of clusterMemberships(entity)) {
+      if (!['useCases', 'agentRoles', 'languages'].includes(type)) continue;
+      const key = `${type}:${id}`;
+      if (!catalogGroups.has(key)) catalogGroups.set(key, { key, type, id, entities: [] });
+      catalogGroups.get(key).entities.push(entity);
+    }
+  }
+  const catalogClusters = [...catalogGroups.values()].map(value => {
+    const recent = value.entities.filter(entity => entity.firstSeen >= recentStart && entity.firstSeen <= latest);
+    const baseline = value.entities.filter(entity => entity.firstSeen >= baselineStart && entity.firstSeen <= baselineEnd);
+    const sourceSet = new Set(recent.flatMap(entity => [...entity.sources]));
+    const days = observedDays(value.type);
+    const recentRate = recent.length / Math.max(1, days.recent);
+    const baselineRate = baseline.length / Math.max(1, days.baseline);
+    return {
+      key: value.key, type: value.type, id: value.id,
+      path: trendPath(value.type, value.id), dataPath: trendDataPath(value.type, value.id),
+      ranges: rangeStats(value.entities, latest), recentCount: recent.length,
+      baselineCount: baseline.length, sourceCount: sourceSet.size,
+      growthPercent: baselineRate ? Math.round((recentRate / baselineRate - 1) * 100) : null,
+      isNew: recent.length > 0 && baseline.length === 0,
+      examples: [], weekly: buildWeeklySeries(entityList, value.type, value.id, latest, 12),
+      projects: recent.sort((a, b) => b.firstSeen.localeCompare(a.firstSeen) || a.key.localeCompare(b.key))
+        .map(entity => ({ ...entity.item, trendDate: entity.firstSeen })),
+    };
+  }).filter(cluster => cluster.path).sort((a, b) => a.key.localeCompare(b.key));
+
   return {
     schemaVersion: 4, latest, seriesWeeks: 12,
     recent: { start: recentStart, end: latest, days: recentDays },
     baseline: { start: baselineStart, end: baselineEnd, days: baselineDays },
-    thresholds: { minProjects, minSources, minGrowthPercent }, languages, clusters: output,
+    thresholds: { minProjects, minSources, minGrowthPercent }, languages,
+    clusters: output, catalogClusters,
   };
 }
 

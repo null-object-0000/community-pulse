@@ -583,6 +583,12 @@ test('every emitted project, report, and sitemap entry has a real static page an
   assert.equal(Object.keys(projects).length, index.projectCount); assert.ok(index.projectCount > 0);
   const trends = JSON.parse(fs.readFileSync(path.join(dist, 'data/trends.json')));
   assert.equal(trends.clusters.length, index.trendCount);
+  assert.equal(trends.catalogClusters.length, index.categoryCount);
+  assert.ok(trends.catalogClusters.length >= trends.clusters.length);
+  for (const cluster of trends.catalogClusters) {
+    assert.ok(fs.existsSync(path.join(dist, cluster.path.replace(/^\//, ''), 'index.html')), cluster.path);
+    assert.ok(fs.existsSync(path.join(dist, 'en', cluster.path.replace(/^\//, ''), 'index.html')), `/en${cluster.path}`);
+  }
   assert.ok(fs.existsSync(path.join(dist, 'trends', 'index.html')));
   assert.ok(fs.existsSync(path.join(dist, 'en', 'trends', 'index.html')));
   const trendsPage = fs.readFileSync(path.join(dist, 'trends', 'index.html'), 'utf8');
