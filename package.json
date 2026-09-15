@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "catalog:build": "node scripts/catalog/build-database.js",
-    "catalog:import": "node scripts/catalog/build-database.js --incremental",
-    "catalog:check": "node scripts/catalog/check-database.js",
-    "catalog:export:mysql": "node scripts/catalog/export-mysql.js",
+    "catalog:build": "node scripts/catalog/build-mysql-import.js",
+    "catalog:check": "node scripts/catalog/check-mysql-import.js",
     "catalog:upload:mysql": "node scripts/catalog/upload-mysql.js",
     "catalog:query": "node scripts/catalog/query-trends.js",
     "comments:sync": "node scripts/sync-comment-counts.js",

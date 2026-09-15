@@ -146,12 +146,10 @@ jobs:
           fi
           TARGET="${{ steps.setdate.outputs.date }}"
           OBSERVED="$(TZ=Asia/Shanghai date +%F)"
-          # runner 是一次性的，所以这里只构建 TARGET..OBSERVED 的增量投影；稳定 product_id
+          # 直接从 source-raw 生成 TARGET..OBSERVED 的 MySQL 增量包；稳定 product_id
           # 与 MySQL upsert 让重复执行幂等。Product Hunt 使用全量 records，不是精选日报子集。
-          node scripts/catalog/build-database.js --start "$TARGET" --end "$OBSERVED" \
-            --out data/catalog/daily.sqlite --replace
-          node scripts/catalog/check-database.js data/catalog/daily.sqlite
-          node scripts/catalog/export-mysql.js --database data/catalog/daily.sqlite --profile trends
+          node scripts/catalog/build-mysql-import.js --start "$TARGET" --end "$OBSERVED"
+          node scripts/catalog/check-mysql-import.js
           node scripts/catalog/upload-mysql.js
 
       - name: 持久化站点图片
