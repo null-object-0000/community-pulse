@@ -42,34 +42,54 @@ export function parseTrendFilters(url, availableSources, latestDate) {
 
 function selectedCte(sourceCount) {
   const placeholders = Array.from({ length: sourceCount }, () => '?').join(', ');
-  return `selected_products AS (
-    SELECT product_id, MIN(first_seen_date) AS selected_first_seen
+  return `candidate_products AS (
+    SELECT product_id, MIN(first_seen_date) AS candidate_first_seen
     FROM product_source_first_seen
-    WHERE source_id IN (${placeholders})
+    WHERE source_id IN (${placeholders}) AND first_seen_date BETWEEN ? AND ?
     GROUP BY product_id
+  ),
+  selected_products AS (
+    SELECT c.product_id, c.candidate_first_seen AS selected_first_seen
+    FROM candidate_products c
+    WHERE NOT EXISTS (
+      SELECT 1 FROM product_source_first_seen earlier
+      WHERE earlier.product_id = c.product_id AND earlier.source_id IN (${placeholders})
+        AND earlier.first_seen_date < c.candidate_first_seen
+    )
   )`;
 }
 
-async function all(db, sql, bindings = []) {
-  const result = await db.prepare(sql).bind(...bindings).all();
-  return result.results || [];
+function selectedBindings(filters, earliest) {
+  return [...filters.sources, earliest, filters.to, ...filters.sources];
 }
 
-export async function availableSources(db) {
+async function all(db, sql, bindings = [], timings = null, label = '') {
+  const started = performance.now();
+  try {
+    const result = await db.prepare(sql).bind(...bindings).all();
+    return result.results || [];
+  } finally {
+    if (timings && label) timings.push(`${label};dur=${(performance.now() - started).toFixed(1)}`);
+  }
+}
+
+export async function availableSources(db, timings = null) {
   return all(db, `SELECT s.id, s.name, s.description,
-    COUNT(DISTINCT f.product_id) AS productCount,
+    COUNT(f.product_id) AS productCount,
     MIN(f.first_seen_date) AS firstSeenDate,
     MAX(f.last_seen_date) AS lastSeenDate
     FROM sources s
     LEFT JOIN product_source_first_seen f ON f.source_id = s.id
     WHERE s.enabled = 1
-    GROUP BY s.id, s.name, s.description, s.sort_order
-    ORDER BY s.sort_order, s.id`);
+    GROUP BY s.id
+    ORDER BY s.sort_order, s.id`, [], timings, 'sources');
 }
 
-export async function queryTrends(db, filters) {
+export async function queryTrends(db, filters, timings = null) {
   const baselineDays = filters.baselineDays || filters.days;
   const cte = selectedCte(filters.sources.length);
+  const weeklyStart = offsetDate(filters.to, -83);
+  const selected = selectedBindings(filters, [filters.from, filters.previousFrom, weeklyStart].sort()[0]);
   // Assignments store leaf terms. The recursive relation rolls each leaf up to
   // every ancestor at read time, so a novel-writing product also contributes to
   // content-creation without storing the parent twice. Totals, coverage and term
@@ -98,8 +118,9 @@ export async function queryTrends(db, filters) {
       WHERE t.parent_id IS NOT NULL
     ),
     memberships AS (
-      SELECT DISTINCT ta.product_id, a.term_id
-      FROM taxonomy_assignments ta
+      SELECT DISTINCT sp.product_id, a.term_id
+      FROM selected_products sp
+      JOIN taxonomy_assignments ta ON ta.product_id = sp.product_id
       JOIN ancestors a ON a.facet = ta.facet AND a.leaf_id = ta.term_id
       WHERE ta.facet = ? AND ta.is_current = 1
     )
@@ -122,13 +143,13 @@ export async function queryTrends(db, filters) {
       totals.currentCount, totals.previousCount, classified.classifiedCount
     ORDER BY currentCount DESC, t.sort_order, t.id`;
   const rows = await all(db, resultsSql, [
-    ...filters.sources,
+    ...selected,
     filters.from, filters.to, filters.previousFrom, filters.previousTo,
     filters.from, filters.to, filters.facet,
     filters.facet, filters.facet,
     filters.from, filters.to, filters.previousFrom, filters.previousTo,
     filters.from, filters.to, ...filters.sources, filters.facet,
-  ]);
+  ], timings, 'trendTotals');
   const taxonomyCtes = `${cte},
     ancestors(facet, leaf_id, term_id) AS (
       SELECT facet, id, id FROM taxonomy_terms WHERE facet = ? AND active = 1
@@ -139,12 +160,12 @@ export async function queryTrends(db, filters) {
       WHERE t.parent_id IS NOT NULL
     ),
     memberships AS (
-      SELECT DISTINCT ta.product_id, a.term_id
-      FROM taxonomy_assignments ta
+      SELECT DISTINCT sp.product_id, a.term_id
+      FROM selected_products sp
+      JOIN taxonomy_assignments ta ON ta.product_id = sp.product_id
       JOIN ancestors a ON a.facet = ta.facet AND a.leaf_id = ta.term_id
       WHERE ta.facet = ? AND ta.is_current = 1
     )`;
-  const weeklyStart = offsetDate(filters.to, -83);
   const weeklyRows = await all(db, `WITH RECURSIVE ${taxonomyCtes}
     SELECT m.term_id AS id, sp.selected_first_seen AS date, COUNT(DISTINCT sp.product_id) AS count
     FROM memberships m
@@ -152,8 +173,8 @@ export async function queryTrends(db, filters) {
     WHERE sp.selected_first_seen BETWEEN ? AND ?
     GROUP BY m.term_id, sp.selected_first_seen
     ORDER BY m.term_id, sp.selected_first_seen`, [
-    ...filters.sources, filters.facet, filters.facet, weeklyStart, filters.to,
-  ]);
+    ...selected, filters.facet, filters.facet, weeklyStart, filters.to,
+  ], timings, 'trendWeekly');
   const exampleRows = await all(db, `WITH RECURSIVE ${taxonomyCtes},
     ranked AS (
       SELECT m.term_id AS id, p.id AS productId, p.title,
@@ -166,8 +187,8 @@ export async function queryTrends(db, filters) {
     )
     SELECT id, productId, title, url, githubRepo, date
     FROM ranked WHERE position <= 4 ORDER BY id, date DESC, productId`, [
-    ...filters.sources, filters.facet, filters.facet, filters.from, filters.to,
-  ]);
+    ...selected, filters.facet, filters.facet, filters.from, filters.to,
+  ], timings, 'trendExamples');
   const weeklyByTerm = new Map();
   for (const row of weeklyRows) {
     if (!weeklyByTerm.has(row.id)) weeklyByTerm.set(row.id, new Map());
@@ -236,7 +257,7 @@ export async function queryTrends(db, filters) {
   };
 }
 
-export async function queryProducts(db, filters, term) {
+export async function queryProducts(db, filters, term, timings = null) {
   if (!/^[a-z0-9-]+$/.test(term || '')) throw new Error('invalid taxonomy term');
   const cte = selectedCte(filters.sources.length);
   const rows = await all(db, `WITH RECURSIVE
@@ -250,8 +271,9 @@ export async function queryProducts(db, filters, term) {
       WHERE t.parent_id IS NOT NULL
     ),
     memberships AS (
-      SELECT DISTINCT ta.product_id, a.term_id
-      FROM taxonomy_assignments ta
+      SELECT DISTINCT sp.product_id, a.term_id
+      FROM selected_products sp
+      JOIN taxonomy_assignments ta ON ta.product_id = sp.product_id
       JOIN ancestors a ON a.facet = ta.facet AND a.leaf_id = ta.term_id
       WHERE ta.facet = ? AND ta.is_current = 1
     )
@@ -267,9 +289,9 @@ export async function queryProducts(db, filters, term) {
     GROUP BY p.id, p.title, p.canonical_url, p.github_repo, sp.selected_first_seen
     ORDER BY sp.selected_first_seen DESC, p.id
     LIMIT 10000`, [
-    ...filters.sources, filters.facet, filters.facet, ...filters.sources,
+    ...selectedBindings(filters, filters.from), filters.facet, filters.facet, ...filters.sources,
     term, filters.from, filters.to,
-  ]);
+  ], timings, 'products');
   const sources = new Set();
   const products = rows.map(row => {
     const sourceIds = String(row.sourceIds || '').split(',').filter(Boolean);
@@ -290,25 +312,31 @@ export async function handleCatalogApi(request, env) {
   if (!env.HYPERDRIVE_READ) return json({ error: 'catalog_database_unavailable' }, { status: 503, cacheControl: 'no-store' });
   let db;
   let close = async () => {};
+  const timings = [];
   try {
+    const connectStarted = performance.now();
     const opened = await (await import('./mysql-db.mjs')).openMysql(env.HYPERDRIVE_READ);
+    timings.push(`connect;dur=${(performance.now() - connectStarted).toFixed(1)}`);
     db = opened.db;
     close = opened.close;
-    const sources = await availableSources(db);
+    const sources = await availableSources(db, timings);
+    const headers = () => ({ 'server-timing': timings.join(', ') });
     if (url.pathname === '/api/v1/sources') {
-      return json({ schemaVersion: 1, sources });
+      return json({ schemaVersion: 1, sources }, { headers: headers() });
     }
     if (url.pathname === '/api/v1/trends') {
       const latest = sources.map((source) => source.lastSeenDate).filter(Boolean).sort().at(-1);
       if (!latest) return json({ error: 'catalog_is_empty' }, { status: 503, cacheControl: 'no-store' });
       const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
-      return json(await queryTrends(db, filters));
+      const data = await queryTrends(db, filters, timings);
+      return json(data, { headers: headers() });
     }
     if (url.pathname === '/api/v1/products') {
       const latest = sources.map((source) => source.lastSeenDate).filter(Boolean).sort().at(-1);
       if (!latest) return json({ error: 'catalog_is_empty' }, { status: 503, cacheControl: 'no-store' });
       const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
-      return json(await queryProducts(db, filters, url.searchParams.get('term')));
+      const data = await queryProducts(db, filters, url.searchParams.get('term'), timings);
+      return json(data, { headers: headers() });
     }
     return json({ error: 'not_found' }, { status: 404, cacheControl: 'no-store' });
   } catch (error) {

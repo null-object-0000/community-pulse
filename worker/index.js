@@ -8,11 +8,51 @@ import { handleCatalogApi } from './catalog-api.mjs';
 //
 // 新增平台时：把文件丢进 verification/，并在这里和 wrangler.toml 的 run_worker_first 里各加一条。
 const VERIFICATION_FILE = /^\/(baidu_verify_[A-Za-z0-9._-]+)\.html$/;
+const CACHED_API = new Set(['/api/v1/sources', '/api/v1/trends', '/api/v1/products']);
+
+// Cache API entries are local to each Cloudflare data center. A versioned key keeps later SQL or
+// taxonomy releases from reading an older response while each entry stays fresh for at most 5 min.
+export function apiCacheKey(request) {
+  const url = new URL(request.url);
+  const sources = url.searchParams.get('sources');
+  if (sources !== null) {
+    url.searchParams.set('sources', [...new Set(sources.split(',').map(value => value.trim()).filter(Boolean))].sort().join(','));
+  }
+  url.searchParams.sort();
+  return new Request(new URL(`/_devtrends_api_cache/v1${url.pathname}${url.search}`, url.origin));
+}
+
+export async function cachedCatalogApi(request, env, ctx, handler = handleCatalogApi) {
+  if (request.method !== 'GET' || !CACHED_API.has(new URL(request.url).pathname) || typeof caches === 'undefined') {
+    return handler(request, env);
+  }
+  const cache = caches.default;
+  const key = apiCacheKey(request);
+  try {
+    const hit = await cache.match(key);
+    if (hit) {
+      const headers = new Headers(hit.headers);
+      headers.set('x-devtrends-cache', 'HIT');
+      return new Response(hit.body, { status: hit.status, headers });
+    }
+  } catch (_) {
+    // A cache failure is never a catalog outage: the database path remains authoritative.
+  }
+  const response = await handler(request, env);
+  if (response.status === 200) {
+    const put = cache.put(key, response.clone()).catch(() => {});
+    if (ctx?.waitUntil) ctx.waitUntil(put);
+    else await put;
+  }
+  const headers = new Headers(response.headers);
+  headers.set('x-devtrends-cache', 'MISS');
+  return new Response(response.body, { status: response.status, headers });
+}
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.pathname.startsWith('/api/v1/')) return handleCatalogApi(request, env);
+    if (url.pathname.startsWith('/api/v1/')) return cachedCatalogApi(request, env, ctx);
     const match = url.pathname.match(VERIFICATION_FILE);
     if (!match) return env.ASSETS.fetch(request);
     // html_handling 会把无扩展名的同名路径映射回这个 .html 文件，那一侧是正常的 200。
