@@ -180,7 +180,52 @@ test('the uploader maps every mirrored mark to a content-addressed CDN key', () 
       assert.ok(fs.existsSync(entry.file), entry.file);
     }
     assert.throws(() => uploadEntries({ x: '/images/' + 'a'.repeat(64) + '.bmp' }, directory), /Unsupported image extension/);
-    assert.throws(() => uploadEntries({ x: '/images/' + 'b'.repeat(64) + '.png' }, directory), /Missing mirror file/);
+    const [missing] = uploadEntries({ x: '/images/' + 'b'.repeat(64) + '.png' }, directory);
+    assert.equal(missing.file, null);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('the uploader skips a missing local file when the remote object exists', async () => {
+  const { main } = require('../scripts/image-upload.js');
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-upload-'));
+  const name = 'd'.repeat(64) + '.webp';
+  const uploaded = [], exitCodes = [], errors = [];
+  try {
+    await main({
+      manifest: { remoteOnly: `/images/${name}` },
+      directory,
+      probe: async key => { assert.equal(key, `images/${name}`); return true; },
+      upload: async entry => { uploaded.push(entry); },
+      logger: { log() {}, warn() {}, error(message) { errors.push(message); } },
+      setExitCode: code => { exitCodes.push(code); },
+    });
+    assert.deepEqual(uploaded, []);
+    assert.deepEqual(exitCodes, []);
+    assert.deepEqual(errors, []);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('the uploader fails when both the local file and remote object are missing', async () => {
+  const { main } = require('../scripts/image-upload.js');
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-upload-'));
+  const name = 'e'.repeat(64) + '.png';
+  const uploaded = [], exitCodes = [], errors = [];
+  try {
+    await main({
+      manifest: { missingEverywhere: `/images/${name}` },
+      directory,
+      probe: async () => false,
+      upload: async entry => { uploaded.push(entry); },
+      logger: { log() {}, warn() {}, error(message) { errors.push(message); } },
+      setExitCode: code => { exitCodes.push(code); },
+    });
+    assert.deepEqual(uploaded, []);
+    assert.deepEqual(exitCodes, [1]);
+    assert.match(errors.join('\n'), new RegExp(`Missing mirror file.*${name}.*remote object returned 404.*images:sync`));
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
   }

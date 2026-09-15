@@ -43,10 +43,10 @@ function uploadEntries(manifest, directory = storeDir) {
     const name = path.basename(local);
     const type = contentType[path.extname(name).toLowerCase()];
     if (!type) throw new Error(`Unsupported image extension in manifest: ${local}`);
-    if (!fs.existsSync(path.join(directory, name))) throw new Error(`Missing mirror file for ${local}; run npm run images:sync`);
-    entries.set(`${prefix}/${name}`, type);
+    const file = path.join(directory, name);
+    entries.set(`${prefix}/${name}`, { local, type, file: fs.existsSync(file) ? file : null });
   }
-  return [...entries].map(([key, type]) => ({ key, type, file: path.join(directory, path.basename(key)) })).sort((a, b) => a.key.localeCompare(b.key));
+  return [...entries].map(([key, entry]) => ({ key, ...entry })).sort((a, b) => a.key.localeCompare(b.key));
 }
 
 // A HEAD against the public origin is the cheapest way to learn what is already there: it needs no
@@ -81,27 +81,49 @@ function putObject({ key, file, type }) {
   });
 }
 
-async function main() {
+async function main({
+  manifest = readManifest(),
+  directory = storeDir,
+  probe = alreadyPublished,
+  upload = putObject,
+  logger = console,
+  setExitCode = code => { process.exitCode = code; },
+} = {}) {
   if (!dryRun && !process.env.CLOUDFLARE_API_TOKEN && !process.env.WRANGLER_BIN && !process.env.CI) {
-    console.warn('No CLOUDFLARE_API_TOKEN set: relying on a local `npx wrangler login` session.');
+    logger.warn('No CLOUDFLARE_API_TOKEN set: relying on a local `npx wrangler login` session.');
   }
-  if (!origin) console.warn('IMAGE_BASE is not set: every object is uploaded without checking the origin first.');
-  const entries = uploadEntries(readManifest());
-  const pending = [];
+  if (!origin) logger.warn('IMAGE_BASE is not set: every object is uploaded without checking the origin first.');
+  const entries = uploadEntries(manifest, directory);
+  // --force may bypass the pre-check only when the bytes exist locally. A missing local file can
+  // never be uploaded, so the public origin must still prove that its object already exists.
+  const pending = force ? entries.filter(entry => entry.file) : [];
+  const failures = [];
   let present = 0, unknown = 0, probed = 0;
   // Probe with the same concurrency as the upload: 900 sequential HEADs would take minutes.
-  const queue = force ? [] : [...entries];
+  const queue = force ? entries.filter(entry => !entry.file) : [...entries];
   await Promise.all(Array.from({ length: concurrency }, async () => {
     while (queue.length) {
       const entry = queue.shift();
-      const published = await alreadyPublished(entry.key);
+      const published = await probe(entry.key);
       if (published === true) present++;
+      else if (!entry.file) {
+        const detail = published === false
+          ? 'the remote object returned 404'
+          : 'the remote object could not be verified';
+        const hint = published === false
+          ? 'run npm run images:sync before uploading'
+          : 'run npm run images:sync and retry (set NODE_USE_ENV_PROXY=1 behind a proxy)';
+        const failure = `${entry.key}: Missing mirror file for ${entry.local}; ${detail}; ${hint}`;
+        failures.push(failure);
+        logger.error(`Upload failed ${failure}`);
+        if (published === null) unknown++;
+      }
       else {
         if (published === null) unknown++;
         pending.push(entry);
       }
       probed++;
-      if (probed % 100 === 0) console.log(`Checked ${probed}/${entries.length}`);
+      if (probed % 100 === 0) logger.log(`Checked ${probed}/${entries.length}`);
     }
   }));
   pending.sort((a, b) => a.key.localeCompare(b.key));
@@ -109,30 +131,29 @@ async function main() {
   // does not use), not that the bucket is empty. Re-uploading ~900 objects by accident is worse
   // than stopping, so require --force to make that explicit.
   if (unknown === entries.length && entries.length) {
-    console.error(`Images: every IMAGE_BASE probe failed (${origin} unreachable from this shell). Set NODE_USE_ENV_PROXY=1 if you are behind a proxy, or re-run with --force to upload everything anyway.`);
-    process.exitCode = 1;
+    logger.error(`Images: every IMAGE_BASE probe failed (${origin} unreachable from this shell). Set NODE_USE_ENV_PROXY=1 if you are behind a proxy, or re-run with --force to upload everything anyway.`);
+    setExitCode(1);
     return;
   }
-  console.log(`Images: ${entries.length} mirrored marks, ${present} already on ${origin || 'the origin'}, ${pending.length} to upload to ${bucket} (concurrency ${concurrency}${unknown ? `, ${unknown} unverifiable` : ''}${dryRun ? ', dry run' : ''}).`);
+  logger.log(`Images: ${entries.length} mirrored marks, ${present} already on ${origin || 'the origin'}, ${pending.length} to upload to ${bucket} (concurrency ${concurrency}${unknown ? `, ${unknown} unverifiable` : ''}${dryRun ? ', dry run' : ''}).`);
   const total = pending.length;
   let done = 0;
-  const failures = [];
   await Promise.all(Array.from({ length: concurrency }, async () => {
     while (pending.length) {
       const entry = pending.shift();
       try {
-        await putObject(entry);
+        await upload(entry);
         done++;
-        if (done % 25 === 0) console.log(`Images: ${done}/${total} uploaded`);
+        if (done % 25 === 0) logger.log(`Images: ${done}/${total} uploaded`);
       } catch (error) {
         failures.push(`${entry.key}: ${error.message}`);
-        console.error(`Upload failed ${entry.key}: ${error.message}`);
+        logger.error(`Upload failed ${entry.key}: ${error.message}`);
       }
     }
   }));
-  console.log(`Images: ${done} uploaded, ${failures.length} failed.`);
-  if (failures.length) process.exitCode = 1;
+  logger.log(`Images: ${done} uploaded, ${failures.length} failed.`);
+  if (failures.length) setExitCode(1);
 }
 
-module.exports = { uploadEntries, alreadyPublished, contentType, cacheControl };
+module.exports = { uploadEntries, alreadyPublished, main, contentType, cacheControl };
 if (require.main === module) main().catch(error => { console.error(error); process.exitCode = 1; });
