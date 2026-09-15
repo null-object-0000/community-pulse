@@ -83,7 +83,11 @@ write('404.html', R.notFoundPage('zh-CN'));
 write('en/404.html', R.notFoundPage('en'));
 writePage('/404/', R.notFoundPage('zh-CN'));
 writePage('/en/404/', R.notFoundPage('en'));
-write('data/trends.json', D.json(trends));
+const publicTrends = { ...trends,
+  clusters: trends.clusters.map(({ projects, ...cluster }) => cluster),
+  catalogClusters: catalogClusters.map(({ projects, ...cluster }) => cluster),
+};
+write('data/trends.json', D.json(publicTrends));
 write('data/index.json', JSON.stringify({ latest, dates, catalogVersion: siteSnapshot.catalogVersion, productCount: (siteSnapshot.productRoutes || []).length, trendCount: trends.clusters.length, categoryCount: catalogClusters.length, generatedAt: new Date().toISOString() }, null, 2));
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${D.origin}/sitemap.xml\nSitemap: ${D.origin}/sitemap-baidu.xml\n`);
 function feedXml(locale) {
@@ -121,7 +125,9 @@ const baiduUrls = pagePairs.map(page => {
   const url = D.origin + D.localPath(page.route, 'zh-CN');
   return `<url><loc>${D.escapeHtml(url)}</loc>${page.date ? `<lastmod>${page.date}</lastmod>` : ''}</url>`;
 });
-const SITEMAP_LIMIT = 45_000;
+// Keep shards comfortably below both protocol limits (50k URLs / 50 MiB) and practical edge
+// transfer budgets: bilingual hreflang URLs are verbose, so 45k entries already reached 20 MiB.
+const SITEMAP_LIMIT = 10_000;
 function writeSitemap(name, urls, namespace) {
   const declaration = '<?xml version="1.0" encoding="UTF-8"?>\n';
   if (urls.length <= SITEMAP_LIMIT) {

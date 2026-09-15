@@ -594,6 +594,8 @@ test('enumerable pages are static while sitemap product routes are reserved for 
   assert.ok(fs.existsSync(path.join(dist, 'trends', 'index.html')));
   assert.ok(fs.existsSync(path.join(dist, 'en', 'trends', 'index.html')));
   const trendsPage = fs.readFileSync(path.join(dist, 'trends', 'index.html'), 'utf8');
+  assert.ok(Buffer.byteLength(trendsPage) < 250_000, 'trend HTML must not embed every recent category product');
+  assert.ok(fs.statSync(path.join(dist, 'data/trends.json')).size < 250_000, 'public trend JSON is a lean card projection');
   assert.match(trendsPage, /data-trend-weeks="4"/);
   assert.match(trendsPage, /data-trend-weeks="8"/);
   assert.match(trendsPage, /data-trend-weeks="12"/);

@@ -304,7 +304,10 @@ function trendsPage(model, locale) {
   const structured = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'CollectionPage', '@id': canonical, url: canonical, name: title, description: t(locale, 'trendsIntro'), inLanguage: locale, isPartOf: { '@id': D.origin + '/#website' }, mainEntity: { '@type': 'ItemList', numberOfItems: model.clusters.length, itemListElement: model.clusters.map((cluster, index) => ({ '@type': 'ListItem', position: index + 1, name: D.facetPathLabel(cluster.type, cluster.id, locale) })) } },
   ] };
-  return shell({ locale, view: 'trends', route, title, description: t(locale, 'trendsIntro'), content, data: { trends: model }, structured });
+  // The browser only needs the source directory for personalized queries. The cards are already
+  // server-rendered, so embedding every category's recent product rows here bloats the HTML.
+  return shell({ locale, view: 'trends', route, title, description: t(locale, 'trendsIntro'), content,
+    data: { trends: { sources: model.sources, latest: model.latest } }, structured });
 }
 function trendClusterPage(model, cluster, locale) {
   const en = locale === 'en', route = cluster.path, canonical = D.origin + lp(route, locale);
