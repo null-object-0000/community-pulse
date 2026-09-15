@@ -35,6 +35,13 @@ test('dynamic product HTML contains canonical bilingual SEO and stable discussio
   assert.match(html, /clarity\.ms\/tag/);
   const thin = renderProductPage({ ...model, product: { ...model.product, item: { title: 'Owner/Repo' } } }, 'en');
   assert.match(thin, /<meta name="robots" content="noindex, follow"\/>/);
+  const media = renderProductPage({ ...model, product: { ...model.product, item: {
+    ...model.product.item, logo: 'https://ph-files.imgix.net/logo.png',
+    images: ['https://ph-files.imgix.net/screenshot.png', 'javascript:alert(1)', 'https://unknown.example/image.png'],
+  } } }, 'en');
+  assert.match(media, /data-gallery=/);
+  assert.match(media, /ph-files\.imgix\.net\/screenshot\.png/);
+  assert.doesNotMatch(media, /unknown\.example\/image\.png|javascript:alert/);
 });
 
 test('catalog cache skips the database on a hit and never stores errors', async () => {

@@ -13,6 +13,7 @@ import { CATALOG_VERSION } from './catalog-version.mjs';
 const VERIFICATION_FILE = /^\/(baidu_verify_[A-Za-z0-9._-]+)\.html$/;
 const CACHED_API = new Set(['/api/v1/sources', '/api/v1/trends', '/api/v1/products']);
 const PRODUCT_ROUTE = /^\/(?:en\/)?(?:projects\/[a-z0-9_.-]+\/[a-z0-9_.-]+|products\/prd_[a-f0-9]{24})\/?$/i;
+const PRODUCT_RENDERER_VERSION = '20260915-gallery';
 
 // Cache API entries are local to each Cloudflare data center. A versioned key keeps later SQL or
 // taxonomy releases from reading an older response while each entry stays fresh for at most 5 min.
@@ -64,7 +65,7 @@ export async function dynamicProductPage(request, env, ctx) {
   if (request.method !== 'GET' || !route) return null;
   const locale = url.pathname.startsWith('/en/') ? 'en' : 'zh-CN';
   const cache = typeof caches === 'undefined' ? null : caches.default;
-  const cacheKey = new Request(new URL(`/_devtrends_product_cache/${CATALOG_VERSION}${url.pathname}`, url.origin));
+  const cacheKey = new Request(new URL(`/_devtrends_product_cache/${CATALOG_VERSION}/${PRODUCT_RENDERER_VERSION}${url.pathname}`, url.origin));
   try {
     const hit = cache && await cache.match(cacheKey);
     if (hit) {
