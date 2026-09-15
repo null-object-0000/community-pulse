@@ -277,7 +277,9 @@ jobs:
       - name: 提交站点快照并推送
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"
-          git add data/catalog/site-snapshot/ worker/catalog-version.mjs
+          # 构建期生成、提交进仓库的常量：catalog 快照版本、静态资源内容哈希版本、ICP 备案号
+          # （worker/asset-version.mjs 与 worker/icp.mjs 由 npm run build 写，Worker 从它们 import）。
+          git add data/catalog/site-snapshot/ worker/catalog-version.mjs worker/asset-version.mjs worker/icp.mjs
           git commit -m "data(catalog): $TARGET 站点快照" || echo "无变更可提交"
           for i in 1 2 3; do
             if git push; then

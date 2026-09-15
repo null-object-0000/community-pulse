@@ -29,6 +29,9 @@ function shell({ locale, view, route, title, description, content, data = {}, st
   const feedUrl = D.origin + lp('/feed.xml', locale);
   const active = view === 'report' ? (route === '/' ? 'discover' : 'archive') : (view === 'trend-cluster' ? 'trends' : view);
   const homePath = lp('/', locale);
+  // ICP 备案是域名级公示：站内两条 HTML 渲染出口（这里与 Worker 的 worker/project-page.mjs）都必须带上。
+  // 备案号只存在 site.config.json，改号不动代码 —— 这里读进来交给 web/shared.js 的 footerHtml 渲染。
+  const icp = String(siteConfig.icp || '').trim();
   // The chrome lives in web/shared.js so the static shell and the Worker's dynamic product pages
   // cannot drift; index.html only keeps the {{topbar}} / {{footerHtml}} slots.
   const headerSearch = ['report', 'trend-cluster'].includes(view) ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '';
@@ -37,7 +40,7 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     robots: noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large', ogLocale: locale === 'en' ? 'en_US' : 'zh_CN',
     ogImage: D.origin + '/og-image.png', ogImageAlt: locale === 'en' ? 'DevTrends — daily developer discoveries' : 'DevTrends 开发者趋势——大家都在做什么',
     feedUrl, feedTitle: locale === 'en' ? 'DevTrends daily discoveries' : 'DevTrends 开发者趋势日报',
-    homePath, topbar: D.topbarHtml({ locale, active, homePath, headerSearch }), footerHtml: D.footerHtml({ locale, homePath }),
+    homePath, topbar: D.topbarHtml({ locale, active, homePath, headerSearch }), footerHtml: D.footerHtml({ locale, homePath, icp }),
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
     pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}?v=${assetVersion}" defer></script>`,
     headPreload: route === '/' ? `<link rel="preload" as="image" href="/globe.svg?v=${assetVersion}" fetchpriority="high" />` : '',
@@ -401,4 +404,4 @@ function notFoundPage(locale) {
     content: heading(locale, t(locale, 'missing'), t(locale, 'missingHint')), data: {},
   }).replace('</main>', `<a class="button primary" href="${lp('/', locale)}">${t(locale, 'home')}</a></main>`);
 }
-module.exports = { shell, heading, commentsSection, reportPage, cardsPage, archivePage, trendsPage, trendClusterPage, notFoundPage };
+module.exports = { shell, heading, commentsSection, reportPage, cardsPage, archivePage, trendsPage, trendClusterPage, notFoundPage, assetVersion };

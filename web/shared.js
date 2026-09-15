@@ -1011,8 +1011,16 @@
       </div>
     </div></header>`;
   }
-  function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
-    return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
+  // ICP 备案是域名级公示，两条渲染出口都必须在页脚带上：构建期页面（scripts/render-site.js）
+  // 与 Worker 动态渲染的产品详情页（worker/project-page.mjs）。值只能由调用方传入 —— 构建期读
+  // site.config.json，Worker 读构建期生成的 worker/icp.mjs；本文件同时被浏览器加载，不能读配置
+  // 文件（浏览器里没有 fs），也不在这里写死号码，否则改备案号要改两处代码。
+  function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale), icp = '' } = {}) {
+    const filing = String(icp ?? '').trim();
+    const icpLink = filing
+      ? `<a class="footer-icp" href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer nofollow">${escapeHtml(filing)}</a>`
+      : '';
+    return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p>${icpLink}</footer>`;
   }
   return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
