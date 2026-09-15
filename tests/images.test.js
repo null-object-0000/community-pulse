@@ -261,11 +261,12 @@ test('built reports expose either a deployed managed file or a trusted origin', 
   assert.ok(managed > 0);
   assert.ok(hotlinked > 0);
   const headers = path.join(directory, '_headers');
-  if (fs.existsSync(headers)) {
+  assert.ok(fs.existsSync(headers));
+  assert.match(fs.readFileSync(headers, 'utf8'), /\/app\.js\n  Cache-Control: public, max-age=31536000, immutable/);
+  if (fs.existsSync(path.join(directory, 'images'))) {
     assert.match(fs.readFileSync(headers, 'utf8'), /Content-Security-Policy: sandbox; default-src 'none'/);
   } else {
-    // An external IMAGE_BASE means this site serves no image bytes, so the rule would be dead config.
-    assert.ok(!fs.existsSync(path.join(directory, 'images')), 'no image bundle in CDN mode');
+    assert.doesNotMatch(fs.readFileSync(headers, 'utf8'), /\/images\/\*/);
   }
 });
 

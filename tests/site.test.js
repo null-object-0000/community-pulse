@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const D = require('../web/shared.js');
+const R = require('../scripts/render-site.js');
 const { buildProjects, projectPage } = require('../scripts/projects.js');
 const { applyEnhancedMarkdown } = require('../scripts/enhanced-report.js');
 const { metadataComment, renderLocalizedMarkdown, extractItems, validateLocalization } = require('../.agents/skills/community-pulse/scripts/enhance.js');
@@ -339,10 +340,10 @@ test('built pages ship one collapsed chip row with no horizontal scroller', () =
     assert.ok(!html.includes('data-view="list"'), file);
   }
   const home = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
-  assert.equal((home.match(/data-category="/g) || []).length, D.categories.length + 1);
+  assert.equal((home.match(/<button[^>]+data-category="/g) || []).length, D.categories.length + 1);
   // The report pages filter by the same preset categories; the source directory is not a filter.
   const report = fs.readFileSync(path.join(dist, 'reports/2026-09-10/index.html'), 'utf8');
-  assert.equal((report.match(/data-category="/g) || []).length, D.categories.length + 1);
+  assert.equal((report.match(/<button[^>]+data-category="/g) || []).length, D.categories.length + 1);
   for (const html of [home, report]) {
     assert.ok(!html.includes('data-source="'), 'source filter chips');
     assert.ok(!html.includes('id="source-chips"'), 'source filter container');
@@ -507,6 +508,21 @@ test('untrusted source text and URL protocols cannot inject markup or script', (
   assert.ok(!rendered.includes('</script><script>alert(1)</script>'));
   const data = JSON.parse(rendered.match(/<script id="page-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
   assert.equal(data.projectItem.summary, project.item.summary);
+});
+
+test('static report feed is searchable without embedding or repainting the full report', () => {
+  const sample = report('2026-09-14', [['showhn', [{ title: 'Test tool', author: 'Hidden maker', summary: 'A novel writing app', tags: ['fiction'], metrics: { votes: 7 }, primaryCategory: 'ai' }]]]);
+  const html = R.reportPage(sample, sample.date, 'zh-CN', true);
+  const data = JSON.parse(html.match(/<script id="page-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+  assert.equal(data.feedMode, 'dom');
+  assert.equal(data.report, undefined);
+  assert.match(html, /data-category="ai"/);
+  assert.match(html, /data-score="7"/);
+  assert.match(html, /data-search="[^"]*hidden maker[^"]*fiction/);
+  assert.match(html, /rel="preload" as="image" href="\/globe\.svg\?v=[a-f0-9]{16}" fetchpriority="high"/);
+  const app = fs.readFileSync(path.join(__dirname, '../web/app.js'), 'utf8');
+  assert.match(app, /if \(domFeed\) \{/);
+  assert.match(app, /if \(query \|\| category !== 'all'\) renderFeed\(\)/);
 });
 
 test('saved theme applies before rendering, reacts to system changes, and tolerates blocked storage', () => {

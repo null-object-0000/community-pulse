@@ -1,10 +1,13 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const D = require('../web/shared.js');
 const { t, escapeHtml: e, localPath: lp } = D;
 const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
 const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
-const assetVersion = '20260915-mysql-snapshot';
+// Every long-lived browser asset URL changes when its bytes change, including daily rebuilds.
+const assetVersion = crypto.createHash('sha256').update(Buffer.concat(['theme.js', 'token.css', 'styles.css', 'shared.js', 'app.js', 'cards.js', 'globe.svg', 'logo.svg']
+  .map(name => fs.readFileSync(path.join(__dirname, '../web', name))))).digest('hex').slice(0, 16);
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
@@ -23,6 +26,7 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     currentLanguage: locale === 'en' ? 'English' : '简体中文',
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
     pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}?v=${assetVersion}" defer></script>`,
+    headPreload: route === '/' ? `<link rel="preload" as="image" href="/globe.svg?v=${assetVersion}" fetchpriority="high" />` : '',
     bodyAttrs: bodyAttrs ? ` ${bodyAttrs}` : '',
     ...Object.fromEntries(['skip', 'brandLabel', 'system', 'light', 'dark', 'footer', 'neutralAccent', 'blueAccent', 'forestAccent', 'violetAccent'].map(key => [key, t(locale, key)])),
     languageLabel: t(locale, 'language'), themeLabel: t(locale, 'theme'), accentLabel: t(locale, 'accentTheme'), assetVersion,
@@ -53,7 +57,14 @@ function filters(items, locale) {
 }
 function discoveryHero(items, locale) {
   const en = locale === 'en';
-  return `<section class="discovery-hero"><div class="hero-copy"><p class="eyebrow">FROM THE GLOBAL DEVELOPER COMMUNITY</p><h1>${en ? 'Discover what’s next<br>for developers.' : '发现开发者的<br>新东西、新方法、新趋势'}</h1><p class="intro">${en ? 'Find what’s happening across developer communities.<br>Fresh projects, tools, frameworks and ideas. Every day.' : '从全球开发者社区，发现正在发生的变化。<br>每天自动汇总新的项目、工具、框架和技术动态。'}</p><div class="hero-stats"><div><span class="stat-icon">${D.icon('repo')}</span><span><b>${items.length}</b><small>${en ? 'Discoveries today' : '今日新发现'}</small></span></div><div><span class="stat-icon">${D.icon('box')}</span><span><b>${new Set(items.map(i => i.sourceId)).size}</b><small>${en ? 'Community sources' : '数据来源'}</small></span></div></div></div><div class="hero-art" aria-hidden="true"><img src="/globe.svg?v=${assetVersion}" alt="${en ? 'DevTrends shows what developers are building around the world' : 'DevTrends 收录全球开发者正在做的新东西'}"/><span>Build<br>a more open<br>developer world.</span></div></section>`;
+  return `<section class="discovery-hero"><div class="hero-copy"><p class="eyebrow">FROM THE GLOBAL DEVELOPER COMMUNITY</p><h1>${en ? 'Discover what’s next<br>for developers.' : '发现开发者的<br>新东西、新方法、新趋势'}</h1><p class="intro">${en ? 'Find what’s happening across developer communities.<br>Fresh projects, tools, frameworks and ideas. Every day.' : '从全球开发者社区，发现正在发生的变化。<br>每天自动汇总新的项目、工具、框架和技术动态。'}</p><div class="hero-stats"><div><span class="stat-icon">${D.icon('repo')}</span><span><b>${items.length}</b><small>${en ? 'Discoveries today' : '今日新发现'}</small></span></div><div><span class="stat-icon">${D.icon('box')}</span><span><b>${new Set(items.map(i => i.sourceId)).size}</b><small>${en ? 'Community sources' : '数据来源'}</small></span></div></div></div><div class="hero-art" aria-hidden="true"><img src="/globe.svg?v=${assetVersion}" fetchpriority="high" width="520" height="400" alt="${en ? 'DevTrends shows what developers are building around the world' : 'DevTrends 收录全球开发者正在做的新东西'}"/><span>Build<br>a more open<br>developer world.</span></div></section>`;
+}
+function searchableRow(item, locale, date, index) {
+  const search = [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])]
+    .filter(Boolean).join(' ').toLocaleLowerCase(locale);
+  const score = Number(D.metric(item, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0);
+  return D.renderItem(item, locale, { date, index }).replace(/^<article /,
+    `<article data-category="${e(D.itemCategory(item))}" data-search="${e(search)}" data-score="${Number.isFinite(score) ? score : 0}" `);
 }
 function discoverySidebar(items, locale, date, hasMarkdown) {
   const en = locale === 'en', sources = new Map();
@@ -141,7 +152,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
     ? homeEntries(date, cardsTotal, locale, cardsDate, home && trendsAvailable)
     : '';
   const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + entry + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
-    `<div id="feed" class="feed">${items.map((item, index) => D.renderItem(item, locale, { date, index })).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, date, locale, projectIndex)}${commentsSection({ term: `report:${date}`, locale })}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
+    `<div id="feed" class="feed" data-sort="default">${items.map((item, index) => searchableRow(item, locale, date, index)).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, date, locale, projectIndex)}${commentsSection({ term: `report:${date}`, locale })}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
   const website = D.origin + '/#website', organization = D.origin + '/#organization';
   const page = { '@type': 'CollectionPage', '@id': canonical, name: title, description, url: canonical, inLanguage: locale,
@@ -163,7 +174,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
     entry ? 'data-home-entries="1"' : '',
     date === cardsDate ? 'data-cards-available="1"' : '',
   ].filter(Boolean).join(' ');
-  return shell({ locale, view: 'report', route, title, description, content, data: { date, report }, structured, bodyAttrs });
+  return shell({ locale, view: 'report', route, title, description, content, data: { date, feedMode: 'dom' }, structured, bodyAttrs });
 }
 function cardsPage(report, date, locale) {
   const items = D.reportItems(report), title = `${t(locale, 'cardsTitle')} | DevTrends`;

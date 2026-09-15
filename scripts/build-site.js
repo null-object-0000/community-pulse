@@ -45,8 +45,15 @@ const reports = dates.map(date => {
   return report;
 });
 images.copyImages(outputDir, imageManifest);
+// Script/style/hero URLs carry a content-derived version in the HTML. They can stay in the browser
+// without revalidation; a changed byte produces a new URL on the next build.
+const browserCached = ['theme.js', 'token.css', 'styles.css', 'shared.js', 'app.js', 'cards.js', 'globe.svg', 'logo.svg'];
+const headerRules = browserCached.map(name => `/${name}\n  Cache-Control: public, max-age=31536000, immutable\n`).join('');
+// Source badges have stable unversioned URLs; keep their TTL short enough for an icon update.
+const sourceBadgeRules = staticFiles.filter(name => /^source-/.test(name)).map(name => `/${name}\n  Cache-Control: public, max-age=86400\n`).join('');
 // The sandboxing header rule only matters while this site serves the mirrored files itself.
-if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
+const imageRules = images.imageOrigin() ? '' : '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n';
+write('_headers', headerRules + sourceBadgeRules + imageRules);
 // Keep the recent GitHub aggregation only for report continuation rows. Product detail HTML is
 // never emitted here: every product route is rendered by the Worker from MySQL.
 const projects = require('./projects.js').buildProjects(reports);

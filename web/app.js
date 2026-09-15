@@ -15,7 +15,9 @@
   const loadMoreButton = document.getElementById('load-more');
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
-  let items = D.reportItems(page.report);
+  const domFeed = page.feedMode === 'dom';
+  const feedRows = domFeed && feed ? [...feed.querySelectorAll(':scope > .feed-item')] : [];
+  let items = domFeed ? [] : D.reportItems(page.report);
   // ---- comments: one stable GitHub Discussion per report, shared by home/archive and zh/en routes ----
   const comments = document.querySelector('[data-giscus-comments]');
   function giscusTheme() {
@@ -146,8 +148,10 @@
   const filterContainer = () => document.getElementById(filterMeta().containerId);
   const chipOrder = new WeakMap();
   function filterOptions() {
-    return [{ id: 'all', label: filterMeta().all, count: items.length, active: category === 'all' },
-      ...D.categories.map(entry => ({ id: entry.id, label: locale === 'en' ? entry.labelEn : entry.labelZh, count: items.filter(item => D.itemCategory(item) === entry.id).length, active: category === entry.id }))];
+    return [{ id: 'all', label: filterMeta().all, count: domFeed ? feedRows.length : items.length, active: category === 'all' },
+      ...D.categories.map(entry => ({ id: entry.id, label: locale === 'en' ? entry.labelEn : entry.labelZh,
+        count: domFeed ? feedRows.filter(row => row.dataset.category === entry.id).length : items.filter(item => D.itemCategory(item) === entry.id).length,
+        active: category === entry.id }))];
   }
   function layoutFilter(container) {
     const row = container.querySelector('.chip-row');
@@ -231,6 +235,26 @@
   function renderFeed(resetPage = true) {
     if (!feed) return;
     const q = query.trim().toLocaleLowerCase(locale);
+    if (domFeed) {
+      if (sort !== feed.dataset.sort) {
+        const ordered = sort === 'popular'
+          ? feedRows.map((row, index) => ({ row, index })).sort((a, b) => Number(b.row.dataset.score) - Number(a.row.dataset.score) || a.index - b.index).map(entry => entry.row)
+          : feedRows;
+        feed.append(...ordered);
+        feed.dataset.sort = sort;
+      }
+      let visible = 0;
+      for (const row of feedRows) {
+        row.hidden = (category !== 'all' && row.dataset.category !== category) || Boolean(q && !row.dataset.search.includes(q));
+        if (!row.hidden) visible++;
+      }
+      feed.hidden = visible === 0;
+      document.getElementById('empty').hidden = visible > 0;
+      document.getElementById('empty-title').textContent = t('empty');
+      document.getElementById('empty-hint').textContent = t('emptyHint');
+      document.getElementById('clear-filters').hidden = !query && category === 'all';
+      return;
+    }
     const filtered = items.filter(item => (category === 'all' || D.itemCategories(item).includes(category)) && (!q || [item.title, item.titleEn, item.title_en, item.author, item.summary, item.summaryZh, item.summary_zh, item.summaryEn, item.summary_en, D.summary(item, locale).text, item.github?.name, ...(item.tags || []), ...(item.github?.topics || [])].filter(Boolean).join(' ').toLocaleLowerCase(locale).includes(q)));
     if (sort === 'popular') filtered.sort((a, b) => Number(D.metric(b, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0) - Number(D.metric(a, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0));
     if (resetPage) chunkShown = 1;
@@ -758,7 +782,14 @@
     loadMoreButton?.addEventListener('click', () => { chunkShown++; renderFeed(false); });
     if (range !== 'recent' || params.get('sources')) activateRange();
   }
-  if (feed) { paintFilter(); renderFeed(); updateFilterUrl(); }
+  if (feed) {
+    if (domFeed) {
+      syncFilterState();
+      layoutFilter(filterContainer());
+      if (query || category !== 'all') renderFeed();
+    } else { paintFilter(); renderFeed(); }
+    updateFilterUrl();
+  }
   // Fix a desktop sidebar only when the complete module fits in the viewport. A taller sidebar
   // remains in normal document flow, avoiding a second scrollbar beside the page scrollbar.
   const stickySidebars = [...document.querySelectorAll('.discovery-sidebar, .project-sidebar')];

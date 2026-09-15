@@ -369,6 +369,7 @@ body:not([data-view="report"]) .workspace { padding-top: 48px; }
 .feed-tools select { font-size: .8125rem; padding: 8px 24px 8px 11px; max-width: 168px; }
 .feed { border: 0; box-shadow: none; border-radius: 0; background: transparent; }
 .feed-item { grid-template-columns: 30px 56px minmax(280px, 1fr) 150px 64px; gap: 14px; min-height: 96px; padding: 15px 0; align-items: center; }
+.discovery-results .feed-item { content-visibility: auto; contain-intrinsic-size: auto 96px; }
 /* 标签回到产品信息列，来源与热度保留稳定宽度；中等宽度只压缩主列。 */
 @media (max-width: 900px) { .feed-item { grid-template-columns: 30px 48px minmax(0, 1fr) 150px 62px; gap: 12px; } }
 .item-number { padding: 0; font-size: .8125rem; text-align: center; color: var(--faint); }
