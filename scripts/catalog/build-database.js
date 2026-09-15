@@ -5,15 +5,19 @@ const crypto = require('crypto');
 const { DatabaseSync } = require('node:sqlite');
 const D = require('../../web/shared.js');
 const { identitiesFor, productId, sourceItemId, stableId } = require('./identity');
-const { loadItems, OBSERVED_SOURCES } = require('../../.agents/skills/community-pulse/scripts/source_raw_items');
+const {
+  loadItems, OBSERVED_SOURCES, loadGithubRepositories, attachRepositoryFacts,
+  loadSiteDescriptions, attachDescriptionFallback,
+} = require('../../.agents/skills/community-pulse/scripts/source_raw_items');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_RAW_ROOT = path.join(ROOT, '知识', '大家都在做什么', 'source-raw');
 const DEFAULT_DATABASE = path.join(ROOT, 'data', 'catalog', 'devtrends.sqlite');
 const SOURCE_CONFIG = path.join(ROOT, '.agents', 'skills', 'community-pulse', 'config', 'sources.json');
 const MIGRATIONS = path.join(ROOT, 'migrations');
-const PARSER_VERSION = 'catalog-v1';
+const PARSER_VERSION = 'catalog-v2';
 const TAXONOMY_VERSION = 'legacy-infer-v1';
+const NO_SUMMARY = D.t('zh-CN', 'noSummary');
 
 function parseArgs(argv) {
   const options = { out: DEFAULT_DATABASE, rawRoot: DEFAULT_RAW_ROOT, replace: false, incremental: false, taxonomy: true };
@@ -45,6 +49,42 @@ function migrationFiles() {
 
 function applyMigrations(db) {
   for (const file of migrationFiles()) db.exec(fs.readFileSync(file, 'utf8'));
+  upgradeEnrichmentProductStatus(db);
+}
+
+function upgradeEnrichmentProductStatus(db) {
+  const table = db.prepare(`SELECT sql FROM sqlite_master
+    WHERE type='table' AND name='enrichment_product_status'`).get();
+  if (!table || (table.sql.includes("'skipped'") && table.sql.includes('skip_reason'))) return;
+  db.exec(`
+    BEGIN IMMEDIATE;
+    ALTER TABLE enrichment_product_status RENAME TO enrichment_product_status_legacy;
+    CREATE TABLE enrichment_product_status (
+      enrichment_run_id TEXT NOT NULL REFERENCES enrichment_runs(id) ON DELETE CASCADE,
+      product_id TEXT NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+      status TEXT NOT NULL CHECK (status IN ('pending', 'running', 'complete', 'failed', 'skipped')),
+      attempt_count INTEGER NOT NULL DEFAULT 0,
+      model_request_count INTEGER NOT NULL DEFAULT 0,
+      input_hash TEXT NOT NULL,
+      error TEXT,
+      skip_reason TEXT CHECK (skip_reason IS NULL OR skip_reason IN
+        ('missing_description', 'missing_title', 'missing_title_and_description')),
+      started_at TEXT,
+      completed_at TEXT,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (enrichment_run_id, product_id)
+    );
+    INSERT INTO enrichment_product_status
+      (enrichment_run_id, product_id, status, attempt_count, model_request_count,
+       input_hash, error, started_at, completed_at, updated_at)
+    SELECT enrichment_run_id, product_id, status, attempt_count, model_request_count,
+      input_hash, error, started_at, completed_at, updated_at
+    FROM enrichment_product_status_legacy;
+    DROP TABLE enrichment_product_status_legacy;
+    CREATE INDEX idx_enrichment_product_status_run_status
+      ON enrichment_product_status(enrichment_run_id, status, product_id);
+    COMMIT;
+  `);
 }
 
 function sourceDates(rawRoot, sourceId, options) {
@@ -90,7 +130,10 @@ function prepareStatements(db) {
       ON CONFLICT(id) DO UPDATE SET
         product_id=excluded.product_id,
         title=CASE WHEN length(excluded.title) > length(source_items.title) THEN excluded.title ELSE source_items.title END,
-        summary=CASE WHEN length(excluded.summary) > length(source_items.summary) THEN excluded.summary ELSE source_items.summary END,
+        summary=CASE
+          WHEN trim(source_items.summary) = ? THEN excluded.summary
+          WHEN length(excluded.summary) > length(source_items.summary) THEN excluded.summary
+          ELSE source_items.summary END,
         url=COALESCE(NULLIF(source_items.url, ''), excluded.url),
         published_at=COALESCE(source_items.published_at, excluded.published_at),
         raw_locator=excluded.raw_locator,
@@ -169,14 +212,27 @@ function importDay(db, statements, source, date, options) {
     maxItems: Infinity,
     productHuntView: 'all',
   });
+  let evidence = options.descriptionEvidence.get(date);
+  if (!evidence) {
+    const repositoryFile = path.join(options.rawRoot, 'github-repositories', `${date}.json`);
+    const repositories = fs.existsSync(repositoryFile)
+      ? loadGithubRepositories(options.rawRoot, date).repositories
+      : null;
+    evidence = { repositories, descriptions: loadSiteDescriptions(date, options.rawRoot) };
+    options.descriptionEvidence.set(date, evidence);
+  }
+  const items = attachDescriptionFallback(
+    attachRepositoryFacts(loaded.items, evidence.repositories),
+    evidence,
+  );
   const relativeSnapshot = path.relative(ROOT, snapshot);
   const runId = stableId('run', `${source.id}\u0000${date}\u0000${PARSER_VERSION}`);
   const captureMode = OBSERVED_SOURCES.has(source.id) ? 'observed-snapshot' : 'date-addressable';
   statements.run.run(
     runId, source.id, date, captureMode, relativeSnapshot, sha256File(snapshot),
-    PARSER_VERSION, loaded.items.length,
+    PARSER_VERSION, items.length,
   );
-  for (const item of loaded.items) {
+  for (const item of items) {
     const externalId = String(item.externalId || item.url || item.title || 'untitled');
     const id = resolveProduct(statements, item, date);
     const itemId = sourceItemId(source.id, externalId);
@@ -187,11 +243,18 @@ function importDay(db, statements, source, date, options) {
       githubUrl: item.githubUrl || item.github?.url || '',
       logo: item.logo || item.icon || item.siteLogo || '',
       images: item.images || item.imageUrls || [],
+      descriptionSource: item.descriptionSource || '',
     };
-    const summary = D.summary(item, 'zh-CN').text;
+    // Removing `github` here is deliberate: attachDescriptionFallback already admitted repository
+    // copy only when it clears the shared 40-character floor. D.summary's display fallback has no
+    // such floor and would otherwise smuggle a short repository blurb into source_items.
+    const renderedSummary = D.summary({ ...item, github: null }, 'zh-CN').text;
+    // `noSummary` is presentation copy, not source data. Keeping the database empty here also
+    // prevents the catalog enhancer from treating a UI placeholder as model evidence.
+    const summary = renderedSummary === NO_SUMMARY ? '' : renderedSummary;
     statements.sourceItem.run(
       itemId, source.id, externalId, id, item.title || '', summary || '', item.url || '', item.publishedAt || null,
-      relativeSnapshot, JSON.stringify(projection), date, date,
+      relativeSnapshot, JSON.stringify(projection), date, date, NO_SUMMARY,
     );
     const inserted = statements.observation.run(id, source.id, itemId, date, item.publishedAt || null, runId);
     if (inserted.changes) statements.firstSeen.run(id, source.id, date, date);
@@ -206,7 +269,7 @@ function importDay(db, statements, source, date, options) {
       }
     }
   }
-  return loaded.items.length;
+  return items.length;
 }
 
 function counts(db) {
@@ -222,6 +285,7 @@ function counts(db) {
 }
 
 function buildCatalog(options) {
+  options = { ...options, descriptionEvidence: new Map() };
   const output = path.resolve(options.out || DEFAULT_DATABASE);
   const parent = path.dirname(output);
   fs.mkdirSync(parent, { recursive: true });
@@ -284,4 +348,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { parseArgs, applyMigrations, buildCatalog, sourceDates, counts };
+module.exports = { parseArgs, applyMigrations, upgradeEnrichmentProductStatus, buildCatalog, sourceDates, counts };

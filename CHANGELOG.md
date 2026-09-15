@@ -20,7 +20,7 @@
 | 09-12 | 16 | 50 文件 +936/-348 | 18 文件 +34,170/-14 | 移动端卡片阅读器 | community-pulse |
 | 09-13 | 28 | 147 文件 +4,008/-394 | 671 文件 +902,580/-81 | 趋势分析、SEO、新增数据源 | community-pulse |
 | 09-14 | 23（另有未提交） | 42 文件 +2,261/-133 | 616 文件 +89,400/-7,572 | 投稿相似去重与全量日报回溯；配图与描述兜底；业务场景二级主题；GitHub Trending 历史回填；**全量产品库 + D1 趋势查询纵切** | community-pulse |
-| 09-15 | 0（未提交） | 2 文件 +88/-22 | — | 修复外置镜像上传对远端已存在对象的误报 | community-pulse |
+| 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；合入产品库影子增强并清理过时分支 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -225,6 +225,16 @@
 - **MySQL 双读与日增量链**：新增 `worker/mysql-db.mjs`，用 `mysql2` 把 Hyperdrive 适配成现有 D1 `prepare → bind → all` 合约，并强制 `dateStrings` 保持 API 的 `YYYY-MM-DD` 格式。独立 MySQL 预览对比了 13 来源目录、默认全来源、仅 Show HN、仅 Product Hunt、组合来源及 Agent 角色 / 语言 / 集成分面和跨月日期窗口，与本地 D1 基准 JSON 逐字段一致。新增可复用的 `catalog:upload:mysql` 和短命 `wrangler.mysql-import.toml`：日报 workflow 每天在同一阻断步骤里依次更新 D1 与 MySQL，MySQL 分片通过随机 256-bit Bearer token 保护的临时 Worker 导入，每片单事务、记录续传进度，无论成败都删除 Worker。暂不切生产读路，先让日增量链与 D1 并行。
 - **生产正式切换 MySQL，D1 退役**：趋势 API 只通过 `HYPERDRIVE_READ` 连阿里云 MySQL，移除 `DB` binding 和所有 D1 运行分支；日更链改为从本地 SQLite 中间库直接生成 MySQL upsert 分片，删除 D1 导出 / 上传工具。切换检查又找到并修复了一处旧变量残留：连接已打开 MySQL 后，趋势查询曾误传 `env.DB`；现在来源与趋势共用同一 MySQL 连接。新版生产上线后，实测 13 来源、全来源 / 仅 Show HN / 排除 Product Hunt 组合均返回 200，再永久删除远端 `devtrends-catalog` D1；删除后 Workers 备用域与主域的来源 / 趋势接口仍返回 200，Cloudflare D1 列表已为空。
 - **修复 MySQL 动态趋势的功能回归**：切换首版的前端 `catalogCard()` 只重画「标题 + 三个数字」，还主动隐藏周期控件，因此成功的 API 请求反而把原有的 4/8/12 周趋势图、近期产品与分类页链接从 DOM 里删掉。现在 MySQL `/api/v1/trends` 同步返回 12 周序列、最新 4 个代表产品、来源数和分类路径，动态卡恢复完整结构；对比窗口也从误写的「前 7 天」恢复为页面声明的「此前 28 天」，增长率按日均速度比较。新增 `/api/v1/products` 让分类页的近 7 天列表与当前来源组合、卡片数量同口径；构建端为所有已有分类生成中英文落地页，不再只为当周过趋势阈值的分类生成，任意来源组合都不会点进 404。真实 Hyperdrive 预览校验「软件开发」为 372 个产品 / 11 来源 / 12 个周点 / 4 个代表，分类列表也是同样 372 条。
+- **阶段 3a：LLM 产品库影子管道**：新增 `scripts/catalog/enrich-products.js`，按观察日取全量唯一产品，以共享 `enhance.js` 的 `localize()`、提示词、受控词表校验和 `sourceHash` 做版本化增强；没有另写一套 prompt。SQLite / MySQL 各新增逐产品状态表，记录 `pending/running/complete/failed`、执行次数、模型请求数、输入哈希与错误，使失败可用 `--retry-failed` 或指定产品单独续跑，普通 `--resume` 对已终态且输入未变的产品保持 0 请求。结果写入双语 `product_content` 与 `taxonomy_assignments`（含主分类和五个分面），`confidence` 明确留空；同一 processor version 只替换自己的旧 shadow 投影。
+  - **为什么把激活彻底拆开**：runner 当前只接受 `--mode shadow`，所有输出硬写 `is_current=0`，不提供顺手切换 current 的参数。查询端继续只认 `is_current=1`，因此规则标签与 LLM 标签不会在本轮形成并集；未来完整回填验收后再用独立事务做版本切换。
+  - **限流与验证**：共享 LLM 调用遇 429 时尊重 `Retry-After`，否则指数退避并加抖动；新增测试覆盖 shadow 不变量、相同输入 0 请求、单条输入变化只重跑该条、失败状态续跑，以及现有 current 规则行不变。数据库校验器同步拒绝任何被误标 current 的 catalog shadow 行和已结束 run 中残留的非终态产品。
+  - **数据（首批 shadow 实跑）**：2026-09-13 的 673 条观察按产品去重为 665 条，首轮 713 次模型请求 / 252.147 秒，658 成功、7 失败；显式重试失败项再请求 32 次 / 24.972 秒，1 条恢复，最终 659 complete / 6 failed，665 条全部终态。落库 1,318 条双语内容与 2,632 条 LLM 分类，全部 `is_current=0`、`confidence=NULL`；普通 resume 实测 0 次模型请求。运行前后 current 分类均为 372,996 条且逐行哈希相同，current 内容均为 0，证明线上投影零变化。
+- **代码 / 产品描述证据链**：产品库解析器升到 `catalog-v2`，每个来源日离线合并同日 `github-repositories` 与 `site-logos`，复用日报的 `attachDescriptionFallback()` 把「源描述 → 仓库描述 → 官网 meta description」接入 `source_items.summary`；证据按日期缓存，早于仓库快照起点的历史日继续降级而不报错。`descriptionSource` 同步写进 projection 便于审计。数据库不再保存 `web/shared.js` 的 UI 文案 `noSummary`，旧库增量导入时也会先把既有占位替换成真实兜底或空值，避免原来的“只按长度取胜”把展示占位钉在事实层。09-13 的 64 个原占位实测补上 13 个（仓库 4 / 官网 9），剩余 51 个改为空值；YazSes / DiskTriage / Learnlance 三个指定样例均与日报一样命中仓库层。
+- **代码 / 无描述增强口径**：共享 `validateLocalization()` 新增默认关闭的 `allowEmptyUseCases` 参数，日报调用方式与「至少一个业务场景」校验不变；只有产品库 `catalog-localize-v2` 显式开启。输入先用 `D.t(..., 'noSummary')` 识别中英文 UI 占位并清空，不复制文案；模型即使从标题猜出业务场景，校验层也会确定性清空 `useCases`，同时给该产品的 shadow 分类写 `confidence=0.25`。首轮真实 shadow 为 665 产品 / 697 请求 / 223.939 秒 / 660 complete / 5 个既有严格校验失败，定向重试 5 条后恢复 1 条，最终 661 complete / 4 failed；旧批次的 60 个「占位摘要 + 假 useCases」全部变为 complete + 双语空摘要 + 空 useCases + 低置信，0 个失败。相同命令重跑 0 请求 / 0.012 秒；`is_current` 始终未改，current 分类仍为 372,996、current 内容仍为 0。
+- **代码 / 无描述增强口径修正**：用户最终拍板「名称与描述缺一不打标」，因此废弃上一条 `allowEmptyUseCases` / `confidence=0.25` 方案，`validateLocalization()` 恢复所有调用统一要求至少一个受控 `useCases`。产品库 runner 升到 `catalog-localize-v3`，在模型入口前用 `source_items.summary` 的兜底后值过滤空串、纯空白与共享中英文 `noSummary` 占位；新增终态 `skipped` 与结构化 `skip_reason`，区别于真正的模型失败，且 `attempt_count=model_request_count=0` 可审计零请求。跳过仍保存完整 `input_hash`，描述补齐后 hash 改变会自动重置为 pending；测试用临时库实证从 skipped 重入并完成。runner 只删除 `is_current=0` 的 catalog v1/v2 taxonomy/content/run，发现任何旧版 current 行则拒绝清理，确保线上投影不受影响。
+- **数据 / v3 shadow 实跑**：09-13 共 665 个产品，614 个名称与兜底后描述齐全进入队列，51 个因 `missing_description` 跳过，缺名称及双缺均为 0；首跑 647 次模型请求 / 157.888 秒，609 complete / 5 failed / 51 skipped。库内审计确认 51 个 skipped 全部为 0 attempt、0 request、0 输出；普通 resume 为 0 请求 / 0.049 秒。v1/v2 影子清理实删 5,184 条 taxonomy、2,640 条 content 和 2 个旧 run，最终库只剩 v3 的 2,454 条 taxonomy 与 1,218 条 content，全部 `is_current=0`。运行前后 current 指纹相同（taxonomy 372,996 条，SHA-256 `ad8f1e28…e0be285`；content 0 条）。
+- **代码 / 数据 / 官网描述小样本**：修复 `capture_site_logos_raw.js` 在跨页面命中 icon cache 时漏回传当前页面 `description` / `ogImage` 的分支；用默认代理对 2026-09-13 报告执行一次 `--replace`，按观察日规则更新 09-13 / 09-14 两个辅助文件。实测拥有的 55 行中 45 条带 description、32 条带 ogImage，页面结果为 47 ok / 5 missing / 3 failed；离线校验通过。全历史重新扫描确认现存 256 文件 / 2174 条是旧记录数，不是待抓页面数；按当前候选规则实际为 4695 行 / 4357 个唯一页面。按小样本约 49 个新页面 / 60 秒估算，并发 6 全量约 1.5 小时，保守预算 1.5–2 小时。全量建议不加 `--replace`：`RESUME_FIELDS` 已会自动重抓缺新字段的旧记录，同时保留已升级日期以便断点续跑；完成后可用 `--refresh-failures` 单独再试失败项。该抓取只改 `source-raw/site-logos`，不运行 `collect` / `backfill_site_logos`，因此不会改 45 期 `raw/` 日报。
+- **验证**：`npm run check` 构建 256 期 / 2347 个项目，180/180 测试通过；09-13 smoke 库为 673 行 / 665 产品、完整性 `ok`。再用当前 source-raw 离线重放同日日报（79 条），其中 53 条能按 `sourceId + externalId` 直接对应产品库，描述逐条比较 **0 差异**；shadow/current 不变量通过。
 
 ### GitHub Trending 历史回填：把 6–8 月的 12 周柱状图从「每周 1 天采样」补成逐日
 
@@ -245,10 +255,13 @@
 
 ---
 
-## 2026-09-15（0 个提交，改动未提交）· 修复外置镜像上传早退
+## 2026-09-15 · 修复镜像上传误报 + 产品库影子增强入主分支
 
 - **代码**：`images:upload` 不再在构造清单条目时把本地无字节一律判为失败，而是保留 `file: null` 并先探测 CDN；远端 200 说明内容寻址对象已发布，安全跳过，404 或无法判定则明确失败。`--force` 也不能绕过无本地字节条目的探测，避免把真正缺失的新图片静默放过；有本地字节的新增对象仍按既有路径上传。
 - **测试**：替换旧的「本地缺字节立即抛错」断言，覆盖「本地缺字节 + 远端存在 → 跳过」与「本地缺字节 + 远端 404 → 不上传且非零退出」，扩展名校验与整批预检不可用的防线保持不变。
+- **代码 / 分支决策**：将 `feat/catalog-enrichment` 的两次影子增强提交合入主分支，保留「产品名称和真实描述缺一不打标」的最终口径；runner 只写 `is_current=0`，不顺手激活线上分类。`feat/trending-continuation` 的持续热门列表能力已在主分支实现，旧分支还缺 MySQL 趋势与分类页修复，故不合入；`refactor/modularize-frontend` 已是主分支祖先，也不重复合入。
+- **数据 / 冲突处理**：官网图标辅助层 09-14 文件取主分支完整的 61 条记录，同时保留影子增强分支补充的描述与配图证据字段；按合并后的实际 records 重算 SHA-256，离线校验为 54 个图标、6 个无图标、1 个失败、0 个警告，避免把较旧的 25 条分支快照覆盖完整采集。
+- **验证**：合并后的 `npm run check` 构建 257 期 / 2379 个 GitHub 项目，182/182 测试通过；影子增强、描述兜底、来源层离线校验均通过。
 
 ## 值得记录的决策
 

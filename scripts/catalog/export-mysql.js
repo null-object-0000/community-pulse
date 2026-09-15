@@ -11,7 +11,7 @@ const TABLES = {
   full: [
     'sources', 'ingestion_runs', 'products', 'product_identities', 'identity_conflicts',
     'source_items', 'observations', 'product_source_first_seen', 'enrichment_runs',
-    'product_content', 'taxonomy_terms', 'taxonomy_assignments', 'reports', 'report_items',
+    'enrichment_product_status', 'product_content', 'taxonomy_terms', 'taxonomy_assignments', 'reports', 'report_items',
   ],
 };
 

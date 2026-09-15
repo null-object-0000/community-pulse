@@ -15,7 +15,7 @@ const db = new DatabaseSync(file, { readOnly: true });
 const required = [
   'sources', 'ingestion_runs', 'products', 'product_identities', 'identity_conflicts',
   'source_items', 'observations', 'product_source_first_seen', 'enrichment_runs',
-  'product_content', 'taxonomy_terms', 'taxonomy_assignments', 'reports', 'report_items',
+  'enrichment_product_status', 'product_content', 'taxonomy_terms', 'taxonomy_assignments', 'reports', 'report_items',
 ];
 const tables = new Set(db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map((row) => row.name));
 const missing = required.filter((table) => !tables.has(table));
@@ -36,6 +36,15 @@ const invalidFirstSeen = db.prepare(`SELECT count(*) AS value FROM product_sourc
 const danglingAssignments = db.prepare(`SELECT count(*) AS value FROM taxonomy_assignments a
   LEFT JOIN taxonomy_terms t ON t.facet=a.facet AND t.id=a.term_id
   WHERE t.id IS NULL`).get().value;
+const currentShadowAssignments = db.prepare(`SELECT count(*) AS value FROM taxonomy_assignments a
+  JOIN enrichment_runs r ON r.id=a.enrichment_run_id
+  WHERE r.kind='catalog-product' AND a.is_current<>0`).get().value;
+const currentShadowContent = db.prepare(`SELECT count(*) AS value FROM product_content c
+  JOIN enrichment_runs r ON r.id=c.enrichment_run_id
+  WHERE r.kind='catalog-product' AND c.is_current<>0`).get().value;
+const nonTerminalProductStates = db.prepare(`SELECT count(*) AS value FROM enrichment_product_status s
+  JOIN enrichment_runs r ON r.id=s.enrichment_run_id
+  WHERE r.status IN ('complete','failed') AND s.status IN ('pending','running')`).get().value;
 const summary = {
   file,
   sources: count('sources'),
@@ -47,11 +56,15 @@ const summary = {
   brokenObservations,
   invalidFirstSeen,
   danglingAssignments,
+  currentShadowAssignments,
+  currentShadowContent,
+  nonTerminalProductStates,
   integrity: db.prepare('PRAGMA integrity_check').get().integrity_check,
 };
 db.close();
 
-if (brokenObservations || invalidFirstSeen || danglingAssignments || summary.integrity !== 'ok') {
+if (brokenObservations || invalidFirstSeen || danglingAssignments || currentShadowAssignments
+  || currentShadowContent || nonTerminalProductStates || summary.integrity !== 'ok') {
   console.error(JSON.stringify(summary, null, 2));
   process.exit(1);
 }

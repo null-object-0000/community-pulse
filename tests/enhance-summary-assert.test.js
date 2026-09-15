@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 
 const SKILL = path.join(__dirname, '..', '.agents', 'skills', 'community-pulse', 'scripts');
-const { validateLocalization, translationInput } = require(path.join(SKILL, 'enhance.js'));
+const { validateLocalization, translationInput, retryAfterMs, rateLimitDelayMs } = require(path.join(SKILL, 'enhance.js'));
 
 const CATEGORY = 'developer-tools';
 const TAXONOMY = { useCases: ['software-development'], agentRoles: [], productForms: [], platforms: [], integrations: [] };
@@ -39,4 +39,11 @@ test('the guard reads the same description the localizer does', () => {
   assert.equal(translationInput(''), '');
   // Markdown link syntax and bare URLs are stripped before the length test, same as the prompt input.
   assert.equal(translationInput('[官网](https://example.com/) 真实描述文字'), '官网 真实描述文字');
+});
+
+test('429 retries respect Retry-After and otherwise use exponential backoff with jitter', () => {
+  assert.equal(retryAfterMs('2'), 2000);
+  assert.equal(rateLimitDelayMs(1, 0, () => 0), 750);
+  assert.equal(rateLimitDelayMs(3, 0, () => 0.5), 3375);
+  assert.equal(rateLimitDelayMs(2, 5000, () => 0), 5000);
 });
