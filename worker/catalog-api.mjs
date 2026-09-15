@@ -40,27 +40,37 @@ export function parseTrendFilters(url, availableSources, latestDate) {
   return { sources, from, to, days, baselineDays, facet, previousFrom, previousTo };
 }
 
-function selectedCte(sourceCount) {
-  const placeholders = Array.from({ length: sourceCount }, () => '?').join(', ');
-  return `candidate_products AS (
-    SELECT product_id, MIN(first_seen_date) AS candidate_first_seen
-    FROM product_source_first_seen
-    WHERE source_id IN (${placeholders}) AND first_seen_date BETWEEN ? AND ?
-    GROUP BY product_id
-  ),
-  selected_products AS (
-    SELECT c.product_id, c.candidate_first_seen AS selected_first_seen
-    FROM candidate_products c
-    WHERE NOT EXISTS (
-      SELECT 1 FROM product_source_first_seen earlier
-      WHERE earlier.product_id = c.product_id AND earlier.source_id IN (${placeholders})
-        AND earlier.first_seen_date < c.candidate_first_seen
-    )
-  )`;
-}
-
-function selectedBindings(filters, earliest) {
-  return [...filters.sources, earliest, filters.to, ...filters.sources];
+function selectedPlan(filters, allSources = false, rangeFrom = null) {
+  const range = rangeFrom ? ' WHERE first_seen_date BETWEEN ? AND ?' : '';
+  const rangeBindings = rangeFrom ? [rangeFrom, filters.to] : [];
+  if (allSources) {
+    return {
+      cte: `selected_products AS (
+        SELECT id AS product_id, first_seen_date AS selected_first_seen FROM products${range}
+      )`,
+      bindings: rangeBindings,
+    };
+  }
+  if (filters.sources.length === 1) {
+    return {
+      cte: `selected_products AS (
+        SELECT product_id, first_seen_date AS selected_first_seen
+        FROM product_source_first_seen WHERE source_id = ?${range ? ' AND first_seen_date BETWEEN ? AND ?' : ''}
+      )`,
+      bindings: [filters.sources[0], ...rangeBindings],
+    };
+  }
+  const placeholders = Array.from({ length: filters.sources.length }, () => '?').join(', ');
+  return {
+    cte: `selected_products AS (
+      SELECT product_id, MIN(first_seen_date) AS selected_first_seen
+      FROM product_source_first_seen
+      WHERE source_id IN (${placeholders})
+      GROUP BY product_id
+      ${rangeFrom ? 'HAVING MIN(first_seen_date) BETWEEN ? AND ?' : ''}
+    )`,
+    bindings: [...filters.sources, ...rangeBindings],
+  };
 }
 
 async function all(db, sql, bindings = [], timings = null, label = '') {
@@ -85,11 +95,12 @@ export async function availableSources(db, timings = null) {
     ORDER BY s.sort_order, s.id`, [], timings, 'sources');
 }
 
-export async function queryTrends(db, filters, timings = null) {
+export async function queryTrends(db, filters, timings = null, options = {}) {
+  const databases = options.databases || [db, db, db];
   const baselineDays = filters.baselineDays || filters.days;
-  const cte = selectedCte(filters.sources.length);
   const weeklyStart = offsetDate(filters.to, -83);
-  const selected = selectedBindings(filters, [filters.from, filters.previousFrom, weeklyStart].sort()[0]);
+  const selected = selectedPlan(filters, options.allSources, [filters.previousFrom, filters.from].sort()[0]);
+  const cte = selected.cte;
   // Assignments store leaf terms. The recursive relation rolls each leaf up to
   // every ancestor at read time, so a novel-writing product also contributes to
   // content-creation without storing the parent twice. Totals, coverage and term
@@ -142,15 +153,15 @@ export async function queryTrends(db, filters, timings = null) {
     GROUP BY t.id, t.parent_id, t.label_zh, t.label_en, t.sort_order,
       totals.currentCount, totals.previousCount, classified.classifiedCount
     ORDER BY currentCount DESC, t.sort_order, t.id`;
-  const rows = await all(db, resultsSql, [
-    ...selected,
+  const rowsPromise = all(databases[0], resultsSql, [
+    ...selected.bindings,
     filters.from, filters.to, filters.previousFrom, filters.previousTo,
     filters.from, filters.to, filters.facet,
     filters.facet, filters.facet,
     filters.from, filters.to, filters.previousFrom, filters.previousTo,
     filters.from, filters.to, ...filters.sources, filters.facet,
   ], timings, 'trendTotals');
-  const taxonomyCtes = `${cte},
+  const taxonomyCtes = (plan) => `${plan.cte},
     ancestors(facet, leaf_id, term_id) AS (
       SELECT facet, id, id FROM taxonomy_terms WHERE facet = ? AND active = 1
       UNION ALL
@@ -166,29 +177,32 @@ export async function queryTrends(db, filters, timings = null) {
       JOIN ancestors a ON a.facet = ta.facet AND a.leaf_id = ta.term_id
       WHERE ta.facet = ? AND ta.is_current = 1
     )`;
-  const weeklyRows = await all(db, `WITH RECURSIVE ${taxonomyCtes}
+  const weeklySelected = selectedPlan(filters, options.allSources, weeklyStart);
+  const weeklyPromise = all(databases[1], `WITH RECURSIVE ${taxonomyCtes(weeklySelected)}
     SELECT m.term_id AS id, sp.selected_first_seen AS date, COUNT(DISTINCT sp.product_id) AS count
     FROM memberships m
     JOIN selected_products sp ON sp.product_id = m.product_id
     WHERE sp.selected_first_seen BETWEEN ? AND ?
     GROUP BY m.term_id, sp.selected_first_seen
     ORDER BY m.term_id, sp.selected_first_seen`, [
-    ...selected, filters.facet, filters.facet, weeklyStart, filters.to,
+    ...weeklySelected.bindings, filters.facet, filters.facet, weeklyStart, filters.to,
   ], timings, 'trendWeekly');
-  const exampleRows = await all(db, `WITH RECURSIVE ${taxonomyCtes},
-    ranked AS (
-      SELECT m.term_id AS id, p.id AS productId, p.title,
-        p.canonical_url AS url, p.github_repo AS githubRepo, sp.selected_first_seen AS date,
-        ROW_NUMBER() OVER (PARTITION BY m.term_id ORDER BY sp.selected_first_seen DESC, p.id) AS position
-      FROM memberships m
-      JOIN selected_products sp ON sp.product_id = m.product_id
-      JOIN products p ON p.id = sp.product_id
-      WHERE sp.selected_first_seen BETWEEN ? AND ?
-    )
-    SELECT id, productId, title, url, githubRepo, date
-    FROM ranked WHERE position <= 4 ORDER BY id, date DESC, productId`, [
-    ...selected, filters.facet, filters.facet, filters.from, filters.to,
+  // MySQL used to rank every candidate with ROW_NUMBER before keeping four rows per term. On the
+  // production RDS that window sort dominated the endpoint (6.4s in a real request). The current
+  // window contains only a few thousand classified products, so returning that bounded set and
+  // applying the four-row cap below is both simpler and substantially cheaper.
+  const exampleSelected = selectedPlan(filters, options.allSources, filters.from);
+  const examplesPromise = all(databases[2], `WITH RECURSIVE ${taxonomyCtes(exampleSelected)}
+    SELECT m.term_id AS id, p.id AS productId, p.title,
+      p.canonical_url AS url, p.github_repo AS githubRepo, sp.selected_first_seen AS date
+    FROM memberships m
+    JOIN selected_products sp ON sp.product_id = m.product_id
+    JOIN products p ON p.id = sp.product_id
+    WHERE sp.selected_first_seen BETWEEN ? AND ?
+    ORDER BY m.term_id, sp.selected_first_seen DESC, p.id`, [
+    ...exampleSelected.bindings, filters.facet, filters.facet, filters.from, filters.to,
   ], timings, 'trendExamples');
+  const [rows, weeklyRows, exampleRows] = await Promise.all([rowsPromise, weeklyPromise, examplesPromise]);
   const weeklyByTerm = new Map();
   for (const row of weeklyRows) {
     if (!weeklyByTerm.has(row.id)) weeklyByTerm.set(row.id, new Map());
@@ -197,6 +211,7 @@ export async function queryTrends(db, filters, timings = null) {
   const examplesByTerm = new Map();
   for (const row of exampleRows) {
     if (!examplesByTerm.has(row.id)) examplesByTerm.set(row.id, []);
+    if (examplesByTerm.get(row.id).length >= 4) continue;
     examplesByTerm.get(row.id).push({
       title: row.title, url: row.url || (row.githubRepo ? `https://github.com/${row.githubRepo}` : ''),
       date: String(row.date).slice(0, 10),
@@ -257,9 +272,10 @@ export async function queryTrends(db, filters, timings = null) {
   };
 }
 
-export async function queryProducts(db, filters, term, timings = null) {
+export async function queryProducts(db, filters, term, timings = null, options = {}) {
   if (!/^[a-z0-9-]+$/.test(term || '')) throw new Error('invalid taxonomy term');
-  const cte = selectedCte(filters.sources.length);
+  const selected = selectedPlan(filters, options.allSources, filters.from);
+  const cte = selected.cte;
   const rows = await all(db, `WITH RECURSIVE
     ${cte},
     ancestors(facet, leaf_id, term_id) AS (
@@ -289,7 +305,7 @@ export async function queryProducts(db, filters, term, timings = null) {
     GROUP BY p.id, p.title, p.canonical_url, p.github_repo, sp.selected_first_seen
     ORDER BY sp.selected_first_seen DESC, p.id
     LIMIT 10000`, [
-    ...selectedBindings(filters, filters.from), filters.facet, filters.facet, ...filters.sources,
+    ...selected.bindings, filters.facet, filters.facet, ...filters.sources,
     term, filters.from, filters.to,
   ], timings, 'products');
   const sources = new Set();
@@ -306,19 +322,19 @@ export async function queryProducts(db, filters, term, timings = null) {
   return { schemaVersion: 1, filters: { ...filters, term }, count: products.length, sourceCount: sources.size, products };
 }
 
-export async function handleCatalogApi(request, env) {
+export async function handleCatalogApi(request, env, ctx) {
   const url = new URL(request.url);
   if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, { status: 405, cacheControl: 'no-store' });
   if (!env.HYPERDRIVE_READ) return json({ error: 'catalog_database_unavailable' }, { status: 503, cacheControl: 'no-store' });
   let db;
-  let close = async () => {};
+  const closes = [];
   const timings = [];
   try {
     const connectStarted = performance.now();
     const opened = await (await import('./mysql-db.mjs')).openMysql(env.HYPERDRIVE_READ);
     timings.push(`connect;dur=${(performance.now() - connectStarted).toFixed(1)}`);
     db = opened.db;
-    close = opened.close;
+    closes.push(opened.close);
     const sources = await availableSources(db, timings);
     const headers = () => ({ 'server-timing': timings.join(', ') });
     if (url.pathname === '/api/v1/sources') {
@@ -328,20 +344,35 @@ export async function handleCatalogApi(request, env) {
       const latest = sources.map((source) => source.lastSeenDate).filter(Boolean).sort().at(-1);
       if (!latest) return json({ error: 'catalog_is_empty' }, { status: 503, cacheControl: 'no-store' });
       const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
-      const data = await queryTrends(db, filters, timings);
+      const extraStarted = performance.now();
+      const mysql = await import('./mysql-db.mjs');
+      const extras = await Promise.all([
+        mysql.openMysql(env.HYPERDRIVE_READ),
+        mysql.openMysql(env.HYPERDRIVE_READ),
+      ]);
+      extras.forEach((extra) => closes.push(extra.close));
+      timings.push(`parallelConnect;dur=${(performance.now() - extraStarted).toFixed(1)}`);
+      const data = await queryTrends(db, filters, timings, {
+        allSources: filters.sources.length === sources.length,
+        databases: [db, ...extras.map((extra) => extra.db)],
+      });
       return json(data, { headers: headers() });
     }
     if (url.pathname === '/api/v1/products') {
       const latest = sources.map((source) => source.lastSeenDate).filter(Boolean).sort().at(-1);
       if (!latest) return json({ error: 'catalog_is_empty' }, { status: 503, cacheControl: 'no-store' });
       const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
-      const data = await queryProducts(db, filters, url.searchParams.get('term'), timings);
+      const data = await queryProducts(db, filters, url.searchParams.get('term'), timings, {
+        allSources: filters.sources.length === sources.length,
+      });
       return json(data, { headers: headers() });
     }
     return json({ error: 'not_found' }, { status: 404, cacheControl: 'no-store' });
   } catch (error) {
     return json({ error: 'invalid_request', message: error.message }, { status: 400, cacheControl: 'no-store' });
   } finally {
-    await close();
+    const closing = Promise.allSettled(closes.map((close) => close()));
+    if (ctx?.waitUntil) ctx.waitUntil(closing);
+    else await closing;
   }
 }

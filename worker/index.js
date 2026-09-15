@@ -19,12 +19,12 @@ export function apiCacheKey(request) {
     url.searchParams.set('sources', [...new Set(sources.split(',').map(value => value.trim()).filter(Boolean))].sort().join(','));
   }
   url.searchParams.sort();
-  return new Request(new URL(`/_devtrends_api_cache/v1${url.pathname}${url.search}`, url.origin));
+  return new Request(new URL(`/_devtrends_api_cache/v8${url.pathname}${url.search}`, url.origin));
 }
 
 export async function cachedCatalogApi(request, env, ctx, handler = handleCatalogApi) {
   if (request.method !== 'GET' || !CACHED_API.has(new URL(request.url).pathname) || typeof caches === 'undefined') {
-    return handler(request, env);
+    return handler(request, env, ctx);
   }
   const cache = caches.default;
   const key = apiCacheKey(request);
@@ -38,7 +38,7 @@ export async function cachedCatalogApi(request, env, ctx, handler = handleCatalo
   } catch (_) {
     // A cache failure is never a catalog outage: the database path remains authoritative.
   }
-  const response = await handler(request, env);
+  const response = await handler(request, env, ctx);
   if (response.status === 200) {
     const put = cache.put(key, response.clone()).catch(() => {});
     if (ctx?.waitUntil) ctx.waitUntil(put);

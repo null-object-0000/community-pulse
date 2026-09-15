@@ -8,7 +8,7 @@ test('catalog cache normalizes source order and keeps different combinations apa
   const c = apiCacheKey(new Request('https://devtrends.site/api/v1/trends?sources=showhn&facet=useCases'));
   assert.equal(a.url, b.url);
   assert.notEqual(a.url, c.url);
-  assert.match(a.url, /_devtrends_api_cache\/v1/);
+  assert.match(a.url, /_devtrends_api_cache\/v8/);
 });
 
 test('catalog cache skips the database on a hit and never stores errors', async () => {

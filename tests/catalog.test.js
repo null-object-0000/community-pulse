@@ -80,6 +80,8 @@ test('trend query recomputes first-seen within the selected source set', async (
   const allSources = await queryTrends(new QueryAdapter(db), { ...base, sources: ['producthunt', 'showhn'] });
   assert.equal(allSources.coverage.uniqueProducts, 1);
   assert.equal(allSources.results.find((row) => row.id === 'novel-writing').previousCount, 1);
+  const allSourcesFastPath = await queryTrends(new QueryAdapter(db), { ...base, sources: ['producthunt', 'showhn'] }, null, { allSources: true });
+  assert.deepEqual(allSourcesFastPath, allSources);
 
   const showHn = await queryTrends(new QueryAdapter(db), { ...base, sources: ['showhn'] });
   assert.equal(showHn.coverage.uniqueProducts, 2);

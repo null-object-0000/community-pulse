@@ -262,9 +262,12 @@
 - **代码 / 分支决策**：将 `feat/catalog-enrichment` 的两次影子增强提交合入主分支，保留「产品名称和真实描述缺一不打标」的最终口径；runner 只写 `is_current=0`，不顺手激活线上分类。`feat/trending-continuation` 的持续热门列表能力已在主分支实现，旧分支还缺 MySQL 趋势与分类页修复，故不合入；`refactor/modularize-frontend` 已是主分支祖先，也不重复合入。
 - **数据 / 冲突处理**：官网图标辅助层 09-14 文件取主分支完整的 61 条记录，同时保留影子增强分支补充的描述与配图证据字段；按合并后的实际 records 重算 SHA-256，离线校验为 54 个图标、6 个无图标、1 个失败、0 个警告，避免把较旧的 25 条分支快照覆盖完整采集。
 - **验证**：合并后的 `npm run check` 构建 257 期 / 2379 个 GitHub 项目，182/182 测试通过；影子增强、描述兜底、来源层离线校验均通过。
-- **代码 / 趋势接口性能**：线上抽样显示来源目录约 0.9–1.9 秒、趋势不同分面约 1.9–5.6 秒，Product Hunt 单源 Agent 分面曾达 11.2 秒。根因候选是每次请求都扫描全量产品×来源首见表、趋势另跑三条分类查询。SQL 改为先用 `(source_id, first_seen_date, product_id)` 索引取目标窗口候选，再按产品×来源主键排除所选来源的更早记录；分类父级展开只处理候选产品。来源目录因 `(product_id, source_id)` 主键唯一，去掉无用的 `COUNT(DISTINCT)`；不改变任意来源组合内首见重算口径。
+- **代码 / 趋势接口性能**：线上抽样显示来源目录约 0.9–1.9 秒、趋势不同分面约 1.9–5.6 秒，Product Hunt 单源 Agent 分面曾达 11.2 秒。`Server-Timing` 证实瓶颈不是连接（通常 2–13ms），而是同一请求串行重复三次「所选来源首见 + 分类成员」查询。最终分三路：全来源直接按 `products(first_seen_date,id)` 取窗口；单来源直接按 `(source_id,first_seen_date,product_id)` 取窗口；只有任意多来源子集保留完整 `MIN(first_seen_date)`，从而保持集合内首见口径。分类成员从时间窗口候选产品出发再接当前分类，三条互不依赖的趋势查询通过三个 Hyperdrive 池连接并行；代表产品不再对候选全集做 `ROW_NUMBER` 窗口排序，而由 Worker 对已按分类/日期排序的近期结果每类截 4 条。来源目录因 `(product_id,source_id)` 主键唯一，去掉无用的 `COUNT(DISTINCT)`。
+  - **试过并回退**：首版尝试用「目标窗口候选 + `NOT EXISTS` 排除更早来源」统一优化任意来源组合；SQLite 结果与速度正常，但真实 MySQL 默认查询超过 20 秒，立即回退。第二版只取消 `GROUP BY` 但没有把日期条件推入 CTE，RDS 仍物化全表，也未达标。最终实现不再用 SQLite 执行计划代替 MySQL 判断，每版都用线上分段计时验收。
+  - **连接释放不挡首字节**：分段 SQL 已降至毫秒级后仍有 2–3 秒未归因 TTFB，定位为 `finally` 等待三个 mysql2 连接执行 `end()`；现在用 Worker `waitUntil` 在响应提交后完成释放，连接仍关闭但不占用户等待时间。
+  - **索引与多来源集合**：RDS 新增覆盖索引 `(product_id,source_id,first_seen_date)`，保留原 `(source_id,first_seen_date,product_id)`：前者服务跨来源聚合，后者服务单来源日期窗口。仅强制主键/覆盖索引的实验都没有改善真实执行计划，因此最终不写 `FORCE INDEX`；多来源仍精确求 `MIN`，但用聚合后的 `HAVING MIN(first_seen_date) BETWEEN ...` 在进入分类连接前裁到 7/35/84 天窗口。
   - **为什么同时加边缘缓存与计时**：Hyperdrive 缓存的是 SQL 结果，不等同于完整 API 响应缓存；热门来源组合现在用 Cloudflare Cache API 在请求进入 MySQL 前命中，键将来源集合去重排序且带版本号，响应最多缓存 5 分钟、非 200 不缓存、缓存故障回退数据库。`Server-Timing` 分别标出连接、来源、趋势三条 SQL 与分类列表耗时，便于真实 MySQL 上识别下一处瓶颈。Cloudflare 缓存按数据中心存放，因此冷节点仍需由 SQL 优化兜底。
-  - **验证（发布前）**：本地完整 SQLite 库对全来源业务场景、仅 Show HN Agent、仅 Product Hunt Agent 三组查询做新旧结果逐字段比较，均一致；专项测试覆盖规范化键、不同来源组合隔离、缓存命中不再访问数据库、错误响应不入缓存。
+  - **验证**：本地完整 SQLite 库对全来源业务场景、仅 Show HN Agent、仅 Product Hunt Agent 三组查询做新旧结果逐字段比较，均一致；专项测试覆盖全来源快路径、单来源集合内首见、规范化缓存键、不同来源组合隔离、缓存命中不再访问数据库、错误响应不入缓存。线上强制未命中实测：默认全来源约 1.24 秒、Product Hunt 单源约 1.10 秒、Show HN 单源约 1.04–1.86 秒、分类列表约 1.10 秒；多来源中，排除 Product Hunt 约 1.03 秒、Show HN + V2EX 约 4.0 秒、Product Hunt + Show HN 约 5.5 秒。重复组合同节点缓存命中约 0.9–1.6 秒，其中本机代理 TLS/网络约占 0.8–1.0 秒。
 
 ## 值得记录的决策
 
