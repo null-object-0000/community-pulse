@@ -6,13 +6,13 @@
   "timezone": "Asia/Shanghai",
   "status": "ok",
   "complete": true,
-  "fetchedAt": "2026-09-14T05:52:12.657Z",
-  "itemCount": 44,
+  "fetchedAt": "2026-09-14T14:48:56.263Z",
+  "itemCount": 43,
   "candidateCount": 53,
   "pageCount": 49,
   "missingCount": 7,
-  "failureCount": 2,
-  "contentSha256": "ff84bbac2b342a9d7f80c3f5382c97d1b67c458745d5c3b920459301a174f513",
+  "failureCount": 3,
+  "contentSha256": "da7338a78e249a315c27cb962a1e4c6b5b35bdcf2973c65e74c2b70c357b44bc",
   "capture": {
     "mode": "website-logo-fallback",
     "userAgent": "Mozilla/5.0 (compatible; community-pulse-source-capture/1; +https://devtrends.site)",
@@ -21,7 +21,7 @@
       "2026-09-13"
     ],
     "skippedSources": [],
-    "refreshed": false,
+    "refreshed": true,
     "limits": {
       "pageBytes": 3145728,
       "iconBytes": 2097152,
@@ -39,6 +39,11 @@
       "title": "pet memorial portrait",
       "reportDate": "2026-09-13",
       "pageUrl": "https://aipetmemorialportrait.com/",
+      "description": "Turn a beloved pet's photo into a custom memorial portrait — a unique keepsake of the love you shared. Free preview. Instant download.",
+      "ogImage": {
+        "url": "https://aipetmemorialportrait.com/og.png",
+        "sha256": "ede60280a4aa5fd2ee7ddd677db1a303a2c6ca21375c375164c14452c8d0df28"
+      },
       "status": "ok",
       "iconUrl": "https://aipetmemorialportrait.com/logo.png",
       "iconKind": "apple-touch-icon",
@@ -63,23 +68,25 @@
       "title": "剪蛋 Jiandan",
       "reportDate": "2026-09-13",
       "pageUrl": "https://www.jiandan.qd.je/",
-      "status": "ok",
-      "iconUrl": "https://www.jiandan.qd.je/assets/jiandan.png",
-      "iconKind": "icon",
-      "contentType": "image/png",
-      "byteLength": 237420,
-      "contentSha256": "f8dd1aaf63047bc7f11681ff1472f5fd107eba5e6a016a35f6806aff16d769ff",
-      "declaredIconCount": 1,
+      "description": "",
+      "ogImage": null,
+      "status": "failed",
+      "iconUrl": "",
+      "iconKind": "",
+      "contentType": "",
+      "byteLength": 0,
+      "contentSha256": "",
+      "declaredIconCount": 0,
       "attempts": [
         {
-          "url": "https://www.jiandan.qd.je/assets/jiandan.png",
-          "kind": "png",
-          "status": "ok",
+          "url": "https://www.jiandan.qd.je/favicon.ico",
+          "kind": "",
+          "status": "failed",
           "cached": false,
-          "error": ""
+          "error": "curl: (35) TLS connect error: error:0A000126:SSL routines::unexpected eof while reading"
         }
       ],
-      "error": ""
+      "error": "curl: (35) TLS connect error: error:0A000126:SSL routines::unexpected eof while reading"
     },
     {
       "sourceId": "github-trending",
@@ -653,6 +660,11 @@
       "title": "[开源推荐] AV-Toolkit：把 FFmpeg 跑在浏览器里的音视频处理工具",
       "reportDate": "2026-09-13",
       "pageUrl": "https://av-toolkit.newscast.top/",
+      "description": "AV-Toolkit 是一款纯前端的浏览器端音视频处理工具：格式转换、片段截取、音频提取、视频压缩均在本地完成，文件不上传任何服务器，隐私安全有保障。",
+      "ogImage": {
+        "url": "https://av-toolkit.newscast.top/og-image.png",
+        "sha256": "701e0622c783143e6a37181b7c8bc589d5ae33b6cf84e45196f09dbe5e769ae1"
+      },
       "status": "ok",
       "iconUrl": "https://av-toolkit.newscast.top/apple-touch-icon.png",
       "iconKind": "apple-touch-icon",
@@ -677,6 +689,8 @@
       "title": "[开源自荐] Afterglow-聊天记录AI炼化的RAG方案",
       "reportDate": "2026-09-13",
       "pageUrl": "https://afterglow.kldhsh.top/",
+      "description": "Afterglow（续温）—— 本地运行的 AI 朋友系统。把曾经对你好的话，续成往后的陪伴。",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://afterglow.kldhsh.top/favicon.svg",
       "iconKind": "icon",
@@ -701,6 +715,11 @@
       "title": "[开源推荐] Robot Reel：在浏览器里逐帧检查机器人与物理仿真实验",
       "reportDate": "2026-09-13",
       "pageUrl": "https://noteflowai.github.io/robot-reel/",
+      "description": "Recorded physical-AI experiments you can watch, step through and take apart: GPU cloth deformation, SmolVLA stress trials, Newton time sculptures, MCP-directed Blender films and editable OpenUSD scenes.",
+      "ogImage": {
+        "url": "https://noteflowai.github.io/robot-reel/showcase/social.png",
+        "sha256": "dee65a6770cd9946ddf97638b80735f51fd3e8510db233efa11c2a45412388e6"
+      },
       "status": "missing",
       "iconUrl": "",
       "iconKind": "",
@@ -725,6 +744,11 @@
       "title": "[开源推荐] dsh-skills-anywhere：让不同编程助手共享现有 Agent Skills",
       "reportDate": "2026-09-13",
       "pageUrl": "https://huggingface.co/spaces/glayguo/dsh-skills-anywhere",
+      "description": "This interactive web tool lets you browse a shared pool of agent skills, search by name, and view the full source of each skill directly in the browser. You can also upload a SKILL.md file to see h...",
+      "ogImage": {
+        "url": "https://huggingface.co/spaces/glayguo/dsh-skills-anywhere/resolve/main/thumbnail.png",
+        "sha256": "a5b68cb9a3234626cb57c3711a32429452c451a6000fb4cb57be11e8a7d75895"
+      },
       "status": "ok",
       "iconUrl": "https://huggingface.co/favicon.ico",
       "iconKind": "default-favicon",
@@ -749,6 +773,8 @@
       "title": "[开源推荐] FluentRead 流畅阅读：一款开源的浏览器双语翻译插件",
       "reportDate": "2026-09-13",
       "pageUrl": "https://fluent.thinkstu.com/",
+      "description": "一款开源的浏览器双语翻译插件。",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://fluent.thinkstu.com/logo.webp",
       "iconKind": "icon",
@@ -773,6 +799,11 @@
       "title": "Show HN: Determinstic LLM inference for lowest price Gemma 4, with Windows XP",
       "reportDate": "2026-09-13",
       "pageUrl": "https://www.tokendelivery.ai/",
+      "description": "Open-weight models, fully deterministic. The same answer every time, byte for byte, at the floor price.",
+      "ogImage": {
+        "url": "https://tokendelivery.ai/og.png",
+        "sha256": "32bd09ab2e92effc21776b89376ce8290c374ce6fbc5cf766e09f0315be104a5"
+      },
       "status": "ok",
       "iconUrl": "https://www.tokendelivery.ai/logo.png",
       "iconKind": "apple-touch-icon",
@@ -797,6 +828,11 @@
       "title": "Show HN: Music Generation Backed by Algebra",
       "reportDate": "2026-09-13",
       "pageUrl": "https://monictheory.com/",
+      "description": "Monic Theory: Make More Music. Synthesize targeted MIDI assets using your favorite creator mode. Learn music theory to expand your music making toolkit..",
+      "ogImage": {
+        "url": "https://monictheory.com/images/og-image.jpg",
+        "sha256": "0ccf2a6ae99e64977b1ed61b54b5b19c510838fe3605f40d3f022397126844e3"
+      },
       "status": "missing",
       "iconUrl": "",
       "iconKind": "",
@@ -821,6 +857,8 @@
       "title": "Show HN: Come prove the Berge Fulkerson conjecture with a swarm of agents",
       "reportDate": "2026-09-13",
       "pageUrl": "https://provetogether.ai/problems/15",
+      "description": "Let G be a finite bridgeless cubic graph (every vertex has degree 3 and no edge is a bridge). Do there exist six perfect matchings M₁, …, M₆ of G, repetitions allowed, such that ev",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://provetogether.ai/favicon.svg",
       "iconKind": "icon",
@@ -845,6 +883,11 @@
       "title": "Show HN: What If Donut.c but with Any ASCII Art",
       "reportDate": "2026-09-13",
       "pageUrl": "https://asdesai.com/blog/how-fetch-works/",
+      "description": "One file of C, no GPU, no graphics library. Just math and printf.",
+      "ogImage": {
+        "url": "https://asdesai.com/img/fetch/og.png",
+        "sha256": "749a806574d8d5bc67c79ecb74cb3262ba87be3d0d4a3e7a06f1cb31e3902058"
+      },
       "status": "ok",
       "iconUrl": "https://asdesai.com/favicon.ico",
       "iconKind": "icon",
@@ -869,6 +912,11 @@
       "title": "Show HN: PDFidelity – Translate PDFs while preserving the original layout",
       "reportDate": "2026-09-13",
       "pageUrl": "https://www.pdfidelity.com/",
+      "description": "Traduce artículos científicos (papers) académicos, capítulos de libros y PDFs científicos en una experiencia de lectura natural sin perder el formato original ni el sentido.",
+      "ogImage": {
+        "url": "https://www.pdfidelity.com/brand.png?v=20260714",
+        "sha256": "12b6dfb8e8119e6a7fdb955aabedf550e3ab408991dc210ecbeab03b4a0b34ba"
+      },
       "status": "ok",
       "iconUrl": "https://www.pdfidelity.com/apple-touch-icon.png",
       "iconKind": "apple-touch-icon",
@@ -893,6 +941,8 @@
       "title": "Show HN: YazSes – offline hold-to-talk voice dictation for Linux, macOS, Windows",
       "reportDate": "2026-09-13",
       "pageUrl": "https://mskazemi.com/yazses/",
+      "description": "",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://mskazemi.com/yazses/assets/favicon.svg",
       "iconKind": "icon",
@@ -917,6 +967,11 @@
       "title": "Show HN: Everything a web page can learn about you, in plain English",
       "reportDate": "2026-09-13",
       "pageUrl": "https://sessioncontext.org/",
+      "description": "Everything a single web page can work out about the browser, device and person that requested it — stated in plain English, with the raw values behind every claim.",
+      "ogImage": {
+        "url": "https://sessioncontext.org/opengraph-image?7aa37e78e6b9c0f5",
+        "sha256": "8642e62b1bb7e9b493ecf0b9ea951c1a369ddc62ae6965f39d58f3242bfad553"
+      },
       "status": "ok",
       "iconUrl": "https://sessioncontext.org/icon.svg?icon.0mojxgedbod8_.svg",
       "iconKind": "icon",
@@ -941,6 +996,8 @@
       "title": "Show HN: Most Penalized HN Stories",
       "reportDate": "2026-09-13",
       "pageUrl": "https://news.social-protocols.org/penalties",
+      "description": "",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://news.social-protocols.org/static/apple-touch-icon.png",
       "iconKind": "apple-touch-icon",
@@ -965,6 +1022,11 @@
       "title": "Show HN: Open-Sourced Chrome Extension to Save, Organize and Switch Bookmarks",
       "reportDate": "2026-09-13",
       "pageUrl": "https://ringlochid.me/leotabs",
+      "description": "Save tabs and bookmarks into project collections. Switch projects, search saved links, and reopen your work with LeoTabs, a free Chrome and Edge extension.",
+      "ogImage": {
+        "url": "https://ringlochid.me/leotabs/assets/library.png",
+        "sha256": "cf0f4462641b9f4ea8628ee9328999ef5a7139e149acf08f88db956c7680035a"
+      },
       "status": "missing",
       "iconUrl": "",
       "iconKind": "",
@@ -996,6 +1058,11 @@
       "title": "Show HN: The iPhone Duo fold effect on any Windows laptop",
       "reportDate": "2026-09-13",
       "pageUrl": "https://winduo.baselashraf.com/",
+      "description": "Close your laptop and the screen leans away, blurring and dimming, like an iPhone Duo folding shut. Apple uses a hinge. Mac Duo uses the MacBook's lid angle sensor. Your laptop has neither, so WinDuo reads the angle from your webcam. Free and open source.",
+      "ogImage": {
+        "url": "https://baselashraf.com/media/winduo-og.png",
+        "sha256": "80ad6fadda583959701859c12b0feface6ac6bc23a4eccae40515f7382e0111f"
+      },
       "status": "ok",
       "iconUrl": "https://winduo.baselashraf.com/icon.svg",
       "iconKind": "icon",
@@ -1020,6 +1087,11 @@
       "title": "Show HN: The Kinect is dead, so I rebuilt it in a browser tab for my kids",
       "reportDate": "2026-09-13",
       "pageUrl": "https://hoplagames.com/en/",
+      "description": "Free webcam movement games for kids. Jump, wave and dance to play — no download, no sign-up, and the camera never leaves your device.",
+      "ogImage": {
+        "url": "https://hoplagames.com/og.png",
+        "sha256": "7b9fc7626f689c723a1c5ce9db5023ca662d1d1fc9795396a765140d6767a70d"
+      },
       "status": "ok",
       "iconUrl": "https://hoplagames.com/apple-touch-icon.png",
       "iconKind": "apple-touch-icon",
@@ -1044,6 +1116,8 @@
       "title": "Show HN: Analyst Index – analysts who make money telling you good stock calls",
       "reportDate": "2026-09-13",
       "pageUrl": "https://www.analystidx.com/",
+      "description": "Explore stock analysis, compare analyst price targets and stock forecasts, and follow equity research with reported analyst scores and original forecast terms.",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://www.analystidx.com/favicon.svg",
       "iconKind": "icon",
@@ -1068,6 +1142,11 @@
       "title": "【开源自荐】no_human：AI 写完代码，先由另一个模型独立评审再开 PR",
       "reportDate": "2026-09-13",
       "pageUrl": "https://getnohuman.com/",
+      "description": "Free and open-source, on your machine. no_human plans, codes, tests and reviews the work, then opens the pull request — you approve.",
+      "ogImage": {
+        "url": "https://getnohuman.com/assets/og-card-v15.jpg",
+        "sha256": "0b3ebef5b7c31aa124adb5a11ff5554d87f222d11fb560c269ad51936b4f3e34"
+      },
       "status": "ok",
       "iconUrl": "https://getnohuman.com/assets/mark-dark-180.png?v=2",
       "iconKind": "apple-touch-icon",
@@ -1092,6 +1171,11 @@
       "title": "【软件自荐】AV-Toolkit：把 FFmpeg 放进浏览器，音视频处理不再上传文件",
       "reportDate": "2026-09-13",
       "pageUrl": "https://av-toolkit.newscast.top/",
+      "description": "AV-Toolkit 是一款纯前端的浏览器端音视频处理工具：格式转换、片段截取、音频提取、视频压缩均在本地完成，文件不上传任何服务器，隐私安全有保障。",
+      "ogImage": {
+        "url": "https://av-toolkit.newscast.top/og-image.png",
+        "sha256": "701e0622c783143e6a37181b7c8bc589d5ae33b6cf84e45196f09dbe5e769ae1"
+      },
       "status": "ok",
       "iconUrl": "https://av-toolkit.newscast.top/apple-touch-icon.png",
       "iconKind": "apple-touch-icon",
@@ -1116,6 +1200,8 @@
       "title": "[开源自荐] 聊天记录AI炼化的RAG方案",
       "reportDate": "2026-09-13",
       "pageUrl": "https://afterglow.kldhsh.top/",
+      "description": "Afterglow（续温）—— 本地运行的 AI 朋友系统。把曾经对你好的话，续成往后的陪伴。",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://afterglow.kldhsh.top/favicon.svg",
       "iconKind": "icon",
@@ -1140,6 +1226,11 @@
       "title": "【开源自荐】OrcaReplay：把 AI 编程 Agent 的运行录下来，不花 token 原样重放",
       "reportDate": "2026-09-13",
       "pageUrl": "http://www.orcarouter.ai/",
+      "description": "One OpenAI-compatible AI gateway for production AI — adaptive routing, load balancing, guardrails, agent firewall, observability and governance across 200+ models.",
+      "ogImage": {
+        "url": "https://www.orcarouter.ai/orca-og-v2.png",
+        "sha256": "72768fe9d1f9cf890b0b4db6dd5f7505f59ffb1ac05505bbeb83874bde8bd9cb"
+      },
       "status": "ok",
       "iconUrl": "https://www.orcarouter.ai/orca-logo.png",
       "iconKind": "json-ld-logo",
@@ -1164,6 +1255,8 @@
       "title": "【网站自荐】哪版：比较 iPhone 各地区版本的价格、双卡与功能差异",
       "reportDate": "2026-09-13",
       "pageUrl": "https://naban.barrybarrywu.cn/",
+      "description": "",
+      "ogImage": null,
       "status": "failed",
       "iconUrl": "",
       "iconKind": "",
@@ -1177,10 +1270,10 @@
           "kind": "",
           "status": "failed",
           "cached": false,
-          "error": "curl: (28) Failed to connect to naban.barrybarrywu.cn port 443 after 8002 ms: Timeout was reached curl: (28) Failed to connect to naban.barrybarrywu.cn port 443 after 8002 ms: Timeout was reached"
+          "error": "response exceeds 2048 KiB"
         }
       ],
-      "error": "curl: (28) Failed to connect to naban.barrybarrywu.cn port 443 after 8003 ms: Timeout was reached curl: (28) Failed to connect to naban.barrybarrywu.cn port 443 after 8002 ms: Timeout was reached"
+      "error": "curl: (28) Operation timed out after 15002 milliseconds with 411139 bytes received"
     },
     {
       "sourceId": "weekly-issues",
@@ -1188,6 +1281,11 @@
       "title": "[开源自荐] Robot Reel：逐帧检查机器人策略与物理仿真实验",
       "reportDate": "2026-09-13",
       "pageUrl": "https://noteflowai.github.io/robot-reel/",
+      "description": "Recorded physical-AI experiments you can watch, step through and take apart: GPU cloth deformation, SmolVLA stress trials, Newton time sculptures, MCP-directed Blender films and editable OpenUSD scenes.",
+      "ogImage": {
+        "url": "https://noteflowai.github.io/robot-reel/showcase/social.png",
+        "sha256": "dee65a6770cd9946ddf97638b80735f51fd3e8510db233efa11c2a45412388e6"
+      },
       "status": "missing",
       "iconUrl": "",
       "iconKind": "",
@@ -1212,6 +1310,11 @@
       "title": "[开源自荐] dsh-skills-anywhere：让不同编程助手共享现有 Agent Skills",
       "reportDate": "2026-09-13",
       "pageUrl": "https://huggingface.co/spaces/glayguo/dsh-skills-anywhere",
+      "description": "This interactive web tool lets you browse a shared pool of agent skills, search by name, and view the full source of each skill directly in the browser. You can also upload a SKILL.md file to see h...",
+      "ogImage": {
+        "url": "https://huggingface.co/spaces/glayguo/dsh-skills-anywhere/resolve/main/thumbnail.png",
+        "sha256": "a5b68cb9a3234626cb57c3711a32429452c451a6000fb4cb57be11e8a7d75895"
+      },
       "status": "ok",
       "iconUrl": "https://huggingface.co/favicon.ico",
       "iconKind": "default-favicon",
@@ -1236,6 +1339,8 @@
       "title": "〖网站自荐〗TreeQuoteCheck：拆开树木移除报价里的价格与服务范围",
       "reportDate": "2026-09-13",
       "pageUrl": "https://treequotecheck.com/",
+      "description": "Explore a broad published tree-removal cost reference, review a written quote's scope, and keep unknowns visible.",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://treequotecheck.com/favicon.svg",
       "iconKind": "icon",
@@ -1260,6 +1365,8 @@
       "title": "baiduan-router：九模型MCP调度器 pip install即用",
       "reportDate": "2026-09-13",
       "pageUrl": "https://pypi.org/project/baiduan-router/",
+      "description": "Route prompts across 9 LLM backends through a single MCP server — compare, optimize, and save. No lock-in, no vendor bias.",
+      "ogImage": null,
       "status": "ok",
       "iconUrl": "https://pypi.org/static/images/favicon.35549fe8.ico",
       "iconKind": "icon",
@@ -1284,6 +1391,11 @@
       "title": "【工具自荐】RoomAI —— 上传一张房间实拍照，20 秒到 1 分钟生成不改墙体的 AI 室内效果图",
       "reportDate": "2026-09-13",
       "pageUrl": "https://www.roomai.ai/",
+      "description": "Get AI room design from a real photo of your room in 20 seconds to a minute — same walls, same windows, new finish and furniture. Free to try, no card needed.",
+      "ogImage": {
+        "url": "https://www.roomai.ai/home/rooms/hero-warm.webp",
+        "sha256": "327ba7cef842a443d5e52ade8103cd540a76c2a8b2222714b32dac350d9f5f9b"
+      },
       "status": "ok",
       "iconUrl": "https://www.roomai.ai/apple-icon.png",
       "iconKind": "apple-touch-icon",
@@ -1308,6 +1420,11 @@
       "title": "【开源自荐】Status Trio: 将 iPhone Duo 的三合一状态图标带到 macOS",
       "reportDate": "2026-09-13",
       "pageUrl": "https://statustrio.lingai.net/",
+      "description": "Status Trio 是一个原生 macOS 菜单栏应用，将 Wi-Fi、电池和音量整合进一个紧凑、可配置的菜单栏图标。允许自定义多种外观配置。",
+      "ogImage": {
+        "url": "https://statustrio.lingai.net/og.jpg",
+        "sha256": "3dfcb4a97e8f177566a3ccd14112f9a877ced5e4870bc095f240375d0a5a4653"
+      },
       "status": "ok",
       "iconUrl": "https://statustrio.lingai.net/app-icon-128.png",
       "iconKind": "icon",

@@ -9,12 +9,15 @@ const {
   sourceHash,
   PROMPT_VERSION,
 } = require('../../.agents/skills/community-pulse/scripts/enhance.js');
+const { upgradeEnrichmentProductStatus } = require('./build-database');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_DATABASE = path.join(ROOT, 'data', 'catalog', 'devtrends.sqlite');
 const STATUS_MIGRATION = path.join(ROOT, 'migrations', '0003_enrichment_product_status.sql');
 const PROCESSOR = 'enhance.localize';
-const PROCESSOR_VERSION = 'catalog-localize-v1';
+const PROCESSOR_VERSION = 'catalog-localize-v3';
+const NO_SUMMARIES = new Set([D.t('zh-CN', 'noSummary'), D.t('en', 'noSummary')]);
+const LEGACY_PROCESSOR_VERSIONS = ['catalog-localize-v1', 'catalog-localize-v2'];
 
 function parseArgs(argv) {
   const options = {
@@ -54,6 +57,7 @@ function stableRunId(options) {
 
 function ensureStatusSchema(db) {
   db.exec(fs.readFileSync(STATUS_MIGRATION, 'utf8'));
+  upgradeEnrichmentProductStatus(db);
 }
 
 function loadProducts(db, options) {
@@ -82,7 +86,44 @@ function loadProducts(db, options) {
 
 function localizationInput(row) {
   const title = String(row.title || '').trim();
-  return { heading: title, title, desc: String(row.summary || '').trim(), section: row.source_id };
+  const stored = String(row.summary || '').trim();
+  return { heading: title, title, desc: NO_SUMMARIES.has(stored) ? '' : stored, section: row.source_id };
+}
+
+function skipReason(input) {
+  const missingTitle = !String(input.title || '').trim();
+  const missingDescription = !String(input.desc || '').trim();
+  if (missingTitle && missingDescription) return 'missing_title_and_description';
+  if (missingTitle) return 'missing_title';
+  if (missingDescription) return 'missing_description';
+  return null;
+}
+
+function cleanupLegacyShadowRows(db) {
+  const placeholders = LEGACY_PROCESSOR_VERSIONS.map(() => '?').join(',');
+  const currentAssignments = db.prepare(`SELECT count(*) AS count FROM taxonomy_assignments
+    WHERE processor_version IN (${placeholders}) AND is_current=1`).get(...LEGACY_PROCESSOR_VERSIONS).count;
+  const currentContent = db.prepare(`SELECT count(*) AS count FROM product_content
+    WHERE content_source IN (${placeholders}) AND is_current=1`)
+    .get(...LEGACY_PROCESSOR_VERSIONS.map((version) => `llm:${version}`)).count;
+  if (currentAssignments || currentContent) {
+    throw new Error(`refusing to clean legacy catalog rows marked current: ${currentAssignments} assignments, ${currentContent} content`);
+  }
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    const assignments = db.prepare(`DELETE FROM taxonomy_assignments
+      WHERE processor_version IN (${placeholders}) AND is_current=0`).run(...LEGACY_PROCESSOR_VERSIONS).changes;
+    const content = db.prepare(`DELETE FROM product_content
+      WHERE content_source IN (${placeholders}) AND is_current=0`)
+      .run(...LEGACY_PROCESSOR_VERSIONS.map((version) => `llm:${version}`)).changes;
+    const runs = db.prepare(`DELETE FROM enrichment_runs
+      WHERE kind='catalog-product' AND processor_version IN (${placeholders})`).run(...LEGACY_PROCESSOR_VERSIONS).changes;
+    db.exec('COMMIT');
+    return { assignments, content, runs };
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
 }
 
 function seedPrimaryCategories(db) {
@@ -109,12 +150,13 @@ function writeResult(db, context, row, input, localized, requestCount) {
       .run(row.product_id, context.processorVersion);
     const assignment = db.prepare(`INSERT INTO taxonomy_assignments
       (product_id, facet, term_id, assignment_source, confidence, processor_version, enrichment_run_id, is_current, created_at)
-      VALUES (?, ?, ?, 'llm', NULL, ?, ?, 0, ?)`);
-    assignment.run(row.product_id, 'primaryCategory', localized.primaryCategory, context.processorVersion, context.runId, now);
+      VALUES (?, ?, ?, 'llm', ?, ?, ?, 0, ?)`);
+    const confidence = Number.isFinite(localized.confidence) ? localized.confidence : null;
+    assignment.run(row.product_id, 'primaryCategory', localized.primaryCategory, confidence, context.processorVersion, context.runId, now);
     for (const [facet, termIds] of Object.entries(localized.taxonomy)) {
       if (!D.taxonomyFacets[facet] || !Array.isArray(termIds)) continue;
       for (const termId of termIds) {
-        assignment.run(row.product_id, facet, termId, context.processorVersion, context.runId, now);
+        assignment.run(row.product_id, facet, termId, confidence, context.processorVersion, context.runId, now);
       }
     }
     db.prepare(`UPDATE enrichment_product_status SET status='complete', model_request_count=model_request_count+?,
@@ -134,6 +176,26 @@ function writeFailure(db, context, row, error, requestCount) {
     .run(requestCount, String(error.stack || error.message || error).slice(0, 4000), now, now, context.runId, row.product_id);
 }
 
+function writeSkip(db, context, row, reason) {
+  const now = new Date().toISOString();
+  const contentSource = `llm:${context.processorVersion}`;
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    db.prepare(`DELETE FROM product_content
+      WHERE product_id=? AND content_source=? AND is_current=0`).run(row.product_id, contentSource);
+    db.prepare(`DELETE FROM taxonomy_assignments
+      WHERE product_id=? AND assignment_source='llm' AND processor_version=? AND is_current=0`)
+      .run(row.product_id, context.processorVersion);
+    db.prepare(`UPDATE enrichment_product_status SET status='skipped', error=NULL, skip_reason=?,
+      completed_at=?, updated_at=? WHERE enrichment_run_id=? AND product_id=?`)
+      .run(reason, now, now, context.runId, row.product_id);
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    throw error;
+  }
+}
+
 async function runEnrichment(options, dependencies = {}) {
   if (!fs.existsSync(options.database)) throw new Error(`catalog database is missing: ${options.database}`);
   const localize = dependencies.localize || sharedLocalize;
@@ -141,6 +203,7 @@ async function runEnrichment(options, dependencies = {}) {
   const db = new DatabaseSync(options.database);
   db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');
   ensureStatusSchema(db);
+  const legacyCleanup = cleanupLegacyShadowRows(db);
   seedPrimaryCategories(db);
   const runId = stableRunId(options);
   const rows = loadProducts(db, options);
@@ -157,21 +220,27 @@ async function runEnrichment(options, dependencies = {}) {
     WHERE enrichment_run_id=? AND product_id=?`);
   const insertStatus = db.prepare(`INSERT INTO enrichment_product_status
     (enrichment_run_id, product_id, status, input_hash) VALUES (?, ?, 'pending', ?)`);
-  const resetStatus = db.prepare(`UPDATE enrichment_product_status SET status='pending', input_hash=?, error=NULL,
+  const resetStatus = db.prepare(`UPDATE enrichment_product_status SET status='pending', input_hash=?, error=NULL, skip_reason=NULL,
     completed_at=NULL, updated_at=CURRENT_TIMESTAMP WHERE enrichment_run_id=? AND product_id=?`);
   const pending = [];
   let skippedComplete = 0;
   let skippedFailed = 0;
+  let skippedUnchanged = 0;
   for (const row of rows) {
     const input = localizationInput(row);
     const inputHash = sourceHash(input);
+    const reason = skipReason(input);
     const status = getStatus.get(runId, row.product_id);
     if (!status) {
       insertStatus.run(runId, row.product_id, inputHash);
-      pending.push({ row, input, inputHash });
+      if (reason) writeSkip(db, { runId, processorVersion: options.processorVersion }, row, reason);
+      else pending.push({ row, input, inputHash });
     } else if (status.input_hash !== inputHash) {
       resetStatus.run(inputHash, runId, row.product_id);
-      pending.push({ row, input, inputHash });
+      if (reason) writeSkip(db, { runId, processorVersion: options.processorVersion }, row, reason);
+      else pending.push({ row, input, inputHash });
+    } else if (status.status === 'skipped') {
+      skippedUnchanged += 1;
     } else if (status.status === 'complete') {
       skippedComplete += 1;
     } else if (status.status === 'failed') {
@@ -230,13 +299,21 @@ async function runEnrichment(options, dependencies = {}) {
     mode: options.mode,
     processorVersion: options.processorVersion,
     selectedProducts: rows.length,
+    eligibleProducts: rows.length - (states.skipped || 0),
     pendingProducts: pending.length,
     skippedComplete,
     skippedFailed,
+    skippedUnchanged,
+    skippedProducts: states.skipped || 0,
+    skipReasons: Object.fromEntries(db.prepare(`SELECT skip_reason,count(*) AS count FROM enrichment_product_status
+      WHERE enrichment_run_id=? AND status='skipped' GROUP BY skip_reason ORDER BY skip_reason`)
+      .all(runId).map((row) => [row.skip_reason, row.count])),
     modelRequests,
     succeeded,
     failed,
-    states: { pending: states.pending || 0, running: states.running || 0, complete: states.complete || 0, failed: states.failed || 0 },
+    states: { pending: states.pending || 0, running: states.running || 0, complete: states.complete || 0,
+      failed: states.failed || 0, skipped: states.skipped || 0 },
+    legacyCleanup,
     elapsedSeconds: Number(((Date.now() - started) / 1000).toFixed(3)),
   };
   db.close();
@@ -259,6 +336,8 @@ module.exports = {
   ensureStatusSchema,
   loadProducts,
   localizationInput,
+  skipReason,
+  cleanupLegacyShadowRows,
   runEnrichment,
   PROCESSOR_VERSION,
 };

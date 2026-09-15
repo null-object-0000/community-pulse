@@ -5,7 +5,10 @@ const path = require('node:path');
 const test = require('node:test');
 const { DatabaseSync } = require('node:sqlite');
 const { applyMigrations } = require('../scripts/catalog/build-database');
-const { runEnrichment, PROCESSOR_VERSION } = require('../scripts/catalog/enrich-products');
+const D = require('../web/shared');
+const {
+  runEnrichment, localizationInput, skipReason, cleanupLegacyShadowRows, PROCESSOR_VERSION,
+} = require('../scripts/catalog/enrich-products');
 
 function fixture() {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-enrichment-'));
@@ -94,7 +97,7 @@ test('failed products have a terminal state and can be resumed independently', a
   const options = { database, date: '2026-09-13', concurrency: 1, mode: 'shadow', resume: false, processorVersion: PROCESSOR_VERSION, productId: 'p1' };
   const failed = await runEnrichment(options, { localize: async (_input, hooks) => { hooks.onRequest(); throw new Error('synthetic failure'); }, onProgress() {} });
   assert.equal(failed.failed, 1);
-  assert.deepEqual(failed.states, { pending: 0, running: 0, complete: 0, failed: 1 });
+  assert.deepEqual(failed.states, { pending: 0, running: 0, complete: 0, failed: 1, skipped: 0 });
   const idempotent = await runEnrichment({ ...options, resume: true }, {
     localize: async () => { throw new Error('ordinary resume must not retry terminal failures'); }, onProgress() {},
   });
@@ -108,6 +111,72 @@ test('failed products have a terminal state and can be resumed independently', a
   const db = new DatabaseSync(database, { readOnly: true });
   const status = db.prepare(`SELECT status,attempt_count,model_request_count,error FROM enrichment_product_status`).get();
   assert.deepEqual({ ...status }, { status: 'complete', attempt_count: 2, model_request_count: 2, error: null });
+  db.close();
+  fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('catalog skips missing descriptions without a model call and re-enters when the input hash changes', async () => {
+  const { directory, database } = fixture();
+  const db = new DatabaseSync(database);
+  db.prepare(`UPDATE source_items SET summary=? WHERE id='s2'`).run(D.t('zh-CN', 'noSummary'));
+  db.close();
+  assert.equal(localizationInput({ title: 'Two', summary: D.t('zh-CN', 'noSummary'), source_id: 'producthunt' }).desc, '');
+
+  let calls = 0;
+  const result = await runEnrichment(
+    { database, date: '2026-09-13', concurrency: 1, mode: 'shadow', resume: false, processorVersion: PROCESSOR_VERSION, productId: 'p2' },
+    { localize: async () => { calls += 1; throw new Error('a skipped product must never reach the model'); }, onProgress() {} },
+  );
+  assert.equal(calls, 0);
+  assert.equal(result.modelRequests, 0);
+  assert.equal(result.skippedProducts, 1);
+  assert.deepEqual(result.skipReasons, { missing_description: 1 });
+  let verify = new DatabaseSync(database, { readOnly: true });
+  assert.deepEqual({ ...verify.prepare(`SELECT status,attempt_count,model_request_count,skip_reason
+    FROM enrichment_product_status WHERE product_id='p2'`).get() }, {
+    status: 'skipped', attempt_count: 0, model_request_count: 0, skip_reason: 'missing_description',
+  });
+  verify.close();
+
+  const update = new DatabaseSync(database);
+  update.prepare(`UPDATE source_items SET summary='A newly recovered product description.' WHERE id='s2'`).run();
+  update.close();
+  const reentered = await runEnrichment(
+    { database, date: '2026-09-13', concurrency: 1, mode: 'shadow', resume: true, processorVersion: PROCESSOR_VERSION, productId: 'p2' },
+    { localize: async (input, hooks) => { calls += 1; hooks.onRequest(); return localized(input.title); }, onProgress() {} },
+  );
+  assert.equal(reentered.pendingProducts, 1);
+  assert.equal(reentered.modelRequests, 1);
+  assert.equal(reentered.succeeded, 1);
+  verify = new DatabaseSync(database, { readOnly: true });
+  assert.equal(verify.prepare(`SELECT status FROM enrichment_product_status WHERE product_id='p2'`).get().status, 'complete');
+  verify.close();
+  fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('catalog reports each missing-input reason using trimmed shared placeholders', () => {
+  assert.equal(skipReason(localizationInput({ title: 'Named', summary: '   ', source_id: 'showhn' })), 'missing_description');
+  assert.equal(skipReason(localizationInput({ title: ' ', summary: 'Described', source_id: 'showhn' })), 'missing_title');
+  assert.equal(skipReason(localizationInput({ title: '', summary: D.t('en', 'noSummary'), source_id: 'showhn' })), 'missing_title_and_description');
+  assert.equal(skipReason(localizationInput({ title: 'Named', summary: 'Described', source_id: 'showhn' })), null);
+});
+
+test('legacy catalog cleanup deletes only v1/v2 shadow projections', () => {
+  const { directory, database } = fixture();
+  const db = new DatabaseSync(database);
+  db.exec(`
+    INSERT INTO enrichment_runs(id,kind,processor,processor_version,status)
+      VALUES ('old-v2','catalog-product','enhance.localize','catalog-localize-v2','complete');
+    INSERT INTO enrichment_product_status(enrichment_run_id,product_id,status,input_hash)
+      VALUES ('old-v2','p1','complete','old-input');
+    INSERT INTO taxonomy_assignments(product_id,facet,term_id,assignment_source,processor_version,enrichment_run_id,is_current)
+      VALUES ('p1','useCases','software-development','llm','catalog-localize-v2','old-v2',0);
+    INSERT INTO product_content(product_id,locale,title,summary,content_source,enrichment_run_id,is_current)
+      VALUES ('p1','en','One','Old','llm:catalog-localize-v2','old-v2',0);
+  `);
+  assert.deepEqual(cleanupLegacyShadowRows(db), { assignments: 1, content: 1, runs: 1 });
+  assert.equal(db.prepare(`SELECT count(*) n FROM enrichment_runs WHERE id='old-v2'`).get().n, 0);
+  assert.equal(db.prepare(`SELECT count(*) n FROM taxonomy_assignments WHERE assignment_source='rule' AND is_current=1`).get().n, 1);
   db.close();
   fs.rmSync(directory, { recursive: true, force: true });
 });

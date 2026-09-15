@@ -321,7 +321,7 @@ async function resolvePage(pageUrl, workingDir, iconCache, io = { fetchPageHtml,
       const cached = iconCache.get(candidate.url);
       attempts.push({ url: candidate.url, kind: cached.kind, status: cached.kind ? 'ok' : 'failed', cached: true, error: cached.error || '' });
       if (cached.kind) {
-        return { pageUrl, status: 'ok', declaredIconCount: declared.length, attempts, iconUrl: candidate.url, iconKind: candidate.kind, contentType: cached.contentType, byteLength: cached.byteLength, contentSha256: cached.contentSha256, error: '' };
+        return { pageUrl, description, ogImage, status: 'ok', declaredIconCount: declared.length, attempts, iconUrl: candidate.url, iconKind: candidate.kind, contentType: cached.contentType, byteLength: cached.byteLength, contentSha256: cached.contentSha256, error: '' };
       }
       continue;
     }

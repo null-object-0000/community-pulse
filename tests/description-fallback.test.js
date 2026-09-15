@@ -45,6 +45,19 @@ test('the capture reads the description out of the same response as the icon', a
   assert.equal(result.description, LONG);
 });
 
+test('an icon-cache hit still carries the description and og image parsed from this page', async () => {
+  const html = `<meta name="description" content="${LONG}"><meta property="og:image" content="/card.png"><link rel="icon" href="/shared.png">`;
+  const cache = new Map([['https://site.test/shared.png', {
+    kind: 'png', contentType: 'image/png', byteLength: PNG.length, contentSha256: 'cached-sha', error: '',
+  }]]);
+  const result = await resolvePage('https://site.test/', os.tmpdir(), cache, {
+    fetchPageHtml: async () => ({ status: 200, body: Buffer.from(html), contentType: 'text/html', kind: '', error: '', text: html }),
+    fetchIconBytes: async (url) => ({ status: 200, body: PNG, contentType: 'image/png', kind: 'png', error: '', url }),
+  });
+  assert.equal(result.description, LONG);
+  assert.equal(result.ogImage.url, 'https://site.test/card.png');
+});
+
 // ------------------------------------------------------------ 三级兜底
 
 test('the description floor is the same forty characters the dedupe uses', () => {
