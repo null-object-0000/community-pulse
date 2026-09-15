@@ -390,10 +390,16 @@
     const sourceFilter = document.querySelector('[data-trend-source-filter]');
     const sourceOptions = sourceFilter?.querySelector('[data-source-options]');
     const sourceStatus = sourceFilter?.querySelector('[data-source-status]');
-    let catalogSources = [];
+    let catalogSources = Array.isArray(page.trends?.sources) ? page.trends.sources : [];
     let selectedSources = new Set();
     let trendRequest = 0;
     let trendRefreshTimer = 0;
+    const staticFacetHtml = new Map([...document.querySelectorAll('[data-trend-facet-panel]')].map(panel => [panel.dataset.trendFacetPanel, panel.innerHTML]));
+    const staticCurrentWindow = document.querySelector('[data-trend-current-window]')?.textContent || '';
+    const staticBaselineWindow = document.querySelector('[data-trend-baseline-window]')?.textContent || '';
+    const staticCoverage = document.querySelector('[data-trend-coverage]')?.textContent || '';
+
+    const isCustomSourceSet = () => selectedSources.size > 0 && selectedSources.size < catalogSources.length;
 
     const number = value => new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN').format(value);
     const percent = value => new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN', {
@@ -425,7 +431,7 @@
       }).join('');
       const starts = [4, 8, 12].map(weeks => `${weeks}:${weekly[Math.max(0, weekly.length - weeks)]?.start || ''}`).join(';');
       const spark = weekly.length ? `<div class="trend-spark" aria-label="${locale === 'en' ? 'Weekly new products' : '每周新增产品'}"><div class="trend-spark-heading"><span>${locale === 'en' ? 'Weekly new products' : '每周新增产品'}</span></div><div class="trend-bars">${bars}</div><div class="trend-axis"><time class="trend-axis-start" data-trend-starts="${D.escapeHtml(starts)}">${D.escapeHtml(D.dateLabel(weekly[0].start, locale))}</time><time>${D.escapeHtml(D.dateLabel(weekly.at(-1).end, locale))}</time></div></div>` : '';
-      const examples = (row.examples || []).map(example => `<li>${example.url ? `<a href="${D.escapeHtml(example.url)}" target="_blank" rel="noopener noreferrer">${D.escapeHtml(example.title)}<span aria-hidden="true">↗</span></a>` : `<span>${D.escapeHtml(example.title)}</span>`}<time datetime="${D.escapeHtml(example.date)}">${D.escapeHtml(D.dateLabel(example.date, locale))}</time></li>`).join('');
+      const examples = (row.examples || []).map(example => `<li>${example.url ? `<a href="${D.escapeHtml(example.internal ? D.localPath(example.url, locale) : example.url)}"${example.internal ? '' : ' target="_blank" rel="noopener noreferrer"'}>${D.escapeHtml(example.title)}<span aria-hidden="true">↗</span></a>` : `<span>${D.escapeHtml(example.title)}</span>`}<time datetime="${D.escapeHtml(example.date)}">${D.escapeHtml(D.dateLabel(example.date, locale))}</time></li>`).join('');
       const children = rows.filter(candidate => candidate.parentId === row.id && candidate.currentCount > 0);
       const subtopics = children.length ? `<p class="trend-subtopics"><span>${locale === 'en' ? 'Subtopics' : '子主题'}</span>${children.map(child => `<a href="${D.escapeHtml(localTrendPath(child.path))}">${D.escapeHtml(locale === 'en' ? child.labelEn : child.labelZh)}<em>${number(child.currentCount)}</em></a>`).join('')}</p>` : '';
       const count = locale === 'en' ? `${number(row.currentCount)} products` : `${number(row.currentCount)} 个产品`;
@@ -485,6 +491,23 @@
       clearTimeout(trendRefreshTimer);
       trendRefreshTimer = setTimeout(refreshCatalogTrends, 220);
     }
+    function restoreCatalogSnapshot() {
+      trendRequest++;
+      for (const panel of document.querySelectorAll('[data-trend-facet-panel]')) {
+        if (staticFacetHtml.has(panel.dataset.trendFacetPanel)) panel.innerHTML = staticFacetHtml.get(panel.dataset.trendFacetPanel);
+        panel.removeAttribute('aria-busy');
+      }
+      const currentWindow = document.querySelector('[data-trend-current-window]');
+      const baselineWindow = document.querySelector('[data-trend-baseline-window]');
+      const coverage = document.querySelector('[data-trend-coverage]');
+      if (currentWindow) currentWindow.textContent = staticCurrentWindow;
+      if (baselineWindow) baselineWindow.textContent = staticBaselineWindow;
+      if (coverage) coverage.textContent = staticCoverage;
+      if (sourceStatus) sourceStatus.textContent = locale === 'en'
+        ? `All ${catalogSources.length} sources · static catalog snapshot.`
+        : `全部 ${catalogSources.length} 个来源 · 静态产品库快照。`;
+      document.querySelector('.trend-period')?.querySelector('[data-trend-weeks][aria-pressed="true"]')?.click();
+    }
     function paintSourceOptions() {
       if (!sourceOptions) return;
       sourceOptions.innerHTML = catalogSources.map(source => `<label title="${D.escapeHtml(`${source.name} · ${number(source.productCount)} ${locale === 'en' ? 'products' : '个产品'}`)}"><input type="checkbox" value="${D.escapeHtml(source.id)}"${selectedSources.has(source.id) ? ' checked' : ''}/><span>${D.escapeHtml(source.name)}</span></label>`).join('');
@@ -492,11 +515,13 @@
     async function loadCatalogSources() {
       if (!sourceFilter) return;
       try {
-        const response = await fetch('/api/v1/sources', { headers: { accept: 'application/json' } });
-        if (!response.ok) return;
-        const data = await response.json();
-        if (!Array.isArray(data.sources) || !data.sources.length) return;
-        catalogSources = data.sources;
+        if (!catalogSources.length) {
+          const response = await fetch('/api/v1/sources', { headers: { accept: 'application/json' } });
+          if (!response.ok) return;
+          const data = await response.json();
+          if (!Array.isArray(data.sources) || !data.sources.length) return;
+          catalogSources = data.sources;
+        }
         const requested = new Set((params.get('sources') || '').split(',').filter(Boolean));
         selectedSources = requested.size
           ? new Set(catalogSources.map(source => source.id).filter(id => requested.has(id)))
@@ -504,7 +529,8 @@
         if (!selectedSources.size) selectedSources = new Set(catalogSources.map(source => source.id));
         paintSourceOptions();
         sourceFilter.hidden = false;
-        await refreshCatalogTrends();
+        if (isCustomSourceSet()) await refreshCatalogTrends();
+        else restoreCatalogSnapshot();
       } catch (_) {
         // Static report-derived trends remain visible when the database is unavailable.
       }
@@ -525,7 +551,7 @@
       if (!button) return;
       activeFacet = button.dataset.trendFacet;
       paintTrendFacet();
-      scheduleCatalogTrends();
+      if (isCustomSourceSet()) scheduleCatalogTrends();
     });
     paintTrendFacet(Boolean(params.has('facet')));
     sourceOptions?.addEventListener('change', event => {
@@ -533,11 +559,12 @@
       if (!input) return;
       input.checked ? selectedSources.add(input.value) : selectedSources.delete(input.value);
       updateSourceUrl();
-      scheduleCatalogTrends();
+      if (selectedSources.size === catalogSources.length) restoreCatalogSnapshot();
+      else scheduleCatalogTrends();
     });
     sourceFilter?.querySelector('[data-source-all]')?.addEventListener('click', () => {
       selectedSources = new Set(catalogSources.map(source => source.id));
-      paintSourceOptions(); updateSourceUrl(); scheduleCatalogTrends();
+      paintSourceOptions(); updateSourceUrl(); restoreCatalogSnapshot();
     });
     sourceFilter?.querySelector('[data-source-none]')?.addEventListener('click', () => {
       selectedSources.clear();
@@ -627,18 +654,16 @@
     }
   }
   if (search) search.value = query;
-  // ---- category library: the cluster page also browses every project the archive ever classified
-  // into the cluster. The default "recent" list is server-rendered; the wider ranges lazy-load a
-  // per-category data file once and filter it client-side, keeping the initial page small and the
-  // whole archive searchable, sortable, and indexable through the same feed.
+  // ---- category library: recent / 4-week / 12-week views come from the versioned static snapshot.
+  // The default recent list is server-rendered; wider fixed ranges lazy-load one category file.
   const clusterRange = document.querySelector('[data-cluster-range]');
   if (clusterRange && feed && page.view === 'trend-cluster') {
     const cluster = page.trendCluster || {};
     const ranges = cluster.ranges || {};
     const dataPath = cluster.dataPath;
-    let range = ['4w', '12w', 'all'].includes(params.get('range')) ? params.get('range') : 'recent';
+    let range = ['4w', '12w'].includes(params.get('range')) ? params.get('range') : 'recent';
     let library = null;
-    let catalogRecent = null;
+    const catalogRanges = new Map();
     const statsEl = document.getElementById('cluster-range-stats');
     const countEl = document.getElementById('cluster-count');
     const sourcesEl = document.getElementById('cluster-sources');
@@ -655,19 +680,51 @@
     function paintRangeStats() {
       const spec = ranges[range];
       if (!spec || !statsEl) return;
-      statsEl.textContent = range === 'all'
-        ? t('trendsLibrarySpan', { n: spec.count, first: D.dateLabel(spec.start, locale), last: D.dateLabel(spec.end, locale) })
-        : t('trendsRangeSpan', { n: spec.count, start: D.dateLabel(spec.start, locale), end: D.dateLabel(spec.end, locale) });
+      statsEl.textContent = t('trendsRangeSpan', { n: spec.count, start: D.dateLabel(spec.start, locale), end: D.dateLabel(spec.end, locale) });
       if (countEl) countEl.textContent = range === 'recent' ? t('trendsProjects', { n: spec.count }) : t('count', { n: spec.count });
       if (sourcesEl) sourcesEl.textContent = t('trendsSources', { n: spec.sources });
+    }
+    async function loadCustomRange(id) {
+      if (!params.get('sources')) return null;
+      if (catalogRanges.has(id)) return catalogRanges.get(id);
+      const spec = ranges[id];
+      if (!spec) return null;
+      const products = [];
+      const sourceIds = new Set();
+      for (let pageNumber = 1; ; pageNumber++) {
+        const query = new URLSearchParams({ facet: cluster.type, term: cluster.id, sources: params.get('sources'),
+          from: spec.start, to: spec.end, page: String(pageNumber), pageSize: '300' });
+        const response = await fetch(`/api/v1/products?${query}`, { headers: { accept: 'application/json' } });
+        if (!response.ok) throw new Error(`catalog ${response.status}`);
+        const data = await response.json();
+        products.push(...(data.products || []));
+        for (const product of data.products || []) for (const sourceId of product.sourceIds || [product.sourceId]) if (sourceId) sourceIds.add(sourceId);
+        if (!data.hasMore) break;
+      }
+      ranges[id] = { ...spec, count: products.length, sources: sourceIds.size };
+      catalogRanges.set(id, products);
+      return products;
     }
     async function activateRange() {
       paintRangeButtons();
       paintRangeStats();
       syncRangeUrl();
+      if (params.get('sources')) {
+        try {
+          chunkSize = 60;
+          items = await loadCustomRange(range);
+          paintRangeStats();
+          const buttonCount = clusterRange.querySelector(`[data-range="${range}"] em`);
+          if (buttonCount) buttonCount.textContent = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN').format(items.length);
+          renderFeed();
+          return;
+        } catch (_) {
+          // Keep the matching static all-source range readable while a personalized query is unavailable.
+        }
+      }
       if (range === 'recent') {
-        chunkSize = catalogRecent ? 60 : 0;
-        items = catalogRecent || D.reportItems(page.report);
+        chunkSize = 0;
+        items = D.reportItems(page.report);
         renderFeed();
         return;
       }
@@ -699,24 +756,7 @@
       activateRange();
     });
     loadMoreButton?.addEventListener('click', () => { chunkShown++; renderFeed(false); });
-    async function loadCatalogRecent() {
-      const query = new URLSearchParams({ facet: cluster.type, term: cluster.id });
-      if (params.get('sources')) query.set('sources', params.get('sources'));
-      try {
-        const response = await fetch(`/api/v1/products?${query}`, { headers: { accept: 'application/json' } });
-        if (!response.ok) throw new Error(`catalog ${response.status}`);
-        const data = await response.json();
-        catalogRecent = data.products || [];
-        ranges.recent = { start: data.filters.from, end: data.filters.to, count: data.count, sources: data.sourceCount };
-        const recentButton = clusterRange.querySelector('[data-range="recent"] em');
-        if (recentButton) recentButton.textContent = new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'zh-CN').format(data.count);
-        if (range === 'recent') activateRange();
-      } catch (_) {
-        // The server-rendered report projection remains a usable fallback.
-      }
-    }
-    loadCatalogRecent();
-    if (range !== 'recent') activateRange();
+    if (range !== 'recent' || params.get('sources')) activateRange();
   }
   if (feed) { paintFilter(); renderFeed(); updateFilterUrl(); }
   // Fix a desktop sidebar only when the complete module fits in the viewport. A taller sidebar

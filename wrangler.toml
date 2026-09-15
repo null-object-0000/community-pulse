@@ -9,7 +9,7 @@ binding = "ASSETS"
 not_found_handling = "404-page"
 # 只有站长平台的归属验证文件走 Worker：静态资源的 html_handling 会把 /x.html 307 到 /x，
 # 而百度要求这条 .html 地址本身返回 200（见 worker/index.js）。
-run_worker_first = ["/baidu_verify_*", "/api/v1/*"]
+run_worker_first = ["/baidu_verify_*", "/api/v1/*", "/projects/*", "/en/projects/*", "/products/*", "/en/products/*"]
 
 # MySQL 是唯一在线产品库。读连接允许 Hyperdrive 缓存，写连接禁用缓存。
 [[hyperdrive]]

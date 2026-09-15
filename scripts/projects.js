@@ -115,7 +115,4 @@ function projectPage(project, locale) {
   };
   return R.shell({ locale, view: 'project', route: project.path, title, description, content, data: { projectItem: item, date: project.lastSeen }, structured });
 }
-function writeProjects(projects, { writePage }) {
-  for (const project of projects) for (const locale of ['zh-CN', 'en']) writePage(lp(project.path, locale), projectPage(project, locale));
-}
-module.exports = { buildProjects, projectPage, writeProjects };
+module.exports = { buildProjects, projectPage };

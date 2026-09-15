@@ -9,10 +9,10 @@ const directory = path.resolve(process.argv.find((arg) => arg.startsWith('--dir=
 const manifestFile = path.join(directory, 'manifest.json');
 if (!fs.existsSync(manifestFile)) throw new Error(`MySQL import manifest is missing: ${manifestFile}`);
 const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
-if (manifest.dialect !== 'mysql' || manifest.schemaVersion !== 2 || manifest.source !== 'source-raw') {
+if (manifest.dialect !== 'mysql' || manifest.schemaVersion !== 3 || manifest.source !== 'source-raw') {
   throw new Error('unsupported MySQL import manifest');
 }
-const required = new Set(['sources', 'products', 'product_source_first_seen', 'taxonomy_terms', 'taxonomy_assignments']);
+const required = new Set(['sources', 'products', 'product_routes', 'product_details', 'product_source_first_seen', 'taxonomy_terms', 'taxonomy_assignments']);
 const seen = new Set();
 let totalRows = 0;
 let totalBytes = 0;

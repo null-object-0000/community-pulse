@@ -4,7 +4,7 @@ const D = require('../web/shared.js');
 const { t, escapeHtml: e, localPath: lp } = D;
 const template = fs.readFileSync(path.join(__dirname, '../web/index.html'), 'utf8');
 const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.config.json'), 'utf8'));
-const assetVersion = '20260914-subtopics';
+const assetVersion = '20260915-mysql-snapshot';
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
@@ -276,7 +276,7 @@ function trendsPage(model, locale) {
   // The source list itself comes from MySQL so newly registered sources appear without
   // changing this template. Keep the control hidden until the API is available: the
   // static report-derived model remains a readable fallback during migration or outage.
-  const sourcePicker = `<section class="trend-source-picker" data-trend-source-filter data-locale="${locale}" hidden>
+  const sourcePicker = `<section class="trend-source-picker" data-trend-source-filter data-locale="${locale}"${model.sources?.length ? '' : ' hidden'}>
     <header><div><span>${en ? 'DATA SOURCES' : '数据来源'}</span><b>${en ? 'Choose any source combination' : '自由选择参与计算的数据源'}</b></div><div><button type="button" data-source-all>${en ? 'Select all' : '全选'}</button><button type="button" data-source-none>${en ? 'Clear' : '清空'}</button></div></header>
     <div class="trend-source-options" data-source-options></div>
     <p data-source-status aria-live="polite"></p>
@@ -333,7 +333,7 @@ function trendClusterPage(model, cluster, locale) {
   // page works without JavaScript and Search still sees the current trend without a huge payload.
   const ranges = cluster.ranges || {};
   const recentRange = ranges.recent || { start: model.recent.start, end: model.recent.end, count: items.length, sources: cluster.sourceCount };
-  const rangeKeys = [['recent', 'trendsRangeRecent'], ['4w', 'trendsRange4Weeks'], ['12w', 'trendsRange12Weeks'], ['all', 'trendsRangeAll']];
+  const rangeKeys = [['recent', 'trendsRangeRecent'], ['4w', 'trendsRange4Weeks'], ['12w', 'trendsRange12Weeks']];
   const rangeButtons = rangeKeys.map(([id, key]) => {
     const spec = ranges[id];
     const number = spec ? spec.count : (id === 'recent' ? items.length : 0);
@@ -341,9 +341,9 @@ function trendClusterPage(model, cluster, locale) {
   }).join('');
   // The stats line doubles as the entry hook to the full category archive, so it opens on the
   // all-time summary and only describes the active window after a switch.
-  const allRange = ranges.all;
-  const libraryStats = e(allRange
-    ? t(locale, 'trendsLibrarySpan', { n: allRange.count, first: D.dateLabel(allRange.start, locale), last: D.dateLabel(allRange.end, locale) })
+  const widestRange = ranges['12w'];
+  const libraryStats = e(widestRange
+    ? t(locale, 'trendsRangeSpan', { n: widestRange.count, start: D.dateLabel(widestRange.start, locale), end: D.dateLabel(widestRange.end, locale) })
     : t(locale, 'trendsRangeSpan', { n: recentRange.count, start: D.dateLabel(recentRange.start, locale), end: D.dateLabel(recentRange.end, locale) }));
   const rangeControl = `<section class="cluster-range" aria-label="${t(locale, 'trendsRange')}"><span>${t(locale, 'trendsRange')}</span><div class="cluster-range-buttons" role="group" aria-label="${t(locale, 'trendsRange')}" data-cluster-range>${rangeButtons}</div><p class="cluster-range-stats" id="cluster-range-stats" aria-live="polite">${libraryStats}</p></section>`;
   const loadMore = `<button type="button" id="load-more" class="load-more" hidden>${e(t(locale, 'trendsLoadMore', { n: 0 }))}</button>`;

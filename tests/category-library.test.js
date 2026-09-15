@@ -63,15 +63,14 @@ test('the build emits one library file per cluster and the cluster page keeps it
   assert.equal(trends.clusters.length, index.trendCount);
   for (const cluster of trends.clusters) {
     assert.ok(cluster.dataPath, cluster.key);
-    assert.ok(cluster.ranges?.all, cluster.key);
+    assert.ok(cluster.ranges?.['12w'], cluster.key);
     const file = path.join(dist, cluster.dataPath.replace(/^\//, ''));
     assert.ok(fs.existsSync(file), cluster.dataPath);
     const library = JSON.parse(fs.readFileSync(file, 'utf8'));
     assert.equal(library.id, cluster.id);
-    assert.equal(library.projects.length, library.ranges.all.count);
+    assert.equal(library.projects.length, library.ranges['12w'].count);
     assert.ok(library.ranges.recent.count <= library.ranges['4w'].count, cluster.key);
     assert.ok(library.ranges['4w'].count <= library.ranges['12w'].count, cluster.key);
-    assert.ok(library.ranges['12w'].count <= library.ranges.all.count, cluster.key);
     for (const row of library.projects) {
       assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(row.trendDate), 'library rows keep their discovery date');
       assert.equal(row.content, undefined);
@@ -84,7 +83,7 @@ test('the build emits one library file per cluster and the cluster page keeps it
   assert.match(page, /data-range="recent" aria-pressed="true"/);
   assert.match(page, /data-range="4w"/);
   assert.match(page, /data-range="12w"/);
-  assert.match(page, /data-range="all"/);
+  assert.doesNotMatch(page, /data-range="all"/);
   assert.match(page, /id="cluster-range-stats"/);
   assert.match(page, /id="cluster-count"/);
   assert.match(page, /id="load-more"/);

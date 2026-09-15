@@ -8,7 +8,33 @@ test('catalog cache normalizes source order and keeps different combinations apa
   const c = apiCacheKey(new Request('https://devtrends.site/api/v1/trends?sources=showhn&facet=useCases'));
   assert.equal(a.url, b.url);
   assert.notEqual(a.url, c.url);
-  assert.match(a.url, /_devtrends_api_cache\/v8/);
+  assert.match(a.url, /_devtrends_api_cache\/v9/);
+});
+
+test('product routes normalize locales and reject paths outside the catalog contract', async () => {
+  const { canonicalProductRoute } = await import('../worker/index.js');
+  assert.equal(canonicalProductRoute('/en/projects/Owner/Repo/'), '/projects/owner/repo/');
+  assert.equal(canonicalProductRoute('/products/prd_0123456789abcdef01234567'), '/products/prd_0123456789abcdef01234567/');
+  assert.equal(canonicalProductRoute('/projects/owner/repo/issues/1'), '');
+});
+
+test('dynamic product HTML contains canonical bilingual SEO and stable discussion identity', async () => {
+  const { renderProductPage } = await import('../worker/project-page.mjs');
+  const model = { catalogVersion: 'v1', product: {
+    id: 'prd_0123456789abcdef01234567', title: 'Owner/Repo', githubRepo: 'owner/repo', route: '/projects/owner/repo/',
+    canonicalUrl: 'https://github.com/owner/repo', firstSeenDate: '2026-09-01', lastSeenDate: '2026-09-15',
+    item: { summary: 'A useful project.', githubUrl: 'https://github.com/owner/repo', taxonomy: { useCases: ['software-development'] } },
+    sources: [{ sourceId: 'showhn', sourceName: 'Show HN', firstSeenDate: '2026-09-01', lastSeenDate: '2026-09-15', observationCount: 2 }],
+  } };
+  const html = renderProductPage(model, 'en');
+  assert.match(html, /<link rel="canonical" href="https:\/\/devtrends\.site\/en\/projects\/owner\/repo\/"/);
+  assert.match(html, /"@type":"SoftwareSourceCode"/);
+  assert.match(html, /data-giscus-term="project:owner\/repo"/);
+  assert.match(html, /"catalogVersion":"v1"/);
+  assert.match(html, /googletagmanager\.com\/gtag\/js\?id=G-1E9PXZ2EVK/);
+  assert.match(html, /clarity\.ms\/tag/);
+  const thin = renderProductPage({ ...model, product: { ...model.product, item: { title: 'Owner/Repo' } } }, 'en');
+  assert.match(thin, /<meta name="robots" content="noindex, follow"\/>/);
 });
 
 test('catalog cache skips the database on a hit and never stores errors', async () => {

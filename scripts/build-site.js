@@ -2,7 +2,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const D = require('../web/shared.js');
 const { applyEnhancedMarkdown } = require('./enhanced-report.js');
-const { buildTrends, buildEntityIndex, buildClusterLibrary } = require('./trends.js');
 const R = require('./render-site.js');
 const images = require('./image-store.js');
 const imageManifest = images.readManifest();
@@ -13,6 +12,11 @@ const finalDir = path.join(root, '知识', '大家都在做什么', 'final');
 const outputDir = path.join(root, 'dist');
 const commentCountsPath = path.join(root, 'data', 'comment-counts.json');
 const commentCounts = fs.existsSync(commentCountsPath) ? JSON.parse(fs.readFileSync(commentCountsPath, 'utf8')).counts || {} : {};
+const siteSnapshotDir = path.join(root, 'data', 'catalog', 'site-snapshot');
+const siteSnapshotPath = path.join(siteSnapshotDir, 'manifest.json');
+if (!fs.existsSync(siteSnapshotPath)) throw new Error('Missing MySQL site snapshot: run npm run catalog:snapshot');
+const siteSnapshot = JSON.parse(fs.readFileSync(siteSnapshotPath, 'utf8'));
+if (siteSnapshot.schemaVersion !== 1 || !siteSnapshot.catalogVersion || siteSnapshot.trends?.source !== 'mysql-site-snapshot') throw new Error('Invalid MySQL site snapshot');
 const dates = fs.readdirSync(sourceDir).filter(name => /^\d{4}-\d{2}-\d{2}\.json$/.test(name)).map(name => name.slice(0, -5)).sort().reverse();
 function write(file, content) { const target = path.join(outputDir, file); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, content); }
 function writePage(route, content) { write(path.join(route.replace(/^\//, ''), 'index.html'), content); }
@@ -43,21 +47,25 @@ const reports = dates.map(date => {
 images.copyImages(outputDir, imageManifest);
 // The sandboxing header rule only matters while this site serves the mirrored files itself.
 if (!images.imageOrigin()) write('_headers', '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n');
-// Project catalog is built before rendering so report links point only to generated pages.
+// Keep the recent GitHub aggregation only for report continuation rows. Product detail HTML is
+// never emitted here: every product route is rendered by the Worker from MySQL.
 const projects = require('./projects.js').buildProjects(reports);
+const { identitiesFor, productId } = require('./catalog/identity.js');
+for (const report of reports) for (const source of report.results || []) for (const item of source.items || []) {
+  if (!item.projectPath) item.projectPath = `/products/${productId(identitiesFor({ ...item, sourceId: item.sourceId || source.sourceId })[0])}/`;
+}
 // The trending-continuation panel renders feed rows, so it needs the same project snapshots the
 // detail pages use: the report's own `continuedItems` only keep identity and today's stars.
 const projectIndex = new Map(projects.map(project => [project.key, project]));
 const latest = dates[0] || null;
 const latestTotal = D.reportItems(reports[0] || { results: [] }).length;
-// The entity index is shared by the trend model and the per-category libraries so both see the
-// same first-seen dates, deduplication keys, and "richer observation" item replacements.
-const entities = latest ? buildEntityIndex(reports) : new Map();
-const trends = latest ? buildTrends(reports, latest, { entities }) : { schemaVersion: 1, latest: null, recent: {}, baseline: {}, thresholds: { minProjects: 3, minSources: 2, minGrowthPercent: 25 }, clusters: [] };
+const trends = siteSnapshot.trends;
 const catalogClusters = trends.catalogClusters || trends.clusters;
 for (const cluster of catalogClusters) {
   if (!cluster.dataPath) continue;
-  write(cluster.dataPath.replace(/^\//, ''), D.json(buildClusterLibrary(entities, cluster, latest)));
+  const snapshotFile = path.join(siteSnapshotDir, 'categories', cluster.dataPath.replace(/^\/data\/trends\//, ''));
+  if (!fs.existsSync(snapshotFile)) throw new Error(`Missing category snapshot: ${snapshotFile}`);
+  write(cluster.dataPath.replace(/^\//, ''), fs.readFileSync(snapshotFile));
 }
 for (const report of reports) {
   write(`data/reports/${report.date}.json`, D.json(report));
@@ -75,10 +83,8 @@ write('404.html', R.notFoundPage('zh-CN'));
 write('en/404.html', R.notFoundPage('en'));
 writePage('/404/', R.notFoundPage('zh-CN'));
 writePage('/en/404/', R.notFoundPage('en'));
-if (projects.length) require('./projects.js').writeProjects(projects, { write, writePage });
-write('data/projects.json', D.json(Object.fromEntries(projects.map(project => [project.key, project.path]))));
 write('data/trends.json', D.json(trends));
-write('data/index.json', JSON.stringify({ latest, dates, projectCount: projects.length, trendCount: trends.clusters.length, categoryCount: catalogClusters.length, generatedAt: new Date().toISOString() }, null, 2));
+write('data/index.json', JSON.stringify({ latest, dates, catalogVersion: siteSnapshot.catalogVersion, productCount: (siteSnapshot.productRoutes || []).length, trendCount: trends.clusters.length, categoryCount: catalogClusters.length, generatedAt: new Date().toISOString() }, null, 2));
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${D.origin}/sitemap.xml\nSitemap: ${D.origin}/sitemap-baidu.xml\n`);
 function feedXml(locale) {
   const en = locale === 'en', feedPath = D.localPath('/feed.xml', locale), homePath = D.localPath('/', locale);
@@ -100,7 +106,7 @@ const pagePairs = [
   { route: '/', date: latest }, { route: '/trends/', date: latest }, { route: '/reports/', date: latest },
   ...catalogClusters.map(cluster => ({ route: cluster.path, date: latest })),
   ...dates.map(date => ({ route: `/reports/${date}/`, date })),
-  ...projects.map(project => ({ route: project.path, date: project.lastSeen })),
+  ...(siteSnapshot.productRoutes || []).filter(product => product.indexable).map(product => ({ route: product.route, date: product.date })),
 ];
 const alternates = route => [
   ['zh-CN', D.origin + D.localPath(route, 'zh-CN')],
@@ -111,10 +117,27 @@ const sitemapUrls = pagePairs.flatMap(page => ['zh-CN', 'en'].map(locale => {
   const url = D.origin + D.localPath(page.route, locale);
   return `<url><loc>${D.escapeHtml(url)}</loc>${alternates(page.route)}${page.date ? `<lastmod>${page.date}</lastmod>` : ''}</url>`;
 }));
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${sitemapUrls.join('')}</urlset>\n`);
 const baiduUrls = pagePairs.map(page => {
   const url = D.origin + D.localPath(page.route, 'zh-CN');
   return `<url><loc>${D.escapeHtml(url)}</loc>${page.date ? `<lastmod>${page.date}</lastmod>` : ''}</url>`;
 });
-write('sitemap-baidu.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${baiduUrls.join('')}</urlset>\n`);
-console.log(`Built ${dates.length} reports and ${projects.length} GitHub projects in Chinese and English; latest: ${latest}.`);
+const SITEMAP_LIMIT = 45_000;
+function writeSitemap(name, urls, namespace) {
+  const declaration = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  if (urls.length <= SITEMAP_LIMIT) {
+    write(name, `${declaration}<urlset ${namespace}>${urls.join('')}</urlset>\n`);
+    return;
+  }
+  const stem = name.replace(/\.xml$/, '');
+  const parts = [];
+  for (let offset = 0; offset < urls.length; offset += SITEMAP_LIMIT) {
+    const part = `${stem}-${parts.length + 1}.xml`;
+    write(part, `${declaration}<urlset ${namespace}>${urls.slice(offset, offset + SITEMAP_LIMIT).join('')}</urlset>\n`);
+    parts.push(part);
+  }
+  const entries = parts.map(part => `<sitemap><loc>${D.escapeHtml(`${D.origin}/${part}`)}</loc>${latest ? `<lastmod>${latest}</lastmod>` : ''}</sitemap>`).join('');
+  write(name, `${declaration}<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${entries}</sitemapindex>\n`);
+}
+writeSitemap('sitemap.xml', sitemapUrls, 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"');
+writeSitemap('sitemap-baidu.xml', baiduUrls, 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
+console.log(`Built ${dates.length} reports and ${catalogClusters.length} MySQL-backed categories; product details are dynamic; latest: ${latest}.`);

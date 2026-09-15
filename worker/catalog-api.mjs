@@ -18,6 +18,15 @@ function daysBetween(from, to) {
   return Math.floor((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86400000) + 1;
 }
 
+function productCursor(value) {
+  if (!value) return null;
+  try {
+    const [date, id] = atob(value).split('|');
+    if (!DATE.test(date) || !/^prd_[a-f0-9]{24}$/.test(id || '')) throw new Error('shape');
+    return { date, id };
+  } catch { throw new Error('invalid product cursor'); }
+}
+
 export function parseTrendFilters(url, availableSources, latestDate) {
   const requested = (url.searchParams.get('sources') || '')
     .split(',').map((value) => value.trim()).filter(Boolean);
@@ -31,7 +40,7 @@ export function parseTrendFilters(url, availableSources, latestDate) {
   const from = url.searchParams.get('from') || offsetDate(to, -6);
   if (!DATE.test(from) || !DATE.test(to) || from > to) throw new Error('invalid date range');
   const days = daysBetween(from, to);
-  if (days < 1 || days > 366) throw new Error('date range must be between 1 and 366 days');
+  if (days < 1 || days > 5000) throw new Error('date range must be between 1 and 5000 days');
   const facet = url.searchParams.get('facet') || 'useCases';
   if (!FACETS.has(facet)) throw new Error(`unknown facet: ${facet}`);
   const previousTo = offsetDate(from, -1);
@@ -213,8 +222,9 @@ export async function queryTrends(db, filters, timings = null, options = {}) {
     if (!examplesByTerm.has(row.id)) examplesByTerm.set(row.id, []);
     if (examplesByTerm.get(row.id).length >= 4) continue;
     examplesByTerm.get(row.id).push({
-      title: row.title, url: row.url || (row.githubRepo ? `https://github.com/${row.githubRepo}` : ''),
-      date: String(row.date).slice(0, 10),
+      title: row.title,
+      url: row.githubRepo ? `/projects/${String(row.githubRepo).toLowerCase()}/` : `/products/${row.productId}/`,
+      internal: true, date: String(row.date).slice(0, 10),
     });
   }
   const segment = { useCases: 'use-cases', agentRoles: 'agent-roles', languages: 'programming-languages' }[filters.facet];
@@ -274,7 +284,40 @@ export async function queryTrends(db, filters, timings = null, options = {}) {
 
 export async function queryProducts(db, filters, term, timings = null, options = {}) {
   if (!/^[a-z0-9-]+$/.test(term || '')) throw new Error('invalid taxonomy term');
-  const selected = selectedPlan(filters, options.allSources, filters.from);
+  const pageSize = Math.max(1, Math.min(300, Number(options.pageSize) || 100));
+  const page = Math.max(1, Math.min(10000, Number(options.page) || 1));
+  const offset = (page - 1) * pageSize;
+  if (options.allSources) {
+    const cursor = productCursor(options.cursor);
+    const cursorWhere = cursor ? ' AND (p.first_seen_date < ? OR (p.first_seen_date = ? AND p.id > ?))' : '';
+    const cursorBindings = cursor ? [cursor.date, cursor.date, cursor.id] : [];
+    const rows = await all(db, `WITH RECURSIVE descendants(id) AS (
+        SELECT ? UNION ALL
+        SELECT t.id FROM taxonomy_terms t JOIN descendants d ON t.parent_id = d.id
+        WHERE t.facet = ? AND t.active = 1
+      )
+      SELECT page.id, page.title, page.url, page.githubRepo, pd.item_json AS itemJson,
+        page.date,
+        (SELECT GROUP_CONCAT(sf.source_id) FROM product_source_first_seen sf
+          WHERE sf.product_id = page.id AND sf.first_seen_date = page.date) AS sourceIds
+      FROM (
+        SELECT p.id, p.title, p.canonical_url AS url, p.github_repo AS githubRepo,
+          p.first_seen_date AS date
+        FROM products p
+        WHERE p.first_seen_date BETWEEN ? AND ?${cursorWhere}
+          AND EXISTS (
+            SELECT 1 FROM taxonomy_assignments ta
+            JOIN descendants d ON d.id = ta.term_id
+            WHERE ta.product_id = p.id AND ta.facet = ? AND ta.is_current = 1
+          )
+        ORDER BY p.first_seen_date DESC, p.id
+        LIMIT ${pageSize + 1}
+      ) page
+      LEFT JOIN product_details pd ON pd.product_id = page.id
+      ORDER BY page.date DESC, page.id`, [term, filters.facet, filters.from, filters.to, ...cursorBindings, filters.facet], timings, 'productsAllSources');
+    return productRows(rows, filters, term, page, pageSize, true);
+  }
+  const selected = selectedPlan(filters, false, filters.from);
   const cte = selected.cte;
   const rows = await all(db, `WITH RECURSIVE
     ${cte},
@@ -293,33 +336,95 @@ export async function queryProducts(db, filters, term, timings = null, options =
       JOIN ancestors a ON a.facet = ta.facet AND a.leaf_id = ta.term_id
       WHERE ta.facet = ? AND ta.is_current = 1
     )
-    SELECT p.id, p.title, p.canonical_url AS url, p.github_repo AS githubRepo,
-      sp.selected_first_seen AS date, GROUP_CONCAT(DISTINCT sf.source_id) AS sourceIds
-    FROM memberships m
-    JOIN selected_products sp ON sp.product_id = m.product_id
-    JOIN products p ON p.id = sp.product_id
-    LEFT JOIN product_source_first_seen sf ON sf.product_id = sp.product_id
-      AND sf.source_id IN (${Array.from({ length: filters.sources.length }, () => '?').join(', ')})
-      AND sf.first_seen_date = sp.selected_first_seen
-    WHERE m.term_id = ? AND sp.selected_first_seen BETWEEN ? AND ?
-    GROUP BY p.id, p.title, p.canonical_url, p.github_repo, sp.selected_first_seen
-    ORDER BY sp.selected_first_seen DESC, p.id
-    LIMIT 10000`, [
+    SELECT page.id, page.title, page.url, page.githubRepo, pd.item_json AS itemJson,
+      page.date,
+      (SELECT GROUP_CONCAT(sf.source_id) FROM product_source_first_seen sf
+        WHERE sf.product_id = page.id AND sf.first_seen_date = page.date
+          AND sf.source_id IN (${Array.from({ length: filters.sources.length }, () => '?').join(', ')})) AS sourceIds
+    FROM (
+      SELECT p.id, p.title, p.canonical_url AS url, p.github_repo AS githubRepo,
+        sp.selected_first_seen AS date
+      FROM memberships m
+      JOIN selected_products sp ON sp.product_id = m.product_id
+      JOIN products p ON p.id = sp.product_id
+      WHERE m.term_id = ? AND sp.selected_first_seen BETWEEN ? AND ?
+      ORDER BY sp.selected_first_seen DESC, p.id
+      LIMIT ${pageSize + 1} OFFSET ${offset}
+    ) page
+    LEFT JOIN product_details pd ON pd.product_id = page.id
+    ORDER BY page.date DESC, page.id`, [
     ...selected.bindings, filters.facet, filters.facet, ...filters.sources,
     term, filters.from, filters.to,
   ], timings, 'products');
+  return productRows(rows, filters, term, page, pageSize);
+}
+
+function productRows(rows, filters, term, page, pageSize, cursorMode = false) {
+  const hasMore = rows.length > pageSize;
   const sources = new Set();
-  const products = rows.map(row => {
+  const products = rows.slice(0, pageSize).map(row => {
     const sourceIds = String(row.sourceIds || '').split(',').filter(Boolean);
     sourceIds.forEach(source => sources.add(source));
+    let detail = row.itemJson || {};
+    if (typeof detail === 'string') {
+      try { detail = JSON.parse(detail); } catch { detail = {}; }
+    }
+    const projectPath = row.githubRepo ? `/projects/${String(row.githubRepo).toLowerCase()}/` : `/products/${row.id}/`;
     return {
-      sourceId: sourceIds[0] || 'catalog', externalId: row.id, title: row.title,
+      ...detail, sourceId: detail.sourceId || sourceIds[0] || 'catalog', sourceIds,
+      externalId: detail.externalId || row.id, productId: row.id, title: detail.title || row.title,
       url: row.url || (row.githubRepo ? `https://github.com/${row.githubRepo}` : ''),
       githubUrl: row.githubRepo ? `https://github.com/${row.githubRepo}` : undefined,
-      trendDate: String(row.date).slice(0, 10), taxonomy: { [filters.facet]: [term] },
+      projectPath, trendDate: String(row.date).slice(0, 10),
+      taxonomy: { ...(detail.taxonomy || {}), [filters.facet]: [term] },
     };
   });
-  return { schemaVersion: 1, filters: { ...filters, term }, count: products.length, sourceCount: sources.size, products };
+  const last = products.at(-1);
+  return { schemaVersion: 2, filters: { ...filters, term }, count: products.length, sourceCount: sources.size,
+    page, pageSize, hasMore, nextPage: hasMore && !cursorMode ? page + 1 : null,
+    nextCursor: hasMore && cursorMode && last ? btoa(`${last.trendDate}|${last.productId}`) : null, products };
+}
+
+export async function queryProductDetail(db, routePath, timings = null) {
+  const rows = await all(db, `SELECT p.id, p.title, p.canonical_url AS canonicalUrl,
+      p.github_repo AS githubRepo, p.first_seen_date AS firstSeenDate, p.last_seen_date AS lastSeenDate,
+      pd.item_json AS itemJson, pd.content_hash AS contentHash
+    FROM product_routes r
+    JOIN products p ON p.id = r.product_id
+    LEFT JOIN product_details pd ON pd.product_id = p.id
+    WHERE r.route_path = ? LIMIT 1`, [routePath], timings, 'productDetail');
+  if (!rows.length) return null;
+  const row = rows[0];
+  let item = row.itemJson || {};
+  if (typeof item === 'string') {
+    try { item = JSON.parse(item); } catch { item = {}; }
+  }
+  const taxonomy = await all(db, `SELECT ta.facet, ta.term_id AS termId
+    FROM taxonomy_assignments ta
+    WHERE ta.product_id = ? AND ta.is_current = 1
+    ORDER BY ta.facet, ta.term_id`, [row.id], timings, 'productTaxonomy');
+  const sources = await all(db, `SELECT f.source_id AS sourceId, s.name AS sourceName,
+      f.first_seen_date AS firstSeenDate, f.last_seen_date AS lastSeenDate,
+      f.observation_count AS observationCount
+    FROM product_source_first_seen f JOIN sources s ON s.id = f.source_id
+    WHERE f.product_id = ? ORDER BY f.first_seen_date, f.source_id`, [row.id], timings, 'productSources');
+  const facets = {};
+  for (const value of taxonomy) (facets[value.facet] ||= []).push(value.termId);
+  const githubRepo = row.githubRepo ? String(row.githubRepo).toLowerCase() : '';
+  return {
+    schemaVersion: 1,
+    catalogVersion: `${String(row.lastSeenDate).slice(0, 10)}-${row.contentHash || 'base'}`,
+    product: {
+      id: row.id, title: item.title || row.title, canonicalUrl: row.canonicalUrl || '', githubRepo,
+      route: githubRepo ? `/projects/${githubRepo}/` : `/products/${row.id}/`,
+      firstSeenDate: String(row.firstSeenDate).slice(0, 10), lastSeenDate: String(row.lastSeenDate).slice(0, 10),
+      item: { ...item, taxonomy: facets },
+      sources: sources.map(source => ({ ...source,
+        firstSeenDate: String(source.firstSeenDate).slice(0, 10), lastSeenDate: String(source.lastSeenDate).slice(0, 10),
+        observationCount: Number(source.observationCount || 0),
+      })),
+    },
+  };
 }
 
 export async function handleCatalogApi(request, env, ctx) {
@@ -364,6 +469,7 @@ export async function handleCatalogApi(request, env, ctx) {
       const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
       const data = await queryProducts(db, filters, url.searchParams.get('term'), timings, {
         allSources: filters.sources.length === sources.length,
+        page: url.searchParams.get('page'), pageSize: url.searchParams.get('pageSize'), cursor: url.searchParams.get('cursor'),
       });
       return json(data, { headers: headers() });
     }

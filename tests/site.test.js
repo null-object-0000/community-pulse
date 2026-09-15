@@ -576,11 +576,13 @@ test('the worker serves verification .html files with 200 instead of the html_ha
   }
 });
 
-test('every emitted project, report, and sitemap entry has a real static page and canonical language URLs', () => {
+test('enumerable pages are static while sitemap product routes are reserved for the Worker', () => {
   const dist = path.join(__dirname, '../dist');
   const index = JSON.parse(fs.readFileSync(path.join(dist, 'data/index.json')));
-  const projects = JSON.parse(fs.readFileSync(path.join(dist, 'data/projects.json')));
-  assert.equal(Object.keys(projects).length, index.projectCount); assert.ok(index.projectCount > 0);
+  const snapshot = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/catalog/site-snapshot/manifest.json')));
+  assert.equal(index.catalogVersion, snapshot.catalogVersion);
+  assert.equal(index.productCount, snapshot.productRoutes.length);
+  assert.ok(!fs.existsSync(path.join(dist, 'data/projects.json')), 'the old static project index is retired');
   const trends = JSON.parse(fs.readFileSync(path.join(dist, 'data/trends.json')));
   assert.equal(trends.clusters.length, index.trendCount);
   assert.equal(trends.catalogClusters.length, index.categoryCount);
@@ -601,19 +603,15 @@ test('every emitted project, report, and sitemap entry has a real static page an
   assert.match(trendsPage, /data-trend-facet-panel="agentRoles" hidden/);
   assert.match(trendsPage, /data-trend-facet-panel="languages" hidden/);
   assert.match(trendsPage, /class="trend-bar" data-trend-week="11"/);
-  // The language lens is suppressed while the repository snapshot under-covers the window (see
-  // scripts/trends.js `languageCoverage`): the page explains why instead of showing a growth figure
-  // that only reflects the data arriving. When the layer is backfilled this notice disappears.
+  // The MySQL snapshot may have no current language rows while enrichment coverage is still being
+  // backfilled, but every controlled language category route remains pre-generated and reachable.
   const languageClusters = trends.clusters.filter(cluster => cluster.type === 'languages');
-  if (trends.languages?.complete === false) {
-    assert.equal(languageClusters.length, 0, 'an under-covered snapshot must publish no language clusters');
-    assert.match(trendsPage, /class="trend-empty trend-notice"/);
-    assert.match(trendsPage, /编程语言视角暂不可用/);
-  } else {
+  if (languageClusters.length) {
     const language = languageClusters[0];
     assert.ok(language?.path?.startsWith('/trends/programming-languages/'));
     assert.ok(fs.existsSync(path.join(dist, language.path.replace(/^\//, ''), 'index.html')));
   }
+  assert.ok(trends.catalogClusters.some(cluster => cluster.type === 'languages'));
   const contentCreation = trends.clusters.find(cluster => cluster.key === 'useCases:content-creation');
   assert.ok(contentCreation?.path);
   const travel = trends.clusters.find(cluster => cluster.key === 'useCases:travel-mobility');
@@ -639,14 +637,23 @@ test('every emitted project, report, and sitemap entry has a real static page an
     assert.ok(novelPage.includes(`href="${contentCreation.path}"`), 'the sub-topic links back to its parent');
     assert.match(novelPage, /"position":3,"name":"小说创作"/);
   }
-  const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
+  const sitemapRoot = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
+  const sitemapParts = [...sitemapRoot.matchAll(/<loc>https:\/\/devtrends\.site\/(sitemap-\d+\.xml)<\/loc>/g)]
+    .map(match => fs.readFileSync(path.join(dist, match[1]), 'utf8'));
+  const sitemap = sitemapParts.length ? sitemapParts.join('\n') : sitemapRoot;
+  assert.ok(sitemapParts.length || sitemapRoot.includes('<urlset'), 'root sitemap is a urlset or an index');
   const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
+  assert.equal(urls.filter(url => /^https:\/\/devtrends\.site\/(?:en\/)?(?:projects|products)\//.test(url)).length,
+    snapshot.productRoutes.filter(route => route.indexable).length * 2);
   assert.equal(new Set(urls).size, urls.length);
   assert.match(sitemap, /xmlns:xhtml="http:\/\/www\.w3\.org\/1999\/xhtml"/);
   assert.equal((sitemap.match(/hreflang="zh-CN"/g) || []).length, urls.length);
   assert.equal((sitemap.match(/hreflang="en"/g) || []).length, urls.length);
   assert.equal((sitemap.match(/hreflang="x-default"/g) || []).length, urls.length);
-  const baiduSitemap = fs.readFileSync(path.join(dist, 'sitemap-baidu.xml'), 'utf8');
+  const baiduRoot = fs.readFileSync(path.join(dist, 'sitemap-baidu.xml'), 'utf8');
+  const baiduParts = [...baiduRoot.matchAll(/<loc>https:\/\/devtrends\.site\/(sitemap-baidu-\d+\.xml)<\/loc>/g)]
+    .map(match => fs.readFileSync(path.join(dist, match[1]), 'utf8'));
+  const baiduSitemap = baiduParts.length ? baiduParts.join('\n') : baiduRoot;
   const baiduUrls = [...baiduSitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(baiduUrls.length * 2, urls.length);
   assert.ok(baiduUrls.every(url => url.startsWith(D.origin + '/') && !url.startsWith(D.origin + '/en/')));
@@ -668,6 +675,10 @@ test('every emitted project, report, and sitemap entry has a real static page an
   for (const url of urls) {
     assert.ok(url.startsWith(D.origin + '/'));
     const route = url.slice(D.origin.length);
+    if (/^\/(?:en\/)?(?:projects|products)\//.test(route)) {
+      assert.ok(!fs.existsSync(path.join(dist, route, 'index.html')), `${route} must be rendered by the Worker`);
+      continue;
+    }
     const html = fs.readFileSync(path.join(dist, route, 'index.html'), 'utf8');
     assert.ok(html.includes(`<link rel="canonical" href="${url}"`), url);
     assert.ok(html.includes(`<html lang="${route.startsWith('/en/') ? 'en' : 'zh-CN'}">`), url);
@@ -678,11 +689,6 @@ test('every emitted project, report, and sitemap entry has a real static page an
     for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) assert.doesNotThrow(() => JSON.parse(match[1]), url);
     const data = JSON.parse(html.match(/<script id="page-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
     assert.ok(data.locale);
-    if (route.includes('/projects/')) {
-      assert.ok(html.includes('SoftwareSourceCode')); assert.ok(html.includes('BreadcrumbList'));
-      const repo = D.repository(data.projectItem); assert.ok(repo, url);
-      assert.equal(repo.path, route.replace(/^\/en(?=\/)/, ''));
-    }
   }
   const homeHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
   assert.ok(homeHtml.includes('"@type":"WebSite"'));
@@ -696,8 +702,8 @@ test('every emitted project, report, and sitemap entry has a real static page an
     for (const item of D.reportItems(data)) {
       assert.ok(D.isCategoryId(D.itemCategory(item)), `${date}: ${item.title}`);
       assert.equal(D.itemCategories(item).length, 1, `${date}: ${item.title}`);
-      if (D.repository(item)) assert.equal(item.projectPath, projects[D.repository(item).key]);
-      else assert.equal(item.projectPath, undefined);
+      if (D.repository(item)) assert.equal(item.projectPath, D.repository(item).path);
+      else assert.match(item.projectPath, /^\/products\/prd_[a-f0-9]{24}\/$/);
     }
     if (fs.existsSync(path.join(__dirname, `../知识/大家都在做什么/final/${date}.md`))) {
       assert.ok(['llm-final', 'mixed'].includes(data.presentation.summarySource), date);

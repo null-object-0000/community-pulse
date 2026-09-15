@@ -5,6 +5,7 @@ const path = require('node:path');
 const test = require('node:test');
 const { identitiesFor } = require('../scripts/catalog/identity');
 const { buildMysqlImport, sqlValue } = require('../scripts/catalog/build-mysql-import');
+const { rangeStats } = require('../scripts/catalog/build-site-snapshot');
 const { loadItems } = require('../.agents/skills/community-pulse/scripts/source_raw_items');
 
 test('catalog identity prefers repository, keeps website and source aliases', () => {
@@ -29,13 +30,18 @@ test('source snapshots compile directly into a MySQL import package', () => {
   const rawRoot = path.join(__dirname, '..', '知识', '大家都在做什么', 'source-raw');
   const manifest = buildMysqlImport({ out: directory, rawRoot, start: '2026-09-13', end: '2026-09-13', sources: new Set(['producthunt']), taxonomy: true, maxBytes: 100_000 });
   const tables = new Set(manifest.files.map((file) => file.table));
-  assert.deepEqual(tables, new Set(['sources', 'products', 'product_source_first_seen', 'taxonomy_terms', 'taxonomy_assignments']));
+  assert.deepEqual(tables, new Set(['sources', 'products', 'product_routes', 'product_details', 'product_source_first_seen', 'taxonomy_terms', 'taxonomy_assignments']));
+  assert.equal(manifest.schemaVersion, 3);
   assert.equal(manifest.dialect, 'mysql');
   assert.equal(manifest.source, 'source-raw');
   assert.ok(manifest.inputRows > 0);
   assert.ok(manifest.files.every((file) => /^[a-f0-9]{64}$/.test(file.sha256)));
   const productSql = fs.readFileSync(path.join(directory, manifest.files.find((file) => file.table === 'products').name), 'utf8');
   assert.match(productSql, /ON DUPLICATE KEY UPDATE/);
+  const routeSql = fs.readFileSync(path.join(directory, manifest.files.find((file) => file.table === 'product_routes').name), 'utf8');
+  assert.match(routeSql, /\/products\/prd_[a-f0-9]{24}\//);
+  const detailSql = fs.readFileSync(path.join(directory, manifest.files.find((file) => file.table === 'product_details').name), 'utf8');
+  assert.match(detailSql, /item_json/);
   const assignmentSql = fs.readFileSync(path.join(directory, manifest.files.find((file) => file.table === 'taxonomy_assignments').name), 'utf8');
   assert.match(assignmentSql, /INSERT IGNORE INTO taxonomy_assignments \(product_id,facet,term_id/);
   assert.doesNotMatch(assignmentSql, /taxonomy_assignments \(id,/);
@@ -44,6 +50,19 @@ test('source snapshots compile directly into a MySQL import package', () => {
 
 test('MySQL literals preserve backslashes and quotes', () => {
   assert.equal(sqlValue("path\\segment's"), "'path\\\\segment''s'");
+});
+
+test('site snapshot ranges are deterministic supersets of the recent catalog', () => {
+  const products = [
+    { trendDate: '2026-09-15', sourceIds: ['a'] },
+    { trendDate: '2026-09-01', sourceIds: ['b'] },
+    { trendDate: '2026-07-01', sourceIds: ['a', 'b'] },
+  ];
+  const ranges = rangeStats(products, '2026-09-15');
+  assert.equal(ranges.recent.count, 1);
+  assert.equal(ranges['4w'].count, 2);
+  assert.equal(ranges['12w'].count, 3);
+  assert.equal(ranges['12w'].sources, 2);
 });
 
 test('MySQL adapter preserves the query prepare-bind-all contract', async () => {

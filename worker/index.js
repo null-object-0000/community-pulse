@@ -1,4 +1,7 @@
-import { handleCatalogApi } from './catalog-api.mjs';
+import { handleCatalogApi, queryProductDetail } from './catalog-api.mjs';
+import { openMysql } from './mysql-db.mjs';
+import { renderProductPage } from './project-page.mjs';
+import { CATALOG_VERSION } from './catalog-version.mjs';
 
 // 站长平台的归属验证文件（仓库根的 verification/ 目录，构建时复制到站点根）。
 //
@@ -9,6 +12,7 @@ import { handleCatalogApi } from './catalog-api.mjs';
 // 新增平台时：把文件丢进 verification/，并在这里和 wrangler.toml 的 run_worker_first 里各加一条。
 const VERIFICATION_FILE = /^\/(baidu_verify_[A-Za-z0-9._-]+)\.html$/;
 const CACHED_API = new Set(['/api/v1/sources', '/api/v1/trends', '/api/v1/products']);
+const PRODUCT_ROUTE = /^\/(?:en\/)?(?:projects\/[a-z0-9_.-]+\/[a-z0-9_.-]+|products\/prd_[a-f0-9]{24})\/?$/i;
 
 // Cache API entries are local to each Cloudflare data center. A versioned key keeps later SQL or
 // taxonomy releases from reading an older response while each entry stays fresh for at most 5 min.
@@ -19,7 +23,7 @@ export function apiCacheKey(request) {
     url.searchParams.set('sources', [...new Set(sources.split(',').map(value => value.trim()).filter(Boolean))].sort().join(','));
   }
   url.searchParams.sort();
-  return new Request(new URL(`/_devtrends_api_cache/v8${url.pathname}${url.search}`, url.origin));
+  return new Request(new URL(`/_devtrends_api_cache/v9${url.pathname}${url.search}`, url.origin));
 }
 
 export async function cachedCatalogApi(request, env, ctx, handler = handleCatalogApi) {
@@ -49,10 +53,56 @@ export async function cachedCatalogApi(request, env, ctx, handler = handleCatalo
   return new Response(response.body, { status: response.status, headers });
 }
 
+export function canonicalProductRoute(pathname) {
+  const route = pathname.replace(/^\/en(?=\/)/, '').replace(/\/?$/, '/').toLowerCase();
+  return PRODUCT_ROUTE.test(pathname) ? route : '';
+}
+
+export async function dynamicProductPage(request, env, ctx) {
+  const url = new URL(request.url);
+  const route = canonicalProductRoute(url.pathname);
+  if (request.method !== 'GET' || !route) return null;
+  const locale = url.pathname.startsWith('/en/') ? 'en' : 'zh-CN';
+  const cache = typeof caches === 'undefined' ? null : caches.default;
+  const cacheKey = new Request(new URL(`/_devtrends_product_cache/${CATALOG_VERSION}${url.pathname}`, url.origin));
+  try {
+    const hit = cache && await cache.match(cacheKey);
+    if (hit) {
+      const headers = new Headers(hit.headers);
+      headers.set('x-devtrends-cache', 'HIT');
+      return new Response(hit.body, { status: hit.status, headers });
+    }
+  } catch (_) {}
+  if (!env.HYPERDRIVE_READ) return new Response('Catalog database unavailable', { status: 503 });
+  const opened = await openMysql(env.HYPERDRIVE_READ);
+  try {
+    const model = await queryProductDetail(opened.db, route);
+    if (!model) {
+      const missing = await env.ASSETS.fetch(new Request(new URL(locale === 'en' ? '/en/404/' : '/404/', url), request));
+      return new Response(missing.body, { status: 404, headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=60' } });
+    }
+    const response = new Response(renderProductPage(model, locale), { headers: {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'public, max-age=300, s-maxage=86400, stale-while-revalidate=604800',
+      'x-devtrends-cache': 'MISS',
+      'x-devtrends-catalog-version': CATALOG_VERSION,
+    } });
+    const put = cache?.put(cacheKey, response.clone()).catch(() => {});
+    if (put && ctx?.waitUntil) ctx.waitUntil(put);
+    else if (put) await put;
+    return response;
+  } finally {
+    const close = opened.close();
+    if (ctx?.waitUntil) ctx.waitUntil(close);
+    else await close;
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/v1/')) return cachedCatalogApi(request, env, ctx);
+    if (PRODUCT_ROUTE.test(url.pathname)) return dynamicProductPage(request, env, ctx);
     const match = url.pathname.match(VERIFICATION_FILE);
     if (!match) return env.ASSETS.fetch(request);
     // html_handling 会把无扩展名的同名路径映射回这个 .html 文件，那一侧是正常的 200。

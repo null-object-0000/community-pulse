@@ -30,6 +30,25 @@ const TABLES = {
       first_seen_date=LEAST(products.first_seen_date, VALUES(first_seen_date)),
       last_seen_date=GREATEST(products.last_seen_date, VALUES(last_seen_date)), updated_at=CURRENT_TIMESTAMP(3)`,
   },
+  product_routes: {
+    columns: ['route_path', 'product_id', 'route_kind'],
+    upsert: `ON DUPLICATE KEY UPDATE product_id=VALUES(product_id), route_kind=VALUES(route_kind),
+      updated_at=CURRENT_TIMESTAMP(3)`,
+  },
+  product_details: {
+    columns: ['product_id', 'observed_date', 'content_score', 'item_json', 'content_hash'],
+    upsert: `ON DUPLICATE KEY UPDATE
+      item_json=IF(VALUES(observed_date) > product_details.observed_date OR
+        (VALUES(observed_date) = product_details.observed_date AND VALUES(content_score) >= product_details.content_score),
+        VALUES(item_json), product_details.item_json),
+      content_hash=IF(VALUES(observed_date) > product_details.observed_date OR
+        (VALUES(observed_date) = product_details.observed_date AND VALUES(content_score) >= product_details.content_score),
+        VALUES(content_hash), product_details.content_hash),
+      content_score=IF(VALUES(observed_date) > product_details.observed_date OR
+        (VALUES(observed_date) = product_details.observed_date AND VALUES(content_score) >= product_details.content_score),
+        VALUES(content_score), product_details.content_score),
+      observed_date=GREATEST(product_details.observed_date, VALUES(observed_date)), updated_at=CURRENT_TIMESTAMP(3)`,
+  },
   product_source_first_seen: {
     columns: ['product_id', 'source_id', 'first_seen_date', 'last_seen_date', 'observation_count'],
     upsert: `ON DUPLICATE KEY UPDATE
@@ -114,10 +133,31 @@ function loadEvidence(cache, rawRoot, date) {
   return evidence;
 }
 
+const DETAIL_FIELDS = [
+  'sourceId', 'sourceName', 'externalId', 'title', 'titleZh', 'titleEn', 'summary', 'summaryZh', 'summaryEn',
+  'url', 'websiteUrl', 'githubUrl', 'issueUrl', 'relatedIssue', 'vibecafeUrl', 'productHuntUrl',
+  'author', 'authorUrl', 'publishedAt', 'tags', 'taxonomy', 'primaryCategory', 'language', 'lang',
+  'logo', 'icon', 'siteLogo', 'image', 'images', 'imageUrls', 'metrics', 'github',
+];
+
+function detailItem(item, source) {
+  const detail = { sourceId: item.sourceId || source.id, sourceName: item.sourceName || source.name };
+  for (const key of DETAIL_FIELDS) if (item[key] !== undefined) detail[key] = item[key];
+  return detail;
+}
+
+function detailScore(item) {
+  return String(item.summaryZh || item.summaryEn || item.summary || '').length
+    + (item.github ? 200 : 0) + ((item.images || item.imageUrls || []).length * 20)
+    + (item.logo || item.icon || item.siteLogo ? 50 : 0);
+}
+
 function collectRows(options) {
   const config = JSON.parse(fs.readFileSync(SOURCE_CONFIG, 'utf8'));
   const sources = config.sources.filter((source) => source.enabled && (!options.sources || options.sources.has(source.id)));
   const products = new Map();
+  const routes = new Map();
+  const details = new Map();
   const identityOwners = new Map();
   const firstSeen = new Map();
   const assignments = new Map();
@@ -155,6 +195,16 @@ function collectRows(options) {
           firstSeenDate: existing ? [existing.firstSeenDate, date].sort()[0] : date,
           lastSeenDate: existing ? [existing.lastSeenDate, date].sort().at(-1) : date,
         });
+        routes.set(`/products/${id}/`, [`/products/${id}/`, id, 'product']);
+        const githubRepo = existing?.githubRepo || primary.githubRepo || '';
+        if (githubRepo) routes.set(`/projects/${githubRepo}/`, [`/projects/${githubRepo}/`, id, 'github']);
+        const projected = detailItem(item, source);
+        const score = detailScore(projected);
+        const knownDetail = details.get(id);
+        if (!knownDetail || date > knownDetail.date || (date === knownDetail.date && score >= knownDetail.score)) {
+          const json = JSON.stringify(projected);
+          details.set(id, { id, date, score, json, hash: crypto.createHash('sha256').update(json).digest('hex') });
+        }
         const externalId = String(item.externalId || item.url || item.title || 'untitled');
         const observationKey = `${source.id}\0${externalId}\0${date}`;
         const pairKey = `${id}\0${source.id}`;
@@ -186,6 +236,8 @@ function collectRows(options) {
     tables: {
       sources: sources.map((source, index) => [source.id, source.name, source.desc || '', 1, index]),
       products: [...products.values()].map((p) => [p.id, p.canonicalKey, p.title, p.canonicalUrl, p.githubRepo, p.firstSeenDate, p.lastSeenDate]),
+      product_routes: [...routes.values()],
+      product_details: [...details.values()].map((p) => [p.id, p.date, p.score, p.json, p.hash]),
       product_source_first_seen: [...firstSeen.values()].map((p) => [p.productId, p.sourceId, p.firstSeenDate, p.lastSeenDate, p.observationCount]),
       taxonomy_terms: options.taxonomy ? taxonomyRows() : [],
       taxonomy_assignments: [...assignments.values()],
@@ -196,6 +248,9 @@ function collectRows(options) {
 function writeTable(directory, table, rows, maxBytes, state) {
   if (!rows.length) return;
   const { columns, upsert } = TABLES[table];
+  // INSERT IGNORE over the taxonomy unique key costs more Worker CPU per byte than the plain
+  // detail upsert. Keep those statements smaller so the temporary import Worker stays below 1102.
+  const byteLimit = table === 'taxonomy_assignments' ? Math.min(maxBytes, 750_000) : maxBytes;
   let tuples = [];
   let tupleBytes = 0;
   const flush = () => {
@@ -210,7 +265,10 @@ function writeTable(directory, table, rows, maxBytes, state) {
   };
   for (const row of rows) {
     const tuple = `(${row.map(sqlValue).join(',')})`;
-    if (tuples.length >= 200 || (tuples.length && tupleBytes + Buffer.byteLength(tuple) > maxBytes)) flush();
+    // Keep each statement below the upload/packet budget, but do not impose a tiny row cap: the
+    // full catalog contains hundreds of thousands of rows and 200-row chunks created 8k HTTP
+    // uploads. Byte-bounded statements stay safe while reducing a full replay to a few hundred.
+    if (tuples.length && tupleBytes + Buffer.byteLength(tuple) > byteLimit) flush();
     tuples.push(tuple);
     tupleBytes += Buffer.byteLength(tuple) + 2;
   }
@@ -227,7 +285,7 @@ function buildMysqlImport(options) {
   const state = { sequence: 0, files: [] };
   for (const [table, rows] of Object.entries(collected.tables)) writeTable(options.out, table, rows, options.maxBytes, state);
   const manifest = {
-    schemaVersion: 2, dialect: 'mysql', source: 'source-raw', generatedAt: new Date().toISOString(),
+    schemaVersion: 3, dialect: 'mysql', source: 'source-raw', generatedAt: new Date().toISOString(),
     range: { start: options.start || null, end: options.end || null }, days: collected.days, inputRows: collected.rows,
     files: state.files, totalRows: state.files.reduce((sum, file) => sum + file.rows, 0),
     totalBytes: state.files.reduce((sum, file) => sum + file.bytes, 0),

@@ -25,7 +25,19 @@ const endpoint = `${deploy.stdout || ''}\n${deploy.stderr || ''}`.match(/https:\
 if (!endpoint) throw new Error('temporary import Worker URL was not reported');
 
 try {
+  const detailMigration = path.join(ROOT, 'migrations', 'mysql', '0004_dynamic_product_pages.sql');
+  const migration = spawnSync('curl', [
+    '--silent', '--show-error', '--fail-with-body', '--retry', '5', '--retry-all-errors', '--retry-delay', '2',
+    '--max-time', '180', '-X', 'POST', '-H', `Authorization: Bearer ${token}`,
+    '--data-binary', `@${detailMigration}`, `${endpoint}/import`,
+  ], { cwd: ROOT, encoding: 'utf8' });
+  if (migration.status !== 0) {
+    process.stdout.write(migration.stdout || '');
+    process.stderr.write(migration.stderr || '');
+    failure = migration.status || 1;
+  }
   for (const [index, entry] of manifest.files.entries()) {
+    if (failure) break;
     if (completed.has(entry.name)) continue;
     console.log(`[${index + 1}/${manifest.files.length}] ${entry.name}: ${entry.rows} rows`);
     const upload = spawnSync('curl', [
