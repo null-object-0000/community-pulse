@@ -679,17 +679,20 @@ test('enumerable pages are static while sitemap product routes are reserved for 
   assert.equal((sitemap.match(/hreflang="zh-CN"/g) || []).length, urls.length);
   assert.equal((sitemap.match(/hreflang="en"/g) || []).length, urls.length);
   assert.equal((sitemap.match(/hreflang="x-default"/g) || []).length, urls.length);
-  const baiduRoot = fs.readFileSync(path.join(dist, 'sitemap-baidu.xml'), 'utf8');
-  const baiduParts = [...baiduRoot.matchAll(/<loc>https:\/\/devtrends\.site\/(sitemap-baidu-\d+\.xml)<\/loc>/g)]
-    .map(match => fs.readFileSync(path.join(dist, match[1]), 'utf8'));
-  const baiduSitemap = baiduParts.length ? baiduParts.join('\n') : baiduRoot;
+  // 百度已明确不再抓取索引型 sitemap，所以百度那份必须是扁平 urlset（首个文件占用不带序号的名字）。
+  const baiduFiles = ['sitemap-baidu.xml',
+    ...fs.readdirSync(dist).filter(name => /^sitemap-baidu-\d+\.xml$/.test(name))
+      .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]))];
+  const baiduSitemap = baiduFiles.map(name => fs.readFileSync(path.join(dist, name), 'utf8')).join('\n');
+  assert.ok(!baiduSitemap.includes('<sitemapindex'), 'Baidu no longer crawls index-style sitemaps');
+  for (const name of baiduFiles) assert.ok(fs.readFileSync(path.join(dist, name), 'utf8').includes('<urlset'), name);
   const baiduUrls = [...baiduSitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
   assert.equal(baiduUrls.length * 2, urls.length);
   assert.ok(baiduUrls.every(url => url.startsWith(D.origin + '/') && !url.startsWith(D.origin + '/en/')));
   assert.ok(!baiduSitemap.includes('hreflang'));
   const robots = fs.readFileSync(path.join(dist, 'robots.txt'), 'utf8');
   assert.ok(robots.includes(`${D.origin}/sitemap.xml`));
-  assert.ok(robots.includes(`${D.origin}/sitemap-baidu.xml`));
+  for (const name of baiduFiles) assert.ok(robots.includes(`${D.origin}/${name}`), `${name} must be declared in robots.txt`);
   for (const locale of ['', 'en/']) {
     const feed = fs.readFileSync(path.join(dist, locale, 'feed.xml'), 'utf8');
     assert.match(feed, /^<\?xml version="1\.0" encoding="UTF-8"\?>/);

@@ -96,7 +96,6 @@ const publicTrends = { ...trends,
 };
 write('data/trends.json', D.json(publicTrends));
 write('data/index.json', JSON.stringify({ latest, dates, catalogVersion: siteSnapshot.catalogVersion, productCount: (siteSnapshot.productRoutes || []).length, trendCount: trends.clusters.length, categoryCount: catalogClusters.length, generatedAt: new Date().toISOString() }, null, 2));
-write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${D.origin}/sitemap.xml\nSitemap: ${D.origin}/sitemap-baidu.xml\n`);
 function feedXml(locale) {
   const en = locale === 'en', feedPath = D.localPath('/feed.xml', locale), homePath = D.localPath('/', locale);
   const channelTitle = en ? 'DevTrends — Daily Developer Discoveries' : 'DevTrends 开发者趋势日报';
@@ -152,5 +151,24 @@ function writeSitemap(name, urls, namespace) {
   write(name, `${declaration}<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${entries}</sitemapindex>\n`);
 }
 writeSitemap('sitemap.xml', sitemapUrls, 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"');
-writeSitemap('sitemap-baidu.xml', baiduUrls, 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
+// 百度《普通收录》文档：「搜索资源平台 sitemap 文件提交已不再支持索引型文件形式，历史提交的
+// 索引型文件已不再进行抓取」—— 索引型 sitemap 对百度等于不存在，所以百度那份必须是扁平
+// urlset。单文件上限 5 万条 / 10 MiB，超过就切成多个扁平文件：第一个继续占用
+// /sitemap-baidu.xml 这个稳定地址（平台里填的就是它），其余由 robots.txt 一并声明。
+// `sitemap.xml` 保持索引型 —— Google / Bing 都支持索引文件，且双语 hreflang 很占体积。
+const BAIDU_SITEMAP_LIMIT = 50_000;
+const BAIDU_NAMESPACE = 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
+function writeBaiduSitemap(urls) {
+  const declaration = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  const files = [];
+  for (let offset = 0; offset < urls.length; offset += BAIDU_SITEMAP_LIMIT) {
+    const name = files.length ? `sitemap-baidu-${files.length + 1}.xml` : 'sitemap-baidu.xml';
+    write(name, `${declaration}<urlset ${BAIDU_NAMESPACE}>${urls.slice(offset, offset + BAIDU_SITEMAP_LIMIT).join('')}</urlset>\n`);
+    files.push(name);
+  }
+  if (!files.length) { write('sitemap-baidu.xml', `${declaration}<urlset ${BAIDU_NAMESPACE}></urlset>\n`); files.push('sitemap-baidu.xml'); }
+  return files;
+}
+const baiduFiles = writeBaiduSitemap(baiduUrls);
+write('robots.txt', `User-agent: *\nAllow: /\n\n${['sitemap.xml', ...baiduFiles].map(name => `Sitemap: ${D.origin}/${name}`).join('\n')}\n`);
 console.log(`Built ${dates.length} reports and ${catalogClusters.length} MySQL-backed categories; product details are dynamic; latest: ${latest}.`);

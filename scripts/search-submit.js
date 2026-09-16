@@ -11,9 +11,15 @@ const snapshotFile = path.join(root, 'data', 'catalog', 'site-snapshot', 'manife
 // 详情页在摘要短于这个长度时是 `noindex`（判定见 worker/project-page.mjs，两处必须一致）：
 // 把百度引到不该收录的薄页上，等于白白花掉当天只有个位数的配额。
 const DETAIL_SUMMARY_MIN = 20;
-// 入口页：今日发现 / 趋势洞察。历史归档 `/reports/` 不在百度日推集合里 —— 它有全站导航内链、
-// 也在 sitemap 里，每天占一个名额换不来收录（IndexNow 没有配额，仍旧带它）。
-const HUB_ROUTES = ['/', '/trends/'];
+// 百度「普通收录」的 API 配额按「当天新产出的链接」发放，官方 FAQ 说得很直接：重复提交已发布
+// 链接既浪费配额，又可能被下调额度、甚至失去 API 推送权限（实测同一个 URL 提交两次也确实各扣
+// 一次配额）。所以百度那份只放当天真正新增的 URL —— 当天日报页 + 当天详情页；首页 `/`、
+// 趋势洞察 `/trends/`、归档 `/reports/` 一律不进：它们每天都被全站导航内链，内容更新由
+// sitemap 的 `lastmod` 表达，不值得占用抢来的配额。
+const BAIDU_HUBS = date => [`/reports/${date}/`];
+// IndexNow 的协议本来就为「新增或更新」设计（Bing / Yandex 都接受重复提交更新过的页面），没有
+// 配额，所以这里保留入口页 —— 首页与趋势页每天的内容变化值得通知它们。
+const INDEXNOW_HUBS = date => ['/', '/trends/', '/reports/', `/reports/${date}/`];
 
 function reportDates() {
   return fs.readdirSync(rawDir)
@@ -69,15 +75,15 @@ function detailRoutes(report) {
   return entries;
 }
 
-// 每日推送集合：三个入口页（今日发现 / 趋势洞察 / 当天日报）+ 当天详情页，顺序照搬日报自身
-// 的排序，所以「当天最值得看的 5 个项目」一定排在配额能覆盖到的位置。`baidu` 受配额约束
-// （见 submitBaidu，配额用满即停），`indexNow` 没有配额，多带上历史归档页。
+// 每日推送集合：当天日报页 + 当天详情页，顺序照搬日报自身的排序，所以「当天最值得看的几个」
+// 一定排在配额能覆盖到的位置。`baidu` 受配额约束（见 submitBaidu，配额用满即停），
+// `indexNow` 没有配额，另外带上每天会被更新内容、值得重新通知的入口页。
 function submissionUrls(report, date, indexableRoutes = loadIndexableRoutes()) {
   const detail = detailRoutes(report)
     .filter(entry => isIndexableDetail(entry.item, entry.route, indexableRoutes))
     .map(entry => entry.route);
-  const baiduRoutes = [...new Set([...HUB_ROUTES, `/reports/${date}/`, ...detail])];
-  const indexNowRoutes = [...new Set(['/', '/reports/', ...baiduRoutes])];
+  const baiduRoutes = [...new Set([...BAIDU_HUBS(date), ...detail])];
+  const indexNowRoutes = [...new Set([...INDEXNOW_HUBS(date), ...baiduRoutes])];
   return {
     baidu: baiduRoutes.map(route => D.origin + D.localPath(route, 'zh-CN')),
     indexNow: indexNowRoutes.flatMap(route => [D.origin + D.localPath(route, 'zh-CN'), D.origin + D.localPath(route, 'en')]),

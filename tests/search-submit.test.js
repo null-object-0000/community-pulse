@@ -5,7 +5,7 @@ const path = require('node:path');
 const D = require('../web/shared.js');
 const { submissionUrls, submitIndexNow, submitBaidu, detailRoute } = require('../scripts/search-submit.js');
 
-test('daily submissions lead with the three hubs and then follow report order', () => {
+test('Baidu gets only the day\'s new URLs while IndexNow also covers refreshed hubs', () => {
   const report = { results: [{ sourceId: 'showhn', items: [
     { title: 'Repo', url: 'https://github.com/Owner/Repo', summary: 'A'.repeat(30) },
     { title: 'Thin product', url: 'https://example.com/thin', summary: 'short' },
@@ -13,16 +13,18 @@ test('daily submissions lead with the three hubs and then follow report order', 
     { title: 'Issue', url: 'https://github.com/owner/repo/issues/1', summary: 'C'.repeat(30) },
   ] }] };
   const targets = submissionUrls(report, '2026-09-13', new Map());
-  assert.deepEqual(targets.baidu.slice(0, 3), [
-    `${D.origin}/`, `${D.origin}/trends/`, `${D.origin}/reports/2026-09-13/`,
-  ]);
-  assert.equal(targets.baidu.length, 6, 'three hubs plus three indexable detail pages');
+  assert.deepEqual(targets.baidu.slice(0, 1), [`${D.origin}/reports/2026-09-13/`]);
+  assert.equal(targets.baidu.length, 4, 'the report page plus three indexable detail pages');
+  // 官方的重复提交会浪费配额、可能下调额度，所以首页/趋势页/归档页不进百度那份。
+  assert.ok(!targets.baidu.includes(`${D.origin}/`));
+  assert.ok(!targets.baidu.includes(`${D.origin}/trends/`));
+  assert.ok(!targets.baidu.includes(`${D.origin}/reports/`));
+  assert.ok(targets.indexNow.includes(`${D.origin}/`), 'IndexNow accepts updated pages and has no quota');
+  assert.ok(targets.indexNow.includes(`${D.origin}/trends/`));
+  assert.ok(targets.indexNow.includes(`${D.origin}/en/reports/`));
   assert.ok(targets.baidu.includes(`${D.origin}/projects/owner/repo/`));
   assert.ok(!targets.baidu.some(url => url.includes('/issues/')), 'issue pages are not repositories');
   assert.ok(!targets.baidu.some(url => url.includes('/thin')), 'a noindex detail page must not consume the quota');
-  assert.ok(!targets.baidu.includes(`${D.origin}/reports/`), 'the archive index is left to the sitemap');
-  assert.ok(targets.indexNow.includes(`${D.origin}/en/reports/`), 'IndexNow has no quota, so it keeps the archive');
-  assert.ok(targets.indexNow.includes(`${D.origin}/en/trends/`));
 });
 
 test('the site snapshot overrides the summary length when it knows the route', () => {
@@ -31,9 +33,9 @@ test('the site snapshot overrides the summary length when it knows the route', (
   const route = detailRoute(item, 'showhn');
   assert.match(route, /^\/products\/prd_[a-f0-9]{24}\/$/);
   const known = submissionUrls(report, '2026-09-13', new Map([[route, false]]));
-  assert.equal(known.baidu.length, 3, 'an explicitly noindex route stays out even with a long summary');
+  assert.equal(known.baidu.length, 1, 'an explicitly noindex route stays out even with a long summary');
   const unknown = submissionUrls(report, '2026-09-13', new Map());
-  assert.equal(unknown.baidu.length, 4, 'unknown routes fall back to the report summary length');
+  assert.equal(unknown.baidu.length, 2, 'unknown routes fall back to the report summary length');
 });
 
 test('IndexNow sends the public root key and the complete URL batch', async () => {
