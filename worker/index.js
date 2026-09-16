@@ -13,7 +13,7 @@ import { CATALOG_VERSION } from './catalog-version.mjs';
 const VERIFICATION_FILE = /^\/(baidu_verify_[A-Za-z0-9._-]+)\.html$/;
 const CACHED_API = new Set(['/api/v1/sources', '/api/v1/trends', '/api/v1/products']);
 const PRODUCT_ROUTE = /^\/(?:en\/)?(?:projects\/[a-z0-9_.-]+\/[a-z0-9_.-]+|products\/prd_[a-f0-9]{24})\/?$/i;
-const PRODUCT_RENDERER_VERSION = '20260916-chrome';
+const PRODUCT_RENDERER_VERSION = '20260916-links';
 
 // Cache API entries are local to each Cloudflare data center. A versioned key keeps later SQL or
 // taxonomy releases from reading an older response while each entry stays fresh for at most 5 min.

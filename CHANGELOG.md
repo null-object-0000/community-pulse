@@ -21,7 +21,7 @@
 | 09-13 | 28 | 147 文件 +4,008/-394 | 671 文件 +902,580/-81 | 趋势分析、SEO、新增数据源 | community-pulse |
 | 09-14 | 23（另有未提交） | 42 文件 +2,261/-133 | 616 文件 +89,400/-7,572 | 投稿相似去重与全量日报回溯；配图与描述兜底；业务场景二级主题；GitHub Trending 历史回填；**全量产品库 + D1 趋势查询纵切** | community-pulse |
 | 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
-| 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，并把全站顶栏/页脚收敛成一份实现 | community-pulse |
+| 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，把全站顶栏/页脚收敛成一份实现；修正详情页 GitHub / 官网 / 来源三个入口的取值链 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -314,6 +314,13 @@
   - **Worker 现在 `import D from '../web/shared.js'`**（CJS UMD 文件）。为了不让「构建期 bundler 能不能吃下 CJS」变成上线时的赌博，本地用 esbuild 按 wrangler 的 `browser` / ESM / `workerd,worker,browser` 条件把 `project-page.mjs` 单独打了一次包并真的执行：产物 93.3kb，渲染出的 HTML 里品牌 SVG、4 个主题色按钮、语言选择器、页脚标语、上一轮的 `.project-identity` 全在。
   - **版本号继续 bump**：`PRODUCT_RENDERER_VERSION` → `20260916-chrome`、`ASSET_VERSION` → `20260916-product-chrome`（`shared.js` 与 `app.js` 都变了，两者的 URL 版本都必须换）。
   - **验证**：`npm run check` 190/190，新增「静态页与动态页的全局外壳必须逐字节一致」回归测试（同时断言 `#theme-picker`、`data-theme-choice`、`data-accent-choice`、`#language-picker`、`brand-logo` 确实存在，避免两边一起退化成「一样但都没有」）。本地 fixture 在 1280px 与 390px 下确认选择器可用：点「深色」后 `data-theme="dark"` 且 `aria-pressed` 同步、点紫罗兰后 `data-accent="violet"`；线上控制台不再出现那个 TypeError。
+- **代码 / 详情页三个入口指向错位**：反馈「hippoxOS 的 GitHub 与官网点下去都是 GitHub，来源反而是官网」。两个独立原因叠在一起：
+  - **官网用了 catalog 的 canonical URL 兜底**：GitHub 类产品的 `canonical_url` 就是仓库本身，而 `worker/catalog-api.mjs` 会把它和 `githubRepo` 一起小写化 —— 于是「官网」变成 `github.com/hippoxhq/hippoxos`，与 `item.githubUrl` 的 `github.com/HippoxHQ/hippoxOS` 只差大小写，连按 URL 去重都躲过去了，三个按钮全留了下来。站点其它地方（列表行、旧静态详情页）一直用 `D.itemLinks` 的取值链 `websiteUrl → github.homepage →（无仓库时才）item.url`，只有 Worker 这份是另写的一套。
+  - **「来源」的兜底 `item.url` 不是来源 URL**：中国独立开发者这类看板把**产品链接**存在 `url`（hippoxOS 的 `url` 就是 `hippoxos.vercel.app`），GitHub Trending / Show HN 存的则是**仓库地址**，所以来源注定与官网或 GitHub 重复，或干脆没有来源。现在优先取这条自己的帖子 —— 补上此前被链路漏掉的 Show HN `hnUrl`，加上投稿 issue、VibeCafé / Product Hunt 产品页、V2EX 帖子 —— 都没有才回落到来源看板首页（`D.sourceInfo().url`，如 `github.com/1c7/chinese-independent-developer`、`github.com/trending`）。
+  - **去重改成大小写不敏感**：仓库身份在上游是小写的，而原始 item 保留作者的大小写，逐字节比较会把 `github.com/Owner/Repo` 与 `github.com/owner/repo` 当成两个不同目标 —— 这正是官网重复的同一个陷阱，Trending 的来源也踩了它。
+  - **Worker 不再自己拼链接**：`linkEntries` 改为调用同一个 `D.itemLinks`，只保留两处差异（用所有者原始大小写显示仓库、catalog 里的 `githubRepo` 作为仓库兜底），`PRODUCT_RENDERER_VERSION` → `20260916-links`、`ASSET_VERSION` → `20260916-product-links`。列表行的来源名链接也随之变准：以前中国独立开发者行把「来源」链到产品自己的网站，Trending / Show HN 行干脆不渲染链接。
+  - **`hnUrl` 没进过 MySQL**：`scripts/catalog/build-mysql-import.js` 的 `DETAIL_FIELDS` 漏了它，所以 Show HN 详情页永远拿不到自己的讨论串。补上后 `item_json` 会带上该字段（补字段会改 `content_hash`，也就是 `catalogVersion`，由日报的快照重建自动带出）；历史产品要等它们再次被收录才会刷新，在那之前回落到 HN 看板，仍是正确的「来源」语义。
+  - **验证**：`npm run check` 195/195（新增 `tests/item-links.test.js` 四条：hippoxOS 形状的三个目标、来源不与官网/仓库重复、有帖子时用帖子、无官网时不发第二个 GitHub；详情页新增「三个按钮的文案与 href」断言；`tests/site.test.js` 里「无链接条目渲染 span」改为断言链到看板）。另本地跑了一天份的 `catalog:build` + `check-mysql-import`，确认 `hnUrl` 真的写进了 `item_json` 且清单校验通过。
 
 ## 值得记录的决策
 

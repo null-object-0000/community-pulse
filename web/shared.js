@@ -571,13 +571,27 @@
     url.searchParams.set('utm_content', `${date || 'project'}_${item.sourceId || 'unknown'}_${item.externalId || item.title || 'item'}`.slice(0, 160));
     return url.href;
   }
+  // Three destinations with three different meanings: the repository, the product's own website,
+  // and where DevTrends actually found it. `url` is NOT an origin URL — boards such as 中国独立开发者
+  // store the product link there, and trending / Show HN store the repository — so using it as the
+  // last source fallback made 来源 repeat 官网 or the GitHub button. Prefer the item's own
+  // post/thread (Show HN's hnUrl, a submission issue, VibeCafé / Product Hunt page, V2EX thread),
+  // then the source board itself.
   function itemLinks(item) {
     const repo = repository(item);
+    const repositoryUrl = safeUrl(repo?.url);
     const website = safeUrl(item.websiteUrl || item.github?.homepage || (!repo ? item.url : ''));
-    const source = safeUrl(item.issueUrl || item.relatedIssue || item.vibecafeUrl || item.productHuntUrl || item.url);
+    const post = safeUrl(item.issueUrl || item.relatedIssue || item.hnUrl || item.vibecafeUrl || item.productHuntUrl || item.url);
+    const board = safeUrl(sourceInfo(item)?.url);
+    // Repository identity is lowercased upstream while the raw item keeps the owner's casing, so a
+    // byte comparison would let https://github.com/Owner/Repo and https://github.com/owner/repo count
+    // as two different destinations and show the repository twice.
+    const key = url => String(url).toLowerCase();
+    const distinct = url => (url && key(url) !== key(website) && key(url) !== key(repositoryUrl) ? url : '');
+    const source = distinct(post) || distinct(board) || '';
     const seen = new Set();
-    return [['repository', repo?.url], ['website', website], ['source', source]]
-      .filter(([, url]) => url && !seen.has(url) && seen.add(url));
+    return [['repository', repositoryUrl], ['website', website], ['source', source]]
+      .filter(([, url]) => url && !seen.has(key(url)) && seen.add(key(url)));
   }
   const icon = (name) => {
     const paths = {

@@ -133,9 +133,12 @@ function loadEvidence(cache, rawRoot, date) {
   return evidence;
 }
 
+// `hnUrl` is the Show HN thread. It is the only origin URL those items carry (their `url` is the
+// repository or the product site), so dropping it here left Show HN detail pages with no source
+// but the board. Adding a field changes content_hash, which is why the catalogue version follows.
 const DETAIL_FIELDS = [
   'sourceId', 'sourceName', 'externalId', 'title', 'titleZh', 'titleEn', 'summary', 'summaryZh', 'summaryEn',
-  'url', 'websiteUrl', 'githubUrl', 'issueUrl', 'relatedIssue', 'vibecafeUrl', 'productHuntUrl',
+  'url', 'websiteUrl', 'githubUrl', 'issueUrl', 'relatedIssue', 'hnUrl', 'vibecafeUrl', 'productHuntUrl',
   'author', 'authorUrl', 'publishedAt', 'tags', 'taxonomy', 'primaryCategory', 'language', 'lang',
   'logo', 'icon', 'siteLogo', 'image', 'images', 'imageUrls', 'metrics', 'github',
 ];

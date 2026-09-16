@@ -179,7 +179,9 @@ test('a long source name stays beside its badge instead of wrapping under it', (
   assert.ok(html.includes('title="科技爱好者周刊投稿"'), html);
   const clusterHtml = D.renderItem({ title: 'Kiri', sourceId: 'chinese-indie-dev' }, 'zh-CN', { date: '2026-09-12', showDate: true });
   assert.match(clusterHtml, /<div class="item-tags has-date"><time class="tag tag-date item-discovery-date"[^>]*>2026年9月12日<\/time>/);
-  assert.match(clusterHtml, /<span class="source-label"[^>]*>中文独立开发者<\/span><\/div>/);
+  // The badge stays beside the name, and the name links to the source's own board: an item that
+  // carries no origin URL of its own still has a meaningful 来源 (see tests/item-links.test.js).
+  assert.match(clusterHtml, /<a class="source-label" href="https:\/\/github\.com\/1c7\/chinese-independent-developer"[^>]*>中文独立开发者<\/a><\/div>/);
   assert.doesNotMatch(clusterHtml, /<div class="item-source">[\s\S]*?<time/);
   // English is ~6.4px/char at .75rem, so only a short label stays readable inside the same column.
   const english = D.sourceName({ sourceId: 'weekly-issues' }, 'en');

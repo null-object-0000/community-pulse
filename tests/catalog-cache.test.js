@@ -107,6 +107,34 @@ test('product detail hero keeps the mark, owner and title inside one identity ro
   assert.match(untitled, /<span class="project-mark" aria-hidden="true">·<\/span>/);
 });
 
+test('product detail buttons separate the repository, the website and the source', async () => {
+  const { renderProductPage } = await import('../worker/project-page.mjs');
+  // The live hippoxOS page linked 官网 to the repository (its catalogue canonical URL) and 来源 to
+  // the product's own site, so two of the three buttons went to GitHub.
+  const item = {
+    sourceId: 'chinese-indie-dev', title: 'hippoxOS', url: 'https://hippoxos.vercel.app/',
+    githubUrl: 'https://github.com/HippoxHQ/hippoxOS', github: { homepage: 'https://hippoxos.vercel.app' },
+    summaryZh: '一款真正意义上的 LLM 操作系统，内置 6 个子系统，统一由自然语言控制。',
+  };
+  const model = { catalogVersion: 'v1', product: {
+    id: 'prd_0123456789abcdef01234567', title: 'hippoxOS', githubRepo: 'hippoxhq/hippoxos', route: '/projects/hippoxhq/hippoxos/',
+    canonicalUrl: 'https://github.com/hippoxhq/hippoxos', firstSeenDate: '2026-09-15', lastSeenDate: '2026-09-15',
+    item,
+    sources: [{ sourceId: 'chinese-indie-dev', sourceName: '中国独立开发者', firstSeenDate: '2026-09-15', lastSeenDate: '2026-09-15', observationCount: 1 }],
+  } };
+  const buttons = html => {
+    const block = html.match(/<div class="project-links">([\s\S]*?)<\/div>/);
+    assert.ok(block, 'the hero must render a link row');
+    return [...block[1].matchAll(/href="([^"]+)"[^>]*>([^<]+) ↗<\/a>/g)].map(match => [match[2], match[1]]);
+  };
+  assert.deepEqual(buttons(renderProductPage(model, 'zh-CN')), [
+    ['GitHub', 'https://github.com/HippoxHQ/hippoxOS'],
+    ['官网', 'https://hippoxos.vercel.app/'],
+    ['来源', 'https://github.com/1c7/chinese-independent-developer'],
+  ]);
+  assert.deepEqual(buttons(renderProductPage(model, 'en')).map(([label]) => label), ['GitHub', 'Website', 'Source']);
+});
+
 test('catalog cache skips the database on a hit and never stores errors', async () => {
   const { cachedCatalogApi } = await import('../worker/index.js');
   const entries = new Map();
