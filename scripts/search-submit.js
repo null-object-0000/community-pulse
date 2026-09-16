@@ -1,10 +1,19 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const D = require('../web/shared.js');
+const { identitiesFor, productId } = require('./catalog/identity.js');
 
 const root = path.resolve(__dirname, '..');
 const rawDir = path.join(root, '知识', '大家都在做什么', 'raw');
 const config = JSON.parse(fs.readFileSync(path.join(root, 'site.config.json'), 'utf8'));
+const snapshotFile = path.join(root, 'data', 'catalog', 'site-snapshot', 'manifest.json');
+
+// 详情页在摘要短于这个长度时是 `noindex`（判定见 worker/project-page.mjs，两处必须一致）：
+// 把百度引到不该收录的薄页上，等于白白花掉当天只有个位数的配额。
+const DETAIL_SUMMARY_MIN = 20;
+// 入口页：今日发现 / 趋势洞察。历史归档 `/reports/` 不在百度日推集合里 —— 它有全站导航内链、
+// 也在 sitemap 里，每天占一个名额换不来收录（IndexNow 没有配额，仍旧带它）。
+const HUB_ROUTES = ['/', '/trends/'];
 
 function reportDates() {
   return fs.readdirSync(rawDir)
@@ -21,15 +30,58 @@ function loadReport(date) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function submissionUrls(report, date) {
-  const routes = new Set(['/', '/reports/', `/reports/${date}/`]);
-  for (const item of D.reportItems(report)) {
-    const repository = D.repository(item);
-    if (repository) routes.add(repository.path);
+// 条目 → 站内详情页：GitHub 仓库是 `/projects/<owner>/<repo>/`，其余一律是产品库的
+// `/products/prd_<id>/`（跟 scripts/build-site.js 用同一套 identity 逻辑，所以离线一致）。
+function detailRoute(item, sourceId) {
+  const repository = D.repository(item);
+  if (repository) return repository.path;
+  if (!(item.url || item.websiteUrl || item.githubUrl)) return null;
+  try {
+    return `/products/${productId(identitiesFor({ ...item, sourceId: item.sourceId || sourceId })[0])}/`;
+  } catch {
+    return null;
   }
-  const chinese = [...routes].map(route => D.origin + D.localPath(route, 'zh-CN'));
-  const indexNow = [...chinese, ...[...routes].map(route => D.origin + D.localPath(route, 'en'))];
-  return { chinese, indexNow: [...new Set(indexNow)] };
+}
+
+// 快照给出的是「这份路由到底可不可索引」（构建期算好、sitemap 用的是同一个标记）；
+// 快照没覆盖到的路由（例如刚收录、还没进快照的）退回日报条目自身的摘要长度判定。
+function loadIndexableRoutes(file = snapshotFile) {
+  try {
+    const snapshot = JSON.parse(fs.readFileSync(file, 'utf8'));
+    return new Map((snapshot.productRoutes || []).map(product => [product.route, product.indexable]));
+  } catch {
+    return new Map();
+  }
+}
+
+function isIndexableDetail(item, route, indexableRoutes) {
+  const known = indexableRoutes.get(route);
+  if (known !== undefined) return known;
+  return String(item.summaryZh || item.summaryEn || item.summary || '').trim().length >= DETAIL_SUMMARY_MIN;
+}
+
+function detailRoutes(report) {
+  const entries = [];
+  for (const source of report.results || []) for (const item of source.items || []) {
+    const route = detailRoute(item, source.sourceId);
+    if (route) entries.push({ route, item });
+  }
+  return entries;
+}
+
+// 每日推送集合：三个入口页（今日发现 / 趋势洞察 / 当天日报）+ 当天详情页，顺序照搬日报自身
+// 的排序，所以「当天最值得看的 5 个项目」一定排在配额能覆盖到的位置。`baidu` 受配额约束
+// （见 submitBaidu，配额用满即停），`indexNow` 没有配额，多带上历史归档页。
+function submissionUrls(report, date, indexableRoutes = loadIndexableRoutes()) {
+  const detail = detailRoutes(report)
+    .filter(entry => isIndexableDetail(entry.item, entry.route, indexableRoutes))
+    .map(entry => entry.route);
+  const baiduRoutes = [...new Set([...HUB_ROUTES, `/reports/${date}/`, ...detail])];
+  const indexNowRoutes = [...new Set(['/', '/reports/', ...baiduRoutes])];
+  return {
+    baidu: baiduRoutes.map(route => D.origin + D.localPath(route, 'zh-CN')),
+    indexNow: indexNowRoutes.flatMap(route => [D.origin + D.localPath(route, 'zh-CN'), D.origin + D.localPath(route, 'en')]),
+  };
 }
 
 async function submitIndexNow(urls, fetchImpl = fetch) {
@@ -100,17 +152,17 @@ async function main() {
   const indexNowOnly = process.argv.includes('--indexnow-only');
   const baiduOnly = process.argv.includes('--baidu-only');
   if (indexNowOnly && baiduOnly) throw new Error('--indexnow-only and --baidu-only cannot be combined');
-  const result = { date, indexNowUrls: targets.indexNow.length, baiduUrls: targets.chinese.length };
+  const result = { date, indexNowUrls: targets.indexNow.length, baiduUrls: targets.baidu.length };
   if (dryRun) {
     result.dryRun = true;
     result.urls = targets;
   } else {
     if (!baiduOnly) result.indexNow = await submitIndexNow(targets.indexNow);
-    if (!indexNowOnly) result.baidu = await submitBaidu(targets.chinese);
+    if (!indexNowOnly) result.baidu = await submitBaidu(targets.baidu);
   }
   process.stdout.write(JSON.stringify(result, null, 2) + '\n');
 }
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
 
-module.exports = { reportDates, loadReport, submissionUrls, submitIndexNow, submitBaidu };
+module.exports = { reportDates, loadReport, submissionUrls, submitIndexNow, submitBaidu, detailRoute, loadIndexableRoutes };
