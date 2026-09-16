@@ -282,6 +282,13 @@
 
 ## 2026-09-16 · CI 侧入口与搜索推送
 
+- **代码 / 招聘广告准入收紧为 v2**：v1 的 `HIRING_POST` 太窄，只认「开放网申 / 招聘+岗位 / 工程师+招聘」等少数写法，导致 `【上海招聘】 Speak…`、`【招聘】FrameX…`、`阿联酋…岗位合集`、`Autowise.ai【社招-web前端】…`、`TD Synnex 北京/成都招聘` 这些一眼就是招聘帖的进了 `review` 而没被排除（用户复核这批时点出）。v2 补上「方括号招聘标签」「拉丁公司名 + 招聘」「团队 + 校招/岗位」等形状，并新增 `weak_recruitment_signal` 原因区分「有招聘词但没有投递形状」的记录。改判后全历史 **7 条**被排除（原 3 条 + 新增 4 条），其中 `【上海招聘】 Speak`、`TD Synnex`、`阿里云-MuleRun`、`酷睿程 CARIZON` 是新增命中；`Recruit OS` / `OpenJobAutofill` / `面试官手册` / 求职类文章仍全部保留（有测试覆盖）。**判据只读标题**：不引入正文/标签依赖，本例的 Issue `body` 本就是 `null`。
+- **代码 / 标题兜底的版本说明排除**：用户复核指出 `2026-07-14 #3440` 的兜底结果 `v2.18.3发布：已有方案扩写…` 是版本更新说明而非产品名。新增 `isReleaseNote()`，命中「vX.Y.Z 发布/更新/修复/新增」等形状的字段值不再当候选，退回 `owner/repo`（该条现为 `FB208/OpenBidKit_Yibiao`）。全历史兜底命中 8 条，其中 5 条来自 `项目标题`、1 条 `工具名称`、1 条 `项目名称`、1 条仓库名。
+
+- **代码 / 广告定向撤销（生产待批）**：新增 `scripts/catalog/revoke-admissions.js`，把准入排除的条目生成定向 SQL（`data/catalog/revoke.sql`）。设计边界：**只删「本来源的这次观察」**（`report_items` → `product_source_first_seen` → `taxonomy_assignments` → `observations` → `source_items`），产品只有在撤销后不再被任何来源观察时才连带删除 `product_details` / `product_routes` / `product_identities` / `products`，避免误删跨来源产品；实体表必须覆盖**含被排除条目在内的全部条目**，否则算不出 url 的其它持有者。实测 7 条广告的 url 都只被自己持有（`sharedCount: 0`），全库 10,747 个实体键里 907 个有多观察，说明跨来源合并本身是常态、独立删除是安全的。**写生产 MySQL 需用户确认后执行**：撤销只改库，站点要等下一次 `catalog:snapshot` + 重建才反映。
+
+- **验证（本轮）**：`npm run check` 224/224（新增招聘形状与版本说明两组断言）；`revoke-admissions --dry-run` 输出 7 条目标、0 条共享；SQL 引用的 9 张表全部存在于 `migrations/mysql`。
+
 - **验证**：含新 final 的 `npm run check` 实测 222/222；构建数据为 `llm-final` 90/90，38 条原纯英文描述均有中文译文，Homebrew / BrewUI 显示「Homebrew 包管理器的 macOS 官方图形界面客户端」。首页 HTML 显示 CanvasCode，Recruit OS 与 CS-Books 都保留、PDD 广告标题不再出现。生产备用入口只读核对仍是 raw 91/91、广告尚在，说明尚未部署；批准前不写生产、不推 main。
 
 - **数据 / 09-15 增强补跑**：只补缺失的 `final/2026-09-15.md`，输入先排除 #11707 广告，完整 90/90 匹配为 `llm-final`；2 条源描述缺失仍留空、不补造介绍。复跑返回 `already_complete`，不改已有 final，不重发日报。补跑前缺失检查实测 exit 1、补跑后 exit 0；原始 source-raw 与 raw 均未改写。该 final 只修静态日报译文，不能冒充已打通 MySQL 全量产品翻译链。

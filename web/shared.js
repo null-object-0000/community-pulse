@@ -539,6 +539,13 @@
     `^\\s*(?:(?:${TITLE_BRACKET_LABEL}|${TITLE_PLAIN_LABEL})\\s*[/|｜·、,，\\-–—]?\\s*)+`,
     'i');
   // Preserve source title for final matching; only explicit fields may supply a name.
+  // A "项目标题" that is really a release note (v2.18.3发布：…) names a version, not the product;
+  // taking it would put a changelog line in the list row, so it falls through to owner/repo.
+  function isReleaseNote(value) {
+    return /^v?\d+(?:\.\d+)*\s*(?:发布|release)\b/i.test(value)
+      || /^v?\d+(?:\.\d+){1,3}\b.*(?:发布|更新|支持|修复|新增)/.test(value)
+      || /^(?:更新|发布|升级)\s*(?:日志|说明|内容)|(?:更新|发布|升级)日志/.test(value);
+  }
   function titleFallback(item) {
     if (String(item.title || '').replace(TITLE_PREFIX, '').trim()) return null;
     if (item.titleFallback) return { value: item.titleFallback, source: item.titleFallbackSource || 'normalized' };
@@ -554,7 +561,7 @@
       const label = inline?.[1] || field;
       const value = (inline?.[2] || (field ? line : '')).replace(/[*_`]/g, '').trim();
       if (label && value) {
-        if (value.length <= 240 && !/^(?:No response|无|暂无|待补充|todo|https?:\/\/)/i.test(value) && !/[<>]/.test(value)) values[label].push(value);
+        if (value.length <= 240 && !/^(?:No response|无|暂无|待补充|todo|https?:\/\/)/i.test(value) && !/[<>]/.test(value) && !isReleaseNote(value)) values[label].push(value);
         field = '';
       }
     }
