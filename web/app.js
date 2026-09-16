@@ -414,6 +414,9 @@
     const sourceFilter = document.querySelector('[data-trend-source-filter]');
     const sourceOptions = sourceFilter?.querySelector('[data-source-options]');
     const sourceStatus = sourceFilter?.querySelector('[data-source-status]');
+    const sourceToggle = sourceFilter?.querySelector('[data-source-toggle]');
+    const sourcePanel = sourceFilter?.querySelector('[data-source-panel]');
+    const sourceValue = sourceFilter?.querySelector('[data-source-value]');
     let catalogSources = Array.isArray(page.trends?.sources) ? page.trends.sources : [];
     let selectedSources = new Set();
     let trendRequest = 0;
@@ -471,7 +474,7 @@
     }
     async function refreshCatalogTrends() {
       if (!catalogSources.length || !selectedSources.size) {
-        if (sourceStatus) sourceStatus.textContent = locale === 'en' ? 'Choose at least one source.' : '请至少选择一个数据源。';
+        paintSourceStatus(locale === 'en' ? 'Choose at least one source.' : '请至少选择一个数据源。');
         const panel = document.querySelector(`[data-trend-facet-panel="${activeFacet}"]`);
         if (panel) panel.innerHTML = `<p class="trend-empty">${locale === 'en' ? 'Choose at least one source to calculate trends.' : '请选择至少一个数据源后再计算趋势。'}</p>`;
         return;
@@ -497,16 +500,16 @@
         if (coverage) coverage.textContent = locale === 'en'
           ? `${number(data.coverage.uniqueProducts)} unique products · ${number(data.coverage.classifiedProducts)} classified · ${percent(data.coverage.classificationRate)} coverage. First-seen dates are recomputed within the selected sources.`
           : `${number(data.coverage.uniqueProducts)} 个去重产品 · ${number(data.coverage.classifiedProducts)} 个已有分类 · 分类覆盖率 ${percent(data.coverage.classificationRate)}。首次发现日期按当前所选来源重新计算。`;
-        if (sourceStatus) sourceStatus.textContent = locale === 'en'
+        paintSourceStatus(locale === 'en'
           ? `${selectedSources.size} of ${catalogSources.length} sources participate in this result.`
-          : `${catalogSources.length} 个来源中有 ${selectedSources.size} 个参与本次计算。`;
+          : `${catalogSources.length} 个来源中有 ${selectedSources.size} 个参与本次计算。`);
         const period = document.querySelector('.trend-period');
         if (period) period.hidden = false;
         period?.querySelector('[data-trend-weeks][aria-pressed="true"]')?.click();
       } catch (_) {
-        if (requestId === trendRequest && sourceStatus) sourceStatus.textContent = locale === 'en'
+        if (requestId === trendRequest) paintSourceStatus(locale === 'en'
           ? 'The full-catalog query is temporarily unavailable; showing the static fallback.'
-          : '全量产品库查询暂时不可用，当前保留静态兜底结果。';
+          : '全量产品库查询暂时不可用，当前保留静态兜底结果。');
       } finally {
         if (requestId === trendRequest) panel?.removeAttribute('aria-busy');
       }
@@ -527,14 +530,45 @@
       if (currentWindow) currentWindow.textContent = staticCurrentWindow;
       if (baselineWindow) baselineWindow.textContent = staticBaselineWindow;
       if (coverage) coverage.textContent = staticCoverage;
-      if (sourceStatus) sourceStatus.textContent = locale === 'en'
+      paintSourceStatus(locale === 'en'
         ? `All ${catalogSources.length} sources · static catalog snapshot.`
-        : `全部 ${catalogSources.length} 个来源 · 静态产品库快照。`;
+        : `全部 ${catalogSources.length} 个来源 · 静态产品库快照。`);
       document.querySelector('.trend-period')?.querySelector('[data-trend-weeks][aria-pressed="true"]')?.click();
+    }
+    // The explanation lives inside the checklist, but the fetch result also matters after the
+    // checklist closes, so the same sentence is mirrored onto the trigger as a native tooltip.
+    function paintSourceStatus(text) {
+      if (sourceStatus) sourceStatus.textContent = text;
+      if (sourceToggle) sourceToggle.title = text;
+    }
+    // The trigger names the current selection, so the closed select still says what it filters by:
+    // a single source reads as its own name and the full set reads as "all sources".
+    function paintSourceSummary() {
+      if (!sourceValue) return;
+      const selected = [...selectedSources];
+      const source = catalogSources.find(candidate => candidate.id === selected[0]);
+      const label = !selected.length
+        ? (locale === 'en' ? 'No sources' : '未选择来源')
+        : selected.length === catalogSources.length
+          ? (locale === 'en' ? 'All sources' : '全部来源')
+          : selected.length === 1
+            ? D.sourceName({ sourceId: selected[0], sourceName: source?.name }, locale)
+            : (locale === 'en' ? `${number(selected.length)} sources` : `${number(selected.length)} 个来源`);
+      sourceValue.textContent = label;
+    }
+    function paintSourcePanel(open) {
+      if (!sourcePanel || !sourceToggle) return;
+      sourcePanel.hidden = !open;
+      sourceToggle.setAttribute('aria-expanded', String(open));
     }
     function paintSourceOptions() {
       if (!sourceOptions) return;
-      sourceOptions.innerHTML = catalogSources.map(source => `<label title="${D.escapeHtml(`${source.name} · ${number(source.productCount)} ${locale === 'en' ? 'products' : '个产品'}`)}"><input type="checkbox" value="${D.escapeHtml(source.id)}"${selectedSources.has(source.id) ? ' checked' : ''}/><span>${D.escapeHtml(source.name)}</span></label>`).join('');
+      sourceOptions.innerHTML = catalogSources.map(source => {
+        const name = D.sourceName({ sourceId: source.id, sourceName: source.name }, locale);
+        const count = locale === 'en' ? `${number(source.productCount)} products` : `${number(source.productCount)} 个产品`;
+        return `<label title="${D.escapeHtml(`${name} · ${count}`)}"><input type="checkbox" value="${D.escapeHtml(source.id)}"${selectedSources.has(source.id) ? ' checked' : ''}/><span>${D.escapeHtml(name)}</span><em>${D.escapeHtml(number(source.productCount))}</em></label>`;
+      }).join('');
+      paintSourceSummary();
     }
     async function loadCatalogSources() {
       if (!sourceFilter) return;
@@ -578,10 +612,21 @@
       if (isCustomSourceSet()) scheduleCatalogTrends();
     });
     paintTrendFacet(Boolean(params.has('facet')));
+    sourceToggle?.addEventListener('click', () => paintSourcePanel(sourcePanel.hidden));
+    sourcePanel?.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      paintSourcePanel(false);
+      sourceToggle.focus();
+    });
+    document.addEventListener('click', event => {
+      if (!sourcePanel || sourcePanel.hidden || sourceFilter.contains(event.target)) return;
+      paintSourcePanel(false);
+    });
     sourceOptions?.addEventListener('change', event => {
       const input = event.target.closest('input[type="checkbox"]');
       if (!input) return;
       input.checked ? selectedSources.add(input.value) : selectedSources.delete(input.value);
+      paintSourceSummary();
       updateSourceUrl();
       if (selectedSources.size === catalogSources.length) restoreCatalogSnapshot();
       else scheduleCatalogTrends();

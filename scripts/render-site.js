@@ -284,14 +284,20 @@ function trendsPage(model, locale) {
   ];
   const facetTabs = facets.map(([id, key], index) => `<button type="button" role="tab" id="trend-tab-${id}" aria-controls="trend-panel-${id}" aria-selected="${index === 0}" data-trend-facet="${id}">${t(locale, key)}</button>`).join('');
   const facetPicker = `<div class="trend-facets"><span>${t(locale, 'trendsDimension')}</span><div role="tablist" aria-label="${t(locale, 'trendsDimension')}">${facetTabs}</div></div>`;
-  // The source list itself comes from MySQL so newly registered sources appear without
-  // changing this template. Keep the control hidden until the API is available: the
-  // static report-derived model remains a readable fallback during migration or outage.
-  const sourcePicker = `<section class="trend-source-picker" data-trend-source-filter data-locale="${locale}"${model.sources?.length ? '' : ' hidden'}>
-    <header><div><span>${en ? 'DATA SOURCES' : '数据来源'}</span><b>${en ? 'Choose any source combination' : '自由选择参与计算的数据源'}</b></div><div><button type="button" data-source-all>${en ? 'Select all' : '全选'}</button><button type="button" data-source-none>${en ? 'Clear' : '清空'}</button></div></header>
-    <div class="trend-source-options" data-source-options></div>
-    <p data-source-status aria-live="polite"></p>
-  </section>`;
+  // The source list itself comes from MySQL so newly registered sources appear without changing
+  // this template. The control is a select-sized trigger that sits in the same row as the lens and
+  // period pickers, and it opens a checklist because first-seen dates are recomputed for any
+  // combination of sources. Keep it hidden until the API is available: the static report-derived
+  // model remains a readable fallback during migration or outage.
+  const sourcePicker = `<div class="trend-source-select" data-trend-source-filter data-locale="${locale}"${model.sources?.length ? '' : ' hidden'}>
+    <span id="trend-source-label">${t(locale, 'trendsDataSource')}</span>
+    <button type="button" class="trend-select-button" data-source-toggle aria-expanded="false" aria-controls="trend-source-panel" aria-labelledby="trend-source-label trend-source-value"><span id="trend-source-value" data-source-value>${en ? 'All sources' : '全部来源'}</span><svg class="trend-select-caret" width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+    <div class="trend-select-panel" id="trend-source-panel" data-source-panel hidden>
+      <div class="trend-select-actions"><button type="button" data-source-all>${en ? 'Select all' : '全选'}</button><button type="button" data-source-none>${en ? 'Clear' : '清空'}</button></div>
+      <div class="trend-source-options" data-source-options role="group" aria-label="${t(locale, 'trendsDataSource')}"></div>
+      <p data-source-status aria-live="polite"></p>
+    </div>
+  </div>`;
   const grids = facets.map(([id]) => {
     const cards = model.clusters.filter(cluster => cluster.type === id).map(card).join('');
     // A lens whose source data does not cover the comparison window states that instead of showing
@@ -310,8 +316,8 @@ function trendsPage(model, locale) {
   const summary = `<div class="trend-window"><div><span>${t(locale, 'trendsWindow')}</span><b data-trend-current-window>${e(dateRange(model.recent))}</b></div><div><span>${t(locale, 'trendsBaseline')}</span><b data-trend-baseline-window>${e(dateRange(model.baseline))}</b></div><p data-trend-coverage>${en ? `A cluster appears after at least ${model.thresholds.minProjects} new projects from ${model.thresholds.minSources} sources, with a daily rate up ${model.thresholds.minGrowthPercent}% or newly emerging.` : `至少 ${model.thresholds.minProjects} 个新项目、覆盖 ${model.thresholds.minSources} 个来源，且日均出现速度提升 ${model.thresholds.minGrowthPercent}%（或为新主题）后才展示。`}</p></div>`;
   const periods = [4, 8, 12].map(weeks => `<button type="button" data-trend-weeks="${weeks}" aria-pressed="${weeks === 12}">${t(locale, `trends${weeks}Weeks`)}</button>`).join('');
   const periodPicker = `<div class="trend-period"><span>${t(locale, 'trendsPeriod')}</span><div role="group" aria-label="${t(locale, 'trendsPeriod')}">${periods}</div></div>`;
-  const controls = `<div class="trend-controls">${facetPicker}${periodPicker}</div>`;
-  const content = heading(locale, t(locale, 'trendsTitle'), t(locale, 'trendsIntro'), '', 'DEV TRENDS / SIGNALS') + sourcePicker + controls + summary + grids;
+  const controls = `<div class="trend-controls">${facetPicker}<div class="trend-controls-tail">${periodPicker}${sourcePicker}</div></div>`;
+  const content = heading(locale, t(locale, 'trendsTitle'), t(locale, 'trendsIntro'), '', 'DEV TRENDS / SIGNALS') + controls + summary + grids;
   const structured = { '@context': 'https://schema.org', '@graph': [
     { '@type': 'CollectionPage', '@id': canonical, url: canonical, name: title, description: t(locale, 'trendsIntro'), inLanguage: locale, isPartOf: { '@id': D.origin + '/#website' }, mainEntity: { '@type': 'ItemList', numberOfItems: model.clusters.length, itemListElement: model.clusters.map((cluster, index) => ({ '@type': 'ListItem', position: index + 1, name: D.facetPathLabel(cluster.type, cluster.id, locale) })) } },
   ] };

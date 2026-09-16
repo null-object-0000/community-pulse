@@ -621,6 +621,17 @@ test('enumerable pages are static while sitemap product routes are reserved for 
   assert.match(trendsPage, /data-trend-facet-panel="agentRoles" hidden/);
   assert.match(trendsPage, /data-trend-facet-panel="languages" hidden/);
   assert.match(trendsPage, /class="trend-bar" data-trend-week="11"/);
+  // The source filter is a select-sized trigger inside the lens/period row, and it opens a
+  // checklist; the whole card that used to sit above the row is gone.
+  assert.ok(!trendsPage.includes('trend-source-picker'), 'the source picker card is replaced by the row control');
+  assert.match(trendsPage, /class="trend-controls"[^>]*><div class="trend-facets"[\s\S]*?class="trend-controls-tail">[\s\S]*?class="trend-period"[\s\S]*?data-trend-source-filter[\s\S]*?data-source-toggle[^>]+aria-expanded="false"[^>]+aria-controls="trend-source-panel"/);
+  assert.match(trendsPage, /data-source-panel hidden/);
+  assert.match(trendsPage, /data-source-options role="group"/);
+  assert.match(trendsPage, /data-source-status aria-live="polite"/);
+  assert.match(trendsPage, /<span id="trend-source-value" data-source-value>全部来源<\/span>/);
+  const enTrendsPage = fs.readFileSync(path.join(dist, 'en', 'trends', 'index.html'), 'utf8');
+  assert.match(enTrendsPage, />Sources<\/span>/);
+  assert.match(enTrendsPage, /data-source-value>All sources<\/span>/);
   // The MySQL snapshot may have no current language rows while enrichment coverage is still being
   // backfilled, but every controlled language category route remains pre-generated and reachable.
   const languageClusters = trends.clusters.filter(cluster => cluster.type === 'languages');
