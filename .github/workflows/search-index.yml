@@ -60,27 +60,39 @@ jobs:
         if: inputs.dry_run != true
         env:
           TARGET_DATE: ${{ steps.target.outputs.date }}
+          # 公开主域对 CI 出口会返回 Cloudflare 浏览器验证（HTTP 403，不是部署未完成），
+          # 与日更快照同因，所以先轮询同一个生产 Worker 的 workers.dev 备用入口；
+          # 主域留作兜底，两个入口都是这份部署，主域仍只面向用户访问。
+          CHECK_ORIGINS: https://community-pulse.nichangen.workers.dev https://devtrends.site
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 40); do
-            if curl -fsS --max-time 15 "https://devtrends.site/data/index.json?deploy-check=$GITHUB_RUN_ID-$attempt" \
-              | TARGET_DATE="$TARGET_DATE" node -e '
-                let input="";
-                process.stdin.on("data", chunk => input += chunk);
-                process.stdin.on("end", () => {
-                  try {
-                    const index = JSON.parse(input);
-                    process.exit(Array.isArray(index.dates) && index.dates.includes(process.env.TARGET_DATE) ? 0 : 1);
-                  } catch { process.exit(1); }
-                });
-              '; then
-              echo "线上已包含 $TARGET_DATE"
-              exit 0
-            fi
-            echo "等待部署（$attempt/40）"
+          deadline=$((SECONDS + 600))
+          attempt=0
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            attempt=$((attempt + 1))
+            for origin in $CHECK_ORIGINS; do
+              if curl -fsS --max-time 15 \
+                  -A 'DevTrends deploy check (+https://devtrends.site)' \
+                  -H 'Accept: application/json' \
+                  "$origin/data/index.json?deploy-check=$GITHUB_RUN_ID-$attempt" \
+                | TARGET_DATE="$TARGET_DATE" node -e '
+                  let input="";
+                  process.stdin.on("data", chunk => input += chunk);
+                  process.stdin.on("end", () => {
+                    try {
+                      const index = JSON.parse(input);
+                      process.exit(Array.isArray(index.dates) && index.dates.includes(process.env.TARGET_DATE) ? 0 : 1);
+                    } catch { process.exit(1); }
+                  });
+                '; then
+                echo "$origin 已包含 $TARGET_DATE"
+                exit 0
+              fi
+            done
+            echo "等待部署（第 ${attempt} 次，已等 ${SECONDS}s）"
             sleep 15
           done
-          echo "等待线上部署超时，未向搜索引擎推送" >&2
+          echo "等待线上部署超时（${SECONDS}s），未向搜索引擎推送" >&2
           exit 1
 
       - name: 推送 IndexNow 与百度

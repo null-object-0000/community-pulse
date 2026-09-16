@@ -1,5 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const D = require('../web/shared.js');
 const { submissionUrls, submitIndexNow, submitBaidu } = require('../scripts/search-submit.js');
 
@@ -49,4 +51,11 @@ test('Baidu is optional and receives Chinese canonical URLs only', async () => {
   assert.ok(!request.url.includes('https%3A'));
   assert.equal(request.options.body, `${D.origin}/\n${D.origin}/reports/2026-09-13/`);
   assert.deepEqual(result, { status: 200, submitted: 2, remaining: 98 });
+});
+
+test('the deploy check polls the Worker entry point before the public zone', () => {
+  const workflow = fs.readFileSync(path.join(__dirname, '..', '.github', 'workflows', 'search-index.yml'), 'utf8');
+  assert.match(workflow, /- name: 等待 Cloudflare 部署包含该日报/);
+  assert.match(workflow, /CHECK_ORIGINS: https:\/\/community-pulse\.nichangen\.workers\.dev https:\/\/devtrends\.site/);
+  assert.match(workflow, /\$origin\/data\/index\.json\?deploy-check=/);
 });
