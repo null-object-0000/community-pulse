@@ -21,7 +21,7 @@
 | 09-13 | 28 | 147 文件 +4,008/-394 | 671 文件 +902,580/-81 | 趋势分析、SEO、新增数据源 | community-pulse |
 | 09-14 | 23（另有未提交） | 42 文件 +2,261/-133 | 616 文件 +89,400/-7,572 | 投稿相似去重与全量日报回溯；配图与描述兜底；业务场景二级主题；GitHub Trending 历史回填；**全量产品库 + D1 趋势查询纵切** | community-pulse |
 | 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
-| 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select | community-pulse |
+| 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区与收录记录版式 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -300,6 +300,10 @@
   - **来源名改用 `D.sourceName`**：趋势页之前直接用 MySQL 的 `sources.name`（只有中文），英文站也显示中文，且与日报列表 / 来源目录的叫法不一致；现在三处共用同一套中英名字（如 `阮一峰周刊·用户投稿` → `科技爱好者周刊投稿`）。
   - **响应式**：≤760px 三个筛选组各自独占一行、标签左控件右，≤600px 面板宽度收窄到视口内；面板固定右对齐、`z-index` 与 chip 菜单同级。
   - **验证**：`npm run check` 185/185（新增趋势页断言：来源控件必须落在 `.trend-controls` 内、旧的 `trend-source-picker` 卡片不得再出现、中英触发器文案）。本地 `dist/` 预览在 1280 / 860 / 560px 下确认单行不溢出、面板不越界，勾选、清空、全选、点外部、Esc 关闭与焦点回位、`?sources=` 与 `?facet=` `?period=` 共存都符合预期。
+- **代码 / 动态产品详情页版式修复**：`/products/prd_<id>/` 与 `/projects/<owner>/<repo>/` 由 `worker/project-page.mjs` 从 MySQL 现场渲染，这套模板从 09-15 迁到动态渲染起就漏了静态版 `scripts/projects.js` 里的 `.project-identity` 包裹层：`.project-mark` 与 `.project-heading` 成了 `.project-hero` 的两个并列块级子元素，而 `.project-heading` 自带 `justify-content: space-between` —— 于是「产品 / owner」贴在最左、`<h1>` 甩到最右，有平台标志的产品更是 logo 独占一行、标题另起一行贴右。修复是补回 `.project-identity` 与 heading 内层 `<div>`，与静态版结构一致；没有平台标志、也没有官网图标的产品改为按列表同一条兜底链渲染首字母（`.project-mark` 本来就有这个底色样式，此前 mark 直接不渲染，页面左上角空一块）。移动端断点里 ` .project-identity { gap: 13px }` 这条规则也随之从死代码恢复生效。
+  - **收录记录挤成一行**：`sourceRows` 用的是 `<b>/<span>/<em>` 行内元素，而 `.timeline` 的样式只认 `<time>` / `<p>` / `.source-links`，所以来源名、日期区间、收录次数连成 `Product Hunt 新品2026年9月14日 - 2026年9月14日1 次收录`。改成 `<b>` + `<p class="source-history-meta">`，并补 `.timeline.source-history` 规则（行距、等宽数字、最后一行去掉 25px 时间轴尾巴）；同一来源只被收录过一次时不再打印重复的首末日期，收敛成 `2026年9月14日 · 1 次收录`。
+  - **必须一起 bump 两个版本号**：详情页 HTML 走边缘缓存（`PRODUCT_RENDERER_VERSION`，缓存键的一部分）且 `styles.css` 是 `max-age=31536000, immutable`，只改模板或只改 CSS 都会继续命中旧产物。所以同步把 `worker/index.js` 的 `PRODUCT_RENDERER_VERSION` 提到 `20260916-layout`、`worker/project-page.mjs` 的 `ASSET_VERSION` 提到 `20260916-product-layout`。
+  - **验证**：`npm run check` 189/189（新增详情页版式回归测试：`.project-identity` 必须存在、owner 与标题必须在同一个 heading 块里、无标志时首字母兜底、单日区间折叠与多日区间两种写法）。因为详情页要连 Hyperdrive/MySQL 才渲染，本地用一个 fixture model 直接调 `renderProductPage` 写进 `dist/` 预览：1280px 与 390px、浅色与深色主题下逐屏核对，并确认配图缩略图与「+N」按钮统一 92×58、侧栏与评论区位置不变。
 
 ## 值得记录的决策
 
