@@ -28,13 +28,17 @@ const VISIBLE_LUMINANCE = 0.46;
 const VISIBLE_SHARE = 0.02;
 const OPAQUE_COVERAGE = 0.9;
 
-// WebP/AVIF 没有不引依赖就能用的解码器，这几枚已知的浅色标志只能手工兜底。键是镜像文件名里的
-// 内容哈希，值是它是什么；`images:sync` 把它们并进 tones.json，仍然按「manifest 里还有这个
-// 文件」裁剪，所以标志被替换或下线之后条目会自己消失。
+// WebP 没有不引依赖就能用的解码器（VP8/VP8L 的熵编码不是 deflate），这几枚已知的浅色标志只能
+// 手工兜底。键是镜像文件名里的内容哈希，值是什么；`images:sync` 把它们并进 tones.json，仍然按
+// 「manifest 里还有这个文件」裁剪，所以标志被替换或下线之后条目会自己消失。
+//
+// 这份名单是拿 Pillow 按**同一个判据**独立复算出来的（Node 解不了 WebP，Pillow 能），不是眼看：
+// 全量 232 枚 WebP 里只有这两枚在把像素合成到白底后「看得清的部分」不到 2%。反面教材是这条路径
+// 上的第一版名单——它来自已经废弃的「平均亮度 + 没有深色像素」判据，结果把「浅灰图形 + 一个深色
+// 字母」的三枚（文件夹 U、彩色点阵、蓝色云朵描边）也收了进来，而它们在白框上本来就看得清。
 const MANUAL_LIGHT_MARKS = new Map([
-  ['2a75299260240d0cd96402b978bec1f8131c1f984b3f0fd79cf4184d43f28002.webp', 'VibeCafé 浅色产品标志'],
-  ['4efd92bbaff7737a6290de993d319ffce16a9df5f37ffc9afca6ac5b424b0147.webp', 'VibeCafé 浅色产品标志'],
-  ['6d2a8b8a52850f94c95681f864286f7fa69693fe1e43394213549b1586ab62bc.webp', 'VibeCafé 浅色产品标志'],
+  ['769cdb89c07a75c23353e7f95ac013abd180230437179edc5065b33447cfb76d.webp', 'VibeCafé 黄绿色螺旋，白底上几乎只是浅黄'],
+  ['88c13f182cf13805c9a67ffa477ad0046e0b726d4cd3022a51ec968fe3aa9747.webp', 'VibeCafé 浅绿色电池，白底上只剩一道深色描边'],
 ]);
 
 const MIRROR_PATH = /^\/images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/;
