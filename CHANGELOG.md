@@ -282,6 +282,10 @@
 
 ## 2026-09-16 · CI 侧入口与搜索推送
 
+- **验证**：含新 final 的 `npm run check` 实测 222/222；构建数据为 `llm-final` 90/90，38 条原纯英文描述均有中文译文，Homebrew / BrewUI 显示「Homebrew 包管理器的 macOS 官方图形界面客户端」。首页 HTML 显示 CanvasCode，Recruit OS 与 CS-Books 都保留、PDD 广告标题不再出现。生产备用入口只读核对仍是 raw 91/91、广告尚在，说明尚未部署；批准前不写生产、不推 main。
+
+- **数据 / 09-15 增强补跑**：只补缺失的 `final/2026-09-15.md`，输入先排除 #11707 广告，完整 90/90 匹配为 `llm-final`；2 条源描述缺失仍留空、不补造介绍。复跑返回 `already_complete`，不改已有 final，不重发日报。补跑前缺失检查实测 exit 1、补跑后 exit 0；原始 source-raw 与 raw 均未改写。该 final 只修静态日报译文，不能冒充已打通 MySQL 全量产品翻译链。
+
 - **数据 / 标签标题历史核验**：9 条候选中 8 条有明确项目/产品/工具名称、项目标题或仓库根地址可确定性展示，1 条 2026-06-10 weekly-issues #10280 正文仅「涵盖移动」且无仓库，留待审、不猜产品名；结果落 `data/catalog/title-fallback-audit.json`。只重建展示与导入投影，不重写历史 raw 或 final 标题。
 
 - **代码 / 增强故障补偿（修复分支，尚未上线）**：独立核实 Hermes communitypulse 任务日志：09-16 07:30 的首步 `git pull` 遭 GnuTLS/TLS 握手失败，重试后终止，增强未运行；当日 raw 又迟到至 10:17，原任务没有补偿。新增本地 `enhance-report.js`（不拉取、不推送、不重发、完整匹配校验后独占写 final、沿用 `.work` 恢复），以及 `check-enhancement.js --repair` 和小时级 Actions 缺失告警（北京次日中午宽限、近三天）。弃用直接调用发送脚本补跑：它会推送 `HEAD:main`，甚至可能把修复分支上线。Actions 无法访问本机 LLM，因此自动生成补偿仍需将检查命令安装到增强主机定时任务；本次不偷偷改外部 cron。
