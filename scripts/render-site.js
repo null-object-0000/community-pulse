@@ -8,6 +8,22 @@ const siteConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../site.conf
 // Every long-lived browser asset URL changes when its bytes change, including daily rebuilds.
 const assetVersion = crypto.createHash('sha256').update(Buffer.concat(['theme.js', 'token.css', 'styles.css', 'shared.js', 'app.js', 'cards.js', 'globe.svg', 'logo.svg']
   .map(name => fs.readFileSync(path.join(__dirname, '../web', name))))).digest('hex').slice(0, 16);
+// Product logos and screenshots live on the image mirror and the source CDNs, i.e. on origins the
+// HTML connection cannot be reused for. The browser only discovers them once it has parsed the
+// body — 455 KB into the home page — so each of those origins then pays its own DNS + TCP + TLS
+// round trip before the first logo can paint. On a slow link that handshake costs several times
+// more than the few KB the image itself weighs. Hint the origins this page actually references, in
+// document order, and only the first three: every extra preconnect occupies a socket the
+// render-blocking CSS and JS still need. Same-origin images are skipped by the `https://` anchor.
+function preconnectTags(html) {
+  const origins = [];
+  for (const [, origin] of html.matchAll(/<img\b[^>]*\bsrc="(https:\/\/[^/"]+)/g)) {
+    if (!origins.includes(origin)) origins.push(origin);
+  }
+  return origins.slice(0, 3)
+    .map(origin => `<link rel="preconnect" href="${origin}" /><link rel="dns-prefetch" href="${origin}" />`)
+    .join('');
+}
 function shell({ locale, view, route, title, description, content, data = {}, structured = null, noindex = false, bodyAttrs = '' }) {
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
@@ -25,6 +41,7 @@ function shell({ locale, view, route, title, description, content, data = {}, st
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
     pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}?v=${assetVersion}" defer></script>`,
     headPreload: route === '/' ? `<link rel="preload" as="image" href="/globe.svg?v=${assetVersion}" fetchpriority="high" />` : '',
+    headPreconnect: preconnectTags(content),
     bodyAttrs: bodyAttrs ? ` ${bodyAttrs}` : '',
     skip: t(locale, 'skip'), assetVersion,
   };

@@ -557,6 +557,44 @@ test('every page carries the site analytics tags', () => {
   assert.ok(home.includes('gtag(\'config\',\'G-1E9PXZ2EVK\')'));
 });
 
+test('HTML pages keep a browser cache window while fingerprinted assets stay immutable', () => {
+  // Cloudflare 的 html_handling 自己解析目录索引（`/` → `/index.html`），这类响应拿不到 ETag /
+  // Last-Modified，所以 `max-age=0, must-revalidate` 等于每次导航全文重下（首页压缩 78 KB、解码
+  // 455 KB）。一个正的 max-age 是唯一能让浏览器直接复用页面的手段；实测 Chrome 对顶层导航不应用
+  // stale-while-revalidate，所以 SWR 只能跟在 max-age 后面当补充，不能拿它当主开关。
+  const dist = path.join(__dirname, '../dist');
+  const headers = fs.readFileSync(path.join(dist, '_headers'), 'utf8');
+  const htmlCache = '  Cache-Control: public, max-age=300, stale-while-revalidate=86400';
+  for (const route of ['/', '/en/', '/reports/*', '/en/reports/*', '/trends/*', '/en/trends/*']) {
+    assert.ok(headers.includes(`${route}\n${htmlCache}`), `${route} must carry the HTML cache window`);
+  }
+  // `_headers` 的规则在 Cloudflare 侧是叠加的：一条路径命中多条就把同名头逗号拼起来，带指纹资源的
+  // `immutable` 会被污染，所以这里既断言它还在，也禁止再出现会撞上它的通配规则。
+  assert.ok(headers.includes('/app.js\n  Cache-Control: public, max-age=31536000, immutable'), 'fingerprinted assets must stay immutable');
+  assert.ok(!/^\/\*/m.test(headers), 'a catch-all _headers rule would clash with every per-asset Cache-Control');
+  assert.ok(!/^\/en\/\*\n/m.test(headers), 'a bare /en/* rule would also hit /en/feed.xml, which has no cache rule of its own');
+});
+
+test('pages preconnect the image origins they really reference, and only those', () => {
+  const dist = path.join(__dirname, '../dist');
+  // 图片在镜像域名和来源 CDN 上，HTML 的连接复用不了；浏览器要等 body 解析完才发现它们，冷链路上
+  // 每次握手比图片本身还贵（一张 logo 只有几 KB）。
+  for (const [name, file] of [['home', 'index.html'], ['report', 'reports/2026-09-15/index.html']]) {
+    const html = fs.readFileSync(path.join(dist, file), 'utf8');
+    const origins = [...html.matchAll(/<link rel="preconnect" href="(https:\/\/[^/"]+)"/g)].map(match => match[1]);
+    assert.ok(origins.length > 0, `${name} renders mirrored images, so it must hint their origins`);
+    assert.equal(new Set(origins).size, origins.length, `${name} must not hint the same origin twice`);
+    for (const origin of origins) {
+      assert.ok(html.includes(`src="${origin}/`), `${name} preconnects ${origin} but never loads an image from it`);
+      assert.ok(html.includes(`<link rel="dns-prefetch" href="${origin}"`), `${name} needs the dns-prefetch fallback for ${origin}`);
+    }
+  }
+  // 这几类页面一张外域图片都没有，多一条预连接就白占一个 socket。
+  for (const file of ['404.html', 'reports/index.html', 'trends/index.html']) {
+    assert.ok(!fs.readFileSync(path.join(dist, file), 'utf8').includes('rel="preconnect"'), `${file} has no external image to preconnect to`);
+  }
+});
+
 test('every site verification file is served from the site root byte-for-byte', () => {
   const dist = path.join(__dirname, '../dist');
   const directory = path.join(__dirname, '../verification');

@@ -53,7 +53,25 @@ const headerRules = browserCached.map(name => `/${name}\n  Cache-Control: public
 const sourceBadgeRules = staticFiles.filter(name => /^source-/.test(name)).map(name => `/${name}\n  Cache-Control: public, max-age=86400\n`).join('');
 // The sandboxing header rule only matters while this site serves the mirrored files itself.
 const imageRules = images.imageOrigin() ? '' : '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n';
-write('_headers', headerRules + sourceBadgeRules + imageRules);
+// Cloudflare resolves directory indexes itself (`/` → `/index.html`) and attaches neither `ETag` nor
+// `Last-Modified` to those responses — every other content type gets one, and the asset worker does
+// implement `If-None-Match` → 304, it is only the HTML navigation path that never advertises a
+// validator. Without one, `max-age=0, must-revalidate` degenerates into re-downloading the whole
+// page — 78 KB compressed, 455 KB decoded on the home page — on every single navigation.
+//
+// A positive `max-age` is what actually fixes that. `stale-while-revalidate` alone does not:
+// measured in Chrome, `max-age=0, stale-while-revalidate=86400` still transferred all 456 KB on a
+// second navigation, because Chrome does not apply stale-while-revalidate to top-level navigations.
+// With `max-age=300` the same navigation is `deliveryType: cache`, 0 bytes, first paint 312 ms
+// instead of 2448 ms. The value stays short for a daily site, and a cached page always pairs with
+// the `?v=` asset URLs it was parsed with, so no version skew is possible. Remove this block to go
+// back to revalidating on every navigation.
+const htmlCacheRule = 'Cache-Control: public, max-age=300, stale-while-revalidate=86400\n';
+// Only directory routes are listed. `reports/` and `trends/` hold nothing but index.html, and the
+// English rules deliberately stop short of the `/en/feed.xml` asset.
+const htmlRules = ['/', '/en/', '/404/', '/en/404/', '/cards/', '/en/cards/', '/reports/*', '/en/reports/*', '/trends/*', '/en/trends/*']
+  .map(pattern => `${pattern}\n  ${htmlCacheRule}`).join('');
+write('_headers', headerRules + sourceBadgeRules + imageRules + htmlRules);
 // Keep the recent GitHub aggregation only for report continuation rows. Product detail HTML is
 // never emitted here: every product route is rendered by the Worker from MySQL.
 const projects = require('./projects.js').buildProjects(reports);
