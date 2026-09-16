@@ -3,11 +3,23 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const D = require('../../web/shared.js');
+const images = require('../image-store.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_OUT = path.join(ROOT, 'data', 'catalog', 'site-snapshot');
 const FACETS = ['useCases', 'agentRoles', 'languages'];
 const WINDOW_DAYS = { recent: 7, '4w': 28, '12w': 84 };
+const imageManifest = images.readManifest();
+const lightMarks = images.readTones().light;
+
+// 分类库/趋势快照里的条目是 MySQL `item_json` 的投影，图片地址必须和日报行走同一条本地化：同一张
+// 官网图标在日报行上是 R2 地址、在分类页上是官网原始地址的话，消费端的 D.localImage 只认镜像与
+// 两个回源 host，会把它整个丢掉 —— 线上实测分类页 5 行里 4 行只剩首字母。
+// 宽松模式：快照含历史全量，早被 prune 的老地址不该让整次快照失败（顺带带上浅色标志的 markTone）。
+function localizeSnapshotProducts(products) {
+  for (const product of products || []) images.localizeItem(product, imageManifest, lightMarks, { strict: false });
+  return products;
+}
 
 function parseArgs(argv) {
   // Internal batch jobs use the same production Worker without the public site's zone WAF.
@@ -171,6 +183,8 @@ async function buildSiteSnapshot(options) {
       products = await categoryProducts(options, type, id, earliest, latest);
       console.log(`Fetched ${type}:${id} (${products.length} products)`);
     }
+    // 复用上一份快照时也要过一遍：那份缓存可能是本地化之前生成的。
+    localizeSnapshotProducts(products);
     for (const product of products) if (product.projectPath) productRoutes.set(product.projectPath, {
       route: product.projectPath, date: product.trendDate || latest, productId: product.productId,
       indexable: String(product.summaryZh || product.summaryEn || product.summary || '').trim().length >= 20,
@@ -216,4 +230,4 @@ if (require.main === module) {
   }).catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
 }
 
-module.exports = { parseArgs, offsetDate, fetchJson, rangeStats, buildCluster, buildSiteSnapshot };
+module.exports = { parseArgs, offsetDate, fetchJson, rangeStats, buildCluster, buildSiteSnapshot, localizeSnapshotProducts };

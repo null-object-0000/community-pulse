@@ -193,35 +193,51 @@ function localizeUrl(value, manifest) {
   return mirrorUrl(D.localImage(value, manifest));
 }
 
-function localizeReport(report, manifest, lightMarks = readTones().light) {
-  for (const source of report.results || []) for (const item of source.items || []) {
-    for (const field of fields) if (item[field]) {
-      item[field] = localizeUrl(item[field], manifest);
-    }
-    for (const field of listFields) if (Array.isArray(item[field])) {
-      // An unsynced URL throws before this point, so filtering only drops known-bad images.
-      item[field] = item[field].map(url => localizeUrl(url, manifest)).filter(Boolean);
-    }
-    // Our own screenshots are a list like `images`; the website's og:image is a single object.
-    if (Array.isArray(item.screenshots)) {
-      item.screenshots = item.screenshots.map(url => localizeUrl(url, manifest)).filter(Boolean);
-    }
-    if (item.ogImage && item.ogImage.url) {
-      try {
-        item.ogImage = { ...item.ogImage, url: localizeUrl(item.ogImage.url, manifest) };
-      } catch (_) {
-        // An og:image that was never mirrored (outside the retention window) must not break the
-        // build: the gallery simply keeps the source's own media and our screenshot.
-        item.ogImage = null;
-      }
-    }
-    // A mark that is itself a pale, transparent drawing disappears on the white tile the rows use;
-    // the tone travels with the row so the browser can swap in the dark plate (see styles.css).
-    // Same precedence chain as the renderer — `D.itemMark` is the single copy of it.
-    delete item.markTone;
-    const mark = D.itemMark(item);
-    if (mark && lightMarks.has(markImagePath(mark))) item.markTone = 'light';
+// One item's image fields, rewritten to the mirror this site serves. Every consumer of an item has to
+// go through this — the static report build, the MySQL import package and the site snapshot — or the
+// same product ends up with two different addresses for the same icon (mirror vs. the website's own
+// URL), and whichever consumer only accepts mirrors silently drops the image.
+//
+// `strict: false` is for the full-history projections (MySQL import, site snapshot): there, a URL
+// that was never mirrored — a source that has since died, an entry pruned from the manifest — must
+// not fail the whole build. Keeping the original value leaves the consumer free to hotlink it (when
+// its host is trusted) or drop it, which is exactly what happened before this existed.
+function localizeItem(item, manifest, lightMarks, { strict = true } = {}) {
+  const localize = value => {
+    if (strict) return localizeUrl(value, manifest);
+    try { return localizeUrl(value, manifest); } catch { return value; }
+  };
+  for (const field of fields) if (item[field]) {
+    item[field] = localize(item[field]);
   }
+  for (const field of listFields) if (Array.isArray(item[field])) {
+    // An unsynced URL throws before this point, so filtering only drops known-bad images.
+    item[field] = item[field].map(localize).filter(Boolean);
+  }
+  // Our own screenshots are a list like `images`; the website's og:image is a single object.
+  if (Array.isArray(item.screenshots)) {
+    item.screenshots = item.screenshots.map(localize).filter(Boolean);
+  }
+  if (item.ogImage && item.ogImage.url) {
+    try {
+      item.ogImage = { ...item.ogImage, url: localize(item.ogImage.url) };
+    } catch (_) {
+      // An og:image that was never mirrored (outside the retention window) must not break the
+      // build: the gallery simply keeps the source's own media and our screenshot.
+      item.ogImage = null;
+    }
+  }
+  // A mark that is itself a pale, transparent drawing disappears on the white tile the rows use;
+  // the tone travels with the row so the browser can swap in the dark plate (see styles.css).
+  // Same precedence chain as the renderer — `D.itemMark` is the single copy of it.
+  delete item.markTone;
+  const mark = D.itemMark(item);
+  if (mark && lightMarks.has(markImagePath(mark))) item.markTone = 'light';
+  return item;
+}
+
+function localizeReport(report, manifest, lightMarks = readTones().light) {
+  for (const source of report.results || []) for (const item of source.items || []) localizeItem(item, manifest, lightMarks);
   return report;
 }
 
@@ -349,5 +365,5 @@ async function syncImages() {
   console.log(`Images: ${retained.size} mirrored URLs (marks from ${dates.length} reports, screenshots from ${window.length}), ${done} downloaded, ${failed} unavailable, ${removed.length} manifest entries and ${pruned} files pruned; ${light.length} light marks.`);
 }
 
-module.exports = { readManifest, readTones, writeTones, collectLightMarks, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays, localScreenshotPath, screenshotFilesDir, screenshotUrls, materializeScreenshot };
+module.exports = { readManifest, readTones, writeTones, collectLightMarks, localizeItem, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays, localScreenshotPath, screenshotFilesDir, screenshotUrls, materializeScreenshot };
 if (require.main === module) syncImages().catch(error => { console.error(error); process.exitCode = 1; });

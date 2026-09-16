@@ -5,8 +5,9 @@ const path = require('node:path');
 const test = require('node:test');
 const { identitiesFor } = require('../scripts/catalog/identity');
 const { buildMysqlImport, sqlValue, loadEvidence, repositoryEvidenceDate } = require('../scripts/catalog/build-mysql-import');
-const { parseArgs, fetchJson, rangeStats } = require('../scripts/catalog/build-site-snapshot');
+const { parseArgs, fetchJson, rangeStats, localizeSnapshotProducts } = require('../scripts/catalog/build-site-snapshot');
 const { loadItems } = require('../.agents/skills/community-pulse/scripts/source_raw_items');
+const { readManifest } = require('../scripts/image-store.js');
 
 test('catalog identity prefers repository, keeps website and source aliases', () => {
   const identities = identitiesFor({ sourceId: 'showhn', externalId: '42', title: 'Example', url: 'https://example.com/?utm_source=hn', githubUrl: 'https://github.com/Owner/Repo/' });
@@ -183,4 +184,55 @@ test('dynamic trend cards retain charts, examples and category links', () => {
   assert.match(app, /class="trend-bar" data-trend-week/);
   assert.match(app, /\/api\/v1\/products\?/);
   assert.doesNotMatch(app, /if \(period\) period\.hidden = true/);
+});
+
+test('the site snapshot localizes every mirrored mark before publishing it', () => {
+  // 分类库/趋势快照里的条目是 MySQL item_json 的投影。以前它们存官网原始地址，而消费端只认镜像与
+  // 两个回源 host，整排官网图标被丢掉 —— 线上分类页 5 行里有 4 行只剩首字母。
+  const imageManifest = readManifest();
+  const entry = Object.entries(imageManifest).find(([url, local]) =>
+    typeof local === 'string' && /\.(?:png|svg|ico|webp)$/.test(local) && !url.startsWith('screenshots-files/'));
+  assert.ok(entry, 'expected the manifest to carry at least one mirrored mark');
+  const [remote, mirror] = entry;
+  const atlas = '/images/48ef32669ae1b91eb35dd66ea2c20175c4863be27d4f45011d6913d72ddb959f.svg';
+  const products = [
+    { title: 'Mapped', siteLogo: remote },
+    { title: 'Light', siteLogo: atlas },
+    { title: 'Unmapped', siteLogo: 'https://gone.test/icon.png' },
+  ];
+  // 强制仓库内镜像模式，断言的就是清单里那个相对路径本身。
+  const saved = process.env.IMAGE_BASE;
+  process.env.IMAGE_BASE = '';
+  try {
+    localizeSnapshotProducts(products);
+  } finally {
+    if (saved !== undefined) process.env.IMAGE_BASE = saved; else delete process.env.IMAGE_BASE;
+  }
+  // 清单里有映射的必须已被改写；清单里没有的（源已失效）保持原样，交给消费端决定丢还是回源。
+  assert.equal(products[0].siteLogo, mirror);
+  assert.equal(products[1].siteLogo, atlas);
+  assert.equal(products[1].markTone, 'light');
+  assert.equal(products[2].siteLogo, 'https://gone.test/icon.png');
+  assert.equal(products[2].markTone, undefined);
+});
+
+test('the MySQL import package stores mirrored marks and their tone, not the website URLs', () => {
+  // 详情页与分类页读的就是这份 item_json。Worker 的 trustedImage() 只放行镜像域名与两个回源 host，
+  // 所以「清单里有映射却没被本地化」就是详情页只剩首字母的那个 bug。
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-mysql-marks-'));
+  const rawRoot = path.join(__dirname, '..', '知识', '大家都在做什么', 'source-raw');
+  const manifest = buildMysqlImport({ out: directory, rawRoot, start: '2026-09-15', end: '2026-09-16', sources: new Set(['github-trending']), taxonomy: false, maxBytes: 100_000 });
+  const detailSql = fs.readFileSync(path.join(directory, manifest.files.find((file) => file.table === 'product_details').name), 'utf8');
+  const imageManifest = readManifest();
+  const marks = [...detailSql.matchAll(/"(?:logo|icon|siteLogo)":"(https?:\\?\/\\?\/[^"]+)"/g)].map((match) => match[1].replace(/\\\//g, '/'));
+  assert.ok(marks.length > 0, 'expected the day window to carry marks');
+  let mirrored = 0;
+  for (const mark of marks) {
+    if (/^https:\/\/img\.devtrends\.site\/images\/[a-f0-9]{64}\./.test(mark)) { mirrored += 1; continue; }
+    assert.equal(imageManifest[mark], undefined, `${mark} has a mirror but was not localized`);
+  }
+  assert.ok(mirrored > 0, 'expected at least one mirrored mark in the package');
+  // 浅色标志的色调也跟着走，详情页/分类页才会换深色底板。
+  for (const tone of detailSql.matchAll(/"markTone":"([a-z]+)"/g)) assert.equal(tone[1], 'light');
+  fs.rmSync(directory, { recursive: true, force: true });
 });

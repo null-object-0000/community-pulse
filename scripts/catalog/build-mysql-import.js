@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const D = require('../../web/shared.js');
+const images = require('../image-store.js');
 const { identitiesFor, productId } = require('./identity');
 const {
   loadItems, loadGithubRepositories, attachRepositoryFacts,
@@ -14,6 +15,9 @@ const DEFAULT_RAW_ROOT = path.join(ROOT, '知识', '大家都在做什么', 'sou
 const DEFAULT_OUTPUT = path.join(ROOT, 'data', 'catalog', 'mysql-import');
 const SOURCE_CONFIG = path.join(ROOT, '.agents', 'skills', 'community-pulse', 'config', 'sources.json');
 const TAXONOMY_VERSION = 'legacy-infer-v1';
+// 图片清单与色调清单读一次即可：导入包是「历史全量」的投影，逐条读盘会让 32 万条观察变成 32 万次 IO。
+const imageManifest = images.readManifest();
+const lightMarks = images.readTones().light;
 
 const TABLES = {
   sources: {
@@ -177,7 +181,12 @@ const DETAIL_FIELDS = [
 function detailItem(item, source) {
   const detail = { sourceId: item.sourceId || source.id, sourceName: item.sourceName || source.name };
   for (const key of DETAIL_FIELDS) if (item[key] !== undefined) detail[key] = item[key];
-  return detail;
+  // 这份 item 是详情页与分类页的唯一输入（Worker 从 MySQL 现场渲染），而它以前存的是**官网原始
+  // 地址**：Worker 的 trustedImage() 只放行镜像域名与两个回源 host，于是官网图标全被丢掉 —— 实测
+  // 6,895 个有标志的产品里 1,552 个（22%）详情页只剩首字母，而同一期日报行是正常的。现在两条链
+  // 共用 image-store 的同一段本地化（顺带带上浅色标志的 markTone）。
+  // 宽松模式：历史全量里难免有源已失效、清单已 prune 掉的老地址，一张图不该让整次导入失败。
+  return images.localizeItem(detail, imageManifest, lightMarks, { strict: false });
 }
 
 function detailScore(item) {
