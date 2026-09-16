@@ -31,9 +31,12 @@ function offsetDate(date, days) {
   return value.toISOString().slice(0, 10);
 }
 
-async function fetchJson(origin, route, fetcher = fetch) {
+async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))) {
   let lastError;
-  for (let attempt = 1; attempt <= 4; attempt += 1) {
+  // A snapshot pages through thousands of products. One transient edge/Hyperdrive 5xx must not
+  // discard the whole daily batch; 4 quick retries were insufficient on the ATL runner.
+  const maxAttempts = 8;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
       const response = await fetcher(new URL(route, origin), { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(60000) });
       const contentType = response.headers.get('content-type') || '';
@@ -42,13 +45,22 @@ async function fetchJson(origin, route, fetcher = fetch) {
         const message = `${route}: HTTP ${response.status}, ${contentType || 'unknown content type'}${ray ? `, cf-ray ${ray}` : ''}`;
         // A challenge page cannot be solved by retrying and must never be printed into CI logs.
         if (response.status === 403 || /html/i.test(contentType)) throw Object.assign(new Error(`${message}; expected catalog JSON (possible Cloudflare challenge)`), { permanent: true });
-        throw new Error(`${message}; expected catalog JSON`);
+        let errorCode = '';
+        if (/\bjson\b/i.test(contentType)) {
+          try {
+            const body = await response.json();
+            if (/^[a-z_]{1,80}$/.test(body?.error || '')) errorCode = `, catalog error ${body.error}`;
+          } catch (_) {}
+        }
+        const error = new Error(`${message}${errorCode}; expected catalog JSON`);
+        if (response.status >= 400 && response.status < 500 && response.status !== 429) error.permanent = true;
+        throw error;
       }
       return response.json();
     } catch (error) {
       lastError = error;
       if (error.permanent) break;
-      if (attempt < 4) await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
+      if (attempt < maxAttempts) await sleep(Math.min(30000, 1000 * 2 ** (attempt - 1)));
     }
   }
   throw lastError;

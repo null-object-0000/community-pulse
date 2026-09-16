@@ -94,6 +94,31 @@ test('snapshot API rejects Cloudflare challenge HTML without retries or logging 
   assert.deepEqual(sources.sources, [{ id: 'showhn' }]);
 });
 
+test('snapshot API retries transient JSON 503 with exponential backoff and a bounded error code', async () => {
+  let calls = 0;
+  const delays = [];
+  const model = await fetchJson('https://community-pulse.nichangen.workers.dev', '/api/v1/products', async () => {
+    calls++;
+    if (calls < 3) return new Response(JSON.stringify({ error: 'catalog_database_unavailable', message: 'do not print this' }),
+      { status: 503, headers: { 'content-type': 'application/json', 'cf-ray': `test-${calls}` } });
+    return new Response(JSON.stringify({ products: [{ id: 'one' }] }), { headers: { 'content-type': 'application/json' } });
+  }, async (ms) => { delays.push(ms); });
+  assert.equal(calls, 3);
+  assert.deepEqual(delays, [1000, 2000]);
+  assert.deepEqual(model.products, [{ id: 'one' }]);
+  let failedCalls = 0;
+  await assert.rejects(fetchJson('https://community-pulse.nichangen.workers.dev', '/api/v1/products', async () => {
+    failedCalls++;
+    return new Response(JSON.stringify({ error: 'catalog_database_unavailable', message: 'do not print this' }),
+      { status: 503, headers: { 'content-type': 'application/json' } });
+  }, async () => {}), (error) => {
+    assert.match(error.message, /catalog error catalog_database_unavailable/);
+    assert.doesNotMatch(error.message, /do not print this/);
+    return true;
+  });
+  assert.equal(failedCalls, 8);
+});
+
 test('MySQL adapter preserves the query prepare-bind-all contract', async () => {
   const calls = [];
   const { mysqlAdapter } = await import('../worker/mysql-db.mjs');
