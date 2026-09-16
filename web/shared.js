@@ -538,11 +538,42 @@
   const TITLE_PREFIX = new RegExp(
     `^\\s*(?:(?:${TITLE_BRACKET_LABEL}|${TITLE_PLAIN_LABEL})\\s*[/|｜·、,，\\-–—]?\\s*)+`,
     'i');
-  // 只有标签的标题（如整条就叫 [Open Source]）清完是空串，那样列表会出现没标题的行，退回原标题。
+  // Preserve source title for final matching; only explicit fields may supply a name.
+  function titleFallback(item) {
+    if (String(item.title || '').replace(TITLE_PREFIX, '').trim()) return null;
+    if (item.titleFallback) return { value: item.titleFallback, source: item.titleFallbackSource || 'normalized' };
+    const lines = String(item.content || '').replace(/```[^\n]*\n[\s\S]*?(?:```|$)|~~~[^\n]*\n[\s\S]*?(?:~~~|$)/g, '').split(/\r?\n/);
+    const values = { '项目名称': [], '产品名称': [], '工具名称': [], '项目标题': [] };
+    let field = '';
+    for (const raw of lines) {
+      const line = raw.trim();
+      const heading = line.match(/^#{1,6}\s+(项目名称|产品名称|工具名称|项目标题)\s*[:：]?\s*$/);
+      if (heading) { field = heading[1]; continue; }
+      if (/^#{1,6}\s/.test(line)) { field = ''; continue; }
+      const inline = line.match(/^(?:[-*]\s+)?(?:\*\*)?(项目名称|产品名称|工具名称|项目标题)(?:\*\*)?\s*[:：]\s*(.+)$/);
+      const label = inline?.[1] || field;
+      const value = (inline?.[2] || (field ? line : '')).replace(/[*_`]/g, '').trim();
+      if (label && value) {
+        if (value.length <= 240 && !/^(?:No response|无|暂无|待补充|todo|https?:\/\/)/i.test(value) && !/[<>]/.test(value)) values[label].push(value);
+        field = '';
+      }
+    }
+    for (const label of ['项目名称', '产品名称', '工具名称', '项目标题']) {
+      const candidates = [...new Set(values[label])];
+      if (candidates.length === 1) return { value: candidates[0], source: `issue-body:${label}` };
+      if (candidates.length > 1) break;
+    }
+    const repo = repository(item);
+    return repo ? { value: repo.fullName, source: 'github-repository' } : null;
+  }
   function displayTitle(item, locale = 'zh-CN') {
     const localized = locale === 'en' ? item.titleEn || item.title_en : item.titleZh || item.title_zh;
     const title = String(localized || item.title || repository(item)?.fullName || 'Untitled');
-    return title.replace(TITLE_PREFIX, '').trim() || title.trim();
+    return titleFallback(item)?.value || title.replace(TITLE_PREFIX, '').trim() || title.trim();
+  }
+  function withTitleFallback(item) {
+    const fallback = titleFallback(item);
+    return fallback ? { ...item, titleFallback: fallback.value, titleFallbackSource: fallback.source } : item;
   }
   const reportItems = report => (report?.results || []).flatMap(source => (source.items || []).map(item => ({ ...item, sourceId: item.sourceId || source.sourceId, sourceName: source.sourceName })));
   function metric(item, names) {
@@ -882,5 +913,5 @@
   function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
   }
-  return { origin, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

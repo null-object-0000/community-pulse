@@ -7,6 +7,8 @@ const path = require('path');
 const zlib = require('zlib');
 const { discoverItemRepository, normalizeGitHubRepoUrl, repositoryKey } = require('./github_repo_utils');
 const { descriptionFromIssue } = require('./issue-description');
+const { issueAdmission } = require('./issue-admission');
+const D = require('../../../../web/shared.js');
 const { boardBySourceId } = require('./chinese_indie_boards');
 const { candidatePage } = require('./site_logo');
 
@@ -134,7 +136,7 @@ function extractExternalUrls(value) {
   return String(value || '').match(/https?:\/\/[^\s<>()[\]{}"'（）［］【】《》〈〉「」『』，。：；！？、…]+/g) || [];
 }
 
-function issueItems(document, src) {
+function issueItems(document, src, options = {}) {
   const repository = src.id === 'weekly-issues' ? 'ruanyf/weekly' : '521xueweihan/HelloGitHub';
   const tags = src.id === 'weekly-issues'
     ? ['ruanyf-weekly', 'submission']
@@ -143,6 +145,11 @@ function issueItems(document, src) {
   // 匹配「文章自荐」「文章推荐」「文章投稿」标签（含全角/半角括号变体）。
   const isArticleSubmission = (title) => /[\[［【(（]?\s*文章\s*(?:自荐|推荐|投稿)\s*[\]］】)）]?|文章投稿\s*[:：]/.test(title || '');
   return (document.records || [])
+    .filter(issue => {
+      const decision = issueAdmission({ title: issue.title, sourceId: src.id });
+      if (decision.status !== 'accepted') options.onAdmission?.({ sourceId: src.id, externalId: String(issue.number), title: issue.title, ...decision });
+      return decision.status !== 'excluded';
+    })
     .filter((issue) => src.id !== 'weekly-issues' || !isArticleSubmission(issue.title || ''))
     .map((issue) => {
     const issueUrl = issue.html_url || `https://github.com/${repository}/issues/${issue.number}`;
@@ -160,6 +167,8 @@ function issueItems(document, src) {
       externalId: String(issue.number),
       issueUrl,
     };
+    const admission = issueAdmission(item);
+    if (admission.status === 'review') item.admission = admission;
     const githubUrl = discoverItemRepository(item);
     if (githubUrl) item.url = githubUrl;
     else {
@@ -167,7 +176,7 @@ function issueItems(document, src) {
       item.url = found?.find((url) => !/\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#]|$)/i.test(url)
         && !/github\.com\/(?:user-attachments|[^/]+\/[^/]+\/(?:assets|issues|releases))(?:\/|$)/i.test(url)) || issueUrl;
     }
-    return item;
+    return D.withTitleFallback(item);
   });
 }
 
@@ -844,7 +853,11 @@ function loadItems(src, options = {}) {
   const converter = CONVERTERS[src.id];
   if (!converter) throw new Error(`no source-raw converter registered for ${src.id}`);
   const loaded = loadDocument(src, options);
-  const items = converter(loaded.document, src, options).map((item) => {
+  const admissionDecisions = [];
+  const items = converter(loaded.document, src, { ...options, onAdmission: decision => {
+    admissionDecisions.push(decision);
+    options.onAdmission?.(decision);
+  } }).map((item) => {
     const githubUrl = normalizeGitHubRepoUrl(item.githubUrl) || discoverItemRepository(item);
     if (!githubUrl) return item;
     return { ...item, githubUrl, github: { ...(item.github || {}), url: githubUrl } };
@@ -872,6 +885,7 @@ function loadItems(src, options = {}) {
       complete: loaded.document.complete,
       inputItemCount: loaded.document.itemCount,
       outputItemCount: selected.length,
+      admissionDecisions,
     },
   };
 }

@@ -87,8 +87,8 @@ function productGallery(item, locale) {
 }
 
 export function renderProductPage(model, locale = 'zh-CN') {
-  const product = model.product;
-  const item = product.item || {};
+  const item = model.product.item || {};
+  const product = { ...model.product, title: D.titleFallback(item)?.value || model.product.title };
   const en = locale === 'en';
   const route = product.route;
   const canonical = ORIGIN + localPath(route, locale);

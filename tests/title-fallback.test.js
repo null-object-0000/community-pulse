@@ -1,0 +1,38 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const D = require('../web/shared');
+const { prepare } = require('../scripts/enhance-report');
+test('real CanvasCode label uses explicit fields without changing title or descriptions', () => {
+  const raw = JSON.parse(fs.readFileSync('知识/大家都在做什么/raw/2026-09-15.json'));
+  const item = raw.results.flatMap(s => s.items).find(i => i.externalId === '3710');
+  const copy = D.withTitleFallback(item);
+  assert.equal(D.displayTitle(copy), 'CanvasCode');
+  assert.equal(copy.title, '[开源推荐]');
+  assert.deepEqual(D.summary(copy), D.summary(item));
+  assert.equal(copy.content, item.content);
+  assert.equal(copy.titleFallbackSource, 'issue-body:项目名称');
+});
+test('dynamic detail uses projected fallback even if old MySQL product title wins the length upsert', async () => {
+  const { renderProductPage } = await import('../worker/project-page.mjs');
+  const item = D.withTitleFallback({ title: '[开源推荐]', content: '项目名称：CanvasCode', summary: 'Original description remains unchanged.' });
+  const model = { catalogVersion: 'v1', product: { id: 'prd_0123456789abcdef01234567', title: '[开源推荐]', githubRepo: '', route: '/products/prd_0123456789abcdef01234567/', canonicalUrl: '', firstSeenDate: '2026-09-15', lastSeenDate: '2026-09-15', item, sources: [] } };
+  const html = renderProductPage(model);
+  assert.ok(html.includes('<title>CanvasCode | DevTrends</title>'));
+  assert.ok(html.includes('<h1>CanvasCode</h1>'));
+  assert.equal(model.product.title, '[开源推荐]');
+});
+test('only explicit fields: no prose guessing; conflicts fall back to repository; normal titles untouched', () => {
+  assert.equal(D.displayTitle({ title: '[开源推荐]', content: 'This amazing product is Foo' }), '[开源推荐]');
+  assert.equal(D.displayTitle({ title: '[开源推荐]', content: '项目名称：A\n项目名称：B', url: 'https://github.com/a/b' }), 'a/b');
+  assert.equal(D.displayTitle({ title: '【Tokenscope】', content: '项目名称：Other' }), '【Tokenscope】');
+  assert.equal(D.displayTitle({ title: '【工具自荐】', content: '工具名称：mouse code generator' }), 'mouse code generator');
+  assert.equal(D.displayTitle({ title: '[开源推荐]', content: '```md\n项目名称：Fake\n```\n### 项目标题\nReal' }), 'Real');
+});
+test('enhancement input preserves original match headings and removes only the ad', () => {
+  const job = prepare('2026-09-15');
+  assert.equal(job.report.results.flatMap(s => s.items).length, 90);
+  assert.ok(job.markdown.includes('[开源推荐]'));
+  assert.ok(job.markdown.includes('Recruit OS'));
+  assert.ok(!job.markdown.includes('11707'));
+});

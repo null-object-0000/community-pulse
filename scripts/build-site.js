@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const D = require('../web/shared.js');
 const { applyEnhancedMarkdown } = require('./enhanced-report.js');
+const { admitReport } = require('../.agents/skills/community-pulse/scripts/issue-admission.js');
 const R = require('./render-site.js');
 const images = require('./image-store.js');
 const imageManifest = images.readManifest();
@@ -31,7 +32,7 @@ for (const name of staticFiles) fs.copyFileSync(path.join(root, 'web', name), pa
 const verificationDir = path.join(root, 'verification');
 for (const name of fs.readdirSync(verificationDir)) fs.copyFileSync(path.join(verificationDir, name), path.join(outputDir, name));
 const reports = dates.map(date => {
-  const raw = JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8'));
+  const raw = admitReport(JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8')));
   const finalPath = path.join(finalDir, `${date}.md`), rawMarkdown = path.join(sourceDir, `${date}.md`);
   const finalExists = fs.existsSync(finalPath);
   const report = finalExists ? applyEnhancedMarkdown(raw, fs.readFileSync(finalPath, 'utf8'), date) : { ...raw, presentation: { summarySource: 'raw', enhancedItemCount: 0, totalItemCount: D.reportItems(raw).length } };

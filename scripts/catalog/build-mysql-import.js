@@ -172,13 +172,14 @@ function loadEvidence(cache, rawRoot, date) {
 // repository or the product site), so dropping it here left Show HN detail pages with no source
 // but the board. Adding a field changes content_hash, which is why the catalogue version follows.
 const DETAIL_FIELDS = [
-  'sourceId', 'sourceName', 'externalId', 'title', 'titleZh', 'titleEn', 'summary', 'summaryZh', 'summaryEn',
+  'sourceId', 'sourceName', 'externalId', 'title', 'titleFallback', 'titleFallbackSource', 'titleZh', 'titleEn', 'summary', 'summaryZh', 'summaryEn',
   'url', 'websiteUrl', 'githubUrl', 'issueUrl', 'relatedIssue', 'hnUrl', 'vibecafeUrl', 'productHuntUrl',
   'author', 'authorUrl', 'publishedAt', 'tags', 'taxonomy', 'primaryCategory', 'language', 'lang',
   'logo', 'icon', 'siteLogo', 'image', 'images', 'imageUrls', 'metrics', 'github',
 ];
 
 function detailItem(item, source) {
+  item = D.withTitleFallback(item);
   const detail = { sourceId: item.sourceId || source.id, sourceName: item.sourceName || source.name };
   for (const key of DETAIL_FIELDS) if (item[key] !== undefined) detail[key] = item[key];
   // 这份 item 是详情页与分类页的唯一输入（Worker 从 MySQL 现场渲染），而它以前存的是**官网原始
@@ -208,12 +209,14 @@ function collectRows(options) {
   const evidenceCache = new Map();
   let days = 0;
   let rows = 0;
+  const admissionDecisions = [];
 
   for (const source of sources) {
     for (const date of sourceDates(options.rawRoot, source.id, options)) {
       const loaded = loadItems(source, {
         date, observedDate: date, rawRoot: options.rawRoot, maxItems: Infinity, productHuntView: 'all',
       });
+      admissionDecisions.push(...(loaded.sourceRaw?.admissionDecisions || []).map(d => ({ date, ...d })));
       const evidence = loadEvidence(evidenceCache, options.rawRoot, date);
       const items = attachDescriptionFallback(attachRepositoryFacts(loaded.items, evidence.repositories), evidence);
       days += 1;
@@ -228,7 +231,7 @@ function collectRows(options) {
           if (!identityOwners.has(key)) identityOwners.set(key, id);
         }
         const existing = products.get(id);
-        const title = String(item.title || '');
+        const title = D.titleFallback(item)?.value || String(item.title || '');
         products.set(id, {
           id,
           canonicalKey: existing?.canonicalKey || primary.canonicalKey,
@@ -275,7 +278,7 @@ function collectRows(options) {
   }
 
   return {
-    days, rows,
+    days, rows, admissionDecisions,
     tables: {
       sources: sources.map((source, index) => [source.id, source.name, source.desc || '', 1, index]),
       products: [...products.values()].map((p) => [p.id, p.canonicalKey, p.title, p.canonicalUrl, p.githubRepo, p.firstSeenDate, p.lastSeenDate]),
@@ -330,6 +333,7 @@ function buildMysqlImport(options) {
   const manifest = {
     schemaVersion: 3, dialect: 'mysql', source: 'source-raw', generatedAt: new Date().toISOString(),
     range: { start: options.start || null, end: options.end || null }, days: collected.days, inputRows: collected.rows,
+    admissionDecisions: collected.admissionDecisions,
     files: state.files, totalRows: state.files.reduce((sum, file) => sum + file.rows, 0),
     totalBytes: state.files.reduce((sum, file) => sum + file.bytes, 0),
   };
