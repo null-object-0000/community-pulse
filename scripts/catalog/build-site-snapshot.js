@@ -10,7 +10,8 @@ const FACETS = ['useCases', 'agentRoles', 'languages'];
 const WINDOW_DAYS = { recent: 7, '4w': 28, '12w': 84 };
 
 function parseArgs(argv) {
-  const options = { origin: process.env.CATALOG_API_ORIGIN || 'https://devtrends.site', out: DEFAULT_OUT, concurrency: 1 };
+  // Internal batch jobs use the same production Worker without the public site's zone WAF.
+  const options = { origin: process.env.CATALOG_API_ORIGIN || 'https://community-pulse.nichangen.workers.dev', out: DEFAULT_OUT, concurrency: 1 };
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
     const value = inline === undefined ? argv[++index] : inline;
@@ -30,15 +31,23 @@ function offsetDate(date, days) {
   return value.toISOString().slice(0, 10);
 }
 
-async function fetchJson(origin, route) {
+async function fetchJson(origin, route, fetcher = fetch) {
   let lastError;
   for (let attempt = 1; attempt <= 4; attempt += 1) {
     try {
-      const response = await fetch(new URL(route, origin), { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(60000) });
-      if (!response.ok) throw new Error(`${route}: HTTP ${response.status} ${await response.text()}`);
+      const response = await fetcher(new URL(route, origin), { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(60000) });
+      const contentType = response.headers.get('content-type') || '';
+      if (!response.ok || !/\bjson\b/i.test(contentType)) {
+        const ray = response.headers.get('cf-ray');
+        const message = `${route}: HTTP ${response.status}, ${contentType || 'unknown content type'}${ray ? `, cf-ray ${ray}` : ''}`;
+        // A challenge page cannot be solved by retrying and must never be printed into CI logs.
+        if (response.status === 403 || /html/i.test(contentType)) throw Object.assign(new Error(`${message}; expected catalog JSON (possible Cloudflare challenge)`), { permanent: true });
+        throw new Error(`${message}; expected catalog JSON`);
+      }
       return response.json();
     } catch (error) {
       lastError = error;
+      if (error.permanent) break;
       if (attempt < 4) await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
     }
   }
@@ -195,4 +204,4 @@ if (require.main === module) {
   }).catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
 }
 
-module.exports = { parseArgs, offsetDate, rangeStats, buildCluster, buildSiteSnapshot };
+module.exports = { parseArgs, offsetDate, fetchJson, rangeStats, buildCluster, buildSiteSnapshot };

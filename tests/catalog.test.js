@@ -5,7 +5,7 @@ const path = require('node:path');
 const test = require('node:test');
 const { identitiesFor } = require('../scripts/catalog/identity');
 const { buildMysqlImport, sqlValue } = require('../scripts/catalog/build-mysql-import');
-const { rangeStats } = require('../scripts/catalog/build-site-snapshot');
+const { parseArgs, fetchJson, rangeStats } = require('../scripts/catalog/build-site-snapshot');
 const { loadItems } = require('../.agents/skills/community-pulse/scripts/source_raw_items');
 
 test('catalog identity prefers repository, keeps website and source aliases', () => {
@@ -63,6 +63,35 @@ test('site snapshot ranges are deterministic supersets of the recent catalog', (
   assert.equal(ranges['4w'].count, 2);
   assert.equal(ranges['12w'].count, 3);
   assert.equal(ranges['12w'].sources, 2);
+});
+
+test('site snapshot jobs use the production Worker entry point, not the public zone WAF', () => {
+  if (!process.env.CATALOG_API_ORIGIN) assert.equal(parseArgs([]).origin, 'https://community-pulse.nichangen.workers.dev');
+  assert.equal(parseArgs(['--origin', 'https://example.test']).origin, 'https://example.test');
+  const workflow = fs.readFileSync(path.join(__dirname, '../.github/workflows/daily-report.yml'), 'utf8');
+  assert.match(workflow, /CATALOG_API_ORIGIN: https:\/\/community-pulse\.nichangen\.workers\.dev/);
+  assert.match(workflow, /- name: 预检产品库读入口/);
+});
+
+test('snapshot API rejects Cloudflare challenge HTML without retries or logging its body', async () => {
+  let calls = 0;
+  const challenge = async () => {
+    calls++;
+    return new Response('<html>secret challenge token</html>', { status: 403, headers: { 'content-type': 'text/html', 'cf-ray': 'test-ray' } });
+  };
+  await assert.rejects(fetchJson('https://devtrends.site', '/api/v1/sources', challenge), (error) => {
+    assert.match(error.message, /HTTP 403.*Cloudflare challenge/);
+    assert.match(error.message, /cf-ray test-ray/);
+    assert.doesNotMatch(error.message, /secret challenge token/);
+    return true;
+  });
+  assert.equal(calls, 1);
+  const sources = await fetchJson('https://community-pulse.nichangen.workers.dev', '/api/v1/sources', async (url, init) => {
+    assert.equal(url.hostname, 'community-pulse.nichangen.workers.dev');
+    assert.equal(init.headers.accept, 'application/json');
+    return new Response(JSON.stringify({ sources: [{ id: 'showhn' }] }), { headers: { 'content-type': 'application/json; charset=utf-8' } });
+  });
+  assert.deepEqual(sources.sources, [{ id: 'showhn' }]);
 });
 
 test('MySQL adapter preserves the query prepare-bind-all contract', async () => {
