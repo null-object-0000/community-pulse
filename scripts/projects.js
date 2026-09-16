@@ -76,7 +76,7 @@ function projectPage(project, locale) {
   const related = project.related.length ? `<section class="panel"><h2>${t(locale, 'related')}</h2><div class="related-list">${project.related.map(other => `<a href="${lp(other.path, locale)}"><b>${e(other.name)}</b>${other.language ? `<span>${e(other.language)}</span>` : ''}</a>`).join('')}</div></section>` : '';
   const gallery = D.galleryHtml(D.mediaEntries(item), locale);
   const galleryPanel = gallery ? `<section class="panel" id="screenshots"><h2>${t(locale, 'gallery')}</h2>${gallery}</section>` : '';
-  const markUrl = D.localImage(item.logo) || D.localImage(item.icon) || D.localImage(item.siteLogo);
+  const markUrl = D.itemMark(item), markTone = D.markClass(item);
   const source = D.sourceInfo(item), sourceName = D.sourceName(item, locale);
   const sourceUrl = D.itemLinks(item).find(([label]) => label === 'source')?.[1];
   const sourceBadge = source?.logo ? `<img src="${e(source.logo)}" alt="${e(sourceName)}" loading="lazy" />` : e(sourceName.slice(0, 2));
@@ -89,7 +89,7 @@ function projectPage(project, locale) {
     ...project.topics.map(label => ({ label, origin: 'source' })),
   ].filter(tag => { const key = String(tag.label).toLowerCase(); if (!key || seenTags.has(key)) return false; seenTags.add(key); return true; }).slice(0, 12);
   const content = `<nav class="breadcrumb" aria-label="${locale === 'en' ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/', locale)}">${t(locale, 'discover')}</a><span>/</span><span>${t(locale, 'details')}</span></nav>
-    <article class="project-hero"><div class="project-identity"><span class="project-mark${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${e(markUrl)}" class="is-logo" alt="${e(`${project.owner}/${project.name}`)}" />` : initials}</span><div class="project-heading"><div>${sourceLine}<p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div></div></div>
+    <article class="project-hero"><div class="project-identity"><span class="project-mark${markUrl ? ` has-logo${markTone}` : ''}" aria-hidden="true">${markUrl ? `<img src="${e(markUrl)}" class="is-logo" alt="${e(`${project.owner}/${project.name}`)}" />` : initials}</span><div class="project-heading"><div>${sourceLine}<p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div></div></div>
     <p class="project-summary" lang="${s.lang}">${e(shortSummary)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
     ${detailTags.length ? `<div class="project-tags">${detailTags.map(tag => D.tagHtml(tag, locale)).join('')}</div>` : ''}
     <div class="project-links">${links.map(([label, url], i) => `<a class="button${i === 0 ? ' primary' : ''}" href="${e(D.trackedUrl(url, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${t(locale, label)} ${D.icon('arrow')}</a>`).join('')}</div></article>

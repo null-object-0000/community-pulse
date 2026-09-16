@@ -359,6 +359,18 @@
   function localImages(value, manifest = {}) {
     return (Array.isArray(value) ? value : []).map(entry => localImage(entry, manifest)).filter(Boolean);
   }
+  // The product mark identifies an item at 48–56px: platform logo → declared icon → the icon its
+  // official website declares (`siteLogo`, captured offline), then initials. Only managed mirrors
+  // pass; a software screenshot is never borrowed for the mark. `localizeReport` in
+  // scripts/image-store.js reads the tone of this same mark, so the precedence lives here only once.
+  function itemMark(item) {
+    return localImage(item?.logo) || localImage(item?.icon) || localImage(item?.siteLogo);
+  }
+  // A mark that is itself a pale transparent drawing is invisible on the white tile the rows use;
+  // `item.markTone` is set at build time (scripts/mark-tone.js) and switches the tile to dark.
+  function markClass(item) {
+    return item?.markTone === 'light' ? ' is-light' : '';
+  }
   // ── 插图集 ──────────────────────────────────────────────────────────────────
   // 一条行可能有三类配图，按信息量排序展示：
   //
@@ -699,8 +711,8 @@
     // The product mark identifies an item at 48px. A software screenshot is never borrowed for the
     // avatar: it belongs to the gallery. A row without a platform mark falls back to the logo its
     // official website declares (`siteLogo`, captured offline) and only then to its initials.
-    const logoUrl = localImage(item.logo);
-    const markUrl = logoUrl || localImage(item.icon) || localImage(item.siteLogo);
+    const markUrl = itemMark(item);
+    const markTone = markClass(item);
     const title = displayTitle(item, locale);
     const score = stars !== null ? stars : votes;
     const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
@@ -714,7 +726,7 @@
       <div class="item-score">${score !== null ? `${scoreIcon}<span>${compact(score, locale)}</span>` : '<span>—</span>'}</div>`;
     return `<article class="feed-item${continuation ? ' is-continuation' : ''}" data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
       <span class="item-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span>
-      <span class="item-avatar avatar-${index % 5}${markUrl ? ' has-logo' : ''}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
+      <span class="item-avatar avatar-${index % 5}${markUrl ? ` has-logo${markTone}` : ''}" aria-hidden="true">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" loading="lazy" />` : escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2))}</span>
       <div class="item-primary"><h2>${titleUrl ? `<a href="${escapeHtml(titleUrl)}"${projectPath ? '' : ' target="_blank" rel="noopener noreferrer"'}>${escapeHtml(title)}</a>` : escapeHtml(title)}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}<div class="item-tags${discoveryDate ? ' has-date' : ''}">${discoveryDate}${language ? tagHtml({ label: language, origin: 'language' }, locale) : ''}${tags.map(tag => tagHtml(tag, locale)).join('')}</div></div>
       ${trailing}</article>`;
   }
@@ -765,13 +777,14 @@
     const score = stars !== null ? stars : votes;
     const scoreIcon = stars !== null ? icon('star') : (votes !== null ? '<span aria-hidden="true">▲</span>' : '');
     const tags = visibleTags(item, locale).slice(0, 2);
-    const markUrl = localImage(item.logo) || localImage(item.icon) || localImage(item.siteLogo);
+    const markUrl = itemMark(item);
+    const markTone = markClass(item);
     const screenshots = mediaEntries(item).map(entry => entry.url);
     const initials = escapeHtml((repo?.name || title).replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
     const sourceBadge = source?.logo ? `<img src="${escapeHtml(source.logo)}" alt="${escapeHtml(sourceName(item, locale))}" loading="lazy" />` : sourceMark(item);
     const visual = screenshots.length
       ? `<div class="swipe-visual has-image"><img src="${escapeHtml(screenshots[0])}" alt="${escapeHtml(`${title} · ${t(locale, 'gallery')}`)}" /></div>`
-      : `<div class="swipe-visual is-typographic" aria-hidden="true"><span class="swipe-mark avatar-${index % 5}${markUrl ? ' has-logo' : ''}">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" />` : initials}</span><span class="swipe-wordmark">${escapeHtml(title)}</span></div>`;
+      : `<div class="swipe-visual is-typographic" aria-hidden="true"><span class="swipe-mark avatar-${index % 5}${markUrl ? ` has-logo${markTone}` : ''}">${markUrl ? `<img src="${escapeHtml(markUrl)}" class="is-logo" alt="${escapeHtml(title)}" />` : initials}</span><span class="swipe-wordmark">${escapeHtml(title)}</span></div>`;
     const metadata = [language ? `<span class="tag">${escapeHtml(language)}</span>` : '', ...tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`), score !== null ? `<span class="swipe-score">${scoreIcon}<span>${compact(score, locale)}</span></span>` : ''].join('');
     // Only the top card is reachable. The cards waiting behind it must not carry links or buttons at
     // all: `inert` alone still leaves them in the tab order in Chromium, so a keyboard user would
@@ -869,5 +882,5 @@
   function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
   }
-  return { origin, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { origin, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

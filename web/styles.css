@@ -647,6 +647,13 @@ body[data-view="cards"] { visibility: hidden; }
    exposes a seam. Filling the tile leaves one clean rounded square, and transparent marks keep the white. */
 .item-avatar.has-logo { background: #fff; box-shadow: none; }
 .item-avatar img.is-logo { padding: 0; background: #fff; object-fit: contain; }
+/* A mark that is itself a pale transparent drawing (pacifio/atlas 的 #FFFFEE 就是) disappears on the
+   white tile, so those keep the site's dark navy and drop the white fill on the image — the mark then
+   shows in its own colour instead of turning into an outline. Which marks those are is decided once
+   per mark from its own pixels (scripts/mark-tone.js) and rides on the row as `item.markTone`; the
+   three mark tiles share one plate, and these rules come after the white ones so they win the tie. */
+.item-avatar.is-light, .swipe-mark.is-light, .project-mark.is-light { background: #101a30; }
+.item-avatar.is-light img.is-logo, .swipe-mark.is-light img, .project-mark.is-light img { background: transparent; }
 .panel .item-gallery { margin-top: 0; }
 .panel .gallery-thumb { width: 92px; height: 58px; }
 .lightbox { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 5vmin; background: var(--color-overlay); }

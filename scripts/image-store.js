@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const D = require('../web/shared.js');
+const { classifyImage, extensionOf, markImagePath, MANUAL_LIGHT_MARKS } = require('./mark-tone.js');
 
 const fields = ['image', 'logo', 'icon', 'siteLogo'];
 // Screenshot galleries: `images` holds every image a source published for a product.
@@ -25,8 +26,48 @@ const isMirroredMark = value => {
 const storeDir = path.resolve(__dirname, '../assets/images');
 const rawDir = path.resolve(__dirname, '../知识/大家都在做什么/raw');
 const manifestPath = path.join(storeDir, 'manifest.json');
+const tonesPath = path.join(storeDir, 'tones.json');
 const configPath = path.resolve(__dirname, '../site.config.json');
 const readManifest = () => fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
+// 浅色标志清单（见 scripts/mark-tone.js）：和 manifest 一样提交进仓库，键是内容寻址的镜像路径，
+// 所以同一份 checkout 在仓库内镜像模式和外置 CDN 模式下都查得到。默认值缓存，构建期每条日报都
+// 要查一次。
+let tonesCache = null;
+function readTones() {
+  if (!tonesCache) {
+    let document = null;
+    try { document = JSON.parse(fs.readFileSync(tonesPath, 'utf8')); } catch { document = null; }
+    tonesCache = { light: new Set(Array.isArray(document?.light) ? document.light.filter(entry => D.localImage(entry)) : []) };
+  }
+  return tonesCache;
+}
+// 逐个判定本地有字节的标志，产出新的浅色清单。本地没有字节的沿用上一次的结论：镜像文件不在 Git
+// 里（见 .gitignore），CI 的干净 checkout 只有提交进仓库的这份清单，重新下载之前判定不了。
+function collectLightMarks(manifest, previous = new Set()) {
+  const light = new Set();
+  for (const local of new Set(Object.values(manifest))) {
+    if (!D.localImage(local)) continue;
+    const name = path.basename(local);
+    const file = path.join(storeDir, name);
+    const manual = MANUAL_LIGHT_MARKS.has(name);
+    if (!fs.existsSync(file)) {
+      if (previous.has(local)) light.add(local);
+      continue;
+    }
+    const result = classifyImage(fs.readFileSync(file), extensionOf(name));
+    // 手工兜底只补「解不出来」的那些（WebP 之类）；能解出来的以判定为准。
+    if (result.tone === 'light' || (result.tone === 'unknown' && manual)) light.add(local);
+  }
+  return light;
+}
+function writeTones(manifest) {
+  const light = collectLightMarks(manifest, readTones().light);
+  const keys = [...light].sort();
+  fs.writeFileSync(`${tonesPath}.tmp`, `${JSON.stringify({ schemaVersion: 1, light: keys }, null, 2)}\n`);
+  fs.renameSync(`${tonesPath}.tmp`, tonesPath);
+  tonesCache = { light };
+  return keys;
+}
 // `site.config.json` carries the committed mirror origin so the Workers Builds trigger needs no
 // extra configuration; `IMAGE_BASE` still overrides it (an empty `IMAGE_BASE=` forces the bundled
 // mode, which is what the tests and local preview use).
@@ -152,7 +193,7 @@ function localizeUrl(value, manifest) {
   return mirrorUrl(D.localImage(value, manifest));
 }
 
-function localizeReport(report, manifest) {
+function localizeReport(report, manifest, lightMarks = readTones().light) {
   for (const source of report.results || []) for (const item of source.items || []) {
     for (const field of fields) if (item[field]) {
       item[field] = localizeUrl(item[field], manifest);
@@ -174,6 +215,12 @@ function localizeReport(report, manifest) {
         item.ogImage = null;
       }
     }
+    // A mark that is itself a pale, transparent drawing disappears on the white tile the rows use;
+    // the tone travels with the row so the browser can swap in the dark plate (see styles.css).
+    // Same precedence chain as the renderer — `D.itemMark` is the single copy of it.
+    delete item.markTone;
+    const mark = D.itemMark(item);
+    if (mark && lightMarks.has(markImagePath(mark))) item.markTone = 'light';
   }
   return report;
 }
@@ -292,12 +339,15 @@ async function syncImages() {
   const { keptFiles } = pruneManifest(manifest, retained);
   let pruned = 0;
   for (const name of fs.readdirSync(storeDir)) {
-    if (name === 'manifest.json' || keptFiles.has(name)) continue;
+    if (['manifest.json', 'tones.json'].includes(name) || keptFiles.has(name)) continue;
     fs.rmSync(path.join(storeDir, name));
     pruned++;
   }
-  console.log(`Images: ${retained.size} mirrored URLs (marks from ${dates.length} reports, screenshots from ${window.length}), ${done} downloaded, ${failed} unavailable, ${removed.length} manifest entries and ${pruned} files pruned.`);
+  // The tone list is rebuilt after the files settle, so an entry can never point at a file that was
+  // just pruned and a mark whose bytes arrived today is classified in the same run.
+  const light = writeTones(manifest);
+  console.log(`Images: ${retained.size} mirrored URLs (marks from ${dates.length} reports, screenshots from ${window.length}), ${done} downloaded, ${failed} unavailable, ${removed.length} manifest entries and ${pruned} files pruned; ${light.length} light marks.`);
 }
 
-module.exports = { readManifest, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays, localScreenshotPath, screenshotFilesDir, screenshotUrls, materializeScreenshot };
+module.exports = { readManifest, readTones, writeTones, collectLightMarks, localizeReport, copyImages, downloadImage, imageExtension, imageOrigin, mirrorUrl, pruneManifest, reportDates, reportUrls, itemUrls, retentionDays, localScreenshotPath, screenshotFilesDir, screenshotUrls, materializeScreenshot };
 if (require.main === module) syncImages().catch(error => { console.error(error); process.exitCode = 1; });

@@ -344,6 +344,8 @@ npm run check
 
 **PH 标志不镜像，走回源**：`ph-files.imgix.net` 已在 `web/shared.js` 的 `hotlinkOrigins` 白名单里（PH 图集一直就是这么做的），而 PH 的 `thumbnail` 常是发布原图（实测最大 9 MB，含动态 GIF），最终只渲染成 48px 头像。因此 `scripts/image-store.js` 的 `itemUrls()` 用 `isMirroredMark()` 跳过这个 host：`images:sync` 不下载、manifest 不保留，下次同步会把已有的这类标志一并 prune（实测 476 个文件 / 30 MB）。`IMAGES_RETENTION_DAYS>0` 的「整期镜像」模式不受影响。
 
+**浅色标志换深色底板**：列表 / 宫格 / 卡片 / 详情页的标志框都是白底，官网图标里那些透明底的浅色图形（pacifio/atlas 的 `#FFFFEE`）画上去等于消失。`images:sync` 顺便用 `scripts/mark-tone.js` 逐个判定标志（PNG/ICO/SVG 自己解，判据是「合成到白底上还剩多少像素看得清」），把浅色的写进 `assets/images/tones.json`（和 manifest 一起提交、按内容寻址）；构建时 `localizeReport` 按 `logo → icon → siteLogo` 取值链给行挂 `item.markTone = 'light'`，渲染时加 `is-light` 换 `#101a30` 底板。想单独核对某张图：`node scripts/mark-tone.js <文件>`；WebP/AVIF 解不了，已知的浅色项在 `mark-tone.js` 的 `MANUAL_LIGHT_MARKS` 里手工兜底。
+
 **旧混合层日报的 PH 行拿不到精选投影**：2026-01-01~2026-08 的日报（216 天）是已废弃的旧混合层生成的，每天是「当日热门 20 条」而不是 `featured: true`，与 `officialFeatured` 只有 10% 能对上（4433 行里 482 行），所以 `--refresh-featured` 补不到它们的 logo。这类行要按 Post ID 定向补抓（`post(id: ID!)` 支持 `thumbnail { url }` / `media { url }`，见 `capture_producthunt_post_media.js`）：
 
 ```bash
