@@ -47,23 +47,45 @@ async function submitIndexNow(urls, fetchImpl = fetch) {
   return { status: response.status, submitted: urls.length };
 }
 
+// 百度「普通收录」对超额批次是**整批拒绝**：配额只剩 7 条时推 53 条，HTTP 400 `over quota`，
+// 一条都不会收录（实测 remain 不变），而站点日配额目前只有个位数，比一期日报要推的 URL 少得多。
+// 所以整批提交在这里等于「配额够也推不进去、配额不够全丢，还把 workflow 判成失败」。
+// 现在按条提交、把当天配额用满即停，剩下的记为 deferred —— 那部分本来就由 sitemap-baidu.xml
+// 与百度自己的抓取兜底，是配额约束而不是站点故障，因此不抛错。
 async function submitBaidu(urls, fetchImpl = fetch) {
   const token = process.env.BAIDU_SITE_TOKEN;
   if (!token) return { skipped: true, reason: 'BAIDU_SITE_TOKEN is not configured' };
   const endpoint = new URL(process.env.BAIDU_SUBMIT_ENDPOINT || 'http://data.zz.baidu.com/urls');
   endpoint.searchParams.set('site', process.env.BAIDU_SITE || new URL(D.origin).hostname);
   endpoint.searchParams.set('token', token);
-  const response = await fetchImpl(endpoint, {
-    method: 'POST',
-    headers: { 'content-type': 'text/plain; charset=utf-8' },
-    body: urls.join('\n'),
-    signal: AbortSignal.timeout(30000),
-  });
-  const text = await response.text();
-  let result;
-  try { result = JSON.parse(text); } catch { result = {}; }
-  if (!response.ok || result.error) throw new Error(`Baidu rejected the submission with HTTP ${response.status}${result.message ? `: ${result.message}` : ''}`);
-  return { status: response.status, submitted: Number(result.success) || 0, remaining: Number(result.remain) || 0 };
+  const quotaReached = deferred => {
+    console.error(`百度今日配额已用完：已提交 ${submitted} 条，${deferred} 条未提交（由 sitemap-baidu.xml 兜底）`);
+    return { status, submitted, remaining: 0, quotaExhausted: true, deferred };
+  };
+  let status = 0;
+  let submitted = 0;
+  let remaining = 0;
+  for (let index = 0; index < urls.length; index += 1) {
+    const response = await fetchImpl(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'text/plain; charset=utf-8' },
+      body: urls[index],
+      signal: AbortSignal.timeout(30000),
+    });
+    const text = await response.text();
+    let result;
+    try { result = JSON.parse(text); } catch { result = {}; }
+    status = response.status;
+    if (!response.ok || result.error) {
+      // 超额是预期内的配额上限；其它错误（token / site 不匹配等）仍旧硬失败。
+      if (/over quota/i.test(result.message || '')) return quotaReached(urls.length - index);
+      throw new Error(`Baidu rejected the submission with HTTP ${response.status}${result.message ? `: ${result.message}` : ''}`);
+    }
+    submitted += Number(result.success) || 0;
+    remaining = Number(result.remain) || 0;
+    if (remaining <= 0 && index + 1 < urls.length) return quotaReached(urls.length - index - 1);
+  }
+  return { status, submitted, remaining };
 }
 
 function argumentValue(name) {
