@@ -274,6 +274,7 @@
   const themePicker = document.getElementById('theme-picker');
   const accentMessage = { neutral: 'neutralAccent', blue: 'blueAccent', forest: 'forestAccent', violet: 'violetAccent' };
   function syncThemePicker() {
+    if (!themePicker) return;
     const preference = window.DevTrendsTheme.get();
     const accent = window.DevTrendsTheme.getAccent();
     themePicker.querySelectorAll('[data-theme-choice]').forEach(button => {
@@ -287,7 +288,9 @@
     themePicker.querySelector('summary').title = label;
   }
   syncThemePicker();
-  themePicker.addEventListener('click', event => {
+  // Every page shell ships the picker, but a missing one must never take the rest of the script down
+  // with it (that is how the dynamic product pages used to lose their filters and tracking).
+  themePicker?.addEventListener('click', event => {
     const accentButton = event.target.closest('[data-accent-choice]');
     if (accentButton) {
       window.DevTrendsTheme.setAccent(accentButton.dataset.accentChoice);
@@ -304,10 +307,10 @@
     themePicker.querySelector('summary').focus();
   });
   document.addEventListener('click', event => {
-    if (!themePicker.contains(event.target)) themePicker.open = false;
+    if (themePicker && !themePicker.contains(event.target)) themePicker.open = false;
   });
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && themePicker.open) {
+    if (themePicker && event.key === 'Escape' && themePicker.open) {
       themePicker.open = false;
       themePicker.querySelector('summary').focus();
     }

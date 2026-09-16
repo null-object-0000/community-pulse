@@ -1,6 +1,44 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 
+const { topbarHtml, footerHtml } = require('../web/shared.js');
+const render = require('../scripts/render-site.js');
+
+// The dynamic product pages used to hand-copy the topbar and footer, which is how they ended up
+// without the appearance/accent/language pickers (and crashed app.js on the missing #theme-picker).
+// Both renderers must keep emitting the same chrome, so compare them byte for byte.
+function chromeOf(html) {
+  const topbar = html.match(/<header class="topbar">[\s\S]*?<\/header>/);
+  const footer = html.match(/<footer class="footer">[\s\S]*?<\/footer>/);
+  assert.ok(topbar && footer, 'page must render the global chrome');
+  return { topbar: topbar[0], footer: footer[0] };
+}
+
+test('static and dynamic pages render identical global chrome', async () => {
+  const { renderProductPage } = await import('../worker/project-page.mjs');
+  for (const locale of ['zh-CN', 'en']) {
+    const model = { catalogVersion: 'v1', product: {
+      id: 'prd_0123456789abcdef01234567', title: 'Owner/Repo', githubRepo: 'owner/repo', route: '/projects/owner/repo/',
+      canonicalUrl: 'https://github.com/owner/repo', firstSeenDate: '2026-09-01', lastSeenDate: '2026-09-15',
+      item: { summary: 'A useful project with enough text to index.' },
+      sources: [{ sourceId: 'showhn', sourceName: 'Show HN', firstSeenDate: '2026-09-01', lastSeenDate: '2026-09-15', observationCount: 2 }],
+    } };
+    const dynamic = chromeOf(renderProductPage(model, locale));
+    // No catalogue report needed: shell() only interpolates the template slots it is given.
+    const staticPage = chromeOf(render.shell({ locale, view: 'project', route: '/projects/owner/repo/', title: 't', description: 'd', content: '' }));
+    assert.equal(dynamic.topbar, staticPage.topbar, `${locale} topbar drift`);
+    assert.equal(dynamic.footer, staticPage.footer, `${locale} footer drift`);
+    // Guard the actual regression: the pickers must be present, not merely equal to each other.
+    assert.match(dynamic.topbar, /id="theme-picker"/);
+    assert.match(dynamic.topbar, /data-theme-choice="light"/);
+    assert.match(dynamic.topbar, /data-accent-choice="violet"/);
+    assert.match(dynamic.topbar, /id="language-picker"/);
+    assert.match(dynamic.topbar, /class="brand-logo"/);
+  }
+  assert.equal(topbarHtml({ locale: 'zh-CN', active: 'discover', homePath: '/' }).includes('aria-current="page"'), true);
+  assert.equal(footerHtml({ locale: 'en', homePath: '/en' }).includes('↗'), true);
+});
+
 test('catalog cache normalizes source order and keeps different combinations apart', async () => {
   const { apiCacheKey } = await import('../worker/index.js');
   const a = apiCacheKey(new Request('https://devtrends.site/api/v1/trends?facet=useCases&sources=showhn,producthunt,showhn'));

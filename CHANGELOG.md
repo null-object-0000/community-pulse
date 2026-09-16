@@ -21,7 +21,7 @@
 | 09-13 | 28 | 147 文件 +4,008/-394 | 671 文件 +902,580/-81 | 趋势分析、SEO、新增数据源 | community-pulse |
 | 09-14 | 23（另有未提交） | 42 文件 +2,261/-133 | 616 文件 +89,400/-7,572 | 投稿相似去重与全量日报回溯；配图与描述兜底；业务场景二级主题；GitHub Trending 历史回填；**全量产品库 + D1 趋势查询纵切** | community-pulse |
 | 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
-| 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区与收录记录版式 | community-pulse |
+| 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，并把全站顶栏/页脚收敛成一份实现 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -307,6 +307,13 @@
   - **收录记录挤成一行**：`sourceRows` 用的是 `<b>/<span>/<em>` 行内元素，而 `.timeline` 的样式只认 `<time>` / `<p>` / `.source-links`，所以来源名、日期区间、收录次数连成 `Product Hunt 新品2026年9月14日 - 2026年9月14日1 次收录`。改成 `<b>` + `<p class="source-history-meta">`，并补 `.timeline.source-history` 规则（行距、等宽数字、最后一行去掉 25px 时间轴尾巴）；同一来源只被收录过一次时不再打印重复的首末日期，收敛成 `2026年9月14日 · 1 次收录`。
   - **必须一起 bump 两个版本号**：详情页 HTML 走边缘缓存（`PRODUCT_RENDERER_VERSION`，缓存键的一部分）且 `styles.css` 是 `max-age=31536000, immutable`，只改模板或只改 CSS 都会继续命中旧产物。所以同步把 `worker/index.js` 的 `PRODUCT_RENDERER_VERSION` 提到 `20260916-layout`、`worker/project-page.mjs` 的 `ASSET_VERSION` 提到 `20260916-product-layout`。
   - **验证**：`npm run check` 189/189（新增详情页版式回归测试：`.project-identity` 必须存在、owner 与标题必须在同一个 heading 块里、无标志时首字母兜底、单日区间折叠与多日区间两种写法）。因为详情页要连 Hyperdrive/MySQL 才渲染，本地用一个 fixture model 直接调 `renderProductPage` 写进 `dist/` 预览：1280px 与 390px、浅色与深色主题下逐屏核对，并确认配图缩略图与「+N」按钮统一 92×58、侧栏与评论区位置不变。
+- **代码 / 动态详情页顶栏与页脚并入全站统一外壳**：版式修好之后，详情页右上角仍然只有「一个跳语言的按钮」——静态页的 `brand-logo` SVG、外观（浅色 / 深色 / 跟随系统）、主题色（4 个色板）和语言选择器全部缺失，页脚也少了标语。更严重的是 `web/app.js` 无条件读取 `#theme-picker`，在详情页上 `themePicker.querySelectorAll` 直接抛 `Uncaught TypeError: Cannot read properties of null`（线上实测），脚本从那一行起整段中断 —— 语言切换绑定、排序、粘性侧栏调度、外链埋点全部不再执行，只有抛错之前注册的评论区与灯箱还活着。
+  - **根因是外壳被手抄了两遍**：一份在静态模板 `web/index.html`，一份在 Worker 模板里，前者加了功能后者没跟上。这次把顶栏与页脚收敛到 `web/shared.js` 的 `topbarHtml()` / `footerHtml()`：静态站改成由 `{{topbar}}` / `{{footerHtml}}` 占位符注入，Worker 直接调用同一个函数。**这条路径是刻意的取舍**：`scripts/projects.js` 那条静态详情页早已不产出，Worker 侧再手抄一份「看起来一样」的标记，就是下一次漂移的种子。
+  - **静态站零变化**：改动前后用 `git worktree` 建了一份 HEAD 基线各自构建，把首页 / 日报 / 英文首页 / 趋势页 / 卡片页的 `<header class="topbar">` 与 `<footer>` 抽出来逐字节比对，5 个页面全部 IDENTICAL（含缩进空白）。`scripts/render-site.js` 里那些只为占位符存在、现在没人再读的值（`navigation` / `navLabel` / `themeLabel` / `zhChecked` …）一并删掉。
+  - **顺带修 app.js 的空值保护**：`syncThemePicker()` 与两个 `document` 级监听都先判断 `themePicker` 是否存在。外壳缺失不该再拖垮整段脚本 —— 这次是缺选择器，下次可能是任何一处标记调整。
+  - **Worker 现在 `import D from '../web/shared.js'`**（CJS UMD 文件）。为了不让「构建期 bundler 能不能吃下 CJS」变成上线时的赌博，本地用 esbuild 按 wrangler 的 `browser` / ESM / `workerd,worker,browser` 条件把 `project-page.mjs` 单独打了一次包并真的执行：产物 93.3kb，渲染出的 HTML 里品牌 SVG、4 个主题色按钮、语言选择器、页脚标语、上一轮的 `.project-identity` 全在。
+  - **版本号继续 bump**：`PRODUCT_RENDERER_VERSION` → `20260916-chrome`、`ASSET_VERSION` → `20260916-product-chrome`（`shared.js` 与 `app.js` 都变了，两者的 URL 版本都必须换）。
+  - **验证**：`npm run check` 190/190，新增「静态页与动态页的全局外壳必须逐字节一致」回归测试（同时断言 `#theme-picker`、`data-theme-choice`、`data-accent-choice`、`#language-picker`、`brand-logo` 确实存在，避免两边一起退化成「一样但都没有」）。本地 fixture 在 1280px 与 390px 下确认选择器可用：点「深色」后 `data-theme="dark"` 且 `aria-pressed` 同步、点紫罗兰后 `data-accent="violet"`；线上控制台不再出现那个 TypeError。
 
 ## 值得记录的决策
 

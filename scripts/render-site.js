@@ -12,24 +12,21 @@ function shell({ locale, view, route, title, description, content, data = {}, st
   const canonical = D.origin + lp(route, locale);
   const feedUrl = D.origin + lp('/feed.xml', locale);
   const active = view === 'report' ? (route === '/' ? 'discover' : 'archive') : (view === 'trend-cluster' ? 'trends' : view);
-  const navigation = [['discover', '/'], ['trends', '/trends/'], ['archive', '/reports/']].map(([key, url]) =>
-    `<a href="${lp(url, locale)}"${active === key ? ' aria-current="page"' : ''}>${t(locale, key)}</a>`).join('');
+  const homePath = lp('/', locale);
+  // The chrome lives in web/shared.js so the static shell and the Worker's dynamic product pages
+  // cannot drift; index.html only keeps the {{topbar}} / {{footerHtml}} slots.
+  const headerSearch = ['report', 'trend-cluster'].includes(view) ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '';
   const values = {
     locale, view, title: e(title), description: e(description), canonical, zhUrl: D.origin + route, enUrl: D.origin + '/en' + route,
     robots: noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large', ogLocale: locale === 'en' ? 'en_US' : 'zh_CN',
     ogImage: D.origin + '/og-image.png', ogImageAlt: locale === 'en' ? 'DevTrends — daily developer discoveries' : 'DevTrends 开发者趋势——大家都在做什么',
     feedUrl, feedTitle: locale === 'en' ? 'DevTrends daily discoveries' : 'DevTrends 开发者趋势日报',
-    homePath: lp('/', locale), navigation, navLabel: locale === 'en' ? 'Main navigation' : '主导航',
-    headerSearch: ['report', 'trend-cluster'].includes(view) ? `<label class="search header-search">${D.icon('search')}<span class="sr-only">${t(locale, 'search')}</span><input id="search" type="search" placeholder="${t(locale, 'search')}" autocomplete="off" /><kbd>⌘ K</kbd></label>` : '',
-    zhSelected: locale === 'zh-CN' ? 'selected' : '', enSelected: locale === 'en' ? 'selected' : '',
-    zhChecked: locale === 'zh-CN' ? 'true' : 'false', enChecked: locale === 'en' ? 'true' : 'false',
-    currentLanguage: locale === 'en' ? 'English' : '简体中文',
+    homePath, topbar: D.topbarHtml({ locale, active, homePath, headerSearch }), footerHtml: D.footerHtml({ locale, homePath }),
     content, structuredData: structured ? `<script type="application/ld+json">${D.json(structured)}</script>` : '',
     pageData: D.json({ ...data, locale, view, route }), pageScript: `<script src="/${view === 'cards' ? 'cards.js' : 'app.js'}?v=${assetVersion}" defer></script>`,
     headPreload: route === '/' ? `<link rel="preload" as="image" href="/globe.svg?v=${assetVersion}" fetchpriority="high" />` : '',
     bodyAttrs: bodyAttrs ? ` ${bodyAttrs}` : '',
-    ...Object.fromEntries(['skip', 'brandLabel', 'system', 'light', 'dark', 'footer', 'neutralAccent', 'blueAccent', 'forestAccent', 'violetAccent'].map(key => [key, t(locale, key)])),
-    languageLabel: t(locale, 'language'), themeLabel: t(locale, 'theme'), accentLabel: t(locale, 'accentTheme'), assetVersion,
+    skip: t(locale, 'skip'), assetVersion,
   };
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => {
     if (!(key in values)) throw new Error(`Missing template value: ${key}`);

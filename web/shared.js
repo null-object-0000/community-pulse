@@ -807,5 +807,53 @@
     try { storage.setItem(cardsProgressKey, JSON.stringify({ date, maxIndex })); } catch {}
     return { date, maxIndex, readCount: Math.min(maxIndex + 1, total), complete: total > 0 && maxIndex === total - 1 };
   }
-  return { origin, messages, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  // ---- global chrome: one implementation for every renderer ----
+  // The static builder injects these through the `{{topbar}}` / `{{footerHtml}}` placeholders in
+  // web/index.html; the Worker's MySQL-rendered product pages call the same functions. Copying this
+  // markup into the Worker by hand is exactly what left /products/* without the appearance and
+  // language controls — and, because app.js reads #theme-picker unconditionally, it also threw there
+  // and killed every binding after it. Keep both entry points on these two functions.
+  const navItems = [['discover', '/'], ['trends', '/trends/'], ['archive', '/reports/']];
+  function topbarHtml({ locale = 'zh-CN', active = '', homePath = localPath('/', locale), headerSearch = '' } = {}) {
+    const navigation = navItems.map(([key, url]) =>
+      `<a href="${localPath(url, locale)}"${active === key ? ' aria-current="page"' : ''}>${t(locale, key)}</a>`).join('');
+    const label = key => t(locale, key);
+    return `<header class="topbar"><div class="topbar-inner">
+      <a class="brand" href="${homePath}" aria-label="DevTrends"><svg class="brand-logo" width="34" height="34" viewBox="0 0 48 48" role="img" aria-label="DevTrends"><rect x="1" y="1" width="46" height="46" rx="12" fill="#161b22"/><path fill="#fff" fill-rule="evenodd" d="M9.5 9h12c9.39 0 17 6.72 17 15s-7.61 15-17 15h-12V9Zm8 8v14h4c4.97 0 9-3.13 9-7s-4.03-7-9-7h-4Z"/><path d="m15.5 30.51 5.8-5.81 3.7 2.8 6.7-7.7M27.48 20.62 31.7 19.8 31.47 24.09" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DevTrends<small>${label('brandLabel')}</small></span></a>
+      <nav class="main-nav" aria-label="${locale === 'en' ? 'Main navigation' : '主导航'}">${navigation}</nav>
+      ${headerSearch}
+      <div class="preferences">
+        <details class="theme-picker" id="theme-picker">
+          <summary aria-label="${label('theme')}" title="${label('theme')}">
+            <svg class="theme-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+            <svg class="theme-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20.5 14a9 9 0 0 1-10.5-10.5A9 9 0 1 0 20.5 14Z"/></svg>
+          </summary>
+          <div class="theme-options" role="group" aria-label="${label('theme')}">
+            <button type="button" data-theme-choice="light" aria-pressed="false"><span class="theme-option-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/></svg></span>${label('light')}<span class="theme-check" aria-hidden="true">✓</span></button>
+            <button type="button" data-theme-choice="dark" aria-pressed="false"><span class="theme-option-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 15.1A8.4 8.4 0 0 1 8.9 3.8 8.5 8.5 0 1 0 20.2 15.1Z"/></svg></span>${label('dark')}<span class="theme-check" aria-hidden="true">✓</span></button>
+            <button type="button" data-theme-choice="system" aria-pressed="true"><span class="theme-option-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>${label('system')}<span class="theme-check" aria-hidden="true">✓</span></button>
+            <div class="theme-options-divider" aria-hidden="true"></div>
+            <span class="accent-options-label">${label('accentTheme')}</span>
+            <div class="accent-options" role="group" aria-label="${label('accentTheme')}">
+              <button type="button" data-accent-choice="neutral" aria-label="${label('neutralAccent')}" title="${label('neutralAccent')}" aria-pressed="true"><span class="accent-swatch is-neutral" aria-hidden="true"></span><span class="theme-check" aria-hidden="true">✓</span></button>
+              <button type="button" data-accent-choice="blue" aria-label="${label('blueAccent')}" title="${label('blueAccent')}" aria-pressed="false"><span class="accent-swatch is-blue" aria-hidden="true"></span><span class="theme-check" aria-hidden="true">✓</span></button>
+              <button type="button" data-accent-choice="forest" aria-label="${label('forestAccent')}" title="${label('forestAccent')}" aria-pressed="false"><span class="accent-swatch is-forest" aria-hidden="true"></span><span class="theme-check" aria-hidden="true">✓</span></button>
+              <button type="button" data-accent-choice="violet" aria-label="${label('violetAccent')}" title="${label('violetAccent')}" aria-pressed="false"><span class="accent-swatch is-violet" aria-hidden="true"></span><span class="theme-check" aria-hidden="true">✓</span></button>
+            </div>
+          </div>
+        </details>
+        <details class="menu-picker language-picker" id="language-picker">
+          <summary aria-label="${label('language')}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5h14M5 17.5h14"/></svg><span data-menu-current>${locale === 'en' ? 'English' : '简体中文'}</span><svg class="menu-caret" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></summary>
+          <div class="menu-options" role="menu" aria-label="${label('language')}">
+            <button type="button" role="menuitemradio" aria-checked="${locale === 'zh-CN' ? 'true' : 'false'}" data-language-choice="zh-CN" data-menu-label="简体中文"><span>简体中文</span><span class="menu-check" aria-hidden="true">✓</span></button>
+            <button type="button" role="menuitemradio" aria-checked="${locale === 'en' ? 'true' : 'false'}" data-language-choice="en" data-menu-label="English"><span>English</span><span class="menu-check" aria-hidden="true">✓</span></button>
+          </div>
+        </details>
+      </div>
+    </div></header>`;
+  }
+  function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
+    return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
+  }
+  return { origin, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
