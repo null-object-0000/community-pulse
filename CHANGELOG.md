@@ -321,6 +321,10 @@
   - **Worker 不再自己拼链接**：`linkEntries` 改为调用同一个 `D.itemLinks`，只保留两处差异（用所有者原始大小写显示仓库、catalog 里的 `githubRepo` 作为仓库兜底），`PRODUCT_RENDERER_VERSION` → `20260916-links`、`ASSET_VERSION` → `20260916-product-links`。列表行的来源名链接也随之变准：以前中国独立开发者行把「来源」链到产品自己的网站，Trending / Show HN 行干脆不渲染链接。
   - **`hnUrl` 没进过 MySQL**：`scripts/catalog/build-mysql-import.js` 的 `DETAIL_FIELDS` 漏了它，所以 Show HN 详情页永远拿不到自己的讨论串。补上后 `item_json` 会带上该字段（补字段会改 `content_hash`，也就是 `catalogVersion`，由日报的快照重建自动带出）；历史产品要等它们再次被收录才会刷新，在那之前回落到 HN 看板，仍是正确的「来源」语义。
   - **验证**：`npm run check` 195/195（新增 `tests/item-links.test.js` 四条：hippoxOS 形状的三个目标、来源不与官网/仓库重复、有帖子时用帖子、无官网时不发第二个 GitHub；详情页新增「三个按钮的文案与 href」断言；`tests/site.test.js` 里「无链接条目渲染 span」改为断言链到看板）。另本地跑了一天份的 `catalog:build` + `check-mysql-import`，确认 `hnUrl` 真的写进了 `item_json` 且清单校验通过。
+  - **顺带查出的「官网消失」缺口（一天窗口，会自愈）**：追 v2ex 那条链接时发现，`scripts/catalog/build-mysql-import.js` 的 `loadEvidence()` 按**源文件自己的日期**去找仓库快照，而 V2EX 与两个 GitHub Trending 源把文档写在**观察日**分区（`$OBSERVED = TARGET + 1`），仓库快照却按 `--date $TARGET` 落盘 —— 于是那两个分区拿不到 `repositories`，整批 item 丢掉 homepage / language / stars / topics，详情页因此没有「官网」按钮（`raw/*.json` 里这份事实是齐全的，所以列表行与详情页还会对不上）。
+    - **修法**：找不到当天的快照就回落到**不晚于该文档日期的最新一份**（`repositoryEvidenceDate()`），并记忆化目录列表与解析结果；`github.snapshotDate` 仍然如实记录事实来自哪一天，页面不会假装数据是当天的。不向前借（文档早于所有快照时依旧保持「无事实」）。
+    - **范围比一开始估计的小得多，所以没有跑全量回填**：先量了历史才发现，这个缺口**只影响当时最新那个观察日分区**。日报 workflow 的导入范围是 `--start $TARGET --end $OBSERVED`，也就是每次都会把前一天的观察日分区再处理一遍，那时对应快照已经存在、分数也更高（多了 GitHub 事实），upsert 会直接覆盖 —— 所以它第二天就自愈。实测线上 5 个「最新收录不在 09-16 分区」且有 homepage 的详情页（llmxray / clistate / openstats / buff-term / hippoxOS）全部是 `GitHub + 官网 + 来源` 三个按钮，历史产品并没有积压。没有为此重建并上传 484 MB 的 catalog（那是没有收益的生产写入）——这一点纠正了我先前「历史产品保持现状」的判断。
+    - **验证**：`npm run check` 196/196，新增用例覆盖「观察日分区借最近一份快照」「同一天仍取当天」「文档早于所有快照时为 null」「借来的快照确实带出 homepage / language」；本地重建 2026-09-16 增量包，确认 `"homepage":"https://toto-study.com"` 已出现在该产品的 `item_json` 里。
 
 ## 值得记录的决策
 

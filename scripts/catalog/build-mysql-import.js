@@ -122,11 +122,42 @@ function taxonomyRows() {
   return rows;
 }
 
+// Repository snapshots are captured per report date (`capture_github_repositories_raw.js --date
+// $TARGET`), but V2EX and both GitHub Trending sources file their documents under the *observed*
+// date (`$OBSERVED = TARGET + 1`). Walking document dates therefore looked for
+// `github-repositories/<observed>.json`, found nothing, and passed `repositories: null` — so every
+// item in those partitions lost its homepage, language, stars and topics. That is what left their
+// detail pages without a 官网 button even though the report row (enriched from the TARGET snapshot)
+// had the site. Fall back to the newest snapshot at or before the document date; the facts keep
+// their own `snapshotDate`, so a page still reports how old the numbers are.
+const repositorySnapshotDates = new Map();
+function repositoryEvidenceDate(rawRoot, date) {
+  if (!repositorySnapshotDates.has(rawRoot)) {
+    const directory = path.join(rawRoot, 'github-repositories');
+    repositorySnapshotDates.set(rawRoot, fs.existsSync(directory)
+      ? fs.readdirSync(directory).map((name) => name.match(/^(\d{4}-\d{2}-\d{2})\.json$/)?.[1]).filter(Boolean).sort()
+      : []);
+  }
+  let found = null;
+  for (const value of repositorySnapshotDates.get(rawRoot)) {
+    if (value > date) break;
+    found = value;
+  }
+  return found;
+}
+
+const repositorySnapshots = new Map();
+function repositoriesFor(rawRoot, evidenceDate) {
+  const key = `${rawRoot}\0${evidenceDate}`;
+  if (!repositorySnapshots.has(key)) repositorySnapshots.set(key, loadGithubRepositories(rawRoot, evidenceDate).repositories);
+  return repositorySnapshots.get(key);
+}
+
 function loadEvidence(cache, rawRoot, date) {
   if (cache.has(date)) return cache.get(date);
-  const repositoryFile = path.join(rawRoot, 'github-repositories', `${date}.json`);
+  const evidenceDate = repositoryEvidenceDate(rawRoot, date);
   const evidence = {
-    repositories: fs.existsSync(repositoryFile) ? loadGithubRepositories(rawRoot, date).repositories : null,
+    repositories: evidenceDate ? repositoriesFor(rawRoot, evidenceDate) : null,
     descriptions: loadSiteDescriptions(date, rawRoot),
   };
   cache.set(date, evidence);
@@ -302,4 +333,4 @@ if (require.main === module) {
   catch (error) { console.error(error.stack || error.message); process.exitCode = 1; }
 }
 
-module.exports = { parseArgs, sourceDates, sqlValue, taxonomyRows, collectRows, buildMysqlImport, TABLES };
+module.exports = { parseArgs, sourceDates, sqlValue, taxonomyRows, collectRows, buildMysqlImport, loadEvidence, repositoryEvidenceDate, TABLES };

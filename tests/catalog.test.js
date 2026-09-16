@@ -4,7 +4,7 @@ const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
 const { identitiesFor } = require('../scripts/catalog/identity');
-const { buildMysqlImport, sqlValue } = require('../scripts/catalog/build-mysql-import');
+const { buildMysqlImport, sqlValue, loadEvidence, repositoryEvidenceDate } = require('../scripts/catalog/build-mysql-import');
 const { parseArgs, fetchJson, rangeStats } = require('../scripts/catalog/build-site-snapshot');
 const { loadItems } = require('../.agents/skills/community-pulse/scripts/source_raw_items');
 
@@ -50,6 +50,40 @@ test('source snapshots compile directly into a MySQL import package', () => {
 
 test('MySQL literals preserve backslashes and quotes', () => {
   assert.equal(sqlValue("path\\segment's"), "'path\\\\segment''s'");
+});
+
+test('observed-date source partitions borrow the newest repository snapshot at or before them', () => {
+  // V2EX / Trending file their documents under TARGET + 1 while the repository snapshot is captured
+  // under TARGET, so the exact-date lookup returned nothing and those items lost homepage, language,
+  // stars and topics — which is what left their detail pages without a 官网 button.
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-evidence-'));
+  const rawRoot = path.join(directory, 'source-raw');
+  fs.mkdirSync(path.join(rawRoot, 'github-repositories'), { recursive: true });
+  const snapshot = (date) => ({
+    schemaVersion: 1, sourceId: 'github-repositories', sourceName: 'GitHub 仓库快照',
+    targetDate: date, timezone: 'Asia/Shanghai', status: 'ok', complete: true,
+    records: [{ repository: 'owner/repo', response: {
+      html_url: 'https://github.com/owner/repo', full_name: 'owner/repo', description: 'd',
+      stargazers_count: 5, forks_count: 1, open_issues_count: 0, language: 'TypeScript',
+      license: { spdx_id: 'MIT' }, topics: ['ai'], homepage: 'https://site.dev', default_branch: 'main',
+    } }],
+  });
+  fs.writeFileSync(path.join(rawRoot, 'github-repositories', '2026-09-15.json'), JSON.stringify(snapshot('2026-09-15')));
+  fs.writeFileSync(path.join(rawRoot, 'github-repositories', '2026-09-13.json'), JSON.stringify(snapshot('2026-09-13')));
+  try {
+    assert.equal(repositoryEvidenceDate(rawRoot, '2026-09-16'), '2026-09-15');
+    assert.equal(repositoryEvidenceDate(rawRoot, '2026-09-15'), '2026-09-15');
+    assert.equal(repositoryEvidenceDate(rawRoot, '2026-09-14'), '2026-09-13');
+    assert.equal(repositoryEvidenceDate(rawRoot, '2026-09-12'), null);
+    const cache = new Map();
+    const observed = loadEvidence(cache, rawRoot, '2026-09-16');
+    assert.equal(observed.repositories.get('owner/repo').homepage, 'https://site.dev');
+    assert.equal(observed.repositories.get('owner/repo').language, 'TypeScript');
+    // A date before every snapshot keeps the old "no facts" behaviour instead of borrowing forwards.
+    assert.equal(loadEvidence(cache, rawRoot, '2026-09-12').repositories, null);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 test('site snapshot ranges are deterministic supersets of the recent catalog', () => {
