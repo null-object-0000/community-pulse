@@ -108,6 +108,19 @@ test('site snapshot jobs use the production Worker entry point, not the public z
   assert.match(workflow, /- name: 预检产品库读入口/);
 });
 
+test('snapshot rebuild can bypass the same-version cache without eating the next argument', () => {
+  // MySQL 里的投影变了但 `--to` 没变时必须能强制重建（手工补跑），否则整份快照原样吐回。
+  assert.equal(parseArgs([]).refresh, false);
+  assert.equal(parseArgs(['--refresh']).refresh, true);
+  assert.equal(parseArgs(['--refresh=false']).refresh, false);
+  // `--refresh` 是开关，不能像带值参数那样吞掉下一个参数。
+  const args = parseArgs(['--refresh', '--to', '2026-09-16']);
+  assert.equal(args.refresh, true);
+  assert.equal(args.to, '2026-09-16');
+  const workflow = fs.readFileSync(path.join(__dirname, '../.github/workflows/catalog-refresh.yml'), 'utf8');
+  assert.match(workflow, /catalog:snapshot -- --to "\$\{\{ steps\.dates\.outputs\.to \}\}" \$REFRESH/);
+});
+
 test('snapshot API rejects Cloudflare challenge HTML without retries or logging its body', async () => {
   let calls = 0;
   const challenge = async () => {

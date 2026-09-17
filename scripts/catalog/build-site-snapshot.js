@@ -23,15 +23,18 @@ function localizeSnapshotProducts(products) {
 
 function parseArgs(argv) {
   // Internal batch jobs use the same production Worker without the public site's zone WAF.
-  const options = { origin: process.env.CATALOG_API_ORIGIN || 'https://community-pulse.nichangen.workers.dev', out: DEFAULT_OUT, concurrency: 1 };
+  const options = { origin: process.env.CATALOG_API_ORIGIN || 'https://community-pulse.nichangen.workers.dev', out: DEFAULT_OUT, concurrency: 1, refresh: false };
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
-    const value = inline === undefined ? argv[++index] : inline;
+    // `--refresh` 是开关，不带值；其它参数都需要值。
+    const boolean = name === '--refresh';
+    const value = inline === undefined && !boolean ? argv[++index] : inline;
     if (name === '--origin') options.origin = value;
     else if (name === '--out') options.out = path.resolve(value);
     else if (name === '--concurrency') options.concurrency = Math.max(1, Number(value) || 1);
     else if (name === '--from') options.from = value;
     else if (name === '--to') options.to = value;
+    else if (name === '--refresh') options.refresh = inline === undefined || inline !== 'false';
     else throw new Error(`unknown argument: ${argv[index]}`);
   }
   return options;
@@ -172,7 +175,9 @@ async function buildSiteSnapshot(options) {
     const target = path.join(temp, pathname);
     let products;
     const prior = fs.existsSync(target) ? target : path.join(options.out, pathname);
-    if (fs.existsSync(prior)) {
+    // `--refresh` 强制跳过同版本缓存：MySQL 里的投影变了但 `--to` 没变时（例如历史数据回填后
+    // 手工补跑），缓存命中会让整份快照原样吐回来，`catalogVersion` 也不变，产品页继续吃旧内容。
+    if (!options.refresh && fs.existsSync(prior)) {
       const cached = JSON.parse(fs.readFileSync(prior, 'utf8'));
       if (cached.latest === latest && cached.ranges?.['12w']?.start === earliest && cached.type === type && cached.id === id) {
         products = cached.projects;

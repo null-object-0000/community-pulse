@@ -1,0 +1,117 @@
+name: 刷新产品库（MySQL + 站点快照）
+
+# 手动补跑「产品库投影」。适用场景：
+#   1. 仓库里的 source-raw / raw 修正过之后（例如 2026-09-17 的投稿正文插图回填），MySQL 里的
+#      `product_details.item_json` 还是旧投影，产品详情页与趋势分类页看不到新数据；
+#   2. 只想按当前 MySQL 重建站点快照 —— 传 `skip_import=true`。
+#
+# 幂等：导入全是 upsert（日期取 LEAST/GREATEST、详情按 observed_date + content_score 覆盖），
+# 重复跑不会写坏数据；快照按 `--to` 复用同版本缓存，重建后 `catalog-version.mjs` 变化会让
+# Worker 的产品页边缘缓存键失效。
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: '导入起始日期 YYYY-MM-DD'
+        required: true
+        default: '2026-01-01'
+      end:
+        description: '导入结束日期 YYYY-MM-DD（留空 = 最新已发布日报）'
+        required: false
+        default: ''
+      snapshot_to:
+        description: '站点快照截止日 YYYY-MM-DD（留空 = 最新已发布日报）'
+        required: false
+        default: ''
+      skip_import:
+        description: '只重建站点快照，不写 MySQL'
+        type: boolean
+        required: false
+        default: false
+      refresh_snapshot:
+        description: '跳过同版本快照缓存（MySQL 变了但日期没变时必须开）'
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: write
+
+env:
+  # 内部批处理走生产 Worker 的 workers.dev 入口，绕过公开主域的浏览器验证。
+  CATALOG_API_ORIGIN: https://community-pulse.nichangen.workers.dev
+
+jobs:
+  catalog-refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: 安装项目依赖
+        run: npm ci
+
+      - name: 确定日期范围
+        id: dates
+        run: |
+          LATEST="$(ls 知识/大家都在做什么/raw | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}\.json$' | sed 's/\.json$//' | sort | tail -1)"
+          START="${{ github.event.inputs.start }}"
+          END="${{ github.event.inputs.end }}"
+          TO="${{ github.event.inputs.snapshot_to }}"
+          [ -n "$END" ] || END="$LATEST"
+          [ -n "$TO" ] || TO="$LATEST"
+          echo "最近一期日报: $LATEST"
+          echo "导入范围: $START .. $END"
+          echo "站点快照: $TO"
+          echo "start=$START" >> "$GITHUB_OUTPUT"
+          echo "end=$END" >> "$GITHUB_OUTPUT"
+          echo "to=$TO" >> "$GITHUB_OUTPUT"
+
+      - name: 预检产品库读入口
+        run: |
+          node -e 'const { fetchJson } = require("./scripts/catalog/build-site-snapshot"); fetchJson(process.env.CATALOG_API_ORIGIN, "/api/v1/sources").then(data => { if (!Array.isArray(data.sources) || !data.sources.length) throw Error("Catalog API returned no sources"); console.log("Catalog API ready:", data.sources.length, "sources"); }).catch(error => { console.error(error.message); process.exitCode = 1; })'
+
+      - name: 生成 MySQL 导入包
+        if: ${{ github.event.inputs.skip_import != 'true' }}
+        run: |
+          node scripts/catalog/build-mysql-import.js --start "${{ steps.dates.outputs.start }}" --end "${{ steps.dates.outputs.end }}"
+          node scripts/catalog/check-mysql-import.js
+
+      - name: 写入 MySQL
+        if: ${{ github.event.inputs.skip_import != 'true' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "缺少 CLOUDFLARE_API_TOKEN：无法写入产品库。"
+            exit 1
+          fi
+          node scripts/catalog/upload-mysql.js
+
+      - name: 从 MySQL 生成版本化站点快照
+        run: |
+          REFRESH=""
+          [ "${{ github.event.inputs.refresh_snapshot }}" = "true" ] && REFRESH="--refresh"
+          npm run catalog:snapshot -- --to "${{ steps.dates.outputs.to }}" $REFRESH
+
+      - name: 提交并推送快照
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/catalog/site-snapshot/ worker/catalog-version.mjs
+          git commit -m "data(catalog): 重建站点快照至 ${{ steps.dates.outputs.to }}" || echo "无变更可提交"
+          for i in 1 2 3; do
+            if git push; then
+              break
+            else
+              echo "push 冲突, 第 ${i} 次 pull --rebase 后重试"
+              git pull --rebase origin main || true
+              sleep 2
+            fi
+          done
