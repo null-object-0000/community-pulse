@@ -421,6 +421,13 @@ test('submission issue bodies yield the description instead of the template scaf
   assert.equal(descriptionFromIssue('<p>一个把命令行输出变好看的终端工具，支持主题。</p>'), '一个把命令行输出变好看的终端工具，支持主题。');
   // 正文里的 `<` `>` 比较符不是标签，不能被吃掉
   assert.equal(descriptionFromIssue('把 a < b > c 的比较结果画成图表，支持导出 PNG。'), '把 a < b > c 的比较结果画成图表，支持导出 PNG。');
+  // 属性里带 `>` 的标签照常删干净
+  assert.equal(descriptionFromIssue('<img alt="a > b" src="https://x/a.png">文字'), '文字');
+  // ruanyf/weekly#9746（WorldX）：属性里多打了一个引号（`…94d7""`），而清洗用的那条
+  // `(?:[^<>"']+|"[^"]*"|'[^']*')*` 是有歧义重复的正则，回溯是指数级的 —— 2026-09-17 的产品库
+  // 全量补跑卡在这一行 4 小时没出来。现在改成线性扫描，畸形标签整段删掉。
+  const worldX = '<td align="center" valign="top" width="50%"><img src="https://github.com/user-attachments/assets/57b464a7-5954-4e57-a293-c4c9e34c94d7"" alt="WorldX: pixel world simulation with character dialogue sidebar" width="400"/></td>';
+  assert.equal(descriptionFromIssue(worldX), '');
   // 正文只有字段名和链接时返回空，交给上层用占位文案，而不是把「项目地址：」当简介
   assert.equal(descriptionFromIssue('项目地址：https://github.com/a/b'), '');
   assert.equal(descriptionFromIssue(''), '');

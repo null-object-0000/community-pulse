@@ -44,15 +44,49 @@ const MIN_DESCRIPTION_LENGTH = 15;
 
 // 投稿正文里真正会出现的 HTML 标签。只吃这份白名单，而不是「任意尖括号」——技术投稿的正文里
 // 常有 `<message-id>`、`a < b` 这类内容，它们不是标签。插图 `<img>` 由 issue-media.js 收进配图集。
-const HTML_TAG = new RegExp(
-  String.raw`<\/?(?:img|br|hr|div|p|a|span|strong|em|b|i|u|s|code|pre|blockquote|ul|ol|li|h[1-6]|table|thead|tbody|tr|td|th|figure|figcaption|picture|source|video|audio|details|summary|small|sub|sup|kbd|mark|center|font|section|article|header|footer)\b`
-  + String.raw`(?:\s+(?:[^<>"']+|"[^"]*"|'[^']*')*)?\/?>`, 'gi');
+const HTML_TAG_NAME = new RegExp(
+  String.raw`<\/?(?:img|br|hr|div|p|a|span|strong|em|b|i|u|s|code|pre|blockquote|ul|ol|li|h[1-6]|table|thead|tbody|tr|td|th|figure|figcaption|picture|source|video|audio|details|summary|small|sub|sup|kbd|mark|center|font|section|article|header|footer)\b`, 'gi');
+
+/**
+ * 删掉白名单里的 HTML 标签。
+ *
+ * **别把它写回一条正则**：`<\/?(?:…)\b(?:\s+(?:[^<>"']+|"[^"]*"|'[^']*')*)?\/?>` 里的
+ * `(?:[^<>"']+|"[^"]*"|'[^']*')*` 是有歧义的重复 —— `[^<>"']+` 能在任意位置把同一段属性文本切开，
+ * 整条匹配一旦失败，回溯次数就是指数级。实测 ruanyf/weekly #9746（WorldX，属性里多打了一个引号
+ * `…94d7""`）能让它永远跑不完：2026-09-17 的产品库全量补跑就是卡在这一步 4 小时没出来。
+ * 顺带它还漏掉了畸形标签（`<img src=" alt="b" width="400"/>` 里只吃掉 `<img src="`）。
+ * 改成一次线性扫描：认出标签名后，找引号外的第一个 `>` 收尾；找不到就原样留着。
+ */
+function stripHtmlTags(value) {
+  const text = String(value ?? '');
+  let out = '';
+  let last = 0;
+  HTML_TAG_NAME.lastIndex = 0;
+  for (let match; (match = HTML_TAG_NAME.exec(text)); ) {
+    let index = HTML_TAG_NAME.lastIndex;
+    let quote = '';
+    for (; index < text.length; index += 1) {
+      const char = text[index];
+      // 先遇到 `<` 就说明这个标签是畸形的（例如属性里多打了一个引号）：就地收尾，
+      // 把残骸整段删掉，而不是像以前那样把 `<img src=" alt="…` 留在简介里。
+      if (char === '<') break;
+      if (quote) { if (char === quote) quote = ''; continue; }
+      if (char === '"' || char === "'") { quote = char; continue; }
+      if (char === '>') break;
+    }
+    if (index >= text.length) break;                 // 到结尾都没收尾：剩下的原样保留
+    out += `${text.slice(last, match.index)} `;
+    // `>` 收尾：跳过它；`<` 收尾：从那个 `<` 继续找下一个标签。
+    last = text[index] === '>' ? index + 1 : index;
+    HTML_TAG_NAME.lastIndex = last;
+  }
+  return out + text.slice(last);
+}
 
 /** 去掉 markdown 内联标记与链接，压平空白。单行语义。 */
 function stripInlineMarkup(value) {
-  return String(value ?? '')
-    .replace(/<!--[\s\S]*?-->/g, '')                 // 模板里的 HTML 注释
-    .replace(HTML_TAG, ' ')                          // HTML 标签（`<img …>` 等）
+  const withoutComments = String(value ?? '').replace(/<!--[\s\S]*?-->/g, ''); // 模板里的 HTML 注释
+  return stripHtmlTags(withoutComments)             // HTML 标签（`<img …>` 等）
     .replace(/<https?:\/\/[^>\s]+>/g, '')            // <https://...>
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')            // 图片
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')         // [文本](链接) → 文本

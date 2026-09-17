@@ -398,6 +398,16 @@
   - **决策：为什么不做「最新事实 + 最好摘要」的字段级合并**。日更只导入 TARGET..OBSERVED 两天，构建期根本看不到那条旧的好行，所以规则必须由 MySQL 的 upsert 独立复算一遍；字段级合并要在 SQL 里做 JSON 手术、还得把阈值抄进 SQL，等于多出第二份难测的实现。评分优先只需要比较已经存在的 `content_score` 列，两条链天然一致。**代价**：这一行的官网 / 配图也停在更丰富的那次观测上（「最近收录」来自 `products` 表，仍然是最新的）；`detailScore` 的权重一改，旧行存的分数与新行不可比，必须重跑全量导入。
   - upsert 里的 `observed_date` 也从 `GREATEST(...)` 改成「跟着赢的那一行走」：否则被顶掉的那次导入会把日期抬到新行、内容却还是旧行，「日期 + 分数」不再描述同一行。
 - **代码 / 薄页门禁与补描述下限收敛成一份阈值**（`web/shared.js` 新增 `DETAIL_SUMMARY_MIN = 20`）：Worker 详情页决定 `robots` 的判定、站点快照的 `indexable`、`scripts/search-submit.js` 以前各写一份 20，采集层补描述（`source_raw_items.js` 的 `DESCRIPTION_MIN_LENGTH`）却写 40 —— 补描述的目的本来就是让这一行不是薄页，两个数不一致的结果是 **20~39 字的真描述永远补不上**（`github-repositories` 层 893 个仓库里 95 个落在这段，例如 `chromedevtools/chrome-devtools-mcp` 的「Chrome DevTools for coding agents」），页面只能显示占位符。`collect.js` 的 `DESCRIPTION_DEDUPE_MIN_LENGTH = 40` 是另一回事（标题+描述相似度去重的守卫），没动。
+- **代码 / 投稿简介清洗里的一条指数级正则（这才是全量补跑跑不完的真凶）**：`issue-description.js` 删 HTML 标签用的
+  `<\/?(?:…)\b(?:\s+(?:[^<>"']+|"[^"]*"|'[^']*')*)?\/?>` 是有歧义重复的正则 —— `[^<>"']+` 能在任意位置把同一段属性文本切开，
+  整条匹配一旦失败，回溯次数就是指数级。触发它的是 ruanyf/weekly#9746（WorldX）正文里一个多打了引号的属性
+  （`…57b464a7…94d7""`）：本机单跑 `descriptionFromIssue` 在 1.5 KB 的正文上永不返回，`build-mysql-import` 走到
+  `weekly-issues/2026-04-24` 就定住。**两次产品库全量补跑都是卡在这里**（02:33Z 那次 4 小时 14 分，我中午那次 1 小时 50 分，
+  都停在「生成 MySQL 导入包」），我一开始误判成「私有仓库 runner 内存不够」，量了才发现跟内存无关。顺带它还有个正确性
+  问题：畸形标签只被吃掉前半截，`<img src=" alt="b" width="400"/>` 的残骸会留在简介里。
+  - **改法**：换成一次线性扫描（`stripHtmlTags`）—— 认出白名单标签名后，找引号外的第一个 `>` 收尾；先遇到 `<` 就当畸形标签，
+    就地删掉整段残骸。行为回归写进 `tests/site.test.js`（真实语料那一行 + 属性里带 `>` 的标签 + `a < b > c` 与 `<message-id>` 不被误伤）。
+  - **实测**：全历史导入 `collectRows`（2026-01-01 → 09-16，全来源，20.9 万行）**26 秒**跑完（修复前 >76 分钟没跑完，CI 4 小时没跑完）。
 - **验证**：`npm run check` **233/233**（新增 `tests/catalog.test.js` 两条：择优规则的单元用例 + upsert SQL 与新规则逐字一致、且不再是旧的 `VALUES(observed_date) > …`；`tests/description-fallback.test.js` 那条改为断言下限就是收录门禁）。离线把 12 周窗口重算一遍：快照里 **1,417 条 `noindex` 路由有 49 条（3.5%）**会拿回 ≥20 字摘要，其余 1,360 条确实没有可用描述、保持 noindex。**这一步还没在线上生效**：投影规则与阈值都要跑一次 `catalog-refresh.yml`（`start=2026-01-01` + `refresh_snapshot=true`）重写 MySQL 与站点快照，Worker 的详情页才会拿到新行。
 - **遗留（未做，留给下一轮）**：① 这一行的仓库仍解析成 `animal-island-ui` —— 同类错误在 1815 条带「项目地址」字段的投稿里有 **13 条**（正文先提了别的仓库），修法是「带字段名的地址行优先于正文第一个仓库链接」，属发布层解析规则，改动会影响历史日报的项目合并，没在这一版动；② ~~MySQL / 站点快照里的历史行要另跑 `catalog:build …` + `catalog:upload:mysql`~~（已由 `catalog-refresh.yml` 处理，见上条）；③ 正刊（`weekly-issue` 的 `![](cdn.beekka.com/…)`）与 HelloGitHub 月刊的推荐配图是同一类需求，但它们的图在另一条解析链上，且要新增 `cdn.beekka.com` 白名单，没顺手做。
 
