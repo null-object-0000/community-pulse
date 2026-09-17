@@ -416,6 +416,11 @@ test('submission issue bodies yield the description instead of the template scaf
   assert.equal(descriptionFromIssue(body), '一个把命令行输出变好看的终端工具，支持主题。');
   assert.equal(descriptionFromIssue('项目名称：langid\n\n项目描述：用于识别输入文本所属的语种。\n\n项目依赖：numpy\n'), '用于识别输入文本所属的语种。');
   assert.equal(descriptionFromIssue('这是一段普通介绍，没有模板字段，应当原样保留。'), '这是一段普通介绍，没有模板字段，应当原样保留。');
+  // 正文里的插图 `<img>` 归 issue-media.js 的配图集，标签本身不能当简介（曾经留下 `src=" />` 残骸）
+  assert.equal(descriptionFromIssue('<img width="3612" height="1898" alt="Image" src="https://github.com/user-attachments/assets/abc" />\n\n一张手绘风图标库，零依赖、支持 currentColor。'), '一张手绘风图标库，零依赖、支持 currentColor。');
+  assert.equal(descriptionFromIssue('<p>一个把命令行输出变好看的终端工具，支持主题。</p>'), '一个把命令行输出变好看的终端工具，支持主题。');
+  // 正文里的 `<` `>` 比较符不是标签，不能被吃掉
+  assert.equal(descriptionFromIssue('把 a < b > c 的比较结果画成图表，支持导出 PNG。'), '把 a < b > c 的比较结果画成图表，支持导出 PNG。');
   // 正文只有字段名和链接时返回空，交给上层用占位文案，而不是把「项目地址：」当简介
   assert.equal(descriptionFromIssue('项目地址：https://github.com/a/b'), '');
   assert.equal(descriptionFromIssue(''), '');

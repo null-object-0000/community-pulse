@@ -7,6 +7,7 @@ const path = require('path');
 const zlib = require('zlib');
 const { discoverItemRepository, normalizeGitHubRepoUrl, repositoryKey } = require('./github_repo_utils');
 const { descriptionFromIssue } = require('./issue-description');
+const { issueImages } = require('./issue-media');
 const { issueAdmission } = require('./issue-admission');
 const D = require('../../../../web/shared.js');
 const { boardBySourceId } = require('./chinese_indie_boards');
@@ -153,6 +154,9 @@ function issueItems(document, src, options = {}) {
     .filter((issue) => src.id !== 'weekly-issues' || !isArticleSubmission(issue.title || ''))
     .map((issue) => {
     const issueUrl = issue.html_url || `https://github.com/${repository}/issues/${issue.number}`;
+    // 作者自己在正文里贴的插图 → 产品的「原始配图」（见 issue-media.js）。与简介同源同规则：
+    // 图收进配图集，`<img>` 标签不再出现在简介里。
+    const images = issueImages(issue.body);
     const item = {
       sourceId: src.id,
       title: issue.title || '',
@@ -166,6 +170,7 @@ function issueItems(document, src, options = {}) {
       tags,
       externalId: String(issue.number),
       issueUrl,
+      ...(images.length ? { images, image: images[0] } : {}),
     };
     const admission = issueAdmission(item);
     if (admission.status === 'review') item.admission = admission;

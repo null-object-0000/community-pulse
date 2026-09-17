@@ -42,10 +42,17 @@ const PLAIN_VALUE = /^(?:js|ts|javascript|typescript|python|rust|go|golang|java|
 
 const MIN_DESCRIPTION_LENGTH = 15;
 
+// 投稿正文里真正会出现的 HTML 标签。只吃这份白名单，而不是「任意尖括号」——技术投稿的正文里
+// 常有 `<message-id>`、`a < b` 这类内容，它们不是标签。插图 `<img>` 由 issue-media.js 收进配图集。
+const HTML_TAG = new RegExp(
+  String.raw`<\/?(?:img|br|hr|div|p|a|span|strong|em|b|i|u|s|code|pre|blockquote|ul|ol|li|h[1-6]|table|thead|tbody|tr|td|th|figure|figcaption|picture|source|video|audio|details|summary|small|sub|sup|kbd|mark|center|font|section|article|header|footer)\b`
+  + String.raw`(?:\s+(?:[^<>"']+|"[^"]*"|'[^']*')*)?\/?>`, 'gi');
+
 /** 去掉 markdown 内联标记与链接，压平空白。单行语义。 */
 function stripInlineMarkup(value) {
   return String(value ?? '')
     .replace(/<!--[\s\S]*?-->/g, '')                 // 模板里的 HTML 注释
+    .replace(HTML_TAG, ' ')                          // HTML 标签（`<img …>` 等）
     .replace(/<https?:\/\/[^>\s]+>/g, '')            // <https://...>
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')            // 图片
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')         // [文本](链接) → 文本

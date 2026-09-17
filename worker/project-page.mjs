@@ -59,15 +59,11 @@ function linkEntries(product, locale) {
   return entries.filter(([, url]) => url && !seen.has(url.toLowerCase()) && seen.add(url.toLowerCase()));
 }
 
+// 图片可信判断只有一份实现（web/shared.js 的 managedImage / hotlinkable）：镜像路径、镜像域名
+// 与回源白名单都在那里。这里以前抄了一份 host 列表，结果是同一张投稿插图在日报行上有、在
+// 详情页配图区被整排丢掉。改成直接问它。
 function trustedImage(value) {
-  const url = safeUrl(value);
-  if (!url) return '';
-  const parsed = new URL(url);
-  if (['ph-files.imgix.net', 'akxlagkpqhwjrwrq.public.blob.vercel-storage.com'].includes(parsed.hostname.toLowerCase())) return url;
-  if (parsed.hostname.toLowerCase() === 'img.devtrends.site' &&
-      /^\/images\/[a-f0-9]{64}\.(?:png|jpg|gif|webp|avif|ico|svg)$/.test(parsed.pathname) &&
-      !parsed.search && !parsed.hash) return url;
-  return '';
+  return D.localImage(typeof value === 'string' ? value : (value?.url || ''));
 }
 
 function productGallery(item, locale) {

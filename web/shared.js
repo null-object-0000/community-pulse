@@ -329,6 +329,21 @@
     'akxlagkpqhwjrwrq.public.blob.vercel-storage.com', // VibeCafé product media
     'ph-files.imgix.net', // Product Hunt launch media
   ]);
+  // GitHub 上的投稿插图（issue 附件与仓库里提交的截图）不能按 host 整站放行 —— 那样 `github.com`
+  // 的任意页面地址都会变成可渲染的 `<img>`。所以按「host + 路径形状」放行三种确定是图片的位置：
+  //   github.com/user-attachments/assets/<uuid>              投稿附件（302 到带签名的 S3 图片，可长期引用）
+  //   github.com/<owner>/<repo>/blob/<ref>/…<ext>?raw=true   仓库里的图片，GitHub 按 raw 直出
+  //   raw.githubusercontent.com/<owner>/<repo>/<ref>/…<ext>  仓库原始文件
+  // 这份白名单只有这一处实现：浏览器、Worker 详情页与构建期（scripts/image-store.js）都问它。
+  const IMAGE_FILE_PATH = /\.(?:png|jpe?g|gif|webp|avif|svg)$/i;
+  const hotlinkPaths = [
+    ({ hostname, pathname }) => hostname === 'github.com'
+      && /^\/user-attachments\/assets\/[0-9a-f][0-9a-f-]{10,}$/i.test(pathname),
+    ({ hostname, pathname, searchParams }) => hostname === 'github.com'
+      && /^\/[^/]+\/[^/]+\/blob\/[^/]+\/.+$/i.test(pathname) && IMAGE_FILE_PATH.test(pathname) && searchParams.has('raw'),
+    ({ hostname, pathname }) => hostname === 'raw.githubusercontent.com'
+      && /^\/[^/]+\/[^/]+\/[^/]+\/.+$/i.test(pathname) && IMAGE_FILE_PATH.test(pathname),
+  ];
   const localImagePath = /^\/images\/[a-f0-9]{64}\.(png|jpg|gif|webp|avif|ico|svg)$/;
   // Mirrors can also be served from the CDN origin that `IMAGE_BASE` selects at build time
   // (see scripts/image-store.js). Only these hosts may appear in markup, so a foreign origin
@@ -336,7 +351,10 @@
   const imageOrigins = new Set(['img.devtrends.site']);
   function hotlinkable(value) {
     const url = safeUrl(value);
-    return url && hotlinkOrigins.has(new URL(url).hostname.toLowerCase()) ? url : '';
+    if (!url) return '';
+    const parsed = new URL(url);
+    if (hotlinkOrigins.has(parsed.hostname.toLowerCase())) return url;
+    return hotlinkPaths.some(rule => rule(parsed)) ? url : '';
   }
   // A managed mirror is either a same-site path or the same content-addressed path on the
   // configured image CDN. Anything else is not a managed image.
