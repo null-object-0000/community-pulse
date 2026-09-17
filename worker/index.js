@@ -13,7 +13,13 @@ import { CATALOG_VERSION } from './catalog-version.mjs';
 const VERIFICATION_FILE = /^\/(baidu_verify_[A-Za-z0-9._-]+)\.html$/;
 const CACHED_API = new Set(['/api/v1/sources', '/api/v1/trends', '/api/v1/products']);
 const PRODUCT_ROUTE = /^\/(?:en\/)?(?:projects\/[a-z0-9_.-]+\/[a-z0-9_.-]+|products\/prd_[a-f0-9]{24})\/?$/i;
-const PRODUCT_RENDERER_VERSION = '20260916-mark-tone';
+// 详情页缓存键的第二段：渲染逻辑变了要手改，让全部详情页重新渲染一次。
+// **产品库补跑之后也常常需要改它**：详情页的 `s-maxage` 是 24 小时，而 `CATALOG_VERSION` 只在
+// 站点快照重建时变。2026-09-17 手工补跑就撞到过一次——快照提交触发部署、`CATALOG_VERSION` 变了，
+// 但部署后第一批请求（我的巡检脚本）读到的还是补跑前的行，于是这份「旧内容的渲染」被存进了新键，
+// 规范化 URL 要等 24 小时才自愈（同一路由去掉尾斜杠、换个大小写就能绕过缓存看到正确内容）。
+// 判断方法：`curl` 一个等价但 pathname 不同的地址，若内容正确，就是缓存而不是数据。
+const PRODUCT_RENDERER_VERSION = '20260917-catalog-refresh';
 
 // Cache API entries are local to each Cloudflare data center. A versioned key keeps later SQL or
 // taxonomy releases from reading an older response while each entry stays fresh for at most 5 min.
