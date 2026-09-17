@@ -22,6 +22,7 @@
 | 09-14 | 23（另有未提交） | 42 文件 +2,261/-133 | 616 文件 +89,400/-7,572 | 投稿相似去重与全量日报回溯；配图与描述兜底；业务场景二级主题；GitHub Trending 历史回填；**全量产品库 + D1 趋势查询纵切** | community-pulse |
 | 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
 | 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，把全站顶栏/页脚收敛成一份实现；修正详情页 GitHub / 官网 / 来源三个入口的取值链；给透明底的浅色产品标志做明暗判定并换深色底板 | community-pulse |
+| 09-17 | 3 | 8 文件 +383/-9 | 518 文件 +14,225/-5,009 | 投稿正文的插图与描述分家：正文 `<img>`/`![]()` 进产品配图集（GitHub 三种地址按路径白名单回源），标签不再漏进简介；回源白名单收敛成一份实现 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -373,6 +374,23 @@
   - **全量重放顺带把历史修复补齐了**：`27de6ab`（观察日分区借最近一份仓库快照）此前只对日更窗口生效，这次全量重放把它带到全部历史 —— 只有 4 个**语言簇**的周计数与示例发生变化（`rust` recent 7→8，`go` / `javascript` / `java-kotlin` 的周计数各 +1），其余 24 个簇逐字节一致，符合「原先只有最新观察日分区拿不到 homepage / language / stars」的判断。
   - **快照的 `catalogVersion` 以前只随 MySQL 数据变化**：现在 `files` 哈希里含本地化后的地址，只要镜像清单更新过它就会变，产品页缓存不会继续吃旧内容。
 - **验证**：`npm run check` 213/213（新增两条：`localizeSnapshotProducts` 的改写与宽松回退、MySQL 导入包「清单里有映射的标志必须已本地化、且 `markTone` 只可能是 light」的不变量）。本地重建后分类页 `java-kotlin` 从 1/5 行有 logo 变成 3/5（剩两行本来就没有标志字段）。线上实测：`/projects/pacifio/atlas/` 的英雄区从 `at` 变成 `class="project-mark has-logo is-light"`（浅色标志 + 深色底板）；定向抽取 10 个「此前只剩首字母」的 `/products/prd_*` 详情页，现在 10/10 都渲染出 logo。顺带确认随机抽样为什么看不出效果：全站只有 2.3% 的产品带标志，随机抽 25 个详情页命中率本来就很低。
+
+## 2026-09-17（3 个提交）· 投稿正文的插图与描述分家
+
+用户当天复核 ruanyf/weekly#11740（Naive Icons）时问「他其实 img 里类似是来源插图，我们要看怎么处理下」，随后把口径定成两句：**正文里的 `<img>` 应该算该产品的插图**，**但不该算产品描述**。查完发现这是两个独立的缺陷，其中一个还牵出第三处。
+
+- **诊断 / 这张图其实不是正文里的图**：投稿行的 `images` 一直是空的（配图只有 VibeCafé 的 `imageUrls` 与 Product Hunt 的 `media`），行上显示的图来自我们自己的三层（官网首屏截图 / `siteLogo` / `ogImage`），而这一行的仓库解析错了 —— 正文第一个 GitHub 链接是作者**另一个**项目 `animal-island-ui`（括号里的一句「作者新项目」），`discoverItemRepository()` 取「正文里第一个仓库地址」，于是 4.6k star、语言标签、logo、截图、`/projects/guokaigdg/animal-island-ui/` 全跟着错，抓到的「官网截图」就是那个项目的插画风首页。真身在 `- 地址:` 行：`guokaigdg/naive-icons`（6 star / MIT / 09-13 建）。**这一版没有动仓库解析规则**（见「遗留」）。
+- **诊断 / 简介里的 `<img>` 是真的**：`stripInlineMarkup` 只删 URL 不删标签，而 `src="https://…"` 的裸链接正则把收尾引号一起吃掉了，于是简介开头留下 `<img width="3612" height="1898" alt="Image" src=" />`；全量扫 `raw/*.json`，**1223 / 11494 行**如此，旧版本还留下 `!Image` / `!截图` 这类 markdown 图片 alt 残骸（约 1700 行）。
+- **代码 / 投稿插图进配图集**（新增 `issue-media.js`，接线在 `source_raw_items.js` 的 `issueItems`）：`issueImages(body)` 按正文顺序取 `<img src>` 与 markdown `![]()`，≤9 张、按地址去重，挂成 `images` + `image`（首张），与平台配图同属「原始配图」层 —— 于是它排在官网截图与 OG 图前面，成为封面与灯箱第一张。
+  - **决策：只收渲染得出来的地址**（唯一口径 `D.hotlinkable`）。GitHub 的三种形状按「host + 路径形状」放行：`github.com/user-attachments/assets/<uuid>`（302 到带签名的 S3 图）、`github.com/<owner>/<repo>/blob/<ref>/…<ext>?raw=true`、`raw.githubusercontent.com/…`。**为什么不用 host 白名单**：`github.com` 整站不是图床，放行 host 等于让任意仓库页地址都能进 `<img>`。实测 3530 条带图投稿里 **2977 条（84%）**至少有一张 GitHub 托管的图（可放行 6736 张，含 470 张 `blob?raw=true`），剩下 2011 张落在 553 条里，是 imgur / jsdelivr / 各类对象存储的长尾 —— 这一版**不收**，因为收进来渲染不了会让 strict 构建直接抛 `Image has not been synced`（仓里没有它们的镜像通道）。
+  - **决策：配图走回源、不镜像**，与既有配图同一条通道（镜像的只有产品标志），所以这次回填不需要 `images:sync` / R2 上传；代价是页面直接吃原图（实测投稿图常见 1~3 MB），与 Product Hunt 图集一直以来的做法一致。长尾图床要进来，先得有镜像通道。
+  - **徽章不是插图**：`img.shields.io` / `badgen` 这类 host 与 `badge.svg`、GitHub Actions 徽章路径剔除；`![推广图]`、`![Image]` 这类 alt 残骸在回填时清理。提取用 `(?:\s|^)src=` 而不是 `\bsrc=` —— 后者会命中 `data-src` 懒加载占位图（回归测试先抓到了这个坑）。
+- **代码 / 描述不再吃标签**：`stripInlineMarkup` 改为按 **HTML 标签白名单**删标签（40 来个真实标签名 + 带引号的属性）。**试过又放弃**：通用 `/<[^>]*>/` 更简单，但它会把技术投稿正文里的 `<message-id>`（HelloGitHub 的 ChatDrop 那条 `chatdrop context '<message-id>'` 命令行示例）一起吃掉，实测在 09-16 的 raw md 里已经能看到这种误伤，所以退回白名单；正文里的 `<` `>` 比较符照样不受影响。
+- **代码 / 回源白名单收敛成一份实现**：`worker/project-page.mjs` 的 `trustedImage()` 以前抄了一份 host 列表（PH + vercel blob + 镜像域名），现在直接复用 `D.localImage()`。新增的 GitHub 路径规则因此**一次生效于三处**（浏览器 `D.localImage`、Worker 详情页、构建期 `scripts/image-store.js` 的 strict 校验），不必再像 09-15 那样改一个漏一个。
+- **数据 / 历史回填**（新增 `backfill_issue_media.js`，离线、不联网、不重跑 collect）：259 期日报跑完 = 258 个 `raw/*.json`（补插图 **1535 行**、清简介残骸 **1673 行**）、258 个 raw `.md`、2 个 `final/*.md`（连隐藏 `devtrends-i18n` 元数据里的 `summaryZh` 一起改）。逐文件核对过：**只动 `images` / `image` / `summary` 三个字段**，item 数与其它字段逐字节不变。
+  - **决策：历史简介只删残骸、不重算**。历史行是当时解析规则的结果，用今天的规则重算，抽样 294 行里 **157 行**会变（多数与图片无关，比如「地址：」这类残留字段名被顺带删掉），那是一次远超本次范围的改写；宁可只做「把图片残骸拿掉」这一件事。
+- **验证**：`npm run check` **230/230**（新增 `tests/issue-media.test.js` 6 条：白名单形状、提取顺序/去重/上限、徽章与不可渲染地址、实体解码与 `data-src`、端到端挂载、无图行不产生空字段；`site.test.js` 的投稿简介用例补了 `<img>` / `<p>` / `a < b` 三条）。重建后 `dist/data/reports/*.json` 里 `src=" />` 残骸 **0 处**；11740 的 `images` = 投稿自己那张 3612×1898 图，`summaryZh` 已是干净文本。
+- **遗留（未做，留给下一轮）**：① 这一行的仓库仍解析成 `animal-island-ui` —— 同类错误在 1815 条带「项目地址」字段的投稿里有 **13 条**（正文先提了别的仓库），修法是「带字段名的地址行优先于正文第一个仓库链接」，属发布层解析规则，改动会影响历史日报的项目合并，没在这一版动；② MySQL / 站点快照里的历史行要另跑 `catalog:build --start 2026-01-01 --end 2026-09-16` + `catalog:upload:mysql` 才会带上新插图与干净简介（本轮只改了仓库里的 raw/final 与静态构建）；③ 正刊（`weekly-issue` 的 `![](cdn.beekka.com/…)`）与 HelloGitHub 月刊的推荐配图是同一类需求，但它们的图在另一条解析链上，且要新增 `cdn.beekka.com` 白名单，没顺手做。
 
 ## 值得记录的决策
 

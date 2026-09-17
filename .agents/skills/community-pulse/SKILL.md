@@ -170,6 +170,7 @@ Markdown 条目的三级标题统一使用纯文字，不在产品名称上包�
 | `capture_site_logos_raw.js` | 官网 Logo 兜底抓取 | 没有平台产品标志的行改读官网声明的图标, 按来源层日期落 `source-raw/site-logos/<date>.json`; 见下节 |
 | `validate_site_logos_raw.js` | 离线校验官网 Logo 层 | 用 source-raw 重算候选行, 校验计数/哈希/ok 记录的证据与覆盖率, 不联网 |
 | `backfill_site_logos.js` | 旧日报回填 `siteLogo` | 只把已抓到的图标 URL 写进缺标志的行, 不重跑 collect |
+| `backfill_issue_media.js` | 投稿旧日报补正文插图 | 用 `issue-media.js` 离线从 `content` 现算 `images`/`image`, 并删掉简介里的图片残骸; 只改这三个字段与对应 md, 不重算历史简介 |
 
 ## 官网 Logo 兜底层（site-logos）
 
@@ -232,6 +233,38 @@ cd ../../.. && npm run images:sync && npm run check
 （按 sourceId+externalId 匹配，退化时按页面 URL），`collect.js` 不联网；站点把 `siteLogo` 与 `logo`/`icon`
 一起镜像（`npm run images:sync`）并按 `logo → icon → siteLogo → 文字` 渲染 48px 头像。图标下载失败时
 清单里记 `null`，该行自动回到文字，不会出现破图。
+
+## 投稿正文插图（issue-media，2026-09-17 建成）
+
+投稿人自己在 Issue 正文里贴的图（`<img src>` 与 markdown `![]()`）是这个产品最真实的展示图，
+以前整段丢掉（只有 VibeCafé / Product Hunt 这类平台自带媒体的来源才有插图集）。
+现在 `issue-media.js` 的 `issueImages(body)` 按正文顺序取出来，由 `issueItems()` 挂成
+`images` + `image`（首张），与平台配图同为「原始配图」层，优先级高于官网截图与 OG 图。
+同一批正文以前还会把 `<img …>` 标签漏进简介（旧清洗只删 URL，留下 `src=" />` 残骸，
+全量 1223/11494 行），现在 `issue-description.js` 的 `stripInlineMarkup` 会按 HTML 标签白名单删掉标签。
+
+- **只收渲染得出来的地址**：白名单唯一口径是 `web/shared.js` 的 `D.hotlinkable`。GitHub 的三种
+  图片地址按「host + 路径形状」放行（`github.com/user-attachments/assets/<uuid>`、
+  `github.com/<owner>/<repo>/blob/<ref>/…<ext>?raw=true`、`raw.githubusercontent.com/…`），
+  长尾图床（imgur、各类对象存储）这一版不收 —— 收进来又渲染不了的图会让构建直接报错。
+  改白名单要同时看 `web/shared.js` 与 `worker/project-page.mjs`（后者现在直接复用 `D.localImage`）。
+- **徽章不是插图**：`img.shields.io` / `badgen` 这类 host 与 `badge.svg`、GitHub Actions 徽章路径被剔除。
+- 上限 9 张、按地址去重；`data:image/...`、相对路径、`data-src` 懒加载占位图都不收。
+
+历史回填（离线，不联网、不重跑 collect）：
+
+```bash
+cd .agents/skills/community-pulse
+node scripts/backfill_issue_media.js --dry-run
+node scripts/backfill_issue_media.js --start 2026-01-01 --end 2026-09-16
+cd ../../.. && npm run build
+```
+
+它只改三处：`raw/<date>.json` 的 `images`/`image` 与简介残骸、`raw/<date>.md` 的 `>` 摘要行、
+`final/<date>.md`（含隐藏 `devtrends-i18n` 元数据里的 `summaryZh`）。**历史简介只删图片残骸、
+不重算** —— 历史行是当时解析规则的结果，用今天的规则重算会顺带改写大量与图片无关的行
+（实测约一半的行会变）。MySQL / 站点快照里的历史行要另跑 `catalog:build --start --end` +
+`catalog:upload:mysql` 才会刷新。
 
 ## 原始来源层（source-raw）
 
