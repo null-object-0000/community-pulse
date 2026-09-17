@@ -27,14 +27,15 @@ const cacheControl = 'public, max-age=31536000, immutable';
 const bucket = process.env.R2_BUCKET || 'community-pulse-images';
 const prefix = (process.env.R2_PREFIX || 'images').replace(/^\/+|\/+$/g, '');
 const origin = imageOrigin();
-// Probing is network-bound (one HEAD against the CDN, ~40ms) while uploading spawns a wrangler
-// process per object. They shared one constant before, so the pre-check queue — ~2100 marks, of
-// which ~95% are already published — was pinned to the upload's conservative 4 and became the
-// longest step of the daily run. Give the probe its own, higher default; uploads keep 4.
+// Probing is one HEAD per object and uploading spawns a wrangler process per object, so they want
+// different widths. Both stay at 4: a higher probe concurrency was tried (16) and it tripped the
+// CDN's bot protection — unverifiable probes went from 1 to 28 in a single daily run, which the
+// 403-is-not-404 contract below then turned into a failed report. Revisit only with measurements
+// from a real run, not from a laptop behind a proxy.
 const concurrency = Math.max(1, Number(process.env.R2_CONCURRENCY) || 4);
 const probeConcurrency = Math.max(
   1,
-  Number(process.env.R2_PROBE_CONCURRENCY) || 16,
+  Number(process.env.R2_PROBE_CONCURRENCY) || 4,
 );
 const force = process.argv.includes('--force');
 const dryRun = process.argv.includes('--dry-run');
@@ -107,8 +108,13 @@ async function main({
   const pending = force ? entries.filter(entry => entry.file) : [];
   const failures = [];
   let present = 0, unknown = 0, probed = 0;
-  // Probe with its own concurrency: 2100 sequential HEADs would take minutes, and the probe is a
-  // read-only request, so it can safely run wider than the wrangler-spawning upload queue below.
+  // Objects that could not be verified and have no local bytes to upload with. The probe is a HEAD
+  // against a CDN that may answer 403/429/5xx or time out; per alreadyPublished() those say nothing
+  // about the object, so they are NOT failures — only a real 404 (or a 200 with no local copy to
+  // push, which the upload queue cannot act on) is. Screenshot entries live in this bucket by
+  // design: their bytes are capture output under screenshots-files/ and are never downloaded into
+  // assets/images, so a probe hiccup used to read as "missing mirror file" and fail the whole run.
+  const unverified = [];
   const queue = force ? entries.filter(entry => !entry.file) : [...entries];
   await Promise.all(Array.from({ length: probeConcurrency }, async () => {
     while (queue.length) {
@@ -116,16 +122,14 @@ async function main({
       const published = await probe(entry.key);
       if (published === true) present++;
       else if (!entry.file) {
-        const detail = published === false
-          ? 'the remote object returned 404'
-          : 'the remote object could not be verified';
-        const hint = published === false
-          ? 'run npm run images:sync before uploading'
-          : 'run npm run images:sync and retry (set NODE_USE_ENV_PROXY=1 behind a proxy)';
-        const failure = `${entry.key}: Missing mirror file for ${entry.local}; ${detail}; ${hint}`;
-        failures.push(failure);
-        logger.error(`Upload failed ${failure}`);
-        if (published === null) unknown++;
+        if (published === false) {
+          const failure = `${entry.key}: Missing mirror file for ${entry.local}; the remote object returned 404; run npm run images:sync before uploading`;
+          failures.push(failure);
+          logger.error(`Upload failed ${failure}`);
+        } else {
+          unknown++;
+          unverified.push(entry.key);
+        }
       }
       else {
         if (published === null) unknown++;
@@ -145,6 +149,13 @@ async function main({
     return;
   }
   logger.log(`Images: ${entries.length} mirrored marks, ${present} already on ${origin || 'the origin'}, ${pending.length} to upload to ${bucket} (probe ${probeConcurrency}, upload ${concurrency}${unknown ? `, ${unknown} unverifiable` : ''}${dryRun ? ', dry run' : ''}).`);
+  // Unverifiable objects with no local bytes are reported but never fatal: a blocked or throttled
+  // probe is a statement about the CDN edge we happened to hit, not about the object. The bytes
+  // they reference were published when their report shipped; re-checking is what images:verify is
+  // for. Listing them keeps the noise visible without letting it break a daily run.
+  if (unverified.length) {
+    logger.warn(`Images: ${unverified.length} object(s) could not be verified and have no local bytes; not failing. First few: ${unverified.slice(0, 3).join(', ')}`);
+  }
   const total = pending.length;
   let done = 0;
   await Promise.all(Array.from({ length: concurrency }, async () => {

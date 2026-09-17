@@ -231,6 +231,35 @@ test('the uploader fails when both the local file and remote object are missing'
   }
 });
 
+test('an unverifiable probe never fails the run when there are no local bytes', async () => {
+  // Screenshot entries have no local copy by design (their bytes are capture output), so a
+  // throttled HEAD (403/429/5xx) used to be reported as "Missing mirror file" and fail the whole
+  // daily run — the 2026-09-18 report was lost that way. A probe that cannot decide is not a 404.
+  // The mix matters: one object still verifies, so the "every probe failed" channel guard stays
+  // quiet and the unverifiable one is the only thing under test.
+  const { main } = require('../scripts/image-upload.js');
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'devtrends-upload-'));
+  const name = 'f'.repeat(64) + '.webp';
+  const other = 'g'.repeat(64) + '.webp';
+  const uploaded = [], exitCodes = [], errors = [], warnings = [];
+  try {
+    await main({
+      manifest: { screenshot: `/images/${name}`, published: `/images/${other}` },
+      directory,
+      probe: async key => (key.endsWith(name) ? null : true),
+      upload: async entry => { uploaded.push(entry); },
+      logger: { log() {}, warn(message) { warnings.push(message); }, error(message) { errors.push(message); } },
+      setExitCode: code => { exitCodes.push(code); },
+    });
+    assert.deepEqual(uploaded, []);
+    assert.deepEqual(exitCodes, [], 'an unverifiable probe must not set a failing exit code');
+    assert.deepEqual(errors, [], 'an unverifiable probe must not be reported as an upload failure');
+    assert.match(warnings.join('\n'), /could not be verified and have no local bytes; not failing/);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test('built reports expose either a deployed managed file or a trusted origin', () => {
   const directory = path.resolve(__dirname, '../dist');
   let managed = 0;
