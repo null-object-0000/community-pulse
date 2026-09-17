@@ -18,7 +18,7 @@
           "author": "Justin-sky",
           "authorUrl": "https://github.com/Justin-sky",
           "publishedAt": "2026-08-29T01:48:10Z",
-          "summary": "我是这个项目的作者，自荐一下。 现在的 AI 视频/图片创作大多是「网页抽卡」：提示词扔进网页会话，等结果、碰运气，素材散落在各家平台的对话框里，想拼成片子还得再拷去剪辑软件。做短剧、广告这类要批量出内容的活儿，这套流程撑不住。 AI Art Engine 想把 AI 创作变成工程化生产：一个本地优先的桌面应用（Windows / macOS / Linux，GPL3.0），工程、素材、模型配置全部留在本地，项目本身不设任何服务端。创作流程用节点图组织——文本、图片、视频、声音、3D 模型都是画布上的节点，连线即流水线，批量任务排队执行，共同上游自动复用，最后在内置成片时间线上编排导出（ffmpeg 合成 MP4）。 几个我认为有意思的点： 短剧 Agent 流水线：单集剧本进去，Agent 依次完成节拍拆解、9 宫格分镜、4 宫格动态分镜（36 格），每一级产物都经过「导演审核」节点打分（PASS/FAIL，失败原因自动写入状态文件，重跑时自动带上），最终产出 36 条动态分镜视频。 3D 导演台：文生/图生 3D 模型（Meshy、Tripo、Rodin、Luma AI、Lux3D）连进节点即入 3D 舞台；也能丢参考图让 AI 用基础几何体搭出整座场景白模，摆机位、截站位图锁定构图，再喂给图生视频。 一键工作流：12 个行业模板（短剧分镜、游戏买量、电商带货、漫画出版、知识口播等），选模板 → 预览拓扑 → 落盘成宿主资产，也可以用自然语言让 AI 现场规划一张节点图。 不绑厂商：OpenAI、DeepSeek、智谱、Kimi、Google、可灵、MiniMax、火山方舟、ComfyUI 等 20+ 提供商，也支持 Ollama / vLLM / LM Studio 纯本地推理；模型 API Key 需自备（本地模型除外）。 GitHub： 官网与使用手册： 下载：Releases 提供 Windows / macOS / Linux 安装包 <img width=\"1440\" height=\"900\" alt=\"Image\" src=\" / <img width=\"1120\" height=\"760\" alt=\"Image\" src=\" / <img width=\"1440\" height=\"900\" alt=\"Image\" src=\" /",
+          "summary": "我是这个项目的作者，自荐一下。 现在的 AI 视频/图片创作大多是「网页抽卡」：提示词扔进网页会话，等结果、碰运气，素材散落在各家平台的对话框里，想拼成片子还得再拷去剪辑软件。做短剧、广告这类要批量出内容的活儿，这套流程撑不住。 AI Art Engine 想把 AI 创作变成工程化生产：一个本地优先的桌面应用（Windows / macOS / Linux，GPL3.0），工程、素材、模型配置全部留在本地，项目本身不设任何服务端。创作流程用节点图组织——文本、图片、视频、声音、3D 模型都是画布上的节点，连线即流水线，批量任务排队执行，共同上游自动复用，最后在内置成片时间线上编排导出（ffmpeg 合成 MP4）。 几个我认为有意思的点： 短剧 Agent 流水线：单集剧本进去，Agent 依次完成节拍拆解、9 宫格分镜、4 宫格动态分镜（36 格），每一级产物都经过「导演审核」节点打分（PASS/FAIL，失败原因自动写入状态文件，重跑时自动带上），最终产出 36 条动态分镜视频。 3D 导演台：文生/图生 3D 模型（Meshy、Tripo、Rodin、Luma AI、Lux3D）连进节点即入 3D 舞台；也能丢参考图让 AI 用基础几何体搭出整座场景白模，摆机位、截站位图锁定构图，再喂给图生视频。 一键工作流：12 个行业模板（短剧分镜、游戏买量、电商带货、漫画出版、知识口播等），选模板 → 预览拓扑 → 落盘成宿主资产，也可以用自然语言让 AI 现场规划一张节点图。 不绑厂商：OpenAI、DeepSeek、智谱、Kimi、Google、可灵、MiniMax、火山方舟、ComfyUI 等 20+ 提供商，也支持 Ollama / vLLM / LM Studio 纯本地推理；模型 API Key 需自备（本地模型除外）。 GitHub： 官网与使用手册： 下载：Releases 提供 Windows / macOS / Linux 安装包",
           "content": "我是这个项目的作者，自荐一下。\n\n现在的 AI 视频/图片创作大多是「网页抽卡」：提示词扔进网页会话，等结果、碰运气，素材散落在各家平台的对话框里，想拼成片子还得再拷去剪辑软件。做短剧、广告这类要批量出内容的活儿，这套流程撑不住。\n\nAI Art Engine 想把 AI 创作变成工程化生产：一个本地优先的桌面应用（Windows / macOS / Linux，GPL-3.0），工程、素材、模型配置全部留在本地，项目本身不设任何服务端。创作流程用节点图组织——文本、图片、视频、声音、3D 模型都是画布上的节点，连线即流水线，批量任务排队执行，共同上游自动复用，最后在内置成片时间线上编排导出（ffmpeg 合成 MP4）。\n\n几个我认为有意思的点：\n\n- **短剧 Agent 流水线**：单集剧本进去，Agent 依次完成节拍拆解、9 宫格分镜、4 宫格动态分镜（36 格），每一级产物都经过「导演审核」节点打分（PASS/FAIL，失败原因自动写入状态文件，重跑时自动带上），最终产出 36 条动态分镜视频。\n- **3D 导演台**：文生/图生 3D 模型（Meshy、Tripo、Rodin、Luma AI、Lux3D）连进节点即入 3D 舞台；也能丢参考图让 AI 用基础几何体搭出整座场景白模，摆机位、截站位图锁定构图，再喂给图生视频。\n- **一键工作流**：12 个行业模板（短剧分镜、游戏买量、电商带货、漫画出版、知识口播等），选模板 → 预览拓扑 → 落盘成宿主资产，也可以用自然语言让 AI 现场规划一张节点图。\n- **不绑厂商**：OpenAI、DeepSeek、智谱、Kimi、Google、可灵、MiniMax、火山方舟、ComfyUI 等 20+ 提供商，也支持 Ollama / vLLM / LM Studio 纯本地推理；模型 API Key 需自备（本地模型除外）。\n\n- GitHub：https://github.com/Justin-sky/ai-art-engine\n- 官网与使用手册：https://justin-sky.github.io/ai-art-engine/\n- 下载：Releases 提供 Windows / macOS / Linux 安装包\n\n<img width=\"1440\" height=\"900\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f33f4dba-a252-4af6-892e-1d3c3736340e\" />\n\n<img width=\"1120\" height=\"760\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3612061c-19ce-4de1-9faf-59475edbf570\" />\n\n<img width=\"1440\" height=\"900\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dc7a1313-1445-41b8-bca7-0d033ad4bfd4\" />\n",
           "metrics": {
             "comments": 0
@@ -28,7 +28,13 @@
             "submission"
           ],
           "externalId": "11412",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11412"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11412",
+          "images": [
+            "https://github.com/user-attachments/assets/f33f4dba-a252-4af6-892e-1d3c3736340e",
+            "https://github.com/user-attachments/assets/3612061c-19ce-4de1-9faf-59475edbf570",
+            "https://github.com/user-attachments/assets/dc7a1313-1445-41b8-bca7-0d033ad4bfd4"
+          ],
+          "image": "https://github.com/user-attachments/assets/f33f4dba-a252-4af6-892e-1d3c3736340e"
         },
         {
           "sourceId": "weekly-issues",
@@ -75,7 +81,7 @@
           "author": "dqtx760",
           "authorUrl": "https://github.com/dqtx760",
           "publishedAt": "2026-08-29T08:13:13Z",
-          "summary": "很多人问我：你这终端怎么配的？分屏顺手、背景半透明、AI 命令行还带标签页。 今天我把整套环境打包成了开源项目 weztermkit。 !weztermkit 预览 一句话：把 Windows 上那套老终端，换成开箱即用的现代环境。 最爽的一点——你不用自己敲命令：把仓库地址丢给任意 AI 编程工具（Claude Code / Codex / Cursor 都行），它照着里面的 SKILL.md，自动帮你装成跟我一模一样的。 包含什么： WezTerm：GPU 加速、Lua 配置、好用的分屏 Nushell：管道里传的是结构化数据，不用拿纯文本硬解析 Starship：一眼看到 git 分支 / 目录 / 语言版本 CaskaydiaCove Nerd Font：缺了它提示符里全是方框 AI CLI 快捷命令：cc / qw / cx / gm / km / gr，启动时自动改标签页标题 资源管理器右键「Open WezTerm here」、WezTerm 双通道（Nightly 推荐 / Stable） 安装器是 PowerShell 写的：幂等、支持 WhatIf 预演、覆盖前自动备份、不需要管理员权限。装完有 verify.ps1 跑 13 项验收。 ⚠️ 仅支持 Windows。 仓库地址： 觉得好用点个 star，踩到坑提个 issue。",
+          "summary": "很多人问我：你这终端怎么配的？分屏顺手、背景半透明、AI 命令行还带标签页。 今天我把整套环境打包成了开源项目 weztermkit。 预览 一句话：把 Windows 上那套老终端，换成开箱即用的现代环境。 最爽的一点——你不用自己敲命令：把仓库地址丢给任意 AI 编程工具（Claude Code / Codex / Cursor 都行），它照着里面的 SKILL.md，自动帮你装成跟我一模一样的。 包含什么： WezTerm：GPU 加速、Lua 配置、好用的分屏 Nushell：管道里传的是结构化数据，不用拿纯文本硬解析 Starship：一眼看到 git 分支 / 目录 / 语言版本 CaskaydiaCove Nerd Font：缺了它提示符里全是方框 AI CLI 快捷命令：cc / qw / cx / gm / km / gr，启动时自动改标签页标题 资源管理器右键「Open WezTerm here」、WezTerm 双通道（Nightly 推荐 / Stable） 安装器是 PowerShell 写的：幂等、支持 WhatIf 预演、覆盖前自动备份、不需要管理员权限。装完有 verify.ps1 跑 13 项验收。 ⚠️ 仅支持 Windows。 仓库地址： 觉得好用点个 star，踩到坑提个 issue。",
           "content": "很多人问我：你这终端怎么配的？分屏顺手、背景半透明、AI 命令行还带标签页。\n\n今天我把整套环境打包成了开源项目 **wezterm-kit**。\n\n![wezterm-kit 预览](https://github.com/dqtx760/wezterm-kit/raw/main/assets/readme/screenshot.jpg)\n\n一句话：把 Windows 上那套老终端，换成开箱即用的现代环境。\n\n最爽的一点——你**不用自己敲命令**：把仓库地址丢给任意 AI 编程工具（Claude Code / Codex / Cursor 都行），它照着里面的 `SKILL.md`，自动帮你装成跟我一模一样的。\n\n包含什么：\n\n- **WezTerm**：GPU 加速、Lua 配置、好用的分屏\n- **Nushell**：管道里传的是结构化数据，不用拿纯文本硬解析\n- **Starship**：一眼看到 git 分支 / 目录 / 语言版本\n- **CaskaydiaCove Nerd Font**：缺了它提示符里全是方框\n- **AI CLI 快捷命令**：`cc` / `qw` / `cx` / `gm` / `km` / `gr`，启动时自动改标签页标题\n- 资源管理器右键「Open WezTerm here」、WezTerm 双通道（Nightly 推荐 / Stable）\n\n安装器是 PowerShell 写的：幂等、支持 `-WhatIf` 预演、覆盖前自动备份、不需要管理员权限。装完有 `verify.ps1` 跑 13 项验收。\n\n⚠️ 仅支持 Windows。\n\n仓库地址：https://github.com/dqtx760/wezterm-kit\n觉得好用点个 star，踩到坑提个 issue。\n",
           "metrics": {
             "comments": 0
@@ -94,7 +100,7 @@
           "author": "security00",
           "authorUrl": "https://github.com/security00",
           "publishedAt": "2026-08-29T10:23:00Z",
-          "summary": "我是这个工具的作者，自荐一个在线 AI 视频背景去除工具：ExportAlpha。 很多视频背景去除工具最终只能下载普通 MP4，背景虽然看起来被移除了，但文件本身没有透明通道，放到网页、OBS 或剪辑软件中仍然无法直接叠加使用。 ExportAlpha 想解决的是这个问题：上传视频后自动移除背景，并直接导出真正带 Alpha 透明通道的视频文件。 主要支持： Transparent WebM：VP9 + Alpha，适合 Chrome、Firefox、网页动画和 OBS 透明视频叠加 ProRes 4444 MOV：适合 Premiere、DaVinci Resolve、Final Cut 等剪辑软件 支持上传 MP4、MOV、WebM 和 M4V 最高支持 1080p、60 秒视频 全程在线处理，不需要安装 FFmpeg 或桌面软件 新账号赠送 15 秒测试额度，无需绑定银行卡 工具地址： 需要注意的是，一些桌面播放器会把透明区域显示成黑色，这不代表透明通道丢失。可以在 Chrome、OBS 或剪辑时间线中叠加到彩色背景上验证。 这个工具比较适合制作网页透明动画、直播挂件、商品展示素材、数字人视频和剪辑合成素材。欢迎试用和反馈。 一个在线视频背景去除工具，可以将普通视频直接导出为带 Alpha 透明通道的 VP9 WebM 或 ProRes 4444 MOV，适合网页动画、OBS 叠加和后期剪辑。 <img width=\"2082\" height=\"1305\" alt=\"Image\" src=\" / <img width=\"2058\" height=\"1032\" alt=\"Image\" src=\" /",
+          "summary": "我是这个工具的作者，自荐一个在线 AI 视频背景去除工具：ExportAlpha。 很多视频背景去除工具最终只能下载普通 MP4，背景虽然看起来被移除了，但文件本身没有透明通道，放到网页、OBS 或剪辑软件中仍然无法直接叠加使用。 ExportAlpha 想解决的是这个问题：上传视频后自动移除背景，并直接导出真正带 Alpha 透明通道的视频文件。 主要支持： Transparent WebM：VP9 + Alpha，适合 Chrome、Firefox、网页动画和 OBS 透明视频叠加 ProRes 4444 MOV：适合 Premiere、DaVinci Resolve、Final Cut 等剪辑软件 支持上传 MP4、MOV、WebM 和 M4V 最高支持 1080p、60 秒视频 全程在线处理，不需要安装 FFmpeg 或桌面软件 新账号赠送 15 秒测试额度，无需绑定银行卡 工具地址： 需要注意的是，一些桌面播放器会把透明区域显示成黑色，这不代表透明通道丢失。可以在 Chrome、OBS 或剪辑时间线中叠加到彩色背景上验证。 这个工具比较适合制作网页透明动画、直播挂件、商品展示素材、数字人视频和剪辑合成素材。欢迎试用和反馈。 一个在线视频背景去除工具，可以将普通视频直接导出为带 Alpha 透明通道的 VP9 WebM 或 ProRes 4444 MOV，适合网页动画、OBS 叠加和后期剪辑。",
           "content": "我是这个工具的作者，自荐一个在线 AI 视频背景去除工具：**ExportAlpha**。\n\n很多视频背景去除工具最终只能下载普通 MP4，背景虽然看起来被移除了，但文件本身没有透明通道，放到网页、OBS 或剪辑软件中仍然无法直接叠加使用。\n\nExportAlpha 想解决的是这个问题：上传视频后自动移除背景，并直接导出真正带 Alpha 透明通道的视频文件。\n\n主要支持：\n\n- **Transparent WebM**：VP9 + Alpha，适合 Chrome、Firefox、网页动画和 OBS 透明视频叠加\n- **ProRes 4444 MOV**：适合 Premiere、DaVinci Resolve、Final Cut 等剪辑软件\n- 支持上传 MP4、MOV、WebM 和 M4V\n- 最高支持 1080p、60 秒视频\n- 全程在线处理，不需要安装 FFmpeg 或桌面软件\n- 新账号赠送 15 秒测试额度，无需绑定银行卡\n\n工具地址：https://exportalpha.com\n\n需要注意的是，一些桌面播放器会把透明区域显示成黑色，这不代表透明通道丢失。可以在 Chrome、OBS 或剪辑时间线中叠加到彩色背景上验证。\n\n这个工具比较适合制作网页透明动画、直播挂件、商品展示素材、数字人视频和剪辑合成素材。欢迎试用和反馈。\n\n一个在线视频背景去除工具，可以将普通视频直接导出为带 Alpha 透明通道的 VP9 WebM 或 ProRes 4444 MOV，适合网页动画、OBS 叠加和后期剪辑。\n\n<img width=\"2082\" height=\"1305\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f4245600-a1ed-41cc-acde-c33ab6465467\" />\n\n<img width=\"2058\" height=\"1032\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/63f42ffa-e7a9-4e14-9001-92bd3ab9a7e4\" />",
           "metrics": {
             "comments": 0
@@ -105,7 +111,12 @@
           ],
           "externalId": "11416",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11416",
-          "siteLogo": "https://exportalpha.com/apple-touch-icon.png"
+          "siteLogo": "https://exportalpha.com/apple-touch-icon.png",
+          "images": [
+            "https://github.com/user-attachments/assets/f4245600-a1ed-41cc-acde-c33ab6465467",
+            "https://github.com/user-attachments/assets/63f42ffa-e7a9-4e14-9001-92bd3ab9a7e4"
+          ],
+          "image": "https://github.com/user-attachments/assets/f4245600-a1ed-41cc-acde-c33ab6465467"
         },
         {
           "sourceId": "weekly-issues",
@@ -114,7 +125,7 @@
           "author": "zeroxer",
           "authorUrl": "https://github.com/zeroxer",
           "publishedAt": "2026-08-29T11:11:23Z",
-          "summary": "这版主要是把「额度」和「用量统计」拆成了两页： 额度页：各服务商的会话/周额度进度条，展开能看今日花费、30 天累计和当前活动状态 仪表盘（新）：本地统计的 token 用量 —— 模型占比环图、贡献热力图、按日分模型的 柱状图，支持今日/本周/本月/本年切换 下载地址: <img width=\"2456\" height=\"1133\" alt=\"Image\" src=\" /",
+          "summary": "这版主要是把「额度」和「用量统计」拆成了两页： 额度页：各服务商的会话/周额度进度条，展开能看今日花费、30 天累计和当前活动状态 仪表盘（新）：本地统计的 token 用量 —— 模型占比环图、贡献热力图、按日分模型的 柱状图，支持今日/本周/本月/本年切换 下载地址:",
           "content": "这版主要是把「额度」和「用量统计」拆成了两页：\n\n- 额度页：各服务商的会话/周额度进度条，展开能看今日花费、30 天累计和当前活动状态\n- 仪表盘（新）：本地统计的 token 用量 —— 模型占比环图、贡献热力图、按日分模型的 柱状图，支持今日/本周/本月/本年切换\n- 下载地址: https://agenton.xmagicer.com/\n\n<img width=\"2456\" height=\"1133\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/51be443f-8fca-4eca-8ff4-b565de6a9101\" />\n",
           "metrics": {
             "comments": 0
@@ -125,7 +136,11 @@
           ],
           "externalId": "11417",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11417",
-          "siteLogo": "https://agenton.xmagicer.com/assets/logo-DKYZfxaZ.svg"
+          "siteLogo": "https://agenton.xmagicer.com/assets/logo-DKYZfxaZ.svg",
+          "images": [
+            "https://github.com/user-attachments/assets/51be443f-8fca-4eca-8ff4-b565de6a9101"
+          ],
+          "image": "https://github.com/user-attachments/assets/51be443f-8fca-4eca-8ff4-b565de6a9101"
         },
         {
           "sourceId": "weekly-issues",
@@ -134,7 +149,7 @@
           "author": "mubasharali24428-crypto",
           "authorUrl": "https://github.com/mubasharali24428-crypto",
           "publishedAt": "2026-08-29T11:58:19Z",
-          "summary": "我是这个网站的作者，自荐一个小实验项目：BidYourStartup（bidyourstartup.com）。 这个网站只卖一样东西——\"第一名\"。 首页只有一个皇冠位置，任何人付 $1.99（约合十几元人民币），就可以让自己的 Startup 名称和链接戴上皇冠，挂在首页最顶部。没有竞价、没有订阅、没有加价抢拍，永远一口价 $1.99。 规则只有一条：皇冠会一直属于你，直到下一个人也付 $1.99 接力。所以你可能是\"一日之君\"，也可能只当五分钟，取决于有没有人愿意把你顶下去。 一些设计上的取舍： 付费位诚实标注：皇冠明确标注为 Paid placement（付费推广位），不伪装成自然排名； 链接安全筛查：所有提交的链接在付款前先过一道安全筛查（Google Safe Browsing 级别 + DNS 层校验），钓鱼和恶意网站直接拦截； 钱包充值：$5 / $10 / $20 预充值，多次抢冠无需反复走结账流程； 公开退款政策：站点上有明确的退款说明页。 截至目前，第一顶皇冠还空着——现在付款的人将成为这个站的第一位\"开国\"第一名。 适合刚发布产品、想要一个便宜又有仪式感的\"首发曝光\"的独立开发者，也适合单纯想整活的朋友。 网站地址： 定价说明：Pricing — BidYourStartup 这个项目本质上是一个微支付实验：验证\"当一天第一名\"这种最便宜的仪式感，到底有没有人愿意买单。欢迎大家试用和拍砖。 一个只卖\"第一名\"的网站：付 $1.99 让自己的 Startup 戴上首页皇冠，保留到下一位买家付款接力为止，付费位明确标注，无订阅无竞价。 <img width=\"1512\" height=\"982\" alt=\"Image\" src=\" / <img width=\"1512\" height=\"982\" alt=\"Image\" src=\" /",
+          "summary": "我是这个网站的作者，自荐一个小实验项目：BidYourStartup（bidyourstartup.com）。 这个网站只卖一样东西——\"第一名\"。 首页只有一个皇冠位置，任何人付 $1.99（约合十几元人民币），就可以让自己的 Startup 名称和链接戴上皇冠，挂在首页最顶部。没有竞价、没有订阅、没有加价抢拍，永远一口价 $1.99。 规则只有一条：皇冠会一直属于你，直到下一个人也付 $1.99 接力。所以你可能是\"一日之君\"，也可能只当五分钟，取决于有没有人愿意把你顶下去。 一些设计上的取舍： 付费位诚实标注：皇冠明确标注为 Paid placement（付费推广位），不伪装成自然排名； 链接安全筛查：所有提交的链接在付款前先过一道安全筛查（Google Safe Browsing 级别 + DNS 层校验），钓鱼和恶意网站直接拦截； 钱包充值：$5 / $10 / $20 预充值，多次抢冠无需反复走结账流程； 公开退款政策：站点上有明确的退款说明页。 截至目前，第一顶皇冠还空着——现在付款的人将成为这个站的第一位\"开国\"第一名。 适合刚发布产品、想要一个便宜又有仪式感的\"首发曝光\"的独立开发者，也适合单纯想整活的朋友。 网站地址： 定价说明：Pricing — BidYourStartup 这个项目本质上是一个微支付实验：验证\"当一天第一名\"这种最便宜的仪式感，到底有没有人愿意买单。欢迎大家试用和拍砖。 一个只卖\"第一名\"的网站：付 $1.99 让自己的 Startup 戴上首页皇冠，保留到下一位买家付款接力为止，付费位明确标注，无订阅无竞价。",
           "content": " 我是这个网站的作者，自荐一个小实验项目：BidYourStartup（bidyourstartup.com）。\n\n这个网站只卖一样东西——\"第一名\"。\n\n首页只有一个皇冠位置，任何人付 $1.99（约合十几元人民币），就可以让自己的 Startup 名称和链接戴上皇冠，挂在首页最顶部。没有竞价、没有订阅、没有加价抢拍，永远一口价 $1.99。\n\n规则只有一条：皇冠会一直属于你，直到下一个人也付 $1.99 接力。所以你可能是\"一日之君\"，也可能只当五分钟，取决于有没有人愿意把你顶下去。\n\n一些设计上的取舍：\n\n付费位诚实标注：皇冠明确标注为 Paid placement（付费推广位），不伪装成自然排名；\n链接安全筛查：所有提交的链接在付款前先过一道安全筛查（Google Safe Browsing 级别 + DNS 层校验），钓鱼和恶意网站直接拦截；\n钱包充值：$5 / $10 / $20 预充值，多次抢冠无需反复走结账流程；\n公开退款政策：站点上有明确的退款说明页。\n截至目前，第一顶皇冠还空着——现在付款的人将成为这个站的第一位\"开国\"第一名。\n\n适合刚发布产品、想要一个便宜又有仪式感的\"首发曝光\"的独立开发者，也适合单纯想整活的朋友。\n\n网站地址：https://bidyourstartup.com/ 定价说明：[Pricing — BidYourStartup](https://bidyourstartup.com/pricing)\n\n这个项目本质上是一个微支付实验：验证\"当一天第一名\"这种最便宜的仪式感，到底有没有人愿意买单。欢迎大家试用和拍砖。\n\n一个只卖\"第一名\"的网站：付 $1.99 让自己的 Startup 戴上首页皇冠，保留到下一位买家付款接力为止，付费位明确标注，无订阅无竞价。\n<img width=\"1512\" height=\"982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b5244ab6-6602-444a-b4a4-1d3a24825a4e\" />\n\n<img width=\"1512\" height=\"982\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e88b2323-7b4a-4d70-965a-59802dbe1a31\" />\n",
           "metrics": {
             "comments": 0
@@ -145,7 +160,12 @@
           ],
           "externalId": "11418",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11418",
-          "siteLogo": "https://bidyourstartup.com/icon.svg?8762bb42662d1cb4"
+          "siteLogo": "https://bidyourstartup.com/icon.svg?8762bb42662d1cb4",
+          "images": [
+            "https://github.com/user-attachments/assets/b5244ab6-6602-444a-b4a4-1d3a24825a4e",
+            "https://github.com/user-attachments/assets/e88b2323-7b4a-4d70-965a-59802dbe1a31"
+          ],
+          "image": "https://github.com/user-attachments/assets/b5244ab6-6602-444a-b4a4-1d3a24825a4e"
         }
       ]
     },
@@ -165,7 +185,7 @@
           "author": "yeh2017",
           "authorUrl": "https://github.com/yeh2017",
           "publishedAt": "2026-08-29T13:14:14Z",
-          "summary": "项目地址 类别 Python 项目标题 面向量化新手的本地 A 股研究与回测平台 项目描述 QFO 是一个免费开源、本地运行的 A 股量化研究与回测平台，面向希望系统学习量化投资的新手。它把数据同步、股票/ETF/可转债筛选、因子研究、策略回测、组合优化、风险分析、可视化以及新闻与可选大模型分析整合为一套可操作流程，并提供 Windows 启动脚本、中文教学网站和完整视频教程。项目只用于软件功能演示和量化研究，不构成投资建议。 亮点 面向 Windows 用户提供首次运行和快速启动脚本，降低本地环境搭建门槛。 数据与配置默认保存在本机，Token/API Key 不展示在教学内容中。 同一界面覆盖股票、ETF 和可转债，并把筛选结果继续连接到因子、回测、组合与风险模块。 提供新手教程、常见错误说明、结构化 Issue Forms 和 Discussions，方便安装排错与功能交流。 新闻中心可选接入大模型做研究辅助，但不提供收益承诺或买卖建议。 示例代码 首次使用可从 Releases 下载稳定版，解压到独立文件夹后运行： bat runfirsttime.bat 完成初始化后，日常启动运行： bat runquickstart.bat 截图或演示视频 数据中台： !QFO 数据中台 智能选股： !QFO 智能选股 策略回测： !QFO 策略回测 73 秒项目总览： 完整教学：",
+          "summary": "项目地址 类别 Python 项目标题 面向量化新手的本地 A 股研究与回测平台 项目描述 QFO 是一个免费开源、本地运行的 A 股量化研究与回测平台，面向希望系统学习量化投资的新手。它把数据同步、股票/ETF/可转债筛选、因子研究、策略回测、组合优化、风险分析、可视化以及新闻与可选大模型分析整合为一套可操作流程，并提供 Windows 启动脚本、中文教学网站和完整视频教程。项目只用于软件功能演示和量化研究，不构成投资建议。 亮点 面向 Windows 用户提供首次运行和快速启动脚本，降低本地环境搭建门槛。 数据与配置默认保存在本机，Token/API Key 不展示在教学内容中。 同一界面覆盖股票、ETF 和可转债，并把筛选结果继续连接到因子、回测、组合与风险模块。 提供新手教程、常见错误说明、结构化 Issue Forms 和 Discussions，方便安装排错与功能交流。 新闻中心可选接入大模型做研究辅助，但不提供收益承诺或买卖建议。 示例代码 首次使用可从 Releases 下载稳定版，解压到独立文件夹后运行： bat runfirsttime.bat 完成初始化后，日常启动运行： bat runquickstart.bat 截图或演示视频 数据中台： 数据中台 智能选股： 智能选股 策略回测： 策略回测 73 秒项目总览： 完整教学：",
           "content": "### 项目地址\n\nhttps://github.com/yeh2017/QFO-Quant-Platform\n\n### 类别\n\nPython\n\n### 项目标题\n\n面向量化新手的本地 A 股研究与回测平台\n\n### 项目描述\n\nQFO 是一个免费开源、本地运行的 A 股量化研究与回测平台，面向希望系统学习量化投资的新手。它把数据同步、股票/ETF/可转债筛选、因子研究、策略回测、组合优化、风险分析、可视化以及新闻与可选大模型分析整合为一套可操作流程，并提供 Windows 启动脚本、中文教学网站和完整视频教程。项目只用于软件功能演示和量化研究，不构成投资建议。\n\n### 亮点\n\n- 面向 Windows 用户提供首次运行和快速启动脚本，降低本地环境搭建门槛。\n- 数据与配置默认保存在本机，Token/API Key 不展示在教学内容中。\n- 同一界面覆盖股票、ETF 和可转债，并把筛选结果继续连接到因子、回测、组合与风险模块。\n- 提供新手教程、常见错误说明、结构化 Issue Forms 和 Discussions，方便安装排错与功能交流。\n- 新闻中心可选接入大模型做研究辅助，但不提供收益承诺或买卖建议。\n\n### 示例代码\n\n首次使用可从 Releases 下载稳定版，解压到独立文件夹后运行：\n\n```bat\nrun_first_time.bat\n```\n\n完成初始化后，日常启动运行：\n\n```bat\nrun_quick_start.bat\n```\n\n### 截图或演示视频\n\n数据中台：\n\n![QFO 数据中台](https://raw.githubusercontent.com/yeh2017/QFO-Quant-Platform/main/assets/preview/data-center.webp)\n\n智能选股：\n\n![QFO 智能选股](https://raw.githubusercontent.com/yeh2017/QFO-Quant-Platform/main/assets/preview/stock-screener.webp)\n\n策略回测：\n\n![QFO 策略回测](https://raw.githubusercontent.com/yeh2017/QFO-Quant-Platform/main/assets/preview/strategy-backtest.webp)\n\n73 秒项目总览：https://www.bilibili.com/video/BV1yDbQ6cEW7/\n\n完整教学：https://www.bilibili.com/video/BV18Cby6XEfR/",
           "metrics": {
             "comments": 1
@@ -175,7 +195,13 @@
             "submission"
           ],
           "externalId": "3608",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3608"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3608",
+          "images": [
+            "https://raw.githubusercontent.com/yeh2017/QFO-Quant-Platform/main/assets/preview/data-center.webp",
+            "https://raw.githubusercontent.com/yeh2017/QFO-Quant-Platform/main/assets/preview/stock-screener.webp",
+            "https://raw.githubusercontent.com/yeh2017/QFO-Quant-Platform/main/assets/preview/strategy-backtest.webp"
+          ],
+          "image": "https://raw.githubusercontent.com/yeh2017/QFO-Quant-Platform/main/assets/preview/data-center.webp"
         },
         {
           "sourceId": "hellogithub-issues",
@@ -184,7 +210,7 @@
           "author": "laoma2053",
           "authorUrl": "https://github.com/laoma2053",
           "publishedAt": "2026-08-29T13:47:17Z",
-          "summary": "项目地址 类别 JS 项目标题 免费无广告的追剧资源指南 项目描述 免费无广告的追剧资源指南，人工精选资源、每天检测资源有效性。 收录在线影视、影视APP、网盘搜索、磁力BT、字幕、TVBox / 影视仓空壳软件/配置地址、IPTV直播源、会员拼团、影视相关开源项目。 开源，社区共同维护。 亮点 免费无广告 人工精选资源 每天检测资源有效性 示例代码 markdown 截图或演示视频 <img width=\"1158\" height=\"885\" alt=\"Image\" src=\" /",
+          "summary": "项目地址 类别 JS 项目标题 免费无广告的追剧资源指南 项目描述 免费无广告的追剧资源指南，人工精选资源、每天检测资源有效性。 收录在线影视、影视APP、网盘搜索、磁力BT、字幕、TVBox / 影视仓空壳软件/配置地址、IPTV直播源、会员拼团、影视相关开源项目。 开源，社区共同维护。 亮点 免费无广告 人工精选资源 每天检测资源有效性 示例代码 markdown 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/laoma2053/awesome-zhuiju-free\n\n### 类别\n\nJS\n\n### 项目标题\n\n免费无广告的追剧资源指南\n\n### 项目描述\n\n- 免费无广告的追剧资源指南，人工精选资源、每天检测资源有效性。\n\n- 收录在线影视、影视APP、网盘搜索、磁力BT、字幕、TVBox / 影视仓空壳软件/配置地址、IPTV直播源、会员拼团、影视相关开源项目。\n\n- 开源，社区共同维护。\n\n### 亮点\n\n- 免费无广告\n\n- 人工精选资源\n\n- 每天检测资源有效性\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"1158\" height=\"885\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8f9a7467-eab2-45f1-a1b8-aa4b69a992ca\" />",
           "metrics": {
             "comments": 0
@@ -194,7 +220,11 @@
             "submission"
           ],
           "externalId": "3609",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3609"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3609",
+          "images": [
+            "https://github.com/user-attachments/assets/8f9a7467-eab2-45f1-a1b8-aa4b69a992ca"
+          ],
+          "image": "https://github.com/user-attachments/assets/8f9a7467-eab2-45f1-a1b8-aa4b69a992ca"
         }
       ]
     },

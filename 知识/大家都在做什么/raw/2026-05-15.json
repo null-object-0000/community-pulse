@@ -52,7 +52,7 @@
           "author": "likaia",
           "authorUrl": "https://github.com/likaia",
           "publishedAt": "2026-05-14T16:04:13Z",
-          "summary": "GitHub地址： 产品官网： <img width=\"486\" height=\"598\" alt=\"Image\" src=\" /",
+          "summary": "GitHub地址： 产品官网：",
           "content": "* GitHub地址：https://github.com/likaia\n* 产品官网：https://www.kaisir.cn/js-screen-shot/\n\n<img width=\"486\" height=\"598\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0c767a78-4b2d-42ce-85b6-68da7ff2e1ef\" />",
           "metrics": {
             "comments": 0
@@ -62,7 +62,11 @@
             "submission"
           ],
           "externalId": "9940",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9940"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9940",
+          "images": [
+            "https://github.com/user-attachments/assets/0c767a78-4b2d-42ce-85b6-68da7ff2e1ef"
+          ],
+          "image": "https://github.com/user-attachments/assets/0c767a78-4b2d-42ce-85b6-68da7ff2e1ef"
         },
         {
           "sourceId": "weekly-issues",
@@ -71,7 +75,7 @@
           "author": "aeroxy",
           "authorUrl": "https://github.com/aeroxy",
           "publishedAt": "2026-05-14T16:49:49Z",
-          "summary": "<img width=\"700\" height=\"394\" alt=\"demo\" src=\" / 项目地址： 一句话： 纯浏览器运行的 AI 工作区 Agent —— Gemma 4 E2Bit ONNX 通过 WebGPU 在浏览器中完整推理，新增 Chrome Gemini Nano 作为轻量后端，一个命令即可切换，零服务端依赖，数据不出机器。 <img width=\"1024\" height=\"1024\" alt=\"Image\" src=\" / 🚀 亮点 1. Chrome 内置 AI（Gemini Nano）作为第二运行时 问题：Web Bro 原本只能通过 WebGPU 运行 Gemma 模型，依赖本地 GPU 硬件。 解决：现在支持 Chrome 内置的 Gemini Nano 作为第二执行后端。用户可以在侧边栏一键切换 \"Chrome AI\" 和 \"Local Gemma\"，无需重新加载页面。 首次加载自动检测可用后端 也可以在侧边栏手动切换 [Chrome AI] ←→ [Local Gemma] 为什么用 Chrome AI？ | 方案 | 依赖 | 启动速度 | 适用场景 | ||||| | WebGPU Gemma | 需要 GPU + WebGPU 支持 | 较慢（需加载模型） | 高质量推理、离线可用 | | Chrome AI (Gemini Nano) | 仅需 Chrome 浏览器 | 极快（模型内置） | 快速响应、轻量任务 | 2. 共享 Prompt 与工具定义 将系统提示、工作区上下文构建和工具定义从 WebGPU Worker 提取到共享模块 src/lib/agentprompt.ts，确保两个后端使用完全一致的指令和工具 schema。 3. 智能能力检测与降级 新增 detectChromeAI() 检查 globalThis.LanguageModel 应用现在只要 WebGPU 或 Chrome AI 任一可用 即可运行 无需 GPU 的设备也能通过 Chrome AI 使用完整功能 4. 持久化运行时管理 后端切换时自动释放前一个运行时（终止 Worker / 销毁 Nano 会话） 重新挂载当前工作区到新运行时，不丢失上下文 选择状态持久化在 appsettings 中 5. 完整功能覆盖 | 类别 | 能力 | ||| | 导航 | 列出目录、搜索文本、读文件、写文件 | | 运行时 | WebGPU Gemma / Chrome Gemini Nano 一键切换 | | 持久化 | IndexedDB 快照（撤销）、本地会话存储 | | 隐私 | 数据不出机器，零服务端依赖 | <img width=\"1024\" height=\"1024\" alt=\"Image\" src=\" / 🧗 使用方式 打开浏览器即可，无需安装、无需 API Key： Demo: 源码: <img width=\"1024\" height=\"1024\" alt=\"Image\" src=\" / 🙏 致谢 Chrome 生态的启发 感谢社区反馈和贡献 欢迎 Star、提 Issue、贡献新功能。让 AI 工作区在浏览器里跑起来，像打开一个网页一样简单。",
+          "summary": "项目地址： 一句话： 纯浏览器运行的 AI 工作区 Agent —— Gemma 4 E2Bit ONNX 通过 WebGPU 在浏览器中完整推理，新增 Chrome Gemini Nano 作为轻量后端，一个命令即可切换，零服务端依赖，数据不出机器。 🚀 亮点 1. Chrome 内置 AI（Gemini Nano）作为第二运行时 问题：Web Bro 原本只能通过 WebGPU 运行 Gemma 模型，依赖本地 GPU 硬件。 解决：现在支持 Chrome 内置的 Gemini Nano 作为第二执行后端。用户可以在侧边栏一键切换 \"Chrome AI\" 和 \"Local Gemma\"，无需重新加载页面。 首次加载自动检测可用后端 也可以在侧边栏手动切换 [Chrome AI] ←→ [Local Gemma] 为什么用 Chrome AI？ | 方案 | 依赖 | 启动速度 | 适用场景 | ||||| | WebGPU Gemma | 需要 GPU + WebGPU 支持 | 较慢（需加载模型） | 高质量推理、离线可用 | | Chrome AI (Gemini Nano) | 仅需 Chrome 浏览器 | 极快（模型内置） | 快速响应、轻量任务 | 2. 共享 Prompt 与工具定义 将系统提示、工作区上下文构建和工具定义从 WebGPU Worker 提取到共享模块 src/lib/agentprompt.ts，确保两个后端使用完全一致的指令和工具 schema。 3. 智能能力检测与降级 新增 detectChromeAI() 检查 globalThis.LanguageModel 应用现在只要 WebGPU 或 Chrome AI 任一可用 即可运行 无需 GPU 的设备也能通过 Chrome AI 使用完整功能 4. 持久化运行时管理 后端切换时自动释放前一个运行时（终止 Worker / 销毁 Nano 会话） 重新挂载当前工作区到新运行时，不丢失上下文 选择状态持久化在 appsettings 中 5. 完整功能覆盖 | 类别 | 能力 | ||| | 导航 | 列出目录、搜索文本、读文件、写文件 | | 运行时 | WebGPU Gemma / Chrome Gemini Nano 一键切换 | | 持久化 | IndexedDB 快照（撤销）、本地会话存储 | | 隐私 | 数据不出机器，零服务端依赖 | 🧗 使用方式 打开浏览器即可，无需安装、无需 API Key： Demo: 源码: 🙏 致谢 Chrome 生态的启发 感谢社区反馈和贡献 欢迎 Star、提 Issue、贡献新功能。让 AI 工作区在浏览器里跑起来，像打开一个网页一样简单。",
           "content": "<img width=\"700\" height=\"394\" alt=\"demo\" src=\"https://github.com/user-attachments/assets/c63cf6cf-b69f-47e1-9434-f8887814de4b\" />\n\n**项目地址**：https://github.com/aeroxy/web-bro  \n\n**一句话**：\n> 纯浏览器运行的 AI 工作区 Agent —— Gemma 4 E2B-it ONNX 通过 WebGPU 在浏览器中完整推理，新增 Chrome Gemini Nano 作为轻量后端，一个命令即可切换，零服务端依赖，数据不出机器。\n\n---\n\n<img width=\"1024\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/82c24ea4-9bca-48c9-b456-a11ff7de4db2\" />\n\n## 🚀 亮点\n\n### 1. Chrome 内置 AI（Gemini Nano）作为第二运行时\n\n> **问题**：Web Bro 原本只能通过 WebGPU 运行 Gemma 模型，依赖本地 GPU 硬件。\n> **解决**：现在支持 Chrome 内置的 Gemini Nano 作为第二执行后端。用户可以在侧边栏一键切换 \"Chrome AI\" 和 \"Local Gemma\"，无需重新加载页面。\n\n```\n# 首次加载自动检测可用后端\n# 也可以在侧边栏手动切换\n[Chrome AI] ←→ [Local Gemma]\n```\n\n#### 为什么用 Chrome AI？\n\n| 方案 | 依赖 | 启动速度 | 适用场景 |\n|------|------|----------|----------|\n| WebGPU Gemma | 需要 GPU + WebGPU 支持 | 较慢（需加载模型） | 高质量推理、离线可用 |\n| Chrome AI (Gemini Nano) | 仅需 Chrome 浏览器 | 极快（模型内置） | 快速响应、轻量任务 |\n\n### 2. 共享 Prompt 与工具定义\n\n将系统提示、工作区上下文构建和工具定义从 WebGPU Worker 提取到共享模块 `src/lib/agent-prompt.ts`，确保两个后端使用完全一致的指令和工具 schema。\n\n### 3. 智能能力检测与降级\n\n- 新增 `detectChromeAI()` 检查 `globalThis.LanguageModel`\n- 应用现在只要 **WebGPU 或 Chrome AI 任一可用** 即可运行\n- 无需 GPU 的设备也能通过 Chrome AI 使用完整功能\n\n### 4. 持久化运行时管理\n\n- 后端切换时自动释放前一个运行时（终止 Worker / 销毁 Nano 会话）\n- 重新挂载当前工作区到新运行时，不丢失上下文\n- 选择状态持久化在 `app_settings` 中\n\n### 5. 完整功能覆盖\n\n| 类别 | 能力 |\n|------|------|\n| **导航** | 列出目录、搜索文本、读文件、写文件 |\n| **运行时** | WebGPU Gemma / Chrome Gemini Nano 一键切换 |\n| **持久化** | IndexedDB 快照（撤销）、本地会话存储 |\n| **隐私** | 数据不出机器，零服务端依赖 |\n\n---\n\n<img width=\"1024\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cadd04f3-d6ec-4b7f-bd6e-b2aaeaaab2c6\" />\n\n## 🧗 使用方式\n\n打开浏览器即可，无需安装、无需 API Key：\n\n**Demo**: https://aeroxy.github.io/web-bro  \n**源码**: https://github.com/aeroxy/web-bro\n\n---\n\n<img width=\"1024\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1cbde2c0-496e-4fd1-8fa5-e509e5382111\" />\n\n## 🙏 致谢\n\n- Chrome 生态的启发\n- 感谢社区反馈和贡献\n\n欢迎 Star、提 Issue、贡献新功能。让 AI 工作区在浏览器里跑起来，像打开一个网页一样简单。",
           "metrics": {
             "comments": 0
@@ -81,7 +85,14 @@
             "submission"
           ],
           "externalId": "9941",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9941"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9941",
+          "images": [
+            "https://github.com/user-attachments/assets/c63cf6cf-b69f-47e1-9434-f8887814de4b",
+            "https://github.com/user-attachments/assets/82c24ea4-9bca-48c9-b456-a11ff7de4db2",
+            "https://github.com/user-attachments/assets/cadd04f3-d6ec-4b7f-bd6e-b2aaeaaab2c6",
+            "https://github.com/user-attachments/assets/1cbde2c0-496e-4fd1-8fa5-e509e5382111"
+          ],
+          "image": "https://github.com/user-attachments/assets/c63cf6cf-b69f-47e1-9434-f8887814de4b"
         },
         {
           "sourceId": "weekly-issues",
@@ -90,7 +101,7 @@
           "author": "aeroxy",
           "authorUrl": "https://github.com/aeroxy",
           "publishedAt": "2026-05-14T17:38:16Z",
-          "summary": "<img width=\"373\" height=\"458\" alt=\"setting\" src=\" / 项目地址： 一句话： Chrome 扩展，用 AI 分析 LinkedIn 职位描述 —— 五个维度评估（薪资匹配、技能匹配、成长潜力、偏好匹配、风险评估），支持 ChatGPT/Claude 云端推理与 Gemini Nano 本地推理双后端，智能对话追问。开启 Chrome AI 后无需 API Key、零网络请求、数据不出设备。 <img width=\"1024\" height=\"1024\" alt=\"Image\" src=\" / 🚀 亮点 1. Chrome 内置 AI（Gemini Nano）作为第二推理后端 问题：原版 Job Bro 仅支持 OpenAI 兼容的云端 API，每次分析职位都需要调用远程模型，有网络依赖和 Token 费用。 解决：新增 Chrome 内置的 Gemini Nano 作为第二推理后端。用户可以在设置中一键切换 Cloud / Chrome AI，无需任何配置。 设置 → 后端选择 [Cloud (OpenAI)] ←→ [Chrome AI] 为什么用 Chrome AI？ | 方案 | API Key | 网络依赖 | 启动速度 | Token 费用 | 数据隐私 | ||||||| | Cloud (OpenAI)| 需要 | 需要 | 无冷启动 | 按量付费 | 数据上云 | | Chrome AI | 不需要 | 不需要 | 首次需下载 4GB | 免费 | 数据不出设备 | 2. 五种 AI 评估 + 自动简历生成 打开 LinkedIn 职位页面，在侧边栏一键分析，自动生成五个维度的评估报告： | 维度 | 说明 | ||| | 薪资评估 | 基于职位、地点、经验要求估算薪资范围，与用户期望对比 | | 技能评估 | 对比职位要求与用户技能栈，标注匹配 / 缺失 / 额外技能 | | 偏好评估 | 远程 / 混合 / 办公、行业、公司规模等偏好匹配度 | | 风险评估 | 裁员历史、招聘活跃度、职位稳定性等风险信号 | | 成长评估 | 技能提升空间、职业路径、学习资源等成长潜力 | 完成后还可一键生成定制化的求职信 / 简历，或对报告内容进一步追问。 3. 持久化对话会话 Chrome AI 的 API 是有状态的，利用这一特性实现了持久化会话： 同一份报告内的多次追问复用同一个模型会话 无需每次携带完整历史，只发送新问题，大幅减少延迟 系统提示变更时自动重建会话 4. 云端 + 本地自定义提示词 由于 Gemini Nano 与 GPT4o 能力差异较大，两个后端各自保存独立的自定义提示词。用户在设置中切换后端时，提示词编辑区会自动切换对应的内容。 5. 零配置，开箱即用 Chrome Web Store 安装后直接使用（Cloud 后端需填 API Key） Chrome AI 后端无需 API Key，下载模型即可 分析结果保存到 IndexedDB，可随时回溯历史报告 <img width=\"1024\" height=\"1024\" alt=\"Image\" src=\" / 🧗 使用方式 1. 安装 Chrome 扩展（或 git clone + bun install && bun dev） 2. 打开任意 LinkedIn 职位页面 3. 点击侧边栏 Job Bro 图标 4. 点击「分析」，等待 AI 评估完成 5. 查看报告，或进一步对话追问 源码： Chrome AI 前提：Chrome 127+，启用 chrome://flags/promptapiforgemininano，下载模型（约 4GB，浏览器管理） <img width=\"1024\" height=\"1024\" alt=\"Image\" src=\" / 🙏 致谢 Chrome 生态的启发 感谢社区反馈和贡献 欢迎 Star、提 Issue、贡献新功能。让求职分析像打开一个网页一样简单。",
+          "summary": "项目地址： 一句话： Chrome 扩展，用 AI 分析 LinkedIn 职位描述 —— 五个维度评估（薪资匹配、技能匹配、成长潜力、偏好匹配、风险评估），支持 ChatGPT/Claude 云端推理与 Gemini Nano 本地推理双后端，智能对话追问。开启 Chrome AI 后无需 API Key、零网络请求、数据不出设备。 🚀 亮点 1. Chrome 内置 AI（Gemini Nano）作为第二推理后端 问题：原版 Job Bro 仅支持 OpenAI 兼容的云端 API，每次分析职位都需要调用远程模型，有网络依赖和 Token 费用。 解决：新增 Chrome 内置的 Gemini Nano 作为第二推理后端。用户可以在设置中一键切换 Cloud / Chrome AI，无需任何配置。 设置 → 后端选择 [Cloud (OpenAI)] ←→ [Chrome AI] 为什么用 Chrome AI？ | 方案 | API Key | 网络依赖 | 启动速度 | Token 费用 | 数据隐私 | ||||||| | Cloud (OpenAI)| 需要 | 需要 | 无冷启动 | 按量付费 | 数据上云 | | Chrome AI | 不需要 | 不需要 | 首次需下载 4GB | 免费 | 数据不出设备 | 2. 五种 AI 评估 + 自动简历生成 打开 LinkedIn 职位页面，在侧边栏一键分析，自动生成五个维度的评估报告： | 维度 | 说明 | ||| | 薪资评估 | 基于职位、地点、经验要求估算薪资范围，与用户期望对比 | | 技能评估 | 对比职位要求与用户技能栈，标注匹配 / 缺失 / 额外技能 | | 偏好评估 | 远程 / 混合 / 办公、行业、公司规模等偏好匹配度 | | 风险评估 | 裁员历史、招聘活跃度、职位稳定性等风险信号 | | 成长评估 | 技能提升空间、职业路径、学习资源等成长潜力 | 完成后还可一键生成定制化的求职信 / 简历，或对报告内容进一步追问。 3. 持久化对话会话 Chrome AI 的 API 是有状态的，利用这一特性实现了持久化会话： 同一份报告内的多次追问复用同一个模型会话 无需每次携带完整历史，只发送新问题，大幅减少延迟 系统提示变更时自动重建会话 4. 云端 + 本地自定义提示词 由于 Gemini Nano 与 GPT4o 能力差异较大，两个后端各自保存独立的自定义提示词。用户在设置中切换后端时，提示词编辑区会自动切换对应的内容。 5. 零配置，开箱即用 Chrome Web Store 安装后直接使用（Cloud 后端需填 API Key） Chrome AI 后端无需 API Key，下载模型即可 分析结果保存到 IndexedDB，可随时回溯历史报告 🧗 使用方式 1. 安装 Chrome 扩展（或 git clone + bun install && bun dev） 2. 打开任意 LinkedIn 职位页面 3. 点击侧边栏 Job Bro 图标 4. 点击「分析」，等待 AI 评估完成 5. 查看报告，或进一步对话追问 源码： Chrome AI 前提：Chrome 127+，启用 chrome://flags/promptapiforgemininano，下载模型（约 4GB，浏览器管理） 🙏 致谢 Chrome 生态的启发 感谢社区反馈和贡献 欢迎 Star、提 Issue、贡献新功能。让求职分析像打开一个网页一样简单。",
           "content": "<img width=\"373\" height=\"458\" alt=\"setting\" src=\"https://github.com/user-attachments/assets/91d4ee3a-1c19-411d-ab0b-0089cfabe81c\" />\n\n**项目地址**：https://github.com/aeroxy/job-bro\n\n**一句话**：\n> Chrome 扩展，用 AI 分析 LinkedIn 职位描述 —— 五个维度评估（薪资匹配、技能匹配、成长潜力、偏好匹配、风险评估），支持 ChatGPT/Claude 云端推理与 Gemini Nano 本地推理双后端，智能对话追问。开启 Chrome AI 后无需 API Key、零网络请求、数据不出设备。\n\n---\n\n<img width=\"1024\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4a9859d6-5053-48ed-980a-a3605bdff8e5\" />\n\n## 🚀 亮点\n\n### 1. Chrome 内置 AI（Gemini Nano）作为第二推理后端\n\n> **问题**：原版 Job Bro 仅支持 OpenAI 兼容的云端 API，每次分析职位都需要调用远程模型，有网络依赖和 Token 费用。\n> **解决**：新增 Chrome 内置的 Gemini Nano 作为第二推理后端。用户可以在设置中一键切换 Cloud / Chrome AI，无需任何配置。\n\n```\n设置 → 后端选择\n[Cloud (OpenAI)] ←→ [Chrome AI]\n```\n\n#### 为什么用 Chrome AI？\n\n| 方案         | API Key | 网络依赖 | 启动速度     | Token 费用 | 数据隐私     |\n|--------------|---------|----------|--------------|------------|--------------|\n| Cloud (OpenAI)| 需要    | 需要     | 无冷启动     | 按量付费   | 数据上云     |\n| Chrome AI    | 不需要  | 不需要   | 首次需下载 4GB | 免费       | 数据不出设备 |\n\n### 2. 五种 AI 评估 + 自动简历生成\n\n打开 LinkedIn 职位页面，在侧边栏一键分析，自动生成五个维度的评估报告：\n\n| 维度 | 说明 |\n|------|------|\n| **薪资评估** | 基于职位、地点、经验要求估算薪资范围，与用户期望对比 |\n| **技能评估** | 对比职位要求与用户技能栈，标注匹配 / 缺失 / 额外技能 |\n| **偏好评估** | 远程 / 混合 / 办公、行业、公司规模等偏好匹配度 |\n| **风险评估** | 裁员历史、招聘活跃度、职位稳定性等风险信号 |\n| **成长评估** | 技能提升空间、职业路径、学习资源等成长潜力 |\n\n完成后还可一键生成定制化的求职信 / 简历，或对报告内容进一步追问。\n\n### 3. 持久化对话会话\n\nChrome AI 的 API 是有状态的，利用这一特性实现了持久化会话：\n- 同一份报告内的多次追问复用同一个模型会话\n- 无需每次携带完整历史，只发送新问题，大幅减少延迟\n- 系统提示变更时自动重建会话\n\n### 4. 云端 + 本地自定义提示词\n\n由于 Gemini Nano 与 GPT-4o 能力差异较大，两个后端各自保存独立的自定义提示词。用户在设置中切换后端时，提示词编辑区会自动切换对应的内容。\n\n### 5. 零配置，开箱即用\n\n- Chrome Web Store 安装后直接使用（Cloud 后端需填 API Key）\n- Chrome AI 后端无需 API Key，下载模型即可\n- 分析结果保存到 IndexedDB，可随时回溯历史报告\n\n---\n\n<img width=\"1024\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5c59b291-c23c-4bf4-9761-b1011b8bc42f\" />\n\n## 🧗 使用方式\n\n1. 安装 Chrome 扩展（或 `git clone` + `bun install && bun dev`）\n2. 打开任意 LinkedIn 职位页面\n3. 点击侧边栏 Job Bro 图标\n4. 点击「分析」，等待 AI 评估完成\n5. 查看报告，或进一步对话追问\n\n**源码**：https://github.com/aeroxy/job-bro\n\n**Chrome AI 前提**：Chrome 127+，启用 `chrome://flags/#prompt-api-for-gemini-nano`，下载模型（约 4GB，浏览器管理）\n\n---\n\n<img width=\"1024\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/990f1c37-7254-4a9c-be84-51a3fe46304f\" />\n\n## 🙏 致谢\n\n- Chrome 生态的启发\n- 感谢社区反馈和贡献\n\n欢迎 Star、提 Issue、贡献新功能。让求职分析像打开一个网页一样简单。\n",
           "metrics": {
             "comments": 0
@@ -100,7 +111,14 @@
             "submission"
           ],
           "externalId": "9942",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9942"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9942",
+          "images": [
+            "https://github.com/user-attachments/assets/91d4ee3a-1c19-411d-ab0b-0089cfabe81c",
+            "https://github.com/user-attachments/assets/4a9859d6-5053-48ed-980a-a3605bdff8e5",
+            "https://github.com/user-attachments/assets/5c59b291-c23c-4bf4-9761-b1011b8bc42f",
+            "https://github.com/user-attachments/assets/990f1c37-7254-4a9c-be84-51a3fe46304f"
+          ],
+          "image": "https://github.com/user-attachments/assets/91d4ee3a-1c19-411d-ab0b-0089cfabe81c"
         },
         {
           "sourceId": "weekly-issues",
@@ -147,7 +165,7 @@
           "author": "can-f",
           "authorUrl": "https://github.com/can-f",
           "publishedAt": "2026-05-15T04:11:12Z",
-          "summary": "【网站自荐】Devinone：一键接入全球顶尖模型享受85%折扣 网站： 一个可以一键接入全球顶尖模型的站点，一个key可以管理所有的模型，支持claude、GPT、Gemini系列最新模型，且自带工作台，工作台支持聊天和图片生成，小白友好使用，注册还赠送余额试用，重要的是审美在线 <img width=\"882\" height=\"586\" alt=\"Image\" src=\" / 工作台同时支持对话模式和绘画模式 <img width=\"1209\" height=\"718\" alt=\"Image\" src=\" /",
+          "summary": "【网站自荐】Devinone：一键接入全球顶尖模型享受85%折扣 网站： 一个可以一键接入全球顶尖模型的站点，一个key可以管理所有的模型，支持claude、GPT、Gemini系列最新模型，且自带工作台，工作台支持聊天和图片生成，小白友好使用，注册还赠送余额试用，重要的是审美在线 工作台同时支持对话模式和绘画模式",
           "content": "【网站自荐】Devinone：一键接入全球顶尖模型享受-85%折扣\n\n网站：[https://www.devinone.com\n](https://www.devinone.com)\n一个可以一键接入全球顶尖模型的站点，一个key可以管理所有的模型，支持claude、GPT、Gemini系列最新模型，且自带工作台，工作台支持聊天和图片生成，小白友好使用，注册还赠送余额试用，重要的是审美在线\n\n<img width=\"882\" height=\"586\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/48184ea6-bba5-4a6e-bf35-9bfbfdcffe90\" />\n\n\n工作台同时支持对话模式和绘画模式\n\n<img width=\"1209\" height=\"718\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/42c32dc1-7b2c-4055-a840-be8a38f19e9c\" />",
           "metrics": {
             "comments": 0
@@ -158,7 +176,12 @@
           ],
           "externalId": "9945",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9945",
-          "siteLogo": "https://www.devinone.com/favicon.svg"
+          "siteLogo": "https://www.devinone.com/favicon.svg",
+          "images": [
+            "https://github.com/user-attachments/assets/48184ea6-bba5-4a6e-bf35-9bfbfdcffe90",
+            "https://github.com/user-attachments/assets/42c32dc1-7b2c-4055-a840-be8a38f19e9c"
+          ],
+          "image": "https://github.com/user-attachments/assets/48184ea6-bba5-4a6e-bf35-9bfbfdcffe90"
         },
         {
           "sourceId": "weekly-issues",
@@ -167,7 +190,7 @@
           "author": "BoWuGit",
           "authorUrl": "https://github.com/BoWuGit",
           "publishedAt": "2026-05-15T05:57:31Z",
-          "summary": "点击下方的Demo视频： BriefFeed是个浏览器插件，它会在你社媒信息流的长帖子或外文上方加一行简短总结，帮你快速判断哪些值得细看，哪些可以滑过去。 它已经支持了X/Twitter、即刻、微博等社媒平台，能明显减少看长帖时的阅读负担，也加了收藏和稍后读功能，方便把值得回看的帖子留下来。 限时免费 · 点击安装BriefFeed（Chrome Web Store） !image.png !image.png !image.png 隐私方面，BriefFeed只处理你已经打开的页面里已加载的帖子内容。为了生成摘要，请求会包含帖子标题/正文、作者展示名、时间戳、平台和页面上识别到的链接等必要信息；不会发送登录态、cookies、关注列表、完整页面DOM，也不会通过平台API额外抓取你的时间线或未加载内容。原文不会在服务器持久化保存；只有你主动收藏的帖子会保存在浏览器本地。插件也可以随时暂停或关闭。 !image.png !image.png !image.png !image.png !image.png GitHub 只摘要公开项目，私有仓库会跳过。 Lobsters及更多站点还在支持中，敬请期待。 !brieffeedlobstersannotated1280x800.png 产品故事可看之前的内测介绍，如果你感兴趣了，也可以扫码加入产品讨论群： !IMG3723.jpeg",
+          "summary": "点击下方的Demo视频： BriefFeed是个浏览器插件，它会在你社媒信息流的长帖子或外文上方加一行简短总结，帮你快速判断哪些值得细看，哪些可以滑过去。 它已经支持了X/Twitter、即刻、微博等社媒平台，能明显减少看长帖时的阅读负担，也加了收藏和稍后读功能，方便把值得回看的帖子留下来。 限时免费 · 点击安装BriefFeed（Chrome Web Store） 隐私方面，BriefFeed只处理你已经打开的页面里已加载的帖子内容。为了生成摘要，请求会包含帖子标题/正文、作者展示名、时间戳、平台和页面上识别到的链接等必要信息；不会发送登录态、cookies、关注列表、完整页面DOM，也不会通过平台API额外抓取你的时间线或未加载内容。原文不会在服务器持久化保存；只有你主动收藏的帖子会保存在浏览器本地。插件也可以随时暂停或关闭。 GitHub 只摘要公开项目，私有仓库会跳过。 Lobsters及更多站点还在支持中，敬请期待。 !brieffeedlobstersannotated1280x800.png 产品故事可看之前的内测介绍，如果你感兴趣了，也可以扫码加入产品讨论群：",
           "content": "点击下方的Demo视频：\n\n[![watch the video](https://cdnv2.ruguoapp.com/FoMx2wTT3HMNLHZCBnRROm_oiIhhv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)](https://brieffeed.app/assets/brieffeed-combined-demo-93s.mp4)\n\n> [BriefFeed](https://brieffeed.app/)是个浏览器插件，它会在你社媒信息流的长帖子或外文上方加一行简短总结，帮你快速判断哪些值得细看，哪些可以滑过去。\n\n它已经支持了X/Twitter、即刻、微博等社媒平台，能明显减少看长帖时的阅读负担，也加了收藏和稍后读功能，方便把值得回看的帖子留下来。\n\n[**限时免费 · 点击安装BriefFeed（Chrome Web Store）**](https://chromewebstore.google.com/detail/brieffeed/lpolefkhiipebkomajgkcjglnfdjkeik)\n\n![image.png](https://cdnv2.ruguoapp.com/FtecHWaO30ZaJZ_HVJz_JAdSwiXTv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n![image.png](https://cdnv2.ruguoapp.com/FhSO812LxhrIQNdc3nVqbgw3fZRBv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n![image.png](https://cdnv2.ruguoapp.com/FpvhTKMXtHijKzOAAdvEK2e3lV5Rv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n隐私方面，BriefFeed只处理你已经打开的页面里已加载的帖子内容。为了生成摘要，请求会包含帖子标题/正文、作者展示名、时间戳、平台和页面上识别到的链接等必要信息；不会发送登录态、cookies、关注列表、完整页面DOM，也不会通过平台API额外抓取你的时间线或未加载内容。原文不会在服务器持久化保存；只有你主动收藏的帖子会保存在浏览器本地。插件也可以随时暂停或关闭。\n\n![image.png](https://cdnv2.ruguoapp.com/FjPs3N-WX-spM74iJw6Ate9XN0Sev3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n![image.png](https://cdnv2.ruguoapp.com/FndYo6dM7VpSXwA0TudnF6RKnySJv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n![image.png](https://cdnv2.ruguoapp.com/FjtBpjHuB_H_sEaAs8mk_sRUhgc_v3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n![image.png](https://cdnv2.ruguoapp.com/Fow8k6x1OgqAFPhrkMYSqi3Qa7QXv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n![image.png](https://cdnv2.ruguoapp.com/FgjIvXo1v1kyRbE_1bw0r9RBdolgv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\nGitHub 只摘要公开项目，私有仓库会跳过。\n\n[Lobsters](https://lobste.rs/s/oznirn/redis_cost_ambition)及更多站点还在支持中，敬请期待。\n\n![brieffeed-lobsters-annotated-1280x800.png](https://cdnv2.ruguoapp.com/FjH53NMCbXcm2rBhAEsTxNOuUIXUv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)\n\n产品故事可看之前的[内测介绍](https://www.v2ex.com/t/1211756)，如果你感兴趣了，也可以扫码加入产品讨论群：\n\n![IMG_3723.jpeg](https://cdnv2.ruguoapp.com/FpDGUN_B3Uco4-aFWuDJiNAVlq8nv3.png?imageMogr2/meta-keep-list/ZXhpZixVc2VyQ29tbWVudA==/auto-orient)",
           "metrics": {
             "comments": 0
@@ -245,7 +268,7 @@
           "author": "robot19960122-web",
           "authorUrl": "https://github.com/robot19960122-web",
           "publishedAt": "2026-05-15T13:17:39Z",
-          "summary": "【工具自荐】Toon Tone Color：一个用 HSB 滑杆猜卡通配色的浏览器小游戏 阮老师您好，推荐一个刚上线的免费浏览器小游戏 Toon Tone Color。 网站：Toon Tone Color 截图： !Toon Tone Color preview 它是一个 5 轮的颜色记忆 / 配色猜测小游戏：用户看到一条卡通风格的颜色提示，然后用 HSB（Hue / Saturation / Brightness）滑杆调出自己记忆中的颜色，提交后得到分数，最后生成一张可复制的成绩卡。 主要特点： 1. 无需注册，打开即玩 适合手机和桌面浏览器，P0 版本保持很轻量。 2. 用 HSB 滑杆做交互 相比普通颜色选择器，更像一个关于色相、饱和度、亮度的小游戏，也适合用来观察用户对颜色的直觉。 3. 结果卡片在本地生成 成绩卡由浏览器端生成并复制，不上传用户游戏数据。 4. 独立站实验属性 这是一个小型 SEO / 轻游戏站实验，用来验证“简单互动小游戏 + 可分享结果卡 + 长尾搜索词”的冷启动效果。 说明：网站是 fanmade 项目，不隶属于任何动画、动漫、游戏、漫画、工作室或娱乐品牌；页面没有使用官方素材，也避免暗示官方背书。 如果适合周刊的“工具 / 资源 / 独立开发”栏目，欢迎收录。谢谢。",
+          "summary": "【工具自荐】Toon Tone Color：一个用 HSB 滑杆猜卡通配色的浏览器小游戏 阮老师您好，推荐一个刚上线的免费浏览器小游戏 Toon Tone Color。 网站：Toon Tone Color 截图： Tone Color preview 它是一个 5 轮的颜色记忆 / 配色猜测小游戏：用户看到一条卡通风格的颜色提示，然后用 HSB（Hue / Saturation / Brightness）滑杆调出自己记忆中的颜色，提交后得到分数，最后生成一张可复制的成绩卡。 主要特点： 1. 无需注册，打开即玩 适合手机和桌面浏览器，P0 版本保持很轻量。 2. 用 HSB 滑杆做交互 相比普通颜色选择器，更像一个关于色相、饱和度、亮度的小游戏，也适合用来观察用户对颜色的直觉。 3. 结果卡片在本地生成 成绩卡由浏览器端生成并复制，不上传用户游戏数据。 4. 独立站实验属性 这是一个小型 SEO / 轻游戏站实验，用来验证“简单互动小游戏 + 可分享结果卡 + 长尾搜索词”的冷启动效果。 说明：网站是 fanmade 项目，不隶属于任何动画、动漫、游戏、漫画、工作室或娱乐品牌；页面没有使用官方素材，也避免暗示官方背书。 如果适合周刊的“工具 / 资源 / 独立开发”栏目，欢迎收录。谢谢。",
           "content": "【工具自荐】Toon Tone Color：一个用 HSB 滑杆猜卡通配色的浏览器小游戏\n\n阮老师您好，推荐一个刚上线的免费浏览器小游戏 **Toon Tone Color**。\n\n- 网站：[Toon Tone Color](https://toontonecolor.com/?utm_source=github_ruanyf_weekly&utm_medium=backlink&utm_campaign=toontonecolor_cold_start_202605&utm_content=issue_self_recommendation)\n- 截图：\n\n![Toon Tone Color preview](https://toontonecolor.com/og-image.png)\n\n它是一个 5 轮的颜色记忆 / 配色猜测小游戏：用户看到一条卡通风格的颜色提示，然后用 HSB（Hue / Saturation / Brightness）滑杆调出自己记忆中的颜色，提交后得到分数，最后生成一张可复制的成绩卡。\n\n主要特点：\n\n1. **无需注册，打开即玩**  \n   适合手机和桌面浏览器，P0 版本保持很轻量。\n\n2. **用 HSB 滑杆做交互**  \n   相比普通颜色选择器，更像一个关于色相、饱和度、亮度的小游戏，也适合用来观察用户对颜色的直觉。\n\n3. **结果卡片在本地生成**  \n   成绩卡由浏览器端生成并复制，不上传用户游戏数据。\n\n4. **独立站实验属性**  \n   这是一个小型 SEO / 轻游戏站实验，用来验证“简单互动小游戏 + 可分享结果卡 + 长尾搜索词”的冷启动效果。\n\n说明：网站是 fan-made 项目，不隶属于任何动画、动漫、游戏、漫画、工作室或娱乐品牌；页面没有使用官方素材，也避免暗示官方背书。\n\n如果适合周刊的“工具 / 资源 / 独立开发”栏目，欢迎收录。谢谢。\n",
           "metrics": {
             "comments": 0
@@ -606,7 +629,7 @@
           "author": "ZengLiangYi",
           "authorUrl": "https://github.com/ZengLiangYi",
           "publishedAt": "2026-05-15T08:02:19Z",
-          "summary": "项目地址 类别 人工智能 项目标题 AI 对话知识提炼与语义搜索工具 项目描述 ChatCrystal 解决 AI 编程对话价值浪费的问题。开发者每天和 Claude Code、Cursor 等工具聊几十轮，解决方案和架构决策都埋在历史记录里，下次遇到同样问题又得重新想。ChatCrystal 自动导入 5 个 AI 编程工具的对话，用 LLM 生成结构化笔记（标题、摘要、关键结论、代码片段、标签），并通过向量嵌入实现语义搜索——按含义而非关键词查找历史经验。完全本地运行，支持 Ollama 离线使用 亮点 1. 支持 5 个数据源并可通过 adapters 自行扩展：Claude Code、Cursor、Codex CLI、Trae、GitHub Copilot 2. 语义搜索：用自然语言描述问题即可找到之前的解决方案 3. SKILL + MCP Server 集成：AI Agent 可在新对话中自动回忆历史知识 4. 本地优先：数据不出本机，支持 Ollama 完全离线运行 5. 多端可用：CLI + Web 界面 + Electron 桌面应用 示例代码 markdown npm install g chatcrystal crystal serve d crystal import 截图或演示视频 <img width=\"800\" height=\"450\" alt=\"Image\" src=\" / <img width=\"1740\" height=\"1086\" alt=\"Image\" src=\" /",
+          "summary": "项目地址 类别 人工智能 项目标题 AI 对话知识提炼与语义搜索工具 项目描述 ChatCrystal 解决 AI 编程对话价值浪费的问题。开发者每天和 Claude Code、Cursor 等工具聊几十轮，解决方案和架构决策都埋在历史记录里，下次遇到同样问题又得重新想。ChatCrystal 自动导入 5 个 AI 编程工具的对话，用 LLM 生成结构化笔记（标题、摘要、关键结论、代码片段、标签），并通过向量嵌入实现语义搜索——按含义而非关键词查找历史经验。完全本地运行，支持 Ollama 离线使用 亮点 1. 支持 5 个数据源并可通过 adapters 自行扩展：Claude Code、Cursor、Codex CLI、Trae、GitHub Copilot 2. 语义搜索：用自然语言描述问题即可找到之前的解决方案 3. SKILL + MCP Server 集成：AI Agent 可在新对话中自动回忆历史知识 4. 本地优先：数据不出本机，支持 Ollama 完全离线运行 5. 多端可用：CLI + Web 界面 + Electron 桌面应用 示例代码 markdown npm install g chatcrystal crystal serve d crystal import 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/ZengLiangYi/ChatCrystal\n\n### 类别\n\n人工智能\n\n### 项目标题\n\nAI 对话知识提炼与语义搜索工具\n\n### 项目描述\n\nChatCrystal 解决 AI 编程对话价值浪费的问题。开发者每天和 Claude Code、Cursor 等工具聊几十轮，解决方案和架构决策都埋在历史记录里，下次遇到同样问题又得重新想。ChatCrystal 自动导入 5 个 AI 编程工具的对话，用 LLM 生成结构化笔记（标题、摘要、关键结论、代码片段、标签），并通过向量嵌入实现语义搜索——按含义而非关键词查找历史经验。完全本地运行，支持 Ollama 离线使用\n\n### 亮点\n\n1. 支持 5 个数据源并可通过 adapters 自行扩展：Claude Code、Cursor、Codex CLI、Trae、GitHub Copilot\n2. 语义搜索：用自然语言描述问题即可找到之前的解决方案\n3. SKILL + MCP Server 集成：AI Agent 可在新对话中自动回忆历史知识\n4. 本地优先：数据不出本机，支持 Ollama 完全离线运行\n5. 多端可用：CLI + Web 界面 + Electron 桌面应用\n\n### 示例代码\n\n```markdown\nnpm install -g chatcrystal\ncrystal serve -d\ncrystal import\n```\n\n### 截图或演示视频\n\n<img width=\"800\" height=\"450\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/11137652-63d5-4b32-adfd-b5259e4dc1bb\" />\n<img width=\"1740\" height=\"1086\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/39466e29-9384-4d1a-907e-5c945ce85472\" />",
           "metrics": {
             "comments": 0
@@ -616,7 +639,12 @@
             "submission"
           ],
           "externalId": "3265",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3265"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3265",
+          "images": [
+            "https://github.com/user-attachments/assets/11137652-63d5-4b32-adfd-b5259e4dc1bb",
+            "https://github.com/user-attachments/assets/39466e29-9384-4d1a-907e-5c945ce85472"
+          ],
+          "image": "https://github.com/user-attachments/assets/11137652-63d5-4b32-adfd-b5259e4dc1bb"
         },
         {
           "sourceId": "hellogithub-issues",
@@ -625,7 +653,7 @@
           "author": "methol",
           "authorUrl": "https://github.com/methol",
           "publishedAt": "2026-05-15T09:15:33Z",
-          "summary": "项目地址 类别 Swift 项目标题 在 macOS 菜单栏实时看 Claude / Codex / Gemini 的 API 用量 项目描述 UsageBar 是一个常驻 macOS 菜单栏的轻量工具，让你不再为了看 Claude / Codex / Gemini API 用量去反复刷浏览器。菜单栏图标内嵌 5 小时 / 7 天双进度条，一眼看完；点开 popover 可查看分模型用量、USD 成本估算、重置倒计时，以及最近 30 天的用量历史趋势图。本地优先，凭证不出机。 亮点 多 provider，零额外登录：Claude 走浏览器 OAuth；Codex / Gemini 直接复用本机 CLI 已登录的凭证（~/.codex/auth.json、~/.gemini/oauthcreds.json），UsageBar 自身不再让你登录一次。 菜单栏图标即可读：图标里有迷你双进度条，5 小时短窗 + 7 天长窗同屏，不打开 popover 也能扫一眼判断。 分模型 + USD 成本估算：popover 展示 Opus / Sonnet / GPTx 等各自的 token 消耗，搭配打包好的 LiteLLM 价格快照换算金额。 30 天用量历史图：基于 Swift Charts，可切换 1h / 6h / 1d / 7d / 30d 时间窗，悬停看精确数值。 本地优先：除了向各 provider 官方 quota 接口请求数据，不发任何遥测；凭证以 \\0600\\ 权限存在 \\~/.config/usagebar/\\。 原生轻量：纯 Swift + SwiftUI + Swift Charts，Universal Binary（Apple Silicon / Intel）；运行时依赖只有 Sparkle 一项用于自动更新。 AIled 开发：从 spec / ADR / plan 到代码、code review、发版 runbook 全部由 AI 驱动，人类只在 hard gate 上做决策。仓库根目录 \\AGENTS.md\\ + \\docs/agents/\\ 公开记录了完整治理框架，是一个真实可观摩的\"AI 主导开发\"案例。 截图 !Claude 用量视图 !Codex 用量视图",
+          "summary": "项目地址 类别 Swift 项目标题 在 macOS 菜单栏实时看 Claude / Codex / Gemini 的 API 用量 项目描述 UsageBar 是一个常驻 macOS 菜单栏的轻量工具，让你不再为了看 Claude / Codex / Gemini API 用量去反复刷浏览器。菜单栏图标内嵌 5 小时 / 7 天双进度条，一眼看完；点开 popover 可查看分模型用量、USD 成本估算、重置倒计时，以及最近 30 天的用量历史趋势图。本地优先，凭证不出机。 亮点 多 provider，零额外登录：Claude 走浏览器 OAuth；Codex / Gemini 直接复用本机 CLI 已登录的凭证（~/.codex/auth.json、~/.gemini/oauthcreds.json），UsageBar 自身不再让你登录一次。 菜单栏图标即可读：图标里有迷你双进度条，5 小时短窗 + 7 天长窗同屏，不打开 popover 也能扫一眼判断。 分模型 + USD 成本估算：popover 展示 Opus / Sonnet / GPTx 等各自的 token 消耗，搭配打包好的 LiteLLM 价格快照换算金额。 30 天用量历史图：基于 Swift Charts，可切换 1h / 6h / 1d / 7d / 30d 时间窗，悬停看精确数值。 本地优先：除了向各 provider 官方 quota 接口请求数据，不发任何遥测；凭证以 \\0600\\ 权限存在 \\~/.config/usagebar/\\。 原生轻量：纯 Swift + SwiftUI + Swift Charts，Universal Binary（Apple Silicon / Intel）；运行时依赖只有 Sparkle 一项用于自动更新。 AIled 开发：从 spec / ADR / plan 到代码、code review、发版 runbook 全部由 AI 驱动，人类只在 hard gate 上做决策。仓库根目录 \\AGENTS.md\\ + \\docs/agents/\\ 公开记录了完整治理框架，是一个真实可观摩的\"AI 主导开发\"案例。 截图 用量视图 用量视图",
           "content": "## 项目地址\n\nhttps://github.com/methol/usage-bar\n\n## 类别\n\nSwift\n\n## 项目标题\n\n在 macOS 菜单栏实时看 Claude / Codex / Gemini 的 API 用量\n\n## 项目描述\n\nUsageBar 是一个常驻 macOS 菜单栏的轻量工具，让你不再为了看 Claude / Codex / Gemini API 用量去反复刷浏览器。菜单栏图标内嵌 5 小时 / 7 天双进度条，一眼看完；点开 popover 可查看分模型用量、USD 成本估算、重置倒计时，以及最近 30 天的用量历史趋势图。本地优先，凭证不出机。\n\n## 亮点\n\n- **多 provider，零额外登录**：Claude 走浏览器 OAuth；Codex / Gemini 直接复用本机 CLI 已登录的凭证（`~/.codex/auth.json`、`~/.gemini/oauth_creds.json`），UsageBar 自身不再让你登录一次。\n- **菜单栏图标即可读**：图标里有迷你双进度条，5 小时短窗 + 7 天长窗同屏，不打开 popover 也能扫一眼判断。\n- **分模型 + USD 成本估算**：popover 展示 Opus / Sonnet / GPT-x 等各自的 token 消耗，搭配打包好的 LiteLLM 价格快照换算金额。\n- **30 天用量历史图**：基于 Swift Charts，可切换 1h / 6h / 1d / 7d / 30d 时间窗，悬停看精确数值。\n- **本地优先**：除了向各 provider 官方 quota 接口请求数据，不发任何遥测；凭证以 \\`0600\\` 权限存在 \\`~/.config/usage-bar/\\`。\n- **原生轻量**：纯 Swift + SwiftUI + Swift Charts，Universal Binary（Apple Silicon / Intel）；运行时依赖只有 Sparkle 一项用于自动更新。\n- **AI-led 开发**：从 spec / ADR / plan 到代码、code review、发版 runbook 全部由 AI 驱动，人类只在 hard gate 上做决策。仓库根目录 \\`AGENTS.md\\` + \\`docs/agents/\\` 公开记录了完整治理框架，是一个真实可观摩的\"AI 主导开发\"案例。\n\n## 截图\n\n![Claude 用量视图](https://github.com/methol/usage-bar/releases/download/v0.7.0/usagebar-claude.png)\n\n![Codex 用量视图](https://github.com/methol/usage-bar/releases/download/v0.7.0/usagebar-codex.png)",
           "metrics": {
             "comments": 0

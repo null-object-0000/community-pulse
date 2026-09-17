@@ -73,7 +73,7 @@
           "author": "dull-bird",
           "authorUrl": "https://github.com/dull-bird",
           "publishedAt": "2026-06-28T02:39:34Z",
-          "summary": "WeRead Vault 把微信读书的书架、划线、想法、阅读统计一次性归档进本机的一个 SQLite 文件——可查询、可视化、可导出，AI 直接读，数据不上传。一句话：它是「微信读书的本地数据库」，外加一个带 Agent Skill 的命令行。 GitHub: 主页 / 下载: （macOS .dmg、Windows 安装包，或 pipx install wereadvault） 为什么做它：微信读书官方的 Agent Skill 是 17 个无状态、「按单本书查」的接口，想搜遍所有划线、做跨书统计都得逐本调几百次。WeRead Vault 把数据归档进本地 SQLite，「按书查」变成「随便查」——一条 SQL 全文检索毫秒级搜遍全部划线，一条 GROUP BY 做跨书聚合。 几个特点： 本地优先：数据只存本机一个 SQLite 文件，可备份、迁移、离线，永不上传；本地网页只监听 127.0.0.1。 完整书架 + 阅读统计：同步整个书架（含无笔记的书），周/月/年/全部切换的看板、GitHub 式划线热力图、读得最多排行等。 AI 原生：query（只读 SQL）/ stats（统计 JSON）/ api（直连微信读书接口）+ 自带 Skill，Claude Code、Codex、OpenClaw 一条命令就能查、能荐书；还能 wereadvault open 三体 直接唤起微信读书 App 打开某本书。 导出到知识库：Markdown（带封面、可合并他人热门划线去重）、Obsidian、flomo、Notion。 每天自动同步：一句命令注册系统定时器，到点自动同步，不常驻后台。 纯 Python 标准库 + SQLite，零第三方依赖，MIT 开源。 截图 Dashboard（本地书架） !dashboard 它是怎么工作的 !howitworks 阅读统计 !stats 书籍详情（含相关推荐） !bookdetail",
+          "summary": "WeRead Vault 把微信读书的书架、划线、想法、阅读统计一次性归档进本机的一个 SQLite 文件——可查询、可视化、可导出，AI 直接读，数据不上传。一句话：它是「微信读书的本地数据库」，外加一个带 Agent Skill 的命令行。 GitHub: 主页 / 下载: （macOS .dmg、Windows 安装包，或 pipx install wereadvault） 为什么做它：微信读书官方的 Agent Skill 是 17 个无状态、「按单本书查」的接口，想搜遍所有划线、做跨书统计都得逐本调几百次。WeRead Vault 把数据归档进本地 SQLite，「按书查」变成「随便查」——一条 SQL 全文检索毫秒级搜遍全部划线，一条 GROUP BY 做跨书聚合。 几个特点： 本地优先：数据只存本机一个 SQLite 文件，可备份、迁移、离线，永不上传；本地网页只监听 127.0.0.1。 完整书架 + 阅读统计：同步整个书架（含无笔记的书），周/月/年/全部切换的看板、GitHub 式划线热力图、读得最多排行等。 AI 原生：query（只读 SQL）/ stats（统计 JSON）/ api（直连微信读书接口）+ 自带 Skill，Claude Code、Codex、OpenClaw 一条命令就能查、能荐书；还能 wereadvault open 三体 直接唤起微信读书 App 打开某本书。 导出到知识库：Markdown（带封面、可合并他人热门划线去重）、Obsidian、flomo、Notion。 每天自动同步：一句命令注册系统定时器，到点自动同步，不常驻后台。 纯 Python 标准库 + SQLite，零第三方依赖，MIT 开源。 截图 Dashboard（本地书架） 它是怎么工作的 阅读统计 书籍详情（含相关推荐）",
           "content": "WeRead Vault 把微信读书的书架、划线、想法、阅读统计一次性归档进本机的一个 SQLite 文件——可查询、可视化、可导出，AI 直接读，数据不上传。一句话：它是「微信读书的本地数据库」，外加一个带 Agent Skill 的命令行。\n\n- **GitHub**: https://github.com/dull-bird/weread-vault\n- **主页 / 下载**: https://dull-bird.github.io/weread-vault/ （macOS `.dmg`、Windows 安装包，或 `pipx install weread-vault`）\n\n**为什么做它**：微信读书官方的 Agent Skill 是 17 个无状态、「按单本书查」的接口，想搜遍所有划线、做跨书统计都得逐本调几百次。WeRead Vault 把数据归档进本地 SQLite，「按书查」变成「随便查」——一条 SQL 全文检索毫秒级搜遍全部划线，一条 `GROUP BY` 做跨书聚合。\n\n**几个特点**：\n\n- **本地优先**：数据只存本机一个 SQLite 文件，可备份、迁移、离线，永不上传；本地网页只监听 127.0.0.1。\n- **完整书架 + 阅读统计**：同步整个书架（含无笔记的书），周/月/年/全部切换的看板、GitHub 式划线热力图、读得最多排行等。\n- **AI 原生**：`query`（只读 SQL）/ `stats`（统计 JSON）/ `api`（直连微信读书接口）+ 自带 Skill，Claude Code、Codex、OpenClaw 一条命令就能查、能荐书；还能 `weread-vault open 三体` 直接唤起微信读书 App 打开某本书。\n- **导出到知识库**：Markdown（带封面、可合并他人热门划线去重）、Obsidian、flomo、Notion。\n- **每天自动同步**：一句命令注册系统定时器，到点自动同步，不常驻后台。\n\n纯 Python 标准库 + SQLite，零第三方依赖，MIT 开源。\n\n## 截图\n\n### Dashboard（本地书架）\n![dashboard](https://github.com/dull-bird/weread-vault/raw/main/docs/assets/dashboard.png)\n\n### 它是怎么工作的\n![how-it-works](https://github.com/dull-bird/weread-vault/raw/main/docs/assets/how-it-works.png)\n\n### 阅读统计\n![stats](https://github.com/dull-bird/weread-vault/raw/main/docs/assets/stats-all.png)\n\n### 书籍详情（含相关推荐）\n![book-detail](https://github.com/dull-bird/weread-vault/raw/main/docs/assets/book-detail.png)",
           "metrics": {
             "comments": 0
@@ -149,7 +149,7 @@
           "author": "sigpanic",
           "authorUrl": "https://github.com/sigpanic",
           "publishedAt": "2026-06-28T08:36:08Z",
-          "summary": "项目地址： Goink 是一个真正自主的 AI 写作 Agent。采用 ReAct 循环架构，31 个工具全部由 AI 自主决策调用——你下指令，它自己查角色状态、搜全书伏笔、读前一章、生成正文、出 Diff 等你审批，写完自动检查角色变化、标记伏笔回收、推进弧线节点、刷新读者认知。整条链全自主跑通。 底层是六维结构化记忆引擎：角色有向关系图、伏笔智能追踪、弧线泳道、地点层级拓扑、读者认知控制面板——全部持久化在 SQLite，Agent 自己查库而非靠上下文窗口硬背。12 个内置创作方法论 Skill 常驻注入，支持独立审稿子 Agent 二次审查。 UI/UX：全链路实时流式渲染，工具调用具备 selected→executing→awaitingapproval→completed/failed/loopdetected 六阶段精细化状态渲染，G6 力导向图/拓扑图/泳道图六套可视化面板，Monaco Editor Diff 并排审批，深色模式。 技术栈：Wails v2（Go + React 19）+ Tailwind CSS 4 + ONNX Runtime 本地语义搜索 + Git 全版本管理 + 7 个国产大模型开箱即用 + EPUB 一键导出。安装包 <60MB，零依赖，全平台，MIT 开源。 <img width=\"2559\" height=\"1407\" alt=\"Image\" src=\" / <img width=\"2510\" height=\"1389\" alt=\"Image\" src=\" /",
+          "summary": "项目地址： Goink 是一个真正自主的 AI 写作 Agent。采用 ReAct 循环架构，31 个工具全部由 AI 自主决策调用——你下指令，它自己查角色状态、搜全书伏笔、读前一章、生成正文、出 Diff 等你审批，写完自动检查角色变化、标记伏笔回收、推进弧线节点、刷新读者认知。整条链全自主跑通。 底层是六维结构化记忆引擎：角色有向关系图、伏笔智能追踪、弧线泳道、地点层级拓扑、读者认知控制面板——全部持久化在 SQLite，Agent 自己查库而非靠上下文窗口硬背。12 个内置创作方法论 Skill 常驻注入，支持独立审稿子 Agent 二次审查。 UI/UX：全链路实时流式渲染，工具调用具备 selected→executing→awaitingapproval→completed/failed/loopdetected 六阶段精细化状态渲染，G6 力导向图/拓扑图/泳道图六套可视化面板，Monaco Editor Diff 并排审批，深色模式。 技术栈：Wails v2（Go + React 19）+ Tailwind CSS 4 + ONNX Runtime 本地语义搜索 + Git 全版本管理 + 7 个国产大模型开箱即用 + EPUB 一键导出。安装包 <60MB，零依赖，全平台，MIT 开源。",
           "content": "项目地址：https://github.com/sigpanic/goink\n\nGoink 是一个真正自主的 AI 写作 Agent。采用 ReAct 循环架构，31 个工具全部由 AI 自主决策调用——你下指令，它自己查角色状态、搜全书伏笔、读前一章、生成正文、出 Diff 等你审批，写完自动检查角色变化、标记伏笔回收、推进弧线节点、刷新读者认知。整条链全自主跑通。\n\n底层是六维结构化记忆引擎：角色有向关系图、伏笔智能追踪、弧线泳道、地点层级拓扑、读者认知控制面板——全部持久化在 SQLite，Agent 自己查库而非靠上下文窗口硬背。12 个内置创作方法论 Skill 常驻注入，支持独立审稿子 Agent 二次审查。\n\nUI/UX：全链路实时流式渲染，工具调用具备 selected→executing→awaiting_approval→completed/failed/loop_detected 六阶段精细化状态渲染，G6 力导向图/拓扑图/泳道图六套可视化面板，Monaco Editor Diff 并排审批，深色模式。\n\n技术栈：Wails v2（Go + React 19）+ Tailwind CSS 4 + ONNX Runtime 本地语义搜索 + Git 全版本管理 + 7 个国产大模型开箱即用 + EPUB 一键导出。安装包 <60MB，零依赖，全平台，MIT 开源。\n\n<img width=\"2559\" height=\"1407\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5ee4c36d-723e-4dc4-8652-f4b77b939bd6\" />\n\n<img width=\"2510\" height=\"1389\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7049e454-26b6-4a81-92e0-f971fc30f8a7\" />",
           "metrics": {
             "comments": 0
@@ -159,7 +159,12 @@
             "submission"
           ],
           "externalId": "10484",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10484"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10484",
+          "images": [
+            "https://github.com/user-attachments/assets/5ee4c36d-723e-4dc4-8652-f4b77b939bd6",
+            "https://github.com/user-attachments/assets/7049e454-26b6-4a81-92e0-f971fc30f8a7"
+          ],
+          "image": "https://github.com/user-attachments/assets/5ee4c36d-723e-4dc4-8652-f4b77b939bd6"
         },
         {
           "sourceId": "weekly-issues",
@@ -187,7 +192,7 @@
           "author": "DaiOwen",
           "authorUrl": "https://github.com/DaiOwen",
           "publishedAt": "2026-06-28T11:21:15Z",
-          "summary": "AI 脉搏 是一款面向中国 AI 开发者的每日新闻智能聚合页，基于 Claude Code 自动驱动。每天早中晚三次自动采集 30+ 平台和 11 位优秀 AI 博主，覆盖聚合平台、深度媒体、社区论坛、前沿研究、企业官方等七大维度，智能去重、交叉验证、分类、生成精美的 HTML 页面。无需 npm、无需 Python、无需任何外部服务，仅需 Claude Code 和一个终端。 <img width=\"1274\" height=\"672\" alt=\"Image\" src=\" / 🚀 快速体验 1. 在线访问： 2. RSS 订阅： 3. GitHub 仓库： 🎯 我们解决了什么问题？ AI 行业每天产生数百条新闻： 新模型发布（GPT5、Claude 4、通义千问...） 开源工具更新（LangChain、Ollama、vLLM...） 政策法规（网信办新规、美国 AI 监管...） 企业动态（融资、收购、合作...） 但开发者没有时间去逐一筛选。 刷朋友圈？全是营销号。刷 Twitter？时间线被算法操控。刷 36 氪？AI 内容淹没在其他新闻里。 我们用 AI 技术帮你做这件事：从 30+ 平台智能采集、去重、评分、分类，生成一份 5 分钟可读完的精华摘要。 🤖 AI 原生驱动，零人工干预 整个项目基于 Claude Code CLI 构建： 定时触发 → Claude 搜索采集 → 智能去重评分 → 生成 HTML → Git 推送 → GitHub Pages 部署 全程无人值守。 没有编辑的主观偏好，没有算法的商业算计。 智能评分机制 每条新闻自动评分，高分优先展示： 总分 = 热度信号×0.4 + 时效信号×0.3 + 来源质量×0.3 热度信号：多源交叉验证(+5) / 优先信源首发(+3) / 社区讨论热度高(+1) 时效信号：6h内(+5) / 12h内(+3) / 24h内(+1) 来源质量：36氪/VentureBeat/TheVerge(+3) / MIT Tech Review/人民网(+2) / 其他(+1) 自动去重 标题相似度 80% 视为重复，保留评分高者。同一事件不同角度报道，合并为一条，标注多来源。 七大板块，全覆盖 <img width=\"1237\" height=\"410\" alt=\"Image\" src=\" / ⏰ 每日三版，时区友好 早间版 (08:00) → 覆盖昨夜海外动态 + arXiv 论文 午间版 (12:00) → 增量更新，快速扫读 晚间版 (20:00) → 全天汇总 + GitHub 开源 Top 10 往期内容通过日历归档，点击即可回溯历史版本。 🔒 本地优先，隐私友好 100% 本地运行：数据不出户 零外部依赖：无需 npm、无需 Python、无需任何后端服务 生成的 HTML 零外部请求：无埋点、无追踪、无广告 开源透明：代码在 GitHub，MIT 协议 🇨🇳 中国视角 优先覆盖： 国产大模型动态（通义、豆包、GLM、DeepSeek...） 网信办政策法规 国内开源项目（魔搭社区、PaddlePaddle...） 海外内容： 保留关键数据原文（金额、百分比、版本号） 23 句中文摘要 标注来源，可追溯 📱 多端适配 暗色/亮色双主题：自动跟随系统，或手动切换 PWA 支持：可添加到手机主屏幕，像 App 一样使用 RSS 订阅：支持 feed.xml 订阅，接入你的阅读器 响应式设计：桌面/平板/手机全覆盖",
+          "summary": "AI 脉搏 是一款面向中国 AI 开发者的每日新闻智能聚合页，基于 Claude Code 自动驱动。每天早中晚三次自动采集 30+ 平台和 11 位优秀 AI 博主，覆盖聚合平台、深度媒体、社区论坛、前沿研究、企业官方等七大维度，智能去重、交叉验证、分类、生成精美的 HTML 页面。无需 npm、无需 Python、无需任何外部服务，仅需 Claude Code 和一个终端。 🚀 快速体验 1. 在线访问： 2. RSS 订阅： 3. GitHub 仓库： 🎯 我们解决了什么问题？ AI 行业每天产生数百条新闻： 新模型发布（GPT5、Claude 4、通义千问...） 开源工具更新（LangChain、Ollama、vLLM...） 政策法规（网信办新规、美国 AI 监管...） 企业动态（融资、收购、合作...） 但开发者没有时间去逐一筛选。 刷朋友圈？全是营销号。刷 Twitter？时间线被算法操控。刷 36 氪？AI 内容淹没在其他新闻里。 我们用 AI 技术帮你做这件事：从 30+ 平台智能采集、去重、评分、分类，生成一份 5 分钟可读完的精华摘要。 🤖 AI 原生驱动，零人工干预 整个项目基于 Claude Code CLI 构建： 定时触发 → Claude 搜索采集 → 智能去重评分 → 生成 HTML → Git 推送 → GitHub Pages 部署 全程无人值守。 没有编辑的主观偏好，没有算法的商业算计。 智能评分机制 每条新闻自动评分，高分优先展示： 总分 = 热度信号×0.4 + 时效信号×0.3 + 来源质量×0.3 热度信号：多源交叉验证(+5) / 优先信源首发(+3) / 社区讨论热度高(+1) 时效信号：6h内(+5) / 12h内(+3) / 24h内(+1) 来源质量：36氪/VentureBeat/TheVerge(+3) / MIT Tech Review/人民网(+2) / 其他(+1) 自动去重 标题相似度 80% 视为重复，保留评分高者。同一事件不同角度报道，合并为一条，标注多来源。 七大板块，全覆盖 ⏰ 每日三版，时区友好 早间版 (08:00) → 覆盖昨夜海外动态 + arXiv 论文 午间版 (12:00) → 增量更新，快速扫读 晚间版 (20:00) → 全天汇总 + GitHub 开源 Top 10 往期内容通过日历归档，点击即可回溯历史版本。 🔒 本地优先，隐私友好 100% 本地运行：数据不出户 零外部依赖：无需 npm、无需 Python、无需任何后端服务 生成的 HTML 零外部请求：无埋点、无追踪、无广告 开源透明：代码在 GitHub，MIT 协议 🇨🇳 中国视角 优先覆盖： 国产大模型动态（通义、豆包、GLM、DeepSeek...） 网信办政策法规 国内开源项目（魔搭社区、PaddlePaddle...） 海外内容： 保留关键数据原文（金额、百分比、版本号） 23 句中文摘要 标注来源，可追溯 📱 多端适配 暗色/亮色双主题：自动跟随系统，或手动切换 PWA 支持：可添加到手机主屏幕，像 App 一样使用 RSS 订阅：支持 feed.xml 订阅，接入你的阅读器 响应式设计：桌面/平板/手机全覆盖",
           "content": "AI 脉搏 是一款面向中国 AI 开发者的每日新闻智能聚合页，基于 [Claude Code](https://claude.ai/) 自动驱动。每天早中晚三次自动采集 30+ 平台和 11 位优秀 AI 博主，覆盖聚合平台、深度媒体、社区论坛、前沿研究、企业官方等七大维度，智能去重、交叉验证、分类、生成精美的 HTML 页面。无需 npm、无需 Python、无需任何外部服务，仅需 Claude Code 和一个终端。\n\n<img width=\"1274\" height=\"672\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ec5695e5-55d0-47b5-acd2-8facb2bdc5ec\" />\n\n## 🚀 快速体验\n\n1. **在线访问**：[https://daiowen.github.io/ai-pulse/](https://daiowen.github.io/ai-pulse/)\n2. **RSS 订阅**：[https://daiowen.github.io/ai-pulse/feed.xml](https://daiowen.github.io/ai-pulse/feed.xml)\n3. **GitHub 仓库**：[https://github.com/DaiOwen/ai-pulse](https://github.com/DaiOwen/ai-pulse)\n## 🎯 我们解决了什么问题？\n\nAI 行业每天产生数百条新闻：\n\n- 新模型发布（GPT-5、Claude 4、通义千问...）\n- 开源工具更新（LangChain、Ollama、vLLM...）\n- 政策法规（网信办新规、美国 AI 监管...）\n- 企业动态（融资、收购、合作...）\n\n**但开发者没有时间去逐一筛选。**\n\n刷朋友圈？全是营销号。刷 Twitter？时间线被算法操控。刷 36 氪？AI 内容淹没在其他新闻里。\n\n我们用 AI 技术帮你做这件事：从 30+ 平台智能采集、去重、评分、分类，生成一份 **5 分钟可读完的精华摘要**。\n\n## 🤖 AI 原生驱动，零人工干预\n\n整个项目基于 **Claude Code CLI** 构建：\n\n```\n定时触发 → Claude 搜索采集 → 智能去重评分 → 生成 HTML → Git 推送 → GitHub Pages 部署\n```\n\n**全程无人值守。** 没有编辑的主观偏好，没有算法的商业算计。\n\n### 智能评分机制\n\n每条新闻自动评分，高分优先展示：\n```\n总分 = 热度信号×0.4 + 时效信号×0.3 + 来源质量×0.3\n\n热度信号：多源交叉验证(+5) / 优先信源首发(+3) / 社区讨论热度高(+1)\n时效信号：6h内(+5) / 12h内(+3) / 24h内(+1)\n来源质量：36氪/VentureBeat/TheVerge(+3) / MIT Tech Review/人民网(+2) / 其他(+1)\n```\n\n### 自动去重\n\n标题相似度 > 80% 视为重复，保留评分高者。同一事件不同角度报道，合并为一条，标注多来源。\n\n## 七大板块，全覆盖\n\n<img width=\"1237\" height=\"410\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d605606d-7926-4100-82f5-e870f1b80399\" />\n\n## ⏰ 每日三版，时区友好\n\n```\n早间版 (08:00)  →  覆盖昨夜海外动态 + arXiv 论文\n午间版 (12:00)  →  增量更新，快速扫读\n晚间版 (20:00)  →  全天汇总 + GitHub 开源 Top 10\n```\n\n往期内容通过日历归档，点击即可回溯历史版本。\n\n---\n\n## 🔒 本地优先，隐私友好\n\n- **100% 本地运行**：数据不出户\n- **零外部依赖**：无需 npm、无需 Python、无需任何后端服务\n- **生成的 HTML 零外部请求**：无埋点、无追踪、无广告\n- **开源透明**：代码在 [GitHub](https://github.com/DaiOwen/ai-pulse)，MIT 协议\n\n---\n\n## 🇨🇳 中国视角\n\n优先覆盖：\n\n- 国产大模型动态（通义、豆包、GLM、DeepSeek...）\n- 网信办政策法规\n- 国内开源项目（魔搭社区、PaddlePaddle...）\n\n海外内容：\n\n- 保留关键数据原文（金额、百分比、版本号）\n- 2-3 句中文摘要\n- 标注来源，可追溯\n\n---\n\n## 📱 多端适配\n\n- **暗色/亮色双主题**：自动跟随系统，或手动切换\n- **PWA 支持**：可添加到手机主屏幕，像 App 一样使用\n- **RSS 订阅**：支持 feed.xml 订阅，接入你的阅读器\n- **响应式设计**：桌面/平板/手机全覆盖",
           "metrics": {
             "comments": 0
@@ -197,7 +202,12 @@
             "submission"
           ],
           "externalId": "10487",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10487"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10487",
+          "images": [
+            "https://github.com/user-attachments/assets/ec5695e5-55d0-47b5-acd2-8facb2bdc5ec",
+            "https://github.com/user-attachments/assets/d605606d-7926-4100-82f5-e870f1b80399"
+          ],
+          "image": "https://github.com/user-attachments/assets/ec5695e5-55d0-47b5-acd2-8facb2bdc5ec"
         },
         {
           "sourceId": "weekly-issues",
@@ -206,7 +216,7 @@
           "author": "izumi0uu",
           "authorUrl": "https://github.com/izumi0uu",
           "publishedAt": "2026-06-28T14:55:34Z",
-          "summary": "GitHub Stars 过的项目适合收藏,但做不了长期管理。 当你的star项目收藏到几百几千个的时候，通过原生list功能难以管理，ai时代，github项目指数级增长，而你又想收藏各种各样的项目，过后又忘记在哪，叫什么名字了，所以有很多难解决的问题: 分页看不到全部stars仓库 没有个人打标签系统 没有真正的笔记层 很难回看当时存了什么、为什么存 Better GitHub Stars Manager 插件让 GitHub Stars 对重度用户真正可管理。 <img width=\"540\" height=\"272\" alt=\"Image\" src=\" / 功能特性 一次管理所有已star项目 把你 star 的仓库加载进虚拟化表格。 快速搜索与筛选 在仓库名、描述、topics、笔记中全文搜索;按语言、标签、未打标签筛选。 悬浮按钮一键切换 在你自己的Github star页， 提供悬浮按钮一键切换到管理面板。 自定义标签与笔记 加你自己的标签和笔记,让 star 从被动列表变成一个可用的资料库。 自动推荐标签 一键或批量把仓库的 topics 与语言转成推荐标签。 增量同步与全量重扫 快速拉取新 star 的仓库;需要时可全量重扫来对账 unstar,同时保留你的批注。 repo 页 tag chip 直接在单个 GitHub 仓库页查看和编辑你的标签。 跨设备批注同步 通过你自己的私有 GitHub Gist 推送/拉取标签与笔记。 Gist 支撑的存储层 把批注层放在一个专用 secret Gist 里,可移植、可恢复、跨设备同步,无需后端。 截图 <img width=\"1512\" height=\"751\" alt=\"Image\" src=\" / 教程 1. 先从 Chrome Web Store 安装扩展。 2. 打开插件，点击跳转 Options 页,粘贴一个 GitHub personal access token 并验证。 3. 访问你的 GitHub stars 页: 4. 运行 Sync 导入你的 star。 5. 边浏览仓库边搜索、筛选、打标签、加笔记。 6. 想让批注跨设备流转时用 Push 和 Pull。 项目地址",
+          "summary": "GitHub Stars 过的项目适合收藏,但做不了长期管理。 当你的star项目收藏到几百几千个的时候，通过原生list功能难以管理，ai时代，github项目指数级增长，而你又想收藏各种各样的项目，过后又忘记在哪，叫什么名字了，所以有很多难解决的问题: 分页看不到全部stars仓库 没有个人打标签系统 没有真正的笔记层 很难回看当时存了什么、为什么存 Better GitHub Stars Manager 插件让 GitHub Stars 对重度用户真正可管理。 功能特性 一次管理所有已star项目 把你 star 的仓库加载进虚拟化表格。 快速搜索与筛选 在仓库名、描述、topics、笔记中全文搜索;按语言、标签、未打标签筛选。 悬浮按钮一键切换 在你自己的Github star页， 提供悬浮按钮一键切换到管理面板。 自定义标签与笔记 加你自己的标签和笔记,让 star 从被动列表变成一个可用的资料库。 自动推荐标签 一键或批量把仓库的 topics 与语言转成推荐标签。 增量同步与全量重扫 快速拉取新 star 的仓库;需要时可全量重扫来对账 unstar,同时保留你的批注。 repo 页 tag chip 直接在单个 GitHub 仓库页查看和编辑你的标签。 跨设备批注同步 通过你自己的私有 GitHub Gist 推送/拉取标签与笔记。 Gist 支撑的存储层 把批注层放在一个专用 secret Gist 里,可移植、可恢复、跨设备同步,无需后端。 截图 教程 1. 先从 Chrome Web Store 安装扩展。 2. 打开插件，点击跳转 Options 页,粘贴一个 GitHub personal access token 并验证。 3. 访问你的 GitHub stars 页: 4. 运行 Sync 导入你的 star。 5. 边浏览仓库边搜索、筛选、打标签、加笔记。 6. 想让批注跨设备流转时用 Push 和 Pull。 项目地址",
           "content": "## **GitHub Stars 过的项目适合收藏,但做不了长期管理。**\n\n当你的star项目收藏到几百几千个的时候，通过原生list功能难以管理，ai时代，github项目指数级增长，而你又想收藏各种各样的项目，过后又忘记在哪，叫什么名字了，所以有很多难解决的问题:\n\n* 分页看不到全部stars仓库\n* 没有个人打标签系统\n* 没有真正的笔记层\n* 很难回看当时存了什么、为什么存\n\nBetter GitHub Stars Manager 插件让 GitHub Stars 对重度用户真正可管理。\n\n<img width=\"540\" height=\"272\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3ead57ae-1229-4a0a-8f8b-b55d16ad3682\" />\n\n## **功能特性**\n\n* **一次管理所有已star项目** 把你 star 的仓库加载进虚拟化表格。\n\n* **快速搜索与筛选** 在仓库名、描述、topics、笔记中全文搜索;按语言、标签、未打标签筛选。\n\n* **悬浮按钮一键切换** 在你自己的Github star页， 提供悬浮按钮一键切换到管理面板。\n\n* **自定义标签与笔记** 加你自己的标签和笔记,让 star 从被动列表变成一个可用的资料库。\n\n* **自动推荐标签** 一键或批量把仓库的 topics 与语言转成推荐标签。\n\n* **增量同步与全量重扫** 快速拉取新 star 的仓库;需要时可全量重扫来对账 unstar,同时保留你的批注。\n\n* **repo 页 tag chip** 直接在单个 GitHub 仓库页查看和编辑你的标签。\n\n* **跨设备批注同步** 通过你自己的私有 GitHub Gist 推送/拉取标签与笔记。\n\n* **Gist 支撑的存储层** 把批注层放在一个专用 secret Gist 里,可移植、可恢复、跨设备同步,无需后端。\n\n## **截图**\n\n<img width=\"1512\" height=\"751\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bf693eb7-1080-48ac-8a16-a38a8846efec\" />\n\n## **教程**\n1. 先从 Chrome Web Store 安装扩展。\n2. 打开插件，点击跳转 Options 页,粘贴一个 GitHub personal access token 并验证。\n3. 访问你的 GitHub stars 页:`https://github.com/{you}?tab=stars`。\n4. 运行 **Sync** 导入你的 star。\n5. 边浏览仓库边搜索、筛选、打标签、加笔记。\n6. 想让批注跨设备流转时用 **Push** 和 **Pull**。\n\n## **项目地址**\nhttps://github.com/izumi0uu/better-github-stars-manager",
           "metrics": {
             "comments": 2
@@ -216,7 +226,12 @@
             "submission"
           ],
           "externalId": "10489",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10489"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10489",
+          "images": [
+            "https://github.com/user-attachments/assets/3ead57ae-1229-4a0a-8f8b-b55d16ad3682",
+            "https://github.com/user-attachments/assets/bf693eb7-1080-48ac-8a16-a38a8846efec"
+          ],
+          "image": "https://github.com/user-attachments/assets/3ead57ae-1229-4a0a-8f8b-b55d16ad3682"
         },
         {
           "sourceId": "weekly-issues",
@@ -225,7 +240,7 @@
           "author": "lustan",
           "authorUrl": "https://github.com/lustan",
           "publishedAt": "2026-06-28T15:50:30Z",
-          "summary": "文件管理，JSON编辑格式化，支持SQL、Java、Python、JavaScript、Markdown语法高亮 <img width=\"756\" height=\"753\" alt=\"Image\" src=\" / 文件对比功能，支持实时修改对比 <img width=\"1918\" height=\"874\" alt=\"Image\" src=\" / 写代码的人，电脑里多多少少都囤着一堆零散东西： 接口返回的 JSON，想格式化看看结构； 同事甩来两段配置，要对比一下哪儿不一样； 临时想记几行 SQL、Python 片段，又懒得开 VS Code。 每次为这点事打开一个重量级编辑器，说实话挺费劲。所以我做了 Seecode——一个常驻在浏览器里的代码小工具，开一下就能用，关掉也不占地方。 项目地址：",
+          "summary": "文件管理，JSON编辑格式化，支持SQL、Java、Python、JavaScript、Markdown语法高亮 文件对比功能，支持实时修改对比 写代码的人，电脑里多多少少都囤着一堆零散东西： 接口返回的 JSON，想格式化看看结构； 同事甩来两段配置，要对比一下哪儿不一样； 临时想记几行 SQL、Python 片段，又懒得开 VS Code。 每次为这点事打开一个重量级编辑器，说实话挺费劲。所以我做了 Seecode——一个常驻在浏览器里的代码小工具，开一下就能用，关掉也不占地方。 项目地址：",
           "content": "文件管理，JSON编辑格式化，支持SQL、Java、Python、JavaScript、Markdown语法高亮\n<img width=\"756\" height=\"753\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/21ad7c27-45cf-422d-a0a7-75ff03f0bdfd\" />\n\n文件对比功能，支持实时修改对比\n<img width=\"1918\" height=\"874\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6e629c22-f2d7-4354-b7c2-b5989164cfbd\" />\n\n写代码的人，电脑里多多少少都囤着一堆零散东西：\n接口返回的 JSON，想格式化看看结构；\n同事甩来两段配置，要对比一下哪儿不一样；\n临时想记几行 SQL、Python 片段，又懒得开 VS Code。\n每次为这点事打开一个重量级编辑器，说实话挺费劲。所以我做了 Seecode——一个常驻在浏览器里的代码小工具，开一下就能用，关掉也不占地方。\n\n项目地址：\nhttps://github.com/lustan/seecode",
           "metrics": {
             "comments": 0
@@ -235,7 +250,12 @@
             "submission"
           ],
           "externalId": "10490",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10490"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10490",
+          "images": [
+            "https://github.com/user-attachments/assets/21ad7c27-45cf-422d-a0a7-75ff03f0bdfd",
+            "https://github.com/user-attachments/assets/6e629c22-f2d7-4354-b7c2-b5989164cfbd"
+          ],
+          "image": "https://github.com/user-attachments/assets/21ad7c27-45cf-422d-a0a7-75ff03f0bdfd"
         }
       ]
     },
@@ -255,7 +275,7 @@
           "author": "neluca",
           "authorUrl": "https://github.com/neluca",
           "publishedAt": "2026-06-28T02:01:52Z",
-          "summary": "项目地址 类别 C 项目标题 零硬件上手 ARM 嵌入式：从裸机到 FreeRTOS 项目描述 一套面向初学者的 ARM CortexM0 嵌入式开发教程，使用 QEMU 模拟 BBC micro:bit，无需购买任何硬件。包含 13 个渐进式课程，从裸机启动、手写汇编、C/汇编混合编程，一路讲到中断系统、外设驱动、FreeRTOS 多任务、Bootloader 双固件、看门狗策略、CRC 校验、栈溢出检测等生产级实践。每个课程完全自包含（独立 README + 链接脚本 + 源码），可任意切入。配套 12 篇深度参考文档（工具链 / ELF 格式 / 链接脚本 / ARMv6M 指令集 / NVIC 架构 / FreeRTOS 原理等）。适合所有想真正理解\"代码如何在芯片上运行\"的开发者。 亮点 1. 以\"最小指令集\"破局——56条指令看清全貌 同类嵌入式教程大多从STM32（CortexM3/M4，200+条指令）入手，初学者容易被大量指令淹没。本项目选择ARM家族最精简的CortexM0（仅56条指令，2小时可学完），让学习者极短时间内建立完整心智模型。核心概念（向量表、NVIC、AAPCS、链接脚本）完全可迁移到M3/M4/M7。 2. 彻底零硬件门槛——QEMU仿真 + CI自动化 告别\"先花15刀买micro:bit再开始学\"的痛点。Windows/Linux/macOS装好QEMU就能跑，GitHub Actions自动验证全部13个课程在QEMU上通过。每个课程提供4种CMake运行目标（ELF运行/二进制烧录模拟/GDB暂停调试/GDB动态附着），CLion开箱即用。 3. 远超\"点灯\"教程——直通工业级生产模式 大部分嵌入式入门教程止步于GPIO点灯和串口打印。本项目覆盖：手写启动代码和链接脚本 C/汇编混合编程与临界区 NVIC中断系统与HardFault分析 FreeRTOS多任务与队列通信 Bootloader+Application双固件启动 看门狗多点喂狗策略 断言系统+栈溢出检测+CRC校验+故障日志。结业即具备工业/汽车/医疗等关键领域的嵌入式基础。 4. 13个课程完全自包含 + 12篇深度文档 每个课程是独立CMake项目，学生不必按序学习，可从任意阶段切入。配套文档深入讲解GNU工具链、ELF二进制格式、链接脚本编写、Thumb1约束、newlib移植、FreeRTOS调度器原理等——这些知识在大多数嵌入式课程中被一笔带过，却是实际工程中调试bug的关键。 示例代码 markdown 截图或演示视频 <img width=\"1914\" height=\"1011\" alt=\"Image\" src=\" /",
+          "summary": "项目地址 类别 C 项目标题 零硬件上手 ARM 嵌入式：从裸机到 FreeRTOS 项目描述 一套面向初学者的 ARM CortexM0 嵌入式开发教程，使用 QEMU 模拟 BBC micro:bit，无需购买任何硬件。包含 13 个渐进式课程，从裸机启动、手写汇编、C/汇编混合编程，一路讲到中断系统、外设驱动、FreeRTOS 多任务、Bootloader 双固件、看门狗策略、CRC 校验、栈溢出检测等生产级实践。每个课程完全自包含（独立 README + 链接脚本 + 源码），可任意切入。配套 12 篇深度参考文档（工具链 / ELF 格式 / 链接脚本 / ARMv6M 指令集 / NVIC 架构 / FreeRTOS 原理等）。适合所有想真正理解\"代码如何在芯片上运行\"的开发者。 亮点 1. 以\"最小指令集\"破局——56条指令看清全貌 同类嵌入式教程大多从STM32（CortexM3/M4，200+条指令）入手，初学者容易被大量指令淹没。本项目选择ARM家族最精简的CortexM0（仅56条指令，2小时可学完），让学习者极短时间内建立完整心智模型。核心概念（向量表、NVIC、AAPCS、链接脚本）完全可迁移到M3/M4/M7。 2. 彻底零硬件门槛——QEMU仿真 + CI自动化 告别\"先花15刀买micro:bit再开始学\"的痛点。Windows/Linux/macOS装好QEMU就能跑，GitHub Actions自动验证全部13个课程在QEMU上通过。每个课程提供4种CMake运行目标（ELF运行/二进制烧录模拟/GDB暂停调试/GDB动态附着），CLion开箱即用。 3. 远超\"点灯\"教程——直通工业级生产模式 大部分嵌入式入门教程止步于GPIO点灯和串口打印。本项目覆盖：手写启动代码和链接脚本 C/汇编混合编程与临界区 NVIC中断系统与HardFault分析 FreeRTOS多任务与队列通信 Bootloader+Application双固件启动 看门狗多点喂狗策略 断言系统+栈溢出检测+CRC校验+故障日志。结业即具备工业/汽车/医疗等关键领域的嵌入式基础。 4. 13个课程完全自包含 + 12篇深度文档 每个课程是独立CMake项目，学生不必按序学习，可从任意阶段切入。配套文档深入讲解GNU工具链、ELF二进制格式、链接脚本编写、Thumb1约束、newlib移植、FreeRTOS调度器原理等——这些知识在大多数嵌入式课程中被一笔带过，却是实际工程中调试bug的关键。 示例代码 markdown 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/neluca/embedded-from-scratch\n\n### 类别\n\nC\n\n### 项目标题\n\n零硬件上手 ARM 嵌入式：从裸机到 FreeRTOS\n\n### 项目描述\n\n一套面向初学者的 ARM Cortex-M0 嵌入式开发教程，使用 QEMU 模拟 BBC micro:bit，无需购买任何硬件。包含 13 个渐进式课程，从裸机启动、手写汇编、C/汇编混合编程，一路讲到中断系统、外设驱动、FreeRTOS 多任务、Bootloader 双固件、看门狗策略、CRC 校验、栈溢出检测等生产级实践。每个课程完全自包含（独立 README + 链接脚本 + 源码），可任意切入。配套 12 篇深度参考文档（工具链 / ELF 格式 / 链接脚本 / ARMv6-M 指令集 / NVIC 架构 / FreeRTOS 原理等）。适合所有想真正理解\"代码如何在芯片上运行\"的开发者。\n\n### 亮点\n\n1. 以\"最小指令集\"破局——56条指令看清全貌\n\n同类嵌入式教程大多从STM32（Cortex-M3/M4，200+条指令）入手，初学者容易被大量指令淹没。本项目选择ARM家族最精简的Cortex-M0（仅56条指令，2小时可学完），让学习者极短时间内建立完整心智模型。核心概念（向量表、NVIC、AAPCS、链接脚本）完全可迁移到M3/M4/M7。\n\n2. 彻底零硬件门槛——QEMU仿真 + CI自动化\n\n告别\"先花15刀买micro:bit再开始学\"的痛点。Windows/Linux/macOS装好QEMU就能跑，GitHub Actions自动验证全部13个课程在QEMU上通过。每个课程提供4种CMake运行目标（ELF运行/二进制烧录模拟/GDB暂停调试/GDB动态附着），CLion开箱即用。\n\n3. 远超\"点灯\"教程——直通工业级生产模式\n\n大部分嵌入式入门教程止步于GPIO点灯和串口打印。本项目覆盖：手写启动代码和链接脚本 -> C/汇编混合编程与临界区 -> NVIC中断系统与HardFault分析 -> FreeRTOS多任务与队列通信 -> Bootloader+Application双固件启动 -> 看门狗多点喂狗策略 -> 断言系统+栈溢出检测+CRC校验+故障日志。结业即具备工业/汽车/医疗等关键领域的嵌入式基础。\n\n4. 13个课程完全自包含 + 12篇深度文档\n\n每个课程是独立CMake项目，学生不必按序学习，可从任意阶段切入。配套文档深入讲解GNU工具链、ELF二进制格式、链接脚本编写、Thumb-1约束、newlib移植、FreeRTOS调度器原理等——这些知识在大多数嵌入式课程中被一笔带过，却是实际工程中调试bug的关键。\n\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"1914\" height=\"1011\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c3ba7a7e-6dae-4092-9831-e1774fa78e9a\" />",
           "metrics": {
             "comments": 0
@@ -265,7 +285,11 @@
             "submission"
           ],
           "externalId": "3386",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3386"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3386",
+          "images": [
+            "https://github.com/user-attachments/assets/c3ba7a7e-6dae-4092-9831-e1774fa78e9a"
+          ],
+          "image": "https://github.com/user-attachments/assets/c3ba7a7e-6dae-4092-9831-e1774fa78e9a"
         },
         {
           "sourceId": "hellogithub-issues",
@@ -298,7 +322,7 @@
           "author": "izumi0uu",
           "authorUrl": "https://github.com/izumi0uu",
           "publishedAt": "2026-06-28T14:57:51Z",
-          "summary": "项目地址 类别 JS 项目标题 一个方便管理自己star过的项目的浏览器插件 项目描述 GitHub Stars 过的项目适合收藏,但做不了长期管理。 当你的star项目收藏到几百几千个的时候，通过原生list功能难以管理，ai时代，github项目指数级增长，而你又想收藏各种各样的项目，过后又忘记在哪，叫什么名字了，所以有很多难解决的问题: 分页看不到全部stars仓库 没有个人打标签系统 没有真正的笔记层 很难回看当时存了什么、为什么存 Better GitHub Stars Manager 插件让 GitHub Stars 对重度用户真正可管理。 <img width=\"540\" height=\"272\" alt=\"Image\" src=\" / 功能特性 一次管理所有已star项目 把你 star 的仓库加载进虚拟化表格。 快速搜索与筛选 在仓库名、描述、topics、笔记中全文搜索;按语言、标签、未打标签筛选。 悬浮按钮一键切换 在你自己的Github star页， 提供悬浮按钮一键切换到管理面板。 自定义标签与笔记 加你自己的标签和笔记,让 star 从被动列表变成一个可用的资料库。 自动推荐标签 一键或批量把仓库的 topics 与语言转成推荐标签。 增量同步与全量重扫 快速拉取新 star 的仓库;需要时可全量重扫来对账 unstar,同时保留你的批注。 repo 页 tag chip 直接在单个 GitHub 仓库页查看和编辑你的标签。 跨设备批注同步 通过你自己的私有 GitHub Gist 推送/拉取标签与笔记。 Gist 支撑的存储层 把批注层放在一个专用 secret Gist 里,可移植、可恢复、跨设备同步,无需后端。 截图 <img width=\"1512\" height=\"751\" alt=\"Image\" src=\" / 教程 1. 先从 Chrome Web Store 安装扩展。 2. 打开插件，点击跳转 Options 页,粘贴一个 GitHub personal access token 并验证。 3. 访问你的 GitHub stars 页: 4. 运行 Sync 导入你的 star。 5. 边浏览仓库边搜索、筛选、打标签、加笔记。 6. 想让批注跨设备流转时用 Push 和 Pull。 亮点 一个为重度 GitHub 用户打造的 Chrome 扩展 —— 本地优先、零服务端、个人专属。它把 变成一个可搜索、可打标签、可筛选、可批注的快速工作台,管理成千上万个 star，而不必离开 GitHub。 示例代码 markdown 截图或演示视频 No response",
+          "summary": "项目地址 类别 JS 项目标题 一个方便管理自己star过的项目的浏览器插件 项目描述 GitHub Stars 过的项目适合收藏,但做不了长期管理。 当你的star项目收藏到几百几千个的时候，通过原生list功能难以管理，ai时代，github项目指数级增长，而你又想收藏各种各样的项目，过后又忘记在哪，叫什么名字了，所以有很多难解决的问题: 分页看不到全部stars仓库 没有个人打标签系统 没有真正的笔记层 很难回看当时存了什么、为什么存 Better GitHub Stars Manager 插件让 GitHub Stars 对重度用户真正可管理。 功能特性 一次管理所有已star项目 把你 star 的仓库加载进虚拟化表格。 快速搜索与筛选 在仓库名、描述、topics、笔记中全文搜索;按语言、标签、未打标签筛选。 悬浮按钮一键切换 在你自己的Github star页， 提供悬浮按钮一键切换到管理面板。 自定义标签与笔记 加你自己的标签和笔记,让 star 从被动列表变成一个可用的资料库。 自动推荐标签 一键或批量把仓库的 topics 与语言转成推荐标签。 增量同步与全量重扫 快速拉取新 star 的仓库;需要时可全量重扫来对账 unstar,同时保留你的批注。 repo 页 tag chip 直接在单个 GitHub 仓库页查看和编辑你的标签。 跨设备批注同步 通过你自己的私有 GitHub Gist 推送/拉取标签与笔记。 Gist 支撑的存储层 把批注层放在一个专用 secret Gist 里,可移植、可恢复、跨设备同步,无需后端。 截图 教程 1. 先从 Chrome Web Store 安装扩展。 2. 打开插件，点击跳转 Options 页,粘贴一个 GitHub personal access token 并验证。 3. 访问你的 GitHub stars 页: 4. 运行 Sync 导入你的 star。 5. 边浏览仓库边搜索、筛选、打标签、加笔记。 6. 想让批注跨设备流转时用 Push 和 Pull。 亮点 一个为重度 GitHub 用户打造的 Chrome 扩展 —— 本地优先、零服务端、个人专属。它把 变成一个可搜索、可打标签、可筛选、可批注的快速工作台,管理成千上万个 star，而不必离开 GitHub。 示例代码 markdown 截图或演示视频 No response",
           "content": "### 项目地址\n\nhttps://github.com/izumi0uu/better-github-stars-manager\n\n### 类别\n\nJS\n\n### 项目标题\n\n一个方便管理自己star过的项目的浏览器插件\n\n### 项目描述\n\n## **GitHub Stars 过的项目适合收藏,但做不了长期管理。**\n\n当你的star项目收藏到几百几千个的时候，通过原生list功能难以管理，ai时代，github项目指数级增长，而你又想收藏各种各样的项目，过后又忘记在哪，叫什么名字了，所以有很多难解决的问题:\n\n* 分页看不到全部stars仓库\n* 没有个人打标签系统\n* 没有真正的笔记层\n* 很难回看当时存了什么、为什么存\n\nBetter GitHub Stars Manager 插件让 GitHub Stars 对重度用户真正可管理。\n\n<img width=\"540\" height=\"272\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3ead57ae-1229-4a0a-8f8b-b55d16ad3682\" />\n\n## **功能特性**\n\n* **一次管理所有已star项目** 把你 star 的仓库加载进虚拟化表格。\n\n* **快速搜索与筛选** 在仓库名、描述、topics、笔记中全文搜索;按语言、标签、未打标签筛选。\n\n* **悬浮按钮一键切换** 在你自己的Github star页， 提供悬浮按钮一键切换到管理面板。\n\n* **自定义标签与笔记** 加你自己的标签和笔记,让 star 从被动列表变成一个可用的资料库。\n\n* **自动推荐标签** 一键或批量把仓库的 topics 与语言转成推荐标签。\n\n* **增量同步与全量重扫** 快速拉取新 star 的仓库;需要时可全量重扫来对账 unstar,同时保留你的批注。\n\n* **repo 页 tag chip** 直接在单个 GitHub 仓库页查看和编辑你的标签。\n\n* **跨设备批注同步** 通过你自己的私有 GitHub Gist 推送/拉取标签与笔记。\n\n* **Gist 支撑的存储层** 把批注层放在一个专用 secret Gist 里,可移植、可恢复、跨设备同步,无需后端。\n\n## **截图**\n\n<img width=\"1512\" height=\"751\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bf693eb7-1080-48ac-8a16-a38a8846efec\" />\n\n## **教程**\n1. 先从 Chrome Web Store 安装扩展。\n2. 打开插件，点击跳转 Options 页,粘贴一个 GitHub personal access token 并验证。\n3. 访问你的 GitHub stars 页:`https://github.com/{you}?tab=stars`。\n4. 运行 **Sync** 导入你的 star。\n5. 边浏览仓库边搜索、筛选、打标签、加笔记。\n6. 想让批注跨设备流转时用 **Push** 和 **Pull**。\n\n### 亮点\n\n一个为重度 GitHub 用户打造的 Chrome 扩展 —— 本地优先、零服务端、个人专属。它把 `https://github.com/{user}?tab=stars`页面 变成一个可搜索、可打标签、可筛选、可批注的快速工作台,管理成千上万个 star，而不必离开 GitHub。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n_No response_",
           "metrics": {
             "comments": 0
@@ -308,7 +332,12 @@
             "submission"
           ],
           "externalId": "3389",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3389"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3389",
+          "images": [
+            "https://github.com/user-attachments/assets/3ead57ae-1229-4a0a-8f8b-b55d16ad3682",
+            "https://github.com/user-attachments/assets/bf693eb7-1080-48ac-8a16-a38a8846efec"
+          ],
+          "image": "https://github.com/user-attachments/assets/3ead57ae-1229-4a0a-8f8b-b55d16ad3682"
         }
       ]
     },

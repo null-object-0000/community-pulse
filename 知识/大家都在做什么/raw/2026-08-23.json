@@ -18,7 +18,7 @@
           "author": "hezhizheng",
           "authorUrl": "https://github.com/hezhizheng",
           "publishedAt": "2026-08-22T17:00:22Z",
-          "summary": "<p align=\"center\" <img src=\" alt=\"MultiRow Tabs Logo\" width=\"128\" </p <h1 align=\"center\"MultiRow Tabs（多行平铺标签栏）</h1 一个 Chrome 浏览器扩展（Manifest V3），以多行平铺的方式展示当前窗口的所有标签页，采用零侵入浮动模式：不修改页面任何样式，兼容所有网站。github 视频演示 背景说明 Chrome 扩展无法修改浏览器原生标签栏（标签栏属于浏览器 UI 层，扩展无权注入样式或脚本）。因此本扩展采用「浮动覆盖栏」方案：页面上仅有一个可拖拽的悬浮按钮，点击或按快捷键时标签栏才浮现在页面顶部，不改动页面任何样式，对等任何网站零影响。 功能特性 零侵入浮动模式：标签栏默认隐藏，不修改页面任何样式；展开时浮在页面上方，鼠标离开自动收起 悬浮按钮可拖拽：右上角小圆点按钮可拖拽到页面任意位置，位置自动记忆 自定义快捷键：默认 Alt+Z，可在弹出面板中录制任意组合键，随时展开 / 收起标签栏 多行平铺展示：标签以 favicon + 标题的形式自动换行平铺，当前活动标签白底高亮 标签排序：标签栏左侧提供排序下拉框，支持「默认」（与浏览器标签顺序一致）、「按名称」（中文拼音排序）、「按域名」（优先按一级域名排序，同站点不同子域名的标签自动聚在一起），选择后自动记忆 一键切换 / 还原：点击工具栏图标，在弹出面板中一键显示或隐藏整个功能 标签操作： 左键点击标签 → 切换到该标签 中键点击标签 → 关闭该标签（与原生标签栏行为一致） 点击标签上的 × → 关闭该标签 键盘导航：展开后用 ← → ↑ ↓ 在标签间移动焦点（蓝色高亮），按 Enter 切换到对应标签页，按 Delete 关闭当前高亮标签，按 Esc 收起标签栏 可选显示链接：在弹出面板中勾选「显示链接」后，链接以小字显示在标签名称下方（默认不显示） 实时同步：标签的新建、关闭、切换、标题变化会自动刷新标签栏 无 Mixed Content 警告：favicon 由后台抓取并转为 data URL 下发，http 页面的图标在 https 页面中也不会触发混合内容警告 安装方法 1. 打开 chrome://extensions/ 2. 开启右上角「开发者模式」 3. 下载 最新压缩包 解压 4. 点击「加载已解压的扩展程序」，选择本目录（multirowtabs） 5. 工具栏出现扩展图标即安装成功 使用方法 点击工具栏图标，弹出面板中点击「显示多行标签栏」→ 页面出现悬浮按钮 ≡；点击「隐藏多行标签栏」→ 还原 点击悬浮按钮（或按自定义快捷键）→ 标签栏浮现在页面顶部；鼠标离开标签栏后自动收起 展开标签栏后，通过左侧下拉框切换排序方式（默认 / 按名称 / 按域名），选择立即生效并自动记忆 悬浮按钮可按住拖拽到页面任意位置，位置自动记忆（按窗口百分比保存） 在弹出面板中点击「快捷键」输入框后按下组合键即可录制；「清除」可移除快捷键 勾选 / 取消「显示链接」立即生效，无需刷新页面 文件结构 chromemultirowtabs/ ├── manifest.json MV3 配置，声明 tabs / storage / scripting 权限 ├── background.js Service Worker：切换开关、标签查询、favicon 转换与缓存、事件广播 ├── content.js 渲染悬浮按钮与多行标签栏，处理拖拽 / 快捷键 / 点击 / 中键关闭等交互 ├── content.css 标签栏与悬浮按钮样式（flexwrap 多行平铺） ├── popup.html 工具栏弹出面板 ├── popup.js 面板逻辑：切换按钮 + 显示链接 + 快捷键录制 ├── icon16.png 扩展图标（16px） ├── icon48.png 扩展图标（48px） ├── icon128.png 扩展图标（128px） └── README.md 已知限制 chrome:// 页面、Chrome 网上应用店等浏览器内部页面无法注入内容脚本，这些页面不会显示悬浮按钮 标签栏展开时浮在页面上方，会临时遮挡顶部内容（鼠标离开即收起） 自定义快捷键在页面自身捕获了同一组合键时可能被页面拦截（扩展在捕获阶段监听，绝大多数情况优先生效） 重新加载扩展后，之前已打开的页面需要刷新一次才会加载新脚本 权限说明 | 权限 | 用途 | ||| | tabs | 查询 / 切换 / 关闭标签页，读取标题与 favicon | | storage | 保存开关状态、「显示链接」配置、排序方式、悬浮按钮位置与快捷键 | | scripting | 对已打开的标签页按需注入标签栏脚本 | | <allurls（host） | 允许在所有页面注入标签栏、后台抓取 favicon | License MIT",
+          "summary": "<p align=\"center\" alt=\"MultiRow Tabs Logo\" width=\"128\" </p <h1 align=\"center\"MultiRow Tabs（多行平铺标签栏）</h1 一个 Chrome 浏览器扩展（Manifest V3），以多行平铺的方式展示当前窗口的所有标签页，采用零侵入浮动模式：不修改页面任何样式，兼容所有网站。github 视频演示 背景说明 Chrome 扩展无法修改浏览器原生标签栏（标签栏属于浏览器 UI 层，扩展无权注入样式或脚本）。因此本扩展采用「浮动覆盖栏」方案：页面上仅有一个可拖拽的悬浮按钮，点击或按快捷键时标签栏才浮现在页面顶部，不改动页面任何样式，对等任何网站零影响。 功能特性 零侵入浮动模式：标签栏默认隐藏，不修改页面任何样式；展开时浮在页面上方，鼠标离开自动收起 悬浮按钮可拖拽：右上角小圆点按钮可拖拽到页面任意位置，位置自动记忆 自定义快捷键：默认 Alt+Z，可在弹出面板中录制任意组合键，随时展开 / 收起标签栏 多行平铺展示：标签以 favicon + 标题的形式自动换行平铺，当前活动标签白底高亮 标签排序：标签栏左侧提供排序下拉框，支持「默认」（与浏览器标签顺序一致）、「按名称」（中文拼音排序）、「按域名」（优先按一级域名排序，同站点不同子域名的标签自动聚在一起），选择后自动记忆 一键切换 / 还原：点击工具栏图标，在弹出面板中一键显示或隐藏整个功能 标签操作： 左键点击标签 → 切换到该标签 中键点击标签 → 关闭该标签（与原生标签栏行为一致） 点击标签上的 × → 关闭该标签 键盘导航：展开后用 ← → ↑ ↓ 在标签间移动焦点（蓝色高亮），按 Enter 切换到对应标签页，按 Delete 关闭当前高亮标签，按 Esc 收起标签栏 可选显示链接：在弹出面板中勾选「显示链接」后，链接以小字显示在标签名称下方（默认不显示） 实时同步：标签的新建、关闭、切换、标题变化会自动刷新标签栏 无 Mixed Content 警告：favicon 由后台抓取并转为 data URL 下发，http 页面的图标在 https 页面中也不会触发混合内容警告 安装方法 1. 打开 chrome://extensions/ 2. 开启右上角「开发者模式」 3. 下载 最新压缩包 解压 4. 点击「加载已解压的扩展程序」，选择本目录（multirowtabs） 5. 工具栏出现扩展图标即安装成功 使用方法 点击工具栏图标，弹出面板中点击「显示多行标签栏」→ 页面出现悬浮按钮 ≡；点击「隐藏多行标签栏」→ 还原 点击悬浮按钮（或按自定义快捷键）→ 标签栏浮现在页面顶部；鼠标离开标签栏后自动收起 展开标签栏后，通过左侧下拉框切换排序方式（默认 / 按名称 / 按域名），选择立即生效并自动记忆 悬浮按钮可按住拖拽到页面任意位置，位置自动记忆（按窗口百分比保存） 在弹出面板中点击「快捷键」输入框后按下组合键即可录制；「清除」可移除快捷键 勾选 / 取消「显示链接」立即生效，无需刷新页面 文件结构 chromemultirowtabs/ ├── manifest.json MV3 配置，声明 tabs / storage / scripting 权限 ├── background.js Service Worker：切换开关、标签查询、favicon 转换与缓存、事件广播 ├── content.js 渲染悬浮按钮与多行标签栏，处理拖拽 / 快捷键 / 点击 / 中键关闭等交互 ├── content.css 标签栏与悬浮按钮样式（flexwrap 多行平铺） ├── popup.html 工具栏弹出面板 ├── popup.js 面板逻辑：切换按钮 + 显示链接 + 快捷键录制 ├── icon16.png 扩展图标（16px） ├── icon48.png 扩展图标（48px） ├── icon128.png 扩展图标（128px） └── README.md 已知限制 chrome:// 页面、Chrome 网上应用店等浏览器内部页面无法注入内容脚本，这些页面不会显示悬浮按钮 标签栏展开时浮在页面上方，会临时遮挡顶部内容（鼠标离开即收起） 自定义快捷键在页面自身捕获了同一组合键时可能被页面拦截（扩展在捕获阶段监听，绝大多数情况优先生效） 重新加载扩展后，之前已打开的页面需要刷新一次才会加载新脚本 权限说明 | 权限 | 用途 | ||| | tabs | 查询 / 切换 / 关闭标签页，读取标题与 favicon | | storage | 保存开关状态、「显示链接」配置、排序方式、悬浮按钮位置与快捷键 | | scripting | 对已打开的标签页按需注入标签栏脚本 | | <allurls（host） | 允许在所有页面注入标签栏、后台抓取 favicon | License MIT",
           "content": "<p align=\"center\">\n  <img src=\"https://raw.githubusercontent.com/hezhizheng/multi-row-tabs/master/icon128.png\" alt=\"Multi-Row Tabs Logo\" width=\"128\">\n</p>\n\n<h1 align=\"center\">Multi-Row Tabs（多行平铺标签栏）</h1>\n\n一个 Chrome 浏览器扩展（Manifest V3），以**多行平铺**的方式展示当前窗口的所有标签页，采用**零侵入浮动模式**：不修改页面任何样式，兼容所有网站。[github]( https://github.com/hezhizheng/multi-row-tabs) \n\n![](https://cdn.jsdmirror.com/gh/hezhizheng/static-image-hosting@main/image-hosting/20260823002124_PGLZRWFBYIPURPTW.png)\n## 视频演示\n\nhttps://github.com/user-attachments/assets/a6736d2c-746c-4b45-bb09-1fc7d6831068\n\n## 背景说明\n\nChrome 扩展**无法修改浏览器原生标签栏**（标签栏属于浏览器 UI 层，扩展无权注入样式或脚本）。因此本扩展采用「浮动覆盖栏」方案：页面上仅有一个可拖拽的悬浮按钮，点击或按快捷键时标签栏才浮现在页面顶部，**不改动页面任何样式**，对等任何网站零影响。\n\n## 功能特性\n\n- **零侵入浮动模式**：标签栏默认隐藏，不修改页面任何样式；展开时浮在页面上方，鼠标离开自动收起\n- **悬浮按钮可拖拽**：右上角小圆点按钮可拖拽到页面任意位置，位置自动记忆\n- **自定义快捷键**：默认 `Alt+Z`，可在弹出面板中录制任意组合键，随时展开 / 收起标签栏\n- **多行平铺展示**：标签以 favicon + 标题的形式自动换行平铺，当前活动标签白底高亮\n- **标签排序**：标签栏左侧提供排序下拉框，支持「默认」（与浏览器标签顺序一致）、「按名称」（中文拼音排序）、「按域名」（优先按一级域名排序，同站点不同子域名的标签自动聚在一起），选择后自动记忆\n- **一键切换 / 还原**：点击工具栏图标，在弹出面板中一键显示或隐藏整个功能\n- **标签操作**：\n  - 左键点击标签 → 切换到该标签\n  - 中键点击标签 → 关闭该标签（与原生标签栏行为一致）\n  - 点击标签上的 `×` → 关闭该标签\n- **键盘导航**：展开后用 `←` `→` `↑` `↓` 在标签间移动焦点（蓝色高亮），按 `Enter` 切换到对应标签页，按 `Delete` 关闭当前高亮标签，按 `Esc` 收起标签栏\n- **可选显示链接**：在弹出面板中勾选「显示链接」后，链接以小字显示在标签名称下方（默认不显示）\n- **实时同步**：标签的新建、关闭、切换、标题变化会自动刷新标签栏\n- **无 Mixed Content 警告**：favicon 由后台抓取并转为 data URL 下发，http 页面的图标在 https 页面中也不会触发混合内容警告\n\n## 安装方法\n\n1. 打开 `chrome://extensions/`\n2. 开启右上角「开发者模式」\n3. 下载 [最新压缩包](https://github.com/hezhizheng/multi-row-tabs/archive/refs/heads/master.zip) 解压\n4. 点击「加载已解压的扩展程序」，选择本目录（`multi-row-tabs`）\n5. 工具栏出现扩展图标即安装成功\n\n## 使用方法\n\n- 点击工具栏图标，弹出面板中点击「显示多行标签栏」→ 页面出现悬浮按钮 ≡；点击「隐藏多行标签栏」→ 还原\n- 点击悬浮按钮（或按自定义快捷键）→ 标签栏浮现在页面顶部；鼠标离开标签栏后自动收起\n- 展开标签栏后，通过左侧下拉框切换排序方式（默认 / 按名称 / 按域名），选择立即生效并自动记忆\n- 悬浮按钮可按住拖拽到页面任意位置，位置自动记忆（按窗口百分比保存）\n- 在弹出面板中点击「快捷键」输入框后按下组合键即可录制；「清除」可移除快捷键\n- 勾选 / 取消「显示链接」立即生效，无需刷新页面\n\n## 文件结构\n\n```\nchrome-multirow-tabs/\n├── manifest.json   # MV3 配置，声明 tabs / storage / scripting 权限\n├── background.js   # Service Worker：切换开关、标签查询、favicon 转换与缓存、事件广播\n├── content.js      # 渲染悬浮按钮与多行标签栏，处理拖拽 / 快捷键 / 点击 / 中键关闭等交互\n├── content.css     # 标签栏与悬浮按钮样式（flex-wrap 多行平铺）\n├── popup.html      # 工具栏弹出面板\n├── popup.js        # 面板逻辑：切换按钮 + 显示链接 + 快捷键录制\n├── icon16.png      # 扩展图标（16px）\n├── icon48.png      # 扩展图标（48px）\n├── icon128.png     # 扩展图标（128px）\n└── README.md\n```\n\n## 已知限制\n\n- `chrome://` 页面、Chrome 网上应用店等浏览器内部页面无法注入内容脚本，这些页面不会显示悬浮按钮\n- 标签栏展开时浮在页面上方，会临时遮挡顶部内容（鼠标离开即收起）\n- 自定义快捷键在页面自身捕获了同一组合键时可能被页面拦截（扩展在捕获阶段监听，绝大多数情况优先生效）\n- 重新加载扩展后，之前已打开的页面需要刷新一次才会加载新脚本\n\n## 权限说明\n\n| 权限 | 用途 |\n|---|---|\n| `tabs` | 查询 / 切换 / 关闭标签页，读取标题与 favicon |\n| `storage` | 保存开关状态、「显示链接」配置、排序方式、悬浮按钮位置与快捷键 |\n| `scripting` | 对已打开的标签页按需注入标签栏脚本 |\n| `<all_urls>`（host） | 允许在所有页面注入标签栏、后台抓取 favicon |\n\n## License\n[MIT](./LICENSE.txt)\n",
           "metrics": {
             "comments": 0
@@ -28,7 +28,11 @@
             "submission"
           ],
           "externalId": "11310",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11310"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11310",
+          "images": [
+            "https://raw.githubusercontent.com/hezhizheng/multi-row-tabs/master/icon128.png"
+          ],
+          "image": "https://raw.githubusercontent.com/hezhizheng/multi-row-tabs/master/icon128.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -96,7 +100,7 @@
           "author": "sunnywanggit",
           "authorUrl": "https://github.com/sunnywanggit",
           "publishedAt": "2026-08-23T06:03:41Z",
-          "summary": "以前找产品方向，我会在 Product Hunt 、X 、Reddit 收藏一大堆链接。 但最后还是回答不了一个问题： 这些产品只是有人讨论，还是真的在赚钱？ 所以我做了 Build or Skip （ )。 现在站内收录了 14 万+ 在赚钱的产品，可以查看估算订单、增长状态、趋势、DR 、产品分类、定价、收入模式、广告平台和目标用户。 现在我只需要看那个产品我能打得过，然后“先抄再超”就行了。 <img width=\"2588\" height=\"1794\" alt=\"Image\" src=\" / <img width=\"3574\" height=\"1812\" alt=\"Image\" src=\" /",
+          "summary": "以前找产品方向，我会在 Product Hunt 、X 、Reddit 收藏一大堆链接。 但最后还是回答不了一个问题： 这些产品只是有人讨论，还是真的在赚钱？ 所以我做了 Build or Skip （ )。 现在站内收录了 14 万+ 在赚钱的产品，可以查看估算订单、增长状态、趋势、DR 、产品分类、定价、收入模式、广告平台和目标用户。 现在我只需要看那个产品我能打得过，然后“先抄再超”就行了。",
           "content": "以前找产品方向，我会在 Product Hunt 、X 、Reddit 收藏一大堆链接。\n\n但最后还是回答不了一个问题：\n\n这些产品只是有人讨论，还是真的在赚钱？\n\n所以我做了 Build or Skip （ https://buildorskip.dev/ )。\n\n现在站内收录了 14 万+ 在赚钱的产品，可以查看估算订单、增长状态、趋势、DR 、产品分类、定价、收入模式、广告平台和目标用户。\n\n现在我只需要看那个产品我能打得过，然后“先抄再超”就行了。\n\n<img width=\"2588\" height=\"1794\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b3f37000-c4ad-4391-b847-0e5bdfd01f97\" />\n\n<img width=\"3574\" height=\"1812\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d88974c2-8073-4c42-8e2f-0aceb6ad5948\" />",
           "metrics": {
             "comments": 0
@@ -107,7 +111,12 @@
           ],
           "externalId": "11314",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11314",
-          "siteLogo": "https://buildorskip.dev/apple-icon.png?2fe61f7e3f639209"
+          "siteLogo": "https://buildorskip.dev/apple-icon.png?2fe61f7e3f639209",
+          "images": [
+            "https://github.com/user-attachments/assets/b3f37000-c4ad-4391-b847-0e5bdfd01f97",
+            "https://github.com/user-attachments/assets/d88974c2-8073-4c42-8e2f-0aceb6ad5948"
+          ],
+          "image": "https://github.com/user-attachments/assets/b3f37000-c4ad-4391-b847-0e5bdfd01f97"
         },
         {
           "sourceId": "weekly-issues",
@@ -116,7 +125,7 @@
           "author": "sddzlsc",
           "authorUrl": "https://github.com/sddzlsc",
           "publishedAt": "2026-08-23T09:01:51Z",
-          "summary": "wiwanaAI 获客智能体 通过小红书的评论区关键词，获得精准意向客户。 <img width=\"3006\" height=\"1756\" alt=\"Image\" src=\" / <img width=\"3006\" height=\"1756\" alt=\"Image\" src=\" /",
+          "summary": "wiwanaAI 获客智能体 通过小红书的评论区关键词，获得精准意向客户。",
           "content": "[wiwana-AI 获客智能体](https://wiwana.com)\n通过小红书的评论区关键词，获得精准意向客户。\n\n<img width=\"3006\" height=\"1756\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1c222922-7dd1-469a-bc71-bb169ce2d75b\" />\n\n<img width=\"3006\" height=\"1756\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2a5243aa-e096-4d9a-9810-8b1fc98899fe\" />",
           "metrics": {
             "comments": 1
@@ -127,7 +136,12 @@
           ],
           "externalId": "11316",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11316",
-          "siteLogo": "https://wiwana.com/wiwana-mark.svg"
+          "siteLogo": "https://wiwana.com/wiwana-mark.svg",
+          "images": [
+            "https://github.com/user-attachments/assets/1c222922-7dd1-469a-bc71-bb169ce2d75b",
+            "https://github.com/user-attachments/assets/2a5243aa-e096-4d9a-9810-8b1fc98899fe"
+          ],
+          "image": "https://github.com/user-attachments/assets/1c222922-7dd1-469a-bc71-bb169ce2d75b"
         },
         {
           "sourceId": "weekly-issues",
@@ -136,7 +150,7 @@
           "author": "CqwqY",
           "authorUrl": "https://github.com/CqwqY",
           "publishedAt": "2026-08-23T09:12:52Z",
-          "summary": "CAID浏览器ai副驾 Chromium 扩展（MV3，Chrome + Edge 双发），零构建，不接管浏览器原生新标签页，在任意网页可唤出 AI 副驾；内置插件系统，侧边栏区块 / 主面板 / 弹窗，全部可由你手写 JavaScript 插件自由扩展。仓库地址 官网 副驾侧边栏形态 <img width=\"960\" height=\"489\" alt=\"Image\" src=\" / 副驾底部栏形态 <img width=\"1916\" height=\"970\" alt=\"Image\" src=\" / 运行示例 项目特性： 不占用新标签页：保留浏览器原生新标签页，零侵入。右键点扩展图标 →「选项」即可打开工作台设置页。 跨页 AI 副驾：任意网页右下角浮球唤起副驾，MAIN world 运行、绕过页面脚本干扰；选中文本 → 右键 → 附带上文启动。支持 AI 回答 与 Bing 搜索 双模式、待办、长期记忆。 第六感 · 主动协助（测试版）：采集行为信号（停留、滚动、复制、搜索）在本地推断意图，弹一条轻量气泡建议，点击即唤醒副驾执行对应任务；内置 17 个场景 + 规则表化可扩展，触发场景逐项可开关。全程本机处理，不记录页面正文。 轻量插件系统：用 JavaScript 自制功能区块，零部署、代码存你自己浏览器本地。 服务器监控卡片：填一个可访问地址，零部署探测在线状态与响应速度。 数据本地化：设置、插件、副驾配置全部存于浏览器本地，不依赖任何后端。 长期记忆：副驾拥有长期记忆 安装说明： 1.进入发布链接： ，下载zip后解压 2.打开浏览器开发者模式 3.导入解压缩的拓展导入即可 使用 1.配置 双击展开面板，点击上方设置，打开api配置，输入自己的LLM的api 2.呼出 单击右下角圆球呼出输入栏，双击打开面板。发送信息给副驾即可，运行时会有急停按钮，快捷键 ctrl+L 状态解析： 蓝色小球：正常状态 绿色小球：运行中 红色小球：出错 黄色小球：运行完成 3.拓展界面 右击上方拓展图标进入拓展选项 或 鼠标悬浮于小球后点击产物页 插件，记录，以及拓展功能设置将会在此地显示 特色功能使用 AI错题本功能 往往ai容易犯错，总拿其没办法，现在你可以通过悬浮球向ai写错题本，ai将会在每次执行任务前查阅错题本，并遵守解决方案 AI第六感 在你长时间浏览网页或者你滑动深度深的话，插件会认为你对此感兴趣，可能会在上方悬浮提示你是否要继续看 或 当你在AI所记录的网页浏览，ai则会对当前场景做出建议 如：在电商网站，识别到电商元素或特定网站，将会询问是否需要总结 在github等代码平台，会询问是否需要代码分析等等 打扰？ 你可以进行屏蔽某些网站，甚至关闭智能推荐来，，免除打扰 已知问题 对于AI第六感，还在测试中，且目前使用的是代码逻辑判断，无法对所有网站进行建议 对于副驾，副驾的识别能力是从内（源代码）层面看网页，容易不认得一些图形化按钮，目前修复方法是识别css标签，但仍会有误 且操作由AI执行，一些模糊不清的语句容易使其摸不着头脑 License MIT",
+          "summary": "CAID浏览器ai副驾 Chromium 扩展（MV3，Chrome + Edge 双发），零构建，不接管浏览器原生新标签页，在任意网页可唤出 AI 副驾；内置插件系统，侧边栏区块 / 主面板 / 弹窗，全部可由你手写 JavaScript 插件自由扩展。仓库地址 官网 副驾侧边栏形态 副驾底部栏形态 运行示例 项目特性： 不占用新标签页：保留浏览器原生新标签页，零侵入。右键点扩展图标 →「选项」即可打开工作台设置页。 跨页 AI 副驾：任意网页右下角浮球唤起副驾，MAIN world 运行、绕过页面脚本干扰；选中文本 → 右键 → 附带上文启动。支持 AI 回答 与 Bing 搜索 双模式、待办、长期记忆。 第六感 · 主动协助（测试版）：采集行为信号（停留、滚动、复制、搜索）在本地推断意图，弹一条轻量气泡建议，点击即唤醒副驾执行对应任务；内置 17 个场景 + 规则表化可扩展，触发场景逐项可开关。全程本机处理，不记录页面正文。 轻量插件系统：用 JavaScript 自制功能区块，零部署、代码存你自己浏览器本地。 服务器监控卡片：填一个可访问地址，零部署探测在线状态与响应速度。 数据本地化：设置、插件、副驾配置全部存于浏览器本地，不依赖任何后端。 长期记忆：副驾拥有长期记忆 安装说明： 1.进入发布链接： ，下载zip后解压 2.打开浏览器开发者模式 3.导入解压缩的拓展导入即可 使用 1.配置 双击展开面板，点击上方设置，打开api配置，输入自己的LLM的api 2.呼出 单击右下角圆球呼出输入栏，双击打开面板。发送信息给副驾即可，运行时会有急停按钮，快捷键 ctrl+L 状态解析： 蓝色小球：正常状态 绿色小球：运行中 红色小球：出错 黄色小球：运行完成 3.拓展界面 右击上方拓展图标进入拓展选项 或 鼠标悬浮于小球后点击产物页 插件，记录，以及拓展功能设置将会在此地显示 特色功能使用 AI错题本功能 往往ai容易犯错，总拿其没办法，现在你可以通过悬浮球向ai写错题本，ai将会在每次执行任务前查阅错题本，并遵守解决方案 AI第六感 在你长时间浏览网页或者你滑动深度深的话，插件会认为你对此感兴趣，可能会在上方悬浮提示你是否要继续看 或 当你在AI所记录的网页浏览，ai则会对当前场景做出建议 如：在电商网站，识别到电商元素或特定网站，将会询问是否需要总结 在github等代码平台，会询问是否需要代码分析等等 打扰？ 你可以进行屏蔽某些网站，甚至关闭智能推荐来，，免除打扰 已知问题 对于AI第六感，还在测试中，且目前使用的是代码逻辑判断，无法对所有网站进行建议 对于副驾，副驾的识别能力是从内（源代码）层面看网页，容易不认得一些图形化按钮，目前修复方法是识别css标签，但仍会有误 且操作由AI执行，一些模糊不清的语句容易使其摸不着头脑 License MIT",
           "content": "# CAID-浏览器ai副驾\nChromium 扩展（MV3，Chrome + Edge 双发），**零构建**，**不接管**浏览器原生新标签页，在**任意网页**可唤出 AI 副驾；内置插件系统，**侧边栏区块 / 主面板 / 弹窗**，全部可由你手写 JavaScript 插件自由扩展。[仓库地址](https://github.com/CqwqY/CAID)   [官网](https://graduate.dpdns.org/)\n## 副驾侧边栏形态\n<img width=\"960\" height=\"489\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cd306fdd-e017-4e08-a8cd-0252b2eae5ff\" />\n\n## 副驾底部栏形态\n<img width=\"1916\" height=\"970\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d211719d-f5ad-4f7a-aa6f-1ca3d7a6abdb\" />\n\n## 运行示例\nhttps://github.com/user-attachments/assets/8610870a-0b86-47db-a97c-69a5cea6f340\n\n## 项目特性：\n**不占用新标签页**：保留浏览器原生新标签页，零侵入。右键点扩展图标 →「选项」即可打开工作台设置页。\n- **跨页 AI 副驾**：任意网页右下角浮球唤起副驾，MAIN world 运行、绕过页面脚本干扰；选中文本 → 右键 → 附带上文启动。支持 **AI 回答** 与 **Bing 搜索** 双模式、待办、长期记忆。\n- **第六感 · 主动协助**（测试版）：采集行为信号（停留、滚动、复制、搜索）在本地推断意图，弹一条轻量气泡建议，点击即唤醒副驾执行对应任务；内置 17 个场景 + 规则表化可扩展，触发场景逐项可开关。全程本机处理，不记录页面正文。\n- **轻量插件系统**：用 JavaScript 自制功能区块，零部署、代码存你自己浏览器本地。\n- **服务器监控卡片**：填一个可访问地址，零部署探测在线状态与响应速度。\n- **数据本地化**：设置、插件、副驾配置全部存于浏览器本地，不依赖任何后端。\n- **长期记忆**：副驾拥有长期记忆\n## 安装说明：\n1.进入发布链接：`https://github.com/CqwqY/CAID/releases/tag/v0.3.23` ，下载zip后解压 \n2.打开浏览器**开发者模式**\n3.**导入解压缩的拓展**导入即可\n\n## 使用 \n### 1.配置\n双击展开面板，点击上方设置，打开api配置，输入自己的LLM的api\n### 2.呼出\n单击右下角圆球呼出输入栏，双击打开面板。发送信息给副驾即可，运行时会有急停按钮，快捷键 `ctrl+L`\n### 状态解析：\n- **蓝色小球**：正常状态\n- **绿色小球**：运行中\n- **红色小球**：出错\n- **黄色小球**：运行完成\n### 3.拓展界面\n右击上方拓展图标进入拓展选项 _或_ 鼠标悬浮于小球后点击产物页\n插件，记录，以及拓展功能设置将会在此地显示\n## 特色功能使用\n### AI错题本功能\n往往**ai容易犯错**，总拿其没办法，现在你可以通过悬浮球向ai写错题本，ai将会在每次执行任务前查阅错题本，并遵守解决方案\n### AI第六感\n在你长时间浏览网页或者你滑动深度深的话，插件会认为你对此感兴趣，可能会在上方悬浮提示你是否要继续看\n或\n当你在AI所记录的网页浏览，ai则会对当前场景做出建议\n如：在电商网站，识别到电商元素或特定网站，将会询问是否需要总结\n在github等代码平台，会询问是否需要代码分析等等\n**打扰？**\n你可以进行屏蔽某些网站，甚至关闭智能推荐来，，免除打扰\n\n## 已知问题\n对于AI第六感，还在测试中，且目前使用的是代码逻辑判断，**无法对所有网站进行建议**\n对于副驾，副驾的识别能力是从内（源代码）层面看网页，容易**不认得一些图形化按钮**，目前修复方法是**识别css标签**，**但仍会有误**\n且操作由AI执行，一些模糊不清的语句容易使其摸不着头脑\n## License\nMIT",
           "metrics": {
             "comments": 0
@@ -146,7 +160,12 @@
             "submission"
           ],
           "externalId": "11317",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11317"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11317",
+          "images": [
+            "https://github.com/user-attachments/assets/cd306fdd-e017-4e08-a8cd-0252b2eae5ff",
+            "https://github.com/user-attachments/assets/d211719d-f5ad-4f7a-aa6f-1ca3d7a6abdb"
+          ],
+          "image": "https://github.com/user-attachments/assets/cd306fdd-e017-4e08-a8cd-0252b2eae5ff"
         },
         {
           "sourceId": "weekly-issues",
@@ -198,7 +217,7 @@
           "author": "anyuxurl",
           "authorUrl": "https://github.com/anyuxurl",
           "publishedAt": "2026-08-23T11:48:34Z",
-          "summary": "适用平台：Web / PWA（兼容现代浏览器，以及 10 年前的老旧 Safari / iOS 12+） 项目地址： 在线体验： 做这个小工具，其实就两个很单纯的目的： 1. 让老设备也能流畅聊天：现在的 AI 网页动辄几兆依赖，随便打开就卡死闪退。我想让抽屉里吃灰的 iPhone 5s、老 iPad 或者低配旧电脑，也能毫无压力地与现代大模型流畅对话，真正把“电子垃圾”利用起来。 2. 给喜欢极简、复古风的人一个纯粹的选择：受够了现代软件花哨复杂的界面，如果你只想要一个安静、纯粹、打字机式流式输出的复古聊天窗口，它会很适合你。 核心特点 极致轻量，老设备秒开： 没有任何臃肿的现代前端框架包袱，连 10 年前的老设备（如 iOS 12 的 Safari）都能丝滑流式打字输出，不白屏、不卡顿。 经典复古双主题： 内置 CRT 绿屏终端 与 老 Mac 经典灰白 两套极简主题，低像素、纯文字，回归早期计算机的纯粹感。 自由接入任意大模型： 支持自定义接入任何兼容 OpenAI 格式的接口，包括 DeepSeek、通义千问、Kimi、Moonshot 以及本地运行的 Ollama。 纯本地存储，尊重隐私： 对话记录和你的 API Key 仅保存在当前浏览器的本地存储中，不设云端数据库，支持一键导出/导入 JSON 备份。 支持 PWA“安装”到主屏幕： 可以像原生 App 一样添加到手机桌面，离线资源缓存，二次打开几乎秒进。 （即将）支持 Vercel 一键免费部署： 自带轻量后端代理与防刷限流机制 截图预览 <img width=\"2584\" height=\"1160\" alt=\"Image\" src=\" / <img width=\"2620\" height=\"1160\" alt=\"Image\" src=\" / 欢迎体验与交流 无论是想给家里的老设备找点用处，还是想找个清爽不打扰的极简 AI 工具，都欢迎大家体验！ 项目已完全开源，欢迎大家来提建议或吐槽： GitHub:",
+          "summary": "适用平台：Web / PWA（兼容现代浏览器，以及 10 年前的老旧 Safari / iOS 12+） 项目地址： 在线体验： 做这个小工具，其实就两个很单纯的目的： 1. 让老设备也能流畅聊天：现在的 AI 网页动辄几兆依赖，随便打开就卡死闪退。我想让抽屉里吃灰的 iPhone 5s、老 iPad 或者低配旧电脑，也能毫无压力地与现代大模型流畅对话，真正把“电子垃圾”利用起来。 2. 给喜欢极简、复古风的人一个纯粹的选择：受够了现代软件花哨复杂的界面，如果你只想要一个安静、纯粹、打字机式流式输出的复古聊天窗口，它会很适合你。 核心特点 极致轻量，老设备秒开： 没有任何臃肿的现代前端框架包袱，连 10 年前的老设备（如 iOS 12 的 Safari）都能丝滑流式打字输出，不白屏、不卡顿。 经典复古双主题： 内置 CRT 绿屏终端 与 老 Mac 经典灰白 两套极简主题，低像素、纯文字，回归早期计算机的纯粹感。 自由接入任意大模型： 支持自定义接入任何兼容 OpenAI 格式的接口，包括 DeepSeek、通义千问、Kimi、Moonshot 以及本地运行的 Ollama。 纯本地存储，尊重隐私： 对话记录和你的 API Key 仅保存在当前浏览器的本地存储中，不设云端数据库，支持一键导出/导入 JSON 备份。 支持 PWA“安装”到主屏幕： 可以像原生 App 一样添加到手机桌面，离线资源缓存，二次打开几乎秒进。 （即将）支持 Vercel 一键免费部署： 自带轻量后端代理与防刷限流机制 截图预览 欢迎体验与交流 无论是想给家里的老设备找点用处，还是想找个清爽不打扰的极简 AI 工具，都欢迎大家体验！ 项目已完全开源，欢迎大家来提建议或吐槽： GitHub:",
           "content": "**适用平台**：Web / PWA（兼容现代浏览器，以及 10 年前的老旧 Safari / iOS 12+）  \n**项目地址**：[https://github.com/anyuxurl/retro-chat](https://github.com/anyuxurl/retro-chat)  \n**在线体验**：[https://retro.134687.xyz](https://retro.134687.xyz)\n\n---\n\n做这个小工具，其实就两个很单纯的目的：\n\n1. **让老设备也能流畅聊天**：现在的 AI 网页动辄几兆依赖，随便打开就卡死闪退。我想让抽屉里吃灰的 iPhone 5s、老 iPad 或者低配旧电脑，也能毫无压力地与现代大模型流畅对话，真正把“电子垃圾”利用起来。\n2. **给喜欢极简、复古风的人一个纯粹的选择**：受够了现代软件花哨复杂的界面，如果你只想要一个安静、纯粹、打字机式流式输出的复古聊天窗口，它会很适合你。\n\n---\n\n### 核心特点\n\n- **极致轻量，老设备秒开**：\n  没有任何臃肿的现代前端框架包袱，连 10 年前的老设备（如 iOS 12 的 Safari）都能丝滑流式打字输出，不白屏、不卡顿。\n- **经典复古双主题**：\n  内置 **CRT 绿屏终端** 与 **老 Mac 经典灰白** 两套极简主题，低像素、纯文字，回归早期计算机的纯粹感。\n- **自由接入任意大模型**：\n  支持自定义接入任何兼容 OpenAI 格式的接口，包括 DeepSeek、通义千问、Kimi、Moonshot 以及本地运行的 Ollama。\n- **纯本地存储，尊重隐私**：\n  对话记录和你的 API Key 仅保存在当前浏览器的本地存储中，不设云端数据库，支持一键导出/导入 JSON 备份。\n- **支持 PWA“安装”到主屏幕**：\n  可以像原生 App 一样添加到手机桌面，离线资源缓存，二次打开几乎秒进。\n- **（即将）支持 Vercel 一键免费部署**：\n  自带轻量后端代理与防刷限流机制\n\n---\n\n### 截图预览\n\n<img width=\"2584\" height=\"1160\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6d175789-289b-4a28-94ad-284fd49e5180\" />\n<img width=\"2620\" height=\"1160\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/adf97eef-9636-43bb-9bae-e289a5bd01e3\" />\n\n---\n\n### 欢迎体验与交流\n\n无论是想给家里的老设备找点用处，还是想找个清爽不打扰的极简 AI 工具，都欢迎大家体验！\n\n项目已完全开源，欢迎大家来提建议或吐槽：  \n**GitHub**: [https://github.com/anyuxurl/retro-chat](https://github.com/anyuxurl/retro-chat)",
           "metrics": {
             "comments": 0
@@ -208,7 +227,12 @@
             "submission"
           ],
           "externalId": "11320",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11320"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11320",
+          "images": [
+            "https://github.com/user-attachments/assets/6d175789-289b-4a28-94ad-284fd49e5180",
+            "https://github.com/user-attachments/assets/adf97eef-9636-43bb-9bae-e289a5bd01e3"
+          ],
+          "image": "https://github.com/user-attachments/assets/6d175789-289b-4a28-94ad-284fd49e5180"
         },
         {
           "sourceId": "weekly-issues",
@@ -276,7 +300,7 @@
           "author": "Blue-B",
           "authorUrl": "https://github.com/Blue-B",
           "publishedAt": "2026-08-23T14:40:52Z",
-          "summary": "pisesh 是一个为 Pi coding agent 打造的终端会话管理 TUI：给会话加星收藏、全文搜索、自定义标题、按项目目录过滤，还支持用 AI 生成标题。单文件 Node 脚本，零依赖。安装 pi install npm:pisesh 后在 Pi 里输入 /sesh 即可打开。v0.3.0 起会话切换改用 Pi 官方的 ctx.switchSession()，不再嵌套启动第二个 Pi 进程。 GitHub： npm：pi install npm:pisesh 特性：星标收藏、全文搜索、自定义标题、按项目过滤、AI 标题生成、CJK 宽度对齐、零依赖 !pisesh",
+          "summary": "pisesh 是一个为 Pi coding agent 打造的终端会话管理 TUI：给会话加星收藏、全文搜索、自定义标题、按项目目录过滤，还支持用 AI 生成标题。单文件 Node 脚本，零依赖。安装 pi install npm:pisesh 后在 Pi 里输入 /sesh 即可打开。v0.3.0 起会话切换改用 Pi 官方的 ctx.switchSession()，不再嵌套启动第二个 Pi 进程。 GitHub： npm：pi install npm:pisesh 特性：星标收藏、全文搜索、自定义标题、按项目过滤、AI 标题生成、CJK 宽度对齐、零依赖",
           "content": "pisesh 是一个为 Pi coding agent 打造的终端会话管理 TUI：给会话加星收藏、全文搜索、自定义标题、按项目目录过滤，还支持用 AI 生成标题。单文件 Node 脚本，零依赖。安装 `pi install npm:pisesh` 后在 Pi 里输入 `/sesh` 即可打开。v0.3.0 起会话切换改用 Pi 官方的 ctx.switchSession()，不再嵌套启动第二个 Pi 进程。\n\n- GitHub：https://github.com/Blue-B/pisesh\n- npm：`pi install npm:pisesh`\n- 特性：星标收藏、全文搜索、自定义标题、按项目过滤、AI 标题生成、CJK 宽度对齐、零依赖\n\n![pisesh](https://raw.githubusercontent.com/Blue-B/pisesh/main/assets/screen-list.png)",
           "metrics": {
             "comments": 0
@@ -291,7 +315,11 @@
             "阮一峰周刊·用户投稿",
             "HelloGitHub·用户投稿"
           ],
-          "__mergedCount": 2
+          "__mergedCount": 2,
+          "images": [
+            "https://raw.githubusercontent.com/Blue-B/pisesh/main/assets/screen-list.png"
+          ],
+          "image": "https://raw.githubusercontent.com/Blue-B/pisesh/main/assets/screen-list.png"
         },
         {
           "sourceId": "weekly-issues",

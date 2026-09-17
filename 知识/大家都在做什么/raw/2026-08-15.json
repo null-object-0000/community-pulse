@@ -105,7 +105,7 @@
           "author": "RixinLiu",
           "authorUrl": "https://github.com/RixinLiu",
           "publishedAt": "2026-08-14T20:35:28Z",
-          "summary": "kvcached 是给 vLLM / SGLang 用的 KV cache 库,让多个模型共享一张 GPU 的显存。 一张 GPU 上想同时跑两个大模型,现在只能手动切显存，vLLM 的gpumemoryutilization 启动时就把显存占死,整晚没请求也不还,分多了 OOM,分少了浪费。 kvcached 把 KV cache 的虚拟地址和物理显存拆开:启动只预留地址空间,真有请求写 KV 时才映射物理显存,用完归还。相当于给 GPU 显存加了一层操作系统式的虚拟内存,谁用谁占。 一张 A10080G 跑 3 个 Llama3.18B,面对间歇峰值流量,首 token 延迟比静态切分低 2~28 倍。 不用改引擎代码: pip install kvcached nobuildisolation export ENABLEKVCACHED=true KVCACHEDAUTOPATCH=1 照常 vllm serve / sglang.launchserver 即可 支持 vLLM 和 SGLang,Apache 2.0。Red Hat 已基于它做了 K8s 上的多模型动态部署。 !演示",
+          "summary": "kvcached 是给 vLLM / SGLang 用的 KV cache 库,让多个模型共享一张 GPU 的显存。 一张 GPU 上想同时跑两个大模型,现在只能手动切显存，vLLM 的gpumemoryutilization 启动时就把显存占死,整晚没请求也不还,分多了 OOM,分少了浪费。 kvcached 把 KV cache 的虚拟地址和物理显存拆开:启动只预留地址空间,真有请求写 KV 时才映射物理显存,用完归还。相当于给 GPU 显存加了一层操作系统式的虚拟内存,谁用谁占。 一张 A10080G 跑 3 个 Llama3.18B,面对间歇峰值流量,首 token 延迟比静态切分低 2~28 倍。 不用改引擎代码: pip install kvcached nobuildisolation export ENABLEKVCACHED=true KVCACHEDAUTOPATCH=1 照常 vllm serve / sglang.launchserver 即可 支持 vLLM 和 SGLang,Apache 2.0。Red Hat 已基于它做了 K8s 上的多模型动态部署。",
           "content": "kvcached 是给 vLLM / SGLang 用的 KV cache 库,让多个模型共享一张 GPU 的显存。\n\n一张 GPU 上想同时跑两个大模型,现在只能手动切显存，vLLM 的`--gpu-memory-utilization` 启动时就把显存占死,整晚没请求也不还,分多了 OOM,分少了浪费。\n\nkvcached 把 KV cache 的虚拟地址和物理显存拆开:启动只预留地址空间,真有请求写 KV 时才映射物理显存,用完归还。相当于给 GPU 显存加了一层操作系统式的虚拟内存,谁用谁占。\n\n一张 A100-80G 跑 3 个 Llama-3.1-8B,面对间歇峰值流量,首 token 延迟比静态切分低 2~28 倍。\n\n不用改引擎代码:\n\n    pip install kvcached --no-build-isolation\n    export ENABLE_KVCACHED=true KVCACHED_AUTOPATCH=1\n    # 照常 vllm serve / sglang.launch_server 即可\n\n支持 vLLM 和 SGLang,Apache 2.0。Red Hat 已基于它做了 K8s 上的多模型动态部署。\n\nhttps://github.com/ovg-project/kvcached\n\n![演示](https://raw.githubusercontent.com/ovg-project/kvcached/refs/heads/main/assets/kvcached-example.gif)",
           "metrics": {
             "comments": 0
@@ -115,7 +115,11 @@
             "submission"
           ],
           "externalId": "11189",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11189"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11189",
+          "images": [
+            "https://raw.githubusercontent.com/ovg-project/kvcached/refs/heads/main/assets/kvcached-example.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/ovg-project/kvcached/refs/heads/main/assets/kvcached-example.gif"
         },
         {
           "sourceId": "weekly-issues",
@@ -124,7 +128,7 @@
           "author": "labmimors",
           "authorUrl": "https://github.com/labmimors",
           "publishedAt": "2026-08-14T21:02:52Z",
-          "summary": "【开源自荐】MCP Lens：让 DeepSeek Harness 的 1,000 个 MCP 工具只占两个模型入口 DeepSeek Harness 可以连接很多 MCP Server，但当目录增长到几百、上千个工具时，把所有工具 Schema 每轮都交给模型，会让请求变得很重。 MCP Lens 是一个 MIT 开源的 Harness 插件。它把远端目录放在本地可搜索目录后，只给模型两个稳定入口： mcpsearch(query)：找到候选工具，只返回命中项的准确 inputSchema mcpcall(server, tool, arguments)：调用明确选中的原始工具 在同一套 DeepSeek Harness 0.1.0rc.6、同一 1,000 工具 fixture、同样三个任务的 V4 Flash 实测中： 完整模型可见工具：1,025 → 27（双方共享 25 个非 MCP 工具，MCP 工具面实际为 1,000 → 2） request/header.tools JSON：674,249 B → 27,401 B，减少 95.936% 任务完成：3/3 → 3/3 按 20260814 抓取的价格估算：$0.0307204 → $0.0034707 代价也公开：Lens 多一次搜索步骤，这组任务的输出 Token 从 491 增到 794；这不是通用延迟或质量结论。 项目还提供了一个完全在浏览器本地运行的目录计算器。可以粘贴脱敏后的 MCP Tool JSON，查看自己的模型可见 Schema 数量和 UTF8 字节；内容不会上传。 GitHub： 本地目录计算器： 公开复现实验： !MCP Lens 对比图",
+          "summary": "【开源自荐】MCP Lens：让 DeepSeek Harness 的 1,000 个 MCP 工具只占两个模型入口 DeepSeek Harness 可以连接很多 MCP Server，但当目录增长到几百、上千个工具时，把所有工具 Schema 每轮都交给模型，会让请求变得很重。 MCP Lens 是一个 MIT 开源的 Harness 插件。它把远端目录放在本地可搜索目录后，只给模型两个稳定入口： mcpsearch(query)：找到候选工具，只返回命中项的准确 inputSchema mcpcall(server, tool, arguments)：调用明确选中的原始工具 在同一套 DeepSeek Harness 0.1.0rc.6、同一 1,000 工具 fixture、同样三个任务的 V4 Flash 实测中： 完整模型可见工具：1,025 → 27（双方共享 25 个非 MCP 工具，MCP 工具面实际为 1,000 → 2） request/header.tools JSON：674,249 B → 27,401 B，减少 95.936% 任务完成：3/3 → 3/3 按 20260814 抓取的价格估算：$0.0307204 → $0.0034707 代价也公开：Lens 多一次搜索步骤，这组任务的输出 Token 从 491 增到 794；这不是通用延迟或质量结论。 项目还提供了一个完全在浏览器本地运行的目录计算器。可以粘贴脱敏后的 MCP Tool JSON，查看自己的模型可见 Schema 数量和 UTF8 字节；内容不会上传。 GitHub： 本地目录计算器： 公开复现实验： Lens 对比图",
           "content": "## 【开源自荐】MCP Lens：让 DeepSeek Harness 的 1,000 个 MCP 工具只占两个模型入口\n\nDeepSeek Harness 可以连接很多 MCP Server，但当目录增长到几百、上千个工具时，把所有工具 Schema 每轮都交给模型，会让请求变得很重。\n\nMCP Lens 是一个 MIT 开源的 Harness 插件。它把远端目录放在本地可搜索目录后，只给模型两个稳定入口：\n\n- `mcp_search(query)`：找到候选工具，只返回命中项的准确 `inputSchema`\n- `mcp_call(server, tool, arguments)`：调用明确选中的原始工具\n\n在同一套 DeepSeek Harness 0.1.0-rc.6、同一 1,000 工具 fixture、同样三个任务的 V4 Flash 实测中：\n\n- 完整模型可见工具：1,025 → 27（双方共享 25 个非 MCP 工具，MCP 工具面实际为 1,000 → 2）\n- `request/header.tools` JSON：674,249 B → 27,401 B，减少 95.936%\n- 任务完成：3/3 → 3/3\n- 按 2026-08-14 抓取的价格估算：$0.0307204 → $0.0034707\n\n代价也公开：Lens 多一次搜索步骤，这组任务的输出 Token 从 491 增到 794；这不是通用延迟或质量结论。\n\n项目还提供了一个完全在浏览器本地运行的目录计算器。可以粘贴脱敏后的 MCP Tool JSON，查看自己的模型可见 Schema 数量和 UTF-8 字节；内容不会上传。\n\n- GitHub：https://github.com/labmimors/dsh-mcp-lens\n- 本地目录计算器：https://labmimors.github.io/dsh-mcp-lens/\n- 公开复现实验：https://github.com/labmimors/dsh-mcp-lens/blob/main/docs/LIVE_DEEPSEEK_PILOT.md\n\n![MCP Lens 对比图](https://raw.githubusercontent.com/labmimors/dsh-mcp-lens/main/assets/mcp-lens-comparison.zh-CN.svg)\n",
           "metrics": {
             "comments": 0
@@ -139,7 +143,11 @@
             "阮一峰周刊·用户投稿",
             "HelloGitHub·用户投稿"
           ],
-          "__mergedCount": 2
+          "__mergedCount": 2,
+          "images": [
+            "https://raw.githubusercontent.com/labmimors/dsh-mcp-lens/main/assets/mcp-lens-comparison.zh-CN.svg"
+          ],
+          "image": "https://raw.githubusercontent.com/labmimors/dsh-mcp-lens/main/assets/mcp-lens-comparison.zh-CN.svg"
         },
         {
           "sourceId": "weekly-issues",
@@ -172,7 +180,7 @@
           "author": "GenTang",
           "authorUrl": "https://github.com/GenTang",
           "publishedAt": "2026-08-15T02:46:20Z",
-          "summary": "<img width=\"800\" height=\"800\" alt=\"Image\" src=\" / 线上地址：",
+          "summary": "线上地址：",
           "content": "<img width=\"800\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e1771ecd-b441-457e-a766-91e662c6f5c6\" />\n\n线上地址：https://gentang.github.io/zh/books/deconstructing_LLM/",
           "metrics": {
             "comments": 0
@@ -182,7 +190,11 @@
             "submission"
           ],
           "externalId": "11192",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11192"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11192",
+          "images": [
+            "https://github.com/user-attachments/assets/e1771ecd-b441-457e-a766-91e662c6f5c6"
+          ],
+          "image": "https://github.com/user-attachments/assets/e1771ecd-b441-457e-a766-91e662c6f5c6"
         },
         {
           "sourceId": "weekly-issues",
@@ -229,7 +241,7 @@
           "author": "gocronx",
           "authorUrl": "https://github.com/gocronx",
           "publishedAt": "2026-08-15T04:47:36Z",
-          "summary": "KubeVision 是一个开源、AI 驱动的Kubernetes Dashboard，支持多集群管理、资源监控、Helm 应用部署、Pod 日志与终端、RBAC 及 AI 辅助运维。它不仅能查看集群状态，还可以通过自然语言 排查问题、生成变更方案，并在用户确认后执行操作, MIT开源协议。 GitHub: 文档: <img width=\"3442\" height=\"1984\" alt=\"Image\" src=\" /",
+          "summary": "KubeVision 是一个开源、AI 驱动的Kubernetes Dashboard，支持多集群管理、资源监控、Helm 应用部署、Pod 日志与终端、RBAC 及 AI 辅助运维。它不仅能查看集群状态，还可以通过自然语言 排查问题、生成变更方案，并在用户确认后执行操作, MIT开源协议。 GitHub: 文档:",
           "content": "KubeVision 是一个开源、AI 驱动的Kubernetes Dashboard，支持多集群管理、资源监控、Helm 应用部署、Pod 日志与终端、RBAC 及 AI 辅助运维。它不仅能查看集群状态，还可以通过自然语言 排查问题、生成变更方案，并在用户确认后执行操作, MIT开源协议。\n\nGitHub:https://github.com/gocronx/kubevision\n文档:https://kubevision-docs.pages.dev/\n\n<img width=\"3442\" height=\"1984\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4fb2a678-435e-4d35-a24c-39c603fe5197\" />",
           "metrics": {
             "comments": 0
@@ -239,7 +251,11 @@
             "submission"
           ],
           "externalId": "11195",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11195"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11195",
+          "images": [
+            "https://github.com/user-attachments/assets/4fb2a678-435e-4d35-a24c-39c603fe5197"
+          ],
+          "image": "https://github.com/user-attachments/assets/4fb2a678-435e-4d35-a24c-39c603fe5197"
         },
         {
           "sourceId": "weekly-issues",
@@ -248,7 +264,7 @@
           "author": "aitoboxinc",
           "authorUrl": "https://github.com/aitoboxinc",
           "publishedAt": "2026-08-15T07:49:35Z",
-          "summary": "如果你受够了在 Mac 上层层叠叠的 Finder 窗口中穿梭，或者怀念 Windows 上 Total Commander 那种行云流水的掌控感，ATBCmder 将是你的最终解。这是一款专为追求极致效率的专业用户打造的全键盘、双面板文件管理器。 ✨ 核心亮点： 重塑屏幕空间：支持双栏/三栏/四栏及横纵向自由拆分，一键切换“经典三栏（目录树+工作区+预览区）”，甚至支持同屏平铺所有子目录文件。 全键盘驱动：完美复刻 TC 快捷键，配有“快捷收藏夹”实现任意目录一键瞬移，真正做到双手不离键盘。 AllinOne 引擎：无需跳出软件，原生支持挂载 SMB/FTP/SFTP/WebDAV 远程系统；内置全能预览器，直接秒开 PDF、EPUB 及各类音视频素材。 绝对安全的 AI 辅助：率先接入大语言模型（支持 Gemini、OpenAI 等），支持用自然语言（如“选中本周修改过的大于 10MB 的文档”）进行语义化搜索。AI 仅负责精准“高亮”，修改与删除权 100% 掌握在用户手中。 极客工具箱：内置批量重命名、文件/文件夹对比同步、极速压缩解压等高阶功能。 🔗 了解详情与下载：cmder.aitobox.com <img width=\"1920\" height=\"1080\" alt=\"Image\" src=\" /",
+          "summary": "如果你受够了在 Mac 上层层叠叠的 Finder 窗口中穿梭，或者怀念 Windows 上 Total Commander 那种行云流水的掌控感，ATBCmder 将是你的最终解。这是一款专为追求极致效率的专业用户打造的全键盘、双面板文件管理器。 ✨ 核心亮点： 重塑屏幕空间：支持双栏/三栏/四栏及横纵向自由拆分，一键切换“经典三栏（目录树+工作区+预览区）”，甚至支持同屏平铺所有子目录文件。 全键盘驱动：完美复刻 TC 快捷键，配有“快捷收藏夹”实现任意目录一键瞬移，真正做到双手不离键盘。 AllinOne 引擎：无需跳出软件，原生支持挂载 SMB/FTP/SFTP/WebDAV 远程系统；内置全能预览器，直接秒开 PDF、EPUB 及各类音视频素材。 绝对安全的 AI 辅助：率先接入大语言模型（支持 Gemini、OpenAI 等），支持用自然语言（如“选中本周修改过的大于 10MB 的文档”）进行语义化搜索。AI 仅负责精准“高亮”，修改与删除权 100% 掌握在用户手中。 极客工具箱：内置批量重命名、文件/文件夹对比同步、极速压缩解压等高阶功能。 🔗 了解详情与下载：cmder.aitobox.com",
           "content": "如果你受够了在 Mac 上层层叠叠的 Finder 窗口中穿梭，或者怀念 Windows 上 Total Commander 那种行云流水的掌控感，ATBCmder 将是你的最终解。这是一款专为追求极致效率的专业用户打造的全键盘、双面板文件管理器。\n\n✨ 核心亮点：\n\n* 重塑屏幕空间：支持双栏/三栏/四栏及横纵向自由拆分，一键切换“经典三栏（目录树+工作区+预览区）”，甚至支持同屏平铺所有子目录文件。\n\n* 全键盘驱动：完美复刻 TC 快捷键，配有“快捷收藏夹”实现任意目录一键瞬移，真正做到双手不离键盘。\n\n* All-in-One 引擎：无需跳出软件，原生支持挂载 SMB/FTP/SFTP/WebDAV 远程系统；内置全能预览器，直接秒开 PDF、EPUB 及各类音视频素材。\n\n* 绝对安全的 AI 辅助：率先接入大语言模型（支持 Gemini、OpenAI 等），支持用自然语言（如“选中本周修改过的大于 10MB 的文档”）进行语义化搜索。AI 仅负责精准“高亮”，修改与删除权 100% 掌握在用户手中。\n\n* 极客工具箱：内置批量重命名、文件/文件夹对比同步、极速压缩解压等高阶功能。\n\n🔗 了解详情与下载：[cmder.aitobox.com](https://cmder.aitobox.com/)\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a056542d-3e3d-4a60-9a2d-17dc924900b4\" />",
           "metrics": {
             "comments": 0
@@ -258,7 +274,11 @@
             "submission"
           ],
           "externalId": "11196",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11196"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11196",
+          "images": [
+            "https://github.com/user-attachments/assets/a056542d-3e3d-4a60-9a2d-17dc924900b4"
+          ],
+          "image": "https://github.com/user-attachments/assets/a056542d-3e3d-4a60-9a2d-17dc924900b4"
         },
         {
           "sourceId": "weekly-issues",
@@ -277,7 +297,11 @@
             "submission"
           ],
           "externalId": "11197",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11197"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11197",
+          "images": [
+            "https://github.com/user-attachments/assets/2eb582eb-10f5-4e3d-b97a-a5bbe17a7606"
+          ],
+          "image": "https://github.com/user-attachments/assets/2eb582eb-10f5-4e3d-b97a-a5bbe17a7606"
         },
         {
           "sourceId": "weekly-issues",
@@ -324,7 +348,7 @@
           "author": "ultrazg",
           "authorUrl": "https://github.com/ultrazg",
           "publishedAt": "2026-08-15T09:46:03Z",
-          "summary": "简介 简单好用的跨平台 RSS 阅读器 —— 支持 macOS / Windows，专注于快速浏览与阅读。 截图 !screenshot1 !screenshot2 主要功能 三栏布局：左侧源/文件夹树 · 中间文章列表 · 右侧阅读视图 订阅管理：添加订阅源、分类整理、OPML 导入导出 定时抓取：RSS / Atom 解析，后台定时自动刷新 专注阅读：全文阅读视图 + 无干扰专注模式 快速检索：覆盖标题、摘要与笔记的全局全文搜索 笔记记录：为文章添加笔记，随时回顾 桌面通知：新文章到达提醒，支持 macOS Dock / Windows 任务栏角标 键盘驱动：完善的快捷键系统 主题与国际化：浅色 / 深色 / 跟随系统，中英双语 性能与离线：轻量列表查询、本地缓存、离线可读 项目地址 github.com/cliprss/clip",
+          "summary": "简介 简单好用的跨平台 RSS 阅读器 —— 支持 macOS / Windows，专注于快速浏览与阅读。 截图 主要功能 三栏布局：左侧源/文件夹树 · 中间文章列表 · 右侧阅读视图 订阅管理：添加订阅源、分类整理、OPML 导入导出 定时抓取：RSS / Atom 解析，后台定时自动刷新 专注阅读：全文阅读视图 + 无干扰专注模式 快速检索：覆盖标题、摘要与笔记的全局全文搜索 笔记记录：为文章添加笔记，随时回顾 桌面通知：新文章到达提醒，支持 macOS Dock / Windows 任务栏角标 键盘驱动：完善的快捷键系统 主题与国际化：浅色 / 深色 / 跟随系统，中英双语 性能与离线：轻量列表查询、本地缓存、离线可读 项目地址 github.com/cliprss/clip",
           "content": "## 简介\n\n**简单好用的跨平台 RSS 阅读器** —— 支持 macOS / Windows，专注于快速浏览与阅读。\n\n## 截图\n\n![screenshot1](https://raw.githubusercontent.com/clip-rss/clip/main/screenshot/screenshot_1.png)\n![screenshot2](https://raw.githubusercontent.com/clip-rss/clip/main/screenshot/screenshot_2.png)\n\n## 主要功能\n\n- **三栏布局**：左侧源/文件夹树 · 中间文章列表 · 右侧阅读视图\n- **订阅管理**：添加订阅源、分类整理、OPML 导入导出\n- **定时抓取**：RSS / Atom 解析，后台定时自动刷新\n- **专注阅读**：全文阅读视图 + 无干扰专注模式\n- **快速检索**：覆盖标题、摘要与笔记的全局全文搜索\n- **笔记记录**：为文章添加笔记，随时回顾\n- **桌面通知**：新文章到达提醒，支持 macOS Dock / Windows 任务栏角标\n- **键盘驱动**：完善的快捷键系统\n- **主题与国际化**：浅色 / 深色 / 跟随系统，中英双语\n- **性能与离线**：轻量列表查询、本地缓存、离线可读\n\n## 项目地址\n[github.com/clip-rss/clip](https://github.com/clip-rss/clip)\n\n",
           "metrics": {
             "comments": 0
@@ -334,7 +358,12 @@
             "submission"
           ],
           "externalId": "11200",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11200"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11200",
+          "images": [
+            "https://raw.githubusercontent.com/clip-rss/clip/main/screenshot/screenshot_1.png",
+            "https://raw.githubusercontent.com/clip-rss/clip/main/screenshot/screenshot_2.png"
+          ],
+          "image": "https://raw.githubusercontent.com/clip-rss/clip/main/screenshot/screenshot_1.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -343,7 +372,7 @@
           "author": "mobrava",
           "authorUrl": "https://github.com/mobrava",
           "publishedAt": "2026-08-15T12:05:36Z",
-          "summary": "简介 Clipbara（原名 PasteClip，因与 Mac App Store 已有应用重名而改名）是一款免费开源（GPL3.0）的 macOS 剪贴板管理器，用原生 Swift 6 + SwiftUI 编写，卡片式界面类似付费应用 Paste。数据完全本地存储，无账号、无服务器、无遥测。 GitHub： 截图 !demo 主要功能 卡片式剪贴板历史：支持文本、富文本、HTML、图片、链接、文件、颜色和代码片段 ⌘⇧V 唤出非激活面板，不打断当前应用的焦点；单击卡片即复制到剪贴板并自动收起面板，回到当前应用直接 ⌘V 粘贴 Pinboards：把常用内容整理成命名收藏夹，支持拖拽 按 空格 进行 Quick Look 预览，支持全键盘操作 可排除指定应用（如密码管理器），历史上限可配置、自动清理 对终端友好：图片以 PNG + file URL 方式写入剪贴板，可以可靠地粘贴到 Ghostty / iTerm2 已通过 Apple 公证（notarized），无 Gatekeeper 警告 安装 Homebrew：brew install cask mobrava/tap/clipbara 手动下载： 要求 macOS 14+。",
+          "summary": "简介 Clipbara（原名 PasteClip，因与 Mac App Store 已有应用重名而改名）是一款免费开源（GPL3.0）的 macOS 剪贴板管理器，用原生 Swift 6 + SwiftUI 编写，卡片式界面类似付费应用 Paste。数据完全本地存储，无账号、无服务器、无遥测。 GitHub： 截图 主要功能 卡片式剪贴板历史：支持文本、富文本、HTML、图片、链接、文件、颜色和代码片段 ⌘⇧V 唤出非激活面板，不打断当前应用的焦点；单击卡片即复制到剪贴板并自动收起面板，回到当前应用直接 ⌘V 粘贴 Pinboards：把常用内容整理成命名收藏夹，支持拖拽 按 空格 进行 Quick Look 预览，支持全键盘操作 可排除指定应用（如密码管理器），历史上限可配置、自动清理 对终端友好：图片以 PNG + file URL 方式写入剪贴板，可以可靠地粘贴到 Ghostty / iTerm2 已通过 Apple 公证（notarized），无 Gatekeeper 警告 安装 Homebrew：brew install cask mobrava/tap/clipbara 手动下载： 要求 macOS 14+。",
           "content": "## 简介\n\nClipbara（原名 PasteClip，因与 Mac App Store 已有应用重名而改名）是一款免费开源（GPL-3.0）的 macOS 剪贴板管理器，用原生 Swift 6 + SwiftUI 编写，卡片式界面类似付费应用 Paste。数据完全本地存储，无账号、无服务器、无遥测。\n\nGitHub：https://github.com/mobrava/Clipbara\n\n## 截图\n\n![demo](https://raw.githubusercontent.com/mobrava/Clipbara/main/docs/assets/pasteclip-demo.gif)\n\n## 主要功能\n\n- 卡片式剪贴板历史：支持文本、富文本、HTML、图片、链接、文件、颜色和代码片段\n- `⌘⇧V` 唤出非激活面板，不打断当前应用的焦点；单击卡片即复制到剪贴板并自动收起面板，回到当前应用直接 `⌘V` 粘贴\n- Pinboards：把常用内容整理成命名收藏夹，支持拖拽\n- 按 `空格` 进行 Quick Look 预览，支持全键盘操作\n- 可排除指定应用（如密码管理器），历史上限可配置、自动清理\n- 对终端友好：图片以 PNG + file URL 方式写入剪贴板，可以可靠地粘贴到 Ghostty / iTerm2\n- 已通过 Apple 公证（notarized），无 Gatekeeper 警告\n\n## 安装\n\n- Homebrew：`brew install --cask mobrava/tap/clipbara`\n- 手动下载：https://github.com/mobrava/Clipbara/releases\n\n要求 macOS 14+。\n",
           "metrics": {
             "comments": 0
@@ -353,7 +382,11 @@
             "submission"
           ],
           "externalId": "11201",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11201"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11201",
+          "images": [
+            "https://raw.githubusercontent.com/mobrava/Clipbara/main/docs/assets/pasteclip-demo.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/mobrava/Clipbara/main/docs/assets/pasteclip-demo.gif"
         },
         {
           "sourceId": "weekly-issues",
@@ -381,7 +414,7 @@
           "author": "StaySound4",
           "authorUrl": "https://github.com/StaySound4",
           "publishedAt": "2026-08-15T14:21:41Z",
-          "summary": "!Bilimuzhi 项目头图 简介 Bilimuzhi 是一款纯本地优先的 B 站视频 AI 字幕工作台浏览器插件(Chromium MV3,Chrome/Edge/Brave 均可)。围绕「看懂视频」设计:打开任意视频页即可获取官方/AI/多语言字幕,无字幕视频可调用语音转字幕生成;AI 一键分段 、三档总结、图文对话,把视频整理成可学习、可检索、可追问的笔记。 项目地址 主要功能 时间戳贯穿全链路:分段、总结、对话结果均内嵌可点击时间戳,一键跳回视频对应位置 语音转字幕:无字幕视频也能转字幕;Groq 两个转录模型每日免费额度互不占用,默认交叉调度最大化利用 智能广告识别:分段模式下自动识别广告片段 批量六类来源:单视频/分P/合集/收藏夹/UP 主页/搜索页统一批量获取,导出 TXT/SRT/Markdown/ZIP 双模式归档站与回收站:会话/批量独立标签、置顶、拖拽排序;密码加密备份导出/导入 隐私优先:无遥测、无云端账号,API Key 仅存本地,AI 对话直连你选择的服务商 界面展示 !深色与浅色主题 !对话模式:图文输入+时间戳跳转 !分段与时间轴双面板",
+          "summary": "项目头图 简介 Bilimuzhi 是一款纯本地优先的 B 站视频 AI 字幕工作台浏览器插件(Chromium MV3,Chrome/Edge/Brave 均可)。围绕「看懂视频」设计:打开任意视频页即可获取官方/AI/多语言字幕,无字幕视频可调用语音转字幕生成;AI 一键分段 、三档总结、图文对话,把视频整理成可学习、可检索、可追问的笔记。 项目地址 主要功能 时间戳贯穿全链路:分段、总结、对话结果均内嵌可点击时间戳,一键跳回视频对应位置 语音转字幕:无字幕视频也能转字幕;Groq 两个转录模型每日免费额度互不占用,默认交叉调度最大化利用 智能广告识别:分段模式下自动识别广告片段 批量六类来源:单视频/分P/合集/收藏夹/UP 主页/搜索页统一批量获取,导出 TXT/SRT/Markdown/ZIP 双模式归档站与回收站:会话/批量独立标签、置顶、拖拽排序;密码加密备份导出/导入 隐私优先:无遥测、无云端账号,API Key 仅存本地,AI 对话直连你选择的服务商 界面展示",
           "content": "  ![Bilimuzhi 项目头图](https://github.com/user-attachments/assets/c44fb2df-2269-4b10-9f6d-2531ea1b6212)\n\n   ## 简介\n\n   Bilimuzhi 是一款纯本地优先的 B 站视频 AI 字幕工作台浏览器插件(Chromium MV3,Chrome/Edge/Brave 均可)。围绕「看懂视频」设计:打开任意视频页即可获取官方/AI/多语言字幕,无字幕视频可调用语音转字幕生成;AI 一键分段\n 、三档总结、图文对话,把视频整理成可学习、可检索、可追问的笔记。\n\n   ## 项目地址\n\n   https://github.com/StaySound4/bilimuzhi\n\n   ## 主要功能\n\n   - **时间戳贯穿全链路**:分段、总结、对话结果均内嵌可点击时间戳,一键跳回视频对应位置\n   - **语音转字幕**:无字幕视频也能转字幕;Groq 两个转录模型每日免费额度互不占用,默认交叉调度最大化利用\n   - **智能广告识别**:分段模式下自动识别广告片段\n   - **批量六类来源**:单视频/分P/合集/收藏夹/UP 主页/搜索页统一批量获取,导出 TXT/SRT/Markdown/ZIP\n   - **双模式归档站与回收站**:会话/批量独立标签、置顶、拖拽排序;密码加密备份导出/导入\n   - **隐私优先**:无遥测、无云端账号,API Key 仅存本地,AI 对话直连你选择的服务商\n\n   ## 界面展示\n\n   ![深色与浅色主题](https://github.com/user-attachments/assets/dfa1b3c2-5455-4071-814c-205632d29510)\n\n   ![对话模式:图文输入+时间戳跳转](https://github.com/user-attachments/assets/51a68b84-8294-4993-b702-89f45f323251)\n\n   ![分段与时间轴双面板](https://github.com/user-attachments/assets/6d7492e4-85f7-4fb5-bff3-f8c0ebe98c97)",
           "metrics": {
             "comments": 0
@@ -391,7 +424,14 @@
             "submission"
           ],
           "externalId": "11203",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11203"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11203",
+          "images": [
+            "https://github.com/user-attachments/assets/c44fb2df-2269-4b10-9f6d-2531ea1b6212",
+            "https://github.com/user-attachments/assets/dfa1b3c2-5455-4071-814c-205632d29510",
+            "https://github.com/user-attachments/assets/51a68b84-8294-4993-b702-89f45f323251",
+            "https://github.com/user-attachments/assets/6d7492e4-85f7-4fb5-bff3-f8c0ebe98c97"
+          ],
+          "image": "https://github.com/user-attachments/assets/c44fb2df-2269-4b10-9f6d-2531ea1b6212"
         }
       ]
     },

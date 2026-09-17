@@ -119,7 +119,7 @@
           "author": "lxcong",
           "authorUrl": "https://github.com/lxcong",
           "publishedAt": "2026-05-06T20:34:45Z",
-          "summary": "背景 最近一年我在用 Claude Code、Cursor、Codex 写 agent，最大的痛点不是模型不够聪明，而是模型拿不到外部实时数据： 让 agent 看一眼推特 / Reddit / LinkedIn？官方 API 注册门槛高、还经常 403。 让 agent 抓个网页？Firecrawl、Jina、ScrapeNinja 各开一个账号、各管一套 key。 让 agent 查 BTC 价格 / 链上转账？CoinMarketCap、Dexscreener、Chainbase 各注册一遍。 小红书、抖音、B站、知乎、微博、YouTube……每个平台又是一笔账。 每接入一个新数据源，都要走一遍\"找 API → 注册 → 实名 → 充值 → 写适配层\"的流程。半天就过去了，模型还没开始干活。 AgentKey 是什么 <img width=\"672\" height=\"708\" alt=\"Image\" src=\" / AgentKey 是 一个面向 AI Agent的统一外部数据接口： 一行命令安装，自动给本机所有 agent（Claude Code、Cursor、Codex、Gemini CLI、Claude Desktop 等 40+）配好 MCP，让模型直接拥有： 🌐 Web 搜索 / 抓取（Brave、Perplexity、Tavily、Firecrawl、Jina） 📱 社交平台数据（Twitter / Reddit / LinkedIn / 小红书 / 知乎 / 微博 / B站 / 抖音 / 快手 / Instagram / YouTube / 微信 / Lemon8） 🪙 链上 / 加密货币（Chainbase、CoinMarketCap、Dexscreener） 不用注册十几个三方账号，一个 key 全搞定。 一行命令安装（30 秒） macOS / Linux bash curl fsSL | bash Windows (PowerShell) powershell irm | iex 脚本会自动：探测本机已装的 agent → 把 AgentKey 写进每个 agent 的 MCP 配置 → 弹一个浏览器登录拿 key。 重启 agent 后直接问： \"帮我调研小红书\"私教课\"\"健身私教\"关键词，近 90 天高互动笔记 + 评论区\" <img width=\"1921\" height=\"1317\" alt=\"Image\" src=\" / agent就能自己去拉小红书、汇总观点。无需你再贴 API key、改 JSON。 几个我自己常跑的场景 趋势研究：让 Claude 一句话拉完小红书 + 抖音 + 微博的\"防晒霜\"近 7 天热门帖。 竞品监控：让 agent 每天抓一遍竞品官网 + 推特动态，自动写日报。 链上分析：直接问\"这个钱包过去一周买了什么\"，agent 自己查 Chainbase。 替代内置工具：所有需要 web search / fetch URL 的 prompt，让 agent 走 AgentKey，速度更快、不限速。 链接 官网： 控制台（看用量、领 key）： GitHub： 说明 早期产品，有粗糙之处。Bug 和需求欢迎 GitHub Issue 或 Telegram 反馈。 本地隔离：AgentKey 不接触你的本地文件、agent 对话记录或其他凭证 —— 只做\"对外抓数据\"这一件事。",
+          "summary": "背景 最近一年我在用 Claude Code、Cursor、Codex 写 agent，最大的痛点不是模型不够聪明，而是模型拿不到外部实时数据： 让 agent 看一眼推特 / Reddit / LinkedIn？官方 API 注册门槛高、还经常 403。 让 agent 抓个网页？Firecrawl、Jina、ScrapeNinja 各开一个账号、各管一套 key。 让 agent 查 BTC 价格 / 链上转账？CoinMarketCap、Dexscreener、Chainbase 各注册一遍。 小红书、抖音、B站、知乎、微博、YouTube……每个平台又是一笔账。 每接入一个新数据源，都要走一遍\"找 API → 注册 → 实名 → 充值 → 写适配层\"的流程。半天就过去了，模型还没开始干活。 AgentKey 是什么 AgentKey 是 一个面向 AI Agent的统一外部数据接口： 一行命令安装，自动给本机所有 agent（Claude Code、Cursor、Codex、Gemini CLI、Claude Desktop 等 40+）配好 MCP，让模型直接拥有： 🌐 Web 搜索 / 抓取（Brave、Perplexity、Tavily、Firecrawl、Jina） 📱 社交平台数据（Twitter / Reddit / LinkedIn / 小红书 / 知乎 / 微博 / B站 / 抖音 / 快手 / Instagram / YouTube / 微信 / Lemon8） 🪙 链上 / 加密货币（Chainbase、CoinMarketCap、Dexscreener） 不用注册十几个三方账号，一个 key 全搞定。 一行命令安装（30 秒） macOS / Linux bash curl fsSL | bash Windows (PowerShell) powershell irm | iex 脚本会自动：探测本机已装的 agent → 把 AgentKey 写进每个 agent 的 MCP 配置 → 弹一个浏览器登录拿 key。 重启 agent 后直接问： \"帮我调研小红书\"私教课\"\"健身私教\"关键词，近 90 天高互动笔记 + 评论区\" agent就能自己去拉小红书、汇总观点。无需你再贴 API key、改 JSON。 几个我自己常跑的场景 趋势研究：让 Claude 一句话拉完小红书 + 抖音 + 微博的\"防晒霜\"近 7 天热门帖。 竞品监控：让 agent 每天抓一遍竞品官网 + 推特动态，自动写日报。 链上分析：直接问\"这个钱包过去一周买了什么\"，agent 自己查 Chainbase。 替代内置工具：所有需要 web search / fetch URL 的 prompt，让 agent 走 AgentKey，速度更快、不限速。 链接 官网： 控制台（看用量、领 key）： GitHub： 说明 早期产品，有粗糙之处。Bug 和需求欢迎 GitHub Issue 或 Telegram 反馈。 本地隔离：AgentKey 不接触你的本地文件、agent 对话记录或其他凭证 —— 只做\"对外抓数据\"这一件事。",
           "content": "### 背景\n\n最近一年我在用 Claude Code、Cursor、Codex 写 agent，最大的痛点不是模型不够聪明，而是**模型拿不到外部实时数据**：\n\n- 让 agent 看一眼推特 / Reddit / LinkedIn？官方 API 注册门槛高、还经常 403。\n- 让 agent 抓个网页？Firecrawl、Jina、ScrapeNinja 各开一个账号、各管一套 key。\n- 让 agent 查 BTC 价格 / 链上转账？CoinMarketCap、Dexscreener、Chainbase 各注册一遍。\n- 小红书、抖音、B站、知乎、微博、YouTube……每个平台又是一笔账。\n\n每接入一个新数据源，都要走一遍\"找 API → 注册 → 实名 → 充值 → 写适配层\"的流程。半天就过去了，模型还没开始干活。\n\n### AgentKey 是什么\n<img width=\"672\" height=\"708\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0ee5b04e-9406-4aa2-84b9-f770407ff024\" />\n\n[AgentKey](https://agentkey.app/) 是 一个**面向 AI Agent的统一外部数据接口**：\n一行命令安装，自动给本机所有 agent（Claude Code、Cursor、Codex、Gemini CLI、Claude Desktop 等 40+）配好 MCP，让模型直接拥有：\n\n- 🌐 **Web 搜索 / 抓取**（Brave、Perplexity、Tavily、Firecrawl、Jina）\n- 📱 **社交平台数据**（Twitter / Reddit / LinkedIn / 小红书 / 知乎 / 微博 / B站 / 抖音\n/ 快手 / Instagram / YouTube / 微信 / Lemon8）\n- 🪙 **链上 / 加密货币**（Chainbase、CoinMarketCap、Dexscreener）\n\n不用注册十几个三方账号，一个 key 全搞定。\n\n### 一行命令安装（30 秒）\n\n**macOS / Linux**\n```bash\ncurl -fsSL https://agentkey.app/install.sh | bash\n```\n\n**Windows (PowerShell)**\n```powershell\nirm https://agentkey.app/install.ps1 | iex\n```\n\n脚本会自动：探测本机已装的 agent → 把 AgentKey 写进每个 agent 的 MCP 配置 → 弹一个浏览器登录拿 key。\n\n重启 agent 后直接问：\n> *\"帮我调研小红书\"私教课\"\"健身私教\"关键词，近 90 天高互动笔记 + 评论区\"*\n<img width=\"1921\" height=\"1317\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/10c9d565-195f-46e4-9b7a-6beac05b342e\" />\nagent就能自己去拉小红书、汇总观点。无需你再贴 API key、改 JSON。\n\n### 几个我自己常跑的场景\n\n- **趋势研究**：让 Claude 一句话拉完小红书 + 抖音 + 微博的\"防晒霜\"近 7 天热门帖。\n- **竞品监控**：让 agent 每天抓一遍竞品官网 + 推特动态，自动写日报。\n- **链上分析**：直接问\"这个钱包过去一周买了什么\"，agent 自己查 Chainbase。\n- **替代内置工具**：所有需要 web search / fetch URL 的 prompt，让 agent 走\nAgentKey，速度更快、不限速。\n\n### 链接\n\n- 官网：https://agentkey.app/\n- 控制台（看用量、领 key）：https://console.agentkey.app/\n- GitHub：https://github.com/chainbase-labs/agentkey\n\n### 说明\n\n- 早期产品，有粗糙之处。Bug 和需求欢迎 GitHub Issue 或 Telegram 反馈。\n- 本地隔离：AgentKey 不接触你的本地文件、agent 对话记录或其他凭证 ——\n只做\"对外抓数据\"这一件事。",
           "metrics": {
             "comments": 0
@@ -129,7 +129,12 @@
             "submission"
           ],
           "externalId": "9867",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9867"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9867",
+          "images": [
+            "https://github.com/user-attachments/assets/0ee5b04e-9406-4aa2-84b9-f770407ff024",
+            "https://github.com/user-attachments/assets/10c9d565-195f-46e4-9b7a-6beac05b342e"
+          ],
+          "image": "https://github.com/user-attachments/assets/0ee5b04e-9406-4aa2-84b9-f770407ff024"
         },
         {
           "sourceId": "weekly-issues",
@@ -138,7 +143,7 @@
           "author": "Bclound",
           "authorUrl": "https://github.com/Bclound",
           "publishedAt": "2026-05-07T03:15:06Z",
-          "summary": "Cursor Usage 是一款非官方工具，用来查看 Cursor 各 AI 模型的用量统计。它补齐了官方面板的痛点：支持按月查看当前及历史计费周期，也支持按天查看任意日期范围的明细。数据以与官方一致的表格呈现。 <img width=\"440\" height=\"388\" alt=\"Image\" src=\" / <img width=\"442\" height=\"332\" alt=\"Image\" src=\" /",
+          "summary": "Cursor Usage 是一款非官方工具，用来查看 Cursor 各 AI 模型的用量统计。它补齐了官方面板的痛点：支持按月查看当前及历史计费周期，也支持按天查看任意日期范围的明细。数据以与官方一致的表格呈现。",
           "content": "Cursor Usage 是一款非官方工具，用来查看 Cursor 各 AI 模型的用量统计。它补齐了官方面板的痛点：支持按月查看当前及历史计费周期，也支持按天查看任意日期范围的明细。数据以与官方一致的表格呈现。\nhttps://github.com/Bclound/cursor-usage\n\n<img width=\"440\" height=\"388\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/688ca9b9-f067-4a87-9cce-7eb4a07c637c\" />\n\n<img width=\"442\" height=\"332\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/92d4c4e8-d590-428e-94d0-9fe4e6cd6265\" />",
           "metrics": {
             "comments": 0
@@ -148,7 +153,12 @@
             "submission"
           ],
           "externalId": "9868",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9868"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9868",
+          "images": [
+            "https://github.com/user-attachments/assets/688ca9b9-f067-4a87-9cce-7eb4a07c637c",
+            "https://github.com/user-attachments/assets/92d4c4e8-d590-428e-94d0-9fe4e6cd6265"
+          ],
+          "image": "https://github.com/user-attachments/assets/688ca9b9-f067-4a87-9cce-7eb4a07c637c"
         },
         {
           "sourceId": "weekly-issues",
@@ -176,7 +186,7 @@
           "author": "pipi32167",
           "authorUrl": "https://github.com/pipi32167",
           "publishedAt": "2026-05-07T08:17:16Z",
-          "summary": "作为一个中登，我仍然喜欢传统的以网页为主的上网方式，偶尔会用 AI 总结和追问，不想离开网页。 但是现在的 AI 主要以 chatbot 为主，浏览器 AI 插件又试图做得大而全，做得很复杂，找了半天找不到满足自己需求的插件，索性自己 vibe 了一个。 你只需要配置上 apikey 就能用了，推荐 deepseek v4 flash，便宜量大管饱，一天最多用个几毛钱了： <img width=\"1280\" height=\"800\" alt=\"Image\" src=\" / 预定义提示词： <img width=\"1280\" height=\"800\" alt=\"Image\" src=\" / 即时提示词： <img width=\"2316\" height=\"1366\" alt=\"Image\" src=\" / 项目开源，你可以自己随便改： 也可以从插件商店里下载：",
+          "summary": "作为一个中登，我仍然喜欢传统的以网页为主的上网方式，偶尔会用 AI 总结和追问，不想离开网页。 但是现在的 AI 主要以 chatbot 为主，浏览器 AI 插件又试图做得大而全，做得很复杂，找了半天找不到满足自己需求的插件，索性自己 vibe 了一个。 你只需要配置上 apikey 就能用了，推荐 deepseek v4 flash，便宜量大管饱，一天最多用个几毛钱了： 预定义提示词： 即时提示词： 项目开源，你可以自己随便改： 也可以从插件商店里下载：",
           "content": "作为一个中登，我仍然喜欢传统的以网页为主的上网方式，偶尔会用 AI 总结和追问，不想离开网页。\n但是现在的 AI 主要以 chatbot 为主，浏览器 AI 插件又试图做得大而全，做得很复杂，找了半天找不到满足自己需求的插件，索性自己 vibe 了一个。\n你只需要配置上 apikey 就能用了，推荐 deepseek v4 flash，便宜量大管饱，一天最多用个几毛钱了：\n<img width=\"1280\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ca7ae3cb-89e1-4036-aeca-2bf12ea537c7\" />\n\n预定义提示词：\n<img width=\"1280\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/01ca5f2b-ed1e-4ac1-8c07-8c70b38f3c5e\" />\n\n即时提示词：\n<img width=\"2316\" height=\"1366\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7aa183a2-4f05-469c-aa1c-2ac91676e414\" />\n\n项目开源，你可以自己随便改：[![Github](https://img.shields.io/badge/github-repo-blue?logo=github)](https://github.com/pipi32167/SmartReader)\n\n也可以从插件商店里下载：[![Chrome Extension](https://img.shields.io/badge/chrome%20extension-MV3-orange)](https://chromewebstore.google.com/detail/smartreader/mohkobodogljjhchhaodhdckkhfmaffk?hl=en-US&utm_source=ext_sidebar)\n\n\n\n\n",
           "metrics": {
             "comments": 0
@@ -186,7 +196,13 @@
             "submission"
           ],
           "externalId": "9870",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9870"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9870",
+          "images": [
+            "https://github.com/user-attachments/assets/ca7ae3cb-89e1-4036-aeca-2bf12ea537c7",
+            "https://github.com/user-attachments/assets/01ca5f2b-ed1e-4ac1-8c07-8c70b38f3c5e",
+            "https://github.com/user-attachments/assets/7aa183a2-4f05-469c-aa1c-2ac91676e414"
+          ],
+          "image": "https://github.com/user-attachments/assets/ca7ae3cb-89e1-4036-aeca-2bf12ea537c7"
         },
         {
           "sourceId": "weekly-issues",
@@ -195,7 +211,7 @@
           "author": "codeusb",
           "authorUrl": "https://github.com/codeusb",
           "publishedAt": "2026-05-07T08:23:05Z",
-          "summary": "【开源自荐】vitepluginllmfriendly 让 Vite 站点原生支持 LLM 友好内容输出 开源地址： 项目简介： 一个面向 Vite 的轻量插件，帮你在不改现有页面路由的前提下，为 AI/LLM 提供更易解析的 Markdown 内容和 llms.txt 索引入口，提升抓取质量并降低 token 消耗。 [截图/GIF] <img width=\"1672\" height=\"941\" alt=\"Image\" src=\" / 核心特性： 内容协商输出：同一路径下，浏览器访问返回 HTML，Accept: text/markdown 请求返回对应 .md 内置 llms.txt 支持：兼容 /llms、/llms.txt、/llmsfull、/llmsfull.txt 自动注入发现链接：可在首页注入 <link rel=\"index\" href=\"/llms.txt\"，便于 AI 工具自动发现站点索引 技术亮点/适用场景： 基于 Vite 中间件与流式响应实现，零侵入接入现有站点，适合文档站、博客、产品官网、知识库等希望被 AI 助手更准确理解和引用的项目。 开源协议：MIT",
+          "summary": "【开源自荐】vitepluginllmfriendly 让 Vite 站点原生支持 LLM 友好内容输出 开源地址： 项目简介： 一个面向 Vite 的轻量插件，帮你在不改现有页面路由的前提下，为 AI/LLM 提供更易解析的 Markdown 内容和 llms.txt 索引入口，提升抓取质量并降低 token 消耗。 [截图/GIF] 核心特性： 内容协商输出：同一路径下，浏览器访问返回 HTML，Accept: text/markdown 请求返回对应 .md 内置 llms.txt 支持：兼容 /llms、/llms.txt、/llmsfull、/llmsfull.txt 自动注入发现链接：可在首页注入 <link rel=\"index\" href=\"/llms.txt\"，便于 AI 工具自动发现站点索引 技术亮点/适用场景： 基于 Vite 中间件与流式响应实现，零侵入接入现有站点，适合文档站、博客、产品官网、知识库等希望被 AI 助手更准确理解和引用的项目。 开源协议：MIT",
           "content": "【开源自荐】vite-plugin-llm-friendly - 让 Vite 站点原生支持 LLM 友好内容输出\n\n开源地址：https://github.com/codeusb/vite-plugin-llm-friendly\n\n项目简介：\n一个面向 Vite 的轻量插件，帮你在不改现有页面路由的前提下，为 AI/LLM 提供更易解析的 Markdown 内容和 llms.txt 索引入口，提升抓取质量并降低 token 消耗。\n\n[截图/GIF]\n\n<img width=\"1672\" height=\"941\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c2940ad0-bd74-4ca1-b7b4-f83a0ec5a2b7\" />\n\n\n核心特性：\n- 内容协商输出：同一路径下，浏览器访问返回 HTML，Accept: text/markdown 请求返回对应 .md\n- 内置 llms.txt 支持：兼容 /llms、/llms.txt、/llms-full、/llms-full.txt\n- 自动注入发现链接：可在首页注入 <link rel=\"index\" href=\"/llms.txt\">，便于 AI 工具自动发现站点索引\n\n技术亮点/适用场景：\n基于 Vite 中间件与流式响应实现，零侵入接入现有站点，适合文档站、博客、产品官网、知识库等希望被 AI 助手更准确理解和引用的项目。\n\n开源协议：MIT",
           "metrics": {
             "comments": 0
@@ -205,7 +221,11 @@
             "submission"
           ],
           "externalId": "9871",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9871"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9871",
+          "images": [
+            "https://github.com/user-attachments/assets/c2940ad0-bd74-4ca1-b7b4-f83a0ec5a2b7"
+          ],
+          "image": "https://github.com/user-attachments/assets/c2940ad0-bd74-4ca1-b7b4-f83a0ec5a2b7"
         },
         {
           "sourceId": "weekly-issues",
@@ -214,7 +234,7 @@
           "author": "0647-cyber",
           "authorUrl": "https://github.com/0647-cyber",
           "publishedAt": "2026-05-07T08:54:01Z",
-          "summary": "做了个小工具：WriteGIF —— 输入文字，一键生成\"一笔一画写出来\"的手写动画 GIF。 特点： 4 款手写字体，颜色 / 速度 / 字号可调 基于真实字形数据逐笔书写，自然不机械 浏览器本地渲染，不上传文字 免注册、无水印、无限次、永久免费 适合场景： 小红书配图、视频转场、PPT 点缀、电子贺卡、邮件 Newsletter。 🔗 打开即用，欢迎试试 🙌 <img width=\"496\" height=\"332\" alt=\"Image\" src=\" /",
+          "summary": "做了个小工具：WriteGIF —— 输入文字，一键生成\"一笔一画写出来\"的手写动画 GIF。 特点： 4 款手写字体，颜色 / 速度 / 字号可调 基于真实字形数据逐笔书写，自然不机械 浏览器本地渲染，不上传文字 免注册、无水印、无限次、永久免费 适合场景： 小红书配图、视频转场、PPT 点缀、电子贺卡、邮件 Newsletter。 🔗 打开即用，欢迎试试 🙌",
           "content": "做了个小工具：[WriteGIF](https://writegif.com/) —— 输入文字，一键生成\"一笔一画写出来\"的手写动画 GIF。\n\n特点：\n\n4 款手写字体，颜色 / 速度 / 字号可调\n基于真实字形数据逐笔书写，自然不机械\n浏览器本地渲染，不上传文字\n免注册、无水印、无限次、永久免费\n适合场景： 小红书配图、视频转场、PPT 点缀、电子贺卡、邮件 Newsletter。\n\n🔗 https://writegif.com/\n\n打开即用，欢迎试试 🙌\n<img width=\"496\" height=\"332\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/54d17b36-92e2-45c6-b62c-e3068def31bb\" />",
           "metrics": {
             "comments": 0
@@ -225,7 +245,11 @@
           ],
           "externalId": "9872",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9872",
-          "siteLogo": "https://writegif.com/favicon.ico?eb07a868cc89755b"
+          "siteLogo": "https://writegif.com/favicon.ico?eb07a868cc89755b",
+          "images": [
+            "https://github.com/user-attachments/assets/54d17b36-92e2-45c6-b62c-e3068def31bb"
+          ],
+          "image": "https://github.com/user-attachments/assets/54d17b36-92e2-45c6-b62c-e3068def31bb"
         },
         {
           "sourceId": "weekly-issues",
@@ -234,7 +258,7 @@
           "author": "jazzteam-code",
           "authorUrl": "https://github.com/jazzteam-code",
           "publishedAt": "2026-05-07T08:56:17Z",
-          "summary": "功能概览 1. 16点位，上下左右+四角八个点位 2. 边界检测：可以限制出界 3. 圆角控制 4. 动态位置指示器，动态显示：宽高，角度，位置 5. 拖拽旋转无抖动 6. 动态箭头：随着旋转角度修改箭头指向 7. 完全开源：MIT协议 8. 坐标精准，旋转后，坐标始终为左上角那个点 官网：点我直达 开源地址：点我直达 融入画布 <img width=\"2556\" height=\"1307\" alt=\"Image\" src=\" / 点位展示 <img width=\"446\" height=\"433\" alt=\"Image\" src=\" / 动态指示器 当拖拽调整大小显示宽高，当移动时，显示坐标，当旋转时，显示角度 <img width=\"1069\" height=\"628\" alt=\"Image\" src=\" /",
+          "summary": "功能概览 1. 16点位，上下左右+四角八个点位 2. 边界检测：可以限制出界 3. 圆角控制 4. 动态位置指示器，动态显示：宽高，角度，位置 5. 拖拽旋转无抖动 6. 动态箭头：随着旋转角度修改箭头指向 7. 完全开源：MIT协议 8. 坐标精准，旋转后，坐标始终为左上角那个点 官网：点我直达 开源地址：点我直达 融入画布 点位展示 动态指示器 当拖拽调整大小显示宽高，当移动时，显示坐标，当旋转时，显示角度",
           "content": " 功能概览\n\n1. 16点位，上下左右+四角八个点位\n2. 边界检测：可以限制出界\n3. 圆角控制\n4. 动态位置指示器，动态显示：宽高，角度，位置\n5. 拖拽旋转无抖动\n6. 动态箭头：随着旋转角度修改箭头指向\n7. 完全开源：MIT协议\n8. 坐标精准，旋转后，坐标始终为左上角那个点\n\n官网：[点我直达](https://ddr.mx2d.cn/)\n开源地址：[点我直达](https://github.com/jazzteam-code/draggable-resizable-rotatable)\n\n### 融入画布\n\n<img width=\"2556\" height=\"1307\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1d12b617-4ddc-4848-90a0-6baec730e472\" />\n\n### 点位展示\n\n<img width=\"446\" height=\"433\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/be4e6883-9178-4ae4-a5ac-113b3b88eb2d\" />\n\n### 动态指示器\n当拖拽调整大小显示宽高，当移动时，显示坐标，当旋转时，显示角度\n<img width=\"1069\" height=\"628\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a20c7d2a-9e00-4352-8383-5f1fe3cf57f9\" />",
           "metrics": {
             "comments": 0
@@ -244,7 +268,13 @@
             "submission"
           ],
           "externalId": "9873",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9873"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9873",
+          "images": [
+            "https://github.com/user-attachments/assets/1d12b617-4ddc-4848-90a0-6baec730e472",
+            "https://github.com/user-attachments/assets/be4e6883-9178-4ae4-a5ac-113b3b88eb2d",
+            "https://github.com/user-attachments/assets/a20c7d2a-9e00-4352-8383-5f1fe3cf57f9"
+          ],
+          "image": "https://github.com/user-attachments/assets/1d12b617-4ddc-4848-90a0-6baec730e472"
         },
         {
           "sourceId": "weekly-issues",

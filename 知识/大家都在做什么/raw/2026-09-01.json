@@ -225,7 +225,7 @@
           "author": "SinanWang",
           "authorUrl": "https://github.com/SinanWang",
           "publishedAt": "2026-08-31T18:21:43Z",
-          "summary": "一个独立开发者，小型SaaS团队，或者代理运营团队可用的 AI情报系统。 以上这些角色大部分应该都会开发和运营十几个甚至几十个产品。这些产品的各种数据分散在分析工具、支付平台、代码仓库和云基础设施中，每次要把所有数据整体过一次，要经历很长的时间，如果想让AI辅助帮忙把数据整理一遍，还得花时间花心思挨个导出再丢给AI做分析，非常麻烦。 这就是我遇到的问题和痛点。于是我花了很长时间给自己搞了一个系统来解决这些问题，并且慢慢的打磨了很长时间，最近有朋友也有类似的痛点，于是我又花了一段时间，把这个项目开源了，并给这个项目命名为 Dashloom。 <img width=\"2497\" height=\"1835\" alt=\"Image\" src=\" / <img width=\"2327\" height=\"1306\" alt=\"Image\" src=\" / Dashloom 会把上述多个数据源的数据标准化到统一的证据层，然后 Dashloom Agent 先通过确定性指标和信号雷达找出值得关注的变化，再让你自己的 OpenAI 兼容模型进行分析，生成带证据引用的洞察、行动建议和定期报告。 又可以作为统一的数据大盘查看和分析数据，又可以通过 Agent 的能力为数据提供分析洞察，行动建议，定期报告，并且还能通过安装各种skill来丰富agent的能力。 <img width=\"2383\" height=\"1139\" alt=\"Image\" src=\" / <img width=\"2267\" height=\"1845\" alt=\"Image\" src=\" / 支持多个产品的数据隔离，并提供以下几种预设场景的 agent 能力： 独立开发者 SaaS 收入 SEO 增长 Cloudflare 运维 客户报告 Agent 的结论需要引用实际证据，不会把相关性直接描述为因果关系。 <img width=\"2177\" height=\"1546\" alt=\"Image\" src=\" / 开源版本为完全自部署系统，自己部署，接入自己的数据，使用自己的API，没有任何隐私泄露问题。可以根据自己的实际需要来让codex或者cc code帮自己调整功能或者进行二次开发。 <img width=\"2069\" height=\"1849\" alt=\"Image\" src=\" / 目前支持的数据源包括： 产品与增长： Google Analytics、Google Search Console、Bing Master 收入与支付： Stripe、Lemon Squeezy、Creem、Polar、Paddle 或者导入自己数据库中的自定义收入数据（这样可以覆盖所有支付渠道） 开发与部署： GitHub、Vercel Cloudflare： Workers、Pages、Queues、R2 数据库与后端： Supabase、Cloudflare D1 自定义数据： Custom REST、手动指标导入、开放摄取 API、TypeScript SDK 和 Connector Worker <img width=\"2231\" height=\"1338\" alt=\"Image\" src=\" / 支持OAuth的平台可以简单配置一下一键接入，有些需要自己搞一下变量和密钥。 开源项目地址和介绍 在线cloud版本（还没完善好，免费试用，在关联Google数据提示未认证的位置点击高级，信任即可）：",
+          "summary": "一个独立开发者，小型SaaS团队，或者代理运营团队可用的 AI情报系统。 以上这些角色大部分应该都会开发和运营十几个甚至几十个产品。这些产品的各种数据分散在分析工具、支付平台、代码仓库和云基础设施中，每次要把所有数据整体过一次，要经历很长的时间，如果想让AI辅助帮忙把数据整理一遍，还得花时间花心思挨个导出再丢给AI做分析，非常麻烦。 这就是我遇到的问题和痛点。于是我花了很长时间给自己搞了一个系统来解决这些问题，并且慢慢的打磨了很长时间，最近有朋友也有类似的痛点，于是我又花了一段时间，把这个项目开源了，并给这个项目命名为 Dashloom。 Dashloom 会把上述多个数据源的数据标准化到统一的证据层，然后 Dashloom Agent 先通过确定性指标和信号雷达找出值得关注的变化，再让你自己的 OpenAI 兼容模型进行分析，生成带证据引用的洞察、行动建议和定期报告。 又可以作为统一的数据大盘查看和分析数据，又可以通过 Agent 的能力为数据提供分析洞察，行动建议，定期报告，并且还能通过安装各种skill来丰富agent的能力。 支持多个产品的数据隔离，并提供以下几种预设场景的 agent 能力： 独立开发者 SaaS 收入 SEO 增长 Cloudflare 运维 客户报告 Agent 的结论需要引用实际证据，不会把相关性直接描述为因果关系。 开源版本为完全自部署系统，自己部署，接入自己的数据，使用自己的API，没有任何隐私泄露问题。可以根据自己的实际需要来让codex或者cc code帮自己调整功能或者进行二次开发。 目前支持的数据源包括： 产品与增长： Google Analytics、Google Search Console、Bing Master 收入与支付： Stripe、Lemon Squeezy、Creem、Polar、Paddle 或者导入自己数据库中的自定义收入数据（这样可以覆盖所有支付渠道） 开发与部署： GitHub、Vercel Cloudflare： Workers、Pages、Queues、R2 数据库与后端： Supabase、Cloudflare D1 自定义数据： Custom REST、手动指标导入、开放摄取 API、TypeScript SDK 和 Connector Worker 支持OAuth的平台可以简单配置一下一键接入，有些需要自己搞一下变量和密钥。 开源项目地址和介绍 在线cloud版本（还没完善好，免费试用，在关联Google数据提示未认证的位置点击高级，信任即可）：",
           "content": "一个独立开发者，小型SaaS团队，或者代理运营团队可用的 AI情报系统。\n\n以上这些角色大部分应该都会开发和运营十几个甚至几十个产品。这些产品的各种数据分散在分析工具、支付平台、代码仓库和云基础设施中，每次要把所有数据整体过一次，要经历很长的时间，如果想让AI辅助帮忙把数据整理一遍，还得花时间花心思挨个导出再丢给AI做分析，非常麻烦。\n\n这就是我遇到的问题和痛点。于是我花了很长时间给自己搞了一个系统来解决这些问题，并且慢慢的打磨了很长时间，最近有朋友也有类似的痛点，于是我又花了一段时间，把这个项目开源了，并给这个项目命名为 Dashloom。\n\n<img width=\"2497\" height=\"1835\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/64d6ce8c-240d-4ff2-8e70-c11b0f2f595c\" />\n\n<img width=\"2327\" height=\"1306\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b05721e5-01a3-4847-b1b4-d0c61980f18e\" />\n\nDashloom 会把上述多个数据源的数据标准化到统一的证据层，然后 Dashloom Agent 先通过确定性指标和信号雷达找出值得关注的变化，再让你自己的 OpenAI 兼容模型进行分析，生成带证据引用的洞察、行动建议和定期报告。\n\n又可以作为统一的数据大盘查看和分析数据，又可以通过 Agent 的能力为数据提供分析洞察，行动建议，定期报告，并且还能通过安装各种skill来丰富agent的能力。\n\n<img width=\"2383\" height=\"1139\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/75378094-aa3c-4351-84b5-987ec62722e2\" />\n\n<img width=\"2267\" height=\"1845\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8109fd9c-b445-4e9d-93dc-703b721e46df\" />\n\n支持多个产品的数据隔离，并提供以下几种预设场景的 agent 能力：\n\n独立开发者\nSaaS 收入\nSEO 增长\nCloudflare 运维\n客户报告\n\nAgent 的结论需要引用实际证据，不会把相关性直接描述为因果关系。\n\n<img width=\"2177\" height=\"1546\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8381e744-bd47-4542-bc70-b8649b87f646\" />\n\n开源版本为完全自部署系统，自己部署，接入自己的数据，使用自己的API，没有任何隐私泄露问题。可以根据自己的实际需要来让codex或者cc code帮自己调整功能或者进行二次开发。\n\n<img width=\"2069\" height=\"1849\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/62f541e8-07a9-46b5-b7ca-0178b1896c09\" />\n\n\n\n目前支持的数据源包括：\n- 产品与增长： Google Analytics、Google Search Console、Bing Master\n- 收入与支付： Stripe、Lemon Squeezy、Creem、Polar、Paddle 或者导入自己数据库中的自定义收入数据（这样可以覆盖所有支付渠道）\n- 开发与部署： GitHub、Vercel\n- Cloudflare： Workers、Pages、Queues、R2\n- 数据库与后端： Supabase、Cloudflare D1\n- 自定义数据： Custom REST、手动指标导入、开放摄取 API、TypeScript SDK 和 Connector Worker\n\n<img width=\"2231\" height=\"1338\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/bdad4756-95c5-415a-b4d4-f78cecbe5336\" />\n\n\n支持OAuth的平台可以简单配置一下一键接入，有些需要自己搞一下变量和密钥。\n\n开源项目地址和介绍  \n\nhttps://github.com/dashloom-dev/dashloom\nhttps://github.com/dashloom-dev/dashloom/blob/main/README.zh-CN.md\n\n在线cloud版本（还没完善好，免费试用，在关联Google数据提示未认证的位置点击高级，信任即可）：https://dashloom.dev/",
           "metrics": {
             "comments": 0
@@ -254,7 +254,17 @@
             "pushedAt": "2026-09-08T19:03:33Z",
             "archived": false,
             "snapshotDate": "2026-09-01"
-          }
+          },
+          "images": [
+            "https://github.com/user-attachments/assets/64d6ce8c-240d-4ff2-8e70-c11b0f2f595c",
+            "https://github.com/user-attachments/assets/b05721e5-01a3-4847-b1b4-d0c61980f18e",
+            "https://github.com/user-attachments/assets/75378094-aa3c-4351-84b5-987ec62722e2",
+            "https://github.com/user-attachments/assets/8109fd9c-b445-4e9d-93dc-703b721e46df",
+            "https://github.com/user-attachments/assets/8381e744-bd47-4542-bc70-b8649b87f646",
+            "https://github.com/user-attachments/assets/62f541e8-07a9-46b5-b7ca-0178b1896c09",
+            "https://github.com/user-attachments/assets/bdad4756-95c5-415a-b4d4-f78cecbe5336"
+          ],
+          "image": "https://github.com/user-attachments/assets/64d6ce8c-240d-4ff2-8e70-c11b0f2f595c"
         },
         {
           "sourceId": "weekly-issues",
@@ -263,7 +273,7 @@
           "author": "m0ver",
           "authorUrl": "https://github.com/m0ver",
           "publishedAt": "2026-08-31T20:38:24Z",
-          "summary": "tinystruct framework 版本： 1.7.29 语言： Java 许可证： Apache License 2.0 GitHub： tinystruct 简要说明 tinystruct 是一个轻量级 Java 应用框架，支持命令行工具与 Web 接口的统一调用方式。其目标是通过最少的依赖、简洁的设计、模块化扩展，来降低开发复杂度。 在 1.7.29 版本中，对 HTTP 模块（Tomcat / Netty）、模块化结构和上下文管理进行了优化以减轻核心负担。 核心特性 最少依赖：核心库保持轻量，仅引入必要的组件 统一 @Action 调用机制：命令行与 HTTP 接口共用调用方式 模块化 HTTP 支持：可选集成 Tomcat / Netty 模块 低延迟调用：方法内部调用减少中间开销 扩展能力：支持构建插件 / 生态模块 适用场景广泛：适合小型服务、CLI 工具、AI 应用等 <img width=\"1111\" height=\"757\" alt=\"Image\" src=\" / 生态模块 / 示例项目 下面是一些已有的模块或实例，可作为参考或扩展： | 模块 / 项目 | 类型 | 功能 / 说明 | |||| | tinystructmcp | MCP 服务端模块 | 基于 tinystruct 实现的 MCP（Model Context Protocol）服务器 | | tinystructtomcatserver | HTTP 模块 | 提供 Tomcat 方式的 HTTP 支持 | | tinystructnettyhttpserver | HTTP 模块 | 提供 Netty 模式的 HTTP 支持 | | smalltalk | 应用示例 | 基于 tinystruct 的聊天系统，支持 CLI 与 Web 模式 | | tinystructexamples | 示例项目 | 演示 CLI / Web 混合模式使用方法 | 快速上手示例 引入依赖（Maven 示例） xml <dependency <groupIdorg.tinystruct</groupId <artifactIdtinystruct</artifactId <version1.7.29</version <classifierjarwithdependencies</classifier </dependency",
+          "summary": "tinystruct framework 版本： 1.7.29 语言： Java 许可证： Apache License 2.0 GitHub： tinystruct 简要说明 tinystruct 是一个轻量级 Java 应用框架，支持命令行工具与 Web 接口的统一调用方式。其目标是通过最少的依赖、简洁的设计、模块化扩展，来降低开发复杂度。 在 1.7.29 版本中，对 HTTP 模块（Tomcat / Netty）、模块化结构和上下文管理进行了优化以减轻核心负担。 核心特性 最少依赖：核心库保持轻量，仅引入必要的组件 统一 @Action 调用机制：命令行与 HTTP 接口共用调用方式 模块化 HTTP 支持：可选集成 Tomcat / Netty 模块 低延迟调用：方法内部调用减少中间开销 扩展能力：支持构建插件 / 生态模块 适用场景广泛：适合小型服务、CLI 工具、AI 应用等 生态模块 / 示例项目 下面是一些已有的模块或实例，可作为参考或扩展： | 模块 / 项目 | 类型 | 功能 / 说明 | |||| | tinystructmcp | MCP 服务端模块 | 基于 tinystruct 实现的 MCP（Model Context Protocol）服务器 | | tinystructtomcatserver | HTTP 模块 | 提供 Tomcat 方式的 HTTP 支持 | | tinystructnettyhttpserver | HTTP 模块 | 提供 Netty 模式的 HTTP 支持 | | smalltalk | 应用示例 | 基于 tinystruct 的聊天系统，支持 CLI 与 Web 模式 | | tinystructexamples | 示例项目 | 演示 CLI / Web 混合模式使用方法 | 快速上手示例 引入依赖（Maven 示例） xml <dependency <groupIdorg.tinystruct</groupId <artifactIdtinystruct</artifactId <version1.7.29</version <classifierjarwithdependencies</classifier </dependency",
           "content": "# tinystruct framework\n\n> **版本：** 1.7.29\n> **语言：** Java  \n> **许可证：** Apache License 2.0  \n> **GitHub：** [tinystruct](https://github.com/tinystruct)\n\n\n\n## 简要说明\n\ntinystruct 是一个轻量级 Java 应用框架，支持命令行工具与 Web 接口的统一调用方式。其目标是通过最少的依赖、简洁的设计、模块化扩展，来降低开发复杂度。\n\n在 1.7.29 版本中，对 HTTP 模块（Tomcat / Netty）、模块化结构和上下文管理进行了优化以减轻核心负担。\n\n\n\n## 核心特性\n\n- **最少依赖**：核心库保持轻量，仅引入必要的组件  \n- **统一 `@Action` 调用机制**：命令行与 HTTP 接口共用调用方式  \n- **模块化 HTTP 支持**：可选集成 Tomcat / Netty 模块  \n- **低延迟调用**：方法内部调用减少中间开销  \n- **扩展能力**：支持构建插件 / 生态模块  \n- **适用场景广泛**：适合小型服务、CLI 工具、AI 应用等  \n\n<img width=\"1111\" height=\"757\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/57173ff0-a286-46ef-9000-51e1c53c11fe\" />\n\n\n\n## 生态模块 / 示例项目\n\n下面是一些已有的模块或实例，可作为参考或扩展：\n\n| 模块 / 项目 | 类型 | 功能 / 说明 |\n|--------------|------|----------------------------|\n| `tinystruct-mcp` | MCP 服务端模块 | 基于 tinystruct 实现的 MCP（Model Context Protocol）服务器 |\n| `tinystruct-tomcat-server` | HTTP 模块 | 提供 Tomcat 方式的 HTTP 支持 |\n| `tinystruct-netty-http-server` | HTTP 模块 | 提供 Netty 模式的 HTTP 支持 |\n| `smalltalk` | 应用示例 | 基于 tinystruct 的聊天系统，支持 CLI 与 Web 模式 |\n| `tinystruct-examples` | 示例项目 | 演示 CLI / Web 混合模式使用方法  |\n\n\n\n\n## 快速上手示例\nhttps://github.com/tinystruct/tinystruct\n### 引入依赖（Maven 示例）\n\n```xml\n<dependency>\n  <groupId>org.tinystruct</groupId>\n  <artifactId>tinystruct</artifactId>\n  <version>1.7.29</version>\n  <classifier>jar-with-dependencies</classifier>\n</dependency>\n",
           "metrics": {
             "comments": 0
@@ -312,7 +322,11 @@
             "archived": false,
             "snapshotDate": "2026-09-01"
           },
-          "siteLogo": "https://tinystruct.org/favicon.ico"
+          "siteLogo": "https://tinystruct.org/favicon.ico",
+          "images": [
+            "https://github.com/user-attachments/assets/57173ff0-a286-46ef-9000-51e1c53c11fe"
+          ],
+          "image": "https://github.com/user-attachments/assets/57173ff0-a286-46ef-9000-51e1c53c11fe"
         },
         {
           "sourceId": "weekly-issues",
@@ -341,7 +355,7 @@
           "author": "leonlabs-dev",
           "authorUrl": "https://github.com/leonlabs-dev",
           "publishedAt": "2026-09-01T02:16:40Z",
-          "summary": "项目地址： 在线体验： SystemPro 是一个使用 Vue 3 + TypeScript 开发的园区能源与设备运营管理端。 我做这个项目的原因，是常见的后台模板大多只展示用户、角色和表格增删改查，真正涉及设备资产、能源拓扑、总分表关系、损耗分析、空调集控和账单结算的开源界面相对少见。 项目目前包含： 设备资产、能源计量、空调集控、告警和账单等业务页面 组织、项目、空间、角色和数据权限等企业管理入口 无需后端即可运行的本地只读演示 可在运行时切换 API 地址，不必重新构建前端 亮色、暗色、色弱模式、多语言和响应式布局 它可以用于了解能源管理类产品的页面组织方式，也可以作为 IoT、智慧园区和企业管理项目的前端参考。 <img width=\"3072\" height=\"1650\" alt=\"Image\" src=\" / <img width=\"1672\" height=\"941\" alt=\"Image\" src=\" /",
+          "summary": "项目地址： 在线体验： SystemPro 是一个使用 Vue 3 + TypeScript 开发的园区能源与设备运营管理端。 我做这个项目的原因，是常见的后台模板大多只展示用户、角色和表格增删改查，真正涉及设备资产、能源拓扑、总分表关系、损耗分析、空调集控和账单结算的开源界面相对少见。 项目目前包含： 设备资产、能源计量、空调集控、告警和账单等业务页面 组织、项目、空间、角色和数据权限等企业管理入口 无需后端即可运行的本地只读演示 可在运行时切换 API 地址，不必重新构建前端 亮色、暗色、色弱模式、多语言和响应式布局 它可以用于了解能源管理类产品的页面组织方式，也可以作为 IoT、智慧园区和企业管理项目的前端参考。",
           "content": "项目地址：https://github.com/leonlabs-dev/SystemPro\n\n在线体验：https://console.systempro.site\n\nSystemPro 是一个使用 Vue 3 + TypeScript 开发的园区能源与设备运营管理端。\n\n我做这个项目的原因，是常见的后台模板大多只展示用户、角色和表格增删改查，真正涉及设备资产、能源拓扑、总分表关系、损耗分析、空调集控和账单结算的开源界面相对少见。\n\n项目目前包含：\n\n- 设备资产、能源计量、空调集控、告警和账单等业务页面\n- 组织、项目、空间、角色和数据权限等企业管理入口\n- 无需后端即可运行的本地只读演示\n- 可在运行时切换 API 地址，不必重新构建前端\n- 亮色、暗色、色弱模式、多语言和响应式布局\n\n它可以用于了解能源管理类产品的页面组织方式，也可以作为 IoT、智慧园区和企业管理项目的前端参考。\n\n<img width=\"3072\" height=\"1650\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a102b302-ce73-4c67-bfa2-4fd463168f67\" />\n\n<img width=\"1672\" height=\"941\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d7392854-b53d-4dda-a4bd-918e92046f94\" />",
           "metrics": {
             "comments": 0
@@ -387,7 +401,12 @@
             "HelloGitHub·用户投稿"
           ],
           "__mergedCount": 2,
-          "siteLogo": "https://systempro.site/logo-mark.webp"
+          "siteLogo": "https://systempro.site/logo-mark.webp",
+          "images": [
+            "https://github.com/user-attachments/assets/a102b302-ce73-4c67-bfa2-4fd463168f67",
+            "https://github.com/user-attachments/assets/d7392854-b53d-4dda-a4bd-918e92046f94"
+          ],
+          "image": "https://github.com/user-attachments/assets/a102b302-ce73-4c67-bfa2-4fd463168f67"
         },
         {
           "sourceId": "weekly-issues",
@@ -433,7 +452,11 @@
             "archived": false,
             "snapshotDate": "2026-09-01"
           },
-          "siteLogo": "https://unfour.dev/apple-touch-icon.png"
+          "siteLogo": "https://unfour.dev/apple-touch-icon.png",
+          "images": [
+            "https://raw.githubusercontent.com/zyqzyq/Unfour/main/docs/screenshots/app-overview.png"
+          ],
+          "image": "https://raw.githubusercontent.com/zyqzyq/Unfour/main/docs/screenshots/app-overview.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -557,7 +580,11 @@
             "pushedAt": "2026-09-08T20:33:06Z",
             "archived": false,
             "snapshotDate": "2026-09-01"
-          }
+          },
+          "images": [
+            "https://raw.githubusercontent.com/tt-a1i/archify/main/docs/assets/archify-readme-hero.png"
+          ],
+          "image": "https://raw.githubusercontent.com/tt-a1i/archify/main/docs/assets/archify-readme-hero.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -700,7 +727,7 @@
           "author": "ex90rts",
           "authorUrl": "https://github.com/ex90rts",
           "publishedAt": "2026-09-01T08:42:10Z",
-          "summary": "ReMarker — 英语学习者的网页阅读 AI 助手 ReMarker 是一个 Chrome 浏览器扩展，面向网页深度阅读和外语学习的用户。在浏览文章时，可以随时选中文本后进行复制、搜索、发音、查词、翻译、记笔记或划线等操作，可以在管理页面统一管理由此产生的划线、笔记、生词、翻译和页面足迹数据，同时提供基于遗忘曲线的生词间隔复习功能。 项目仓库： 安装地址：Chrome Web Store 功能特性 阅读工具栏：支持复制或使用 Google 搜索选中内容；对词语发音、查词；对长文本翻译或使用五种颜色划线。 基于上下文的 AI 翻译：通过 OpenAIcompatible LLM 模型，结合页面上下文解释词语或翻译文本；结果会以流式方式实时显示。 划线与笔记：复访页面时恢复划线，可修改颜色、添加笔记，并在管理页集中查看和维护，划线会自动分析 Language Chunks 供学习使用。 生词与翻译：查词结果自动进入生词本，翻译记录单独管理；复访页面时恢复生词下划线，并支持再次翻译。 间隔复习：使用基于遗忘曲线的闪卡生词复习，按“生疏 / 犹豫 / 熟练”自评，自动安排下次复习；扩展角标和 Popup 会显示待复习数量。 学习活动：查看最近六个月的划线、生词和翻译等学习活动，以及今日复习进度。 页面足迹：集中管理划线过、查词过或手动加入的页面，支持筛选、星标、归档和重新打开，也可以作为网络文章收藏夹使用。 导出与备份：划线、生词和翻译可导出为 Obsidian 或 Notion Markdown；支持导入完整 JSON 备份，以及全量和增量 JSON 导出。默认排除敏感配置。 阅读控制：支持全局或按站点启用 ReMarker、控制复制后是否关闭查词面板；网页工具栏和面板会跟随系统深色模式。 界面展示 <img width=\"1561\" height=\"909\" alt=\"Image\" src=\" / <img width=\"1555\" height=\"988\" alt=\"Image\" src=\" /",
+          "summary": "ReMarker — 英语学习者的网页阅读 AI 助手 ReMarker 是一个 Chrome 浏览器扩展，面向网页深度阅读和外语学习的用户。在浏览文章时，可以随时选中文本后进行复制、搜索、发音、查词、翻译、记笔记或划线等操作，可以在管理页面统一管理由此产生的划线、笔记、生词、翻译和页面足迹数据，同时提供基于遗忘曲线的生词间隔复习功能。 项目仓库： 安装地址：Chrome Web Store 功能特性 阅读工具栏：支持复制或使用 Google 搜索选中内容；对词语发音、查词；对长文本翻译或使用五种颜色划线。 基于上下文的 AI 翻译：通过 OpenAIcompatible LLM 模型，结合页面上下文解释词语或翻译文本；结果会以流式方式实时显示。 划线与笔记：复访页面时恢复划线，可修改颜色、添加笔记，并在管理页集中查看和维护，划线会自动分析 Language Chunks 供学习使用。 生词与翻译：查词结果自动进入生词本，翻译记录单独管理；复访页面时恢复生词下划线，并支持再次翻译。 间隔复习：使用基于遗忘曲线的闪卡生词复习，按“生疏 / 犹豫 / 熟练”自评，自动安排下次复习；扩展角标和 Popup 会显示待复习数量。 学习活动：查看最近六个月的划线、生词和翻译等学习活动，以及今日复习进度。 页面足迹：集中管理划线过、查词过或手动加入的页面，支持筛选、星标、归档和重新打开，也可以作为网络文章收藏夹使用。 导出与备份：划线、生词和翻译可导出为 Obsidian 或 Notion Markdown；支持导入完整 JSON 备份，以及全量和增量 JSON 导出。默认排除敏感配置。 阅读控制：支持全局或按站点启用 ReMarker、控制复制后是否关闭查词面板；网页工具栏和面板会跟随系统深色模式。 界面展示",
           "content": "## ReMarker — 英语学习者的网页阅读 AI 助手\n\nReMarker 是一个 Chrome 浏览器扩展，面向网页深度阅读和外语学习的用户。在浏览文章时，可以随时选中文本后进行复制、搜索、发音、查词、翻译、记笔记或划线等操作，可以在管理页面统一管理由此产生的划线、笔记、生词、翻译和页面足迹数据，同时提供基于遗忘曲线的生词间隔复习功能。\n\n**项目仓库**：https://github.com/ex90rts/remarker\n**安装地址**：[Chrome Web Store](https://chromewebstore.google.com/detail/remarker/hdmpdmamklhjagiogicgcfcdpfiilecn)\n\n### 功能特性\n\n- 阅读工具栏：支持复制或使用 Google 搜索选中内容；对词语发音、查词；对长文本翻译或使用五种颜色划线。\n- 基于上下文的 AI 翻译：通过 OpenAI-compatible  LLM 模型，结合页面上下文解释词语或翻译文本；结果会以流式方式实时显示。\n- 划线与笔记：复访页面时恢复划线，可修改颜色、添加笔记，并在管理页集中查看和维护，划线会自动分析 Language Chunks 供学习使用。\n- 生词与翻译：查词结果自动进入生词本，翻译记录单独管理；复访页面时恢复生词下划线，并支持再次翻译。\n- 间隔复习：使用基于遗忘曲线的闪卡生词复习，按“生疏 / 犹豫 / 熟练”自评，自动安排下次复习；扩展角标和 Popup 会显示待复习数量。\n- 学习活动：查看最近六个月的划线、生词和翻译等学习活动，以及今日复习进度。\n- 页面足迹：集中管理划线过、查词过或手动加入的页面，支持筛选、星标、归档和重新打开，也可以作为网络文章收藏夹使用。\n- 导出与备份：划线、生词和翻译可导出为 Obsidian 或 Notion Markdown；支持导入完整 JSON 备份，以及全量和增量 JSON 导出。默认排除敏感配置。\n- 阅读控制：支持全局或按站点启用 ReMarker、控制复制后是否关闭查词面板；网页工具栏和面板会跟随系统深色模式。\n\n### 界面展示\n\n<img width=\"1561\" height=\"909\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/88a001f0-8f71-467f-8d1d-4b20a9efa0f5\" />\n<img width=\"1555\" height=\"988\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/214534be-4715-462b-b8ef-e8937cce7505\" />",
           "metrics": {
             "comments": 0
@@ -730,7 +757,12 @@
             "archived": false,
             "snapshotDate": "2026-09-01"
           },
-          "siteLogo": "https://ex90rts.github.io/remarker/assets/favicon.png"
+          "siteLogo": "https://ex90rts.github.io/remarker/assets/favicon.png",
+          "images": [
+            "https://github.com/user-attachments/assets/88a001f0-8f71-467f-8d1d-4b20a9efa0f5",
+            "https://github.com/user-attachments/assets/214534be-4715-462b-b8ef-e8937cce7505"
+          ],
+          "image": "https://github.com/user-attachments/assets/88a001f0-8f71-467f-8d1d-4b20a9efa0f5"
         },
         {
           "sourceId": "weekly-issues",
@@ -739,7 +771,7 @@
           "author": "zhansan379",
           "authorUrl": "https://github.com/zhansan379",
           "publishedAt": "2026-09-01T10:37:44Z",
-          "summary": "起因是我最近喜欢和豆包聊天，但经常聊到一半就发现额度不足...... 希望大家给我点点star并提出issue zhansan379/LivetalkingChat: 会和你说活的数字人：能听、能想、能答、能打岔，看得懂你在干嘛，还能接外部工具箱。在原版 LiveTalking 上做了 TTS/ASR 熔断降级、长期记忆、全链路观测等加固。An interactive digitalhuman avatar app: it hears, thinks, answers, and can be interrupted — plus camera awareness, pluggable MCP tools, and hardened TTS/ASR failover. 这套系统来自开源的 lipku/LiveTalking，我们在它的基础上加了很多实用功能（说话能随时被打断、看得见你在干嘛、能连各种 AI 对话和工具箱等，见下方「它能做什么」）。 演示视频： <img width=\"2549\" height=\"1191\" alt=\"Image\" src=\" /",
+          "summary": "起因是我最近喜欢和豆包聊天，但经常聊到一半就发现额度不足...... 希望大家给我点点star并提出issue zhansan379/LivetalkingChat: 会和你说活的数字人：能听、能想、能答、能打岔，看得懂你在干嘛，还能接外部工具箱。在原版 LiveTalking 上做了 TTS/ASR 熔断降级、长期记忆、全链路观测等加固。An interactive digitalhuman avatar app: it hears, thinks, answers, and can be interrupted — plus camera awareness, pluggable MCP tools, and hardened TTS/ASR failover. 这套系统来自开源的 lipku/LiveTalking，我们在它的基础上加了很多实用功能（说话能随时被打断、看得见你在干嘛、能连各种 AI 对话和工具箱等，见下方「它能做什么」）。 演示视频：",
           "content": "\n起因是我最近喜欢和豆包聊天，但经常聊到一半就发现额度不足......\n希望大家给我点点star并提出issue\nzhansan379/Livetalking_Chat: 会和你说活的数字人：能听、能想、能答、能打岔，看得懂你在干嘛，还能接外部工具箱。在原版 LiveTalking 上做了 TTS/ASR 熔断降级、长期记忆、全链路观测等加固。An interactive digital-human avatar app: it hears, thinks, answers, and can be interrupted — plus camera awareness, pluggable MCP tools, and hardened TTS/ASR failover.\n\n这套系统来自开源的 [lipku/LiveTalking](https://github.com/lipku/LiveTalking)，我们在它的基础上加了很多实用功能（说话能随时被打断、看得见你在干嘛、能连各种 AI 对话和工具箱等，见下方「它能做什么」）。\n\n演示视频：https://www.bilibili.com/video/BV1xMt36yEGe/?vd_source=51dc853233c8dd59fedc993c62da85d1\n\n<img width=\"2549\" height=\"1191\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/76b1678c-5d52-4ff9-8c2d-f870df681b1e\" />",
           "metrics": {
             "comments": 0
@@ -783,7 +815,11 @@
             "archived": false,
             "snapshotDate": "2026-09-01"
           },
-          "siteLogo": "https://www.livetalking.ai/favicon.ico?favicon.0b3bf435.ico"
+          "siteLogo": "https://www.livetalking.ai/favicon.ico?favicon.0b3bf435.ico",
+          "images": [
+            "https://github.com/user-attachments/assets/76b1678c-5d52-4ff9-8c2d-f870df681b1e"
+          ],
+          "image": "https://github.com/user-attachments/assets/76b1678c-5d52-4ff9-8c2d-f870df681b1e"
         },
         {
           "sourceId": "weekly-issues",

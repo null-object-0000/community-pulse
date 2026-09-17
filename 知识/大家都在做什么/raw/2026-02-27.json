@@ -129,7 +129,7 @@
           "author": "selicens",
           "authorUrl": "https://github.com/selicens",
           "publishedAt": "2026-02-27T03:07:42Z",
-          "summary": "项目背景与定位 Vue 生态中原有的 antdesignvue 维护工作已实质性停滞（最后更新停留在 2024 年 11 月的 v4.2.6 版本）。在此背景下，antdvnext 希望延续在 vue 生态中使用 Ant Design 设计体系。 它并非对 antdesignvue 的简单修补或续写，而是基于 Ant Design 6.x 设计体系的全面重构。 架构升级：完整迁移了 Ant Design 6.x 的 Design Token 体系与语义化 DOM 结构。 底层重构：对标 React 生态的 rc 无头组件方案，底层采用 vc 无头组件。这种架构实现了样式与逻辑的解耦，不仅能完美复刻 Ant Design 的交互体验，更为有定制化需求的开发者提供了底层支撑，便于二次封装或构建私有组件库。 组件完成度 项目目前具备极高的完成度，已实现 Ant Design 规范中的绝大多数组件。 未实现组件：仅 List 组件未纳入开发。 原因说明：Ant Design 官方目前对 List 组件已有重构规划并标记为废弃 (Deprecated)，为保持代码库的前瞻性与一致性，antdvnext 选择与其保持同步，暂未实现该组件。 AI 支持 llm.txt 集成，默认集成了 llm.txt 支持，方便用户通过本地或远程 LLM 模型进行离线问答。 skills 支持，目前比较流行的本地的技能库，配合 Antfu Skills 集合 一起使用，可以减少 AI 幻觉导致的一些问题。 Nuxt 支持 提供了 @antdvnext/nuxt 模块 js export default defineNuxtConfig({ modules: ['@antdvnext/nuxt'], antd: { icon: true, }, css: ['antdvnext/dist/reset.css'], }) 相关链接 官方文档： 组件库仓库： 底层基础设施 (vc 组件)： <img width=\"2550\" height=\"1233\" alt=\"Image\" src=\" /",
+          "summary": "项目背景与定位 Vue 生态中原有的 antdesignvue 维护工作已实质性停滞（最后更新停留在 2024 年 11 月的 v4.2.6 版本）。在此背景下，antdvnext 希望延续在 vue 生态中使用 Ant Design 设计体系。 它并非对 antdesignvue 的简单修补或续写，而是基于 Ant Design 6.x 设计体系的全面重构。 架构升级：完整迁移了 Ant Design 6.x 的 Design Token 体系与语义化 DOM 结构。 底层重构：对标 React 生态的 rc 无头组件方案，底层采用 vc 无头组件。这种架构实现了样式与逻辑的解耦，不仅能完美复刻 Ant Design 的交互体验，更为有定制化需求的开发者提供了底层支撑，便于二次封装或构建私有组件库。 组件完成度 项目目前具备极高的完成度，已实现 Ant Design 规范中的绝大多数组件。 未实现组件：仅 List 组件未纳入开发。 原因说明：Ant Design 官方目前对 List 组件已有重构规划并标记为废弃 (Deprecated)，为保持代码库的前瞻性与一致性，antdvnext 选择与其保持同步，暂未实现该组件。 AI 支持 llm.txt 集成，默认集成了 llm.txt 支持，方便用户通过本地或远程 LLM 模型进行离线问答。 skills 支持，目前比较流行的本地的技能库，配合 Antfu Skills 集合 一起使用，可以减少 AI 幻觉导致的一些问题。 Nuxt 支持 提供了 @antdvnext/nuxt 模块 js export default defineNuxtConfig({ modules: ['@antdvnext/nuxt'], antd: { icon: true, }, css: ['antdvnext/dist/reset.css'], }) 相关链接 官方文档： 组件库仓库： 底层基础设施 (vc 组件)：",
           "content": "## 项目背景与定位\nVue 生态中原有的 ant-design-vue 维护工作已实质性停滞（最后更新停留在 2024 年 11 月的 v4.2.6 版本）。在此背景下，antdv-next 希望延续在 vue 生态中使用 Ant Design 设计体系。\n\n它并非对 ant-design-vue 的简单修补或续写，而是基于 Ant Design 6.x 设计体系的全面重构。\n\n架构升级：完整迁移了 Ant Design 6.x 的 Design Token 体系与语义化 DOM 结构。\n底层重构：对标 React 生态的 rc-* 无头组件方案，底层采用 vc-*  无头组件。这种架构实现了样式与逻辑的解耦，不仅能完美复刻 Ant Design 的交互体验，更为有定制化需求的开发者提供了底层支撑，便于二次封装或构建私有组件库。\n\n## 组件完成度\n项目目前具备极高的完成度，已实现 Ant Design 规范中的绝大多数组件。\n\n未实现组件：仅 List 组件未纳入开发。\n原因说明：Ant Design 官方目前对 List 组件已有重构规划并标记为废弃 (Deprecated)，为保持代码库的前瞻性与一致性，antdv-next 选择与其保持同步，暂未实现该组件。\n\n## AI 支持\n- llm.txt 集成，默认集成了 llm.txt 支持，方便用户通过本地或远程 LLM 模型进行离线问答。\n- skills 支持，目前比较流行的本地的技能库，配合 [Antfu Skills 集合](https://github.com/antfu/skills) 一起使用，可以减少 AI 幻觉导致的一些问题。\n\n## Nuxt 支持\n提供了 @antdv-next/nuxt 模块\n```js\nexport default defineNuxtConfig({\n  modules: ['@antdv-next/nuxt'],\n  antd: {\n    icon: true,\n  },\n  css: ['antdv-next/dist/reset.css'],\n})\n```\n\n## 相关链接\n官方文档：https://www.antdv-next.com/\n组件库仓库：https://github.com/antdv-next/antdv-next\n底层基础设施 (vc-* 组件)：https://github.com/antdv-next/vue-components\n\n<img width=\"2550\" height=\"1233\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c808df4b-2d86-4f68-a73f-ef61a43d7586\" />",
           "metrics": {
             "comments": 0
@@ -139,7 +139,11 @@
             "submission"
           ],
           "externalId": "9078",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9078"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9078",
+          "images": [
+            "https://github.com/user-attachments/assets/c808df4b-2d86-4f68-a73f-ef61a43d7586"
+          ],
+          "image": "https://github.com/user-attachments/assets/c808df4b-2d86-4f68-a73f-ef61a43d7586"
         },
         {
           "sourceId": "weekly-issues",
@@ -148,7 +152,7 @@
           "author": "lvjin521",
           "authorUrl": "https://github.com/lvjin521",
           "publishedAt": "2026-02-27T07:01:05Z",
-          "summary": "工具名称：nano banana 2 工具站 网址链接： 工具简介：nano banana 2是Google新发布的图片生成模型，为nano banana的最新V2版本 详细介绍：nano banana 2 是突破性 AI 绘图模型 Gemini 3.1 Flash Image 的社区版名称。完美平衡了极速响应与工作室级出图质量，相比初代 Nano Banana (Gemini 2.5 Flash Image) 实现了跨越式升级。 工具页面截图： <img width=\"1248\" height=\"832\" alt=\"Image\" src=\" /",
+          "summary": "工具名称：nano banana 2 工具站 网址链接： 工具简介：nano banana 2是Google新发布的图片生成模型，为nano banana的最新V2版本 详细介绍：nano banana 2 是突破性 AI 绘图模型 Gemini 3.1 Flash Image 的社区版名称。完美平衡了极速响应与工作室级出图质量，相比初代 Nano Banana (Gemini 2.5 Flash Image) 实现了跨越式升级。 工具页面截图：",
           "content": "工具名称：nano banana 2 工具站\n网址链接：https://yesnanobanana2.com\n工具简介：nano banana 2是Google新发布的图片生成模型，为nano banana的最新V2版本\n详细介绍：nano banana 2 是突破性 AI 绘图模型 Gemini 3.1 Flash Image 的社区版名称。完美平衡了极速响应与工作室级出图质量，相比初代 Nano Banana (Gemini 2.5 Flash Image) 实现了跨越式升级。\n工具页面截图：\n\n<img width=\"1248\" height=\"832\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/267915d4-8038-434a-a0c0-dc97f7bc9a9a\" />",
           "metrics": {
             "comments": 0
@@ -159,7 +163,11 @@
           ],
           "externalId": "9079",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9079",
-          "siteLogo": "https://yesnanobanana2.com/favicon.ico"
+          "siteLogo": "https://yesnanobanana2.com/favicon.ico",
+          "images": [
+            "https://github.com/user-attachments/assets/267915d4-8038-434a-a0c0-dc97f7bc9a9a"
+          ],
+          "image": "https://github.com/user-attachments/assets/267915d4-8038-434a-a0c0-dc97f7bc9a9a"
         },
         {
           "sourceId": "weekly-issues",
@@ -168,7 +176,7 @@
           "author": "himia0802",
           "authorUrl": "https://github.com/himia0802",
           "publishedAt": "2026-02-27T07:35:14Z",
-          "summary": "【产品名称】Nero Motion Tracker 【支持平台】Windows 【产品页】 【功能简介】 !Image 我们最近更新了 Nero Motion Tracker，新增 Segment Tracking（分区追踪） 功能。 相比传统矩形框选追踪，新版本可以更精准地识别并跟随视频中的人物或物体轮廓运动，生成动态遮罩。适用于人脸打码、隐私保护、车牌模糊、局部特效添加等场景，在复杂运动画面中稳定性更高。 主要特点： 像素级不规则对象追踪 支持多目标独立追踪 支持 Blur / Mosaic / 颜色覆盖等效果 同时保留 Face Tracking 与 Zone Tracking 模式 适合内容创作者、新闻编辑、隐私处理等视频场景使用。 如有相关需求，欢迎体验交流。",
+          "summary": "【产品名称】Nero Motion Tracker 【支持平台】Windows 【产品页】 【功能简介】 我们最近更新了 Nero Motion Tracker，新增 Segment Tracking（分区追踪） 功能。 相比传统矩形框选追踪，新版本可以更精准地识别并跟随视频中的人物或物体轮廓运动，生成动态遮罩。适用于人脸打码、隐私保护、车牌模糊、局部特效添加等场景，在复杂运动画面中稳定性更高。 主要特点： 像素级不规则对象追踪 支持多目标独立追踪 支持 Blur / Mosaic / 颜色覆盖等效果 同时保留 Face Tracking 与 Zone Tracking 模式 适合内容创作者、新闻编辑、隐私处理等视频场景使用。 如有相关需求，欢迎体验交流。",
           "content": "【产品名称】Nero Motion Tracker\n【支持平台】Windows\n【产品页】[https://pcai.nero.com/motion-tracker](https://pcai.nero.com/motion-tracker)\n\n【功能简介】\n\n![Image](https://github.com/user-attachments/assets/afac25ca-8520-404e-b284-91ca9d3530ef)\n\nhttps://github.com/user-attachments/assets/4a1d8a40-5796-4bf8-9b0c-087c9e0e3986\n\n我们最近更新了 Nero Motion Tracker，新增 Segment Tracking（分区追踪） 功能。\n\n相比传统矩形框选追踪，新版本可以更精准地识别并跟随视频中的人物或物体轮廓运动，生成动态遮罩。适用于人脸打码、隐私保护、车牌模糊、局部特效添加等场景，在复杂运动画面中稳定性更高。\n\n主要特点：\n\n- 像素级不规则对象追踪\n- 支持多目标独立追踪\n- 支持 Blur / Mosaic / 颜色覆盖等效果\n- 同时保留 Face Tracking 与 Zone Tracking 模式\n- 适合内容创作者、新闻编辑、隐私处理等视频场景使用。\n\n如有相关需求，欢迎体验交流。",
           "metrics": {
             "comments": 0
@@ -179,7 +187,11 @@
           ],
           "externalId": "9080",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9080",
-          "siteLogo": "https://framerusercontent.com/images/nxMSqIS8Rgd37p7TZjoUTFoBuXs.png"
+          "siteLogo": "https://framerusercontent.com/images/nxMSqIS8Rgd37p7TZjoUTFoBuXs.png",
+          "images": [
+            "https://github.com/user-attachments/assets/afac25ca-8520-404e-b284-91ca9d3530ef"
+          ],
+          "image": "https://github.com/user-attachments/assets/afac25ca-8520-404e-b284-91ca9d3530ef"
         },
         {
           "sourceId": "weekly-issues",
@@ -188,7 +200,7 @@
           "author": "vikiboss",
           "authorUrl": "https://github.com/vikiboss",
           "publishedAt": "2026-02-27T08:45:42Z",
-          "summary": "项目信息 名称: R2 Web 源码: vikiboss/r2web 地址: r2.viki.moe 简介: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。 自荐说明 官方控制台功能基础，登录、操作麻烦；第三方客户端要下载安装，跨平台麻烦；命令行工具上手门槛高，不适合临时操作；其他 Web 项目不专注 R2，功能不完善，体验欠佳。 R2 Web 专注于简单和用户体验，基于原生 HTML5/CSS3/ES6+ 开发，打开浏览器就能用，跨平台零成本，也能当图床使用，支持拖拽、粘贴上传 + 图片压缩，省流量省时间。 一直用的 sm.ms 图床彻底改版，感觉有点臃肿，没合适图床就开始用 Cloudflare R2 做自建，找了一圈没合适 Web 端管理应用，要么审美不在线要么功能不到位。所以搓了个 R2 web 来管理，能充当图床角色，支持私有部署，尤其注重轻量、用户体验，后期不再迭代过多功能，保持精简。 核心总结：H5 纯前端/跨平台 + 目录/文件管理和预览 + 自动图片压缩 项目截图 !93c1205d.png !9392ee.png !ea7dd6.png",
+          "summary": "项目信息 名称: R2 Web 源码: vikiboss/r2web 地址: r2.viki.moe 简介: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。 自荐说明 官方控制台功能基础，登录、操作麻烦；第三方客户端要下载安装，跨平台麻烦；命令行工具上手门槛高，不适合临时操作；其他 Web 项目不专注 R2，功能不完善，体验欠佳。 R2 Web 专注于简单和用户体验，基于原生 HTML5/CSS3/ES6+ 开发，打开浏览器就能用，跨平台零成本，也能当图床使用，支持拖拽、粘贴上传 + 图片压缩，省流量省时间。 一直用的 sm.ms 图床彻底改版，感觉有点臃肿，没合适图床就开始用 Cloudflare R2 做自建，找了一圈没合适 Web 端管理应用，要么审美不在线要么功能不到位。所以搓了个 R2 web 来管理，能充当图床角色，支持私有部署，尤其注重轻量、用户体验，后期不再迭代过多功能，保持精简。 核心总结：H5 纯前端/跨平台 + 目录/文件管理和预览 + 自动图片压缩 项目截图",
           "content": "## 项目信息\n \n- 名称: R2 Web\n- 源码: [vikiboss/r2-web](https://github.com/vikiboss/r2-web)\n- 地址: [r2.viki.moe](https://r2.viki.moe)\n- 简介: 轻盈优雅的 Web 原生 Cloudflare R2 桶文件管理器，一切皆在浏览器中完成。\n\n## 自荐说明\n\n官方控制台功能基础，登录、操作麻烦；第三方客户端要下载安装，跨平台麻烦；命令行工具上手门槛高，不适合临时操作；其他 Web 项目不专注 R2，功能不完善，体验欠佳。\n\nR2 Web 专注于简单和用户体验，基于原生 HTML5/CSS3/ES6+ 开发，打开浏览器就能用，跨平台零成本，也能当图床使用，支持拖拽、粘贴上传 + 图片压缩，省流量省时间。\n\n> 一直用的 sm.ms 图床彻底改版，感觉有点臃肿，没合适图床就开始用 Cloudflare R2 做自建，找了一圈没合适 Web 端管理应用，要么审美不在线要么功能不到位。所以搓了个 R2 web 来管理，能充当图床角色，支持私有部署，尤其注重轻量、用户体验，后期不再迭代过多功能，保持精简。\n\n> 核心总结：H5 纯前端/跨平台 + 目录/文件管理和预览 + 自动图片压缩\n\n**项目截图**\n\n![93c1205d.png](https://image.viki.moe/github/93c1205d.png)\n\n![9392ee.png](https://image.viki.moe/github/9392ee.png)\n\n![ea7dd6.png](https://image.viki.moe/github/ea7dd6.png)\n",
           "metrics": {
             "comments": 0
@@ -207,7 +219,7 @@
           "author": "ZeroLu",
           "authorUrl": "https://github.com/ZeroLu",
           "publishedAt": "2026-02-27T09:13:51Z",
-          "summary": "网站链接： Nano Banana 2 Image Generator Free 亮点： 1. 可以开关谷歌搜索 2. 很便宜，比谷歌官方便宜40%，邀请还有超多免费积分（用我的邀请码IFE2F752CC可以获得50积分），大家可以畅玩起来 3. 页面上放了一些提示词，大家可以直接测试 截图： <img width=\"2292\" height=\"1562\" alt=\"Image\" src=\" / 测试case： <img width=\"1376\" height=\"768\" alt=\"Image\" src=\" /",
+          "summary": "网站链接： Nano Banana 2 Image Generator Free 亮点： 1. 可以开关谷歌搜索 2. 很便宜，比谷歌官方便宜40%，邀请还有超多免费积分（用我的邀请码IFE2F752CC可以获得50积分），大家可以畅玩起来 3. 页面上放了一些提示词，大家可以直接测试 截图： 测试case：",
           "content": "## 网站链接：https://cyberbara.com/nanobanana2\n\n## Nano Banana 2 Image Generator Free\n\n### 亮点：\n1. 可以开关谷歌搜索\n2. 很便宜，比谷歌官方便宜40%，邀请还有超多免费积分（用我的邀请码IFE2F752CC可以获得50积分），大家可以畅玩起来\n3. 页面上放了一些提示词，大家可以直接测试\n\n### 截图：\n<img width=\"2292\" height=\"1562\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/20d9978b-cb78-40dd-bb33-470a42b30dd6\" />\n\n### 测试case：\n<img width=\"1376\" height=\"768\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dddcbc45-0e7d-421f-ac7a-bc272952e8c2\" />",
           "metrics": {
             "comments": 0
@@ -218,7 +230,12 @@
           ],
           "externalId": "9082",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9082",
-          "siteLogo": "https://cyberbara.com/favicon.ico"
+          "siteLogo": "https://cyberbara.com/favicon.ico",
+          "images": [
+            "https://github.com/user-attachments/assets/20d9978b-cb78-40dd-bb33-470a42b30dd6",
+            "https://github.com/user-attachments/assets/dddcbc45-0e7d-421f-ac7a-bc272952e8c2"
+          ],
+          "image": "https://github.com/user-attachments/assets/20d9978b-cb78-40dd-bb33-470a42b30dd6"
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A436:21687B:374DE0:B66015:6A9E8532 and timestamp 2026-09-07 09:34:42 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
@@ -576,7 +593,7 @@
           "author": "Thysrael",
           "authorUrl": "https://github.com/Thysrael",
           "publishedAt": "2026-02-27T15:41:12Z",
-          "summary": "项目地址 类别 人工智能 项目标题 Horizon 从多个可自定义的信息源中收集新闻，利用 AI 对新闻进行打分与过滤，最终生成一份包含摘要、社区讨论和背景知识的中英双语日报。 项目描述 是什么？ Horizon 是一个基于 Python 和 大语言模型 (LLM) 构建的 全自动化科技资讯聚合与摘要生成系统。 它本质上是一个“AI 驱动的主编”，不是通过简单的关键词过滤，而是利用 LLM 的理解能力来筛选、评估并重写自定义的新闻源的热点新闻，最终生成一份高质量的中英双语日报。 痛点： 对于开发者来说，及时了解科技动态是一个重要需求。但现实情况是： 信息分散 — 有价值的新闻散落在 Hacker News、Reddit、Telegram、RSS 等不同平台 噪声太大 — RSS 订阅一旦增多，大量低质量内容淹没真正重要的信息 阅读门槛高 — 英文新闻涉及的背景知识不够了解，读完也不知道社区怎么看 耗费精力 — 每天手动浏览多个平台花费大量时间 Horizon 通过 AI 自动打分过滤 + 背景知识补充 + 社区评论汇总 + 中英双语输出，将每日信息获取从\"大海捞针\"变为\"开箱即读\"。 场景： 个人开发者： 想要利用碎片时间高效获取全球技术动态，不想错过重要的开源项目发布或技术讨论。 技术团队/公司内网： 自动生成行业动态简报，推送到网页，作为团队的每日“早报”。 初学者： Agent 开发： 学习如何通过 API 调用 GPT4/Claude/DeepSeek，如何设计 Prompts 来让 AI 执行复杂的任务（如评分、摘要、翻译）。 自动化工作流： 结合 GitHub Actions 实现 Cron 定时任务，体验“代码写完后，系统自己每天在云端跑”的 DevOps 流程。 现代 Python 项目架构：模块化管理，uv 包管理器等。 亮点 📡 多源聚合 — 从 Hacker News、RSS、Reddit、Telegram 频道和 GitHub（Release 与用户动态）收集内容 🤖 AI 智能打分 — 支持 Claude、GPT4、Gemini、DeepSeek、豆包（Doubao）及任何 OpenAI 兼容 API，对每条内容评分 010，过滤噪声 🌐 中英双语日报 — 同时生成英文和中文版本的每日摘要 🔍 背景知识补充 — 自动搜索网络，为新闻中的陌生概念提供解释，降低阅读门槛 💬 社区声音 — 收集并汇总来自 HackerNews、Reddit 等评论区的社区讨论 🔗 跨源去重 — 自动合并来自不同平台的重复内容 📰 静态站点生成 — 通过 GitHub Actions 部署为 GitHub Pages 站点，定时自动更新 ⚙️ 高度可定制 — 单个 JSON 配置文件，轻松自定义信息源、过滤阈值和 AI 模型 示例代码 使用如下命令即可体验： shell git clone cd horizon 使用 uv 安装 uv sync 配置 cp .env.example .env 添加 API 密钥 cp data/config.example.json data/config.json 自定义信息源 运行 uv run horizon 使用默认 24 小时窗口 配置文件示例： json { \"ai\": { \"provider\": \"doubao\", // 支持 \"openai\", \"anthropic\", \"gemini\", \"doubao\" \"model\": \"doubao15pro256k\", \"apikeyenv\": \"DOUBAOAPIKEY\", \"languages\": [\"en\", \"zh\"] // 中英双语输出 }, \"sources\": { \"hackernews\": { \"enabled\": true, \"fetchtopstories\": 20, \"minscore\": 100 }, \"rss\": [ { \"name\": \"Simon Willison\", \"url\": \" } ], \"reddit\": { \"subreddits\": [{ \"subreddit\": \"MachineLearning\", \"sort\": \"hot\" }], \"fetchcomments\": 5 }, \"telegram\": { \"channels\": [{ \"channel\": \"zaihuapd\", \"fetchlimit\": 20 }] } }, \"filtering\": { \"aiscorethreshold\": 6.0, \"timewindowhours\": 24 } } 截图或演示视频 📖 在线演示 <table <tr <td width=\"50%\" <p align=\"center\"<strong日报总览</strong</p <img src=\" alt=\"日报总览\" / </td <td width=\"50%\" <p align=\"center\"<strong新闻详情</strong</p <img src=\" alt=\"新闻详情\" / </td </tr </table <details <summary<strong终端输出</strong</summary <br <p align=\"center\" <img src=\" alt=\"终端输出\" width=\"400\" / </p </details",
+          "summary": "项目地址 类别 人工智能 项目标题 Horizon 从多个可自定义的信息源中收集新闻，利用 AI 对新闻进行打分与过滤，最终生成一份包含摘要、社区讨论和背景知识的中英双语日报。 项目描述 是什么？ Horizon 是一个基于 Python 和 大语言模型 (LLM) 构建的 全自动化科技资讯聚合与摘要生成系统。 它本质上是一个“AI 驱动的主编”，不是通过简单的关键词过滤，而是利用 LLM 的理解能力来筛选、评估并重写自定义的新闻源的热点新闻，最终生成一份高质量的中英双语日报。 痛点： 对于开发者来说，及时了解科技动态是一个重要需求。但现实情况是： 信息分散 — 有价值的新闻散落在 Hacker News、Reddit、Telegram、RSS 等不同平台 噪声太大 — RSS 订阅一旦增多，大量低质量内容淹没真正重要的信息 阅读门槛高 — 英文新闻涉及的背景知识不够了解，读完也不知道社区怎么看 耗费精力 — 每天手动浏览多个平台花费大量时间 Horizon 通过 AI 自动打分过滤 + 背景知识补充 + 社区评论汇总 + 中英双语输出，将每日信息获取从\"大海捞针\"变为\"开箱即读\"。 场景： 个人开发者： 想要利用碎片时间高效获取全球技术动态，不想错过重要的开源项目发布或技术讨论。 技术团队/公司内网： 自动生成行业动态简报，推送到网页，作为团队的每日“早报”。 初学者： Agent 开发： 学习如何通过 API 调用 GPT4/Claude/DeepSeek，如何设计 Prompts 来让 AI 执行复杂的任务（如评分、摘要、翻译）。 自动化工作流： 结合 GitHub Actions 实现 Cron 定时任务，体验“代码写完后，系统自己每天在云端跑”的 DevOps 流程。 现代 Python 项目架构：模块化管理，uv 包管理器等。 亮点 📡 多源聚合 — 从 Hacker News、RSS、Reddit、Telegram 频道和 GitHub（Release 与用户动态）收集内容 🤖 AI 智能打分 — 支持 Claude、GPT4、Gemini、DeepSeek、豆包（Doubao）及任何 OpenAI 兼容 API，对每条内容评分 010，过滤噪声 🌐 中英双语日报 — 同时生成英文和中文版本的每日摘要 🔍 背景知识补充 — 自动搜索网络，为新闻中的陌生概念提供解释，降低阅读门槛 💬 社区声音 — 收集并汇总来自 HackerNews、Reddit 等评论区的社区讨论 🔗 跨源去重 — 自动合并来自不同平台的重复内容 📰 静态站点生成 — 通过 GitHub Actions 部署为 GitHub Pages 站点，定时自动更新 ⚙️ 高度可定制 — 单个 JSON 配置文件，轻松自定义信息源、过滤阈值和 AI 模型 示例代码 使用如下命令即可体验： shell git clone cd horizon 使用 uv 安装 uv sync 配置 cp .env.example .env 添加 API 密钥 cp data/config.example.json data/config.json 自定义信息源 运行 uv run horizon 使用默认 24 小时窗口 配置文件示例： json { \"ai\": { \"provider\": \"doubao\", // 支持 \"openai\", \"anthropic\", \"gemini\", \"doubao\" \"model\": \"doubao15pro256k\", \"apikeyenv\": \"DOUBAOAPIKEY\", \"languages\": [\"en\", \"zh\"] // 中英双语输出 }, \"sources\": { \"hackernews\": { \"enabled\": true, \"fetchtopstories\": 20, \"minscore\": 100 }, \"rss\": [ { \"name\": \"Simon Willison\", \"url\": \" } ], \"reddit\": { \"subreddits\": [{ \"subreddit\": \"MachineLearning\", \"sort\": \"hot\" }], \"fetchcomments\": 5 }, \"telegram\": { \"channels\": [{ \"channel\": \"zaihuapd\", \"fetchlimit\": 20 }] } }, \"filtering\": { \"aiscorethreshold\": 6.0, \"timewindowhours\": 24 } } 截图或演示视频 📖 在线演示 <table <tr <td width=\"50%\" <p align=\"center\"<strong日报总览</strong</p alt=\"日报总览\" / </td <td width=\"50%\" <p align=\"center\"<strong新闻详情</strong</p alt=\"新闻详情\" / </td </tr </table <details <summary<strong终端输出</strong</summary <br <p align=\"center\" alt=\"终端输出\" width=\"400\" / </p </details",
           "content": "### 项目地址\n\nhttps://github.com/Thysrael/Horizon\n\n### 类别\n\n人工智能\n\n### 项目标题\n\nHorizon 从多个可自定义的信息源中收集新闻，利用 AI 对新闻进行打分与过滤，最终生成一份包含摘要、社区讨论和背景知识的中英双语日报。\n\n### 项目描述\n\n**是什么？**\n\nHorizon 是一个基于 Python 和 大语言模型 (LLM) 构建的 全自动化科技资讯聚合与摘要生成系统。\n\n它本质上是一个“AI 驱动的主编”，不是通过简单的关键词过滤，而是利用 LLM 的理解能力来筛选、评估并重写自定义的新闻源的热点新闻，最终生成一份高质量的中英双语日报。\n\n**痛点：**\n\n对于开发者来说，及时了解科技动态是一个重要需求。但现实情况是：\n\n- **信息分散** — 有价值的新闻散落在 Hacker News、Reddit、Telegram、RSS 等不同平台\n- **噪声太大** — RSS 订阅一旦增多，大量低质量内容淹没真正重要的信息\n- **阅读门槛高** — 英文新闻涉及的背景知识不够了解，读完也不知道社区怎么看\n- **耗费精力** — 每天手动浏览多个平台花费大量时间\n\nHorizon 通过 **AI 自动打分过滤** + **背景知识补充** + **社区评论汇总** + **中英双语输出**，将每日信息获取从\"大海捞针\"变为\"开箱即读\"。\n\n**场景：**\n\n- 个人开发者： 想要利用碎片时间高效获取全球技术动态，不想错过重要的开源项目发布或技术讨论。\n- 技术团队/公司内网： 自动生成行业动态简报，推送到网页，作为团队的每日“早报”。\n\n**初学者：**\n\n- Agent 开发： 学习如何通过 API 调用 GPT-4/Claude/DeepSeek，如何设计 Prompts 来让 AI 执行复杂的任务（如评分、摘要、翻译）。\n- 自动化工作流： 结合 GitHub Actions 实现 Cron 定时任务，体验“代码写完后，系统自己每天在云端跑”的 DevOps 流程。\n- 现代 Python 项目架构：模块化管理，`uv` 包管理器等。\n\n### 亮点\n\n- **📡 多源聚合** — 从 Hacker News、RSS、Reddit、Telegram 频道和 GitHub（Release 与用户动态）收集内容\n- **🤖 AI 智能打分** — 支持 Claude、GPT-4、Gemini、DeepSeek、豆包（Doubao）及任何 OpenAI 兼容 API，对每条内容评分 0-10，过滤噪声\n- **🌐 中英双语日报** — 同时生成英文和中文版本的每日摘要\n- **🔍 背景知识补充** — 自动搜索网络，为新闻中的陌生概念提供解释，降低阅读门槛\n- **💬 社区声音** — 收集并汇总来自 HackerNews、Reddit 等评论区的社区讨论\n- **🔗 跨源去重** — 自动合并来自不同平台的重复内容\n- **📰 静态站点生成** — 通过 GitHub Actions 部署为 GitHub Pages 站点，定时自动更新\n- **⚙️ 高度可定制** — 单个 JSON 配置文件，轻松自定义信息源、过滤阈值和 AI 模型\n\n### 示例代码\n\n使用如下命令即可体验：\n\n```shell\ngit clone https://github.com/Thysrael/Horizon.git\ncd horizon\n\n# 使用 uv 安装\nuv sync\n\n# 配置\ncp .env.example .env          # 添加 API 密钥\ncp data/config.example.json data/config.json  # 自定义信息源\n\n# 运行\nuv run horizon              # 使用默认 24 小时窗口\n```\n\n配置文件示例：\n\n```json\n{\n  \"ai\": {\n    \"provider\": \"doubao\",       // 支持 \"openai\", \"anthropic\", \"gemini\", \"doubao\"\n    \"model\": \"doubao-1-5-pro-256k\",\n    \"api_key_env\": \"DOUBAO_API_KEY\",\n    \"languages\": [\"en\", \"zh\"]   // 中英双语输出\n  },\n  \"sources\": {\n    \"hackernews\": { \"enabled\": true, \"fetch_top_stories\": 20, \"min_score\": 100 },\n    \"rss\": [\n      { \"name\": \"Simon Willison\", \"url\": \"https://simonwillison.net/atom/everything/\" }\n    ],\n    \"reddit\": {\n      \"subreddits\": [{ \"subreddit\": \"MachineLearning\", \"sort\": \"hot\" }],\n      \"fetch_comments\": 5\n    },\n    \"telegram\": {\n      \"channels\": [{ \"channel\": \"zaihuapd\", \"fetch_limit\": 20 }]\n    }\n  },\n  \"filtering\": {\n    \"ai_score_threshold\": 6.0,\n    \"time_window_hours\": 24\n  }\n}\n```\n\n### 截图或演示视频\n\n[📖 在线演示](https://thysrael.github.io/Horizon/)\n\n<table>\n<tr>\n<td width=\"50%\">\n<p align=\"center\"><strong>日报总览</strong></p>\n<img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/overview_zh.png\" alt=\"日报总览\" />\n</td>\n<td width=\"50%\">\n<p align=\"center\"><strong>新闻详情</strong></p>\n<img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/one_news_zh.png\" alt=\"新闻详情\" />\n</td>\n</tr>\n</table>\n\n<details>\n<summary><strong>终端输出</strong></summary>\n<br>\n<p align=\"center\">\n  <img src=\"https://github.com/Thysrael/Horizon/raw/main/docs/assets/terminal_log.png\" alt=\"终端输出\" width=\"400\" />\n</p>\n</details>",
           "metrics": {
             "comments": 0

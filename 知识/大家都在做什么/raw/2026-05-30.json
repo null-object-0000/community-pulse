@@ -69,7 +69,7 @@
           "author": "lxcong",
           "authorUrl": "https://github.com/lxcong",
           "publishedAt": "2026-05-30T03:05:29Z",
-          "summary": "仓库： 概况 Awesome Claude Workflows 是一个社区精选目录，专门收录基于 Claude Code Dynamic Workflows 的、真在生产里跑过的多 Agent 工作流。 Dynamic Workflows 是 Claude Code 在 20260528 随 Claude Opus 4.8 一起发布的新功能（目前 research preview，需 Claude Code v2.1.154+）：用一段 JavaScript 脚本，把几十到上百个子 Agent 按确定性的控制流（并行 fanout、顺序、循环、条件）编排成一条流水线，脚本由 Claude 自动写好、在后台运行，最后只把最终结果交回对话。脚本存进 ~/.claude/workflows/ 就自动变成一个 slash command——不用写 plugin、不用 manifest、不用注册。 我的判断是：这之后会涌现一大批\"基于 Agent 之间互相协调\"的大规模工作流——研究合成、代码审查、500 文件迁移、bug 扫荡、风控分析……每一个都值得被复用，而不是各自从零再搭一遍。所以开了这个目录把它们收起来。 旗舰范例：Trading Agents 目录里第一个完整范例叫 Trading Agents。在 Claude Code 里敲一条命令： /tradingagents 美光科技 接下来：一组分析师 Agent 并行铺开各自取数 → 结果汇总后进入一场看多/看空的多轮 Debate → 再交给一个评审 Panel 独立打分 → 按风险分档给出仓位层面的建议。全程一条命令触发。（仅研究用途，不构成投资建议。） 它是\"用 Dynamic Workflows 做 Agent 间协调\"的一个具体样例：并行分析、顺序辩论、独立评审这种结构，用 parallel（并行、等齐）和 pipeline（流水、不互相等）这两个原语表达起来很顺手；确定性控制流意味着流程可复现；还能结构化输出、断点续跑（改一处只重跑那一处，省 token）。 <img width=\"1200\" height=\"675\" alt=\"Image\" src=\" / <img width=\"1283\" height=\"358\" alt=\"Image\" src=\" / 怎么用 仓库 README 里有安装说明，把工作流脚本放到 ~/.claude/workflows/ 后即成 /<name 命令，本地一条命令就能跑。 现状 还很早：完整旗舰就 Trading Agents 一个，其他分类基本还空着。我更想用\"真有人在用的\"工作流慢慢把它填厚，所以也欢迎来提 PR——你如果做过/在跑某个多 Agent 工作流，哪怕只是偶尔用一次的，都欢迎收录。 MIT 协议，完全免费。欢迎拍砖 ⭐",
+          "summary": "仓库： 概况 Awesome Claude Workflows 是一个社区精选目录，专门收录基于 Claude Code Dynamic Workflows 的、真在生产里跑过的多 Agent 工作流。 Dynamic Workflows 是 Claude Code 在 20260528 随 Claude Opus 4.8 一起发布的新功能（目前 research preview，需 Claude Code v2.1.154+）：用一段 JavaScript 脚本，把几十到上百个子 Agent 按确定性的控制流（并行 fanout、顺序、循环、条件）编排成一条流水线，脚本由 Claude 自动写好、在后台运行，最后只把最终结果交回对话。脚本存进 ~/.claude/workflows/ 就自动变成一个 slash command——不用写 plugin、不用 manifest、不用注册。 我的判断是：这之后会涌现一大批\"基于 Agent 之间互相协调\"的大规模工作流——研究合成、代码审查、500 文件迁移、bug 扫荡、风控分析……每一个都值得被复用，而不是各自从零再搭一遍。所以开了这个目录把它们收起来。 旗舰范例：Trading Agents 目录里第一个完整范例叫 Trading Agents。在 Claude Code 里敲一条命令： /tradingagents 美光科技 接下来：一组分析师 Agent 并行铺开各自取数 → 结果汇总后进入一场看多/看空的多轮 Debate → 再交给一个评审 Panel 独立打分 → 按风险分档给出仓位层面的建议。全程一条命令触发。（仅研究用途，不构成投资建议。） 它是\"用 Dynamic Workflows 做 Agent 间协调\"的一个具体样例：并行分析、顺序辩论、独立评审这种结构，用 parallel（并行、等齐）和 pipeline（流水、不互相等）这两个原语表达起来很顺手；确定性控制流意味着流程可复现；还能结构化输出、断点续跑（改一处只重跑那一处，省 token）。 怎么用 仓库 README 里有安装说明，把工作流脚本放到 ~/.claude/workflows/ 后即成 /<name 命令，本地一条命令就能跑。 现状 还很早：完整旗舰就 Trading Agents 一个，其他分类基本还空着。我更想用\"真有人在用的\"工作流慢慢把它填厚，所以也欢迎来提 PR——你如果做过/在跑某个多 Agent 工作流，哪怕只是偶尔用一次的，都欢迎收录。 MIT 协议，完全免费。欢迎拍砖 ⭐",
           "content": "仓库：https://github.com/lxcong/awesome-claude-workflows\n\n## 概况\n\n**Awesome Claude Workflows** 是一个社区精选目录，专门收录基于 Claude Code **Dynamic Workflows** 的、真在生产里跑过的多 Agent 工作流。\n\nDynamic Workflows 是 Claude Code 在 2026-05-28 随 Claude Opus 4.8 一起发布的新功能（目前 research preview，需 Claude Code v2.1.154+）：用一段 JavaScript 脚本，把几十到上百个子 Agent 按确定性的控制流（并行 fan-out、顺序、循环、条件）编排成一条流水线，脚本由 Claude 自动写好、在后台运行，最后只把最终结果交回对话。脚本存进 `~/.claude/workflows/` 就自动变成一个 slash command——不用写 plugin、不用 manifest、不用注册。\n\n我的判断是：这之后会涌现一大批\"基于 Agent 之间互相协调\"的大规模工作流——研究合成、代码审查、500 文件迁移、bug 扫荡、风控分析……每一个都值得被复用，而不是各自从零再搭一遍。所以开了这个目录把它们收起来。\n\n## 旗舰范例：Trading Agents\n\n目录里第一个完整范例叫 Trading Agents。在 Claude Code 里敲一条命令：\n\n    /trading-agents 美光科技\n\n接下来：一组分析师 Agent 并行铺开各自取数 → 结果汇总后进入一场看多/看空的多轮 Debate → 再交给一个评审 Panel 独立打分 → 按风险分档给出仓位层面的建议。全程一条命令触发。（仅研究用途，不构成投资建议。）\n\n它是\"用 Dynamic Workflows 做 Agent 间协调\"的一个具体样例：并行分析、顺序辩论、独立评审这种结构，用 `parallel`（并行、等齐）和 `pipeline`（流水、不互相等）这两个原语表达起来很顺手；确定性控制流意味着流程可复现；还能结构化输出、断点续跑（改一处只重跑那一处，省 token）。\n\n<img width=\"1200\" height=\"675\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1a67c4c3-de19-4813-b71e-551fc838d406\" />\n\n<img width=\"1283\" height=\"358\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b2dabb7c-84e7-4e88-ac62-567ebe2987bd\" />\n\n\n## 怎么用\n\n仓库 README 里有安装说明，把工作流脚本放到 `~/.claude/workflows/` 后即成 `/<name>` 命令，本地一条命令就能跑。\n\n## 现状\n\n还很早：完整旗舰就 Trading Agents 一个，其他分类基本还空着。我更想用\"真有人在用的\"工作流慢慢把它填厚，所以也欢迎来提 PR——你如果做过/在跑某个多 Agent 工作流，哪怕只是偶尔用一次的，都欢迎收录。\n\nMIT 协议，完全免费。欢迎拍砖 ⭐",
           "metrics": {
             "comments": 0
@@ -79,7 +79,12 @@
             "submission"
           ],
           "externalId": "10132",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10132"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10132",
+          "images": [
+            "https://github.com/user-attachments/assets/1a67c4c3-de19-4813-b71e-551fc838d406",
+            "https://github.com/user-attachments/assets/b2dabb7c-84e7-4e88-ac62-567ebe2987bd"
+          ],
+          "image": "https://github.com/user-attachments/assets/1a67c4c3-de19-4813-b71e-551fc838d406"
         },
         {
           "sourceId": "weekly-issues",
@@ -88,7 +93,7 @@
           "author": "yangyongzhen",
           "authorUrl": "https://github.com/yangyongzhen",
           "publishedAt": "2026-05-30T03:31:14Z",
-          "summary": "AtomMQTT：Rust语言实现的轻量级高性能MQtt服务器 1. 项目地址 : 2. 它解决了什么问题？ 目前流行的一些开源MQTT代理服务器如mosquitto,EMQX或rabbitMQ,要么功能简单，连Web管理界面都没有。要么功能复杂，安装部署繁琐。 而AtomMQTT是一个使用Rust语言开发的轻量级高性能的MQTT服务器，充分利用了Rust语言的优势，单机支持1W+的并发连接，且通信延时在毫秒级别。且自带Web管理客户端，部署超级简单，一个二进制可执行文件+config.toml配置文件总共不到10M大小的体积。 3.核心功能与特性 ✅ SQLite 持久化存储 — 会话、订阅、保留消息、遗嘱消息自动持久化到本地数据库，重启后自动恢复 ✅ 双协议支持 — 同时支持 MQTT 3.1.1 和 MQTT 5.0 ✅ 主题订阅树 — 基于 Trie 树的高效主题匹配（支持 + / 通配符） ✅ 消息路由 — PUBLISH 消息自动转发给所有匹配订阅者 ✅ QoS 0/1/2 — 完整的服务质量支持 ✅ 保留消息 — 支持 Retained Message 存储与分发 ✅ 遗嘱消息 — 支持 Will Message（异常断开时自动发布） ✅ Web 管理界面 — 内置 ActixWeb 仪表盘，实时监控 Broker 指标 ✅ WebSocket 订阅 — 浏览器可直接订阅 MQTT 主题，接收实时消息 ✅ REST API — 提供完整的 HTTP API 用于发布消息、管理客户端 ✅ 匿名/文件认证 — 支持无认证和基于文件的密码认证 ✅ ACL Topic 访问控制 — 基于文件的 publish/subscribe/readwrite 权限管理 ✅ Web 管理界面认证 — HTTP Basic Auth + JSON 登录页面双重认证 ✅ CLI 客户端 — 内置 mqttclient 工具，支持发布/订阅/交互式 Shell ✅ 性能指标 — 内置计数器（连接数、消息数、字节数、包数等） <img width=\"1355\" height=\"705\" alt=\"Image\" src=\" / 4.推荐理由 AtomMQTT Broker 是一个纯 Rust 实现的 MQTT 3.1.1/5.0 消息代理，核心目标是在高性能与数据安全之间取得平衡。 整个软件只有一个mqttweb.exe二进制可执行程序，小巧但性能强大。所有消息路由、订阅匹配在内存中完成，无锁竞争，零拷贝与异步 I/O — 利用 Tokio 运行时和 BytesMut 实现高效网络处理。 内存安全 整个项目使用 ![deny(unsafecode)] 确保零 unsafe Rust 代码。这意味着所有内存安全由 Rust 编译器保证——没有空指针解引用、缓冲区溢出或释放后使用。 单元测试 为了保证功能的稳定性，本项目已做了充分的单元测试。 项目根目录 test/ 下提供了基于 Python 的集成测试脚本，覆盖认证、发布/订阅、保留消息、ACL 权限和离线消息队列等核心功能。 在当下物联网时代，能有一个比肩mosquitto但功能更丰富的轻量级MQTT Broker,将极大的方便MQTT物联网设备的开发调试和使用。",
+          "summary": "AtomMQTT：Rust语言实现的轻量级高性能MQtt服务器 1. 项目地址 : 2. 它解决了什么问题？ 目前流行的一些开源MQTT代理服务器如mosquitto,EMQX或rabbitMQ,要么功能简单，连Web管理界面都没有。要么功能复杂，安装部署繁琐。 而AtomMQTT是一个使用Rust语言开发的轻量级高性能的MQTT服务器，充分利用了Rust语言的优势，单机支持1W+的并发连接，且通信延时在毫秒级别。且自带Web管理客户端，部署超级简单，一个二进制可执行文件+config.toml配置文件总共不到10M大小的体积。 3.核心功能与特性 ✅ SQLite 持久化存储 — 会话、订阅、保留消息、遗嘱消息自动持久化到本地数据库，重启后自动恢复 ✅ 双协议支持 — 同时支持 MQTT 3.1.1 和 MQTT 5.0 ✅ 主题订阅树 — 基于 Trie 树的高效主题匹配（支持 + / 通配符） ✅ 消息路由 — PUBLISH 消息自动转发给所有匹配订阅者 ✅ QoS 0/1/2 — 完整的服务质量支持 ✅ 保留消息 — 支持 Retained Message 存储与分发 ✅ 遗嘱消息 — 支持 Will Message（异常断开时自动发布） ✅ Web 管理界面 — 内置 ActixWeb 仪表盘，实时监控 Broker 指标 ✅ WebSocket 订阅 — 浏览器可直接订阅 MQTT 主题，接收实时消息 ✅ REST API — 提供完整的 HTTP API 用于发布消息、管理客户端 ✅ 匿名/文件认证 — 支持无认证和基于文件的密码认证 ✅ ACL Topic 访问控制 — 基于文件的 publish/subscribe/readwrite 权限管理 ✅ Web 管理界面认证 — HTTP Basic Auth + JSON 登录页面双重认证 ✅ CLI 客户端 — 内置 mqttclient 工具，支持发布/订阅/交互式 Shell ✅ 性能指标 — 内置计数器（连接数、消息数、字节数、包数等） 4.推荐理由 AtomMQTT Broker 是一个纯 Rust 实现的 MQTT 3.1.1/5.0 消息代理，核心目标是在高性能与数据安全之间取得平衡。 整个软件只有一个mqttweb.exe二进制可执行程序，小巧但性能强大。所有消息路由、订阅匹配在内存中完成，无锁竞争，零拷贝与异步 I/O — 利用 Tokio 运行时和 BytesMut 实现高效网络处理。 内存安全 整个项目使用 确保零 unsafe Rust 代码。这意味着所有内存安全由 Rust 编译器保证——没有空指针解引用、缓冲区溢出或释放后使用。 单元测试 为了保证功能的稳定性，本项目已做了充分的单元测试。 项目根目录 test/ 下提供了基于 Python 的集成测试脚本，覆盖认证、发布/订阅、保留消息、ACL 权限和离线消息队列等核心功能。 在当下物联网时代，能有一个比肩mosquitto但功能更丰富的轻量级MQTT Broker,将极大的方便MQTT物联网设备的开发调试和使用。",
           "content": "AtomMQTT：Rust语言实现的轻量级高性能MQtt服务器\n\n**1. 项目地址 :**\n\n[ https://gitcode.com/qq8864/atomMqtt]( https://gitcode.com/qq8864/atomMqtt)\n\n**2. 它解决了什么问题？**\n\n目前流行的一些开源MQTT代理服务器如mosquitto,EMQX或rabbitMQ,要么功能简单，连Web管理界面都没有。要么功能复杂，安装部署繁琐。\n\n而AtomMQTT是一个使用Rust语言开发的轻量级高性能的MQTT服务器，充分利用了Rust语言的优势，单机支持1W+的并发连接，且通信延时在毫秒级别。且自带Web管理客户端，部署超级简单，一个二进制可执行文件+config.toml配置文件总共不到10M大小的体积。\n\n**3.核心功能与特性**\n\n\n- ✅ **SQLite 持久化存储** — 会话、订阅、保留消息、遗嘱消息自动持久化到本地数据库，重启后自动恢复\n- ✅ **双协议支持** — 同时支持 MQTT 3.1.1 和 MQTT 5.0\n- ✅ **主题订阅树** — 基于 Trie 树的高效主题匹配（支持 `+` / `#` 通配符）\n- ✅ **消息路由** — PUBLISH 消息自动转发给所有匹配订阅者\n- ✅ **QoS 0/1/2** — 完整的服务质量支持\n- ✅ **保留消息** — 支持 Retained Message 存储与分发\n- ✅ **遗嘱消息** — 支持 Will Message（异常断开时自动发布）\n- ✅ **Web 管理界面** — 内置 Actix-Web 仪表盘，实时监控 Broker 指标\n- ✅ **WebSocket 订阅** — 浏览器可直接订阅 MQTT 主题，接收实时消息\n- ✅ **REST API** — 提供完整的 HTTP API 用于发布消息、管理客户端\n- ✅ **匿名/文件认证** — 支持无认证和基于文件的密码认证\n- ✅ **ACL Topic 访问控制** — 基于文件的 publish/subscribe/readwrite 权限管理\n- ✅ **Web 管理界面认证** — HTTP Basic Auth + JSON 登录页面双重认证\n- ✅ **CLI 客户端** — 内置 `mqtt-client` 工具，支持发布/订阅/交互式 Shell\n- ✅ **性能指标** — 内置计数器（连接数、消息数、字节数、包数等）\n\n<img width=\"1355\" height=\"705\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7464a12d-9462-45b3-99bc-07371121694e\" />\n\n**4.推荐理由**\n\nAtomMQTT Broker 是一个纯 Rust 实现的 MQTT 3.1.1/5.0 消息代理，核心目标是在高性能与数据安全之间取得平衡。\n\n整个软件只有一个mqtt-web.exe二进制可执行程序，小巧但性能强大。所有消息路由、订阅匹配在内存中完成，无锁竞争，零拷贝与异步 I/O — 利用 Tokio 运行时和 BytesMut 实现高效网络处理。\n\n内存安全\n\n整个项目使用 #![deny(unsafe_code)] 确保零 unsafe Rust 代码。这意味着所有内存安全由 Rust 编译器保证——没有空指针解引用、缓冲区溢出或释放后使用。\n\n单元测试\n\n为了保证功能的稳定性，本项目已做了充分的单元测试。\n项目根目录 test/ 下提供了基于 Python 的集成测试脚本，覆盖认证、发布/订阅、保留消息、ACL 权限和离线消息队列等核心功能。\n\n在当下物联网时代，能有一个比肩mosquitto但功能更丰富的轻量级MQTT Broker,将极大的方便MQTT物联网设备的开发调试和使用。\n\n\n\n",
           "metrics": {
             "comments": 0
@@ -99,7 +104,11 @@
           ],
           "externalId": "10133",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/10133",
-          "siteLogo": "https://cdn-static.gitcode.com/static/images/logo-favicon.png"
+          "siteLogo": "https://cdn-static.gitcode.com/static/images/logo-favicon.png",
+          "images": [
+            "https://github.com/user-attachments/assets/7464a12d-9462-45b3-99bc-07371121694e"
+          ],
+          "image": "https://github.com/user-attachments/assets/7464a12d-9462-45b3-99bc-07371121694e"
         },
         {
           "sourceId": "weekly-issues",
@@ -127,7 +136,7 @@
           "author": "shaozhengmao",
           "authorUrl": "https://github.com/shaozhengmao",
           "publishedAt": "2026-05-30T05:57:22Z",
-          "summary": "<div align=\"center\" <img width=\"400\" height=\"356\" alt=\"Image\" src=\" / </div 项目地址: ✨ 功能 9 种动画状态随机轮播（站立 / 发呆 / 抱臂 / 摸胡子 / 自拍 / 投降 / 向左跑 / 向右跑 / 奔跑） 点击角色触发反应动画，必出语录气泡 空闲时随机冒语录，包含峰哥经典名言 拖拽移动位置，自动记忆上次位置 开机自启动 右键菜单 → 编辑语录，保存即生效，无需重启 右键菜单 → 关闭宠物 📦 安装 下载 Release（推荐） 前往项目主页下载对应版本的 .zip，解压后双击 fenggepet.app 即可。 | 文件 | 适用机型 | ||| | fenggepet1.1.0arm64mac.zip | Apple Silicon（M1 / M2 / M3 / M4） | | fenggepet1.1.0mac.zip | Intel 芯片 | ⚠️ 首次打开提示\"无法验证开发者\"？ 在终端执行以下命令后即可正常打开（每台 Mac 只需执行一次）： bash xattr cr fenggepet.app 本地运行 bash git clone cd fenggepet npm install npm start 🖥️ 系统要求 macOS（Apple Silicon / Intel 均支持） Node.js 18+（仅本地运行时需要）",
+          "summary": "<div align=\"center\" </div 项目地址: ✨ 功能 9 种动画状态随机轮播（站立 / 发呆 / 抱臂 / 摸胡子 / 自拍 / 投降 / 向左跑 / 向右跑 / 奔跑） 点击角色触发反应动画，必出语录气泡 空闲时随机冒语录，包含峰哥经典名言 拖拽移动位置，自动记忆上次位置 开机自启动 右键菜单 → 编辑语录，保存即生效，无需重启 右键菜单 → 关闭宠物 📦 安装 下载 Release（推荐） 前往项目主页下载对应版本的 .zip，解压后双击 fenggepet.app 即可。 | 文件 | 适用机型 | ||| | fenggepet1.1.0arm64mac.zip | Apple Silicon（M1 / M2 / M3 / M4） | | fenggepet1.1.0mac.zip | Intel 芯片 | ⚠️ 首次打开提示\"无法验证开发者\"？ 在终端执行以下命令后即可正常打开（每台 Mac 只需执行一次）： bash xattr cr fenggepet.app 本地运行 bash git clone cd fenggepet npm install npm start 🖥️ 系统要求 macOS（Apple Silicon / Intel 均支持） Node.js 18+（仅本地运行时需要）",
           "content": "<div align=\"center\">\n<img width=\"400\" height=\"356\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6e932ea7-8e03-4a0e-b573-ab605aaef560\" />\n</div>\n\n项目地址:https://github.com/shaozhengmao/fengge-pet\n\n## ✨ 功能\n\n- 9 种动画状态随机轮播（站立 / 发呆 / 抱臂 / 摸胡子 / 自拍 / 投降 / 向左跑 / 向右跑 / 奔跑）\n- 点击角色触发反应动画，必出语录气泡\n- 空闲时随机冒语录，包含峰哥经典名言\n- 拖拽移动位置，自动记忆上次位置\n- 开机自启动\n- 右键菜单 → **编辑语录**，保存即生效，无需重启\n- 右键菜单 → **关闭宠物**\n\n---\n\n## 📦 安装\n\n### 下载 Release（推荐）\n\n前往项目主页下载对应版本的 `.zip`，解压后双击 `fengge-pet.app` 即可。\n\n| 文件 | 适用机型 |\n|---|---|\n| `fengge-pet-1.1.0-arm64-mac.zip` | Apple Silicon（M1 / M2 / M3 / M4） |\n| `fengge-pet-1.1.0-mac.zip` | Intel 芯片 |\n\n> **⚠️ 首次打开提示\"无法验证开发者\"？**\n>\n> 在终端执行以下命令后即可正常打开（每台 Mac 只需执行一次）：\n>\n> ```bash\n> xattr -cr fengge-pet.app\n> ```\n>\n\n### 本地运行\n\n```bash\ngit clone https://github.com/shaozhengmao/fengge-pet.git\ncd fengge-pet\nnpm install\nnpm start\n```\n\n---\n\n## 🖥️ 系统要求\n\n- macOS（Apple Silicon / Intel 均支持）\n- Node.js 18+（仅本地运行时需要）",
           "metrics": {
             "comments": 0
@@ -137,7 +146,11 @@
             "submission"
           ],
           "externalId": "10135",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10135"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10135",
+          "images": [
+            "https://github.com/user-attachments/assets/6e932ea7-8e03-4a0e-b573-ab605aaef560"
+          ],
+          "image": "https://github.com/user-attachments/assets/6e932ea7-8e03-4a0e-b573-ab605aaef560"
         },
         {
           "sourceId": "weekly-issues",
@@ -184,7 +197,7 @@
           "author": "rn-consider",
           "authorUrl": "https://github.com/rn-consider",
           "publishedAt": "2026-05-30T10:37:38Z",
-          "summary": "大家好，我是一名独立开发者，最近做了一个浏览器小游戏：Arrows escape。 游戏地址： 这是一个规则简单的小游戏,用户需要点击没有被其他线阻拦的箭头从而通关至下一关,总共有100关可玩。 搭配上魔性的8bit音乐,不用复杂的学习、注册登录点开即玩,闲暇之余来上一两盘解解压是很好的。 推荐使用手机浏览器打开 体验会比较好。 <img width=\"378\" height=\"837\" alt=\"Image\" src=\" / 欢迎试玩，也欢迎反馈何处需要修正。",
+          "summary": "大家好，我是一名独立开发者，最近做了一个浏览器小游戏：Arrows escape。 游戏地址： 这是一个规则简单的小游戏,用户需要点击没有被其他线阻拦的箭头从而通关至下一关,总共有100关可玩。 搭配上魔性的8bit音乐,不用复杂的学习、注册登录点开即玩,闲暇之余来上一两盘解解压是很好的。 推荐使用手机浏览器打开 体验会比较好。 欢迎试玩，也欢迎反馈何处需要修正。",
           "content": "大家好，我是一名独立开发者，最近做了一个浏览器小游戏：Arrows escape。\n游戏地址：https://arrowgame.app/zh\n这是一个规则简单的小游戏,用户需要点击没有被其他线阻拦的箭头从而通关至下一关,总共有100关可玩。\n搭配上魔性的8-bit音乐,不用复杂的学习、注册登录点开即玩,闲暇之余来上一两盘解解压是很好的。\n推荐使用手机浏览器打开 体验会比较好。\n\n<img width=\"378\" height=\"837\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/054fc4ad-e142-47b3-bcb1-3049b29e5969\" />\n\n欢迎试玩，也欢迎反馈何处需要修正。",
           "metrics": {
             "comments": 0
@@ -195,7 +208,11 @@
           ],
           "externalId": "10138",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/10138",
-          "siteLogo": "https://arrowgame.app/assets/apple-touch-icon.95462ea826.png"
+          "siteLogo": "https://arrowgame.app/assets/apple-touch-icon.95462ea826.png",
+          "images": [
+            "https://github.com/user-attachments/assets/054fc4ad-e142-47b3-bcb1-3049b29e5969"
+          ],
+          "image": "https://github.com/user-attachments/assets/054fc4ad-e142-47b3-bcb1-3049b29e5969"
         },
         {
           "sourceId": "weekly-issues",
@@ -204,7 +221,7 @@
           "author": "nil-byte",
           "authorUrl": "https://github.com/nil-byte",
           "publishedAt": "2026-05-30T11:21:07Z",
-          "summary": "项目地址： Aura Tab 是一个面向 Chrome / Edge 的新标签页扩展，主打高颜值、低打扰和高可定制性。它把智能背景、macOS 风格 Dock / 启动台、快捷链接管理、书签导入、沉浸式图片查看、WebDAV 备份等能力整合到一个新标签页里。 项目比较重视性能与隐私：支持首屏优化、背景缓存、多语言、自定义搜索引擎，不采集用户数据。 Chrome 商店： 截图： !Desktop !Launchpad README 里有更多截图和功能说明，欢迎试用并提出反馈。",
+          "summary": "项目地址： Aura Tab 是一个面向 Chrome / Edge 的新标签页扩展，主打高颜值、低打扰和高可定制性。它把智能背景、macOS 风格 Dock / 启动台、快捷链接管理、书签导入、沉浸式图片查看、WebDAV 备份等能力整合到一个新标签页里。 项目比较重视性能与隐私：支持首屏优化、背景缓存、多语言、自定义搜索引擎，不采集用户数据。 Chrome 商店： 截图： README 里有更多截图和功能说明，欢迎试用并提出反馈。",
           "content": "项目地址：\nhttps://github.com/nil-byte/aura-tab\n\nAura Tab 是一个面向 Chrome / Edge 的新标签页扩展，主打高颜值、低打扰和高可定制性。它把智能背景、macOS 风格 Dock / 启动台、快捷链接管理、书签导入、沉浸式图片查看、WebDAV 备份等能力整合到一个新标签页里。\n\n项目比较重视性能与隐私：支持首屏优化、背景缓存、多语言、自定义搜索引擎，不采集用户数据。\n\nChrome 商店：\nhttps://chromewebstore.google.com/detail/adeamimoopnlcflnpjgcfmebboajlkja\n\n截图：\n\n![Desktop](https://raw.githubusercontent.com/nil-byte/aura-tab/main/assets/other/desktop.png)\n\n![Launchpad](https://raw.githubusercontent.com/nil-byte/aura-tab/main/assets/other/launchpad.png)\n\nREADME 里有更多截图和功能说明，欢迎试用并提出反馈。",
           "metrics": {
             "comments": 0
@@ -214,7 +231,12 @@
             "submission"
           ],
           "externalId": "10139",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10139"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10139",
+          "images": [
+            "https://raw.githubusercontent.com/nil-byte/aura-tab/main/assets/other/desktop.png",
+            "https://raw.githubusercontent.com/nil-byte/aura-tab/main/assets/other/launchpad.png"
+          ],
+          "image": "https://raw.githubusercontent.com/nil-byte/aura-tab/main/assets/other/desktop.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -223,7 +245,7 @@
           "author": "SeanWong17",
           "authorUrl": "https://github.com/SeanWong17",
           "publishedAt": "2026-05-30T12:18:24Z",
-          "summary": "链接： 说明： 一个本地运行的命令行工具，扫描个人相册，调用 OpenAI 兼容 API（推荐小米 MiMo，可以将赠送的token转换为个人数据资产）为每张图片生成结构化描述，结果保存在本地 SQLite，可导出 JSONL / CSV。 输出字段包括：短描述、长描述、场景分类、语义标签、OCR 文字、人数、置信度等，同时生成 embeddingtext 供后续向量检索使用。数据完全归用户本地所有，不依赖任何云服务。 支持 HEIC / DNG / CR3 / Apple Live Photo 等格式，断点续跑，并发处理。 <img width=\"1486\" height=\"1243\" alt=\"Image\" src=\" /",
+          "summary": "链接： 说明： 一个本地运行的命令行工具，扫描个人相册，调用 OpenAI 兼容 API（推荐小米 MiMo，可以将赠送的token转换为个人数据资产）为每张图片生成结构化描述，结果保存在本地 SQLite，可导出 JSONL / CSV。 输出字段包括：短描述、长描述、场景分类、语义标签、OCR 文字、人数、置信度等，同时生成 embeddingtext 供后续向量检索使用。数据完全归用户本地所有，不依赖任何云服务。 支持 HEIC / DNG / CR3 / Apple Live Photo 等格式，断点续跑，并发处理。",
           "content": "链接： https://github.com/SeanWong17/album-assetizer\n\n  说明：\n\n  一个本地运行的命令行工具，扫描个人相册，调用 OpenAI 兼容 API（推荐小米 MiMo，可以将赠送的token转换为个人数据资产）为每张图片生成结构化描述，结果保存在本地 SQLite，可导出 JSONL / CSV。\n\n  输出字段包括：短描述、长描述、场景分类、语义标签、OCR 文字、人数、置信度等，同时生成 embedding_text 供后续向量检索使用。数据完全归用户本地所有，不依赖任何云服务。\n\n  支持 HEIC / DNG / CR3 / Apple Live Photo 等格式，断点续跑，并发处理。\n\n<img width=\"1486\" height=\"1243\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/02a4c4e6-4ceb-4ab8-8183-2c276264b654\" />",
           "metrics": {
             "comments": 0
@@ -233,7 +255,11 @@
             "submission"
           ],
           "externalId": "10140",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10140"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10140",
+          "images": [
+            "https://github.com/user-attachments/assets/02a4c4e6-4ceb-4ab8-8183-2c276264b654"
+          ],
+          "image": "https://github.com/user-attachments/assets/02a4c4e6-4ceb-4ab8-8183-2c276264b654"
         },
         {
           "sourceId": "weekly-issues",
@@ -273,7 +299,7 @@
           "author": "atakhalo",
           "authorUrl": "https://github.com/atakhalo",
           "publishedAt": "2026-05-30T13:05:59Z",
-          "summary": "项目地址 类别 Rust 项目标题 多文件夹图片分组浏览器，集中浏览和管理大量图片 项目描述 基于Tauri v2 + Vue 3 + Rust 的 windows 多文件夹图片浏览器，可以在一个视图中浏览管理多个文件夹及子文件夹中的图片。具有紧凑模式、虚拟分组、彩虹层级、五级标记、对比矩阵功能。 亮点 1. 多文件夹视图，方便浏览管理 2. 彩虹层级，层级关系一目了然 3. 五级标记，方便选择整理 4. 对比矩阵，支持28图两两对比 示例代码 markdown 截图或演示视频 <img width=\"2560\" height=\"1405\" alt=\"Image\" src=\" /",
+          "summary": "项目地址 类别 Rust 项目标题 多文件夹图片分组浏览器，集中浏览和管理大量图片 项目描述 基于Tauri v2 + Vue 3 + Rust 的 windows 多文件夹图片浏览器，可以在一个视图中浏览管理多个文件夹及子文件夹中的图片。具有紧凑模式、虚拟分组、彩虹层级、五级标记、对比矩阵功能。 亮点 1. 多文件夹视图，方便浏览管理 2. 彩虹层级，层级关系一目了然 3. 五级标记，方便选择整理 4. 对比矩阵，支持28图两两对比 示例代码 markdown 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/atakhalo/ImgGroupX\n\n### 类别\n\nRust\n\n### 项目标题\n\n多文件夹图片分组浏览器，集中浏览和管理大量图片\n\n### 项目描述\n\n基于Tauri v2 + Vue 3 + Rust 的 windows 多文件夹图片浏览器，可以在一个视图中浏览管理多个文件夹及子文件夹中的图片。具有紧凑模式、虚拟分组、彩虹层级、五级标记、对比矩阵功能。\n\n### 亮点\n\n1. 多文件夹视图，方便浏览管理\n2. 彩虹层级，层级关系一目了然\n3. 五级标记，方便选择整理\n4. 对比矩阵，支持2-8图两两对比\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"2560\" height=\"1405\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/79d672db-c7a6-4e2a-b526-316d82edc2bf\" />\n\n",
           "metrics": {
             "comments": 0
@@ -283,7 +309,11 @@
             "submission"
           ],
           "externalId": "3311",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3311"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3311",
+          "images": [
+            "https://github.com/user-attachments/assets/79d672db-c7a6-4e2a-b526-316d82edc2bf"
+          ],
+          "image": "https://github.com/user-attachments/assets/79d672db-c7a6-4e2a-b526-316d82edc2bf"
         },
         {
           "sourceId": "hellogithub-issues",

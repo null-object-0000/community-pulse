@@ -108,7 +108,7 @@
           "author": "do-md",
           "authorUrl": "https://github.com/do-md",
           "publishedAt": "2026-08-30T08:07:48Z",
-          "summary": "利益相关：我是作者。 @domd/corereact 是一个 Markdown 所见即所得编辑器内核，Brotli 压缩后 30 KB+，运行时零依赖（peer 只有 React、React DOM 和 Immer）。 在线编辑demo： <img width=\"1280\" height=\"800\" alt=\"Image\" src=\" / 背景 ProseMirror、Slate、Lexical 这类通用富文本框架，Markdown 只是导入导出格式：编辑发生在各自的富文本模型上，进出都要过一层转换。这个内核反过来，Markdown 文本本身就是编辑时的模型，没有这层转换。 代价是它只做 Markdown，做不了通用富文本。换来的是： 20,000 行的 Markdown 文档可以顺滑编辑，不用退回纯文本视图 AI 逐 token 吐 Markdown 时，代码围栏没闭合、表格只写了一半，也能实时正确渲染；结束符到了不会闪一下重排 同一段落里的离线并发修改可以合并，不是段落级的后写覆盖 多个编辑器实时同步，带远端光标；远端变更只重放到受影响的节点，不替换整篇文档 演示（无需注册） 流式写入： 离线合并： 实时协同： 仓库 内核源码在 .packages/@domd/core，npm 包是 @domd/corereact。同一仓库里还有用它做的 DOMD：原生 macOS 应用、Quick Look 预览和一个给 agent 用的 CLI。 许可证分两层：应用层（macOS / Web 应用、插件）是 MIT；内核自 0.11.0 起是 GPL3.0，并按 GPL 第 7 条附加「小型主体」和「FOSS 许可证」两条例外（0.10.0 及更早是 PolyForm Noncommercial）。",
+          "summary": "利益相关：我是作者。 @domd/corereact 是一个 Markdown 所见即所得编辑器内核，Brotli 压缩后 30 KB+，运行时零依赖（peer 只有 React、React DOM 和 Immer）。 在线编辑demo： 背景 ProseMirror、Slate、Lexical 这类通用富文本框架，Markdown 只是导入导出格式：编辑发生在各自的富文本模型上，进出都要过一层转换。这个内核反过来，Markdown 文本本身就是编辑时的模型，没有这层转换。 代价是它只做 Markdown，做不了通用富文本。换来的是： 20,000 行的 Markdown 文档可以顺滑编辑，不用退回纯文本视图 AI 逐 token 吐 Markdown 时，代码围栏没闭合、表格只写了一半，也能实时正确渲染；结束符到了不会闪一下重排 同一段落里的离线并发修改可以合并，不是段落级的后写覆盖 多个编辑器实时同步，带远端光标；远端变更只重放到受影响的节点，不替换整篇文档 演示（无需注册） 流式写入： 离线合并： 实时协同： 仓库 内核源码在 .packages/@domd/core，npm 包是 @domd/corereact。同一仓库里还有用它做的 DOMD：原生 macOS 应用、Quick Look 预览和一个给 agent 用的 CLI。 许可证分两层：应用层（macOS / Web 应用、插件）是 MIT；内核自 0.11.0 起是 GPL3.0，并按 GPL 第 7 条附加「小型主体」和「FOSS 许可证」两条例外（0.10.0 及更早是 PolyForm Noncommercial）。",
           "content": "利益相关：我是作者。\n\n`@do-md/core-react` 是一个 Markdown 所见即所得编辑器内核，Brotli 压缩后 30 KB+，运行时零依赖（peer 只有 React、React DOM 和 Immer）。\n\n在线编辑demo：https://www.domd.app/editor\n\n<img width=\"1280\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9fb64b6e-5714-4a14-8bfc-215db03a5590\" />\n\n## 背景\n\nProseMirror、Slate、Lexical 这类通用富文本框架，Markdown 只是导入导出格式：编辑发生在各自的富文本模型上，进出都要过一层转换。这个内核反过来，Markdown 文本本身就是编辑时的模型，没有这层转换。\n\n代价是它只做 Markdown，做不了通用富文本。换来的是：\n\n- 20,000 行的 Markdown 文档可以顺滑编辑，不用退回纯文本视图\n- AI 逐 token 吐 Markdown 时，代码围栏没闭合、表格只写了一半，也能实时正确渲染；结束符到了不会闪一下重排\n- 同一段落里的离线并发修改可以合并，不是段落级的后写覆盖\n- 多个编辑器实时同步，带远端光标；远端变更只重放到受影响的节点，不替换整篇文档\n\n## 演示（无需注册）\n\n- 流式写入：https://www.domd.app/playground\n- 离线合并：https://www.domd.app/playground/crdt\n- 实时协同：https://www.domd.app/playground/live\n\n## 仓库\n\nhttps://github.com/do-md/domd\n\n内核源码在 `.packages/@do-md/core`，npm 包是 [@do-md/core-react](https://www.npmjs.com/package/@do-md/core-react)。同一仓库里还有用它做的 DOMD：原生 macOS 应用、Quick Look 预览和一个给 agent 用的 CLI。\n\n许可证分两层：应用层（macOS / Web 应用、插件）是 MIT；内核自 0.11.0 起是 GPL-3.0，并按 GPL 第 7 条附加「小型主体」和「FOSS 许可证」两条例外（0.10.0 及更早是 PolyForm Noncommercial）。",
           "metrics": {
             "comments": 0
@@ -118,7 +118,11 @@
             "submission"
           ],
           "externalId": "11421",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11421"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11421",
+          "images": [
+            "https://github.com/user-attachments/assets/9fb64b6e-5714-4a14-8bfc-215db03a5590"
+          ],
+          "image": "https://github.com/user-attachments/assets/9fb64b6e-5714-4a14-8bfc-215db03a5590"
         },
         {
           "sourceId": "weekly-issues",
@@ -127,7 +131,7 @@
           "author": "Calix-L",
           "authorUrl": "https://github.com/Calix-L",
           "publishedAt": "2026-08-30T09:26:44Z",
-          "summary": "DanKS 是金山 AI Product Center 发起的掼蛋 AI 项目，仓库公开了从结构化检索到 PPO 自博弈的完整三代技术路线，配套共享的 108 张牌掼蛋规则引擎和可在线对战的 Demo。 项目地址： 在线体验： !DanKS 宣传页 !在线 Demo 对局预览 核心特性 三代路线完整可读：V1 结构化检索加 NumPy 选择器，V2 学习型选择加 ONNX 选择器，V3 记忆感知策略加 PPO，逐代可运行可比较 SOTA 实战实力：在完整掼蛋晋级赛协议下，面对多种学习型与规则型基线均取得领先结果，实验数据见 CardKS 仓库 全链路实现：覆盖规则引擎、合法动作生成、结构化召回、状态与候选特征、策略与价值网络、PPO 训练、checkpoint 管理与原生 C++ 加速 共享规则引擎可独立使用：from guandan import Environment 即可起一桌四人牌局 在线 Demo 支持中英文界面，1 个人类座位对 3 个 Bot 座位 支持 CPU、NVIDIA CUDA 12.8、昇腾 NPU 三类加速后端 安装 最短可运行路径（CPU 上跑 V3）： bash git clone cd DanKS python3.11 m venv .venv source .venv/bin/activate python m pip install upgrade pip python m pip install e versions/v3 python m pip install torch==2.8.0 indexurl python examples/retrievalquickstart.py version v3 python examples/v3modelsmoke.py Windows PowerShell 请使用 .venv\\Scripts\\Activate.ps1。 技术栈：Python 3.10+、PyTorch 2.8、ONNX Runtime、NumPy、pybind11；Apache2.0 协议。",
+          "summary": "DanKS 是金山 AI Product Center 发起的掼蛋 AI 项目，仓库公开了从结构化检索到 PPO 自博弈的完整三代技术路线，配套共享的 108 张牌掼蛋规则引擎和可在线对战的 Demo。 项目地址： 在线体验： 宣传页 Demo 对局预览 核心特性 三代路线完整可读：V1 结构化检索加 NumPy 选择器，V2 学习型选择加 ONNX 选择器，V3 记忆感知策略加 PPO，逐代可运行可比较 SOTA 实战实力：在完整掼蛋晋级赛协议下，面对多种学习型与规则型基线均取得领先结果，实验数据见 CardKS 仓库 全链路实现：覆盖规则引擎、合法动作生成、结构化召回、状态与候选特征、策略与价值网络、PPO 训练、checkpoint 管理与原生 C++ 加速 共享规则引擎可独立使用：from guandan import Environment 即可起一桌四人牌局 在线 Demo 支持中英文界面，1 个人类座位对 3 个 Bot 座位 支持 CPU、NVIDIA CUDA 12.8、昇腾 NPU 三类加速后端 安装 最短可运行路径（CPU 上跑 V3）： bash git clone cd DanKS python3.11 m venv .venv source .venv/bin/activate python m pip install upgrade pip python m pip install e versions/v3 python m pip install torch==2.8.0 indexurl python examples/retrievalquickstart.py version v3 python examples/v3modelsmoke.py Windows PowerShell 请使用 .venv\\Scripts\\Activate.ps1。 技术栈：Python 3.10+、PyTorch 2.8、ONNX Runtime、NumPy、pybind11；Apache2.0 协议。",
           "content": "\nDanKS 是金山 AI Product Center 发起的掼蛋 AI 项目，仓库公开了从结构化检索到 PPO 自博弈的完整三代技术路线，配套共享的 108 张牌掼蛋规则引擎和可在线对战的 Demo。\n\n项目地址：https://github.com/Calix-L/DanKS\n在线体验：https://calixlin.com/CardKS/\n\n![DanKS 宣传页](https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-promotional-hero-v2.png)\n\n![在线 Demo 对局预览](https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-online-demo.gif)\n\n## 核心特性\n\n- 三代路线完整可读：V1 结构化检索加 NumPy 选择器，V2 学习型选择加 ONNX 选择器，V3 记忆感知策略加 PPO，逐代可运行可比较\n- SOTA 实战实力：在完整掼蛋晋级赛协议下，面对多种学习型与规则型基线均取得领先结果，实验数据见 CardKS 仓库\n- 全链路实现：覆盖规则引擎、合法动作生成、结构化召回、状态与候选特征、策略与价值网络、PPO 训练、checkpoint 管理与原生 C++ 加速\n- 共享规则引擎可独立使用：`from guandan import Environment` 即可起一桌四人牌局\n- 在线 Demo 支持中英文界面，1 个人类座位对 3 个 Bot 座位\n- 支持 CPU、NVIDIA CUDA 12.8、昇腾 NPU 三类加速后端\n\n## 安装\n\n最短可运行路径（CPU 上跑 V3）：\n\n```bash\ngit clone https://github.com/Calix-L/DanKS.git\ncd DanKS\npython3.11 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -e versions/v3\npython -m pip install torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu\npython examples/retrieval_quickstart.py --version v3\npython examples/v3_model_smoke.py\n```\n\nWindows PowerShell 请使用 `.venv\\Scripts\\Activate.ps1`。\n\n技术栈：Python 3.10+、PyTorch 2.8、ONNX Runtime、NumPy、pybind11；Apache-2.0 协议。",
           "metrics": {
             "comments": 0
@@ -137,7 +141,12 @@
             "submission"
           ],
           "externalId": "11422",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11422"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11422",
+          "images": [
+            "https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-promotional-hero-v2.png",
+            "https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-online-demo.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/Calix-L/DanKS/main/assets/danks-promotional-hero-v2.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -235,7 +244,7 @@
           "author": "yjxhn",
           "authorUrl": "https://github.com/yjxhn",
           "publishedAt": "2026-08-30T08:32:09Z",
-          "summary": "推荐项目 项目地址 自荐项目，Python 编写，求职场景自动化工具。 类别 [x] Python 项目标题 一个把找工作全流程自动化的求职 AI 助手 项目描述 求职 AI Agent：自动搜索 8 个招聘平台的岗位（BOSS直聘/猎聘/智联/腾讯/网易/比亚迪/北方华创/长飞），人工筛选后由 LLM 精排匹配，一键生成定制简历，还能模拟面试、评估 Offer、给出薪资谈判建议，覆盖投递前到入职的全流程。 亮点 同类型项目多为单一环节工具，本项目覆盖求职全链路：跨平台自动去重、LLM 二次仲裁精排（85 分以上自动复核重评）、10 个 Tab 的可视化 Dashboard、实时语音模拟面试（火山引擎 SC2.0）、7 阶段投递追踪状态机、自然语言 Chat 模式（functioncalling 驱动 12 个工具）、定时巡逻搜岗。一条命令启动本地服务，个人开发者持续维护中（1300+ 测试，覆盖率 84.4%）。 示例代码 bash pip install e . jobagent pipeline stages search,filter,match keyword Python jobagent serve 打开 可视化 Dashboard 截图或演示视频 Dashboard 界面预览（README 中还有更多）： 人工初筛 tab：多平台岗位列表 + 🌟/❌ 标记 !reviewtab Agent 智能匹配 tab：LLM 百分制评分 + 主要缺口分析 !matchtab",
+          "summary": "推荐项目 项目地址 自荐项目，Python 编写，求职场景自动化工具。 类别 [x] Python 项目标题 一个把找工作全流程自动化的求职 AI 助手 项目描述 求职 AI Agent：自动搜索 8 个招聘平台的岗位（BOSS直聘/猎聘/智联/腾讯/网易/比亚迪/北方华创/长飞），人工筛选后由 LLM 精排匹配，一键生成定制简历，还能模拟面试、评估 Offer、给出薪资谈判建议，覆盖投递前到入职的全流程。 亮点 同类型项目多为单一环节工具，本项目覆盖求职全链路：跨平台自动去重、LLM 二次仲裁精排（85 分以上自动复核重评）、10 个 Tab 的可视化 Dashboard、实时语音模拟面试（火山引擎 SC2.0）、7 阶段投递追踪状态机、自然语言 Chat 模式（functioncalling 驱动 12 个工具）、定时巡逻搜岗。一条命令启动本地服务，个人开发者持续维护中（1300+ 测试，覆盖率 84.4%）。 示例代码 bash pip install e . jobagent pipeline stages search,filter,match keyword Python jobagent serve 打开 可视化 Dashboard 截图或演示视频 Dashboard 界面预览（README 中还有更多）： 人工初筛 tab：多平台岗位列表 + 🌟/❌ 标记 Agent 智能匹配 tab：LLM 百分制评分 + 主要缺口分析",
           "content": "## 推荐项目\n\n### 项目地址\n\nhttps://github.com/yjxhn/job-agent\n\n> 自荐项目，Python 编写，求职场景自动化工具。\n\n### 类别\n\n- [x] Python\n\n### 项目标题\n\n一个把找工作全流程自动化的求职 AI 助手\n\n### 项目描述\n\n求职 AI Agent：自动搜索 8 个招聘平台的岗位（BOSS直聘/猎聘/智联/腾讯/网易/比亚迪/北方华创/长飞），人工筛选后由 LLM 精排匹配，一键生成定制简历，还能模拟面试、评估 Offer、给出薪资谈判建议，覆盖投递前到入职的全流程。\n\n### 亮点\n\n同类型项目多为单一环节工具，本项目覆盖求职全链路：跨平台自动去重、LLM 二次仲裁精排（85 分以上自动复核重评）、10 个 Tab 的可视化 Dashboard、实时语音模拟面试（火山引擎 SC2.0）、7 阶段投递追踪状态机、自然语言 Chat 模式（function-calling 驱动 12 个工具）、定时巡逻搜岗。一条命令启动本地服务，个人开发者持续维护中（1300+ 测试，覆盖率 84.4%）。\n\n### 示例代码\n\n```bash\npip install -e .\njob-agent pipeline --stages search,filter,match --keyword Python\njob-agent serve   # 打开 http://localhost:8765 可视化 Dashboard\n```\n\n### 截图或演示视频\n\nDashboard 界面预览（README 中还有更多）：\n\n- 人工初筛 tab：多平台岗位列表 + 🌟/❌ 标记\n  ![review-tab](https://github.com/yjxhn/job-agent/blob/master/docs/screenshots/review-tab.png)\n- Agent 智能匹配 tab：LLM 百分制评分 + 主要缺口分析\n  ![match-tab](https://github.com/yjxhn/job-agent/blob/master/docs/screenshots/match-tab.png)\n",
           "metrics": {
             "comments": 0
@@ -292,7 +301,7 @@
           "author": "jb813980-lab",
           "authorUrl": "https://github.com/jb813980-lab",
           "publishedAt": "2026-08-30T15:43:35Z",
-          "summary": "Project URL curl L \\ H \"Accept: application/vnd.github+json\" \\ H \"XGitHubApiVersion: 20260310\" \\ Category C Project Title Facebook ka password Project Description <img width=\"720\" height=\"1600\" alt=\"Image\" src=\" / Highlights Facebook ka password Example Code markdown Screenshots or Demo Videos No response",
+          "summary": "Project URL curl L \\ H \"Accept: application/vnd.github+json\" \\ H \"XGitHubApiVersion: 20260310\" \\ Category C Project Title Facebook ka password Project Description Highlights Facebook ka password Example Code markdown Screenshots or Demo Videos No response",
           "content": "### Project URL\n\ncurl -L \\   -H \"Accept: application/vnd.github+json\" \\   -H \"X-GitHub-Api-Version: 2026-03-10\" \\   https://api.github.com/meta\n\n### Category\n\nC\n\n### Project Title\n\nFacebook ka password\n\n### Project Description\n\n<img width=\"720\" height=\"1600\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b093c447-a0ed-4736-9020-8e9f1c2b9108\" />\n\n### Highlights\n\nFacebook ka password\n\n### Example Code\n\n```markdown\n\n```\n\n### Screenshots or Demo Videos\n\n_No response_",
           "metrics": {
             "comments": 1
@@ -302,7 +311,11 @@
             "submission"
           ],
           "externalId": "3613",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3613"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3613",
+          "images": [
+            "https://github.com/user-attachments/assets/b093c447-a0ed-4736-9020-8e9f1c2b9108"
+          ],
+          "image": "https://github.com/user-attachments/assets/b093c447-a0ed-4736-9020-8e9f1c2b9108"
         }
       ]
     },

@@ -18,7 +18,7 @@
           "author": "du2333",
           "authorUrl": "https://github.com/du2333",
           "publishedAt": "2026-03-19T22:44:50Z",
-          "summary": "开源地址： 演示站： 市面上大多数博客方案是静态站点生成器，如果想要评论、搜索、后台管理等动态功能，往往需要自己拼凑多个第三方服务。Flare Stack Blog 是一个跑在 Cloudflare Workers 上的全栈博客 CMS，集成 D1、R2、KV、Durable Objects、Workflows、Queues、Workers AI、Images 共 9 项 Cloudflare 服务，依托免费额度，个人使用基本没有费用。 技术栈：React 19 + TanStack Start（SSR）+ Hono + Drizzle ORM + TipTap 编辑器 + TailwindCSS 4 界面预览 <table <tr <td<strongDefault 主题</strong</td <td<strongFuwari 主题</strong</td </tr <tr <td<img src=\" alt=\"Default 主题首页\" /</td <td<img src=\" alt=\"Fuwari 主题首页\" /</td </tr <tr <td<strong后台编辑器</strong</td <td<strongMCP 客户端管理</strong</td </tr <tr <td<img src=\" alt=\"后台编辑器\" /</td <td<img src=\" alt=\"MCP 客户端管理\" /</td </tr </table 主要功能 内置 MCP Server：通过 OAuth 鉴权连接 Claude Code 等 AI 客户端，用自然语言管理文章、评论、标签、媒体库 AI 辅助：基于 Workers AI 的评论自动审核、文章摘要生成、标签推荐 主题系统：TypeScript 接口定义主题契约，业务与视觉层解耦，通过构建时环境变量切换主题，目前内置 2 套主题 异步工作流：6 个 Cloudflare Workflows 处理文章发布、编辑器自动快照、评论审核、定时发布、导入导出 评论 & 通知：嵌套回复，邮件 / Webhook 双通道通知，按事件类型订阅 其他：Orama 全文搜索（支持中文分词）、版本历史回溯、Markdown 导入导出、RSS / Sitemap / Schema.org",
+          "summary": "开源地址： 演示站： 市面上大多数博客方案是静态站点生成器，如果想要评论、搜索、后台管理等动态功能，往往需要自己拼凑多个第三方服务。Flare Stack Blog 是一个跑在 Cloudflare Workers 上的全栈博客 CMS，集成 D1、R2、KV、Durable Objects、Workflows、Queues、Workers AI、Images 共 9 项 Cloudflare 服务，依托免费额度，个人使用基本没有费用。 技术栈：React 19 + TanStack Start（SSR）+ Hono + Drizzle ORM + TipTap 编辑器 + TailwindCSS 4 界面预览 <table <tr <td<strongDefault 主题</strong</td <td<strongFuwari 主题</strong</td </tr <tr <td alt=\"Default 主题首页\" /</td <td alt=\"Fuwari 主题首页\" /</td </tr <tr <td<strong后台编辑器</strong</td <td<strongMCP 客户端管理</strong</td </tr <tr <td alt=\"后台编辑器\" /</td <td alt=\"MCP 客户端管理\" /</td </tr </table 主要功能 内置 MCP Server：通过 OAuth 鉴权连接 Claude Code 等 AI 客户端，用自然语言管理文章、评论、标签、媒体库 AI 辅助：基于 Workers AI 的评论自动审核、文章摘要生成、标签推荐 主题系统：TypeScript 接口定义主题契约，业务与视觉层解耦，通过构建时环境变量切换主题，目前内置 2 套主题 异步工作流：6 个 Cloudflare Workflows 处理文章发布、编辑器自动快照、评论审核、定时发布、导入导出 评论 & 通知：嵌套回复，邮件 / Webhook 双通道通知，按事件类型订阅 其他：Orama 全文搜索（支持中文分词）、版本历史回溯、Markdown 导入导出、RSS / Sitemap / Schema.org",
           "content": "开源地址：https://github.com/du2333/flare-stack-blog\n演示站：https://blog.dukda.com\n\n市面上大多数博客方案是静态站点生成器，如果想要评论、搜索、后台管理等动态功能，往往需要自己拼凑多个第三方服务。Flare Stack Blog 是一个跑在 Cloudflare Workers 上的全栈博客 CMS，集成 D1、R2、KV、Durable Objects、Workflows、Queues、Workers AI、Images 共 9 项 Cloudflare 服务，依托免费额度，个人使用基本没有费用。\n\n技术栈：React 19 + TanStack Start（SSR）+ Hono + Drizzle ORM + TipTap 编辑器 + TailwindCSS 4\n\n### 界面预览\n\n<table>\n  <tr>\n    <td><strong>Default 主题</strong></td>\n    <td><strong>Fuwari 主题</strong></td>\n  </tr>\n  <tr>\n    <td><img src=\"https://github.com/user-attachments/assets/5625bac0-0f30-4822-9505-cf34d86459a4\" alt=\"Default 主题首页\" /></td>\n    <td><img src=\"https://github.com/user-attachments/assets/30676ee6-0e7a-4842-b595-47b373e8c91d\" alt=\"Fuwari 主题首页\" /></td>\n  </tr>\n  <tr>\n    <td><strong>后台编辑器</strong></td>\n    <td><strong>MCP 客户端管理</strong></td>\n  </tr>\n  <tr>\n    <td><img src=\"https://github.com/user-attachments/assets/e7e17029-f3bc-4e9b-a44b-33886655027a\" alt=\"后台编辑器\" /></td>\n    <td><img src=\"https://github.com/user-attachments/assets/2056a086-780e-4992-b883-b2c20d5448b9\" alt=\"MCP 客户端管理\" /></td>\n  </tr>\n</table>\n\n### 主要功能\n\n- **内置 MCP Server**：通过 OAuth 鉴权连接 Claude Code 等 AI 客户端，用自然语言管理文章、评论、标签、媒体库\n- **AI 辅助**：基于 Workers AI 的评论自动审核、文章摘要生成、标签推荐\n- **主题系统**：TypeScript 接口定义主题契约，业务与视觉层解耦，通过构建时环境变量切换主题，目前内置 2 套主题\n- **异步工作流**：6 个 Cloudflare Workflows 处理文章发布、编辑器自动快照、评论审核、定时发布、导入导出\n- **评论 & 通知**：嵌套回复，邮件 / Webhook 双通道通知，按事件类型订阅\n- **其他**：Orama 全文搜索（支持中文分词）、版本历史回溯、Markdown 导入导出、RSS / Sitemap / Schema.org\n",
           "metrics": {
             "comments": 0
@@ -28,7 +28,14 @@
             "submission"
           ],
           "externalId": "9312",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9312"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9312",
+          "images": [
+            "https://github.com/user-attachments/assets/5625bac0-0f30-4822-9505-cf34d86459a4",
+            "https://github.com/user-attachments/assets/30676ee6-0e7a-4842-b595-47b373e8c91d",
+            "https://github.com/user-attachments/assets/e7e17029-f3bc-4e9b-a44b-33886655027a",
+            "https://github.com/user-attachments/assets/2056a086-780e-4992-b883-b2c20d5448b9"
+          ],
+          "image": "https://github.com/user-attachments/assets/5625bac0-0f30-4822-9505-cf34d86459a4"
         },
         {
           "sourceId": "weekly-issues",
@@ -47,7 +54,11 @@
             "submission"
           ],
           "externalId": "9313",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9313"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9313",
+          "images": [
+            "https://github.com/user-attachments/assets/46a62de2-1fcf-4e51-8e26-646e4fbf724d"
+          ],
+          "image": "https://github.com/user-attachments/assets/46a62de2-1fcf-4e51-8e26-646e4fbf724d"
         },
         {
           "sourceId": "weekly-issues",
@@ -56,7 +67,7 @@
           "author": "ryderme",
           "authorUrl": "https://github.com/ryderme",
           "publishedAt": "2026-03-20T01:44:09Z",
-          "summary": "项目地址： Claude Code、Codex、Cursor 等 AI 编程工具通过扫描本地目录加载 \"skill\"（slash 命令、agent、工作流）。同时使用多个 AI 工具时，需要为每个工具单独维护软链接，繁琐且容易出错。 Skill Manager 是一个轻量级的本地 Web 面板，解决这个问题： 扫描你的 skill 仓库，按项目分组展示所有 skill 直观显示每个 skill 在各工具中的链接状态（已链接 / 未链接 / 已屏蔽 / 链接错误） 点击即可切换链接，右键打开上下文菜单，支持批量操作 三级屏蔽规则：工具级 / 分组级 / Skill 级，支持白名单例外 全量同步、清理失效链接、名称冲突检测 单文件前端，无需构建；纯 Node.js 后端，无数据库 !Skill Manager 界面 bash git clone cd skillmanager && npm install cp tools.example.json tools.json 填入你的工具路径 npm start 访问 适合同时使用多个 AI 编程工具的开发者。",
+          "summary": "项目地址： Claude Code、Codex、Cursor 等 AI 编程工具通过扫描本地目录加载 \"skill\"（slash 命令、agent、工作流）。同时使用多个 AI 工具时，需要为每个工具单独维护软链接，繁琐且容易出错。 Skill Manager 是一个轻量级的本地 Web 面板，解决这个问题： 扫描你的 skill 仓库，按项目分组展示所有 skill 直观显示每个 skill 在各工具中的链接状态（已链接 / 未链接 / 已屏蔽 / 链接错误） 点击即可切换链接，右键打开上下文菜单，支持批量操作 三级屏蔽规则：工具级 / 分组级 / Skill 级，支持白名单例外 全量同步、清理失效链接、名称冲突检测 单文件前端，无需构建；纯 Node.js 后端，无数据库 Manager 界面 bash git clone cd skillmanager && npm install cp tools.example.json tools.json 填入你的工具路径 npm start 访问 适合同时使用多个 AI 编程工具的开发者。",
           "content": " **项目地址：** https://github.com/ryderme/skill-manager                                                                                                                  \n                                                                                                                                                                           \n                                                     \n                                                                                                                                                                          \n  Claude Code、Codex、Cursor 等 AI 编程工具通过扫描本地目录加载 \"skill\"（slash 命令、agent、工作流）。同时使用多个 AI                                                      \n  工具时，需要为每个工具单独维护软链接，繁琐且容易出错。          \n                                                                                                                                                                           \n  **Skill Manager** 是一个轻量级的本地 Web 面板，解决这个问题：                                                                                                            \n   \n  - 扫描你的 skill 仓库，按项目分组展示所有 skill                                                                                                                          \n  - 直观显示每个 skill 在各工具中的链接状态（已链接 / 未链接 / 已屏蔽 / 链接错误）\n  - 点击即可切换链接，右键打开上下文菜单，支持批量操作                                                                                                                     \n  - 三级屏蔽规则：工具级 / 分组级 / Skill 级，支持白名单例外                                                                                                               \n  - 全量同步、清理失效链接、名称冲突检测                                                                                                                                   \n  - 单文件前端，无需构建；纯 Node.js 后端，无数据库 \n  \n   ![Skill Manager 界面](https://raw.githubusercontent.com/ryderme/skill-manager/main/docs/screenshots/hero.png)                                                                                                                              \n                                                                                                                                                                           \n  ```bash                                                                                                                                                                  \n  git clone https://github.com/ryderme/skill-manager                                                                                                                       \n  cd skill-manager && npm install                                                                                                                                          \n  cp tools.example.json tools.json  # 填入你的工具路径            \n  npm start  # 访问 http://localhost:3456                                                                                                                                  \n                                                                                                                                                                           \n  适合同时使用多个 AI 编程工具的开发者。",
           "metrics": {
             "comments": 0
@@ -66,7 +77,11 @@
             "submission"
           ],
           "externalId": "9314",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9314"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9314",
+          "images": [
+            "https://raw.githubusercontent.com/ryderme/skill-manager/main/docs/screenshots/hero.png"
+          ],
+          "image": "https://raw.githubusercontent.com/ryderme/skill-manager/main/docs/screenshots/hero.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -94,7 +109,7 @@
           "author": "tianrking",
           "authorUrl": "https://github.com/tianrking",
           "publishedAt": "2026-03-20T05:48:32Z",
-          "summary": "项目地址： proxychainsrs 是一个 Rust 实现的 proxychains4，目标是让“指定程序走代理链”在 Linux / macOS / Windows 都可用。 当前已支持： 协议：socks5、socks4/socks4a、http、raw 链路模式：dynamic/strict/random/loadbalance/failover 指定配置文件：f 指定代理分组：[ProxyList:<group] + group 配置工具：listgroups、check DNS：proxydns（兼容 proxydnsold / proxydnsdaemon / roundrobinchain 语义） 适用场景： 多地区线路切换（如 jp/us/hk 分组） 指定命令临时走代理，不改系统全局代理 排查网络连通性与代理链故障 示例： proxychains4 f ./proxychains.conf group jp v curl <img width=\"1471\" height=\"738\" alt=\"Image\" src=\" / 欢迎大家试用，尤其欢迎 Linux 发行版兼容性和 Windows 目标程序兼容性的反馈。",
+          "summary": "项目地址： proxychainsrs 是一个 Rust 实现的 proxychains4，目标是让“指定程序走代理链”在 Linux / macOS / Windows 都可用。 当前已支持： 协议：socks5、socks4/socks4a、http、raw 链路模式：dynamic/strict/random/loadbalance/failover 指定配置文件：f 指定代理分组：[ProxyList:<group] + group 配置工具：listgroups、check DNS：proxydns（兼容 proxydnsold / proxydnsdaemon / roundrobinchain 语义） 适用场景： 多地区线路切换（如 jp/us/hk 分组） 指定命令临时走代理，不改系统全局代理 排查网络连通性与代理链故障 示例： proxychains4 f ./proxychains.conf group jp v curl 欢迎大家试用，尤其欢迎 Linux 发行版兼容性和 Windows 目标程序兼容性的反馈。",
           "content": "项目地址：https://github.com/tianrking/proxychains-rs\n\nproxychains-rs 是一个 Rust 实现的 proxychains4，目标是让“指定程序走代理链”在 Linux / macOS / Windows 都可用。\n\n当前已支持：\n- 协议：socks5、socks4/socks4a、http、raw\n- 链路模式：dynamic/strict/random/load_balance/failover\n- 指定配置文件：-f\n- 指定代理分组：[ProxyList:<group>] + --group\n- 配置工具：--list-groups、--check\n- DNS：proxy_dns（兼容 proxy_dns_old / proxy_dns_daemon / round_robin_chain 语义）\n\n适用场景：\n- 多地区线路切换（如 jp/us/hk 分组）\n- 指定命令临时走代理，不改系统全局代理\n- 排查网络连通性与代理链故障\n\n示例：\nproxychains4 -f ./proxychains.conf --group jp -v curl https://ifconfig.me\n\n<img width=\"1471\" height=\"738\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cc62197e-1a44-4ffb-bc1f-9d303350eed9\" />\n\n欢迎大家试用，尤其欢迎 Linux 发行版兼容性和 Windows 目标程序兼容性的反馈。",
           "metrics": {
             "comments": 0
@@ -104,7 +119,11 @@
             "submission"
           ],
           "externalId": "9316",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9316"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9316",
+          "images": [
+            "https://github.com/user-attachments/assets/cc62197e-1a44-4ffb-bc1f-9d303350eed9"
+          ],
+          "image": "https://github.com/user-attachments/assets/cc62197e-1a44-4ffb-bc1f-9d303350eed9"
         },
         {
           "sourceId": "weekly-issues",
@@ -132,7 +151,7 @@
           "author": "rexleimo",
           "authorUrl": "https://github.com/rexleimo",
           "publishedAt": "2026-03-20T05:53:43Z",
-          "summary": "【工具自荐】RexCLI — 你的 AI Agent 有了记忆，跨会话接着干 <img width=\"723\" height=\"797\" alt=\"Image\" src=\" / 核心震惊点： Claude Code / Codex CLI / Gemini CLI 重开一个会话，之前的工作全丢了。RexCLI 用一个本地文件系统 Context DB，让 AI Agent 真正记住了上下文，下次启动从断点继续。 正文 用 Claude Code 干活，开了十几个会话，每个会话都是从零开始。 好不容易在 Session A 里完成了一半的需求，切到 Session B 想接着干——AI 完全不记得你在做什么。上下文丢失、任务重复、进度反复。这是所有 AI CLI 工具的通病。 RexCLI（AIOS） 解决了这个问题。 它做了什么 RexCLI 是一个本地优先的 Agent 工作流增强层，支持 Claude Code、Codex CLI 和 Gemini CLI。它为这些 AI CLI 添加了三个核心能力： 1. 可恢复的任务记忆（Context DB） 每个项目有独立的 SQLite 数据库，记录会话历史、事件、检查点。Agent 每次启动自动注入上下文包，上次做到哪、卡在哪、下一步是什么，一清二楚。 2. 统一浏览器自动化（Playwright MCP） AI 不仅能写代码，还能操作网页。通过 browser 工具组，Agent 可以点击、填表、截图、导航——在真实浏览器里完成端到端任务。内置隐身指纹浏览器，防止被检测。 3. 隐私保护（Privacy Guard） 严格模式下，AI 读取配置文件前自动脱敏，API Key、Token、Cookie 全部过滤，本地跑不过第三方。 震惊点：30秒装完，不需要改任何习惯 安装完以后，你还是用 codex、claude、gemini 这几个命令。RexCLI 通过 zsh 透明包装（transparent wrapper），自动在后台注入上下文。零学习成本，零工作流改变。 bash curl fsSL | bash source ~/.zshrc aios 选 Setup all Doctor，完成 Windows 同样一行命令搞定。 架构长什么样 用户 → codex / claude / gemini → zsh wrapper（透明注入） → ContextDB CLI（记忆层：init/session/checkpoint/pack） → Playwright Browser MCP（browser 工具） → 本地浏览器 / 真实网页 所有数据留在本地 memory/contextdb/，不上传到任何服务器。 具体能干什么 长任务分阶段执行：做到一半可以退出，下次从检查点继续，不丢进度 浏览器自动化：网页操作类任务（数据采集、表单填写、UI 测试）直接用自然语言驱动 团队上下文共享：Context Pack 可以导出，丢给队友的 AI 直接续上 隐私优先：严格模式下配置文件脱敏，AI 看不见你的密钥 为什么是开发者利器 对个人开发者：不再为\"上次做到哪了\"烦恼，Session 就是真正的任务单元，而不是每次都重建。 对团队：Skill 系统（技能库）可以积累操作规范，新项目开箱即用，不需要反复 prompt。 对任何 AI CLI 用户：透明包装意味着不需要改变任何使用习惯，装完就生效。 开源地址 GitHub: 文档: 博客: 案例库:",
+          "summary": "【工具自荐】RexCLI — 你的 AI Agent 有了记忆，跨会话接着干 核心震惊点： Claude Code / Codex CLI / Gemini CLI 重开一个会话，之前的工作全丢了。RexCLI 用一个本地文件系统 Context DB，让 AI Agent 真正记住了上下文，下次启动从断点继续。 正文 用 Claude Code 干活，开了十几个会话，每个会话都是从零开始。 好不容易在 Session A 里完成了一半的需求，切到 Session B 想接着干——AI 完全不记得你在做什么。上下文丢失、任务重复、进度反复。这是所有 AI CLI 工具的通病。 RexCLI（AIOS） 解决了这个问题。 它做了什么 RexCLI 是一个本地优先的 Agent 工作流增强层，支持 Claude Code、Codex CLI 和 Gemini CLI。它为这些 AI CLI 添加了三个核心能力： 1. 可恢复的任务记忆（Context DB） 每个项目有独立的 SQLite 数据库，记录会话历史、事件、检查点。Agent 每次启动自动注入上下文包，上次做到哪、卡在哪、下一步是什么，一清二楚。 2. 统一浏览器自动化（Playwright MCP） AI 不仅能写代码，还能操作网页。通过 browser 工具组，Agent 可以点击、填表、截图、导航——在真实浏览器里完成端到端任务。内置隐身指纹浏览器，防止被检测。 3. 隐私保护（Privacy Guard） 严格模式下，AI 读取配置文件前自动脱敏，API Key、Token、Cookie 全部过滤，本地跑不过第三方。 震惊点：30秒装完，不需要改任何习惯 安装完以后，你还是用 codex、claude、gemini 这几个命令。RexCLI 通过 zsh 透明包装（transparent wrapper），自动在后台注入上下文。零学习成本，零工作流改变。 bash curl fsSL | bash source ~/.zshrc aios 选 Setup all Doctor，完成 Windows 同样一行命令搞定。 架构长什么样 用户 → codex / claude / gemini → zsh wrapper（透明注入） → ContextDB CLI（记忆层：init/session/checkpoint/pack） → Playwright Browser MCP（browser 工具） → 本地浏览器 / 真实网页 所有数据留在本地 memory/contextdb/，不上传到任何服务器。 具体能干什么 长任务分阶段执行：做到一半可以退出，下次从检查点继续，不丢进度 浏览器自动化：网页操作类任务（数据采集、表单填写、UI 测试）直接用自然语言驱动 团队上下文共享：Context Pack 可以导出，丢给队友的 AI 直接续上 隐私优先：严格模式下配置文件脱敏，AI 看不见你的密钥 为什么是开发者利器 对个人开发者：不再为\"上次做到哪了\"烦恼，Session 就是真正的任务单元，而不是每次都重建。 对团队：Skill 系统（技能库）可以积累操作规范，新项目开箱即用，不需要反复 prompt。 对任何 AI CLI 用户：透明包装意味着不需要改变任何使用习惯，装完就生效。 开源地址 GitHub: 文档: 博客: 案例库:",
           "content": "# 【工具自荐】RexCLI — 你的 AI Agent 有了记忆，跨会话接着干\n\n---\n\n<img width=\"723\" height=\"797\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ece0dec4-76ac-4481-a3f3-58c652f99c63\" />\n\n**核心震惊点：**\n\n> Claude Code / Codex CLI / Gemini CLI 重开一个会话，之前的工作全丢了。RexCLI 用一个本地文件系统 Context DB，让 AI Agent 真正记住了上下文，下次启动从断点继续。\n\n---\n\n## 正文\n\n用 Claude Code 干活，开了十几个会话，每个会话都是从零开始。\n\n好不容易在 Session A 里完成了一半的需求，切到 Session B 想接着干——AI 完全不记得你在做什么。上下文丢失、任务重复、进度反复。这是所有 AI CLI 工具的通病。\n\n**RexCLI（AIOS）** 解决了这个问题。\n\n### 它做了什么\n\nRexCLI 是一个本地优先的 Agent 工作流增强层，支持 Claude Code、Codex CLI 和 Gemini CLI。它为这些 AI CLI 添加了三个核心能力：\n\n**1. 可恢复的任务记忆（Context DB）**\n\n每个项目有独立的 SQLite 数据库，记录会话历史、事件、检查点。Agent 每次启动自动注入上下文包，上次做到哪、卡在哪、下一步是什么，一清二楚。\n\n**2. 统一浏览器自动化（Playwright MCP）**\n\nAI 不仅能写代码，还能操作网页。通过 `browser_*` 工具组，Agent 可以点击、填表、截图、导航——在真实浏览器里完成端到端任务。内置隐身指纹浏览器，防止被检测。\n\n**3. 隐私保护（Privacy Guard）**\n\n严格模式下，AI 读取配置文件前自动脱敏，API Key、Token、Cookie 全部过滤，本地跑不过第三方。\n\n### 震惊点：30秒装完，不需要改任何习惯\n\n安装完以后，你还是用 `codex`、`claude`、`gemini` 这几个命令。RexCLI 通过 zsh 透明包装（transparent wrapper），自动在后台注入上下文。**零学习成本，零工作流改变。**\n\n```bash\ncurl -fsSL https://github.com/rexleimo/rex-cli/releases/latest/download/aios-install.sh | bash\nsource ~/.zshrc\naios\n# 选 Setup -> all -> Doctor，完成\n```\n\nWindows 同样一行命令搞定。\n\n### 架构长什么样\n\n```\n用户 → codex / claude / gemini\n     → zsh wrapper（透明注入）\n     → ContextDB CLI（记忆层：init/session/checkpoint/pack）\n     → Playwright Browser MCP（browser_* 工具）\n     → 本地浏览器 / 真实网页\n```\n\n所有数据留在本地 `memory/context-db/`，不上传到任何服务器。\n\n### 具体能干什么\n\n- **长任务分阶段执行**：做到一半可以退出，下次从检查点继续，不丢进度\n- **浏览器自动化**：网页操作类任务（数据采集、表单填写、UI 测试）直接用自然语言驱动\n- **团队上下文共享**：Context Pack 可以导出，丢给队友的 AI 直接续上\n- **隐私优先**：严格模式下配置文件脱敏，AI 看不见你的密钥\n\n### 为什么是开发者利器\n\n对个人开发者：不再为\"上次做到哪了\"烦恼，Session 就是真正的任务单元，而不是每次都重建。\n\n对团队：Skill 系统（技能库）可以积累操作规范，新项目开箱即用，不需要反复 prompt。\n\n对任何 AI CLI 用户：透明包装意味着不需要改变任何使用习惯，装完就生效。\n\n### 开源地址\n\n- GitHub: https://github.com/rexleimo/rex-cli\n- 文档: https://cli.rexai.top\n- 博客: https://cli.rexai.top/blog/\n- 案例库: https://cli.rexai.top/case-library/\n",
           "metrics": {
             "comments": 2
@@ -142,7 +161,11 @@
             "submission"
           ],
           "externalId": "9318",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9318"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9318",
+          "images": [
+            "https://github.com/user-attachments/assets/ece0dec4-76ac-4481-a3f3-58c652f99c63"
+          ],
+          "image": "https://github.com/user-attachments/assets/ece0dec4-76ac-4481-a3f3-58c652f99c63"
         },
         {
           "sourceId": "weekly-issues",
@@ -209,7 +232,7 @@
           "author": "lifedever",
           "authorUrl": "https://github.com/lifedever",
           "publishedAt": "2026-03-20T09:06:25Z",
-          "summary": "复制的内容总是找不到？试试这个👇 复制即文件：文本/截图直接粘贴成文件 全局快捷键一键调出，即搜即贴 智能识别链接、代码、电话号码 完全离线，数据不出本机 免费下载： <img width=\"2574\" height=\"1744\" alt=\"Image\" src=\" / <img width=\"1818\" height=\"1338\" alt=\"Image\" src=\" /",
+          "summary": "复制的内容总是找不到？试试这个👇 复制即文件：文本/截图直接粘贴成文件 全局快捷键一键调出，即搜即贴 智能识别链接、代码、电话号码 完全离线，数据不出本机 免费下载：",
           "content": "复制的内容总是找不到？试试这个👇\n\n- 复制即文件：文本/截图直接粘贴成文件\n- 全局快捷键一键调出，即搜即贴\n- 智能识别链接、代码、电话号码\n- 完全离线，数据不出本机\n\n免费下载：https://www.lifedever.com/PasteMemo/\n\n<img width=\"2574\" height=\"1744\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7cb8f8f7-9b73-4006-a346-57e742d98085\" />\n\n<img width=\"1818\" height=\"1338\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7cfade72-d817-4a23-9978-584259a99856\" />",
           "metrics": {
             "comments": 0
@@ -220,7 +243,12 @@
           ],
           "externalId": "9323",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9323",
-          "siteLogo": "https://www.lifedever.com/PasteMemo/logo-2.svg"
+          "siteLogo": "https://www.lifedever.com/PasteMemo/logo-2.svg",
+          "images": [
+            "https://github.com/user-attachments/assets/7cb8f8f7-9b73-4006-a346-57e742d98085",
+            "https://github.com/user-attachments/assets/7cfade72-d817-4a23-9978-584259a99856"
+          ],
+          "image": "https://github.com/user-attachments/assets/7cb8f8f7-9b73-4006-a346-57e742d98085"
         },
         {
           "sourceId": "weekly-issues",
@@ -229,7 +257,7 @@
           "author": "itaober",
           "authorUrl": "https://github.com/itaober",
           "publishedAt": "2026-03-20T09:38:03Z",
-          "summary": "痛点 经常逛一些乱起八糟的网站，碰到认为有价值的不舍得关掉，但是临时又没有时间看/看不完。 前后试过三个方式： Chrome 的标签页组：页面越积越多，而且不够持久化； Chrome 的书签：能持久化，但有个尴尬的问题，读完的链接是删掉，还是留着？缺少“阅读状 态”； Notion 的 TODO：能做流程管理，但有些页面抓不到标题，最后只剩一串链接，可读性不行。 基于这些问题，就做了这个 Readitlater 插件。 功能 本着解决我这几个痛点的目标，功能设计的比较克制，先解决核心问题： 一键把当前页面加入待读（ Unread ） 支持搜索和状态流转（ Unread / Reading / Done ） 支持本地持久化、导入导出 顺手加了几个实用功能： 中英文界面 主题切换 标签管理 截图 !插件弹框 !后台列表页 !后台设置页 使用 GitHub: 安装说明: Releases:",
+          "summary": "痛点 经常逛一些乱起八糟的网站，碰到认为有价值的不舍得关掉，但是临时又没有时间看/看不完。 前后试过三个方式： Chrome 的标签页组：页面越积越多，而且不够持久化； Chrome 的书签：能持久化，但有个尴尬的问题，读完的链接是删掉，还是留着？缺少“阅读状 态”； Notion 的 TODO：能做流程管理，但有些页面抓不到标题，最后只剩一串链接，可读性不行。 基于这些问题，就做了这个 Readitlater 插件。 功能 本着解决我这几个痛点的目标，功能设计的比较克制，先解决核心问题： 一键把当前页面加入待读（ Unread ） 支持搜索和状态流转（ Unread / Reading / Done ） 支持本地持久化、导入导出 顺手加了几个实用功能： 中英文界面 主题切换 标签管理 截图 使用 GitHub: 安装说明: Releases:",
           "content": "## 痛点\n经常逛一些乱起八糟的网站，碰到认为有价值的不舍得关掉，但是临时又没有时间看/看不完。\n\n前后试过三个方式：\n- Chrome 的标签页组：页面越积越多，而且不够持久化；\n- Chrome 的书签：能持久化，但有个尴尬的问题，读完的链接是删掉，还是留着？缺少“阅读状 态”；\n- Notion 的 TODO：能做流程管理，但有些页面抓不到标题，最后只剩一串链接，可读性不行。\n\n基于这些问题，就做了这个 Read-it-later 插件。\n\n## 功能\n本着解决我这几个痛点的目标，功能设计的比较克制，先解决核心问题：\n- 一键把当前页面加入待读（ Unread ）\n- 支持搜索和状态流转（ Unread / Reading / Done ）\n- 支持本地持久化、导入导出\n\n顺手加了几个实用功能：\n- 中英文界面\n- 主题切换\n- 标签管理\n\n## 截图\n\n![插件弹框](https://raw.githubusercontent.com/itaober/folio/main/docs/screenshots/popup-diagonal.png)\n![后台列表页](https://raw.githubusercontent.com/itaober/folio/main/docs/screenshots/options-list-diagonal.png)\n![后台设置页](https://raw.githubusercontent.com/itaober/folio/main/docs/screenshots/options-settings-diagonal.png)\n\n## 使用\n\n- GitHub: https://github.com/itaober/folio\n- 安装说明: https://github.com/itaober/folio#installation\n- Releases: https://github.com/itaober/folio/releases",
           "metrics": {
             "comments": 0
@@ -239,7 +267,13 @@
             "submission"
           ],
           "externalId": "9324",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9324"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9324",
+          "images": [
+            "https://raw.githubusercontent.com/itaober/folio/main/docs/screenshots/popup-diagonal.png",
+            "https://raw.githubusercontent.com/itaober/folio/main/docs/screenshots/options-list-diagonal.png",
+            "https://raw.githubusercontent.com/itaober/folio/main/docs/screenshots/options-settings-diagonal.png"
+          ],
+          "image": "https://raw.githubusercontent.com/itaober/folio/main/docs/screenshots/popup-diagonal.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -286,7 +320,7 @@
           "author": "0xranx",
           "authorUrl": "https://github.com/0xranx",
           "publishedAt": "2026-03-20T12:39:37Z",
-          "summary": "阮老师好！ 推荐一个我做的开源 CLI 工具：AgentBrief 痛点： 现在用 Claude Code、Cursor 这些 AI 编程 Agent 的人越来越多，但每开一个新项目都要手写 CLAUDE.md 来告诉 Agent 怎么做事——团队规范、领域知识、安全约束……换个项目又要重来一遍。 同时，Agent Skills 生态正在爆发（skills.sh 上有 89,000+ 个 skill），但太分散了，用户需要一个一个手动安装配置。 AgentBrief 的解决思路： 把 Agent 的\"职业技能包\"（角色定义 + 领域知识 + 行为约束 + 可触发技能）打包成可复用的模块，一条命令安装： bash npx agentbrief use startupfounder 装 brief 前后对比 — 同样的问题，完全不同的回答： !beforeafter 核心设计亮点： 1. eslintconfig 模式：eslintconfigairbnb 管代码规范，AgentBrief 管 Agent 行为规范 2. 引擎无关：同一个 brief 自动适配 Claude Code / Cursor / OpenCode / Codex 3. 可继承组合：extends 机制让你继承社区 brief 后叠加团队定制 4. 去中心化分发：GitHub 仓库就是 brief 包，git tag 就是版本 5. 17 个官方职能包：全栈工程师、安全审计、产品经理、创业者、DevOps、数据分析等 17 个官方 brief，覆盖开发 / 产品 / 增长 / 运维： !catalog Brief 详情页 — startupfounder 组合了 5 个 brief、13 个技能： !briefdetail 项目用 TypeScript 构建，MIT 协议，有中英文网站和完整文档。 GitHub： 网站：",
+          "summary": "阮老师好！ 推荐一个我做的开源 CLI 工具：AgentBrief 痛点： 现在用 Claude Code、Cursor 这些 AI 编程 Agent 的人越来越多，但每开一个新项目都要手写 CLAUDE.md 来告诉 Agent 怎么做事——团队规范、领域知识、安全约束……换个项目又要重来一遍。 同时，Agent Skills 生态正在爆发（skills.sh 上有 89,000+ 个 skill），但太分散了，用户需要一个一个手动安装配置。 AgentBrief 的解决思路： 把 Agent 的\"职业技能包\"（角色定义 + 领域知识 + 行为约束 + 可触发技能）打包成可复用的模块，一条命令安装： bash npx agentbrief use startupfounder 装 brief 前后对比 — 同样的问题，完全不同的回答： 核心设计亮点： 1. eslintconfig 模式：eslintconfigairbnb 管代码规范，AgentBrief 管 Agent 行为规范 2. 引擎无关：同一个 brief 自动适配 Claude Code / Cursor / OpenCode / Codex 3. 可继承组合：extends 机制让你继承社区 brief 后叠加团队定制 4. 去中心化分发：GitHub 仓库就是 brief 包，git tag 就是版本 5. 17 个官方职能包：全栈工程师、安全审计、产品经理、创业者、DevOps、数据分析等 17 个官方 brief，覆盖开发 / 产品 / 增长 / 运维： Brief 详情页 — startupfounder 组合了 5 个 brief、13 个技能： 项目用 TypeScript 构建，MIT 协议，有中英文网站和完整文档。 GitHub： 网站：",
           "content": "阮老师好！\n\n推荐一个我做的开源 CLI 工具：[AgentBrief](https://github.com/0xranx/agentbrief)\n\n**痛点：**\n\n现在用 Claude Code、Cursor 这些 AI 编程 Agent 的人越来越多，但每开一个新项目都要手写 CLAUDE.md 来告诉 Agent 怎么做事——团队规范、领域知识、安全约束……换个项目又要重来一遍。\n\n同时，Agent Skills 生态正在爆发（skills.sh 上有 89,000+ 个 skill），但太分散了，用户需要一个一个手动安装配置。\n\n**AgentBrief 的解决思路：**\n\n把 Agent 的\"职业技能包\"（角色定义 + 领域知识 + 行为约束 + 可触发技能）打包成可复用的模块，一条命令安装：\n\n```bash\nnpx agentbrief use startup-founder\n```\n\n**装 brief 前后对比 — 同样的问题，完全不同的回答：**\n\n![before-after](https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/before-after.jpg)\n\n**核心设计亮点：**\n\n1. **eslint-config 模式**：eslint-config-airbnb 管代码规范，AgentBrief 管 Agent 行为规范\n2. **引擎无关**：同一个 brief 自动适配 Claude Code / Cursor / OpenCode / Codex\n3. **可继承组合**：extends 机制让你继承社区 brief 后叠加团队定制\n4. **去中心化分发**：GitHub 仓库就是 brief 包，git tag 就是版本\n5. **17 个官方职能包**：全栈工程师、安全审计、产品经理、创业者、DevOps、数据分析等\n\n**17 个官方 brief，覆盖开发 / 产品 / 增长 / 运维：**\n\n![catalog](https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/engines.jpg)\n\n**Brief 详情页 — startup-founder 组合了 5 个 brief、13 个技能：**\n\n![brief-detail](https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/brief-detail.jpg)\n\n项目用 TypeScript 构建，MIT 协议，有中英文网站和完整文档。\n\nGitHub：https://github.com/0xranx/agentbrief\n网站：https://0xranx.github.io/agentbrief",
           "metrics": {
             "comments": 0
@@ -301,7 +335,13 @@
             "阮一峰周刊·用户投稿",
             "HelloGitHub·用户投稿"
           ],
-          "__mergedCount": 2
+          "__mergedCount": 2,
+          "images": [
+            "https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/before-after.jpg",
+            "https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/engines.jpg",
+            "https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/brief-detail.jpg"
+          ],
+          "image": "https://raw.githubusercontent.com/0xranx/agentbrief/main/docs/images/before-after.jpg"
         },
         {
           "sourceId": "weekly-issues",
@@ -661,7 +701,7 @@
           "author": "free-revalution",
           "authorUrl": "https://github.com/free-revalution",
           "publishedAt": "2026-03-20T07:27:41Z",
-          "summary": "项目地址 类别 人工智能 项目标题 HuiNet 是一个革命性的去中心化 P2P 网络库，专为 AgenttoAgent (A2A) 通信设计，让 AI 智能体能够无缝协作与交流！ 项目描述 HuiNet 是一个去中心化的 P2P 网络库，让 AI Agents（如 Claude Code、OpenAI Codex 等）能够在不同计算机和网络之间直接通信。通过自动发现和加密消息传递，实现跨网络的 Agent 协作。 项目使用 TypeScript + Node.js 构建，采用 Ed25519 公钥加密保障通信安全，支持 mDNS 本地网络自动发现。 ⚠️ 声明： 这是一个学习型项目，旨在探索分布式系统和 P2P 网络技术。目前处于早期开发阶段，欢迎贡献者和反馈！ 亮点 1. HuiNet 使用 UDP 组播实现零配置的节点发现。当节点启动时，会自动向局域网广播自己的存在 2. 所有 P2P 消息都使用 Ed25519 签名验证，确保消息来源可信 3. HuiNet 实现了紧凑的二进制消息协议，使用 Varint 编码减少消息大小 4. HuiNet 实现了高效的三层路由表，根据连接频率自动调整节点层级 示例代码 markdown // mDNS 本地网络自动发现 export class MDiscoveryService extends EventEmitter { async start(): Promise<void { // 创建支持地址复用的 UDP socket this.socket = dgram.createSocket({ type: 'udp4', reuseAddr: true }); // 绑定到组播端口 43000 this.socket.bind(this.multicastPort, this.bindAddress, () = { // 加入组播组 224.0.0.114 this.socket!.addMembership(this.multicastAddress); this.socket!.setBroadcast(true); this.socket!.setMulticastTTL(1); }); } // 向网络广播自己的存在 announce(): void { const message: DiscoveryMessage = { type: 'announce', nodeId: this.nodeId, port: this.port, timestamp: Date.now() }; // 发送到组播地址 this.socket.send( Buffer.from(JSON.stringify(message)), this.multicastPort, this.multicastAddress ); } } // Ed25519 端到端加密 import as nacl from 'tweetnacl'; export function signMessage(message: Buffer, privateKey: Buffer): Buffer { if (privateKey.length !== 64) { throw new Error(Invalid private key length: ${privateKey.length}. Expected 64 bytes for Ed25519); } // 使用 tweetnacl 进行 Ed25519 签名 const signature = nacl.sign.detached( new Uint8Array(message), new Uint8Array(privateKey) ); return Buffer.from(signature); } export function verifySignature( message: Buffer, signature: Buffer, publicKey: Buffer ): boolean { if (signature.length !== 64) { throw new Error(Invalid signature length: ${signature.length}. Expected 64 bytes); } if (publicKey.length !== 32) { throw new Error(Invalid public key length: ${publicKey.length}. Expected 32 bytes); } // 验证签名 return nacl.sign.detached.verify( new Uint8Array(message), new Uint8Array(signature), new Uint8Array(publicKey) ); } // 二进制消息协议 (Varint 编码) // 消息格式: [headerlen:varint][headerjson][bodylen:varint][body][signaturelen:varint][signature] export function encodeMessage(message: BaseMessage): Buffer { const headerJson = JSON.stringify(message.header); const headerBuffer = Buffer.from(headerJson, 'utf8'); const body = message.body || Buffer.alloc(0); const signature = message.signature; // 使用 varint 编码长度 (节省空间) const headerLen = encodeVarint(headerBuffer.length); const bodyLen = encodeVarint(body.length); const sigLen = encodeVarint(signature.length); return Buffer.concat([headerLen, headerBuffer, bodyLen, body, sigLen, signature]); } // Varint 编码: 小于 128 的数字只占 1 字节 function encodeVarint(value: number): Buffer { const buffer = Buffer.allocUnsafe(5); let offset = 0; do { let byte = value & 0x7F; // 取低 7 位 value = 7; // 右移 7 位 if (value !== 0) byte |= 0x80; // 设置继续位 buffer[offset++] = byte; } while (value !== 0); return buffer.subarray(0, offset); } 截图或演示视频 No response",
+          "summary": "项目地址 类别 人工智能 项目标题 HuiNet 是一个革命性的去中心化 P2P 网络库，专为 AgenttoAgent (A2A) 通信设计，让 AI 智能体能够无缝协作与交流！ 项目描述 HuiNet 是一个去中心化的 P2P 网络库，让 AI Agents（如 Claude Code、OpenAI Codex 等）能够在不同计算机和网络之间直接通信。通过自动发现和加密消息传递，实现跨网络的 Agent 协作。 项目使用 TypeScript + Node.js 构建，采用 Ed25519 公钥加密保障通信安全，支持 mDNS 本地网络自动发现。 ⚠️ 声明： 这是一个学习型项目，旨在探索分布式系统和 P2P 网络技术。目前处于早期开发阶段，欢迎贡献者和反馈！ 亮点 1. HuiNet 使用 UDP 组播实现零配置的节点发现。当节点启动时，会自动向局域网广播自己的存在 2. 所有 P2P 消息都使用 Ed25519 签名验证，确保消息来源可信 3. HuiNet 实现了紧凑的二进制消息协议，使用 Varint 编码减少消息大小 4. HuiNet 实现了高效的三层路由表，根据连接频率自动调整节点层级 示例代码 markdown // mDNS 本地网络自动发现 export class MDiscoveryService extends EventEmitter { async start(): Promise<void { // 创建支持地址复用的 UDP socket this.socket = dgram.createSocket({ type: 'udp4', reuseAddr: true }); // 绑定到组播端口 43000 this.socket.bind(this.multicastPort, this.bindAddress, () = { // 加入组播组 224.0.0.114 this.socket!.addMembership(this.multicastAddress); this.socket!.setBroadcast(true); this.socket!.setMulticastTTL(1); }); } // 向网络广播自己的存在 announce(): void { const message: DiscoveryMessage = { type: 'announce', nodeId: this.nodeId, port: this.port, timestamp: Date.now() }; // 发送到组播地址 this.socket.send( Buffer.from(JSON.stringify(message)), this.multicastPort, this.multicastAddress ); } } // Ed25519 端到端加密 import as nacl from 'tweetnacl'; export function signMessage(message: Buffer, privateKey: Buffer): Buffer { if (privateKey.length 64) { throw new Error(Invalid private key length: ${privateKey.length}. Expected 64 bytes for Ed25519); } // 使用 tweetnacl 进行 Ed25519 签名 const signature = nacl.sign.detached( new Uint8Array(message), new Uint8Array(privateKey) ); return Buffer.from(signature); } export function verifySignature( message: Buffer, signature: Buffer, publicKey: Buffer ): boolean { if (signature.length 64) { throw new Error(Invalid signature length: ${signature.length}. Expected 64 bytes); } if (publicKey.length 32) { throw new Error(Invalid public key length: ${publicKey.length}. Expected 32 bytes); } // 验证签名 return nacl.sign.detached.verify( new Uint8Array(message), new Uint8Array(signature), new Uint8Array(publicKey) ); } // 二进制消息协议 (Varint 编码) // 消息格式: [headerlen:varint][headerjson][bodylen:varint][body][signaturelen:varint][signature] export function encodeMessage(message: BaseMessage): Buffer { const headerJson = JSON.stringify(message.header); const headerBuffer = Buffer.from(headerJson, 'utf8'); const body = message.body || Buffer.alloc(0); const signature = message.signature; // 使用 varint 编码长度 (节省空间) const headerLen = encodeVarint(headerBuffer.length); const bodyLen = encodeVarint(body.length); const sigLen = encodeVarint(signature.length); return Buffer.concat([headerLen, headerBuffer, bodyLen, body, sigLen, signature]); } // Varint 编码: 小于 128 的数字只占 1 字节 function encodeVarint(value: number): Buffer { const buffer = Buffer.allocUnsafe(5); let offset = 0; do { let byte = value & 0x7F; // 取低 7 位 value = 7; // 右移 7 位 if (value 0) byte |= 0x80; // 设置继续位 buffer[offset++] = byte; } while (value 0); return buffer.subarray(0, offset); } 截图或演示视频 No response",
           "content": "### 项目地址\n\nhttps://github.com/free-revalution/HuiNet-Network-Core\n\n### 类别\n\n人工智能\n\n### 项目标题\n\nHuiNet 是一个革命性的去中心化 P2P 网络库，专为 Agent-to-Agent (A2A) 通信设计，让 AI 智能体能够无缝协作与交流！\n\n### 项目描述\n\nHuiNet 是一个去中心化的 P2P 网络库，让 AI Agents（如 Claude Code、OpenAI Codex 等）能够在不同计算机和网络之间直接通信。通过自动发现和加密消息传递，实现跨网络的 Agent 协作。\n\n项目使用 TypeScript + Node.js 构建，采用 Ed25519 公钥加密保障通信安全，支持 mDNS 本地网络自动发现。\n\n⚠️ 声明： 这是一个学习型项目，旨在探索分布式系统和 P2P 网络技术。目前处于早期开发阶段，欢迎贡献者和反馈！\n\n### 亮点\n\n1. HuiNet 使用 UDP 组播实现零配置的节点发现。当节点启动时，会自动向局域网广播自己的存在\n2. 所有 P2P 消息都使用 Ed25519 签名验证，确保消息来源可信\n3. HuiNet 实现了紧凑的二进制消息协议，使用 Varint 编码减少消息大小\n4. HuiNet 实现了高效的三层路由表，根据连接频率自动调整节点层级\n\n### 示例代码\n\n```markdown\n// mDNS 本地网络自动发现\nexport class MDiscoveryService extends EventEmitter {\n  async start(): Promise<void> {\n    // 创建支持地址复用的 UDP socket\n    this.socket = dgram.createSocket({\n      type: 'udp4',\n      reuseAddr: true\n    });\n\n    // 绑定到组播端口 43000\n    this.socket.bind(this.multicastPort, this.bindAddress, () => {\n      // 加入组播组 224.0.0.114\n      this.socket!.addMembership(this.multicastAddress);\n      this.socket!.setBroadcast(true);\n      this.socket!.setMulticastTTL(1);\n    });\n  }\n\n  // 向网络广播自己的存在\n  announce(): void {\n    const message: DiscoveryMessage = {\n      type: 'announce',\n      nodeId: this.nodeId,\n      port: this.port,\n      timestamp: Date.now()\n    };\n    \n    // 发送到组播地址\n    this.socket.send(\n      Buffer.from(JSON.stringify(message)),\n      this.multicastPort,\n      this.multicastAddress\n    );\n  }\n}\n\n// Ed25519 端到端加密\nimport * as nacl from 'tweetnacl';\n\nexport function signMessage(message: Buffer, privateKey: Buffer): Buffer {\n  if (privateKey.length !== 64) {\n    throw new Error(`Invalid private key length: ${privateKey.length}. Expected 64 bytes for Ed25519`);\n  }\n\n  // 使用 tweetnacl 进行 Ed25519 签名\n  const signature = nacl.sign.detached(\n    new Uint8Array(message),\n    new Uint8Array(privateKey)\n  );\n\n  return Buffer.from(signature);\n}\n\nexport function verifySignature(\n  message: Buffer,\n  signature: Buffer,\n  publicKey: Buffer\n): boolean {\n  if (signature.length !== 64) {\n    throw new Error(`Invalid signature length: ${signature.length}. Expected 64 bytes`);\n  }\n  if (publicKey.length !== 32) {\n    throw new Error(`Invalid public key length: ${publicKey.length}. Expected 32 bytes`);\n  }\n\n  // 验证签名\n  return nacl.sign.detached.verify(\n    new Uint8Array(message),\n    new Uint8Array(signature),\n    new Uint8Array(publicKey)\n  );\n}\n\n// 二进制消息协议 (Varint 编码)\n// 消息格式: [header_len:varint][header_json][body_len:varint][body][signature_len:varint][signature]\n\nexport function encodeMessage(message: BaseMessage): Buffer {\n  const headerJson = JSON.stringify(message.header);\n  const headerBuffer = Buffer.from(headerJson, 'utf-8');\n  const body = message.body || Buffer.alloc(0);\n  const signature = message.signature;\n\n  // 使用 varint 编码长度 (节省空间)\n  const headerLen = encodeVarint(headerBuffer.length);\n  const bodyLen = encodeVarint(body.length);\n  const sigLen = encodeVarint(signature.length);\n\n  return Buffer.concat([headerLen, headerBuffer, bodyLen, body, sigLen, signature]);\n}\n\n// Varint 编码: 小于 128 的数字只占 1 字节\nfunction encodeVarint(value: number): Buffer {\n  const buffer = Buffer.allocUnsafe(5);\n  let offset = 0;\n\n  do {\n    let byte = value & 0x7F;  // 取低 7 位\n    value >>>= 7;              // 右移 7 位\n    if (value !== 0) byte |= 0x80;  // 设置继续位\n    buffer[offset++] = byte;\n  } while (value !== 0);\n\n  return buffer.subarray(0, offset);\n}\n```\n\n### 截图或演示视频\n\n_No response_",
           "metrics": {
             "comments": 0

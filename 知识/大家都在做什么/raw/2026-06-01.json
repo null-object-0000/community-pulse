@@ -87,7 +87,7 @@
           "author": "PaulHorn",
           "authorUrl": "https://github.com/PaulHorn",
           "publishedAt": "2026-05-31T22:17:47Z",
-          "summary": "项目地址： !Cate 大部分 IDE 把所有东西都塞进固定的标签页和分栏。Cate 换了个思路：给你一块可以无限缩放的画布，编辑器、终端、浏览器、文档、Git 面板和 AI 智能体都是画布上的节点，可以随意拖动、缩放、并排摆放，把一个任务相关的东西放在一起看。类似 Figma 或 Miro，但用来写代码。 几个我觉得有意思的点： 终端、浏览器、PDF 都能直接开在画布上，不用切窗口 内置 AI 智能体面板，可以在画布上同时跑多个 Claude Code 线程，看它们并行干活 面板可以停靠成标签栈，也能拆成独立窗口 一套主题同时控制应用界面、终端配色和编辑器语法高亮 技术栈是 Electron、React、TypeScript。MIT 协议，支持 macOS、Windows、Linux，有简体中文界面和 README。",
+          "summary": "项目地址： 大部分 IDE 把所有东西都塞进固定的标签页和分栏。Cate 换了个思路：给你一块可以无限缩放的画布，编辑器、终端、浏览器、文档、Git 面板和 AI 智能体都是画布上的节点，可以随意拖动、缩放、并排摆放，把一个任务相关的东西放在一起看。类似 Figma 或 Miro，但用来写代码。 几个我觉得有意思的点： 终端、浏览器、PDF 都能直接开在画布上，不用切窗口 内置 AI 智能体面板，可以在画布上同时跑多个 Claude Code 线程，看它们并行干活 面板可以停靠成标签栈，也能拆成独立窗口 一套主题同时控制应用界面、终端配色和编辑器语法高亮 技术栈是 Electron、React、TypeScript。MIT 协议，支持 macOS、Windows、Linux，有简体中文界面和 README。",
           "content": "项目地址：https://github.com/0-AI-UG/cate\n\n![Cate](https://raw.githubusercontent.com/0-AI-UG/cate/main/assets/demo.gif)\n\n大部分 IDE 把所有东西都塞进固定的标签页和分栏。Cate 换了个思路：给你一块可以无限缩放的画布，编辑器、终端、浏览器、文档、Git 面板和 AI 智能体都是画布上的节点，可以随意拖动、缩放、并排摆放，把一个任务相关的东西放在一起看。类似 Figma 或 Miro，但用来写代码。\n\n几个我觉得有意思的点：\n\n- 终端、浏览器、PDF 都能直接开在画布上，不用切窗口\n- 内置 AI 智能体面板，可以在画布上同时跑多个 Claude Code 线程，看它们并行干活\n- 面板可以停靠成标签栈，也能拆成独立窗口\n- 一套主题同时控制应用界面、终端配色和编辑器语法高亮\n\n技术栈是 Electron、React、TypeScript。MIT 协议，支持 macOS、Windows、Linux，有简体中文界面和 README。\n",
           "metrics": {
             "comments": 0
@@ -97,7 +97,11 @@
             "submission"
           ],
           "externalId": "10151",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10151"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10151",
+          "images": [
+            "https://raw.githubusercontent.com/0-AI-UG/cate/main/assets/demo.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/0-AI-UG/cate/main/assets/demo.gif"
         },
         {
           "sourceId": "weekly-issues",
@@ -184,7 +188,7 @@
           "author": "pulseio76",
           "authorUrl": "https://github.com/pulseio76",
           "publishedAt": "2026-06-01T06:41:12Z",
-          "summary": "项目地址： 在线预览： ArgusMind 是一个开源的 AI 代码安全审计 Agent。 它不是把代码丢给大模型，然后问一句“这里有没有漏洞”。它会像安全工程师一样，先理解项目结构，再制定审计计划，寻找危险 Sink，最后顺着调用链往上追，尝试还原一条风险路径。 我做这个项目，是因为现在很多 AI 工具都在帮人写代码，但很少有工具能像安全工程师一样系统地审代码。真实的代码审计不是一次问答，而是一连串判断：哪些模块值得看？哪些函数可能是危险点？参数是怎么传进来的？有没有可利用路径？ ArgusMind 尝试把这个过程拆成多个 Agent 协作完成： ProjectInfo Agent：理解项目语言、框架、入口和目录结构。 Plan Agent：根据项目信息生成审计计划，而不是盲扫整个仓库。 SinkFinder Agent：寻找危险函数、敏感 API 和潜在风险点。 ChainAnalyzer Agent：沿着调用链追踪数据流，分析风险路径是否成立。 和普通扫描器相比，我更希望 ArgusMind 做到的是：不只是告诉你“这里可能有问题”，而是告诉你“它是怎么一路追到这里的”。 所以项目里引入了 Neo4j，把语言、风险类型、Sink、调用链、分析结果都保存成审计图谱。审计结束后，可以在 Web 控制台里查看任务进度、漏洞详情和调用链图。 目前支持： 多 Agent 协作式代码审计 自动生成审计计划 自动发现危险 Sink 调用链追踪与风险路径分析 Neo4j 审计图谱 Web 控制台查看任务、漏洞和链路图 任务暂停、恢复、取消 Docker 本地部署 通过 LiteLLM 接入不同大模型 技术栈：Python / FastAPI / Neo4j / PostgreSQL / LiteLLM / Ant Design Pro。 欢迎对 AI 安全、代码审计、多 Agent、DevSecOps 感兴趣的同学试用和提建议。 <p align=\"center\" <img src=\" alt=\"登录页\" width=\"48%\" / &nbsp; <img src=\" alt=\"控制台\" width=\"48%\" / </p <p align=\"center\"<sub登录 · 控制台（Dashboard）</sub</p <p align=\"center\" <img src=\" alt=\"项目管理\" width=\"48%\" / &nbsp; <img src=\" alt=\"任务管理\" width=\"48%\" / </p <p align=\"center\"<sub项目管理 · 任务管理</sub</p <p align=\"center\" <img src=\" alt=\"任务详情 代码审计链路图\" width=\"96%\" / </p <p align=\"center\"<sub任务详情 · 代码审计链路图</sub</p <p align=\"center\" <img src=\" alt=\"任务详情\" width=\"48%\" / &nbsp; <img src=\" alt=\"漏洞管理\" width=\"48%\" / </p <p align=\"center\"<sub任务详情 · 漏洞管理</sub</p <p align=\"center\" <img src=\" alt=\"漏洞详情\" width=\"48%\" / &nbsp; <img src=\" alt=\"漏洞详情\" width=\"48%\" / </p <p align=\"center\"<sub漏洞详情（报告与代码审计链路图）</sub</p",
+          "summary": "项目地址： 在线预览： ArgusMind 是一个开源的 AI 代码安全审计 Agent。 它不是把代码丢给大模型，然后问一句“这里有没有漏洞”。它会像安全工程师一样，先理解项目结构，再制定审计计划，寻找危险 Sink，最后顺着调用链往上追，尝试还原一条风险路径。 我做这个项目，是因为现在很多 AI 工具都在帮人写代码，但很少有工具能像安全工程师一样系统地审代码。真实的代码审计不是一次问答，而是一连串判断：哪些模块值得看？哪些函数可能是危险点？参数是怎么传进来的？有没有可利用路径？ ArgusMind 尝试把这个过程拆成多个 Agent 协作完成： ProjectInfo Agent：理解项目语言、框架、入口和目录结构。 Plan Agent：根据项目信息生成审计计划，而不是盲扫整个仓库。 SinkFinder Agent：寻找危险函数、敏感 API 和潜在风险点。 ChainAnalyzer Agent：沿着调用链追踪数据流，分析风险路径是否成立。 和普通扫描器相比，我更希望 ArgusMind 做到的是：不只是告诉你“这里可能有问题”，而是告诉你“它是怎么一路追到这里的”。 所以项目里引入了 Neo4j，把语言、风险类型、Sink、调用链、分析结果都保存成审计图谱。审计结束后，可以在 Web 控制台里查看任务进度、漏洞详情和调用链图。 目前支持： 多 Agent 协作式代码审计 自动生成审计计划 自动发现危险 Sink 调用链追踪与风险路径分析 Neo4j 审计图谱 Web 控制台查看任务、漏洞和链路图 任务暂停、恢复、取消 Docker 本地部署 通过 LiteLLM 接入不同大模型 技术栈：Python / FastAPI / Neo4j / PostgreSQL / LiteLLM / Ant Design Pro。 欢迎对 AI 安全、代码审计、多 Agent、DevSecOps 感兴趣的同学试用和提建议。 <p align=\"center\" alt=\"登录页\" width=\"48%\" / &nbsp; alt=\"控制台\" width=\"48%\" / </p <p align=\"center\"<sub登录 · 控制台（Dashboard）</sub</p <p align=\"center\" alt=\"项目管理\" width=\"48%\" / &nbsp; alt=\"任务管理\" width=\"48%\" / </p <p align=\"center\"<sub项目管理 · 任务管理</sub</p <p align=\"center\" alt=\"任务详情 代码审计链路图\" width=\"96%\" / </p <p align=\"center\"<sub任务详情 · 代码审计链路图</sub</p <p align=\"center\" alt=\"任务详情\" width=\"48%\" / &nbsp; alt=\"漏洞管理\" width=\"48%\" / </p <p align=\"center\"<sub任务详情 · 漏洞管理</sub</p <p align=\"center\" alt=\"漏洞详情\" width=\"48%\" / &nbsp; alt=\"漏洞详情\" width=\"48%\" / </p <p align=\"center\"<sub漏洞详情（报告与代码审计链路图）</sub</p",
           "content": "项目地址：https://github.com/pulseio76/ArgusMind\n在线预览：https://argusmind.vercel.app/\nArgusMind 是一个开源的 AI 代码安全审计 Agent。\n\n它不是把代码丢给大模型，然后问一句“这里有没有漏洞”。它会像安全工程师一样，先理解项目结构，再制定审计计划，寻找危险 Sink，最后顺着调用链往上追，尝试还原一条风险路径。\n\n我做这个项目，是因为现在很多 AI 工具都在帮人写代码，但很少有工具能像安全工程师一样系统地审代码。真实的代码审计不是一次问答，而是一连串判断：哪些模块值得看？哪些函数可能是危险点？参数是怎么传进来的？有没有可利用路径？\n\nArgusMind 尝试把这个过程拆成多个 Agent 协作完成：\n\n- ProjectInfo Agent：理解项目语言、框架、入口和目录结构。\n- Plan Agent：根据项目信息生成审计计划，而不是盲扫整个仓库。\n- SinkFinder Agent：寻找危险函数、敏感 API 和潜在风险点。\n- ChainAnalyzer Agent：沿着调用链追踪数据流，分析风险路径是否成立。\n\n和普通扫描器相比，我更希望 ArgusMind 做到的是：不只是告诉你“这里可能有问题”，而是告诉你“它是怎么一路追到这里的”。\n\n所以项目里引入了 Neo4j，把语言、风险类型、Sink、调用链、分析结果都保存成审计图谱。审计结束后，可以在 Web 控制台里查看任务进度、漏洞详情和调用链图。\n\n目前支持：\n\n- 多 Agent 协作式代码审计\n- 自动生成审计计划\n- 自动发现危险 Sink\n- 调用链追踪与风险路径分析\n- Neo4j 审计图谱\n- Web 控制台查看任务、漏洞和链路图\n- 任务暂停、恢复、取消\n- Docker 本地部署\n- 通过 LiteLLM 接入不同大模型\n\n技术栈：Python / FastAPI / Neo4j / PostgreSQL / LiteLLM / Ant Design Pro。\n\n\n欢迎对 AI 安全、代码审计、多 Agent、DevSecOps 感兴趣的同学试用和提建议。\n<p align=\"center\">\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/01-login.png\" alt=\"登录页\" width=\"48%\" />\n  &nbsp;\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/02-dashboard.png\" alt=\"控制台\" width=\"48%\" />\n</p>\n<p align=\"center\"><sub>登录 · 控制台（Dashboard）</sub></p>\n\n<p align=\"center\">\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/03-projects.png\" alt=\"项目管理\" width=\"48%\" />\n  &nbsp;\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/05-tasks.png\" alt=\"任务管理\" width=\"48%\" />\n</p>\n<p align=\"center\"><sub>项目管理 · 任务管理</sub></p>\n\n<p align=\"center\">\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/06-task-detail-1.png\" alt=\"任务详情 - 代码审计链路图\" width=\"96%\" />\n</p>\n<p align=\"center\"><sub>任务详情 · 代码审计链路图</sub></p>\n\n<p align=\"center\">\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/06-task-detail.png\" alt=\"任务详情\" width=\"48%\" />\n  &nbsp;\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/07-vulnerabilities.png\" alt=\"漏洞管理\" width=\"48%\" />\n</p>\n<p align=\"center\"><sub>任务详情 · 漏洞管理</sub></p>\n\n<p align=\"center\">\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/08-vulnerability-detail.png\" alt=\"漏洞详情\" width=\"48%\" />\n  &nbsp;\n  <img src=\"https://github.com/pulseio76/ArgusMind/raw/main/docs/screenshots/08-vulnerability-detail-1.png\" alt=\"漏洞详情\" width=\"48%\" />\n</p>\n<p align=\"center\"><sub>漏洞详情（报告与代码审计链路图）</sub></p>",
           "metrics": {
             "comments": 2
@@ -203,7 +207,7 @@
           "author": "rockbenben",
           "authorUrl": "https://github.com/rockbenben",
           "publishedAt": "2026-06-01T08:47:16Z",
-          "summary": "仓库： 在线体验： 把一个文件夹或一个大文件里散落的 .md / .txt，自动聚合 / 拆分成一本可连续阅读、全文搜索、导出 EPUB 的书；纯本地、零上传。 说明： 本地优先的「文本聚合阅读器」。丢给它一个装满 .md / .txt 的文件夹（几百章的网文、一堆笔记、拆散的技术文档都行），或一个大文件，它会自动识别章节与卷（中文「第X章 / 卷一」、Markdown 标题、一、 / 1.1 编号、Setext 等都认）、按自然顺序拼成一本连续滚动的书，自动生成目录；支持中文分词全文搜索、护眼 / 夜间背景、按卷导出 TXT / Markdown / HTML / EPUB / PDF，读起来像翻电子书。读到错字想改、要统一称谓、或清理下载网文里的乱码？还能就地编辑、全局查找替换、一键整理。 两种用法： ① 服务端版当本地工具跑； ② 纯静态网页版（PWA，可安装离线）直接在浏览器里打开你的本地文件夹，全程零上传。React + TypeScript，MIT。 <img width=\"2569\" height=\"1424\" alt=\"Image\" src=\" / <img width=\"2128\" height=\"1414\" alt=\"Image\" src=\" /",
+          "summary": "仓库： 在线体验： 把一个文件夹或一个大文件里散落的 .md / .txt，自动聚合 / 拆分成一本可连续阅读、全文搜索、导出 EPUB 的书；纯本地、零上传。 说明： 本地优先的「文本聚合阅读器」。丢给它一个装满 .md / .txt 的文件夹（几百章的网文、一堆笔记、拆散的技术文档都行），或一个大文件，它会自动识别章节与卷（中文「第X章 / 卷一」、Markdown 标题、一、 / 1.1 编号、Setext 等都认）、按自然顺序拼成一本连续滚动的书，自动生成目录；支持中文分词全文搜索、护眼 / 夜间背景、按卷导出 TXT / Markdown / HTML / EPUB / PDF，读起来像翻电子书。读到错字想改、要统一称谓、或清理下载网文里的乱码？还能就地编辑、全局查找替换、一键整理。 两种用法： ① 服务端版当本地工具跑； ② 纯静态网页版（PWA，可安装离线）直接在浏览器里打开你的本地文件夹，全程零上传。React + TypeScript，MIT。",
           "content": "仓库：https://github.com/rockbenben/markbook\n在线体验：https://markbook.newzone.top/\n\n把一个文件夹或一个大文件里散落的 .md / .txt，自动聚合 / 拆分成一本可连续阅读、全文搜索、导出 EPUB 的书；纯本地、零上传。\n\n说明：\n本地优先的「文本聚合阅读器」。丢给它一个装满 .md / .txt 的文件夹（几百章的网文、一堆笔记、拆散的技术文档都行），或一个大文件，它会自动识别章节与卷（中文「第X章 / 卷一」、Markdown 标题、一、 / 1.1 编号、Setext 等都认）、按自然顺序拼成一本连续滚动的书，自动生成目录；支持中文分词全文搜索、护眼 / 夜间背景、按卷导出 TXT / Markdown / HTML / EPUB / PDF，读起来像翻电子书。读到错字想改、要统一称谓、或清理下载网文里的乱码？还能就地编辑、全局查找替换、一键整理。\n\n两种用法：\n① 服务端版当本地工具跑；\n② 纯静态网页版（PWA，可安装离线）直接在浏览器里打开你的本地文件夹，全程零上传。React + TypeScript，MIT。\n\n<img width=\"2569\" height=\"1424\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/92ac84c5-0f8f-459c-bc83-916888a9fe31\" />\n\n<img width=\"2128\" height=\"1414\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e00a573b-1a94-4023-bd99-a195b15d649c\" />\n\n",
           "metrics": {
             "comments": 0
@@ -213,7 +217,12 @@
             "submission"
           ],
           "externalId": "10157",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10157"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10157",
+          "images": [
+            "https://github.com/user-attachments/assets/92ac84c5-0f8f-459c-bc83-916888a9fe31",
+            "https://github.com/user-attachments/assets/e00a573b-1a94-4023-bd99-a195b15d649c"
+          ],
+          "image": "https://github.com/user-attachments/assets/92ac84c5-0f8f-459c-bc83-916888a9fe31"
         },
         {
           "sourceId": "weekly-issues",
@@ -260,7 +269,7 @@
           "author": "gokuscraper",
           "authorUrl": "https://github.com/gokuscraper",
           "publishedAt": "2026-06-01T09:49:54Z",
-          "summary": "项目简介： 有时候，不是你想看清自己。 是 AI 把你扒得太彻底了。 我做了一个工具：XPOSE / 推特人格透视。 它不会真去人肉你，但可以在几十秒内，把你（或任何人）的推特公开信息，变成一份犀利到让人脚趾抠地的“人格诊断书” + 无情毒舌吐槽。 它能自动抓取头像、简介和近期推文，丢给 DeepSeek V4 Pro，生成 15 张报告卡片：关于你、毒舌吐槽、优点、缺点、感情生活、财运、健康、别人对你的秘密看法……还能一键下载高清截图，直接分享到 X。 不用下载，不用配环境，浏览器打开就能玩。 你只需要输入一个推特 ID，剩下的全自动。 适用场景包括但不限于： 朋友自恋到膨胀，急需 AI 帮忙“物理清醒” 暗恋对象不敢搭话，先让 AI 替你摸摸底 群聊冷场时，甩一张群友的毒舌报告，瞬间炸群 会议摸鱼，顺手生成自己的报告发朋友圈 推特运营者自检人设，看看 AI 眼里你是什么形象 刚关注的博主，到底是宝藏还是“乐子人”，先测再说 你负责输入 ID，AI 负责精准扎心。 你负责截图，它负责金句。 它不是真正的算命，而是一个有梗、有毒、懂分寸的社交玩具。 娱乐为主，破防自理。 运行截图： <img width=\"1341\" height=\"744\" alt=\"Image\" src=\" / <img width=\"2054\" height=\"6104\" alt=\"Image\" src=\" / 项目地址： 在线体验：xpose7.streamlit.app",
+          "summary": "项目简介： 有时候，不是你想看清自己。 是 AI 把你扒得太彻底了。 我做了一个工具：XPOSE / 推特人格透视。 它不会真去人肉你，但可以在几十秒内，把你（或任何人）的推特公开信息，变成一份犀利到让人脚趾抠地的“人格诊断书” + 无情毒舌吐槽。 它能自动抓取头像、简介和近期推文，丢给 DeepSeek V4 Pro，生成 15 张报告卡片：关于你、毒舌吐槽、优点、缺点、感情生活、财运、健康、别人对你的秘密看法……还能一键下载高清截图，直接分享到 X。 不用下载，不用配环境，浏览器打开就能玩。 你只需要输入一个推特 ID，剩下的全自动。 适用场景包括但不限于： 朋友自恋到膨胀，急需 AI 帮忙“物理清醒” 暗恋对象不敢搭话，先让 AI 替你摸摸底 群聊冷场时，甩一张群友的毒舌报告，瞬间炸群 会议摸鱼，顺手生成自己的报告发朋友圈 推特运营者自检人设，看看 AI 眼里你是什么形象 刚关注的博主，到底是宝藏还是“乐子人”，先测再说 你负责输入 ID，AI 负责精准扎心。 你负责截图，它负责金句。 它不是真正的算命，而是一个有梗、有毒、懂分寸的社交玩具。 娱乐为主，破防自理。 运行截图： 项目地址： 在线体验：xpose7.streamlit.app",
           "content": "项目简介：\n有时候，不是你想看清自己。\n是 AI 把你扒得太彻底了。\n\n我做了一个工具：X-POSE / 推特人格透视。\n它不会真去人肉你，但可以在几十秒内，把你（或任何人）的推特公开信息，变成一份犀利到让人脚趾抠地的“人格诊断书” + 无情毒舌吐槽。\n\n它能自动抓取头像、简介和近期推文，丢给 DeepSeek V4 Pro，生成 15 张报告卡片：关于你、毒舌吐槽、优点、缺点、感情生活、财运、健康、别人对你的秘密看法……还能一键下载高清截图，直接分享到 X。\n\n不用下载，不用配环境，浏览器打开就能玩。\n你只需要输入一个推特 ID，剩下的全自动。\n\n适用场景包括但不限于：\n\n朋友自恋到膨胀，急需 AI 帮忙“物理清醒”\n\n暗恋对象不敢搭话，先让 AI 替你摸摸底\n\n群聊冷场时，甩一张群友的毒舌报告，瞬间炸群\n\n会议摸鱼，顺手生成自己的报告发朋友圈\n\n推特运营者自检人设，看看 AI 眼里你是什么形象\n\n刚关注的博主，到底是宝藏还是“乐子人”，先测再说\n\n你负责输入 ID，AI 负责精准扎心。\n你负责截图，它负责金句。\n\n它不是真正的算命，而是一个有梗、有毒、懂分寸的社交玩具。\n娱乐为主，破防自理。\n\n运行截图：\n\n<img width=\"1341\" height=\"744\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ccaa10f4-3a14-4888-b7db-cc03d047a756\" />\n\n<img width=\"2054\" height=\"6104\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c1dcdb1e-fbd9-4063-a8bb-ddaabccb5ad6\" />\n\n项目地址：https://github.com/gokuscraper/x-pose\n在线体验：xpose7.streamlit.app",
           "metrics": {
             "comments": 0
@@ -270,7 +279,12 @@
             "submission"
           ],
           "externalId": "10160",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10160"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10160",
+          "images": [
+            "https://github.com/user-attachments/assets/ccaa10f4-3a14-4888-b7db-cc03d047a756",
+            "https://github.com/user-attachments/assets/c1dcdb1e-fbd9-4063-a8bb-ddaabccb5ad6"
+          ],
+          "image": "https://github.com/user-attachments/assets/ccaa10f4-3a14-4888-b7db-cc03d047a756"
         },
         {
           "sourceId": "weekly-issues",
@@ -298,7 +312,7 @@
           "author": "mx2013713828",
           "authorUrl": "https://github.com/mx2013713828",
           "publishedAt": "2026-06-01T10:57:06Z",
-          "summary": "llmspace 推荐一下我的项目，主要是在学习agent和harness时，遇到太多不明觉厉的名词，什么context、memory、prompt、tooluse、react......他们到底是什么？有什么作用？在这个项目中可以自定义组装harness，你可以实验新的特性、工具，也可以对比是否勾选特性带来的区别，体验不同Harness下相同prompt带来的完全不同的结果。 <img width=\"1080\" height=\"608\" alt=\"Image\" src=\" /",
+          "summary": "llmspace 推荐一下我的项目，主要是在学习agent和harness时，遇到太多不明觉厉的名词，什么context、memory、prompt、tooluse、react......他们到底是什么？有什么作用？在这个项目中可以自定义组装harness，你可以实验新的特性、工具，也可以对比是否勾选特性带来的区别，体验不同Harness下相同prompt带来的完全不同的结果。",
           "content": "[llm-space](https://github.com/mx2013713828/llm-space)\n\n推荐一下我的项目，主要是在学习agent和harness时，遇到太多不明觉厉的名词，什么context、memory、prompt、tool-use、re-act......他们到底是什么？有什么作用？在这个项目中可以自定义组装harness，你可以实验新的特性、工具，也可以对比是否勾选特性带来的区别，体验不同Harness下相同prompt带来的完全不同的结果。\n\n<img width=\"1080\" height=\"608\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b032c427-c937-40bb-a1cc-0097cb8d991d\" />",
           "metrics": {
             "comments": 1
@@ -308,7 +322,11 @@
             "submission"
           ],
           "externalId": "10162",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10162"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10162",
+          "images": [
+            "https://github.com/user-attachments/assets/b032c427-c937-40bb-a1cc-0097cb8d991d"
+          ],
+          "image": "https://github.com/user-attachments/assets/b032c427-c937-40bb-a1cc-0097cb8d991d"
         },
         {
           "sourceId": "weekly-issues",
@@ -336,7 +354,7 @@
           "author": "zhbhun",
           "authorUrl": "https://github.com/zhbhun",
           "publishedAt": "2026-06-01T15:30:14Z",
-          "summary": "这个工具最初是给家里的小朋友做的，孩子上学后认识了不少字，我想趁这个机会锻炼一下他的语言表达和想象能力。但市面上类似的谁是卧底 App，要么是给大人联机玩的，需要给孩子准备手机和账号；要么塞满了广告，交互体验很差。 于是我干脆自己动手，做了一个纯粹辅助线下游戏的「发牌」工具——不需要人人都拿手机，一部设备轮流传递，面对面玩就够了。 怎么玩 1. 设置游戏人数，点击开始 2. 手机依次传递给每个玩家，各自查看自己的词 3. 看完后，大家按正常谁是卧底的规则线下进行 4. 投票结束后，回到手机上查看每位玩家的词，看看谁是卧底 游戏设置里还可以选择难度——难度越高，分配的词语越难分辨，甚至会出现一些抽象或生僻的词，挑战性拉满。 亮点 🎯 交互极简 —— 小孩子也能独立操作 📱 支持小程序 —— 微信里点开即玩 🏠 支持 PWA 安装 —— 添加到桌面，跟原生 App 一样顺手 🔒 隐私安全 —— 所有数据仅存储在本地，不上传任何云端 体验地址 网页版 👉 小程序版本 !undercover 开发过程 整个项目都是使用 vibe coding 完成的。 1. 需求：使用 Superpower 技能帮我从一句话需求到完整的需求规格文档 2. 设计：frontenddesign + + 3. 开发：vite + react + zustand + tailwindcss + shadcn/ui + Hugeicons 六一快乐，祝大朋友小朋友都玩得开心 🎈",
+          "summary": "这个工具最初是给家里的小朋友做的，孩子上学后认识了不少字，我想趁这个机会锻炼一下他的语言表达和想象能力。但市面上类似的谁是卧底 App，要么是给大人联机玩的，需要给孩子准备手机和账号；要么塞满了广告，交互体验很差。 于是我干脆自己动手，做了一个纯粹辅助线下游戏的「发牌」工具——不需要人人都拿手机，一部设备轮流传递，面对面玩就够了。 怎么玩 1. 设置游戏人数，点击开始 2. 手机依次传递给每个玩家，各自查看自己的词 3. 看完后，大家按正常谁是卧底的规则线下进行 4. 投票结束后，回到手机上查看每位玩家的词，看看谁是卧底 游戏设置里还可以选择难度——难度越高，分配的词语越难分辨，甚至会出现一些抽象或生僻的词，挑战性拉满。 亮点 🎯 交互极简 —— 小孩子也能独立操作 📱 支持小程序 —— 微信里点开即玩 🏠 支持 PWA 安装 —— 添加到桌面，跟原生 App 一样顺手 🔒 隐私安全 —— 所有数据仅存储在本地，不上传任何云端 体验地址 网页版 👉 小程序版本 开发过程 整个项目都是使用 vibe coding 完成的。 1. 需求：使用 Superpower 技能帮我从一句话需求到完整的需求规格文档 2. 设计：frontenddesign + + 3. 开发：vite + react + zustand + tailwindcss + shadcn/ui + Hugeicons 六一快乐，祝大朋友小朋友都玩得开心 🎈",
           "content": "这个工具最初是给家里的小朋友做的，孩子上学后认识了不少字，我想趁这个机会锻炼一下他的语言表达和想象能力。但市面上类似的谁是卧底 App，要么是给大人联机玩的，需要给孩子准备手机和账号；要么塞满了广告，交互体验很差。\n\n于是我干脆自己动手，做了一个纯粹辅助线下游戏的「发牌」工具——**不需要人人都拿手机，一部设备轮流传递，面对面玩就够了。**\n\n## 怎么玩\n\n1. 设置游戏人数，点击开始\n2. 手机依次传递给每个玩家，各自查看自己的词\n3. 看完后，大家按正常谁是卧底的规则线下进行\n4. 投票结束后，回到手机上查看每位玩家的词，看看谁是卧底\n\n游戏设置里还可以选择难度——难度越高，分配的词语越难分辨，甚至会出现一些抽象或生僻的词，挑战性拉满。\n\n## 亮点\n\n- 🎯 **交互极简** —— 小孩子也能独立操作\n- 📱 **支持小程序** —— 微信里点开即玩\n- 🏠 **支持 PWA 安装** —— 添加到桌面，跟原生 App 一样顺手\n- 🔒 **隐私安全** —— 所有数据仅存储在本地，不上传任何云端\n\n## 体验地址\n\n网页版 👉 https://undercover-family.github.io/\n\n小程序版本\n\n![undercover](https://i.imgur.com/fUz3fsM.jpeg)\n\n## 开发过程\n\n整个项目都是使用 vibe coding 完成的。\n\n1. 需求：使用 Superpower 技能帮我从一句话需求到完整的需求规格文档\n2. 设计：frontend-design + https://www.designprompts.dev/sketch + https://github.com/op7418/logo-generator-skill\n3. 开发：vite + react + zustand + tailwindcss + shadcn/ui + Hugeicons\n\n\n---\n\n> 六一快乐，祝大朋友小朋友都玩得开心 🎈\n\n",
           "metrics": {
             "comments": 0

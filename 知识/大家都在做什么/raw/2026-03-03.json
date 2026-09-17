@@ -35,7 +35,7 @@
           "author": "aicu-icu",
           "authorUrl": "https://github.com/aicu-icu",
           "publishedAt": "2026-03-02T16:50:22Z",
-          "summary": "一句话介绍 将任意网页变成 API/MCP 服务器，实现外部工具调用接口/MCP工具就能在用户网页上执行操作并获取结果。 <img width=\"639\" height=\"489\" alt=\"Image\" src=\" / 项目简介 将用户浏览器里打开的网页，一键启动成为API/MCP服务（运行在用户的网页上），主要用于自动化操作用户的网页，比如填写表单、模拟调用页面的js函数对象等。 用户可使用JS代码编写API接口以及MCP工具（JS运行在用户的网页端），然后就能够在外部通过调用生成的API接口，实现请求接口 = 用户网页执行获取结果 = 返回 的流程。 简单使用 访问Broxy官网即可立即体验功能 用户可以在自己的网站中集成SDK，即可为所有网站的访客提供“前端API/MCP\"服务，从而节省您的服务器开销，使用户可以在工作流，或者AI客户端中，自动化调用您提供的接口或者工具，实现您的网页提供的如数据获取、模拟搜索、模拟HTTP请求等功能。 假设这么一个场景：用户安装了Broxy，并打开了小红书网页，然后创建了几个API/MCP工具，并将接口集成到如Claude等AI客户端中，这时候只需要说”帮我搜索关于xxxx的20条笔记，并点赞前5条热门的笔记，挑选其中最热门的笔记，发布一条夸赞笔记的精彩评论！“，通常调用接口或者工具，都能在秒级别内响应，整个工作流执行下来速度就非常的快，相比传统的通用的浏览器MCP方案，极速且省token。 说点别的 这不算是一个新概念，MCP服务一般都运行在服务器或者本地命令行，其实很多网页上的操作，只需要几行JS代码就能实现了。那么我们何不化繁为简，直接的把JS操作的代码转换为AI能够直接调用执行的工具。 Google最近也推出了webmcp的概念： 个人看下来，和我这个项目所表达的意思非常接近！ 不多说，整个项目所有代码全部开源！ 后端使用cloudflare worker部署（免费版），所以如果个人想自己部署，那完全是没有成本的。 项目地址： 官网：",
+          "summary": "一句话介绍 将任意网页变成 API/MCP 服务器，实现外部工具调用接口/MCP工具就能在用户网页上执行操作并获取结果。 项目简介 将用户浏览器里打开的网页，一键启动成为API/MCP服务（运行在用户的网页上），主要用于自动化操作用户的网页，比如填写表单、模拟调用页面的js函数对象等。 用户可使用JS代码编写API接口以及MCP工具（JS运行在用户的网页端），然后就能够在外部通过调用生成的API接口，实现请求接口 = 用户网页执行获取结果 = 返回 的流程。 简单使用 访问Broxy官网即可立即体验功能 用户可以在自己的网站中集成SDK，即可为所有网站的访客提供“前端API/MCP\"服务，从而节省您的服务器开销，使用户可以在工作流，或者AI客户端中，自动化调用您提供的接口或者工具，实现您的网页提供的如数据获取、模拟搜索、模拟HTTP请求等功能。 假设这么一个场景：用户安装了Broxy，并打开了小红书网页，然后创建了几个API/MCP工具，并将接口集成到如Claude等AI客户端中，这时候只需要说”帮我搜索关于xxxx的20条笔记，并点赞前5条热门的笔记，挑选其中最热门的笔记，发布一条夸赞笔记的精彩评论！“，通常调用接口或者工具，都能在秒级别内响应，整个工作流执行下来速度就非常的快，相比传统的通用的浏览器MCP方案，极速且省token。 说点别的 这不算是一个新概念，MCP服务一般都运行在服务器或者本地命令行，其实很多网页上的操作，只需要几行JS代码就能实现了。那么我们何不化繁为简，直接的把JS操作的代码转换为AI能够直接调用执行的工具。 Google最近也推出了webmcp的概念： 个人看下来，和我这个项目所表达的意思非常接近！ 不多说，整个项目所有代码全部开源！ 后端使用cloudflare worker部署（免费版），所以如果个人想自己部署，那完全是没有成本的。 项目地址： 官网：",
           "content": "## 一句话介绍\n将任意网页变成 API/MCP 服务器，实现外部工具调用接口/MCP工具就能在用户网页上执行操作并获取结果。\n\n<img width=\"639\" height=\"489\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cd9df4e1-c629-42dd-b3f2-ea6536391350\" />\n\n## 项目简介\n将用户浏览器里打开的网页，一键启动成为API/MCP服务（运行在用户的网页上），主要用于自动化操作用户的网页，比如填写表单、模拟调用页面的js函数对象等。\n用户可使用JS代码编写API接口以及MCP工具（JS运行在用户的网页端），然后就能够在外部通过调用生成的API接口，实现请求接口 => 用户网页执行获取结果 => 返回 的流程。\n\n## 简单使用\n访问[Broxy官网](https://broxy.dev)即可立即体验功能\n\n用户可以在自己的网站中集成SDK，即可为所有网站的访客提供“前端API/MCP\"服务，从而节省您的服务器开销，使用户可以在工作流，或者AI客户端中，自动化调用您提供的接口或者工具，实现您的网页提供的如数据获取、模拟搜索、模拟HTTP请求等功能。\n\n假设这么一个场景：用户安装了Broxy，并打开了小红书网页，然后创建了几个API/MCP工具，并将接口集成到如Claude等AI客户端中，这时候只需要说”帮我搜索关于xxxx的20条笔记，并点赞前5条热门的笔记，挑选其中最热门的笔记，发布一条夸赞笔记的精彩评论！“，通常调用接口或者工具，都能在秒级别内响应，整个工作流执行下来速度就非常的快，相比传统的通用的浏览器MCP方案，极速且省token。\n\n## 说点别的\n这不算是一个新概念，MCP服务一般都运行在服务器或者本地命令行，其实很多网页上的操作，只需要几行JS代码就能实现了。那么我们何不化繁为简，直接的把JS操作的代码转换为AI能够直接调用执行的工具。\nGoogle最近也推出了webmcp的概念：https://developer.chrome.com/blog/webmcp-epp?hl=zh-cn\n个人看下来，和我这个项目所表达的意思非常接近！\n\n\n不多说，整个项目所有代码全部开源！\n后端使用cloudflare worker部署（免费版），所以如果个人想自己部署，那完全是没有成本的。\n\n\n项目地址：https://github.com/broxy-dev\n官网：https://broxy.dev\n",
           "metrics": {
             "comments": 2
@@ -46,7 +46,11 @@
           ],
           "externalId": "9113",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9113",
-          "siteLogo": "https://broxy.dev/assets/logo.png"
+          "siteLogo": "https://broxy.dev/assets/logo.png",
+          "images": [
+            "https://github.com/user-attachments/assets/cd9df4e1-c629-42dd-b3f2-ea6536391350"
+          ],
+          "image": "https://github.com/user-attachments/assets/cd9df4e1-c629-42dd-b3f2-ea6536391350"
         },
         {
           "sourceId": "weekly-issues",
@@ -93,7 +97,7 @@
           "author": "Yingjie-Zhao",
           "authorUrl": "https://github.com/Yingjie-Zhao",
           "publishedAt": "2026-03-03T06:51:07Z",
-          "summary": "每天从 180+ 全球媒体源中 AI 筛选最重要的新闻，生成结构化摘要。 不是无限信息流，而是每天一份有限的新闻快照 — 读完就走，不刷不焦虑。 核心功能： AI 评分筛选 + 去重，每天只留最值得知道的 事件叙事：自动生成事件的来龙去脉时间线 11 种语言同步生成（中/英/日/韩/法/德/西/葡/俄/阿/印地） 邮件订阅：每日 Digest 直达邮箱 技术栈：Next.js + Cloudflare Workers + 通义千问 + DeepSeek 链接： <img width=\"3342\" height=\"1826\" alt=\"Image\" src=\" / <img width=\"3342\" height=\"1828\" alt=\"Image\" src=\" /",
+          "summary": "每天从 180+ 全球媒体源中 AI 筛选最重要的新闻，生成结构化摘要。 不是无限信息流，而是每天一份有限的新闻快照 — 读完就走，不刷不焦虑。 核心功能： AI 评分筛选 + 去重，每天只留最值得知道的 事件叙事：自动生成事件的来龙去脉时间线 11 种语言同步生成（中/英/日/韩/法/德/西/葡/俄/阿/印地） 邮件订阅：每日 Digest 直达邮箱 技术栈：Next.js + Cloudflare Workers + 通义千问 + DeepSeek 链接：",
           "content": "每天从 180+ 全球媒体源中 AI 筛选最重要的新闻，生成结构化摘要。\n不是无限信息流，而是每天一份有限的新闻快照 — 读完就走，不刷不焦虑。\n\n  **核心功能**：\n  - AI 评分筛选 + 去重，每天只留最值得知道的\n  - 事件叙事：自动生成事件的来龙去脉时间线\n  - 11 种语言同步生成（中/英/日/韩/法/德/西/葡/俄/阿/印地）\n  - 邮件订阅：每日 Digest 直达邮箱\n\n  技术栈：Next.js + Cloudflare Workers + 通义千问 + DeepSeek\n\n  **链接**：https://3mins.news\n\n<img width=\"3342\" height=\"1826\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/838f7c8d-e0c9-4929-948d-73c50c6434e5\" />\n\n<img width=\"3342\" height=\"1828\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d45204b5-61bc-4515-9f43-8c1f59251676\" />",
           "metrics": {
             "comments": 0
@@ -103,7 +107,12 @@
             "submission"
           ],
           "externalId": "9116",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9116"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9116",
+          "images": [
+            "https://github.com/user-attachments/assets/838f7c8d-e0c9-4929-948d-73c50c6434e5",
+            "https://github.com/user-attachments/assets/d45204b5-61bc-4515-9f43-8c1f59251676"
+          ],
+          "image": "https://github.com/user-attachments/assets/838f7c8d-e0c9-4929-948d-73c50c6434e5"
         },
         {
           "sourceId": "weekly-issues",
@@ -112,7 +121,7 @@
           "author": "MaskerPRC",
           "authorUrl": "https://github.com/MaskerPRC",
           "publishedAt": "2026-03-03T08:05:21Z",
-          "summary": "项目地址： 一句话介绍 一个 DockerinDocker 架构的「数字渐进式分身」系统 —— 你用自然语言描述需求，AI 实时生成 Vue 页面 + Express API + 自动部署，30 秒内从想法到可用功能，系统的代码像活体组织一样持续生长。 <img width=\"1376\" height=\"768\" alt=\"Image\" src=\" / 为什么做这个 现有的 AI 助手（ChatGPT、Claude）是「用完即走」的对话框。我想要的是一个会积累、会生长的数字分身 —— 每次对话不是消耗 token，而是在给系统添砖加瓦。聊完之后，功能留下来了，API 留下来了，页面留下来了。 核心机制 用户描述需求 → Claude Code 实时生成代码 → 热部署到 App 容器 → Git 自动提交 → 功能永久保留 整个系统由两个 Docker 容器组成： CONTROL 容器（大脑）：运行 Claude Code 引擎，挂载 Docker Socket，拥有对 App 容器的完全控制权 APP 容器（身体）：承载所有 AI 生成的功能页面和 API，支持热重载 最有意思的设计 1. 对话即功能：说一句\"帮我做个食物日记页面\"，30 秒后你就有了一个完整的 CRUD 应用，含前端页面、后端 API、数据持久化 2. Skill = Markdown：技能系统不是代码插件，而是 Markdown 知识文档。写一份 API 说明书（含 Key、端点、参数），AI 就知道怎么调用它 —— 当执行者从人变成 AI，你不需要函数签名，你需要意图文档 3. 代码是消耗品：功能坏了？不用 debug，重新描述一遍让 AI 再生成一次。每次变更自动 Git 提交，随时 revert 已经「长」出来的功能（全部由对话生成，零手写代码） 微信消息自动化（通过 n8n Webhook，支持私聊/群聊/@成员） Telegram Bot 集成 工作任务管理 + 闲时任务管理（含 TTS 语音播放） 自我认知记录系统 联想触发器（看到信息 → 自动关联可执行的行动） 多平台推广文章生成器（40 种传播触发器模型） 英语学习工具、食物日记、GitHub 仓库监控…… 技术栈 | 层 | 技术 | ||| | 前端 | Vue 3 + Vite + Tailwind CSS 4 + PWA | | 后端 | Node.js + Express | | AI 引擎 | Claude Code API | | 基础设施 | Docker + DockerinDocker | | 数据库 | Supabase (PostgreSQL) | | 语言 | JavaScript ES Modules（不用 TypeScript，AI 生成的代码不需要类型系统） | 和同类项目的差异 | 维度 | 传统 AI 助手 | SelfSystem | |||| | 输出 | 文本回复 | 可运行的功能（页面 + API + 数据） | | 积累性 | 无，对话结束即消失 | 每次对话沉淀为系统功能 | | 扩展方式 | 插件市场 / Plugin SDK | 自然语言描述 → AI 直接生成 | | 定位 | 工具 | 操作系统 | 适合什么人 懂 Docker + Git 的程序员 想要一个深度定制化的个人数字系统 相信「AI 原生」应该是代码由 AI 生成，而不只是 AI 辅助写代码",
+          "summary": "项目地址： 一句话介绍 一个 DockerinDocker 架构的「数字渐进式分身」系统 —— 你用自然语言描述需求，AI 实时生成 Vue 页面 + Express API + 自动部署，30 秒内从想法到可用功能，系统的代码像活体组织一样持续生长。 为什么做这个 现有的 AI 助手（ChatGPT、Claude）是「用完即走」的对话框。我想要的是一个会积累、会生长的数字分身 —— 每次对话不是消耗 token，而是在给系统添砖加瓦。聊完之后，功能留下来了，API 留下来了，页面留下来了。 核心机制 用户描述需求 → Claude Code 实时生成代码 → 热部署到 App 容器 → Git 自动提交 → 功能永久保留 整个系统由两个 Docker 容器组成： CONTROL 容器（大脑）：运行 Claude Code 引擎，挂载 Docker Socket，拥有对 App 容器的完全控制权 APP 容器（身体）：承载所有 AI 生成的功能页面和 API，支持热重载 最有意思的设计 1. 对话即功能：说一句\"帮我做个食物日记页面\"，30 秒后你就有了一个完整的 CRUD 应用，含前端页面、后端 API、数据持久化 2. Skill = Markdown：技能系统不是代码插件，而是 Markdown 知识文档。写一份 API 说明书（含 Key、端点、参数），AI 就知道怎么调用它 —— 当执行者从人变成 AI，你不需要函数签名，你需要意图文档 3. 代码是消耗品：功能坏了？不用 debug，重新描述一遍让 AI 再生成一次。每次变更自动 Git 提交，随时 revert 已经「长」出来的功能（全部由对话生成，零手写代码） 微信消息自动化（通过 n8n Webhook，支持私聊/群聊/@成员） Telegram Bot 集成 工作任务管理 + 闲时任务管理（含 TTS 语音播放） 自我认知记录系统 联想触发器（看到信息 → 自动关联可执行的行动） 多平台推广文章生成器（40 种传播触发器模型） 英语学习工具、食物日记、GitHub 仓库监控…… 技术栈 | 层 | 技术 | ||| | 前端 | Vue 3 + Vite + Tailwind CSS 4 + PWA | | 后端 | Node.js + Express | | AI 引擎 | Claude Code API | | 基础设施 | Docker + DockerinDocker | | 数据库 | Supabase (PostgreSQL) | | 语言 | JavaScript ES Modules（不用 TypeScript，AI 生成的代码不需要类型系统） | 和同类项目的差异 | 维度 | 传统 AI 助手 | SelfSystem | |||| | 输出 | 文本回复 | 可运行的功能（页面 + API + 数据） | | 积累性 | 无，对话结束即消失 | 每次对话沉淀为系统功能 | | 扩展方式 | 插件市场 / Plugin SDK | 自然语言描述 → AI 直接生成 | | 定位 | 工具 | 操作系统 | 适合什么人 懂 Docker + Git 的程序员 想要一个深度定制化的个人数字系统 相信「AI 原生」应该是代码由 AI 生成，而不只是 AI 辅助写代码",
           "content": "**项目地址**：https://github.com/MaskerPRC/self-system\n\n#### 一句话介绍\n\n一个 Docker-in-Docker 架构的「数字渐进式分身」系统 —— 你用自然语言描述需求，AI 实时生成 Vue 页面 + Express API + 自动部署，30 秒内从想法到可用功能，系统的代码像活体组织一样持续生长。\n\n<img width=\"1376\" height=\"768\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/150a0b68-ae31-46a3-b1ec-ede9b7b8c49c\" />\n\n#### 为什么做这个\n\n现有的 AI 助手（ChatGPT、Claude）是「用完即走」的对话框。我想要的是一个**会积累、会生长的数字分身** —— 每次对话不是消耗 token，而是在给系统添砖加瓦。聊完之后，功能留下来了，API 留下来了，页面留下来了。\n\n#### 核心机制\n\n```\n用户描述需求 → Claude Code 实时生成代码 → 热部署到 App 容器 → Git 自动提交 → 功能永久保留\n```\n\n整个系统由两个 Docker 容器组成：\n\n- **CONTROL 容器**（大脑）：运行 Claude Code 引擎，挂载 Docker Socket，拥有对 App 容器的完全控制权\n- **APP 容器**（身体）：承载所有 AI 生成的功能页面和 API，支持热重载\n\n#### 最有意思的设计\n\n1. **对话即功能**：说一句\"帮我做个食物日记页面\"，30 秒后你就有了一个完整的 CRUD 应用，含前端页面、后端 API、数据持久化\n2. **Skill = Markdown**：技能系统不是代码插件，而是 Markdown 知识文档。写一份 API 说明书（含 Key、端点、参数），AI 就知道怎么调用它 —— 当执行者从人变成 AI，你不需要函数签名，你需要意图文档\n3. **代码是消耗品**：功能坏了？不用 debug，重新描述一遍让 AI 再生成一次。每次变更自动 Git 提交，随时 revert\n\n#### 已经「长」出来的功能（全部由对话生成，零手写代码）\n\n- 微信消息自动化（通过 n8n Webhook，支持私聊/群聊/@成员）\n- Telegram Bot 集成\n- 工作任务管理 + 闲时任务管理（含 TTS 语音播放）\n- 自我认知记录系统\n- 联想触发器（看到信息 → 自动关联可执行的行动）\n- 多平台推广文章生成器（40 种传播触发器模型）\n- 英语学习工具、食物日记、GitHub 仓库监控……\n\n#### 技术栈\n\n| 层 | 技术 |\n|---|------|\n| 前端 | Vue 3 + Vite + Tailwind CSS 4 + PWA |\n| 后端 | Node.js + Express |\n| AI 引擎 | Claude Code API |\n| 基础设施 | Docker + Docker-in-Docker |\n| 数据库 | Supabase (PostgreSQL) |\n| 语言 | JavaScript ES Modules（不用 TypeScript，AI 生成的代码不需要类型系统） |\n\n#### 和同类项目的差异\n\n| 维度 | 传统 AI 助手 | Self-System |\n|------|-------------|-------------|\n| 输出 | 文本回复 | 可运行的功能（页面 + API + 数据） |\n| 积累性 | 无，对话结束即消失 | 每次对话沉淀为系统功能 |\n| 扩展方式 | 插件市场 / Plugin SDK | 自然语言描述 → AI 直接生成 |\n| 定位 | 工具 | 操作系统 |\n\n#### 适合什么人\n\n- 懂 Docker + Git 的程序员\n- 想要一个深度定制化的个人数字系统\n- 相信「AI 原生」应该是代码由 AI 生成，而不只是 AI 辅助写代码\n",
           "metrics": {
             "comments": 0
@@ -122,7 +131,11 @@
             "submission"
           ],
           "externalId": "9117",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9117"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9117",
+          "images": [
+            "https://github.com/user-attachments/assets/150a0b68-ae31-46a3-b1ec-ede9b7b8c49c"
+          ],
+          "image": "https://github.com/user-attachments/assets/150a0b68-ae31-46a3-b1ec-ede9b7b8c49c"
         },
         {
           "sourceId": "weekly-issues",
@@ -131,7 +144,7 @@
           "author": "foru17",
           "authorUrl": "https://github.com/foru17",
           "publishedAt": "2026-03-03T08:51:15Z",
-          "summary": "链接： 我在网上写了十几年博客，加上 YouTube、X/Twitter、GitHub 等平台的公开内容，最近把这些数据做了结构化处理，在博客上实现了两个功能： 让 6 个 AI 模型各自写出「AI 眼中的罗磊」，支持多视角切换（luolei.org/about） 基于 RAG 做了一个可以直接聊天的 AI 数字分身（luolei.org 首页） 文章分享了完整的实现思路、技术方案，以及过程中踩的一些坑。 <img width=\"3298\" height=\"1952\" alt=\"Image\" src=\" /",
+          "summary": "链接： 我在网上写了十几年博客，加上 YouTube、X/Twitter、GitHub 等平台的公开内容，最近把这些数据做了结构化处理，在博客上实现了两个功能： 让 6 个 AI 模型各自写出「AI 眼中的罗磊」，支持多视角切换（luolei.org/about） 基于 RAG 做了一个可以直接聊天的 AI 数字分身（luolei.org 首页） 文章分享了完整的实现思路、技术方案，以及过程中踩的一些坑。",
           "content": "链接：[https://luolei.org/luolei-ai](https://luolei.org/luolei-ai)\n\n我在网上写了十几年博客，加上 YouTube、X/Twitter、GitHub 等平台的公开内容，最近把这些数据做了结构化处理，在博客上实现了两个功能：\n\n-   让 6 个 AI 模型各自写出「AI 眼中的罗磊」，支持多视角切换（luolei.org/about）\n-   基于 RAG 做了一个可以直接聊天的 AI 数字分身（luolei.org 首页）\n\n文章分享了完整的实现思路、技术方案，以及过程中踩的一些坑。\n\n<img width=\"3298\" height=\"1952\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f1403054-c939-4a93-baa8-1663b9cc013d\" />",
           "metrics": {
             "comments": 0
@@ -141,7 +154,11 @@
             "submission"
           ],
           "externalId": "9118",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9118"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9118",
+          "images": [
+            "https://github.com/user-attachments/assets/f1403054-c939-4a93-baa8-1663b9cc013d"
+          ],
+          "image": "https://github.com/user-attachments/assets/f1403054-c939-4a93-baa8-1663b9cc013d"
         },
         {
           "sourceId": "weekly-issues",
@@ -169,7 +186,7 @@
           "author": "yunlongwen",
           "authorUrl": "https://github.com/yunlongwen",
           "publishedAt": "2026-03-03T11:22:39Z",
-          "summary": "GitHub Gist + page 一键部署的个人导航网站 <img width=\"1771\" height=\"870\" alt=\"Image\" src=\" / <img width=\"1054\" height=\"839\" alt=\"Image\" src=\" /",
+          "summary": "GitHub Gist + page 一键部署的个人导航网站",
           "content": "GitHub Gist  + page 一键部署的个人导航网站\n\nhttps://github.com/yunlongwen/NavGate\n\n<img width=\"1771\" height=\"870\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4efbf612-c92e-4c6e-a85d-e3d8d7ebc816\" />\n\n\n\n<img width=\"1054\" height=\"839\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e60f00f4-111c-46dc-b07e-e58cd7d58981\" />",
           "metrics": {
             "comments": 0
@@ -179,7 +196,12 @@
             "submission"
           ],
           "externalId": "9120",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9120"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9120",
+          "images": [
+            "https://github.com/user-attachments/assets/4efbf612-c92e-4c6e-a85d-e3d8d7ebc816",
+            "https://github.com/user-attachments/assets/e60f00f4-111c-46dc-b07e-e58cd7d58981"
+          ],
+          "image": "https://github.com/user-attachments/assets/4efbf612-c92e-4c6e-a85d-e3d8d7ebc816"
         },
         {
           "sourceId": "weekly-issues",
@@ -188,7 +210,7 @@
           "author": "cf12436",
           "authorUrl": "https://github.com/cf12436",
           "publishedAt": "2026-03-03T13:56:40Z",
-          "summary": "VideoDance — AI 驱动的视频与图像创作平台 一键生成精美图像、电影级视频和完整短剧——全程 AI 驱动，无需任何技术背景。 传送门：videodance.cc 什么是 VideoDance？ VideoDance 是专为现代创作者打造的一站式 AI 创作平台。无论你是独立短剧导演、内容创作者，还是专业制作团队，都能在这里用一个平台访问全球最强 AI 生成模型，随时随地将创意变为现实。 !在这里插入图片描述 🖼️ AI 图像生成 几秒钟内从文字描述或已有图片生成专业级图像。 11 个顶尖模型：Nano Banana 2、Seedream 4.5、Qwen Image Edit 等 文生图 & 图生图——描述你的想法，或对已有图像进行二次创作 最高 4K 分辨率，满足印刷或广播级输出需求 风格全覆盖：写实摄影、电影感、动漫、概念艺术、奇幻等 高级编辑：局部重绘、风格迁移、背景替换 精选模型 | 模型 | 擅长领域 | ||| | Nano Banana 2 | 超写实人像与摄影风格 | | Seedream 4.5 | 电影级静帧与创意构图 | | Qwen Image Edit | 精准局部重绘与图像编辑 | !在这里插入图片描述 🎥 AI 视频生成 用全球领先的 AI 视频模型，将创意直接变成电影级视频片段。 顶级模型：Sora 2 Pro、Kling O3、Kling 3.0、Seedance 2.0、Wan 2.6 文生视频 & 图生视频双流程 最高 4K 视频质量 单次生成 5–10 秒，可串联制作更长叙事内容 电影级运镜控制：平移、推拉、跟拍、摇臂等专业镜头语言 模型对比 | 模型 | 最佳场景 | 质量 | |||| | Sora 2 Pro | 超写实电影质感 | ⭐⭐⭐⭐⭐ | | Kling O3 | 动作戏、戏剧冲突 | ⭐⭐⭐⭐⭐ | | Kling 3.0 | 流畅人物运动 | ⭐⭐⭐⭐ | | Seedance 2.0 | 快速高效制作 | ⭐⭐⭐⭐ | | Wan 2.6 | 创意风格化内容 | ⭐⭐⭐⭐ | !在这里插入图片描述 🎭 AI 短剧工场——完整短剧一站式制作 从创意到成片，最快 30 分钟。 AI 短剧工场是 VideoDance 的旗舰功能——一套由 AI 全程驱动的短剧制作流水线。你只需要一个故事想法，平台会自动完成剧本、角色、场景、镜头、视频的全流程生产。无需编剧经验，无需摄制团队，无需剪辑软件。 六步制作流程 第一步：剧本 → 第二步：角色 → 第三步：场景 → 第四步：关键帧 → 第五步：视频 → 第六步：导出 第一步——剧本生成 用任意语言描述你的故事概念 AI 自动生成完整的 10 镜剧本：场景描述、角色台词、镜头指引 自由编辑，或一键重新生成 !在这里插入图片描述 第二步——角色设定 AI 为剧本中每个角色生成统一风格的形象图 角色形象在全片保持一致性 单个项目支持 10+ 个角色 第三步——场景概念图 每个场景生成独立的 AI 概念插图 提前预览环境、氛围与灯光效果 支持电影写实、动漫、赛博朋克等多种美术风格 !在这里插入图片描述 第四步——关键帧生成 为每个镜头生成对应的关键帧图像 构图、人物站位、视觉流程在渲染前完整预览 支持全项目批量生成 !在这里插入图片描述 第五步——视频渲染 每张关键帧渲染为完整视频片段 Seedance 2.0（默认）：快速高效，每个项目约 239 积分（Pro 套餐约 $7.96） Kling O3（旗舰）：电影级输出质量，每个项目约 360 积分 第六步——导出与分享 下载单个镜头或完整影片包 所有素材按项目在控制台统一管理 一键生成分享链接 !在这里插入图片描述 现在就去试试 如果你一直觉得视频制作流程太复杂、门槛太高，VideoDance 值得认真看一下。平台没有免费额度，所有功能都需要积分才能使用，但入门档的积分包定价不高，足够跑完一个完整流程。真正感受到它价值的时刻，是你第一次从剧本写到成片导出，全程没有离开过这一个平台。 立即体验videodance.cc",
+          "summary": "VideoDance — AI 驱动的视频与图像创作平台 一键生成精美图像、电影级视频和完整短剧——全程 AI 驱动，无需任何技术背景。 传送门：videodance.cc 什么是 VideoDance？ VideoDance 是专为现代创作者打造的一站式 AI 创作平台。无论你是独立短剧导演、内容创作者，还是专业制作团队，都能在这里用一个平台访问全球最强 AI 生成模型，随时随地将创意变为现实。 🖼️ AI 图像生成 几秒钟内从文字描述或已有图片生成专业级图像。 11 个顶尖模型：Nano Banana 2、Seedream 4.5、Qwen Image Edit 等 文生图 & 图生图——描述你的想法，或对已有图像进行二次创作 最高 4K 分辨率，满足印刷或广播级输出需求 风格全覆盖：写实摄影、电影感、动漫、概念艺术、奇幻等 高级编辑：局部重绘、风格迁移、背景替换 精选模型 | 模型 | 擅长领域 | ||| | Nano Banana 2 | 超写实人像与摄影风格 | | Seedream 4.5 | 电影级静帧与创意构图 | | Qwen Image Edit | 精准局部重绘与图像编辑 | 🎥 AI 视频生成 用全球领先的 AI 视频模型，将创意直接变成电影级视频片段。 顶级模型：Sora 2 Pro、Kling O3、Kling 3.0、Seedance 2.0、Wan 2.6 文生视频 & 图生视频双流程 最高 4K 视频质量 单次生成 5–10 秒，可串联制作更长叙事内容 电影级运镜控制：平移、推拉、跟拍、摇臂等专业镜头语言 模型对比 | 模型 | 最佳场景 | 质量 | |||| | Sora 2 Pro | 超写实电影质感 | ⭐⭐⭐⭐⭐ | | Kling O3 | 动作戏、戏剧冲突 | ⭐⭐⭐⭐⭐ | | Kling 3.0 | 流畅人物运动 | ⭐⭐⭐⭐ | | Seedance 2.0 | 快速高效制作 | ⭐⭐⭐⭐ | | Wan 2.6 | 创意风格化内容 | ⭐⭐⭐⭐ | 🎭 AI 短剧工场——完整短剧一站式制作 从创意到成片，最快 30 分钟。 AI 短剧工场是 VideoDance 的旗舰功能——一套由 AI 全程驱动的短剧制作流水线。你只需要一个故事想法，平台会自动完成剧本、角色、场景、镜头、视频的全流程生产。无需编剧经验，无需摄制团队，无需剪辑软件。 六步制作流程 第一步：剧本 → 第二步：角色 → 第三步：场景 → 第四步：关键帧 → 第五步：视频 → 第六步：导出 第一步——剧本生成 用任意语言描述你的故事概念 AI 自动生成完整的 10 镜剧本：场景描述、角色台词、镜头指引 自由编辑，或一键重新生成 第二步——角色设定 AI 为剧本中每个角色生成统一风格的形象图 角色形象在全片保持一致性 单个项目支持 10+ 个角色 第三步——场景概念图 每个场景生成独立的 AI 概念插图 提前预览环境、氛围与灯光效果 支持电影写实、动漫、赛博朋克等多种美术风格 第四步——关键帧生成 为每个镜头生成对应的关键帧图像 构图、人物站位、视觉流程在渲染前完整预览 支持全项目批量生成 第五步——视频渲染 每张关键帧渲染为完整视频片段 Seedance 2.0（默认）：快速高效，每个项目约 239 积分（Pro 套餐约 $7.96） Kling O3（旗舰）：电影级输出质量，每个项目约 360 积分 第六步——导出与分享 下载单个镜头或完整影片包 所有素材按项目在控制台统一管理 一键生成分享链接 现在就去试试 如果你一直觉得视频制作流程太复杂、门槛太高，VideoDance 值得认真看一下。平台没有免费额度，所有功能都需要积分才能使用，但入门档的积分包定价不高，足够跑完一个完整流程。真正感受到它价值的时刻，是你第一次从剧本写到成片导出，全程没有离开过这一个平台。 立即体验videodance.cc",
           "content": "# VideoDance — AI 驱动的视频与图像创作平台\n\n> **一键生成精美图像、电影级视频和完整短剧——全程 AI 驱动，无需任何技术背景。**\n\n---\n传送门：[videodance.cc](https://videodance.cc)\n## 什么是 VideoDance？\n\nVideoDance 是专为现代创作者打造的一站式 AI 创作平台。无论你是独立短剧导演、内容创作者，还是专业制作团队，都能在这里用一个平台访问全球最强 AI 生成模型，随时随地将创意变为现实。\n\n---\n![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/9aa00aeaf1bf4354aa12a4e26a9dcf93.png#pic_center)\n\n## 🖼️ AI 图像生成\n\n几秒钟内从文字描述或已有图片生成专业级图像。\n\n- **11 个顶尖模型**：Nano Banana 2、Seedream 4.5、Qwen Image Edit 等\n- **文生图 & 图生图**——描述你的想法，或对已有图像进行二次创作\n- **最高 4K 分辨率**，满足印刷或广播级输出需求\n- **风格全覆盖**：写实摄影、电影感、动漫、概念艺术、奇幻等\n- **高级编辑**：局部重绘、风格迁移、背景替换\n\n### 精选模型\n\n| 模型 | 擅长领域 |\n|------|----------|\n| Nano Banana 2 | 超写实人像与摄影风格 |\n| Seedream 4.5 | 电影级静帧与创意构图 |\n| Qwen Image Edit | 精准局部重绘与图像编辑 |\n\n---\n![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/44ab68acc6354c9dbfaeb614ec587fa4.png#pic_center)\n\n## 🎥 AI 视频生成\n\n用全球领先的 AI 视频模型，将创意直接变成电影级视频片段。\n\n- **顶级模型**：Sora 2 Pro、Kling O3、Kling 3.0、Seedance 2.0、Wan 2.6\n- **文生视频 & 图生视频**双流程\n- **最高 4K 视频质量**\n- **单次生成 5–10 秒**，可串联制作更长叙事内容\n- **电影级运镜控制**：平移、推拉、跟拍、摇臂等专业镜头语言\n\n### 模型对比\n\n| 模型 | 最佳场景 | 质量 |\n|------|----------|------|\n| Sora 2 Pro | 超写实电影质感 | ⭐⭐⭐⭐⭐ |\n| Kling O3 | 动作戏、戏剧冲突 | ⭐⭐⭐⭐⭐ |\n| Kling 3.0 | 流畅人物运动 | ⭐⭐⭐⭐ |\n| Seedance 2.0 | 快速高效制作 | ⭐⭐⭐⭐ |\n| Wan 2.6 | 创意风格化内容 | ⭐⭐⭐⭐ |\n\n---\n![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/b29c555576394fa097671299a37855ad.png#pic_center)\n\n## 🎭 AI 短剧工场——完整短剧一站式制作\n\n> **从创意到成片，最快 30 分钟。**\n\nAI 短剧工场是 VideoDance 的旗舰功能——一套由 AI 全程驱动的短剧制作流水线。你只需要一个故事想法，平台会自动完成剧本、角色、场景、镜头、视频的全流程生产。无需编剧经验，无需摄制团队，无需剪辑软件。\n\n### 六步制作流程\n\n```\n第一步：剧本  →  第二步：角色  →  第三步：场景  →  第四步：关键帧  →  第五步：视频  →  第六步：导出\n```\n\n**第一步——剧本生成**\n- 用任意语言描述你的故事概念\n- AI 自动生成完整的 10 镜剧本：场景描述、角色台词、镜头指引\n- 自由编辑，或一键重新生成\n![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/a03fe332b5e942f7afe7a9c85fa9d7c7.png#pic_center)\n\n**第二步——角色设定**\n- AI 为剧本中每个角色生成统一风格的形象图\n- 角色形象在全片保持一致性\n- 单个项目支持 10+ 个角色\n\n**第三步——场景概念图**\n- 每个场景生成独立的 AI 概念插图\n- 提前预览环境、氛围与灯光效果\n- 支持电影写实、动漫、赛博朋克等多种美术风格\n![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/504eb65337e5445494be613f0e06b69d.png#pic_center)\n\n**第四步——关键帧生成**\n- 为每个镜头生成对应的关键帧图像\n- 构图、人物站位、视觉流程在渲染前完整预览\n- 支持全项目批量生成\n![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/676fb81d347e4bce87344f156861be9d.png#pic_center)\n\n**第五步——视频渲染**\n- 每张关键帧渲染为完整视频片段\n- **Seedance 2.0**（默认）：快速高效，每个项目约 239 积分（Pro 套餐约 $7.96）\n- **Kling O3**（旗舰）：电影级输出质量，每个项目约 360 积分\n\n**第六步——导出与分享**\n- 下载单个镜头或完整影片包\n- 所有素材按项目在控制台统一管理\n- 一键生成分享链接\n![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/b7aceca25dd9466ba3139da0a7d35a08.png#pic_center)\n\n\n---\n\n\n## 现在就去试试\n\n如果你一直觉得视频制作流程太复杂、门槛太高，VideoDance 值得认真看一下。平台没有免费额度，所有功能都需要积分才能使用，但入门档的积分包定价不高，足够跑完一个完整流程。真正感受到它价值的时刻，是你第一次从剧本写到成片导出，全程没有离开过这一个平台。\n\n立即体验[videodance.cc](https://videodance.cc)\n---\n\n",
           "metrics": {
             "comments": 0
@@ -208,7 +230,7 @@
           "author": "Olcmyk",
           "authorUrl": "https://github.com/Olcmyk",
           "publishedAt": "2026-03-03T15:45:07Z",
-          "summary": "项目地址： 传统的 GBA 游戏汉化需要处理指针寻址、文本提取、字库注入等复杂的逆向工程流程，技术门槛极高。Meowth GBA Translator 简化了所有操作，实现了口袋妖怪 GBA 改版游戏的自动化一键翻译。只需填入api key，即可完成整个流程。支持中/英/法/德/意/西六种语言之间的互译，适配 macOS 和 Windows。CLI 版可通过 pip install meowth 获取。 <img width=\"1720\" height=\"1616\" alt=\"Image\" src=\" / !Image",
+          "summary": "项目地址： 传统的 GBA 游戏汉化需要处理指针寻址、文本提取、字库注入等复杂的逆向工程流程，技术门槛极高。Meowth GBA Translator 简化了所有操作，实现了口袋妖怪 GBA 改版游戏的自动化一键翻译。只需填入api key，即可完成整个流程。支持中/英/法/德/意/西六种语言之间的互译，适配 macOS 和 Windows。CLI 版可通过 pip install meowth 获取。",
           "content": "项目地址： https://github.com/Olcmyk/Meowth-GBA-Translator\n\n传统的 GBA 游戏汉化需要处理指针寻址、文本提取、字库注入等复杂的逆向工程流程，技术门槛极高。Meowth GBA Translator 简化了所有操作，实现了口袋妖怪 GBA 改版游戏的自动化一键翻译。只需填入api key，即可完成整个流程。支持中/英/法/德/意/西六种语言之间的互译，适配 macOS 和 Windows。CLI 版可通过 `pip install meowth` 获取。\n\n<img width=\"1720\" height=\"1616\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e504c842-1ff8-432b-a752-f516ae70af67\" />\n\n![Image](https://github.com/user-attachments/assets/9f469b1f-054b-44b6-9df4-d6cf27b37ecd)\n\n",
           "metrics": {
             "comments": 1
@@ -218,7 +240,12 @@
             "submission"
           ],
           "externalId": "9122",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9122"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9122",
+          "images": [
+            "https://github.com/user-attachments/assets/e504c842-1ff8-432b-a752-f516ae70af67",
+            "https://github.com/user-attachments/assets/9f469b1f-054b-44b6-9df4-d6cf27b37ecd"
+          ],
+          "image": "https://github.com/user-attachments/assets/e504c842-1ff8-432b-a752-f516ae70af67"
         }
       ]
     },

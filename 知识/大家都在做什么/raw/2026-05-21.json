@@ -18,7 +18,7 @@
           "author": "dsd2077",
           "authorUrl": "https://github.com/dsd2077",
           "publishedAt": "2026-05-21T03:16:53Z",
-          "summary": "得益于开源数字人模型性能的不断提升，现在仅用消费级显卡就能做到和数字人进行实时视频通话。 项目地址： CyberVerse是一个开源的实时数字人Agent框架。 <img width=\"690\" height=\"388\" alt=\"Image\" src=\" / 这张图解释了什么是数字人Agent。 总之通过CyberVerse，仅需一张照片，就可以和任何你喜欢的角色进行实时视频聊天，亦或者创建自己的数字分身，甚至还能指挥ta帮你干一点活。 <img width=\"690\" height=\"388\" alt=\"Image\" src=\" /",
+          "summary": "得益于开源数字人模型性能的不断提升，现在仅用消费级显卡就能做到和数字人进行实时视频通话。 项目地址： CyberVerse是一个开源的实时数字人Agent框架。 这张图解释了什么是数字人Agent。 总之通过CyberVerse，仅需一张照片，就可以和任何你喜欢的角色进行实时视频聊天，亦或者创建自己的数字分身，甚至还能指挥ta帮你干一点活。",
           "content": "得益于开源数字人模型性能的不断提升，现在仅用消费级显卡就能做到和数字人进行实时视频通话。\n\n项目地址：https://github.com/dsd2077/CyberVerse\n\nCyberVerse是一个开源的实时数字人Agent框架。\n\n<img width=\"690\" height=\"388\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3eca2b87-211f-416d-a991-eb265570c9ad\" />\n\n这张图解释了什么是数字人Agent。\n总之通过CyberVerse，仅需一张照片，就可以和任何你喜欢的角色进行实时视频聊天，亦或者创建自己的数字分身，甚至还能指挥ta帮你干一点活。\n\n<img width=\"690\" height=\"388\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c277a638-af9c-44b4-a5fb-3703018257b9\" />\n",
           "metrics": {
             "comments": 0
@@ -28,7 +28,12 @@
             "submission"
           ],
           "externalId": "10011",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10011"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10011",
+          "images": [
+            "https://github.com/user-attachments/assets/3eca2b87-211f-416d-a991-eb265570c9ad",
+            "https://github.com/user-attachments/assets/c277a638-af9c-44b4-a5fb-3703018257b9"
+          ],
+          "image": "https://github.com/user-attachments/assets/3eca2b87-211f-416d-a991-eb265570c9ad"
         },
         {
           "sourceId": "weekly-issues",
@@ -96,7 +101,7 @@
           "author": "xyTom",
           "authorUrl": "https://github.com/xyTom",
           "publishedAt": "2026-05-21T09:06:35Z",
-          "summary": "Coding Tools MCP 是一个基于 Model Context Protocol (MCP) 的本地代码仓库操作后端。它能让任何支持 MCP 的大语言模型客户端，直接与你的本地项目进行交互，实现“阅读代码、全局搜索、生成并应用 Patch、运行命令、审查 Git Diff”的全闭环工作流。 Github Repo 地址： 通过Coding Tools MCP这个工具： 能够给支持 MCP 的客户端接一个本地代码仓库操作后端，让它能读文件、搜代码、打 patch、跑命令、看 git diff。 大概流程是这样： MCP 客户端 ↔ Coding Tools MCP ↔ 本地项目目录 也就是说，只要你的客户端支持 MCP，就可以把它接到本地项目上，当成半个Codex/Claude Code去使用。 支持的工具列表： 文件访问：readfile, listdir, listfiles, viewimage 代码修改：searchtext, applypatch 环境执行：execcommand, writestdin, killsession 版本控制：gitstatus, gitdiff, gitlog, gitshow, gitblame 严格的安全边界设计 在设计之初就充分考虑了本地执行的安全性（尽管它不是一个完整的虚拟化沙箱）： 路径隔离：所有读写、搜索、Git 操作被严格限制在 Workspace 根目录内。拦截绝对路径、.. 穿越及 Symlink 逃逸。 命令限制 (execcommand)：内置超时控制、输出截断、敏感环境变量过滤；自动拦截破坏性命令与未授权的网络操作请求。Linux 环境下尝试使用 Landlock 进行文件系统级沙盒限制。 按需赋权 (Tool Profiles)： full: 完整读写与执行权限。 readonly: 仅开放搜索、读取和 Git 只读操作，拒绝写入和命令执行。 compatreadonlyall: 针对特定客户端的只读暗示兼容模式。 实际使用体验 下面以ChatGPT网页版为例，详细说明一下Coding Tools MCP这个工具的具体使用方式，通过Coding Tools MCP能让本来没有Coding能力的ChatGPT摇身一变成为Codex 1、首先Clone 仓库到本地或者任意的能够运行代码进行开发的机器上 git clone 2、安装相关依赖 cd codingtoolsmcp python m pip install e \".[dev]\" 3、运行Coding Tools MCP服务 codingtoolsmcp workspace /path/to/repo /path/to/repo 这个路径替换为你实际需要开发的项目文件夹路径 4、运行内网穿透服务 scripts/tunnel.sh cloudflared /path/to/repo /path/to/repo 这个路径替换为你实际需要开发的项目文件夹路径 <img width=\"1380\" height=\"342\" alt=\"Image\" src=\" / 记录下来终端当中输出的Authorization Token和Cloudflare Tunnel地址，示例： Bearer qQQJeOQov3cbexcVtc75OCB7TQKxMAOr1dk6mrBO7kA 5、配置ChatGPT网页版 点击设置 <img width=\"484\" height=\"658\" alt=\"Image\" src=\" / 点击创建应用 <img width=\"1140\" height=\"1000\" alt=\"Image\" src=\" / 填写相关信息 <img width=\"584\" height=\"1000\" alt=\"Image\" src=\" / :warning:注意：MCP 服务器 URL应该填写上一步获取到的Cloudflare Tunnel地址，并在最后加上/mcp，例如： 点击连接应用 <img width=\"820\" height=\"1000\" alt=\"Image\" src=\" / 输入上一步获得的Token，记得包括Bearer <img width=\"686\" height=\"1000\" alt=\"Image\" src=\" / 配置成功之后需要返回应用详情页，点击刷新 <img width=\"934\" height=\"628\" alt=\"Image\" src=\" / 刷新之后滑倒页面底部出现相关工具之后即代表配置完成了 <img width=\"800\" height=\"1000\" alt=\"Image\" src=\" / 6、使用Coding Tools MCP通过网页版ChatGPT进行Vibe Coding 如图所示，在开始新的对话之前选择启用Coding Tools MCP工具 <img width=\"1380\" height=\"904\" alt=\"Image\" src=\" / <img width=\"1380\" height=\"466\" alt=\"Image\" src=\" / ChatGPT正常调用Coding Tools MCP工具读取项目相关代码，可以正常进行开发 <img width=\"1380\" height=\"810\" alt=\"Image\" src=\" /",
+          "summary": "Coding Tools MCP 是一个基于 Model Context Protocol (MCP) 的本地代码仓库操作后端。它能让任何支持 MCP 的大语言模型客户端，直接与你的本地项目进行交互，实现“阅读代码、全局搜索、生成并应用 Patch、运行命令、审查 Git Diff”的全闭环工作流。 Github Repo 地址： 通过Coding Tools MCP这个工具： 能够给支持 MCP 的客户端接一个本地代码仓库操作后端，让它能读文件、搜代码、打 patch、跑命令、看 git diff。 大概流程是这样： MCP 客户端 ↔ Coding Tools MCP ↔ 本地项目目录 也就是说，只要你的客户端支持 MCP，就可以把它接到本地项目上，当成半个Codex/Claude Code去使用。 支持的工具列表： 文件访问：readfile, listdir, listfiles, viewimage 代码修改：searchtext, applypatch 环境执行：execcommand, writestdin, killsession 版本控制：gitstatus, gitdiff, gitlog, gitshow, gitblame 严格的安全边界设计 在设计之初就充分考虑了本地执行的安全性（尽管它不是一个完整的虚拟化沙箱）： 路径隔离：所有读写、搜索、Git 操作被严格限制在 Workspace 根目录内。拦截绝对路径、.. 穿越及 Symlink 逃逸。 命令限制 (execcommand)：内置超时控制、输出截断、敏感环境变量过滤；自动拦截破坏性命令与未授权的网络操作请求。Linux 环境下尝试使用 Landlock 进行文件系统级沙盒限制。 按需赋权 (Tool Profiles)： full: 完整读写与执行权限。 readonly: 仅开放搜索、读取和 Git 只读操作，拒绝写入和命令执行。 compatreadonlyall: 针对特定客户端的只读暗示兼容模式。 实际使用体验 下面以ChatGPT网页版为例，详细说明一下Coding Tools MCP这个工具的具体使用方式，通过Coding Tools MCP能让本来没有Coding能力的ChatGPT摇身一变成为Codex 1、首先Clone 仓库到本地或者任意的能够运行代码进行开发的机器上 git clone 2、安装相关依赖 cd codingtoolsmcp python m pip install e \".[dev]\" 3、运行Coding Tools MCP服务 codingtoolsmcp workspace /path/to/repo /path/to/repo 这个路径替换为你实际需要开发的项目文件夹路径 4、运行内网穿透服务 scripts/tunnel.sh cloudflared /path/to/repo /path/to/repo 这个路径替换为你实际需要开发的项目文件夹路径 记录下来终端当中输出的Authorization Token和Cloudflare Tunnel地址，示例： Bearer qQQJeOQov3cbexcVtc75OCB7TQKxMAOr1dk6mrBO7kA 5、配置ChatGPT网页版 点击设置 点击创建应用 填写相关信息 :warning:注意：MCP 服务器 URL应该填写上一步获取到的Cloudflare Tunnel地址，并在最后加上/mcp，例如： 点击连接应用 输入上一步获得的Token，记得包括Bearer 配置成功之后需要返回应用详情页，点击刷新 刷新之后滑倒页面底部出现相关工具之后即代表配置完成了 6、使用Coding Tools MCP通过网页版ChatGPT进行Vibe Coding 如图所示，在开始新的对话之前选择启用Coding Tools MCP工具 ChatGPT正常调用Coding Tools MCP工具读取项目相关代码，可以正常进行开发",
           "content": "Coding Tools MCP 是一个基于 Model Context Protocol (MCP) 的本地代码仓库操作后端。它能让任何支持 MCP 的大语言模型客户端，直接与你的本地项目进行交互，实现“阅读代码、全局搜索、生成并应用 Patch、运行命令、审查 Git Diff”的全闭环工作流。\n\nGithub Repo 地址：https://github.com/xyTom/coding-tools-mcp\n\n通过Coding Tools MCP这个工具：\n\n能够给支持 MCP 的客户端接一个本地代码仓库操作后端，让它能读文件、搜代码、打 patch、跑命令、看 git diff。\n\n**大概流程是这样：**\n\nMCP 客户端 ↔ Coding Tools MCP ↔ 本地项目目录\n也就是说，只要你的客户端支持 MCP，就可以把它接到本地项目上，当成半个Codex/Claude Code去使用。\n\n**支持的工具列表：**\n\n> 文件访问：read_file, list_dir, list_files, view_image\n> 代码修改：search_text, apply_patch\n> 环境执行：exec_command, write_stdin, kill_session\n> 版本控制：git_status, git_diff, git_log, git_show, git_blame\n\n\n**严格的安全边界设计**\n在设计之初就充分考虑了本地执行的安全性（尽管它不是一个完整的虚拟化沙箱）：\n\n- 路径隔离：所有读写、搜索、Git 操作被严格限制在 Workspace 根目录内。拦截绝对路径、.. 穿越及 Symlink 逃逸。\n- 命令限制 (exec_command)：内置超时控制、输出截断、敏感环境变量过滤；自动拦截破坏性命令与未授权的网络操作请求。Linux 环境下尝试使用 Landlock 进行文件系统级沙盒限制。\n- 按需赋权 (Tool Profiles)：\n- full: 完整读写与执行权限。\n- read-only: 仅开放搜索、读取和 Git 只读操作，拒绝写入和命令执行。\n- compat-readonly-all: 针对特定客户端的只读暗示兼容模式。\n\n**实际使用体验**\n下面以ChatGPT网页版为例，详细说明一下Coding Tools MCP这个工具的具体使用方式，通过Coding Tools MCP能让本来没有Coding能力的ChatGPT摇身一变成为Codex\n\n1、首先Clone 仓库到本地或者任意的能够运行代码进行开发的机器上\n\n\n```\ngit clone https://github.com/xyTom/coding-tools-mcp\n```\n\n2、安装相关依赖\n\n\n```\ncd coding-tools-mcp\npython -m pip install -e \".[dev]\"\n```\n\n\n3、运行Coding Tools MCP服务\n\n\n```\ncoding-tools-mcp --workspace /path/to/repo\n/path/to/repo 这个路径替换为你实际需要开发的项目文件夹路径\n```\n\n\n4、运行内网穿透服务\n\n\n```\nscripts/tunnel.sh cloudflared /path/to/repo\n/path/to/repo 这个路径替换为你实际需要开发的项目文件夹路径\n```\n\n<img width=\"1380\" height=\"342\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3d487c45-7b5e-4870-9dea-ee6d025d0f85\" />\n\n\n记录下来终端当中输出的Authorization Token和Cloudflare Tunnel地址，示例：\n\n```\nBearer qQQJeOQov3cbexcVtc75OCB7TQKxMAOr1dk6mrBO7kA\nhttps://effects-sonic-meetings-example.trycloudflare.com   \n```\n \n5、配置ChatGPT网页版\n点击设置\n\n<img width=\"484\" height=\"658\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4d394b02-ca78-4ba4-aebe-d256070fe08f\" />\n\n点击创建应用\n\n<img width=\"1140\" height=\"1000\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e42b5d39-15f7-4083-8f7d-aa250b5ce2ba\" />\n\n填写相关信息\n\n<img width=\"584\" height=\"1000\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/20dcd55e-a459-4d79-914f-3ff75803c327\" />\n\n:warning:注意：MCP 服务器 URL应该填写上一步获取到的Cloudflare Tunnel地址，并在最后加上/mcp，例如：\nhttps://effects-sonic-meetings-example.trycloudflare.com/mcp\n点击连接应用\n\n<img width=\"820\" height=\"1000\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5953127a-1a89-4e77-b878-cd1810dc023c\" />\n\n输入上一步获得的Token，记得包括Bearer\n\n<img width=\"686\" height=\"1000\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4e30c19f-ba11-400b-82fa-4ee5cc0bbb40\" />\n\n配置成功之后需要返回应用详情页，点击刷新\n\n<img width=\"934\" height=\"628\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/99d4488b-784f-49e5-9dc0-3bf26cb31293\" />\n\n刷新之后滑倒页面底部出现相关工具之后即代表配置完成了\n\n<img width=\"800\" height=\"1000\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/242e51e3-febe-42da-8448-e24dd3c71f42\" />\n\n6、使用Coding Tools MCP通过网页版ChatGPT进行Vibe Coding\n如图所示，在开始新的对话之前选择启用Coding Tools MCP工具\n\n<img width=\"1380\" height=\"904\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/382e2f4b-6a24-420b-96d8-b212ce3fe59b\" />\n\n<img width=\"1380\" height=\"466\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/33b44f98-cf87-4dd3-8f1a-bb7e787477af\" />\n\nChatGPT正常调用Coding Tools MCP工具读取项目相关代码，可以正常进行开发\n\n<img width=\"1380\" height=\"810\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/20c617ab-dd27-41c3-b067-31e7fd70c5d9\" />",
           "metrics": {
             "comments": 0
@@ -106,7 +111,19 @@
             "submission"
           ],
           "externalId": "10016",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10016"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10016",
+          "images": [
+            "https://github.com/user-attachments/assets/3d487c45-7b5e-4870-9dea-ee6d025d0f85",
+            "https://github.com/user-attachments/assets/4d394b02-ca78-4ba4-aebe-d256070fe08f",
+            "https://github.com/user-attachments/assets/e42b5d39-15f7-4083-8f7d-aa250b5ce2ba",
+            "https://github.com/user-attachments/assets/20dcd55e-a459-4d79-914f-3ff75803c327",
+            "https://github.com/user-attachments/assets/5953127a-1a89-4e77-b878-cd1810dc023c",
+            "https://github.com/user-attachments/assets/4e30c19f-ba11-400b-82fa-4ee5cc0bbb40",
+            "https://github.com/user-attachments/assets/99d4488b-784f-49e5-9dc0-3bf26cb31293",
+            "https://github.com/user-attachments/assets/242e51e3-febe-42da-8448-e24dd3c71f42",
+            "https://github.com/user-attachments/assets/382e2f4b-6a24-420b-96d8-b212ce3fe59b"
+          ],
+          "image": "https://github.com/user-attachments/assets/3d487c45-7b5e-4870-9dea-ee6d025d0f85"
         },
         {
           "sourceId": "weekly-issues",
@@ -173,7 +190,7 @@
           "author": "smirk9581",
           "authorUrl": "https://github.com/smirk9581",
           "publishedAt": "2026-05-21T14:11:54Z",
-          "summary": "项目地址：< Star ⭐️~开源不易） 文档地址：< 给大家分享我的开源项目 VuReact：一个面向 Vue 3 到 React 迁移、兼具「用 Vue 3 写 React」双重能力的编译工具链。 🤔 开发初衷 我喜欢 Vue 的 <script setup 、组合式 API和及其友好的 Vue 心智模型，但很多项目只能用 React。过去只能三选一： 手动重写 用不靠谱的语法转换工具 / AI 改写 Vue + React 双框架运行时混跑，复杂度爆炸 于是做了 VuReact，探索更优雅靠谱的迁移方案。 ✨ 核心能力 ✅ 纯编译输出：分析 Vue 代码，自动生成静态优化后的标准原生 React 代码，不依赖运行时套壳 ✅ 语义级映射： 深度解析 Vue 语义，完整支持 <script setup、组件、插槽、响应式 （ref/reactive/computed等）、事件派发，输出代码可读易维护 ✅ 渐进式迁移：支持单文件 / 模块分批转换，风险可控 ✅ 原生开发体验：提供 build 编译、watch 监听双模式，开发体验接近 Vite 👍 适用场景 项目需从 Vue 3 渐进式迁移到 React，但不想从头重写，优先寻找现有解决方案 部分开发者以 Vue 为主技术栈，习惯其心智模型，认为 React 的额外负担比 Vue 更重 后端开发者不想学习双框架，Vue 上手快、符合直觉，不愿接触 React 转换后的 React 需完全脱离 Vue 运行时，避免双框架运行时所带来的性能和体积问题 💡 为什么选 VuReact? 其他方案要么是运行时套壳（性能差、调试难），要么是半成品转换（复杂语法就报错）。VuReact 是编译时方案，产物是纯 React 代码，没有 Vue 运行时，支持渐进迁移。 | 其他方案 | VuReact | ||| | 运行时套壳（双框架，性能差，包体大） | 编译时，产物纯 React，可渐进迁移，逐模块编译 | | 半成品转换（复杂语法报错） | 完整模板指令、Props、插槽、Composition API、scoped 样式、 TS 类型定义等 | | AI 改写（结果不确定，代码基于猜测，需人工二次审核） | 确定性编译，基于 AST 静态转换，结果可预测、可追溯 | 👉 深入了解请访问：为什么选择 VuReact？—— 不止是语法转换 vureact 终端交互演示（左 Vue 项目 → 右生成 React 应用）： <img width=\"1024\" height=\"576\" alt=\"Image\" src=\" / 工具已在真实后台项目落地，持续迭代中～ 欢迎大家体验、提反馈， ⭐️ Star 支持，对开源真的很重要！",
+          "summary": "项目地址：< Star ⭐️~开源不易） 文档地址：< 给大家分享我的开源项目 VuReact：一个面向 Vue 3 到 React 迁移、兼具「用 Vue 3 写 React」双重能力的编译工具链。 🤔 开发初衷 我喜欢 Vue 的 <script setup 、组合式 API和及其友好的 Vue 心智模型，但很多项目只能用 React。过去只能三选一： 手动重写 用不靠谱的语法转换工具 / AI 改写 Vue + React 双框架运行时混跑，复杂度爆炸 于是做了 VuReact，探索更优雅靠谱的迁移方案。 ✨ 核心能力 ✅ 纯编译输出：分析 Vue 代码，自动生成静态优化后的标准原生 React 代码，不依赖运行时套壳 ✅ 语义级映射： 深度解析 Vue 语义，完整支持 <script setup、组件、插槽、响应式 （ref/reactive/computed等）、事件派发，输出代码可读易维护 ✅ 渐进式迁移：支持单文件 / 模块分批转换，风险可控 ✅ 原生开发体验：提供 build 编译、watch 监听双模式，开发体验接近 Vite 👍 适用场景 项目需从 Vue 3 渐进式迁移到 React，但不想从头重写，优先寻找现有解决方案 部分开发者以 Vue 为主技术栈，习惯其心智模型，认为 React 的额外负担比 Vue 更重 后端开发者不想学习双框架，Vue 上手快、符合直觉，不愿接触 React 转换后的 React 需完全脱离 Vue 运行时，避免双框架运行时所带来的性能和体积问题 💡 为什么选 VuReact? 其他方案要么是运行时套壳（性能差、调试难），要么是半成品转换（复杂语法就报错）。VuReact 是编译时方案，产物是纯 React 代码，没有 Vue 运行时，支持渐进迁移。 | 其他方案 | VuReact | ||| | 运行时套壳（双框架，性能差，包体大） | 编译时，产物纯 React，可渐进迁移，逐模块编译 | | 半成品转换（复杂语法报错） | 完整模板指令、Props、插槽、Composition API、scoped 样式、 TS 类型定义等 | | AI 改写（结果不确定，代码基于猜测，需人工二次审核） | 确定性编译，基于 AST 静态转换，结果可预测、可追溯 | 👉 深入了解请访问：为什么选择 VuReact？—— 不止是语法转换 vureact 终端交互演示（左 Vue 项目 → 右生成 React 应用）： 工具已在真实后台项目落地，持续迭代中～ 欢迎大家体验、提反馈， ⭐️ Star 支持，对开源真的很重要！",
           "content": "项目地址：<https://github.com/vureact-js/core>（欢迎 Star ⭐️~开源不易）\n文档地址：<https://vureact.top>\n\n给大家分享我的开源项目 **VuReact**：一个面向 Vue 3 到 React 迁移、兼具「用 Vue 3 写 React」双重能力的编译工具链。\n\n## 🤔 开发初衷\n\n我喜欢 Vue 的 `<script setup>` 、组合式 API和及其友好的 Vue 心智模型，但很多项目只能用 React。过去只能三选一：\n\n* 手动重写\n* 用不靠谱的语法转换工具 / AI 改写\n* Vue + React 双框架运行时混跑，复杂度爆炸\n\n于是做了 VuReact，探索更优雅靠谱的迁移方案。\n\n## ✨ 核心能力\n\n* ✅ **纯编译输出**：分析 Vue 代码，自动生成静态优化后的标准原生 React 代码，不依赖运行时套壳\n* ✅ **语义级映射**： 深度解析 Vue 语义，完整支持 `<script setup>`、组件、插槽、响应式 （`ref`/`reactive`/`computed`等）、事件派发，输出代码可读易维护\n* ✅ **渐进式迁移**：支持单文件 / 模块分批转换，风险可控\n* ✅ **原生开发体验**：提供 build 编译、watch 监听双模式，开发体验接近 Vite\n\n## 👍 适用场景\n\n* 项目需从 Vue 3 渐进式迁移到 React，但不想从头重写，优先寻找现有解决方案\n* 部分开发者以 Vue 为主技术栈，习惯其心智模型，认为 React 的额外负担比 Vue 更重\n* 后端开发者不想学习双框架，Vue 上手快、符合直觉，不愿接触 React\n* 转换后的 React 需完全脱离 Vue 运行时，避免双框架运行时所带来的性能和体积问题\n\n## 💡 为什么选 VuReact?\n\n其他方案要么是运行时套壳（性能差、调试难），要么是半成品转换（复杂语法就报错）。VuReact 是编译时方案，产物是纯 React 代码，没有 Vue 运行时，支持渐进迁移。\n\n| 其他方案 | VuReact |\n|----------|---------|\n| 运行时套壳（双框架，性能差，包体大） | 编译时，产物纯 React，可渐进迁移，逐模块编译 |\n| 半成品转换（复杂语法报错） | 完整模板指令、Props、插槽、Composition API、scoped 样式、 TS 类型定义等 |\n| AI 改写（结果不确定，代码基于猜测，需人工二次审核） | 确定性编译，基于 AST 静态转换，结果可预测、可追溯 |\n\n👉 **深入了解请访问：**[为什么选择 VuReact？—— 不止是语法转换](https://vureact.top/guide/why.html)\n\n---\n\nvureact 终端交互演示（左 Vue 项目 → 右生成 React 应用）：\n\n<img width=\"1024\" height=\"576\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5823167e-8054-4778-b2b1-04cde9092311\" />\n\n工具已在真实后台项目落地，持续迭代中～ 欢迎大家体验、提反馈， ⭐️ Star 支持，对开源真的很重要！\n",
           "metrics": {
             "comments": 0
@@ -183,7 +200,11 @@
             "submission"
           ],
           "externalId": "10020",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10020"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10020",
+          "images": [
+            "https://github.com/user-attachments/assets/5823167e-8054-4778-b2b1-04cde9092311"
+          ],
+          "image": "https://github.com/user-attachments/assets/5823167e-8054-4778-b2b1-04cde9092311"
         },
         {
           "sourceId": "weekly-issues",
@@ -222,7 +243,7 @@
           "author": "l0ng-ai",
           "authorUrl": "https://github.com/l0ng-ai",
           "publishedAt": "2026-05-21T01:38:39Z",
-          "summary": "项目地址 类别 Rust 项目标题 Papr 本地优先的桌面 RSS 阅读器 项目描述 Papr 是一个基于 Tauri 开发的本地优先桌面 RSS 阅读器。所有订阅、阅读状态和星标都保存在本地的一个 SQLite 文件里，不需要账号，也不上传云端，备份迁移只要拷贝一个文件。支持 OPML、文件夹、标签规则、全文抓取、FreshRSS 同步和音频朗读，并内置可选的 AI 摘要 / 问答（用自己的 API key）。Rust + Tauri 实现，安装包小、内存占用低，跨 macOS / Windows / Linux，MIT 开源。 亮点 本地优先：数据全在本机一个 SQLite 文件，无账号、无云、无 telemetry 基于 Tauri + Rust，相比 Electron 体积更小、内存更省 AI 摘要 / 问答 / digest 为可选，BYOK，按需启用，不强制联网 自带音频播放器，文章可接连朗读，适合通勤 支持 FreshRSS 同步，要联机也只走自己的服务器 国人独立开发，开源跨三大桌面平台 截图或演示视频 !Papr",
+          "summary": "项目地址 类别 Rust 项目标题 Papr 本地优先的桌面 RSS 阅读器 项目描述 Papr 是一个基于 Tauri 开发的本地优先桌面 RSS 阅读器。所有订阅、阅读状态和星标都保存在本地的一个 SQLite 文件里，不需要账号，也不上传云端，备份迁移只要拷贝一个文件。支持 OPML、文件夹、标签规则、全文抓取、FreshRSS 同步和音频朗读，并内置可选的 AI 摘要 / 问答（用自己的 API key）。Rust + Tauri 实现，安装包小、内存占用低，跨 macOS / Windows / Linux，MIT 开源。 亮点 本地优先：数据全在本机一个 SQLite 文件，无账号、无云、无 telemetry 基于 Tauri + Rust，相比 Electron 体积更小、内存更省 AI 摘要 / 问答 / digest 为可选，BYOK，按需启用，不强制联网 自带音频播放器，文章可接连朗读，适合通勤 支持 FreshRSS 同步，要联机也只走自己的服务器 国人独立开发，开源跨三大桌面平台 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/l0ng-ai/papr\n\n### 类别\n\nRust\n\n### 项目标题\n\nPapr - 本地优先的桌面 RSS 阅读器\n\n### 项目描述\n\nPapr 是一个基于 Tauri 开发的本地优先桌面 RSS 阅读器。所有订阅、阅读状态和星标都保存在本地的一个 SQLite 文件里，不需要账号，也不上传云端，备份迁移只要拷贝一个文件。支持 OPML、文件夹、标签规则、全文抓取、FreshRSS 同步和音频朗读，并内置可选的 AI 摘要\n   / 问答（用自己的 API key）。Rust + Tauri 实现，安装包小、内存占用低，跨 macOS / Windows / Linux，MIT 开源。\n\n### 亮点\n\n - 本地优先：数据全在本机一个 SQLite 文件，无账号、无云、无 telemetry\n  - 基于 Tauri + Rust，相比 Electron 体积更小、内存更省\n  - AI 摘要 / 问答 / digest 为可选，BYOK，按需启用，不强制联网\n  - 自带音频播放器，文章可接连朗读，适合通勤\n  - 支持 FreshRSS 同步，要联机也只走自己的服务器\n  - 国人独立开发，开源跨三大桌面平台\n\n\n\n### 截图或演示视频\n\n![Papr](https://raw.githubusercontent.com/l0ng-ai/papr/main/docs/screenshot.webp)",
           "metrics": {
             "comments": 0
@@ -237,7 +258,11 @@
             "阮一峰周刊·用户投稿",
             "HelloGitHub·用户投稿"
           ],
-          "__mergedCount": 2
+          "__mergedCount": 2,
+          "images": [
+            "https://raw.githubusercontent.com/l0ng-ai/papr/main/docs/screenshot.webp"
+          ],
+          "image": "https://raw.githubusercontent.com/l0ng-ai/papr/main/docs/screenshot.webp"
         },
         {
           "sourceId": "hellogithub-issues",

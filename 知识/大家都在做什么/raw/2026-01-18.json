@@ -18,7 +18,7 @@
           "author": "jsxyhelu",
           "authorUrl": "https://github.com/jsxyhelu",
           "publishedAt": "2026-01-18T01:23:13Z",
-          "summary": "对于大部分文字工作者来说，wps/word仍然是人们熟悉且普遍擅长的编辑工具，那么就不可避免错别字的问题。这里从对现有校对工具的观察出发，并基于大语言模型开展实践探索。 一、实践探索 在代码辅助编程相对成熟的今天，我基于Qorder初步获得了编写这样一个工具的思路，并且在它的推荐下，安装vsstudio,使用github copilot编写csharp程序，实现以下效果： !Image 基本实现路径为：①word 侧边栏的集成；②大语言模型问答的集成；③正文内容的获取并实现纠错；④处理后的结果以批注形式显示，并且修改了一些配色等。 程序是基于csharp实现，这仍然是目前编写word相关程序非常好用的工具。特别是在GitHub Copilot的加持下，工作的效率被极大地提高了。 二、现有校对工具观察 1.黑马校对 应该说，黑马校对给我最深刻的映像就是，直到2025年年末，“金山黑马校对”仍然保持了10年前的风格，而且还能够不断推出新版本（虽然仍然是卖注册码赚钱），这个证明：①这个赛道仍然存在；②这个赛道很难入局。但是技术这块的变化最终一定会改变软件的呈现。 <img width=\"1280\" height=\"557\" alt=\"Image\" src=\" / 对于找出的错误，采用“侧边栏提示”的方法进行，可以选中进行替换。 <img width=\"1280\" height=\"485\" alt=\"Image\" src=\" / 提供类似PDF的标注工具。总的感觉就是还是在wps外面加装了一些东西来达到效果。 2.wordAgent 该软件的特点就是直接嵌入到“word”中去，通过标注的方法对内容进行修改。这个模式就是我想要的效果。 <img width=\"1280\" height=\"642\" alt=\"Image\" src=\" / 3.TextWell 同样是共享软件，TextWell在于比较充分地运用了AI的相关技术。 <img width=\"1270\" height=\"633\" alt=\"Image\" src=\" / 这个就很值得学习，因为这个应该是容易实现的。翻译这块，通过一行一行来对应，应该也是能够给出有效结果： 此外，内部数据这块很重要的就是和现有工具的级联。能够直接整编和上传也是非常重要的。总的来说，确实给出了一些工具，但是距离直接使用还有距离。 4.海鹦OfficeAI助手 这是一款封装方面最为成熟的同类工具。 <img width=\"1157\" height=\"712\" alt=\"Image\" src=\" / 在错误提示这块，选用的“颜色标注”的方法。这个软件是可以在内部部署应用的。 <img width=\"1280\" height=\"640\" alt=\"Image\" src=\" / 它的提示词包括：“进行精确纠错，仅对错误的文字进行校对，不要校对标点符号、回车换行、制表符、空格等特殊字符。” 以及 “在全文语境下，修正所有类型的错误，包括但不限于：错别字、语病、逻辑、标点、序号混乱、用词不当、术语不一致等；结合上下文，把控逻辑与信息一致性，避免断章取义改错；核验专业术语、数据、引用；” 关于这个工具，我想多说一点： <img width=\"1280\" height=\"596\" alt=\"Image\" src=\" / 在他自己提供的几个工具中，确实能够体会到比较紧密地贴切了文字编写的业务场景。最为关键的是它可以使用外置的APIKEY。 虽然仍有积分方面的一些限制，但是对于内部应用应该说提供了可能选项。 原生支持多种类型下载，这样就有在内部应用的可能。这里即使是在右侧开启AI的小窗口，都是很好的嵌入方式，毕竟对于外面来说，wps就是最常用的工具。 代码开源： 开发手札： 下一计划继续探索在kylin上，使用wps能否实现类似的功能，并且需要适配本地大模型。",
+          "summary": "对于大部分文字工作者来说，wps/word仍然是人们熟悉且普遍擅长的编辑工具，那么就不可避免错别字的问题。这里从对现有校对工具的观察出发，并基于大语言模型开展实践探索。 一、实践探索 在代码辅助编程相对成熟的今天，我基于Qorder初步获得了编写这样一个工具的思路，并且在它的推荐下，安装vsstudio,使用github copilot编写csharp程序，实现以下效果： 基本实现路径为：①word 侧边栏的集成；②大语言模型问答的集成；③正文内容的获取并实现纠错；④处理后的结果以批注形式显示，并且修改了一些配色等。 程序是基于csharp实现，这仍然是目前编写word相关程序非常好用的工具。特别是在GitHub Copilot的加持下，工作的效率被极大地提高了。 二、现有校对工具观察 1.黑马校对 应该说，黑马校对给我最深刻的映像就是，直到2025年年末，“金山黑马校对”仍然保持了10年前的风格，而且还能够不断推出新版本（虽然仍然是卖注册码赚钱），这个证明：①这个赛道仍然存在；②这个赛道很难入局。但是技术这块的变化最终一定会改变软件的呈现。 对于找出的错误，采用“侧边栏提示”的方法进行，可以选中进行替换。 提供类似PDF的标注工具。总的感觉就是还是在wps外面加装了一些东西来达到效果。 2.wordAgent 该软件的特点就是直接嵌入到“word”中去，通过标注的方法对内容进行修改。这个模式就是我想要的效果。 3.TextWell 同样是共享软件，TextWell在于比较充分地运用了AI的相关技术。 这个就很值得学习，因为这个应该是容易实现的。翻译这块，通过一行一行来对应，应该也是能够给出有效结果： 此外，内部数据这块很重要的就是和现有工具的级联。能够直接整编和上传也是非常重要的。总的来说，确实给出了一些工具，但是距离直接使用还有距离。 4.海鹦OfficeAI助手 这是一款封装方面最为成熟的同类工具。 在错误提示这块，选用的“颜色标注”的方法。这个软件是可以在内部部署应用的。 它的提示词包括：“进行精确纠错，仅对错误的文字进行校对，不要校对标点符号、回车换行、制表符、空格等特殊字符。” 以及 “在全文语境下，修正所有类型的错误，包括但不限于：错别字、语病、逻辑、标点、序号混乱、用词不当、术语不一致等；结合上下文，把控逻辑与信息一致性，避免断章取义改错；核验专业术语、数据、引用；” 关于这个工具，我想多说一点： 在他自己提供的几个工具中，确实能够体会到比较紧密地贴切了文字编写的业务场景。最为关键的是它可以使用外置的APIKEY。 虽然仍有积分方面的一些限制，但是对于内部应用应该说提供了可能选项。 原生支持多种类型下载，这样就有在内部应用的可能。这里即使是在右侧开启AI的小窗口，都是很好的嵌入方式，毕竟对于外面来说，wps就是最常用的工具。 代码开源： 开发手札： 下一计划继续探索在kylin上，使用wps能否实现类似的功能，并且需要适配本地大模型。",
           "content": "对于大部分文字工作者来说，wps/word仍然是人们熟悉且普遍擅长的编辑工具，那么就不可避免错别字的问题。这里从对现有校对工具的观察出发，并基于大语言模型开展实践探索。\n\n###  一、实践探索\n在代码辅助编程相对成熟的今天，我基于Qorder初步获得了编写这样一个工具的思路，并且在它的推荐下，安装vsstudio,使用github copilot编写csharp程序，实现以下效果：\n![Image](https://github.com/user-attachments/assets/06be1460-3e4c-467a-856d-54bba3cd06ea)\n基本实现路径为：①word 侧边栏的集成；②大语言模型问答的集成；③正文内容的获取并实现纠错；④处理后的结果以批注形式显示，并且修改了一些配色等。\n程序是基于csharp实现，这仍然是目前编写word相关程序非常好用的工具。特别是在GitHub Copilot的加持下，工作的效率被极大地提高了。\n\n### 二、现有校对工具观察\n####  1.黑马校对 \n应该说，黑马校对给我最深刻的映像就是，直到2025年年末，“金山-黑马校对”仍然保持了10年前的风格，而且还能够不断推出新版本（虽然仍然是卖注册码赚钱），这个证明：①这个赛道仍然存在；②这个赛道很难入局。但是技术这块的变化最终一定会改变软件的呈现。\n\n<img width=\"1280\" height=\"557\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e3b5a1f8-ff69-4368-b228-69a392d7e61b\" />\n\n    对于找出的错误，采用“侧边栏提示”的方法进行，可以选中进行替换。\n\n<img width=\"1280\" height=\"485\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/83224e72-fb0d-46e2-a4be-f70266da1c05\" />\n\n    提供类似PDF的标注工具。总的感觉就是还是在wps外面加装了一些东西来达到效果。\n####  2.wordAgent\n该软件的特点就是直接嵌入到“word”中去，通过标注的方法对内容进行修改。这个模式就是我想要的效果。\n\n<img width=\"1280\" height=\"642\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e73f411b-3087-4133-9c11-3ec7e9d612f8\" />\n\n####  3.TextWell\n同样是共享软件，TextWell在于比较充分地运用了AI的相关技术。\n\n<img width=\"1270\" height=\"633\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5c28a028-65e8-4c59-8b10-350d44e241e9\" />\n\n这个就很值得学习，因为这个应该是容易实现的。翻译这块，通过一行一行来对应，应该也是能够给出有效结果：\n此外，内部数据这块很重要的就是和现有工具的级联。能够直接整编和上传也是非常重要的。总的来说，确实给出了一些工具，但是距离直接使用还有距离。\n####  4.海鹦OfficeAI助手\n这是一款封装方面最为成熟的同类工具。\n\n<img width=\"1157\" height=\"712\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f9c1af9f-01e9-46db-a1af-2a62649e0400\" />\n\n在错误提示这块，选用的“颜色标注”的方法。这个软件是可以在内部部署应用的。\n\n<img width=\"1280\" height=\"640\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a107ac50-cb73-4c21-aafe-6d6d6d638abc\" />\n\n它的提示词包括：“进行精确纠错，仅对错误的文字进行校对，不要校对标点符号、回车换行、制表符、空格等特殊字符。” 以及 “在全文语境下，修正所有类型的错误，包括但不限于：错别字、语病、逻辑、标点、序号混乱、用词不当、术语不一致等；结合上下文，把控逻辑与信息一致性，避免断章取义改错；核验专业术语、数据、引用；”\n关于这个工具，我想多说一点：\n\n<img width=\"1280\" height=\"596\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/297cf7a8-cc7c-43d7-94a3-7e648e59caac\" />\n\n在他自己提供的几个工具中，确实能够体会到比较紧密地贴切了文字编写的业务场景。最为关键的是它可以使用外置的API_KEY。\n虽然仍有积分方面的一些限制，但是对于内部应用应该说提供了可能选项。\n原生支持多种类型下载，这样就有在内部应用的可能。这里即使是在右侧开启AI的小窗口，都是很好的嵌入方式，毕竟对于外面来说，wps就是最常用的工具。\n\n\n代码开源： https://github.com/jsxyhelu/GOWordAgentAddIn\n开发手札：https://www.cnblogs.com/jsxyhelu/p/19497787\n下一计划继续探索在kylin上，使用wps能否实现类似的功能，并且需要适配本地大模型。\n\n",
           "metrics": {
             "comments": 0
@@ -28,7 +28,18 @@
             "submission"
           ],
           "externalId": "8740",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/8740"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8740",
+          "images": [
+            "https://github.com/user-attachments/assets/06be1460-3e4c-467a-856d-54bba3cd06ea",
+            "https://github.com/user-attachments/assets/e3b5a1f8-ff69-4368-b228-69a392d7e61b",
+            "https://github.com/user-attachments/assets/83224e72-fb0d-46e2-a4be-f70266da1c05",
+            "https://github.com/user-attachments/assets/e73f411b-3087-4133-9c11-3ec7e9d612f8",
+            "https://github.com/user-attachments/assets/5c28a028-65e8-4c59-8b10-350d44e241e9",
+            "https://github.com/user-attachments/assets/f9c1af9f-01e9-46db-a1af-2a62649e0400",
+            "https://github.com/user-attachments/assets/a107ac50-cb73-4c21-aafe-6d6d6d638abc",
+            "https://github.com/user-attachments/assets/297cf7a8-cc7c-43d7-94a3-7e648e59caac"
+          ],
+          "image": "https://github.com/user-attachments/assets/06be1460-3e4c-467a-856d-54bba3cd06ea"
         },
         {
           "sourceId": "weekly-issues",
@@ -76,7 +87,7 @@
           "author": "debugtheworldbot",
           "authorUrl": "https://github.com/debugtheworldbot",
           "publishedAt": "2026-01-18T11:06:57Z",
-          "summary": "统计键盘敲击、鼠标点击/移动/滚动 数据全部本地存储 每日自动重置，能看到趋势图 windows设计风格 代码纯vibe实现 项目地址： <img width=\"300\" height=\"1607\" alt=\"Image\" src=\" / <img width=\"222\" height=\"243\" alt=\"Image\" src=\" / ps: 之前的mac版本上过一次周刊了，不知道新加的windows版本是否有机会再上一次呢？",
+          "summary": "统计键盘敲击、鼠标点击/移动/滚动 数据全部本地存储 每日自动重置，能看到趋势图 windows设计风格 代码纯vibe实现 项目地址： ps: 之前的mac版本上过一次周刊了，不知道新加的windows版本是否有机会再上一次呢？",
           "content": "* 统计键盘敲击、鼠标点击/移动/滚动\n* 数据全部本地存储\n* 每日自动重置，能看到趋势图\n* windows设计风格\n* 代码纯vibe实现\n\n项目地址： https://github.com/debugtheworldbot/keyStats\n\n<img width=\"300\" height=\"1607\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7d5fa082-0c2a-433c-9060-41caccbe7f05\" />\n\n<img width=\"222\" height=\"243\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/32a797d1-0e59-421a-b3f6-c28a366dc18d\" />\n\nps: 之前的mac版本上过一次[周刊了](https://github.com/ruanyf/weekly/issues/8574)，不知道新加的windows版本是否有机会再上一次呢？",
           "metrics": {
             "comments": 0
@@ -86,7 +97,12 @@
             "submission"
           ],
           "externalId": "8743",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/8743"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8743",
+          "images": [
+            "https://github.com/user-attachments/assets/7d5fa082-0c2a-433c-9060-41caccbe7f05",
+            "https://github.com/user-attachments/assets/32a797d1-0e59-421a-b3f6-c28a366dc18d"
+          ],
+          "image": "https://github.com/user-attachments/assets/7d5fa082-0c2a-433c-9060-41caccbe7f05"
         },
         {
           "sourceId": "weekly-issues",
@@ -95,7 +111,7 @@
           "author": "SeanWong17",
           "authorUrl": "https://github.com/SeanWong17",
           "publishedAt": "2026-01-18T13:43:33Z",
-          "summary": "项目名称： Building Sunlight Simulator 楼盘采光可视化工具 项目地址： 在线演示： 简介： 一个帮助购房者评估小区采光的 3D 日照模拟工具。 买房时经常遇到这些问题：这栋楼冬天能晒到太阳吗？前面的楼会不会挡光？下午几点开始就晒不到了？售楼处的沙盘很难直观感受，于是做了这个工具。 使用方式很简单：在小区规划公示图上测量楼栋位置和尺寸，导出为 JSON 配置文件，导入工具即可生成 3D 模型。支持选择城市纬度、季节，拖动时间轴实时查看 6:0018:00 的阴影变化。 主要功能： 基于太阳高度角算法计算真实阴影 支持全国主要城市纬度 + 手动输入 冬至/春秋分/夏至三种典型日期 区分目标楼栋与周边建筑 JSON 配置文件可分享给同小区的准业主 基于 Three.js，纯前端实现，无需后端。 示例图像： <img width=\"1070\" height=\"1105\" alt=\"Image\" src=\" / <img width=\"1466\" height=\"860\" alt=\"Image\" src=\" /",
+          "summary": "项目名称： Building Sunlight Simulator 楼盘采光可视化工具 项目地址： 在线演示： 简介： 一个帮助购房者评估小区采光的 3D 日照模拟工具。 买房时经常遇到这些问题：这栋楼冬天能晒到太阳吗？前面的楼会不会挡光？下午几点开始就晒不到了？售楼处的沙盘很难直观感受，于是做了这个工具。 使用方式很简单：在小区规划公示图上测量楼栋位置和尺寸，导出为 JSON 配置文件，导入工具即可生成 3D 模型。支持选择城市纬度、季节，拖动时间轴实时查看 6:0018:00 的阴影变化。 主要功能： 基于太阳高度角算法计算真实阴影 支持全国主要城市纬度 + 手动输入 冬至/春秋分/夏至三种典型日期 区分目标楼栋与周边建筑 JSON 配置文件可分享给同小区的准业主 基于 Three.js，纯前端实现，无需后端。 示例图像：",
           "content": "项目名称：  Building Sunlight Simulator 楼盘采光可视化工具\n\n项目地址：https://github.com/SeanWong17/building-sunlight-simulator\n在线演示：https://seanwong17.github.io/building-sunlight-simulator/\n简介：\n\n-  一个帮助购房者评估小区采光的 3D 日照模拟工具。\n\n- 买房时经常遇到这些问题：这栋楼冬天能晒到太阳吗？前面的楼会不会挡光？下午几点开始就晒不到了？售楼处的沙盘很难直观感受，于是做了这个工具。\n\n- 使用方式很简单：在小区规划公示图上测量楼栋位置和尺寸，导出为 JSON 配置文件，导入工具即可生成 3D 模型。支持选择城市纬度、季节，拖动时间轴实时查看 6:00-18:00 的阴影变化。\n\n主要功能：\n\n- 基于太阳高度角算法计算真实阴影\n\n- 支持全国主要城市纬度 + 手动输入\n\n- 冬至/春秋分/夏至三种典型日期\n\n- 区分目标楼栋与周边建筑\n\n- JSON 配置文件可分享给同小区的准业主\n\n- 基于 Three.js，纯前端实现，无需后端。\n\n示例图像：\n\n<img width=\"1070\" height=\"1105\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/710ec460-575b-4764-b2cb-356003349e9b\" />\n\n<img width=\"1466\" height=\"860\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cbf5ffc0-8233-412c-b81d-72da3aeaaf59\" />\n",
           "metrics": {
             "comments": 0
@@ -105,7 +121,12 @@
             "submission"
           ],
           "externalId": "8744",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/8744"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/8744",
+          "images": [
+            "https://github.com/user-attachments/assets/710ec460-575b-4764-b2cb-356003349e9b",
+            "https://github.com/user-attachments/assets/cbf5ffc0-8233-412c-b81d-72da3aeaaf59"
+          ],
+          "image": "https://github.com/user-attachments/assets/710ec460-575b-4764-b2cb-356003349e9b"
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID 685E:106669:AAC9:237E3:6A9E8645 and timestamp 2026-09-07 09:39:17 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"

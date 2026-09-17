@@ -149,7 +149,7 @@
           "author": "shenxianpeng",
           "authorUrl": "https://github.com/shenxianpeng",
           "publishedAt": "2026-09-05T22:25:31Z",
-          "summary": "项目地址 项目介绍 Keelhaven 是一个纯菜单栏的 macOS 备份应用，没有 Dock 图标，也没有主窗口。备份引擎是 restic，加密、去重、增量都交给它，Keelhaven 负责界面、定时和密码管理。 用起来是三步：选要保护的文件夹，选一个自己拥有的存储（外置硬盘、NAS/SFTP，或者任意 S3 协议的对象存储，比如 Backblaze B2、Wasabi、Cloudflare R2），再设一个定时（每小时/每天/每周）。设好之后它就在后台安静地跑，只有出错才弹通知。 仓库密码只存在 macOS 钥匙串里，不落盘、不写日志，也不会作为命令行参数传给 restic 子进程。写出来的是标准的 restic 仓库，哪天不用 Keelhaven 了，用 restic 命令行本身也能继续读取和恢复。 restic 需要访问任意目录、网络和 SSH，App Store 的沙盒放不下，所以目前只有 Homebrew 和一行 curl 脚本两种安装方式。还没有申请 Apple 开发者证书：Homebrew 安装会在安装时清掉隔离标记，能直接打开；如果是从网站下载 dmg 双击安装，首次需要手动允许一次。GPLv3 开源，界面支持中英文双语。 <img width=\"880\" alt=\"Keelhaven 菜单栏面板、新建计划向导、按时间点恢复的三个窗口\" src=\" / brew install cask shenxianpeng/tap/keelhaven 如果没有 Homebrew 可以通过 curl 命令来安装 curl fsSL | bash",
+          "summary": "项目地址 项目介绍 Keelhaven 是一个纯菜单栏的 macOS 备份应用，没有 Dock 图标，也没有主窗口。备份引擎是 restic，加密、去重、增量都交给它，Keelhaven 负责界面、定时和密码管理。 用起来是三步：选要保护的文件夹，选一个自己拥有的存储（外置硬盘、NAS/SFTP，或者任意 S3 协议的对象存储，比如 Backblaze B2、Wasabi、Cloudflare R2），再设一个定时（每小时/每天/每周）。设好之后它就在后台安静地跑，只有出错才弹通知。 仓库密码只存在 macOS 钥匙串里，不落盘、不写日志，也不会作为命令行参数传给 restic 子进程。写出来的是标准的 restic 仓库，哪天不用 Keelhaven 了，用 restic 命令行本身也能继续读取和恢复。 restic 需要访问任意目录、网络和 SSH，App Store 的沙盒放不下，所以目前只有 Homebrew 和一行 curl 脚本两种安装方式。还没有申请 Apple 开发者证书：Homebrew 安装会在安装时清掉隔离标记，能直接打开；如果是从网站下载 dmg 双击安装，首次需要手动允许一次。GPLv3 开源，界面支持中英文双语。 brew install cask shenxianpeng/tap/keelhaven 如果没有 Homebrew 可以通过 curl 命令来安装 curl fsSL | bash",
           "content": "### 项目地址\nhttps://github.com/shenxianpeng/keelhaven\n\n### 项目介绍\n\nKeelhaven 是一个纯菜单栏的 macOS 备份应用，没有 Dock 图标，也没有主窗口。备份引擎是 restic，加密、去重、增量都交给它，Keelhaven 负责界面、定时和密码管理。\n\n用起来是三步：选要保护的文件夹，选一个自己拥有的存储（外置硬盘、NAS/SFTP，或者任意 S3 协议的对象存储，比如 Backblaze B2、Wasabi、Cloudflare R2），再设一个定时（每小时/每天/每周）。设好之后它就在后台安静地跑，只有出错才弹通知。\n\n仓库密码只存在 macOS 钥匙串里，不落盘、不写日志，也不会作为命令行参数传给 restic 子进程。写出来的是标准的 restic 仓库，哪天不用 Keelhaven 了，用 restic 命令行本身也能继续读取和恢复。\n\nrestic 需要访问任意目录、网络和 SSH，App Store 的沙盒放不下，所以目前只有 Homebrew 和一行 curl 脚本两种安装方式。还没有申请 Apple 开发者证书：Homebrew 安装会在安装时清掉隔离标记，能直接打开；如果是从网站下载 dmg 双击安装，首次需要手动允许一次。GPLv3 开源，界面支持中英文双语。\n\n<img width=\"880\" alt=\"Keelhaven 菜单栏面板、新建计划向导、按时间点恢复的三个窗口\" src=\"https://raw.githubusercontent.com/shenxianpeng/keelhaven/main/docs/assets/screenshots/overview.png\" />\n\n```\nbrew install --cask shenxianpeng/tap/keelhaven\n```\n\n如果没有 Homebrew 可以通过 curl 命令来安装\n\n```\ncurl -fsSL https://keelhaven.app/install.sh | bash\n```\n",
           "metrics": {
             "comments": 0
@@ -160,7 +160,11 @@
           ],
           "externalId": "11514",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11514",
-          "siteLogo": "https://keelhaven.app/favicon-180.png"
+          "siteLogo": "https://keelhaven.app/favicon-180.png",
+          "images": [
+            "https://raw.githubusercontent.com/shenxianpeng/keelhaven/main/docs/assets/screenshots/overview.png"
+          ],
+          "image": "https://raw.githubusercontent.com/shenxianpeng/keelhaven/main/docs/assets/screenshots/overview.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -169,7 +173,7 @@
           "author": "security00",
           "authorUrl": "https://github.com/security00",
           "publishedAt": "2026-09-06T00:02:11Z",
-          "summary": "推荐一个自己做的网站：NameVerse。 过生日时，很多人只能发红包或买花。这个网站让你填对方的名字、关系和两三件真实小事，生成一首原创生日歌：名字会唱进副歌，回忆写进主歌。中文名也可以，不常见的读音还能注音。 登录后先免费听 Take A 的前 60 秒，满意再一次性付费，解锁完整 MP3、第二版演唱，以及一个可以转发给对方的拆礼物页面。没有订阅。一首 19.99 美元，三首 49 美元。 可以先看示范礼物页： <img width=\"2271\" height=\"1128\" alt=\"Image\" src=\" / <img width=\"1788\" height=\"1230\" alt=\"Image\" src=\" / <img width=\"1866\" height=\"1212\" alt=\"Image\" src=\" /",
+          "summary": "推荐一个自己做的网站：NameVerse。 过生日时，很多人只能发红包或买花。这个网站让你填对方的名字、关系和两三件真实小事，生成一首原创生日歌：名字会唱进副歌，回忆写进主歌。中文名也可以，不常见的读音还能注音。 登录后先免费听 Take A 的前 60 秒，满意再一次性付费，解锁完整 MP3、第二版演唱，以及一个可以转发给对方的拆礼物页面。没有订阅。一首 19.99 美元，三首 49 美元。 可以先看示范礼物页：",
           "content": "推荐一个自己做的网站：NameVerse。\n\nhttps://nameverse.app\n\n过生日时，很多人只能发红包或买花。这个网站让你填对方的名字、关系和两三件真实小事，生成一首原创生日歌：名字会唱进副歌，回忆写进主歌。中文名也可以，不常见的读音还能注音。\n\n登录后先免费听 Take A 的前 60 秒，满意再一次性付费，解锁完整 MP3、第二版演唱，以及一个可以转发给对方的拆礼物页面。没有订阅。一首 19.99 美元，三首 49 美元。\n\n可以先看示范礼物页：https://nameverse.app/g/sample-elena\n\n<img width=\"2271\" height=\"1128\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1ea72074-f281-4d1d-b7bb-fd34d5088c11\" />\n\n<img width=\"1788\" height=\"1230\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/48e4d128-05bb-4062-bd4f-27272f584a3b\" />\n\n<img width=\"1866\" height=\"1212\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/702c53ae-7287-4910-8bf9-135dcaf66778\" />",
           "metrics": {
             "comments": 0
@@ -180,7 +184,13 @@
           ],
           "externalId": "11515",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11515",
-          "siteLogo": "https://nameverse.app/apple-touch-icon.png"
+          "siteLogo": "https://nameverse.app/apple-touch-icon.png",
+          "images": [
+            "https://github.com/user-attachments/assets/1ea72074-f281-4d1d-b7bb-fd34d5088c11",
+            "https://github.com/user-attachments/assets/48e4d128-05bb-4062-bd4f-27272f584a3b",
+            "https://github.com/user-attachments/assets/702c53ae-7287-4910-8bf9-135dcaf66778"
+          ],
+          "image": "https://github.com/user-attachments/assets/1ea72074-f281-4d1d-b7bb-fd34d5088c11"
         },
         {
           "sourceId": "weekly-issues",
@@ -248,7 +258,7 @@
           "author": "zsuroy",
           "authorUrl": "https://github.com/zsuroy",
           "publishedAt": "2026-09-06T05:28:29Z",
-          "summary": "项目地址 背景 我以前是 Tabby 重度用户，好看、开箱即用，SSH / 串口 / SFTP 都顺手。后来 Harness 工具用的越多，上下文越来越长，Electron 那一套直接失控——光终端就吃将近 1.5G 内存，摸上去烫手～ 切到 Ghostty 之后真香，但痛苦也来了：它只是终端模拟器，Tabby 里那些连接管理全没了。市面上又找不到一个既原生轻量、又能在任意终端里跑的全能连接管理工具，干脆自己写一个。于是有了 ctty。 它是什么 纯 Go 写的 TUI 连接管理器，单个二进制大概 5MB，0 Electron。把 Tabby / Termius / Xshell 里最常用的那部分搬进终端： SSH 主机看板（复用 ~/.ssh/config，支持 tag、搜索、实时连通性） 串口设备自动识别与调试 内置 SFTP 文件浏览器 原生 Telnet（不用系统 telnet） 端口转发（L / R / D）带历史复用 中英文设置可切换，Linux / macOS / Windows / Termux(Android) 都能用 小分屏友好：VS Code / JetBrains / tmux / Zellij 里 8~10 行高也能正常填表单 效果 !ctty demo 安装 macOS： shell brew install zsuroy/ctty/ctty Linux / macOS / Termux： shell curl sSL | bash Windows（PowerShell）： shell irm | iex MIT 开源。欢迎试用，有问题建议直接提 Issue / Pr~😋",
+          "summary": "项目地址 背景 我以前是 Tabby 重度用户，好看、开箱即用，SSH / 串口 / SFTP 都顺手。后来 Harness 工具用的越多，上下文越来越长，Electron 那一套直接失控——光终端就吃将近 1.5G 内存，摸上去烫手～ 切到 Ghostty 之后真香，但痛苦也来了：它只是终端模拟器，Tabby 里那些连接管理全没了。市面上又找不到一个既原生轻量、又能在任意终端里跑的全能连接管理工具，干脆自己写一个。于是有了 ctty。 它是什么 纯 Go 写的 TUI 连接管理器，单个二进制大概 5MB，0 Electron。把 Tabby / Termius / Xshell 里最常用的那部分搬进终端： SSH 主机看板（复用 ~/.ssh/config，支持 tag、搜索、实时连通性） 串口设备自动识别与调试 内置 SFTP 文件浏览器 原生 Telnet（不用系统 telnet） 端口转发（L / R / D）带历史复用 中英文设置可切换，Linux / macOS / Windows / Termux(Android) 都能用 小分屏友好：VS Code / JetBrains / tmux / Zellij 里 8~10 行高也能正常填表单 效果 demo 安装 macOS： shell brew install zsuroy/ctty/ctty Linux / macOS / Termux： shell curl sSL | bash Windows（PowerShell）： shell irm | iex MIT 开源。欢迎试用，有问题建议直接提 Issue / Pr~😋",
           "content": "### 项目地址\nhttps://github.com/zsuroy/ctty\n\n### 背景\n我以前是 Tabby 重度用户，好看、开箱即用，SSH / 串口 / SFTP 都顺手。后来 Harness 工具用的越多，上下文越来越长，Electron 那一套直接失控——光终端就吃将近 1.5G 内存，摸上去烫手～\n\n切到 Ghostty 之后真香，但痛苦也来了：它只是终端模拟器，Tabby 里那些连接管理全没了。市面上又找不到一个既原生轻量、又能在任意终端里跑的全能连接管理工具，干脆自己写一个。于是有了 ctty。\n\n### 它是什么\n纯 Go 写的 TUI 连接管理器，单个二进制大概 5MB，0 Electron。把 Tabby / Termius / Xshell 里最常用的那部分搬进终端：\n\n- SSH 主机看板（复用 ~/.ssh/config，支持 #tag、搜索、实时连通性）\n- 串口设备自动识别与调试\n- 内置 SFTP 文件浏览器\n- 原生 Telnet（不用系统 telnet）\n- 端口转发（-L / -R / -D）带历史复用\n- 中英文设置可切换，Linux / macOS / Windows / Termux(Android) 都能用\n- 小分屏友好：VS Code / JetBrains / tmux / Zellij 里 8~10 行高也能正常填表单\n\n### 效果\n![ctty demo](https://raw.githubusercontent.com/zsuroy/ctty/master/images/ctty.gif)\n\n### 安装\nmacOS：\n```shell\nbrew install zsuroy/ctty/ctty\n```\n\nLinux / macOS / Termux：\n```shell\ncurl -sSL https://raw.githubusercontent.com/zsuroy/ctty/master/install/unix.sh | bash\n```\n\nWindows（PowerShell）：\n```shell\nirm https://raw.githubusercontent.com/zsuroy/ctty/master/install/windows.ps1 | iex\n```\n\nMIT 开源。欢迎试用，有问题建议直接提 Issue / Pr~😋",
           "metrics": {
             "comments": 0
@@ -258,7 +268,11 @@
             "submission"
           ],
           "externalId": "11522",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11522"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11522",
+          "images": [
+            "https://raw.githubusercontent.com/zsuroy/ctty/master/images/ctty.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/zsuroy/ctty/master/images/ctty.gif"
         },
         {
           "sourceId": "weekly-issues",
@@ -350,7 +364,7 @@
           "author": "chenxiachan",
           "authorUrl": "https://github.com/chenxiachan",
           "publishedAt": "2026-09-06T13:26:22Z",
-          "summary": "自荐一个自己维护的开源工具：ThoughtDAG。 和 AI 查资料、试假设时，对话容易长出很多支线。ThoughtDAG 把问答和资料放到画布上，让用户选择哪些内容进入下一次请求：连接需要的节点进行汇总，不再使用的支线仍可留在图上。PDF 摘录保留页码来源。 最近增加了 DeepSeek Harness 插件，可以直接在其 Web 界面中打开思维图，并用 Harness 的模型或 Agent 提问。源会话日志与后续请求分开处理，不会因为画布上删边就改写原始日志。 MIT 协议，中英文界面，提供 macOS、Windows、Linux 桌面版。画布与资料本地保存，支持 Ollama 和 OpenAI 兼容接口；远程推理仍使用用户配置的服务和额度。 !ThoughtDAG 在 DeepSeek Harness 中将对话展开为图并继续提问 官网与下载 GitHub 源码 中文短演示 目前仍在迭代，主要面向愿意手动整理上下文的用户。",
+          "summary": "自荐一个自己维护的开源工具：ThoughtDAG。 和 AI 查资料、试假设时，对话容易长出很多支线。ThoughtDAG 把问答和资料放到画布上，让用户选择哪些内容进入下一次请求：连接需要的节点进行汇总，不再使用的支线仍可留在图上。PDF 摘录保留页码来源。 最近增加了 DeepSeek Harness 插件，可以直接在其 Web 界面中打开思维图，并用 Harness 的模型或 Agent 提问。源会话日志与后续请求分开处理，不会因为画布上删边就改写原始日志。 MIT 协议，中英文界面，提供 macOS、Windows、Linux 桌面版。画布与资料本地保存，支持 Ollama 和 OpenAI 兼容接口；远程推理仍使用用户配置的服务和额度。 在 DeepSeek Harness 中将对话展开为图并继续提问 官网与下载 GitHub 源码 中文短演示 目前仍在迭代，主要面向愿意手动整理上下文的用户。",
           "content": "自荐一个自己维护的开源工具：[ThoughtDAG](https://github.com/chenxiachan/thoughtdag)。\n\n和 AI 查资料、试假设时，对话容易长出很多支线。ThoughtDAG 把问答和资料放到画布上，让用户选择哪些内容进入下一次请求：连接需要的节点进行汇总，不再使用的支线仍可留在图上。PDF 摘录保留页码来源。\n\n最近增加了 DeepSeek Harness 插件，可以直接在其 Web 界面中打开思维图，并用 Harness 的模型或 Agent 提问。源会话日志与后续请求分开处理，不会因为画布上删边就改写原始日志。\n\nMIT 协议，中英文界面，提供 macOS、Windows、Linux 桌面版。画布与资料本地保存，支持 Ollama 和 OpenAI 兼容接口；远程推理仍使用用户配置的服务和额度。\n\n![ThoughtDAG 在 DeepSeek Harness 中将对话展开为图并继续提问](https://raw.githubusercontent.com/chenxiachan/thoughtdag/main/docs/harness-plugin-zh.gif)\n\n- [官网与下载](https://chenxiachan.github.io/thoughtdag/)\n- [GitHub 源码](https://github.com/chenxiachan/thoughtdag)\n- [中文短演示](https://www.bilibili.com/video/BV1Ydt26bENA/)\n\n目前仍在迭代，主要面向愿意手动整理上下文的用户。\n",
           "metrics": {
             "comments": 0
@@ -361,7 +375,11 @@
           ],
           "externalId": "11528",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/11528",
-          "siteLogo": "https://chenxiachan.github.io/thoughtdag/assets/favicon.svg"
+          "siteLogo": "https://chenxiachan.github.io/thoughtdag/assets/favicon.svg",
+          "images": [
+            "https://raw.githubusercontent.com/chenxiachan/thoughtdag/main/docs/harness-plugin-zh.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/chenxiachan/thoughtdag/main/docs/harness-plugin-zh.gif"
         },
         {
           "sourceId": "weekly-issues",

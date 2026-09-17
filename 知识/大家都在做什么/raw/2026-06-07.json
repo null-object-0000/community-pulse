@@ -18,7 +18,7 @@
           "author": "coolbeevip",
           "authorUrl": "https://github.com/coolbeevip",
           "publishedAt": "2026-06-06T16:00:51Z",
-          "summary": "<img width=\"1536\" height=\"1024\" alt=\"Image\" src=\" / 最近我开始大量使用 AI 编码工具处理一些重复性的开发工作。 以前写代码的时候，人基本都坐在电脑前等结果。 现在不一样了。 很多任务交给 Agent 之后，我会直接让它在后台运行： 修改代码 修复问题 编写测试 重构模块 然后去做别的事情。 为了知道任务什么时候完成，我给完成通知设置了一个特别的声音。 《红色警戒》里的经典语音： Mission Accomplished. 效果非常好。 每次听到这个声音，我就知道 Agent 又干完了一件活。 直到有一天。 我离开工位去参加一个会议。 会议刚开始没多久。 突然。 会议室外面传来一声： Mission Accomplished. 我愣了一下。 心想： 谁还在玩《红色警戒》？ 过了几分钟。 又来一次： Mission Accomplished. 这次我感觉有点不对劲。 然后。 第三次： Mission Accomplished. 这时候我终于意识到： 那是我的电脑。 原来在我离开工位后，蓝牙耳机断开了连接。 而 macOS 按照默认逻辑，自动把音频输出切换回了内置扬声器。 与此同时，后台运行的几个 AI 编码任务陆续完成。 于是电脑开始认真地向整个办公室汇报工作成果。 Mission Accomplished. Mission Accomplished. Mission Accomplished. 那一刻，所有人都知道我的 Agent 今天工作很努力。 事后想想。 问题其实不在通知音。 也不在 AI Agent。 macOS 的行为完全符合预期。 耳机断开了。 系统总要找一个新的输出设备。 大多数情况下，它会切换到内置扬声器。 逻辑上没有任何问题。 但现实里并不总是这样。 很多时候，我们根本不希望声音继续播放。 例如： 在办公室 在会议室 在共享空间 深夜工作 离开工位时 后台运行长时间任务时 这些场景下。 突然外放不是方便。 而是尴尬。 于是我开始寻找解决方案。 我找到了一些音频路由工具。 找到了一些自动化工具。 甚至找到了一些需要编写脚本的方案。 但始终没有找到一个足够简单的工具。 我真正想要的功能只有一句话： 当耳机断开并切换到内置扬声器时，立即静音。 仅此而已。 既然找不到。 那就自己做一个。 于是有了 QuietSwitch。 它是一个运行在 macOS 菜单栏中的小工具。 当检测到： 耳机 → 内置扬声器 这个切换发生时， 立即自动静音。 避免任何意外外放。 没有账号。 没有云服务。 没有复杂配置。 没有数据收集。 只解决一个问题。 有趣的是。 我觉得这个问题未来可能会越来越常见。 随着 AI Agent 和自动化工具越来越普及。 越来越多的人会把任务交给电脑，然后离开工位。 而任务完成通知、语音提醒、自动播放内容，也会越来越频繁地出现在人不在电脑前的时候。 软件变得越来越智能。 但有时候。 我们需要的并不是更智能的软件。 而是一个简单的保险丝。 QuietSwitch 就是这样一个小工具。 它诞生于一次有点尴尬的会议事故。 但我始终相信。 很多好产品，最开始都只是开发者想解决自己的一个小麻烦。 <img width=\"1536\" height=\"1024\" alt=\"Image\" src=\" / 项目地址： App Store：",
+          "summary": "最近我开始大量使用 AI 编码工具处理一些重复性的开发工作。 以前写代码的时候，人基本都坐在电脑前等结果。 现在不一样了。 很多任务交给 Agent 之后，我会直接让它在后台运行： 修改代码 修复问题 编写测试 重构模块 然后去做别的事情。 为了知道任务什么时候完成，我给完成通知设置了一个特别的声音。 《红色警戒》里的经典语音： Mission Accomplished. 效果非常好。 每次听到这个声音，我就知道 Agent 又干完了一件活。 直到有一天。 我离开工位去参加一个会议。 会议刚开始没多久。 突然。 会议室外面传来一声： Mission Accomplished. 我愣了一下。 心想： 谁还在玩《红色警戒》？ 过了几分钟。 又来一次： Mission Accomplished. 这次我感觉有点不对劲。 然后。 第三次： Mission Accomplished. 这时候我终于意识到： 那是我的电脑。 原来在我离开工位后，蓝牙耳机断开了连接。 而 macOS 按照默认逻辑，自动把音频输出切换回了内置扬声器。 与此同时，后台运行的几个 AI 编码任务陆续完成。 于是电脑开始认真地向整个办公室汇报工作成果。 Mission Accomplished. Mission Accomplished. Mission Accomplished. 那一刻，所有人都知道我的 Agent 今天工作很努力。 事后想想。 问题其实不在通知音。 也不在 AI Agent。 macOS 的行为完全符合预期。 耳机断开了。 系统总要找一个新的输出设备。 大多数情况下，它会切换到内置扬声器。 逻辑上没有任何问题。 但现实里并不总是这样。 很多时候，我们根本不希望声音继续播放。 例如： 在办公室 在会议室 在共享空间 深夜工作 离开工位时 后台运行长时间任务时 这些场景下。 突然外放不是方便。 而是尴尬。 于是我开始寻找解决方案。 我找到了一些音频路由工具。 找到了一些自动化工具。 甚至找到了一些需要编写脚本的方案。 但始终没有找到一个足够简单的工具。 我真正想要的功能只有一句话： 当耳机断开并切换到内置扬声器时，立即静音。 仅此而已。 既然找不到。 那就自己做一个。 于是有了 QuietSwitch。 它是一个运行在 macOS 菜单栏中的小工具。 当检测到： 耳机 → 内置扬声器 这个切换发生时， 立即自动静音。 避免任何意外外放。 没有账号。 没有云服务。 没有复杂配置。 没有数据收集。 只解决一个问题。 有趣的是。 我觉得这个问题未来可能会越来越常见。 随着 AI Agent 和自动化工具越来越普及。 越来越多的人会把任务交给电脑，然后离开工位。 而任务完成通知、语音提醒、自动播放内容，也会越来越频繁地出现在人不在电脑前的时候。 软件变得越来越智能。 但有时候。 我们需要的并不是更智能的软件。 而是一个简单的保险丝。 QuietSwitch 就是这样一个小工具。 它诞生于一次有点尴尬的会议事故。 但我始终相信。 很多好产品，最开始都只是开发者想解决自己的一个小麻烦。 项目地址： App Store：",
           "content": "<img width=\"1536\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c104c770-0c02-437d-bd3f-8711b1d1d886\" />\n\n最近我开始大量使用 AI 编码工具处理一些重复性的开发工作。\n\n以前写代码的时候，人基本都坐在电脑前等结果。\n\n现在不一样了。\n\n很多任务交给 Agent 之后，我会直接让它在后台运行：\n\n* 修改代码\n* 修复问题\n* 编写测试\n* 重构模块\n\n然后去做别的事情。\n\n为了知道任务什么时候完成，我给完成通知设置了一个特别的声音。\n\n《红色警戒》里的经典语音：\n\n> Mission Accomplished.\n\n效果非常好。\n\n每次听到这个声音，我就知道 Agent 又干完了一件活。\n\n---\n\n直到有一天。\n\n我离开工位去参加一个会议。\n\n会议刚开始没多久。\n\n突然。\n\n会议室外面传来一声：\n\n> Mission Accomplished.\n\n我愣了一下。\n\n心想：\n\n谁还在玩《红色警戒》？\n\n过了几分钟。\n\n又来一次：\n\n> Mission Accomplished.\n\n这次我感觉有点不对劲。\n\n然后。\n\n第三次：\n\n> Mission Accomplished.\n\n这时候我终于意识到：\n\n那是我的电脑。\n\n---\n\n原来在我离开工位后，蓝牙耳机断开了连接。\n\n而 macOS 按照默认逻辑，自动把音频输出切换回了内置扬声器。\n\n与此同时，后台运行的几个 AI 编码任务陆续完成。\n\n于是电脑开始认真地向整个办公室汇报工作成果。\n\n> Mission Accomplished.\n\n> Mission Accomplished.\n\n> Mission Accomplished.\n\n那一刻，所有人都知道我的 Agent 今天工作很努力。\n\n---\n\n事后想想。\n\n问题其实不在通知音。\n\n也不在 AI Agent。\n\nmacOS 的行为完全符合预期。\n\n耳机断开了。\n\n系统总要找一个新的输出设备。\n\n大多数情况下，它会切换到内置扬声器。\n\n逻辑上没有任何问题。\n\n但现实里并不总是这样。\n\n很多时候，我们根本不希望声音继续播放。\n\n例如：\n\n* 在办公室\n* 在会议室\n* 在共享空间\n* 深夜工作\n* 离开工位时\n* 后台运行长时间任务时\n\n这些场景下。\n\n突然外放不是方便。\n\n而是尴尬。\n\n---\n\n于是我开始寻找解决方案。\n\n我找到了一些音频路由工具。\n\n找到了一些自动化工具。\n\n甚至找到了一些需要编写脚本的方案。\n\n但始终没有找到一个足够简单的工具。\n\n我真正想要的功能只有一句话：\n\n> 当耳机断开并切换到内置扬声器时，立即静音。\n\n仅此而已。\n\n---\n\n既然找不到。\n\n那就自己做一个。\n\n于是有了 QuietSwitch。\n\n它是一个运行在 macOS 菜单栏中的小工具。\n\n当检测到：\n\n耳机 → 内置扬声器\n\n这个切换发生时，\n\n立即自动静音。\n\n避免任何意外外放。\n\n没有账号。\n\n没有云服务。\n\n没有复杂配置。\n\n没有数据收集。\n\n只解决一个问题。\n\n---\n\n有趣的是。\n\n我觉得这个问题未来可能会越来越常见。\n\n随着 AI Agent 和自动化工具越来越普及。\n\n越来越多的人会把任务交给电脑，然后离开工位。\n\n而任务完成通知、语音提醒、自动播放内容，也会越来越频繁地出现在人不在电脑前的时候。\n\n软件变得越来越智能。\n\n但有时候。\n\n我们需要的并不是更智能的软件。\n\n而是一个简单的保险丝。\n\nQuietSwitch 就是这样一个小工具。\n\n它诞生于一次有点尴尬的会议事故。\n\n但我始终相信。\n\n很多好产品，最开始都只是开发者想解决自己的一个小麻烦。\n\n---\n\n<img width=\"1536\" height=\"1024\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/14593841-43c5-4dbb-929d-bf367703c7a4\" />\n\n项目地址：\n\nhttps://quietswitch.pages.dev\n\nApp Store：\n\nhttps://apps.apple.com/us/app/quietswitch/id6772697874?mt=12\n",
           "metrics": {
             "comments": 0
@@ -28,7 +28,12 @@
             "submission"
           ],
           "externalId": "10229",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10229"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10229",
+          "images": [
+            "https://github.com/user-attachments/assets/c104c770-0c02-437d-bd3f-8711b1d1d886",
+            "https://github.com/user-attachments/assets/14593841-43c5-4dbb-929d-bf367703c7a4"
+          ],
+          "image": "https://github.com/user-attachments/assets/c104c770-0c02-437d-bd3f-8711b1d1d886"
         },
         {
           "sourceId": "weekly-issues",
@@ -37,7 +42,7 @@
           "author": "BarryBarrywu",
           "authorUrl": "https://github.com/BarryBarrywu",
           "publishedAt": "2026-06-07T03:10:04Z",
-          "summary": "Tutti 一个声音，响遍全场 <img width=\"1920\" height=\"1440\" alt=\"Image\" src=\" / Tutti 是一个 macOS 菜单栏小工具，让同一份声音同时从多个输出设备播放。 macOS 的系统音频一次只能播放一个设备，想边外放边戴耳机、或者让客厅和卧室两组音箱一起响，系统自带的音量功能做不到，需要去 MIDI 里进行设置。 Tutti 补上了这个缺口。不用装任何虚拟音频驱动，也没有内核扩展，全部用苹果自带的 CoreAudio 框架实现。在菜单栏勾选多个输出，Tutti 会临时搭一个聚合设备，让每个设备同时发声；退出时原来的输出干净恢复，不留后台进程，也不留垃圾设备。 使用场景 家里多台蓝牙音响，同时播放一首歌曲，每个房间的音乐同步。 一台 Mac 能同时连两副、甚至三副 AirPods。在咖啡馆不方便外放？你和朋友一人戴一副，一起看同一部电影、听同一首歌。 老师上课时，可以通过耳机监听自己的声音，同时让现场的观众和学生听到功放的声音。直播、录课同理：自己戴耳机听，声音照常外放。 任何\"想让同一份声音同时去几个地方\"的场景。 核心功能 多设备同步输出，在菜单栏勾选有线音箱、、蓝牙耳机、AirPods、显示器的任意组合，同一个声音同时播，完全同步。 音量控制，一个主音量统一调全组，每个设备还能单独调音量和静音。 蓝牙电量，连着的蓝牙耳机电量直接显示在面板里，不用再去系统里查。 替代系统音量图标，可以把 Tutti 设成菜单栏那个音量图标，按音量键时弹的也是它自己的 OSD。 快捷键增强，键盘音量键和滚轮直接控制整组输出，还能把常用的设备组合存成预设，一键切换。 主要能力 源码在 GitHub 上公开（PolyForm Noncommercial 许可）。支持 9 种语言，需要 macOS 13 及以上。 官网： Github：",
+          "summary": "Tutti 一个声音，响遍全场 Tutti 是一个 macOS 菜单栏小工具，让同一份声音同时从多个输出设备播放。 macOS 的系统音频一次只能播放一个设备，想边外放边戴耳机、或者让客厅和卧室两组音箱一起响，系统自带的音量功能做不到，需要去 MIDI 里进行设置。 Tutti 补上了这个缺口。不用装任何虚拟音频驱动，也没有内核扩展，全部用苹果自带的 CoreAudio 框架实现。在菜单栏勾选多个输出，Tutti 会临时搭一个聚合设备，让每个设备同时发声；退出时原来的输出干净恢复，不留后台进程，也不留垃圾设备。 使用场景 家里多台蓝牙音响，同时播放一首歌曲，每个房间的音乐同步。 一台 Mac 能同时连两副、甚至三副 AirPods。在咖啡馆不方便外放？你和朋友一人戴一副，一起看同一部电影、听同一首歌。 老师上课时，可以通过耳机监听自己的声音，同时让现场的观众和学生听到功放的声音。直播、录课同理：自己戴耳机听，声音照常外放。 任何\"想让同一份声音同时去几个地方\"的场景。 核心功能 多设备同步输出，在菜单栏勾选有线音箱、、蓝牙耳机、AirPods、显示器的任意组合，同一个声音同时播，完全同步。 音量控制，一个主音量统一调全组，每个设备还能单独调音量和静音。 蓝牙电量，连着的蓝牙耳机电量直接显示在面板里，不用再去系统里查。 替代系统音量图标，可以把 Tutti 设成菜单栏那个音量图标，按音量键时弹的也是它自己的 OSD。 快捷键增强，键盘音量键和滚轮直接控制整组输出，还能把常用的设备组合存成预设，一键切换。 主要能力 源码在 GitHub 上公开（PolyForm Noncommercial 许可）。支持 9 种语言，需要 macOS 13 及以上。 官网： Github：",
           "content": "# Tutti\n\n**一个声音，响遍全场**\n\n<img width=\"1920\" height=\"1440\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a2924f7b-eb95-4e3d-9ee8-56e612e6ca05\" />\n\nTutti 是一个 macOS 菜单栏小工具，让同一份声音同时从多个输出设备播放。\nmacOS 的系统音频一次只能播放一个设备，想边外放边戴耳机、或者让客厅和卧室两组音箱一起响，系统自带的音量功能做不到，需要去 MIDI 里进行设置。\nTutti 补上了这个缺口。不用装任何虚拟音频驱动，也没有内核扩展，全部用苹果自带的 CoreAudio 框架实现。在菜单栏勾选多个输出，Tutti 会临时搭一个聚合设备，让每个设备同时发声；退出时原来的输出干净恢复，不留后台进程，也不留垃圾设备。\n\n## 使用场景\n\n- 家里多台蓝牙音响，同时播放一首歌曲，每个房间的音乐同步。\n- 一台 Mac 能同时连两副、甚至三副 AirPods。在咖啡馆不方便外放？你和朋友一人戴一副，一起看同一部电影、听同一首歌。\n- 老师上课时，可以通过耳机监听自己的声音，同时让现场的观众和学生听到功放的声音。直播、录课同理：自己戴耳机听，声音照常外放。\n- 任何\"想让同一份声音同时去几个地方\"的场景。\n\n## 核心功能\n\n**多设备同步输出**，在菜单栏勾选有线音箱、、蓝牙耳机、AirPods、显示器的任意组合，同一个声音同时播，完全同步。\n\n**音量控制**，一个主音量统一调全组，每个设备还能单独调音量和静音。\n\n**蓝牙电量**，连着的蓝牙耳机电量直接显示在面板里，不用再去系统里查。\n\n**替代系统音量图标**，可以把 Tutti 设成菜单栏那个音量图标，按音量键时弹的也是它自己的 OSD。\n\n**快捷键增强**，键盘音量键和滚轮直接控制整组输出，还能把常用的设备组合存成预设，一键切换。\n\n## 主要能力\n\n源码在 GitHub 上公开（PolyForm Noncommercial 许可）。支持 9 种语言，需要 macOS 13 及以上。\n\n官网：https://www.tutti.barrybarrywu.com\nGithub：https://github.com/BarryBarrywu/tutti\n",
           "metrics": {
             "comments": 0
@@ -47,7 +52,11 @@
             "submission"
           ],
           "externalId": "10231",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10231"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10231",
+          "images": [
+            "https://github.com/user-attachments/assets/a2924f7b-eb95-4e3d-9ee8-56e612e6ca05"
+          ],
+          "image": "https://github.com/user-attachments/assets/a2924f7b-eb95-4e3d-9ee8-56e612e6ca05"
         },
         {
           "sourceId": "weekly-issues",
@@ -75,7 +84,7 @@
           "author": "harryisfish",
           "authorUrl": "https://github.com/harryisfish",
           "publishedAt": "2026-06-07T07:32:27Z",
-          "summary": "smctl 是一个开源（MIT）命令行工具，给 Apple Silicon Mac 提供风扇曲线控制和电池充电限制——这两件事 macOS 官方都不开放：M 系列芯片没有任何风扇控制 API，电池也只有固定 80% 一档优化充电。 !demo 解决的问题： 长期插电的 MacBook 想把电量维持在自定义区间（如 smctl battery maintain 7080）延长电池寿命 Mac mini / Studio 当家用服务器时风扇策略不可控，smctl 支持手动转速和声明式风扇曲线（TOML 配置），所有命令可走 SSH，支持 json 输出 smctl sensors watch 实时查看全部温度传感器、风扇转速和封装功耗 安全方面做了比较多的工作：daemon 被卸载或异常退出都会自动把硬件交还系统接管；带不可关闭的温度护栏，持续过热会强制风扇回到系统控制。所有 SMC 写入都有回读校验。 安装：brew install leaperone/smctl/smctl 项目地址： （中文文档）",
+          "summary": "smctl 是一个开源（MIT）命令行工具，给 Apple Silicon Mac 提供风扇曲线控制和电池充电限制——这两件事 macOS 官方都不开放：M 系列芯片没有任何风扇控制 API，电池也只有固定 80% 一档优化充电。 解决的问题： 长期插电的 MacBook 想把电量维持在自定义区间（如 smctl battery maintain 7080）延长电池寿命 Mac mini / Studio 当家用服务器时风扇策略不可控，smctl 支持手动转速和声明式风扇曲线（TOML 配置），所有命令可走 SSH，支持 json 输出 smctl sensors watch 实时查看全部温度传感器、风扇转速和封装功耗 安全方面做了比较多的工作：daemon 被卸载或异常退出都会自动把硬件交还系统接管；带不可关闭的温度护栏，持续过热会强制风扇回到系统控制。所有 SMC 写入都有回读校验。 安装：brew install leaperone/smctl/smctl 项目地址： （中文文档）",
           "content": "smctl 是一个开源（MIT）命令行工具，给 Apple Silicon Mac 提供风扇曲线控制和电池充电限制——这两件事 macOS 官方都不开放：M 系列芯片没有任何风扇控制 API，电池也只有固定 80% 一档优化充电。\n\n![demo](https://raw.githubusercontent.com/leaperone/smctl/main/docs/assets/demo.gif)\n\n解决的问题：\n\n- 长期插电的 MacBook 想把电量维持在自定义区间（如 `smctl battery maintain 70-80`）延长电池寿命\n- Mac mini / Studio 当家用服务器时风扇策略不可控，smctl 支持手动转速和声明式风扇曲线（TOML 配置），所有命令可走 SSH，支持 `--json` 输出\n- `smctl sensors --watch` 实时查看全部温度传感器、风扇转速和封装功耗\n\n安全方面做了比较多的工作：daemon 被卸载或异常退出都会自动把硬件交还系统接管；带不可关闭的温度护栏，持续过热会强制风扇回到系统控制。所有 SMC 写入都有回读校验。\n\n安装：`brew install leaperone/smctl/smctl`\n\n项目地址：https://github.com/leaperone/smctl （[中文文档](https://github.com/leaperone/smctl/blob/main/docs/README.zh-CN.md)）",
           "metrics": {
             "comments": 0
@@ -85,7 +94,11 @@
             "submission"
           ],
           "externalId": "10233",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10233"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10233",
+          "images": [
+            "https://raw.githubusercontent.com/leaperone/smctl/main/docs/assets/demo.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/leaperone/smctl/main/docs/assets/demo.gif"
         },
         {
           "sourceId": "weekly-issues",
@@ -94,7 +107,7 @@
           "author": "gokuscraper",
           "authorUrl": "https://github.com/gokuscraper",
           "publishedAt": "2026-06-07T07:48:10Z",
-          "summary": "【开源自荐】Github 照妖镜 — 输入 GitHub 用户名，AI 毒舌分析 + 给你的账号估个价 项目地址： 在线体验： 具体介绍 Github 照妖镜是一个 AI 驱动的 GitHub 开发者档案分析工具。输入 GitHub 用户名或仓库链接，自动抓取公开资料、仓库和动态，生成一份包含 13 个维度的毒舌分析报告——外加一个独家公式算出你的 GitHub 账号值多少钱。 预览 !资料+统计+估值 !Roast+技术栈+弱点 核心功能 🪞 AI 毒舌分析 — 基于 DeepSeek，输出 Roast、技术栈、弱点、开源影响力、协作风格、活力指数等 13 张卡片 💰 账号估值 — 根据 Star、关注者、原创/Fork 仓库数量，用独家公式算出你的 GitHub 身价（¥/$） 📸 截图下载 — 支持按区段逐个下载 PNG，也支持一键全部下载 𝕏 分享到 X — 预填好文案的一键分享 🌐 中英文切换 — 实时切换 🏢 支持个人和组织 — 自动检测账号类型，使用不同的分析提示词 🆓 免费使用 — 通过 OpenCode 免费通道调用，无需付费 技术栈 Python + Streamlit + DeepSeek + GitHub REST API",
+          "summary": "【开源自荐】Github 照妖镜 — 输入 GitHub 用户名，AI 毒舌分析 + 给你的账号估个价 项目地址： 在线体验： 具体介绍 Github 照妖镜是一个 AI 驱动的 GitHub 开发者档案分析工具。输入 GitHub 用户名或仓库链接，自动抓取公开资料、仓库和动态，生成一份包含 13 个维度的毒舌分析报告——外加一个独家公式算出你的 GitHub 账号值多少钱。 预览 核心功能 🪞 AI 毒舌分析 — 基于 DeepSeek，输出 Roast、技术栈、弱点、开源影响力、协作风格、活力指数等 13 张卡片 💰 账号估值 — 根据 Star、关注者、原创/Fork 仓库数量，用独家公式算出你的 GitHub 身价（¥/$） 📸 截图下载 — 支持按区段逐个下载 PNG，也支持一键全部下载 𝕏 分享到 X — 预填好文案的一键分享 🌐 中英文切换 — 实时切换 🏢 支持个人和组织 — 自动检测账号类型，使用不同的分析提示词 🆓 免费使用 — 通过 OpenCode 免费通道调用，无需付费 技术栈 Python + Streamlit + DeepSeek + GitHub REST API",
           "content": "# 【开源自荐】Github 照妖镜 — 输入 GitHub 用户名，AI 毒舌分析 + 给你的账号估个价\n\n**项目地址：** [https://github.com/gokuscraper/github-roast](https://github.com/gokuscraper/github-roast)\n**在线体验：** [https://groast.streamlit.app](https://groast.streamlit.app)\n\n---\n\n## 具体介绍\n\nGithub 照妖镜是一个 AI 驱动的 GitHub 开发者档案分析工具。输入 GitHub 用户名或仓库链接，自动抓取公开资料、仓库和动态，生成一份包含 13 个维度的毒舌分析报告——外加一个独家公式算出你的 GitHub 账号值多少钱。\n\n---\n\n## 预览\n\n![资料+统计+估值](https://raw.githubusercontent.com/gokuscraper/github-roast/main/case/cn/torvalds_1_profile.png)\n![Roast+技术栈+弱点](https://raw.githubusercontent.com/gokuscraper/github-roast/main/case/cn/torvalds_2_analysis_a.png)\n\n---\n\n## 核心功能\n\n- 🪞 **AI 毒舌分析** — 基于 DeepSeek，输出 Roast、技术栈、弱点、开源影响力、协作风格、活力指数等 13 张卡片\n- 💰 **账号估值** — 根据 Star、关注者、原创/Fork 仓库数量，用独家公式算出你的 GitHub 身价（¥/$）\n- 📸 **截图下载** — 支持按区段逐个下载 PNG，也支持一键全部下载\n- 𝕏 **分享到 X** — 预填好文案的一键分享\n- 🌐 **中英文切换** — 实时切换\n- 🏢 **支持个人和组织** — 自动检测账号类型，使用不同的分析提示词\n- 🆓 **免费使用** — 通过 OpenCode 免费通道调用，无需付费\n\n## 技术栈\n\nPython + Streamlit + DeepSeek + GitHub REST API",
           "metrics": {
             "comments": 1
@@ -104,7 +117,12 @@
             "submission"
           ],
           "externalId": "10234",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10234"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10234",
+          "images": [
+            "https://raw.githubusercontent.com/gokuscraper/github-roast/main/case/cn/torvalds_1_profile.png",
+            "https://raw.githubusercontent.com/gokuscraper/github-roast/main/case/cn/torvalds_2_analysis_a.png"
+          ],
+          "image": "https://raw.githubusercontent.com/gokuscraper/github-roast/main/case/cn/torvalds_1_profile.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -113,7 +131,7 @@
           "author": "gokuscraper",
           "authorUrl": "https://github.com/gokuscraper",
           "publishedAt": "2026-06-07T07:55:59Z",
-          "summary": "【开源自荐】X照妖镜 — 输入 X/Twitter 用户名，AI 秒出毒舌人格分析报告 项目地址： 在线体验： 截图展示 <p float=\"left\" <img src=\" width=\"45%\" <img src=\" width=\"45%\" </p 中文报告 @罗永浩，更多示例见项目 README。 核心功能 一键抓取 — 输入 @ 用户名，自动抓取个人资料 + 最新推文 AI 人格分析 — DeepSeek V4 生成 15 维报告：吐槽、长处、弱点、爱情观、金钱观、健康、MBTI 等 账号价值评估 — 加权公式估算账号市场价值（粉丝数 + 互动 + 认证状态） 截图即分享 — 一键下载 PNG，预填推文分享到 X 中英文切换 — UI 语言实时切换，报告语言自动跟随 技术栈 Python Streamlit Playwright DeepSeek API OpenCode API html2canvas",
+          "summary": "【开源自荐】X照妖镜 — 输入 X/Twitter 用户名，AI 秒出毒舌人格分析报告 项目地址： 在线体验： 截图展示 <p float=\"left\" width=\"45%\" width=\"45%\" </p 中文报告 @罗永浩，更多示例见项目 README。 核心功能 一键抓取 — 输入 @ 用户名，自动抓取个人资料 + 最新推文 AI 人格分析 — DeepSeek V4 生成 15 维报告：吐槽、长处、弱点、爱情观、金钱观、健康、MBTI 等 账号价值评估 — 加权公式估算账号市场价值（粉丝数 + 互动 + 认证状态） 截图即分享 — 一键下载 PNG，预填推文分享到 X 中英文切换 — UI 语言实时切换，报告语言自动跟随 技术栈 Python Streamlit Playwright DeepSeek API OpenCode API html2canvas",
           "content": "\n# 【开源自荐】X照妖镜 — 输入 X/Twitter 用户名，AI 秒出毒舌人格分析报告\n\n项目地址：[https://github.com/gokuscraper/x-pose](https://github.com/gokuscraper/x-pose)\n\n在线体验：[https://xpose7.streamlit.app](https://xpose7.streamlit.app)\n\n---\n\n## 截图展示\n\n<p float=\"left\">\n  <img src=\"https://raw.githubusercontent.com/gokuscraper/x-pose/main/case/cn/luoyonghao_1_profile.png\" width=\"45%\">\n  <img src=\"https://raw.githubusercontent.com/gokuscraper/x-pose/main/case/cn/luoyonghao_2_analysis_a.png\" width=\"45%\">\n</p>\n\n> 中文报告 @罗永浩，更多示例见项目 README。\n\n---\n\n## 核心功能\n\n- **一键抓取** — 输入 @ 用户名，自动抓取个人资料 + 最新推文\n- **AI 人格分析** — DeepSeek V4 生成 15 维报告：吐槽、长处、弱点、爱情观、金钱观、健康、MBTI 等\n- **账号价值评估** — 加权公式估算账号市场价值（粉丝数 + 互动 + 认证状态）\n- **截图即分享** — 一键下载 PNG，预填推文分享到 X\n- **中英文切换** — UI 语言实时切换，报告语言自动跟随\n\n## 技术栈\n\n`Python` `Streamlit` `Playwright` `DeepSeek API` `OpenCode API` `html2canvas`\n",
           "metrics": {
             "comments": 1
@@ -123,7 +141,12 @@
             "submission"
           ],
           "externalId": "10235",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10235"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10235",
+          "images": [
+            "https://raw.githubusercontent.com/gokuscraper/x-pose/main/case/cn/luoyonghao_1_profile.png",
+            "https://raw.githubusercontent.com/gokuscraper/x-pose/main/case/cn/luoyonghao_2_analysis_a.png"
+          ],
+          "image": "https://raw.githubusercontent.com/gokuscraper/x-pose/main/case/cn/luoyonghao_1_profile.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -190,7 +213,7 @@
           "author": "coolbeevip",
           "authorUrl": "https://github.com/coolbeevip",
           "publishedAt": "2026-06-07T13:24:08Z",
-          "summary": "我是这个仓库的作者： <img width=\"1400\" height=\"894\" alt=\"Image\" src=\" / 做这个项目的原因很简单：我自己还是机器人仿真的初学者，经常会用 AI 帮我创建 MuJoCo 仿真环境。 这个过程一开始很有帮助。比如我可以让 AI 创建一个 Franka 机械臂抓取场景、UR5e 分拣场景、Go1 越障场景，或者 H1 人形机器人的行走布局。AI 很快能给出 MJCF 文件，也能帮我打开 viewer 检查。 但问题也很明显：生成出来的场景经常“看起来像那么回事”，实际却不一定符合物理常识。 我遇到过的问题包括： 物体悬空 机器人初始姿态不合理 机械臂没有夹爪，却被要求做抓取 末端执行器穿过桌面或传送带 人形机器人一开始就倒下 场景能加载，但不是一个可用的仿真环境 所以我开始把这些经验沉淀成一个 MuJoCo Skill，让 AI Agent 在创建场景时不只是“写 XML”，而是按一个更可靠的流程工作。 这个 Skill 目前主要帮助 AI 做这些事： 构建 MJCF 场景 做基础物理合理性检查 启动 MuJoCo viewer 检查 actuator 做最小控制实验 在不确定时询问用户，而不是猜测需求 对常见场景进行更严格的验证 README 中的示例和场景检查是在 Codex GPT5.5 下验证的。 我并不想把它包装成一个“自动生成完美仿真环境”的工具。它更像是一个给初学者和 AI Agent 使用的工作流约束：让 AI 在创建 MuJoCo 场景时少犯明显错误，也让使用者能更快得到一个可以继续学习和修改的起点。 如果你也在用 AI 辅助机器人仿真，或者你对 MuJoCo、MJCF、机器人控制有经验，欢迎帮我看看这个仓库，也欢迎提建议：",
+          "summary": "我是这个仓库的作者： 做这个项目的原因很简单：我自己还是机器人仿真的初学者，经常会用 AI 帮我创建 MuJoCo 仿真环境。 这个过程一开始很有帮助。比如我可以让 AI 创建一个 Franka 机械臂抓取场景、UR5e 分拣场景、Go1 越障场景，或者 H1 人形机器人的行走布局。AI 很快能给出 MJCF 文件，也能帮我打开 viewer 检查。 但问题也很明显：生成出来的场景经常“看起来像那么回事”，实际却不一定符合物理常识。 我遇到过的问题包括： 物体悬空 机器人初始姿态不合理 机械臂没有夹爪，却被要求做抓取 末端执行器穿过桌面或传送带 人形机器人一开始就倒下 场景能加载，但不是一个可用的仿真环境 所以我开始把这些经验沉淀成一个 MuJoCo Skill，让 AI Agent 在创建场景时不只是“写 XML”，而是按一个更可靠的流程工作。 这个 Skill 目前主要帮助 AI 做这些事： 构建 MJCF 场景 做基础物理合理性检查 启动 MuJoCo viewer 检查 actuator 做最小控制实验 在不确定时询问用户，而不是猜测需求 对常见场景进行更严格的验证 README 中的示例和场景检查是在 Codex GPT5.5 下验证的。 我并不想把它包装成一个“自动生成完美仿真环境”的工具。它更像是一个给初学者和 AI Agent 使用的工作流约束：让 AI 在创建 MuJoCo 场景时少犯明显错误，也让使用者能更快得到一个可以继续学习和修改的起点。 如果你也在用 AI 辅助机器人仿真，或者你对 MuJoCo、MJCF、机器人控制有经验，欢迎帮我看看这个仓库，也欢迎提建议：",
           "content": "我是这个仓库的作者：\n\nhttps://github.com/coolbeevip/mujoco-skills\n\n<img width=\"1400\" height=\"894\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a9a08acb-b272-4960-90d6-23515bf7c6b8\" />\n\n做这个项目的原因很简单：我自己还是机器人仿真的初学者，经常会用 AI 帮我创建 MuJoCo 仿真环境。\n\n这个过程一开始很有帮助。比如我可以让 AI 创建一个 Franka 机械臂抓取场景、UR5e 分拣场景、Go1 越障场景，或者 H1 人形机器人的行走布局。AI 很快能给出 MJCF 文件，也能帮我打开 viewer 检查。\n\n但问题也很明显：生成出来的场景经常“看起来像那么回事”，实际却不一定符合物理常识。\n\n我遇到过的问题包括：\n\n- 物体悬空\n- 机器人初始姿态不合理\n- 机械臂没有夹爪，却被要求做抓取\n- 末端执行器穿过桌面或传送带\n- 人形机器人一开始就倒下\n- 场景能加载，但不是一个可用的仿真环境\n\n所以我开始把这些经验沉淀成一个 MuJoCo Skill，让 AI Agent 在创建场景时不只是“写 XML”，而是按一个更可靠的流程工作。\n\n这个 Skill 目前主要帮助 AI 做这些事：\n\n- 构建 MJCF 场景\n- 做基础物理合理性检查\n- 启动 MuJoCo viewer\n- 检查 actuator\n- 做最小控制实验\n- 在不确定时询问用户，而不是猜测需求\n- 对常见场景进行更严格的验证\n\nREADME 中的示例和场景检查是在 Codex GPT-5.5 下验证的。\n\n我并不想把它包装成一个“自动生成完美仿真环境”的工具。它更像是一个给初学者和 AI Agent 使用的工作流约束：让 AI 在创建 MuJoCo 场景时少犯明显错误，也让使用者能更快得到一个可以继续学习和修改的起点。\n\n如果你也在用 AI 辅助机器人仿真，或者你对 MuJoCo、MJCF、机器人控制有经验，欢迎帮我看看这个仓库，也欢迎提建议：",
           "metrics": {
             "comments": 0
@@ -200,7 +223,11 @@
             "submission"
           ],
           "externalId": "10239",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10239"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10239",
+          "images": [
+            "https://github.com/user-attachments/assets/a9a08acb-b272-4960-90d6-23515bf7c6b8"
+          ],
+          "image": "https://github.com/user-attachments/assets/a9a08acb-b272-4960-90d6-23515bf7c6b8"
         },
         {
           "sourceId": "weekly-issues",
@@ -209,7 +236,7 @@
           "author": "WangQrkkk",
           "authorUrl": "https://github.com/WangQrkkk",
           "publishedAt": "2026-06-07T13:46:00Z",
-          "summary": "PaperQuay是面向桌面端的覆盖 PDF 阅读、全文翻译、论文概览、富文本笔记和 Agent 工作流 AI 辅助文献管理阅读工具。 解决的问题： 常规文献管理工具如 Zotero 等，主要提供基础的文献管理和 PDF 阅读能力；许多 AI 插件与 Zotero 的集成度不够，阅读、翻译、总结、笔记和文献整理往往分散在多个工具里，集成度不够，同时相互之间无法联动。 PaperQuay 希望把这些操作放回同一个桌面工作区：导入 PDF 后，可以管理元数据、分类、标签和附件；阅读时支持 PDF 批注、MinerU 结构块视图、全文翻译、块级译文缓存和划词翻译；速读时可以生成论文概览，包含背景、研究问题、方法、实验设置、主要发现、结论和局限等字段。 笔记方面，PaperQuay 内置富文本 Notes 工作区，支持 [[笔记]] 双向链接、标签、@paper 文献引用、反向链接、本地自动保存和全文搜索，让论文笔记不再脱离文献上下文。 AI 工作流方面，PaperQuay 提供面向文献管理的 Agent 工作区，不只是普通聊天框。Agent 可以辅助批量重命名、元数据补全、智能标签、标签清洗、自动分类和论文总结，并展示工具调用过程和执行结果，方便用户确认后再执行。 数据与隐私方面，PaperQuay 采用本地优先设计，文献库、笔记、批注、导入记录和 RAG 索引保存在本地 SQLite 数据库中，PDF 保存到用户配置的文献存储文件夹。Zotero 兼容是可选能力，可以从 zotero.sqlite 导入分类、标签和可用 PDF 附件，但不强依赖 Zotero。 <div align=\"center\" <img width=\"690\" height=\"370\" alt=\"PaperQuay Demo\" src=\" / <br / <subPaperQuay 文献阅读界面</sub </div <div align=\"center\" <img width=\"690\" height=\"370\" alt=\"PaperQuay Demo\" src=\" / <br / <subPaperQuay 管理文献界面</sub </div 安全和隐私方面做了比较多的工作：PaperQuay 采用本地优先设计，文献库、笔记、批注、翻译缓存、导入记录和 RAG 索引都保存在本地 SQLite 数据库中，PDF 文件存放在用户配置的本地文献目录里；AI 能力由用户自行配置模型服务，不强绑定云端账号。Agent 在执行批量重命名、标签清洗、元数据补全等文献库操作时，会展示工具调用过程和执行结果，方便用户确认，避免黑箱式修改本地文献库。 项目地址：",
+          "summary": "PaperQuay是面向桌面端的覆盖 PDF 阅读、全文翻译、论文概览、富文本笔记和 Agent 工作流 AI 辅助文献管理阅读工具。 解决的问题： 常规文献管理工具如 Zotero 等，主要提供基础的文献管理和 PDF 阅读能力；许多 AI 插件与 Zotero 的集成度不够，阅读、翻译、总结、笔记和文献整理往往分散在多个工具里，集成度不够，同时相互之间无法联动。 PaperQuay 希望把这些操作放回同一个桌面工作区：导入 PDF 后，可以管理元数据、分类、标签和附件；阅读时支持 PDF 批注、MinerU 结构块视图、全文翻译、块级译文缓存和划词翻译；速读时可以生成论文概览，包含背景、研究问题、方法、实验设置、主要发现、结论和局限等字段。 笔记方面，PaperQuay 内置富文本 Notes 工作区，支持 [[笔记]] 双向链接、标签、@paper 文献引用、反向链接、本地自动保存和全文搜索，让论文笔记不再脱离文献上下文。 AI 工作流方面，PaperQuay 提供面向文献管理的 Agent 工作区，不只是普通聊天框。Agent 可以辅助批量重命名、元数据补全、智能标签、标签清洗、自动分类和论文总结，并展示工具调用过程和执行结果，方便用户确认后再执行。 数据与隐私方面，PaperQuay 采用本地优先设计，文献库、笔记、批注、导入记录和 RAG 索引保存在本地 SQLite 数据库中，PDF 保存到用户配置的文献存储文件夹。Zotero 兼容是可选能力，可以从 zotero.sqlite 导入分类、标签和可用 PDF 附件，但不强依赖 Zotero。 <div align=\"center\" <br / <subPaperQuay 文献阅读界面</sub </div <div align=\"center\" <br / <subPaperQuay 管理文献界面</sub </div 安全和隐私方面做了比较多的工作：PaperQuay 采用本地优先设计，文献库、笔记、批注、翻译缓存、导入记录和 RAG 索引都保存在本地 SQLite 数据库中，PDF 文件存放在用户配置的本地文献目录里；AI 能力由用户自行配置模型服务，不强绑定云端账号。Agent 在执行批量重命名、标签清洗、元数据补全等文献库操作时，会展示工具调用过程和执行结果，方便用户确认，避免黑箱式修改本地文献库。 项目地址：",
           "content": "PaperQuay是面向桌面端的覆盖 PDF 阅读、全文翻译、论文概览、富文本笔记和 Agent 工作流 AI 辅助文献管理阅读工具。\n\n解决的问题：\n\n常规文献管理工具如 Zotero 等，主要提供基础的文献管理和 PDF 阅读能力；许多 AI 插件与 Zotero 的集成度不够，阅读、翻译、总结、笔记和文献整理往往分散在多个工具里，集成度不够，同时相互之间无法联动。\n\n- PaperQuay 希望把这些操作放回同一个桌面工作区：导入 PDF 后，可以管理元数据、分类、标签和附件；阅读时支持 PDF 批注、MinerU 结构块视图、全文翻译、块级译文缓存和划词翻译；速读时可以生成论文概览，包含背景、研究问题、方法、实验设置、主要发现、结论和局限等字段。\n\n- 笔记方面，PaperQuay 内置富文本 Notes 工作区，支持 [[笔记]] 双向链接、#标签、@paper 文献引用、反向链接、本地自动保存和全文搜索，让论文笔记不再脱离文献上下文。\n\n- AI 工作流方面，PaperQuay 提供面向文献管理的 Agent 工作区，不只是普通聊天框。Agent 可以辅助批量重命名、元数据补全、智能标签、标签清洗、自动分类和论文总结，并展示工具调用过程和执行结果，方便用户确认后再执行。\n\n- 数据与隐私方面，PaperQuay 采用本地优先设计，文献库、笔记、批注、导入记录和 RAG 索引保存在本地 SQLite 数据库中，PDF 保存到用户配置的文献存储文件夹。Zotero 兼容是可选能力，可以从 zotero.sqlite 导入分类、标签和可用 PDF 附件，但不强依赖 Zotero。\n\n<div align=\"center\">\n  <img width=\"690\" height=\"370\" alt=\"PaperQuay Demo\" src=\"https://github.com/user-attachments/assets/b63d147e-a159-45a5-aa0a-d8774bd40fe4\" />\n  <br />\n  <sub>PaperQuay 文献阅读界面</sub>\n</div>\n\n<div align=\"center\">\n  <img width=\"690\" height=\"370\" alt=\"PaperQuay Demo\" src=\"https://github.com/user-attachments/assets/d6d4a719-8ab4-4dae-be03-2d02e58de3e9\" />\n  <br />\n  <sub>PaperQuay 管理文献界面</sub>\n</div>\n\n安全和隐私方面做了比较多的工作：PaperQuay 采用本地优先设计，文献库、笔记、批注、翻译缓存、导入记录和 RAG 索引都保存在本地 SQLite 数据库中，PDF 文件存放在用户配置的本地文献目录里；AI 能力由用户自行配置模型服务，不强绑定云端账号。Agent 在执行批量重命名、标签清洗、元数据补全等文献库操作时，会展示工具调用过程和执行结果，方便用户确认，避免黑箱式修改本地文献库。\n\n项目地址：https://github.com/WangQrkkk/PaperQuay",
           "metrics": {
             "comments": 0
@@ -219,7 +246,12 @@
             "submission"
           ],
           "externalId": "10240",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10240"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10240",
+          "images": [
+            "https://github.com/user-attachments/assets/b63d147e-a159-45a5-aa0a-d8774bd40fe4",
+            "https://github.com/user-attachments/assets/d6d4a719-8ab4-4dae-be03-2d02e58de3e9"
+          ],
+          "image": "https://github.com/user-attachments/assets/b63d147e-a159-45a5-aa0a-d8774bd40fe4"
         },
         {
           "sourceId": "weekly-issues",
@@ -228,7 +260,7 @@
           "author": "x-at-01",
           "authorUrl": "https://github.com/x-at-01",
           "publishedAt": "2026-06-07T13:48:40Z",
-          "summary": "<a href=\" target=\"blank\"<img src=\" alt=\"npm\" height=\"60\" /</a&nbsp;&nbsp;<a href=\" target=\"blank\"<img src=\" alt=\"github\" height=\"60\" /</a&nbsp;&nbsp;<a href=\" target=\"blank\"<img src=\" alt=\"demo\" height=\"60\" /</a 3.5KB 搞定公式渲染！是时候放弃 KaTeX / MathJax，拥抱原生 MathML 了 为什么说网页数学公式渲染一直以来都在“走弯路”？ 你敢相信吗？仅仅为了在网页里正常显示几个数学公式，你的项目就必须引入 260KB 甚至接近 1MB 的 MathJax/KaTeX 大礼包。更糟的是，这些库在浏览器的 JS 线程中动态计算字符宽度、对齐间距，并用绝对定位硬生生拼出成百上千个 DOM 节点来模拟排版。这不仅让用户的首屏加载缓慢，还极大地消耗了 CPU，造成严重的重绘卡顿。 其实，时代早已经变了。 自 2023 年 1 月起，随着 Chrome 109 正式支持 MathML Core，所有主流浏览器（Blink、Gecko、WebKit）早已完全实现了原生的数学公式排版。 这意味着：我们不再需要向前端打包庞大的排版引擎，所有的公式排版，完全可以交由浏览器的底层 C++ 引擎去高效完成！ @webc.site/math 就是为此诞生的开源项目：一个仅有 3.5KB (Gzip) 的 TeXtoMathML 翻译器。我们只负责在几毫秒内将 TeX 语法转换为标准的 MathML 标签，把耗时的排版工作完全外包给浏览器本身。 为什么它具有极强的破坏力？ 1. 包体积狂缩 20 到 70 倍 @webc.site/math 压缩后仅有 3.58 KB，而 KaTeX 压缩后为 75.15 KB，MathJax 更是高达 278.39 KB。这让你可以毫无压力地将其打包进任何轻量前端应用、小程序，或在 SSR/SSG 构建阶段直接静态生成，实现网页首屏的瞬间加载。 2. 渲染速度暴增 3 到 48 倍 避开了 JS 排版计算后，它的编译性能达到了恐怖的 32.9 万次每秒（Ops/sec），是 KaTeX 的 3.6 倍，MathJax 的 48.8 倍。 3. LLM/AI 时代前端实时公式渲染的黄金搭档 在当下的 AI 智能对话（LLM Chat）场景中，AI 正在以前端流式输出（Streaming）的方式吐出大量的技术公式。在这种高频重绘场景下，传统的 MathJax/KaTeX 会造成显著的延迟和发热。而本库极低的 CPU 消耗，保证了即使在低端移动设备上，AI 输出公式时的打字机效果依然丝滑顺畅。 4. 极为硬核的容错设计 在处理用户或 AI 输入的公式时，如果有未闭合的 \\left 或其他非法语法，本库会自动捕获异常并优雅退化为显示原始公式，绝不因为语法错误导致前端应用崩溃。 真实公式渲染排版效果展示 以下为浏览器使用 Latin Modern Math 字体原生渲染 TeX 公式转换后的 MathML 真实效果展示（导出为 SVG 矢量图）： 欧拉恒等式 (Euler's Identity) !欧拉恒等式 二次方程求解公式 (Quadratic Formula) !二次方程求解公式 麦克斯韦方程之一 (Maxwell's Equation) !麦克斯韦方程之一 薛定谔方程 (Schrödinger Equation) !薛定谔方程 性能对比数据 1. 体积对比（Gzip 压缩后） !体积对比 2. 编译速度对比 (Ops/sec) !编译速度对比 快速上手 1. 替换 Markdown 文本中的公式 javascript import mdMath from \"@webc.site/math/md\"; const markdown = \"欧拉恒等式：$$e^{i\\\\pi} + 1 = 0$$\"; const html = mdMath(markdown); 2. 直接转换单个 TeX 公式 javascript import mathml from \"@webc.site/math\"; const html = mathml(\"e^{i\\\\pi} + 1 = 0\", true); 3. 数学字体配置推荐（关键） 虽然浏览器已原生支持 MathML，但为了达到印刷级别的精美排版，强烈建议配合 Latin Modern Math 数学字体使用（可使用 18s 字体包）： css / 引入在线数学字体 / @import url(\"//registry.npmmirror.com/18s/0.2.24/files/m.css\"); math { fontfamily: m, sansserif; } 坦诚的局限性 本库旨在满足 95% 场景下的日常需求，因此砍掉了少数冷门特性。它目前不支持化学公式扩展（如 \\ce），复杂的自定义宏定义（如 \\newcommand）。如果你的网站需要完美排版大学高等物理、化学论文级别的公式，可能仍需要使用 KaTeX。但对于个人博客、常规技术文档、AI 对话公式渲染等绝大多数场景，本库已经是极佳的替代选择。 欢迎大家前往 GitHub 试用、反馈与交流！",
+          "summary": "<a href=\" target=\"blank\" alt=\"npm\" height=\"60\" /</a&nbsp;&nbsp;<a href=\" target=\"blank\" alt=\"github\" height=\"60\" /</a&nbsp;&nbsp;<a href=\" target=\"blank\" alt=\"demo\" height=\"60\" /</a 3.5KB 搞定公式渲染！是时候放弃 KaTeX / MathJax，拥抱原生 MathML 了 为什么说网页数学公式渲染一直以来都在“走弯路”？ 你敢相信吗？仅仅为了在网页里正常显示几个数学公式，你的项目就必须引入 260KB 甚至接近 1MB 的 MathJax/KaTeX 大礼包。更糟的是，这些库在浏览器的 JS 线程中动态计算字符宽度、对齐间距，并用绝对定位硬生生拼出成百上千个 DOM 节点来模拟排版。这不仅让用户的首屏加载缓慢，还极大地消耗了 CPU，造成严重的重绘卡顿。 其实，时代早已经变了。 自 2023 年 1 月起，随着 Chrome 109 正式支持 MathML Core，所有主流浏览器（Blink、Gecko、WebKit）早已完全实现了原生的数学公式排版。 这意味着：我们不再需要向前端打包庞大的排版引擎，所有的公式排版，完全可以交由浏览器的底层 C++ 引擎去高效完成！ @webc.site/math 就是为此诞生的开源项目：一个仅有 3.5KB (Gzip) 的 TeXtoMathML 翻译器。我们只负责在几毫秒内将 TeX 语法转换为标准的 MathML 标签，把耗时的排版工作完全外包给浏览器本身。 为什么它具有极强的破坏力？ 1. 包体积狂缩 20 到 70 倍 @webc.site/math 压缩后仅有 3.58 KB，而 KaTeX 压缩后为 75.15 KB，MathJax 更是高达 278.39 KB。这让你可以毫无压力地将其打包进任何轻量前端应用、小程序，或在 SSR/SSG 构建阶段直接静态生成，实现网页首屏的瞬间加载。 2. 渲染速度暴增 3 到 48 倍 避开了 JS 排版计算后，它的编译性能达到了恐怖的 32.9 万次每秒（Ops/sec），是 KaTeX 的 3.6 倍，MathJax 的 48.8 倍。 3. LLM/AI 时代前端实时公式渲染的黄金搭档 在当下的 AI 智能对话（LLM Chat）场景中，AI 正在以前端流式输出（Streaming）的方式吐出大量的技术公式。在这种高频重绘场景下，传统的 MathJax/KaTeX 会造成显著的延迟和发热。而本库极低的 CPU 消耗，保证了即使在低端移动设备上，AI 输出公式时的打字机效果依然丝滑顺畅。 4. 极为硬核的容错设计 在处理用户或 AI 输入的公式时，如果有未闭合的 \\left 或其他非法语法，本库会自动捕获异常并优雅退化为显示原始公式，绝不因为语法错误导致前端应用崩溃。 真实公式渲染排版效果展示 以下为浏览器使用 Latin Modern Math 字体原生渲染 TeX 公式转换后的 MathML 真实效果展示（导出为 SVG 矢量图）： 欧拉恒等式 (Euler's Identity) 二次方程求解公式 (Quadratic Formula) 麦克斯韦方程之一 (Maxwell's Equation) 薛定谔方程 (Schrödinger Equation) 性能对比数据 1. 体积对比（Gzip 压缩后） 2. 编译速度对比 (Ops/sec) 快速上手 1. 替换 Markdown 文本中的公式 javascript import mdMath from \"@webc.site/math/md\"; const markdown = \"欧拉恒等式：$$e^{i\\\\pi} + 1 = 0$$\"; const html = mdMath(markdown); 2. 直接转换单个 TeX 公式 javascript import mathml from \"@webc.site/math\"; const html = mathml(\"e^{i\\\\pi} + 1 = 0\", true); 3. 数学字体配置推荐（关键） 虽然浏览器已原生支持 MathML，但为了达到印刷级别的精美排版，强烈建议配合 Latin Modern Math 数学字体使用（可使用 18s 字体包）： css / 引入在线数学字体 / @import url(\"//registry.npmmirror.com/18s/0.2.24/files/m.css\"); math { fontfamily: m, sansserif; } 坦诚的局限性 本库旨在满足 95% 场景下的日常需求，因此砍掉了少数冷门特性。它目前不支持化学公式扩展（如 \\ce），复杂的自定义宏定义（如 \\newcommand）。如果你的网站需要完美排版大学高等物理、化学论文级别的公式，可能仍需要使用 KaTeX。但对于个人博客、常规技术文档、AI 对话公式渲染等绝大多数场景，本库已经是极佳的替代选择。 欢迎大家前往 GitHub 试用、反馈与交流！",
           "content": "<a href=\"https://www.npmjs.com/package/@webc.site/math\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/webc-site/math/dev/readme/zh/svg/badge.npm.svg\" alt=\"npm\" height=\"60\" /></a>&nbsp;&nbsp;<a href=\"https://github.com/webc-site/math\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/webc-site/math/dev/readme/zh/svg/badge.github.svg\" alt=\"github\" height=\"60\" /></a>&nbsp;&nbsp;<a href=\"https://math.webc.site\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/webc-site/math/dev/readme/zh/svg/badge.demo.svg\" alt=\"demo\" height=\"60\" /></a>\n\n# 3.5KB 搞定公式渲染！是时候放弃 KaTeX / MathJax，拥抱原生 MathML 了\n\n### 为什么说网页数学公式渲染一直以来都在“走弯路”？\n\n你敢相信吗？仅仅为了在网页里正常显示几个数学公式，你的项目就必须引入 260KB 甚至接近 1MB 的 MathJax/KaTeX 大礼包。更糟的是，这些库在浏览器的 JS 线程中动态计算字符宽度、对齐间距，并用绝对定位硬生生拼出成百上千个 DOM 节点来模拟排版。这不仅让用户的首屏加载缓慢，还极大地消耗了 CPU，造成严重的重绘卡顿。\n\n其实，时代早已经变了。\n\n自 2023 年 1 月起，随着 Chrome 109 正式支持 MathML Core，所有主流浏览器（Blink、Gecko、WebKit）早已完全实现了原生的数学公式排版。\n\n这意味着：我们不再需要向前端打包庞大的排版引擎，所有的公式排版，完全可以交由浏览器的底层 C++ 引擎去高效完成！\n\n@webc.site/math 就是为此诞生的开源项目：一个仅有 3.5KB (Gzip) 的 TeX-to-MathML 翻译器。我们只负责在几毫秒内将 TeX 语法转换为标准的 MathML 标签，把耗时的排版工作完全外包给浏览器本身。\n\n### 为什么它具有极强的破坏力？\n\n1. **包体积狂缩 20 到 70 倍**\n   - @webc.site/math 压缩后仅有 3.58 KB，而 KaTeX 压缩后为 75.15 KB，MathJax 更是高达 278.39 KB。这让你可以毫无压力地将其打包进任何轻量前端应用、小程序，或在 SSR/SSG 构建阶段直接静态生成，实现网页首屏的瞬间加载。\n\n2. **渲染速度暴增 3 到 48 倍**\n   - 避开了 JS 排版计算后，它的编译性能达到了恐怖的 32.9 万次每秒（Ops/sec），是 KaTeX 的 3.6 倍，MathJax 的 48.8 倍。\n\n3. **LLM/AI 时代前端实时公式渲染的黄金搭档**\n   - 在当下的 AI 智能对话（LLM Chat）场景中，AI 正在以前端流式输出（Streaming）的方式吐出大量的技术公式。在这种高频重绘场景下，传统的 MathJax/KaTeX 会造成显著的延迟和发热。而本库极低的 CPU 消耗，保证了即使在低端移动设备上，AI 输出公式时的打字机效果依然丝滑顺畅。\n\n4. **极为硬核的容错设计**\n   - 在处理用户或 AI 输入的公式时，如果有未闭合的 \\left 或其他非法语法，本库会自动捕获异常并优雅退化为显示原始公式，绝不因为语法错误导致前端应用崩溃。\n\n### 真实公式渲染排版效果展示\n\n以下为浏览器使用 Latin Modern Math 字体原生渲染 TeX 公式转换后的 MathML 真实效果展示（导出为 SVG 矢量图）：\n\n* **欧拉恒等式 (Euler's Identity)**\n  ![欧拉恒等式](https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/euler.svg)\n\n* **二次方程求解公式 (Quadratic Formula)**\n  ![二次方程求解公式](https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/quadratic.svg)\n\n* **麦克斯韦方程之一 (Maxwell's Equation)**\n  ![麦克斯韦方程之一](https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/maxwell.svg)\n\n* **薛定谔方程 (Schrödinger Equation)**\n  ![薛定谔方程](https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/schrodinger.svg)\n\n---\n\n### 性能对比数据\n\n#### 1. 体积对比（Gzip 压缩后）\n![体积对比](https://raw.githubusercontent.com/webc-site/math/dev/demo/size.svg)\n\n#### 2. 编译速度对比 (Ops/sec)\n![编译速度对比](https://raw.githubusercontent.com/webc-site/math/dev/demo/speed.svg)\n\n### 快速上手\n\n#### 1. 替换 Markdown 文本中的公式\n```javascript\nimport mdMath from \"@webc.site/math/md\";\n\nconst markdown = \"欧拉恒等式：$$e^{i\\\\pi} + 1 = 0$$\";\nconst html = mdMath(markdown);\n```\n\n#### 2. 直接转换单个 TeX 公式\n```javascript\nimport mathml from \"@webc.site/math\";\nconst html = mathml(\"e^{i\\\\pi} + 1 = 0\", true);\n```\n\n#### 3. 数学字体配置推荐（关键）\n虽然浏览器已原生支持 MathML，但为了达到印刷级别的精美排版，强烈建议配合 Latin Modern Math 数学字体使用（可使用 18s 字体包）：\n```css\n/* 引入在线数学字体 */\n@import url(\"//registry.npmmirror.com/18s/0.2.24/files/m.css\");\n\nmath {\n  font-family: m, sans-serif;\n}\n```\n\n### 坦诚的局限性\n\n本库旨在满足 95% 场景下的日常需求，因此砍掉了少数冷门特性。它目前不支持化学公式扩展（如 \\ce），复杂的自定义宏定义（如 \\newcommand）。如果你的网站需要完美排版大学高等物理、化学论文级别的公式，可能仍需要使用 KaTeX。但对于个人博客、常规技术文档、AI 对话公式渲染等绝大多数场景，本库已经是极佳的替代选择。\n\n欢迎大家前往 GitHub 试用、反馈与交流！\n",
           "metrics": {
             "comments": 0
@@ -238,7 +270,19 @@
             "submission"
           ],
           "externalId": "10241",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10241"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10241",
+          "images": [
+            "https://raw.githubusercontent.com/webc-site/math/dev/readme/zh/svg/badge.npm.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/readme/zh/svg/badge.github.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/readme/zh/svg/badge.demo.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/euler.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/quadratic.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/maxwell.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/blog/svg/schrodinger.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/demo/size.svg",
+            "https://raw.githubusercontent.com/webc-site/math/dev/demo/speed.svg"
+          ],
+          "image": "https://raw.githubusercontent.com/webc-site/math/dev/readme/zh/svg/badge.npm.svg"
         }
       ]
     },
@@ -282,7 +326,7 @@
           "author": "BarryBarrywu",
           "authorUrl": "https://github.com/BarryBarrywu",
           "publishedAt": "2026-06-07T03:14:27Z",
-          "summary": "项目地址 类别 Swift 项目标题 Tutti 是一个 macOS 菜单栏小工具，让你的多个扬声器同时播放同一段声音。 项目描述 Tutti 一个声音，响遍全场 Tutti 是一个 macOS 菜单栏小工具，让同一份声音同时从多个输出设备播放。 macOS 的系统音频一次只能播放一个设备，想边外放边戴耳机、或者让客厅和卧室两组音箱一起响，系统自带的音量功能做不到，需要去 MIDI 里进行设置。 Tutti 补上了这个缺口。不用装任何虚拟音频驱动，也没有内核扩展，全部用苹果自带的 CoreAudio 框架实现。在菜单栏勾选多个输出，Tutti 会临时搭一个聚合设备，让每个设备同时发声；退出时原来的输出干净恢复，不留后台进程，也不留垃圾设备。 使用场景 家里多台蓝牙音响，同时播放一首歌曲，每个房间的音乐同步。 一台 Mac 能同时连两副、甚至三副 AirPods。在咖啡馆不方便外放？你和朋友一人戴一副，一起看同一部电影、听同一首歌。 老师上课时，可以通过耳机监听自己的声音，同时让现场的观众和学生听到功放的声音。直播、录课同理：自己戴耳机听，声音照常外放。 任何\"想让同一份声音同时去几个地方\"的场景。 主要能力 源码在 GitHub 上公开（PolyForm Noncommercial 许可）。支持 9 种语言，需要 macOS 13 及以上。 官网： Github： 亮点 核心功能 多设备同步输出，在菜单栏勾选有线音箱、、蓝牙耳机、AirPods、显示器的任意组合，同一个声音同时播，完全同步。 音量控制，一个主音量统一调全组，每个设备还能单独调音量和静音。 蓝牙电量，连着的蓝牙耳机电量直接显示在面板里，不用再去系统里查。 替代系统音量图标，可以把 Tutti 设成菜单栏那个音量图标，按音量键时弹的也是它自己的 OSD。 快捷键增强，键盘音量键和滚轮直接控制整组输出，还能把常用的设备组合存成预设，一键切换。 示例代码 markdown 截图或演示视频 <img width=\"1920\" height=\"1440\" alt=\"Image\" src=\" /",
+          "summary": "项目地址 类别 Swift 项目标题 Tutti 是一个 macOS 菜单栏小工具，让你的多个扬声器同时播放同一段声音。 项目描述 Tutti 一个声音，响遍全场 Tutti 是一个 macOS 菜单栏小工具，让同一份声音同时从多个输出设备播放。 macOS 的系统音频一次只能播放一个设备，想边外放边戴耳机、或者让客厅和卧室两组音箱一起响，系统自带的音量功能做不到，需要去 MIDI 里进行设置。 Tutti 补上了这个缺口。不用装任何虚拟音频驱动，也没有内核扩展，全部用苹果自带的 CoreAudio 框架实现。在菜单栏勾选多个输出，Tutti 会临时搭一个聚合设备，让每个设备同时发声；退出时原来的输出干净恢复，不留后台进程，也不留垃圾设备。 使用场景 家里多台蓝牙音响，同时播放一首歌曲，每个房间的音乐同步。 一台 Mac 能同时连两副、甚至三副 AirPods。在咖啡馆不方便外放？你和朋友一人戴一副，一起看同一部电影、听同一首歌。 老师上课时，可以通过耳机监听自己的声音，同时让现场的观众和学生听到功放的声音。直播、录课同理：自己戴耳机听，声音照常外放。 任何\"想让同一份声音同时去几个地方\"的场景。 主要能力 源码在 GitHub 上公开（PolyForm Noncommercial 许可）。支持 9 种语言，需要 macOS 13 及以上。 官网： Github： 亮点 核心功能 多设备同步输出，在菜单栏勾选有线音箱、、蓝牙耳机、AirPods、显示器的任意组合，同一个声音同时播，完全同步。 音量控制，一个主音量统一调全组，每个设备还能单独调音量和静音。 蓝牙电量，连着的蓝牙耳机电量直接显示在面板里，不用再去系统里查。 替代系统音量图标，可以把 Tutti 设成菜单栏那个音量图标，按音量键时弹的也是它自己的 OSD。 快捷键增强，键盘音量键和滚轮直接控制整组输出，还能把常用的设备组合存成预设，一键切换。 示例代码 markdown 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/BarryBarrywu/tutti\n\n### 类别\n\nSwift\n\n### 项目标题\n\nTutti 是一个 macOS 菜单栏小工具，让你的多个扬声器同时播放同一段声音。\n\n### 项目描述\n\n# Tutti\n\n**一个声音，响遍全场**\n\nTutti 是一个 macOS 菜单栏小工具，让同一份声音同时从多个输出设备播放。\nmacOS 的系统音频一次只能播放一个设备，想边外放边戴耳机、或者让客厅和卧室两组音箱一起响，系统自带的音量功能做不到，需要去 MIDI 里进行设置。\nTutti 补上了这个缺口。不用装任何虚拟音频驱动，也没有内核扩展，全部用苹果自带的 CoreAudio 框架实现。在菜单栏勾选多个输出，Tutti 会临时搭一个聚合设备，让每个设备同时发声；退出时原来的输出干净恢复，不留后台进程，也不留垃圾设备。\n\n## 使用场景\n\n- 家里多台蓝牙音响，同时播放一首歌曲，每个房间的音乐同步。\n- 一台 Mac 能同时连两副、甚至三副 AirPods。在咖啡馆不方便外放？你和朋友一人戴一副，一起看同一部电影、听同一首歌。\n- 老师上课时，可以通过耳机监听自己的声音，同时让现场的观众和学生听到功放的声音。直播、录课同理：自己戴耳机听，声音照常外放。\n- 任何\"想让同一份声音同时去几个地方\"的场景。\n\n## 主要能力\n\n源码在 GitHub 上公开（PolyForm Noncommercial 许可）。支持 9 种语言，需要 macOS 13 及以上。\n\n官网：https://www.tutti.barrybarrywu.com\nGithub：https://github.com/BarryBarrywu/tutti\n\n\n### 亮点\n\n## 核心功能\n\n**多设备同步输出**，在菜单栏勾选有线音箱、、蓝牙耳机、AirPods、显示器的任意组合，同一个声音同时播，完全同步。\n\n**音量控制**，一个主音量统一调全组，每个设备还能单独调音量和静音。\n\n**蓝牙电量**，连着的蓝牙耳机电量直接显示在面板里，不用再去系统里查。\n\n**替代系统音量图标**，可以把 Tutti 设成菜单栏那个音量图标，按音量键时弹的也是它自己的 OSD。\n\n**快捷键增强**，键盘音量键和滚轮直接控制整组输出，还能把常用的设备组合存成预设，一键切换。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"1920\" height=\"1440\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f09b0c66-f349-441f-8a41-cef415a497d6\" />",
           "metrics": {
             "comments": 0
@@ -292,7 +336,11 @@
             "submission"
           ],
           "externalId": "3331",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3331"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3331",
+          "images": [
+            "https://github.com/user-attachments/assets/f09b0c66-f349-441f-8a41-cef415a497d6"
+          ],
+          "image": "https://github.com/user-attachments/assets/f09b0c66-f349-441f-8a41-cef415a497d6"
         }
       ]
     },

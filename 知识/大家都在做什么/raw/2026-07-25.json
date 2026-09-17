@@ -114,7 +114,7 @@
           "author": "gokuscraper",
           "authorUrl": "https://github.com/gokuscraper",
           "publishedAt": "2026-07-25T07:19:01Z",
-          "summary": "【开源自荐】Oracle 免费 ARM 抢机SKILL — 让 AI 帮你自动抢，支持微信通知 项目地址： bash 安装方式（任选其一） npx skills i gokuscraper/freeoraclearmskill 或 clawhub install freeoraclearmskill 具体介绍 Oracle Cloud 的 Always Free 层提供 Ampere A1（ARM）实例（2 OCPU / 12 GB 内存 / 200 GB 存储），但由于热门区域资源极度紧张，手动在控制台刷新几乎不可能抢到。 这是一个 AI agent skill，让 Claude Code、OpenClaw、Cursor 等 AI 助手具备自动抢机能力。你只需要提供 Oracle 区域信息，AI 会引导你完成从环境配置到脚本部署的全流程，然后脚本每 60 秒自动轮询，直到抢到为止。抢到后通过 Server酱 实时推送到微信。 适合零基础用户：不需要懂 Linux、SSH 或 OCI CLI，AI 每一步带着操作。 截图展示 !抢机脚本运行中 脚本在服务器后台自动运行，每 60 秒轮询一次 !微信推送通知 抢到后 Server酱 实时推送到微信 核心功能 全自动轮询 — 每 60 秒调用 OCI API 检查可用容量，不放过任何释放 AI 引导配置 — 从零开始，AI 告诉你每一步该做什么 微信实时通知 — 抢到后通过 Server酱 推送到微信，不用盯着屏幕 防回收机制 — 内置轻量 CPU 占用脚本，降低被 Oracle 回收的风险 多平台支持 — 兼容 Claude Code、OpenClaw、Cursor、Codex、Gemini CLI 技术栈 Shell（抢机脚本 grabarm.sh） OCI CLI（Oracle Cloud Infrastructure 命令行工具） Server酱（微信推送通知） AI Agent Skill 框架（兼容多种 AI 助手）",
+          "summary": "【开源自荐】Oracle 免费 ARM 抢机SKILL — 让 AI 帮你自动抢，支持微信通知 项目地址： bash 安装方式（任选其一） npx skills i gokuscraper/freeoraclearmskill 或 clawhub install freeoraclearmskill 具体介绍 Oracle Cloud 的 Always Free 层提供 Ampere A1（ARM）实例（2 OCPU / 12 GB 内存 / 200 GB 存储），但由于热门区域资源极度紧张，手动在控制台刷新几乎不可能抢到。 这是一个 AI agent skill，让 Claude Code、OpenClaw、Cursor 等 AI 助手具备自动抢机能力。你只需要提供 Oracle 区域信息，AI 会引导你完成从环境配置到脚本部署的全流程，然后脚本每 60 秒自动轮询，直到抢到为止。抢到后通过 Server酱 实时推送到微信。 适合零基础用户：不需要懂 Linux、SSH 或 OCI CLI，AI 每一步带着操作。 截图展示 脚本在服务器后台自动运行，每 60 秒轮询一次 抢到后 Server酱 实时推送到微信 核心功能 全自动轮询 — 每 60 秒调用 OCI API 检查可用容量，不放过任何释放 AI 引导配置 — 从零开始，AI 告诉你每一步该做什么 微信实时通知 — 抢到后通过 Server酱 推送到微信，不用盯着屏幕 防回收机制 — 内置轻量 CPU 占用脚本，降低被 Oracle 回收的风险 多平台支持 — 兼容 Claude Code、OpenClaw、Cursor、Codex、Gemini CLI 技术栈 Shell（抢机脚本 grabarm.sh） OCI CLI（Oracle Cloud Infrastructure 命令行工具） Server酱（微信推送通知） AI Agent Skill 框架（兼容多种 AI 助手）",
           "content": "# 【开源自荐】Oracle 免费 ARM 抢机SKILL — 让 AI 帮你自动抢，支持微信通知\n\n项目地址：https://github.com/gokuscraper/free-oracle-arm-skill\n\n```bash\n# 安装方式（任选其一）\nnpx skills i gokuscraper/free-oracle-arm-skill\n# 或\nclawhub install free-oracle-arm-skill\n```\n\n---\n\n## 具体介绍\n\nOracle Cloud 的 Always Free 层提供 Ampere A1（ARM）实例（2 OCPU / 12 GB 内存 / 200 GB 存储），但由于热门区域资源极度紧张，手动在控制台刷新几乎不可能抢到。\n\n这是一个 **AI agent skill**，让 Claude Code、OpenClaw、Cursor 等 AI 助手具备自动抢机能力。你只需要提供 Oracle 区域信息，AI 会引导你完成从环境配置到脚本部署的全流程，然后脚本每 60 秒自动轮询，直到抢到为止。抢到后通过 Server酱 实时推送到微信。\n\n适合零基础用户：不需要懂 Linux、SSH 或 OCI CLI，AI 每一步带着操作。\n\n---\n\n## 截图展示\n\n![抢机脚本运行中](https://raw.githubusercontent.com/gokuscraper/free-oracle-arm-skill/main/assets/terminal-screenshot.jpg)\n*脚本在服务器后台自动运行，每 60 秒轮询一次*\n\n![微信推送通知](https://raw.githubusercontent.com/gokuscraper/free-oracle-arm-skill/main/assets/wechat-notification.jpg)\n*抢到后 Server酱 实时推送到微信*\n\n---\n\n## 核心功能\n\n- **全自动轮询** — 每 60 秒调用 OCI API 检查可用容量，不放过任何释放\n- **AI 引导配置** — 从零开始，AI 告诉你每一步该做什么\n- **微信实时通知** — 抢到后通过 Server酱 推送到微信，不用盯着屏幕\n- **防回收机制** — 内置轻量 CPU 占用脚本，降低被 Oracle 回收的风险\n- **多平台支持** — 兼容 Claude Code、OpenClaw、Cursor、Codex、Gemini CLI\n\n---\n\n## 技术栈\n\n- Shell（抢机脚本 grab_arm.sh）\n- OCI CLI（Oracle Cloud Infrastructure 命令行工具）\n- Server酱（微信推送通知）\n- AI Agent Skill 框架（兼容多种 AI 助手）",
           "metrics": {
             "comments": 0
@@ -124,7 +124,12 @@
             "submission"
           ],
           "externalId": "10879",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/10879"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/10879",
+          "images": [
+            "https://raw.githubusercontent.com/gokuscraper/free-oracle-arm-skill/main/assets/terminal-screenshot.jpg",
+            "https://raw.githubusercontent.com/gokuscraper/free-oracle-arm-skill/main/assets/wechat-notification.jpg"
+          ],
+          "image": "https://raw.githubusercontent.com/gokuscraper/free-oracle-arm-skill/main/assets/terminal-screenshot.jpg"
         },
         {
           "sourceId": "weekly-issues",
@@ -225,7 +230,7 @@
           "author": "yangzizhoudiwuxuande",
           "authorUrl": "https://github.com/yangzizhoudiwuxuande",
           "publishedAt": "2026-07-25T12:24:03Z",
-          "summary": "项目地址 类别 Python 项目标题 一种新的纯文本 项目描述 这是一种新的纯文本标记语言，专为快速写作和极致键盘效率而设计。它适合用来写笔记、技术文档、博客文章，甚至可以作为配置文件的格式。 亮点 只有17种基本语法，有台Mac就能跑。十分的美观。 示例代码 markdown 截图或演示视频 <img width=\"978\" height=\"805\" alt=\"Image\" src=\" /",
+          "summary": "项目地址 类别 Python 项目标题 一种新的纯文本 项目描述 这是一种新的纯文本标记语言，专为快速写作和极致键盘效率而设计。它适合用来写笔记、技术文档、博客文章，甚至可以作为配置文件的格式。 亮点 只有17种基本语法，有台Mac就能跑。十分的美观。 示例代码 markdown 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/yangzizhoudiwuxuande/zarkdown\n\n### 类别\n\nPython\n\n### 项目标题\n\n一种新的纯文本\n\n### 项目描述\n\n这是一种新的纯文本标记语言，专为快速写作和极致键盘效率而设计。它适合用来写笔记、技术文档、博客文章，甚至可以作为配置文件的格式。\n\n### 亮点\n\n只有17种基本语法，有台Mac就能跑。十分的美观。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"978\" height=\"805\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/171db418-d529-4624-af71-e1ea8332ee0c\" />",
           "metrics": {
             "comments": 0
@@ -235,7 +240,11 @@
             "submission"
           ],
           "externalId": "3485",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3485"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3485",
+          "images": [
+            "https://github.com/user-attachments/assets/171db418-d529-4624-af71-e1ea8332ee0c"
+          ],
+          "image": "https://github.com/user-attachments/assets/171db418-d529-4624-af71-e1ea8332ee0c"
         }
       ]
     },

@@ -269,7 +269,7 @@
           "author": "xinchen03",
           "authorUrl": "https://github.com/xinchen03",
           "publishedAt": "2026-09-14T16:28:57Z",
-          "summary": "Minta 是面向 AI 智能体的上下文质量层。 当前绝大多数 AI 记忆工具都在解决「如何存储记忆」，但存得住，不等于信得过。 模型可以记住一条指令，却分辨不出这条规则是否早已过期；也会把过去试错的临时方案当成最优解复用；还会凭空断言从未执行过的操作。记忆工具只负责写入，不负责校验记忆本身的有效性。 这正是 Minta 试图解决的问题：给记忆增加完整生命周期管理能力，做记忆的质量校验层，核心能力包括： 过期检测：周期性扫描记忆，自动标记并归档过时信息，不依赖大模型主观判断 冲突识别：当多条记忆互相矛盾时，不会全部塞进 Prompt，而是将冲突暴露出来交由人工裁决 纠正闭环：人工对 AI 的修正会进入待确认收件箱，确认后固化为长期生效规则，一次修正持续生效 证据分级：设置可信度门限，阻止模型在缺少证据的前提下编造结论 上手简单，支持本地离线运行、无云依赖： git clone && cd minta python mintacli.py start <img width=\"2549\" height=\"1403\" alt=\"Image\" src=\" /> 作为 MCP 工具，可直接接入 Claude Code、Codex、Cursor；Windows 用户也可以下载 ZIP 解压，双击 startminta.bat 一键启动，自动安装依赖并打开管理页面。 DSH 用户安装命令：dsh plugin --profile web add @xxinchen/dsh-plugin 配套有 Context Health 记忆生命周期仪表盘： 项目核心引擎与记忆中枢 UI 完全开源；研究驾驶舱等高级面板可通过 API Key 解锁。项目尚在早期，但「记忆过期、互相冲突、模型无依据自证」是所有深度使用 AI 智能体的人都会碰到的痛点。 文档：[awesome-dsh-plugin.com/p/xinchen03/minta--dsh-plugin/]()",
+          "summary": "Minta 是面向 AI 智能体的上下文质量层。 当前绝大多数 AI 记忆工具都在解决「如何存储记忆」，但存得住，不等于信得过。 模型可以记住一条指令，却分辨不出这条规则是否早已过期；也会把过去试错的临时方案当成最优解复用；还会凭空断言从未执行过的操作。记忆工具只负责写入，不负责校验记忆本身的有效性。 这正是 Minta 试图解决的问题：给记忆增加完整生命周期管理能力，做记忆的质量校验层，核心能力包括： 过期检测：周期性扫描记忆，自动标记并归档过时信息，不依赖大模型主观判断 冲突识别：当多条记忆互相矛盾时，不会全部塞进 Prompt，而是将冲突暴露出来交由人工裁决 纠正闭环：人工对 AI 的修正会进入待确认收件箱，确认后固化为长期生效规则，一次修正持续生效 证据分级：设置可信度门限，阻止模型在缺少证据的前提下编造结论 上手简单，支持本地离线运行、无云依赖： git clone && cd minta python mintacli.py start 作为 MCP 工具，可直接接入 Claude Code、Codex、Cursor；Windows 用户也可以下载 ZIP 解压，双击 startminta.bat 一键启动，自动安装依赖并打开管理页面。 DSH 用户安装命令：dsh plugin --profile web add @xxinchen/dsh-plugin 配套有 Context Health 记忆生命周期仪表盘： 项目核心引擎与记忆中枢 UI 完全开源；研究驾驶舱等高级面板可通过 API Key 解锁。项目尚在早期，但「记忆过期、互相冲突、模型无依据自证」是所有深度使用 AI 智能体的人都会碰到的痛点。 文档：[awesome-dsh-plugin.com/p/xinchen03/minta--dsh-plugin/]()",
           "content": "自荐开源项目：Minta\n仓库：[https://github.com/xinchen03/minta](https://github.com/xinchen03/minta)\n\nMinta 是面向 AI 智能体的上下文质量层。\n\n当前绝大多数 AI 记忆工具都在解决「如何存储记忆」，但**存得住，不等于信得过**。\n模型可以记住一条指令，却分辨不出这条规则是否早已过期；也会把过去试错的临时方案当成最优解复用；还会凭空断言从未执行过的操作。记忆工具只负责写入，不负责校验记忆本身的有效性。\n\n这正是 Minta 试图解决的问题：给记忆增加完整生命周期管理能力，做记忆的质量校验层，核心能力包括：\n\n- 过期检测：周期性扫描记忆，自动标记并归档过时信息，不依赖大模型主观判断\n- 冲突识别：当多条记忆互相矛盾时，不会全部塞进 Prompt，而是将冲突暴露出来交由人工裁决\n- 纠正闭环：人工对 AI 的修正会进入待确认收件箱，确认后固化为长期生效规则，一次修正持续生效\n- 证据分级：设置可信度门限，阻止模型在缺少证据的前提下编造结论\n\n上手简单，支持本地离线运行、无云依赖：\ngit clone https://github.com/xinchen03/minta.git && cd minta\npython minta_cli.py start\n<img width=\"2549\" height=\"1403\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/047d5625-c3c9-4cf7-96aa-be5e6a1f4299\" />\n\n作为 MCP 工具，可直接接入 Claude Code、Codex、Cursor；Windows 用户也可以下载 ZIP 解压，双击 `start_minta.bat` 一键启动，自动安装依赖并打开管理页面。\nDSH 用户安装命令：`dsh plugin --profile web add @xxinchen/dsh-plugin`\n\n配套有 Context Health 记忆生命周期仪表盘：\n[https://raw.githubusercontent.com/xinchen03/minta/main/assets/ui/ui-health.png](https://raw.githubusercontent.com/xinchen03/minta/main/assets/ui/ui-health.png)\n\n项目核心引擎与记忆中枢 UI 完全开源；研究驾驶舱等高级面板可通过 API Key 解锁。项目尚在早期，但「记忆过期、互相冲突、模型无依据自证」是所有深度使用 AI 智能体的人都会碰到的痛点。\n\n文档：[[awesome-dsh-plugin.com/p/xinchen03/minta--dsh-plugin/](https://awesome-dsh-plugin.com/p/xinchen03/minta--dsh-plugin/)](https://awesome-dsh-plugin.com/p/xinchen03/minta--dsh-plugin/)\n\n",
           "metrics": {
             "comments": 0
@@ -316,7 +316,11 @@
             "pushedAt": "2026-09-15T05:37:24Z",
             "archived": false,
             "snapshotDate": "2026-09-15"
-          }
+          },
+          "images": [
+            "https://github.com/user-attachments/assets/047d5625-c3c9-4cf7-96aa-be5e6a1f4299"
+          ],
+          "image": "https://github.com/user-attachments/assets/047d5625-c3c9-4cf7-96aa-be5e6a1f4299"
         },
         {
           "sourceId": "weekly-issues",
@@ -410,7 +414,7 @@
           "author": "gentpan",
           "authorUrl": "https://github.com/gentpan",
           "publishedAt": "2026-09-14T23:15:55Z",
-          "summary": "GitHub（公开仓库用于介绍、下载和反馈，应用源码暂未开放） Homebrew（最新 v0.2.1）： brew tap gentpan/tap brew trust gentpan/tap brew install --cask clistate 目前仍在持续完善，欢迎试用。如果遇到工具来源识别不准确，或者有希望支持的使用场景，欢迎反馈。 界面截图 依次为环境概览、Node.js 多版本与生效路径、精选工具发现。 <img width=\"960\" height=\"768\" alt=\"环境概览\" src=\" /> <img width=\"960\" height=\"768\" alt=\"Node.js 多版本与生效路径\" src=\" /> <img width=\"960\" height=\"768\" alt=\"精选工具发现\" src=\" />",
+          "summary": "GitHub（公开仓库用于介绍、下载和反馈，应用源码暂未开放） Homebrew（最新 v0.2.1）： brew tap gentpan/tap brew trust gentpan/tap brew install --cask clistate 目前仍在持续完善，欢迎试用。如果遇到工具来源识别不准确，或者有希望支持的使用场景，欢迎反馈。 界面截图 依次为环境概览、Node.js 多版本与生效路径、精选工具发现。",
           "content": "大家好，我是 CLI State 的开发者，想自荐一款 macOS 原生命令行环境管理工具。\n\nMac 上的开发工具装多了，经常会遇到这些问题：Node.js、Python 装了不止一个版本，终端到底用的是哪个？某个命令来自 Homebrew、npm，还是官方安装器？更新之后，为什么运行的还是旧版本？\n\n**CLI State 把分散的工具和安装来源集中到一个界面，帮你看清实际生效的版本，并排查重复安装与环境冲突。**\n\n### 主要功能\n\n- **查看工具与来源**：识别 Homebrew、npm、uv、pipx、pnpm、Cargo 等来源的工具，展示版本、安装路径和来源信息。\n- **排查环境问题**：按 PATH 顺序找出实际生效的程序，发现重复安装、版本遮蔽、失效链接等问题。\n- **更新与清理**：通过原来的包管理器执行操作，事先展示命令，支持时预览连带变化，完成后重新扫描验证。\n- **发现实用工具**：按开发入门、PHP、Python、影音处理等用途浏览精选工具，查看已有安装，并预览安装清单。\n- **迁移开发环境**：导出环境配置或 Brewfile，在另一台 Mac 上对比并分步恢复。\n- **追踪环境变化**：查看工具、版本和 PATH 的变化记录，方便回溯问题。\n\n应用本地优先，无需账号，无遥测；不修改 Shell 配置，不使用 sudo。支持 macOS 15 及以上、Apple Silicon 和 Intel，提供简体中文和英文界面。\n\n- 官网与下载：[clistate.com](https://clistate.com/)\n- 项目介绍与反馈：[GitHub](https://github.com/gentpan/CLIState)（公开仓库用于介绍、下载和反馈，应用源码暂未开放）\n- Homebrew（最新 v0.2.1）：\n```\nbrew tap gentpan/tap\nbrew trust gentpan/tap\nbrew install --cask clistate\n```\n\n目前仍在持续完善，欢迎试用。如果遇到工具来源识别不准确，或者有希望支持的使用场景，欢迎反馈。\n\n### 界面截图\n\n依次为环境概览、Node.js 多版本与生效路径、精选工具发现。\n\n<img width=\"960\" height=\"768\" alt=\"环境概览\" src=\"https://github.com/user-attachments/assets/87067c3f-68e9-450d-a2c2-16fea4542267\" />\n<img width=\"960\" height=\"768\" alt=\"Node.js 多版本与生效路径\" src=\"https://github.com/user-attachments/assets/f32380a3-c781-4880-ab25-5c213df9c986\" />\n<img width=\"960\" height=\"768\" alt=\"精选工具发现\" src=\"https://github.com/user-attachments/assets/8da09574-c3ac-44f1-a6e9-d090ceba8884\" />\n",
           "metrics": {
             "comments": 0
@@ -449,7 +453,13 @@
           "siteLogo": "https://clistate.com/assets/icon.png",
           "screenshots": [
             "screenshots-files/93f6ccacd59789852c7ffdcc41c4a7a073448ecc660c5b16b6bcdbc2c2ae863d.webp"
-          ]
+          ],
+          "images": [
+            "https://github.com/user-attachments/assets/87067c3f-68e9-450d-a2c2-16fea4542267",
+            "https://github.com/user-attachments/assets/f32380a3-c781-4880-ab25-5c213df9c986",
+            "https://github.com/user-attachments/assets/8da09574-c3ac-44f1-a6e9-d090ceba8884"
+          ],
+          "image": "https://github.com/user-attachments/assets/87067c3f-68e9-450d-a2c2-16fea4542267"
         },
         {
           "sourceId": "weekly-issues",
@@ -515,7 +525,12 @@
           },
           "screenshots": [
             "screenshots-files/14ea0cd40aa7607a0667a4e9ddc4710c516ef710631d9782a22693de4982c936.webp"
-          ]
+          ],
+          "images": [
+            "https://github.com/user-attachments/assets/998f2f38-e9bb-4597-bc8e-94f807b1a0e2",
+            "https://github.com/user-attachments/assets/b1f5cc94-6ffc-4173-ae90-fbbe12f788d4"
+          ],
+          "image": "https://github.com/user-attachments/assets/998f2f38-e9bb-4597-bc8e-94f807b1a0e2"
         },
         {
           "sourceId": "weekly-issues",
@@ -524,7 +539,7 @@
           "author": "gentpan",
           "authorUrl": "https://github.com/gentpan",
           "publishedAt": "2026-09-14T23:24:07Z",
-          "summary": "QuotaBar 是一个 macOS 菜单栏应用，显示 Claude Code、Codex、Cursor、Gemini 等 AI 编程服务的额度用了多少、什么时候重置，并根据本地日志估算花了多少钱。与 GitHub 上另一款同名项目 nmsn/quota-bar 无关；本项目为 gentpan/QuotaBar。 <img width=\"1920\" height=\"1200\" alt=\"QuotaBar：菜单栏、刘海岛、屏幕边缘停靠条和桌面卡片\" src=\" /> 为什么做 我同时在用 Claude Code、Codex 和 Cursor，每家都有 5 小时窗口、周额度或月度额度，想知道还剩多少，只能挨个打开网页控制台。经常写到一半才发现额度用完了。于是做了一个工具，把所有额度放在抬眼就能看到的地方。 功能 23 个服务商：Claude、Codex、Cursor、Gemini、GitHub Copilot、Kimi、智谱 GLM、DeepSeek、OpenRouter 等（部分标为实验性）。Claude、Codex、Cursor 等直接复用命令行工具已有的登录，不用填任何东西。 四个位置随你选：菜单栏图标 + 下拉面板、刘海两侧（悬停展开）、屏幕边缘停靠条、桌面卡片。 节奏判断：进度条上标出匀速使用时此刻应在的位置，预计重置前会用完时提前提醒，并给出用完时间。 花费估算：读取 Claude Code、Codex CLI、OpenCode 的本地会话日志，按公开价格估算今日、昨日、30 天的花费，可按模型拆分，支持人民币等货币。 分享卡片：一周或一个月的用量生成图片。 服务状态：读取各家官方状态页，服务出问题时直接显示在卡片上。 <img width=\"372\" alt=\"QuotaBar 下拉面板（真实截图）\" src=\" /> 隐私 默认在本机读取和计算，不用注册账号，没有统计和遥测。只有主动加入 Quota Run 时才上传额度读数等（凭据、提示词、代码、路径不上传）。手动填写的密钥存在 macOS 钥匙串里。 安装 shell brew tap gentpan/tap brew trust gentpan/tap brew install --cask quotabar 或从 Releases 下载 dmg。需要 macOS 14+，支持 Apple 芯片和 Intel，经过 Apple 公证，中英文界面。",
+          "summary": "QuotaBar 是一个 macOS 菜单栏应用，显示 Claude Code、Codex、Cursor、Gemini 等 AI 编程服务的额度用了多少、什么时候重置，并根据本地日志估算花了多少钱。与 GitHub 上另一款同名项目 nmsn/quota-bar 无关；本项目为 gentpan/QuotaBar。 为什么做 我同时在用 Claude Code、Codex 和 Cursor，每家都有 5 小时窗口、周额度或月度额度，想知道还剩多少，只能挨个打开网页控制台。经常写到一半才发现额度用完了。于是做了一个工具，把所有额度放在抬眼就能看到的地方。 功能 23 个服务商：Claude、Codex、Cursor、Gemini、GitHub Copilot、Kimi、智谱 GLM、DeepSeek、OpenRouter 等（部分标为实验性）。Claude、Codex、Cursor 等直接复用命令行工具已有的登录，不用填任何东西。 四个位置随你选：菜单栏图标 + 下拉面板、刘海两侧（悬停展开）、屏幕边缘停靠条、桌面卡片。 节奏判断：进度条上标出匀速使用时此刻应在的位置，预计重置前会用完时提前提醒，并给出用完时间。 花费估算：读取 Claude Code、Codex CLI、OpenCode 的本地会话日志，按公开价格估算今日、昨日、30 天的花费，可按模型拆分，支持人民币等货币。 分享卡片：一周或一个月的用量生成图片。 服务状态：读取各家官方状态页，服务出问题时直接显示在卡片上。 隐私 默认在本机读取和计算，不用注册账号，没有统计和遥测。只有主动加入 Quota Run 时才上传额度读数等（凭据、提示词、代码、路径不上传）。手动填写的密钥存在 macOS 钥匙串里。 安装 shell brew tap gentpan/tap brew trust gentpan/tap brew install --cask quotabar 或从 Releases 下载 dmg。需要 macOS 14+，支持 Apple 芯片和 Intel，经过 Apple 公证，中英文界面。",
           "content": "### 项目地址\n- GitHub（MIT 开源，免费）：https://github.com/gentpan/QuotaBar\n- 官网：https://quota.bar\n\nQuotaBar 是一个 macOS 菜单栏应用，显示 Claude Code、Codex、Cursor、Gemini 等 AI 编程服务的额度用了多少、什么时候重置，并根据本地日志估算花了多少钱。与 GitHub 上另一款同名项目 nmsn/quota-bar 无关；本项目为 gentpan/QuotaBar。\n\n<img width=\"1920\" height=\"1200\" alt=\"QuotaBar：菜单栏、刘海岛、屏幕边缘停靠条和桌面卡片\" src=\"https://github.com/user-attachments/assets/84b75e15-4d14-4480-b5d6-ba9215c88c85\" />\n\n### 为什么做\n我同时在用 Claude Code、Codex 和 Cursor，每家都有 5 小时窗口、周额度或月度额度，想知道还剩多少，只能挨个打开网页控制台。经常写到一半才发现额度用完了。于是做了一个工具，把所有额度放在抬眼就能看到的地方。\n\n### 功能\n- **23 个服务商**：Claude、Codex、Cursor、Gemini、GitHub Copilot、Kimi、智谱 GLM、DeepSeek、OpenRouter 等（部分标为实验性）。Claude、Codex、Cursor 等直接复用命令行工具已有的登录，不用填任何东西。\n- **四个位置随你选**：菜单栏图标 + 下拉面板、刘海两侧（悬停展开）、屏幕边缘停靠条、桌面卡片。\n- **节奏判断**：进度条上标出匀速使用时此刻应在的位置，预计重置前会用完时提前提醒，并给出用完时间。\n- **花费估算**：读取 Claude Code、Codex CLI、OpenCode 的本地会话日志，按公开价格估算今日、昨日、30 天的花费，可按模型拆分，支持人民币等货币。\n- **分享卡片**：一周或一个月的用量生成图片。\n- **服务状态**：读取各家官方状态页，服务出问题时直接显示在卡片上。\n\n<img width=\"372\" alt=\"QuotaBar 下拉面板（真实截图）\" src=\"https://github.com/user-attachments/assets/404a1322-312a-453a-b03e-b8d1baa0aac4\" />\n\n### 隐私\n默认在本机读取和计算，不用注册账号，没有统计和遥测。**只有主动加入 Quota Run 时**才上传额度读数等（凭据、提示词、代码、路径不上传）。手动填写的密钥存在 macOS 钥匙串里。\n\n### 安装\n```shell\nbrew tap gentpan/tap\nbrew trust gentpan/tap\nbrew install --cask quotabar\n```\n或从 [Releases](https://github.com/gentpan/QuotaBar/releases/latest) 下载 dmg。需要 macOS 14+，支持 Apple 芯片和 Intel，经过 Apple 公证，中英文界面。\n",
           "metrics": {
             "comments": 0
@@ -562,7 +577,12 @@
           },
           "screenshots": [
             "screenshots-files/ab80127b9a193b5872de8a5855ce43a3d716f03e6cf9f12c15b9d5f16c4708d3.webp"
-          ]
+          ],
+          "images": [
+            "https://github.com/user-attachments/assets/84b75e15-4d14-4480-b5d6-ba9215c88c85",
+            "https://github.com/user-attachments/assets/404a1322-312a-453a-b03e-b8d1baa0aac4"
+          ],
+          "image": "https://github.com/user-attachments/assets/84b75e15-4d14-4480-b5d6-ba9215c88c85"
         },
         {
           "sourceId": "weekly-issues",
@@ -599,7 +619,7 @@
           "author": "sbfkcel",
           "authorUrl": "https://github.com/sbfkcel",
           "publishedAt": "2026-09-14T23:53:49Z",
-          "summary": "<img width=\"1440\" height=\"1129\" alt=\"Image\" src=\" /> 免费纯净，专为Mac用户打造，支持多开和手柄映射。 从画面渲染到反检测、从二进制翻译到多窗录屏——每一层都是自己写的，不依赖第三方闭源组件。 画面直通 画面零拷贝直接挂到原生图层，延迟趋近于零。 反检测 系统层消除模拟器特征，不修改任何 APK，不注入 .so，应用层无感知。 零损耗录屏 每个窗口独立录屏，画面直通采集视频，音频直采，录屏不影响性能。 安装包下载",
+          "summary": "免费纯净，专为Mac用户打造，支持多开和手柄映射。 从画面渲染到反检测、从二进制翻译到多窗录屏——每一层都是自己写的，不依赖第三方闭源组件。 画面直通 画面零拷贝直接挂到原生图层，延迟趋近于零。 反检测 系统层消除模拟器特征，不修改任何 APK，不注入 .so，应用层无感知。 零损耗录屏 每个窗口独立录屏，画面直通采集视频，音频直采，录屏不影响性能。 安装包下载",
           "content": "<img width=\"1440\" height=\"1129\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f6edc971-a2e5-4404-88bc-4f9b11be4145\" />\n\n免费纯净，专为Mac用户打造，支持多开和手柄映射。\n\n从画面渲染到反检测、从二进制翻译到多窗录屏——每一层都是自己写的，不依赖第三方闭源组件。\n\n\n**画面直通**\n画面零拷贝直接挂到原生图层，延迟趋近于零。\n\n**反检测**\n系统层消除模拟器特征，不修改任何 APK，不注入 .so，应用层无感知。\n\n**零损耗录屏**\n每个窗口独立录屏，画面直通采集视频，音频直采，录屏不影响性能。\n\n**安装包下载地址：**\nhttps://github.com/sbfkcel/PryFox-VM/releases",
           "metrics": {
             "comments": 0
@@ -609,7 +629,11 @@
             "submission"
           ],
           "externalId": "11700",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/11700"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/11700",
+          "images": [
+            "https://github.com/user-attachments/assets/f6edc971-a2e5-4404-88bc-4f9b11be4145"
+          ],
+          "image": "https://github.com/user-attachments/assets/f6edc971-a2e5-4404-88bc-4f9b11be4145"
         },
         {
           "sourceId": "weekly-issues",
@@ -679,7 +703,11 @@
             "pushedAt": "2026-09-15T11:57:55Z",
             "archived": false,
             "snapshotDate": "2026-09-15"
-          }
+          },
+          "images": [
+            "https://raw.githubusercontent.com/max1874/ferry/main/docs/screenshot-web.png"
+          ],
+          "image": "https://raw.githubusercontent.com/max1874/ferry/main/docs/screenshot-web.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -983,7 +1011,11 @@
           },
           "screenshots": [
             "screenshots-files/9631a6c518fbd5bea3c19f7420a5c8be478b9ab1ab05d29f51902dcb98042d6b.webp"
-          ]
+          ],
+          "images": [
+            "https://raw.githubusercontent.com/tanghaojin/image-to-poetry-website/main/docs/design/state-03-generated.png"
+          ],
+          "image": "https://raw.githubusercontent.com/tanghaojin/image-to-poetry-website/main/docs/design/state-03-generated.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -1029,7 +1061,11 @@
             "pushedAt": "2026-09-15T05:57:50Z",
             "archived": false,
             "snapshotDate": "2026-09-15"
-          }
+          },
+          "images": [
+            "https://raw.githubusercontent.com/xinxing870126-prog/recruit-os/main/docs/images/interview-followups.png"
+          ],
+          "image": "https://raw.githubusercontent.com/xinxing870126-prog/recruit-os/main/docs/images/interview-followups.png"
         },
         {
           "sourceId": "weekly-issues",
@@ -1088,7 +1124,11 @@
             "pushedAt": "2026-09-15T16:50:17Z",
             "archived": false,
             "snapshotDate": "2026-09-15"
-          }
+          },
+          "images": [
+            "https://raw.githubusercontent.com/CatCatUncle/openworkbuddy/main/docs/images/demo.gif"
+          ],
+          "image": "https://raw.githubusercontent.com/CatCatUncle/openworkbuddy/main/docs/images/demo.gif"
         },
         {
           "sourceId": "weekly-issues",
@@ -1219,7 +1259,11 @@
             "pushedAt": "2026-09-15T07:52:00Z",
             "archived": false,
             "snapshotDate": "2026-09-15"
-          }
+          },
+          "images": [
+            "https://github.com/user-attachments/assets/021d662b-7ff3-4662-9ee0-75f42662f142"
+          ],
+          "image": "https://github.com/user-attachments/assets/021d662b-7ff3-4662-9ee0-75f42662f142"
         },
         {
           "sourceId": "weekly-issues",
@@ -1572,7 +1616,12 @@
             "阮一峰周刊·用户投稿",
             "HelloGitHub·用户投稿"
           ],
-          "__mergedCount": 2
+          "__mergedCount": 2,
+          "images": [
+            "https://raw.githubusercontent.com/tlsflow/TLSFlow/e51718e8a84f2c0d2ff902ba2dcd2afe1daa5d24/docs/Documentation/v1.0.0/img/image-20260903T155324.webp",
+            "https://raw.githubusercontent.com/tlsflow/TLSFlow/e51718e8a84f2c0d2ff902ba2dcd2afe1daa5d24/docs/Documentation/v1.0.0/manual/img/image-20260904T142318.webp"
+          ],
+          "image": "https://raw.githubusercontent.com/tlsflow/TLSFlow/e51718e8a84f2c0d2ff902ba2dcd2afe1daa5d24/docs/Documentation/v1.0.0/img/image-20260903T155324.webp"
         },
         {
           "sourceId": "hellogithub-issues",
@@ -1636,7 +1685,12 @@
             "阮一峰周刊·用户投稿",
             "HelloGitHub·用户投稿"
           ],
-          "__mergedCount": 2
+          "__mergedCount": 2,
+          "images": [
+            "https://raw.githubusercontent.com/guokuaile/tally/main/docs/images/hero.gif",
+            "https://raw.githubusercontent.com/guokuaile/tally/main/docs/images/ai.png"
+          ],
+          "image": "https://raw.githubusercontent.com/guokuaile/tally/main/docs/images/hero.gif"
         },
         {
           "sourceId": "hellogithub-issues",

@@ -89,7 +89,7 @@
           "author": "calderbuild",
           "authorUrl": "https://github.com/calderbuild",
           "publishedAt": "2026-02-28T03:20:11Z",
-          "summary": "SkillForge 仓库地址： 在线演示： 协议：MIT 它是什么 SkillForge 是一个 AI 驱动的 OpenClaw 技能生成器。用户用自然语言描述想让 AI Agent 做什么，系统就能在几秒内生成一个完整的、符合规范的 SKILL.md 文件，并自动完成格式校验和安全扫描。 为什么做这个 OpenClaw 是一个开放的 AI Agent 技能生态，但手写 SKILL.md 门槛不低：需要严格的 YAML frontmatter、特定的 markdown 段落结构、kebabcase 命名等。更关键的是，技能会在 Agent 环境中执行，一旦包含 curl | bash、eval() 之类的危险操作，后果很严重，而此前没有任何工具能在部署前做安全审查。 主要功能 实时流式生成：基于 Claude API + SSE，逐 token 输出 SKILL.md，所见即所得 格式校验：自动检查 YAML frontmatter、必填字段、命名规范，校验失败自动重试 安全扫描器：20+ 条静态分析规则，覆盖 4 个严重等级（Critical / High / Medium / Low），输出 0100 安全评分 快速模板：内置 Code Reviewer、Email Digest、Git Commit Helper 三个模板，点击即用 历史记录：localStorage 保存最近 20 条生成记录，跨会话可回看 一键安装：自动生成 shell 命令，直接部署到 ~/.openclaw/skills/ 技术栈 前端：React 19 + Vite + TypeScript + Tailwind CSS 后端：Python FastAPI + Claude API (SSE streaming) 部署：Vercel（前后端均为 serverless） SkillForge 首页界面 <img width=\"1728\" height=\"963\" alt=\"SkillForge 首页 描述、生成、安装一站式技能创建\" src=\" /",
+          "summary": "SkillForge 仓库地址： 在线演示： 协议：MIT 它是什么 SkillForge 是一个 AI 驱动的 OpenClaw 技能生成器。用户用自然语言描述想让 AI Agent 做什么，系统就能在几秒内生成一个完整的、符合规范的 SKILL.md 文件，并自动完成格式校验和安全扫描。 为什么做这个 OpenClaw 是一个开放的 AI Agent 技能生态，但手写 SKILL.md 门槛不低：需要严格的 YAML frontmatter、特定的 markdown 段落结构、kebabcase 命名等。更关键的是，技能会在 Agent 环境中执行，一旦包含 curl | bash、eval() 之类的危险操作，后果很严重，而此前没有任何工具能在部署前做安全审查。 主要功能 实时流式生成：基于 Claude API + SSE，逐 token 输出 SKILL.md，所见即所得 格式校验：自动检查 YAML frontmatter、必填字段、命名规范，校验失败自动重试 安全扫描器：20+ 条静态分析规则，覆盖 4 个严重等级（Critical / High / Medium / Low），输出 0100 安全评分 快速模板：内置 Code Reviewer、Email Digest、Git Commit Helper 三个模板，点击即用 历史记录：localStorage 保存最近 20 条生成记录，跨会话可回看 一键安装：自动生成 shell 命令，直接部署到 ~/.openclaw/skills/ 技术栈 前端：React 19 + Vite + TypeScript + Tailwind CSS 后端：Python FastAPI + Claude API (SSE streaming) 部署：Vercel（前后端均为 serverless） SkillForge 首页界面",
           "content": "## SkillForge\n\n**仓库地址**：https://github.com/calderbuild/skillforge\n**在线演示**：https://skillforge-frontend-gold.vercel.app\n**协议**：MIT\n\n### 它是什么\n\nSkillForge 是一个 AI 驱动的 OpenClaw 技能生成器。用户用自然语言描述想让 AI Agent 做什么，系统就能在几秒内生成一个完整的、符合规范的 SKILL.md 文件，并自动完成格式校验和安全扫描。\n\n### 为什么做这个\n\nOpenClaw 是一个开放的 AI Agent 技能生态，但手写 SKILL.md 门槛不低：需要严格的 YAML frontmatter、特定的 markdown 段落结构、kebab-case 命名等。更关键的是，技能会在 Agent 环境中执行，一旦包含 `curl | bash`、`eval()` 之类的危险操作，后果很严重，而此前没有任何工具能在部署前做安全审查。\n\n### 主要功能\n\n- **实时流式生成**：基于 Claude API + SSE，逐 token 输出 SKILL.md，所见即所得\n- **格式校验**：自动检查 YAML frontmatter、必填字段、命名规范，校验失败自动重试\n- **安全扫描器**：20+ 条静态分析规则，覆盖 4 个严重等级（Critical / High / Medium / Low），输出 0-100 安全评分\n- **快速模板**：内置 Code Reviewer、Email Digest、Git Commit Helper 三个模板，点击即用\n- **历史记录**：localStorage 保存最近 20 条生成记录，跨会话可回看\n- **一键安装**：自动生成 shell 命令，直接部署到 `~/.openclaw/skills/`\n\n### 技术栈\n\n- 前端：React 19 + Vite + TypeScript + Tailwind CSS\n- 后端：Python FastAPI + Claude API (SSE streaming)\n- 部署：Vercel（前后端均为 serverless）\n\n### SkillForge 首页界面\n\n<img width=\"1728\" height=\"963\" alt=\"SkillForge 首页 -- 描述、生成、安装一站式技能创建\" src=\"https://github.com/user-attachments/assets/f9e665c9-a54c-4414-868c-f9ce8bf1e88a\" />",
           "metrics": {
             "comments": 0
@@ -99,7 +99,11 @@
             "submission"
           ],
           "externalId": "9085",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9085"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9085",
+          "images": [
+            "https://github.com/user-attachments/assets/f9e665c9-a54c-4414-868c-f9ce8bf1e88a"
+          ],
+          "image": "https://github.com/user-attachments/assets/f9e665c9-a54c-4414-868c-f9ce8bf1e88a"
         },
         {
           "sourceId": "weekly-issues",
@@ -108,7 +112,7 @@
           "author": "JoeDeanx",
           "authorUrl": "https://github.com/JoeDeanx",
           "publishedAt": "2026-02-28T05:32:49Z",
-          "summary": "<img width=\"1620\" height=\"992\" alt=\"Image\" src=\" / PixPark AI 是一个面向创作者/设计师/独立开发者的 AI 创作平台：主打「免费、无限、免注册」的在线 AI 图像生成，并提供创作空间（Studio）与模型库，帮助快速产出游戏素材、营销视觉和社交媒体图片。 主页（中文）： 创作空间（Studio）： 主要特点 免费、无限、免注册：打开网页即可开始生成（无需账号）。 上手快：输入描述 → 选择比例/分辨率 → 一键生成。 适合生产素材：针对游戏资产、营销海报、社交媒体配图等场景优化了展示与用例说明。 隐私与版权说明清晰：生成内容临时保存（如 24 小时），并说明生成图片可由用户自行使用（含商用）。 适用人群 独立开发者：快速生成概念图、道具图标、环境素材 设计师/运营：广告创意、首屏视觉、社媒配图 内容创作者：封面、缩略图、风格化背景与插画",
+          "summary": "PixPark AI 是一个面向创作者/设计师/独立开发者的 AI 创作平台：主打「免费、无限、免注册」的在线 AI 图像生成，并提供创作空间（Studio）与模型库，帮助快速产出游戏素材、营销视觉和社交媒体图片。 主页（中文）： 创作空间（Studio）： 主要特点 免费、无限、免注册：打开网页即可开始生成（无需账号）。 上手快：输入描述 → 选择比例/分辨率 → 一键生成。 适合生产素材：针对游戏资产、营销海报、社交媒体配图等场景优化了展示与用例说明。 隐私与版权说明清晰：生成内容临时保存（如 24 小时），并说明生成图片可由用户自行使用（含商用）。 适用人群 独立开发者：快速生成概念图、道具图标、环境素材 设计师/运营：广告创意、首屏视觉、社媒配图 内容创作者：封面、缩略图、风格化背景与插画",
           "content": "\n<img width=\"1620\" height=\"992\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/22dd09bd-cc31-4140-824c-71232b3101c9\" />\n\nPixPark AI 是一个面向创作者/设计师/独立开发者的 AI 创作平台：主打「免费、无限、免注册」的在线 AI 图像生成，并提供创作空间（Studio）与模型库，帮助快速产出游戏素材、营销视觉和社交媒体图片。\n\n- 主页（中文）：https://pixpark.ai/zh  \n- 创作空间（Studio）：https://pixpark.ai/zh/studio  \n\n## 主要特点\n- **免费、无限、免注册**：打开网页即可开始生成（无需账号）。  \n- **上手快**：输入描述 → 选择比例/分辨率 → 一键生成。    \n- **适合生产素材**：针对游戏资产、营销海报、社交媒体配图等场景优化了展示与用例说明。  \n- **隐私与版权说明清晰**：生成内容临时保存（如 24 小时），并说明生成图片可由用户自行使用（含商用）。  \n\n## 适用人群\n- 独立开发者：快速生成概念图、道具图标、环境素材\n- 设计师/运营：广告创意、首屏视觉、社媒配图\n- 内容创作者：封面、缩略图、风格化背景与插画\n",
           "metrics": {
             "comments": 1
@@ -119,7 +123,11 @@
           ],
           "externalId": "9087",
           "issueUrl": "https://github.com/ruanyf/weekly/issues/9087",
-          "siteLogo": "https://pixpark.ai/icon.png?icon.0flwieg0f43_i.png"
+          "siteLogo": "https://pixpark.ai/icon.png?icon.0flwieg0f43_i.png",
+          "images": [
+            "https://github.com/user-attachments/assets/22dd09bd-cc31-4140-824c-71232b3101c9"
+          ],
+          "image": "https://github.com/user-attachments/assets/22dd09bd-cc31-4140-824c-71232b3101c9"
         },
         {
           "sourceId": "weekly-issues",
@@ -147,7 +155,7 @@
           "author": "bingoYB",
           "authorUrl": "https://github.com/bingoYB",
           "publishedAt": "2026-02-28T06:35:27Z",
-          "summary": "HamHome 仓库地址： 产品介绍页： 体验入口：Firefox Addons / Edge Addons / GitHub Releases 协议：MIT 它是什么 HamHome 是一个 AI 驱动的浏览器书签管理插件，保存网页时自动提取正文、生成摘要、推荐分类和标签；回查内容时既能做全文检索，也支持语义搜索和 AI 对话搜索。 为什么做这个 传统书签的核心问题不是“保存不了”，而是“保存之后很快失联”。收藏越来越多之后，用户通常会遇到几个典型问题：一是标题和链接不足以帮助回忆内容，二是目录层级越分越乱，三是想找资料时只能靠关键词碰运气，四是原网页失效后，无法继续查看内容。 HamHome 想解决的就是这类“收藏容易、整理困难、搜索低效”的问题。 主要功能 AI 智能保存：保存网页时自动提取正文，生成摘要、推荐分类和标签，减少手动整理成本 AI 对话搜索：支持自然语言提问，从书签里直接找出相关内容并给出引用来源 语义检索 + 全文搜索：不仅能搜关键词，也能按语义查找“之前看过但记不清标题”的内容 分类方案管理：内置预设分类模板，也支持让 AI 根据使用场景生成层级分类树 网页快照归档：本地保存 HTML 快照，即使原网页失效，也能继续查看核心内容 侧边栏工作流：提供保存面板、侧边栏、管理页等多种入口，适合边浏览边整理 导入导出：支持从浏览器直接导入书签并保留目录结构，支持导出 JSON / HTML 备份 隐私优先：书签数据默认保存在本地，支持隐私域名排除与自带 API Key（BYOK） 多模型兼容支持：支持 OpenAI、Anthropic、Ollama 及自定义兼容端点 技术栈 Extension：WXT + React 19 + TypeScript + Tailwind CSS Web：Next.js 16 内容提取：Mozilla Readability + Turndown 数据存储：Chrome Storage API + IndexedDB 国际化：i18next + reacti18next <img width=\"1280\" height=\"800\" alt=\"Image\" src=\" / <img width=\"2918\" height=\"1570\" alt=\"Image\" src=\" /",
+          "summary": "HamHome 仓库地址： 产品介绍页： 体验入口：Firefox Addons / Edge Addons / GitHub Releases 协议：MIT 它是什么 HamHome 是一个 AI 驱动的浏览器书签管理插件，保存网页时自动提取正文、生成摘要、推荐分类和标签；回查内容时既能做全文检索，也支持语义搜索和 AI 对话搜索。 为什么做这个 传统书签的核心问题不是“保存不了”，而是“保存之后很快失联”。收藏越来越多之后，用户通常会遇到几个典型问题：一是标题和链接不足以帮助回忆内容，二是目录层级越分越乱，三是想找资料时只能靠关键词碰运气，四是原网页失效后，无法继续查看内容。 HamHome 想解决的就是这类“收藏容易、整理困难、搜索低效”的问题。 主要功能 AI 智能保存：保存网页时自动提取正文，生成摘要、推荐分类和标签，减少手动整理成本 AI 对话搜索：支持自然语言提问，从书签里直接找出相关内容并给出引用来源 语义检索 + 全文搜索：不仅能搜关键词，也能按语义查找“之前看过但记不清标题”的内容 分类方案管理：内置预设分类模板，也支持让 AI 根据使用场景生成层级分类树 网页快照归档：本地保存 HTML 快照，即使原网页失效，也能继续查看核心内容 侧边栏工作流：提供保存面板、侧边栏、管理页等多种入口，适合边浏览边整理 导入导出：支持从浏览器直接导入书签并保留目录结构，支持导出 JSON / HTML 备份 隐私优先：书签数据默认保存在本地，支持隐私域名排除与自带 API Key（BYOK） 多模型兼容支持：支持 OpenAI、Anthropic、Ollama 及自定义兼容端点 技术栈 Extension：WXT + React 19 + TypeScript + Tailwind CSS Web：Next.js 16 内容提取：Mozilla Readability + Turndown 数据存储：Chrome Storage API + IndexedDB 国际化：i18next + reacti18next",
           "content": "## HamHome\n**仓库地址**：https://github.com/bingoYB/ham_home  \n**产品介绍页**：https://bingoyb.github.io/ham_home/  \n**体验入口**：[Firefox Add-ons](https://addons.mozilla.org/zh-CN/firefox/addon/hamhome-%E6%99%BA%E8%83%BD%E4%B9%A6%E7%AD%BE%E5%8A%A9%E6%89%8B/) / [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/hamhome-smart-bookmark-/nmbdgbicgagmokdmohgngcbhkaicfnpi) / [GitHub Releases](https://github.com/bingoYB/ham_home/releases)  \n**协议**：MIT\n\n### 它是什么\nHamHome 是一个 AI 驱动的浏览器书签管理插件，保存网页时自动提取正文、生成摘要、推荐分类和标签；回查内容时既能做全文检索，也支持语义搜索和 AI 对话搜索。\n\n### 为什么做这个\n传统书签的核心问题不是“保存不了”，而是“保存之后很快失联”。收藏越来越多之后，用户通常会遇到几个典型问题：一是标题和链接不足以帮助回忆内容，二是目录层级越分越乱，三是想找资料时只能靠关键词碰运气，四是原网页失效后，无法继续查看内容。\n\nHamHome 想解决的就是这类“收藏容易、整理困难、搜索低效”的问题。\n\n### 主要功能\n* **AI 智能保存**：保存网页时自动提取正文，生成摘要、推荐分类和标签，减少手动整理成本\n* **AI 对话搜索**：支持自然语言提问，从书签里直接找出相关内容并给出引用来源\n* **语义检索 + 全文搜索**：不仅能搜关键词，也能按语义查找“之前看过但记不清标题”的内容\n* **分类方案管理**：内置预设分类模板，也支持让 AI 根据使用场景生成层级分类树\n* **网页快照归档**：本地保存 HTML 快照，即使原网页失效，也能继续查看核心内容\n* **侧边栏工作流**：提供保存面板、侧边栏、管理页等多种入口，适合边浏览边整理\n* **导入导出**：支持从浏览器直接导入书签并保留目录结构，支持导出 `JSON` / `HTML` 备份\n* **隐私优先**：书签数据默认保存在本地，支持隐私域名排除与自带 API Key（BYOK）\n* **多模型兼容支持**：支持 OpenAI、Anthropic、Ollama 及自定义兼容端点\n\n### 技术栈\n* **Extension**：WXT + React 19 + TypeScript + Tailwind CSS\n* **Web**：Next.js 16\n* **内容提取**：Mozilla Readability + Turndown\n* **数据存储**：Chrome Storage API + IndexedDB\n* **国际化**：i18next + react-i18next\n\n<img width=\"1280\" height=\"800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b8105caa-9f7b-4345-a9a5-0705550781d7\" />\n\n<img width=\"2918\" height=\"1570\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8710f254-8b8a-4dce-8f8c-ce07c2f91fbb\" />\n\n",
           "metrics": {
             "comments": 2
@@ -157,7 +165,12 @@
             "submission"
           ],
           "externalId": "9089",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9089"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9089",
+          "images": [
+            "https://github.com/user-attachments/assets/b8105caa-9f7b-4345-a9a5-0705550781d7",
+            "https://github.com/user-attachments/assets/8710f254-8b8a-4dce-8f8c-ce07c2f91fbb"
+          ],
+          "image": "https://github.com/user-attachments/assets/b8105caa-9f7b-4345-a9a5-0705550781d7"
         },
         {
           "sourceId": "weekly-issues",
@@ -204,7 +217,7 @@
           "author": "moonrailgun",
           "authorUrl": "https://github.com/moonrailgun",
           "publishedAt": "2026-02-28T10:05:06Z",
-          "summary": "为什么要做这个 AI 原生能力越来越强，势必会引入更多的创作者加入创作。在创作成本越来越低的现在，就像是 figma 代替了 sketch ，纯浏览器端的视频编辑工具必然会取代 capcut 这样的端上应用，让用户能够随时开启创作，而无需特别专业的能力 之前 Opencut 的爆火也证明了这一点，但是 opencut 只是一个基础，只能进行基础的框架，没有办法适用于实战场景，所以我做了 Cutia 。 而现在的浏览器能力已经能够支撑一整套的媒体编辑能力。所以为什么不做呢？ Highlight 浏览器端运行，无需安装 隐私优先，所有数据存储在本地 多轨道时间轴编辑（视频、音频、文本、贴纸） AI 对话助手，自然语言控制编辑器 AI 图像/视频生成 角色库，多次生成保持视觉一致性 自动字幕生成（浏览器内 Whisper ，不上传音频） 转场效果（淡入淡出、擦除、滑动、缩放） 40+ 文本预设 + 8 种字幕模板 Freesound 音效库集成 导出 MP4/WebM ，无水印 完全离线可用 12 种语言支持 开源免费（ MIT ） 预览 <img width=\"2904\" height=\"2036\" alt=\"Image\" src=\" / 在线体验: Github:",
+          "summary": "为什么要做这个 AI 原生能力越来越强，势必会引入更多的创作者加入创作。在创作成本越来越低的现在，就像是 figma 代替了 sketch ，纯浏览器端的视频编辑工具必然会取代 capcut 这样的端上应用，让用户能够随时开启创作，而无需特别专业的能力 之前 Opencut 的爆火也证明了这一点，但是 opencut 只是一个基础，只能进行基础的框架，没有办法适用于实战场景，所以我做了 Cutia 。 而现在的浏览器能力已经能够支撑一整套的媒体编辑能力。所以为什么不做呢？ Highlight 浏览器端运行，无需安装 隐私优先，所有数据存储在本地 多轨道时间轴编辑（视频、音频、文本、贴纸） AI 对话助手，自然语言控制编辑器 AI 图像/视频生成 角色库，多次生成保持视觉一致性 自动字幕生成（浏览器内 Whisper ，不上传音频） 转场效果（淡入淡出、擦除、滑动、缩放） 40+ 文本预设 + 8 种字幕模板 Freesound 音效库集成 导出 MP4/WebM ，无水印 完全离线可用 12 种语言支持 开源免费（ MIT ） 预览 在线体验: Github:",
           "content": "## 为什么要做这个\nAI 原生能力越来越强，势必会引入更多的创作者加入创作。在创作成本越来越低的现在，就像是 figma 代替了 sketch ，纯浏览器端的视频编辑工具必然会取代 capcut 这样的端上应用，让用户能够随时开启创作，而无需特别专业的能力\n\n之前 Opencut 的爆火也证明了这一点，但是 opencut 只是一个基础，只能进行基础的框架，没有办法适用于实战场景，所以我做了 Cutia 。\n\n而现在的浏览器能力已经能够支撑一整套的媒体编辑能力。所以为什么不做呢？\n\n## Highlight\n\n- 浏览器端运行，无需安装\n- 隐私优先，所有数据存储在本地\n- 多轨道时间轴编辑（视频、音频、文本、贴纸）\n- AI 对话助手，自然语言控制编辑器\n- AI 图像/视频生成\n- 角色库，多次生成保持视觉一致性\n- 自动字幕生成（浏览器内 Whisper ，不上传音频）\n- 转场效果（淡入淡出、擦除、滑动、缩放）\n- 40+ 文本预设 + 8 种字幕模板\n- Freesound 音效库集成\n- 导出 MP4/WebM ，无水印\n- 完全离线可用\n- 12 种语言支持\n- 开源免费（ MIT ）\n\n## 预览\n\n<img width=\"2904\" height=\"2036\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ccd5b537-e9cd-4b7b-888e-4d4035c06f95\" />\n\n- 在线体验: https://cutia.msgbyte.com/\n- Github: https://github.com/msgbyte/cutia",
           "metrics": {
             "comments": 0
@@ -214,7 +227,11 @@
             "submission"
           ],
           "externalId": "9092",
-          "issueUrl": "https://github.com/ruanyf/weekly/issues/9092"
+          "issueUrl": "https://github.com/ruanyf/weekly/issues/9092",
+          "images": [
+            "https://github.com/user-attachments/assets/ccd5b537-e9cd-4b7b-888e-4d4035c06f95"
+          ],
+          "image": "https://github.com/user-attachments/assets/ccd5b537-e9cd-4b7b-888e-4d4035c06f95"
         },
         {
           "sourceId": "weekly-issues",
@@ -254,7 +271,7 @@
           "author": "iHongRen",
           "authorUrl": "https://github.com/iHongRen",
           "publishedAt": "2026-02-28T01:28:47Z",
-          "summary": "项目地址 类别 其它 项目标题 macOS Finder 工具栏应用集，快速打开项目，处理文件 项目描述 应用集 openin 系列（20+ app）快速在指定应用中打开文件/目录（VS Code、Terminal、PyCharm 等） apptodmg 将 .app 应用/目录打包为 .dmg 镜像文件 removequarantine 移除应用隔离属性，解决\"无法打开\"问题 TinyImage 图片无损压缩，减小文件大小 <img width=\"2496\" height=\"1364\" alt=\"Image\" src=\" / 安装 1. 下载并打开 apps.dmg，拖拽所需 app 到 Applications/ 2. 按住 ⌘ Command 键，用鼠标将 xxx.app 拖到 Finder 工具栏 3. 打开终端，执行以下命令去除隔离属性，将xxx 替换为安装的app名称 bash xattr d com.apple.quarantine /Applications/xxx.app 使用 在Finder中选择需要处理的文件或者文件夹，然后点击工具栏上的app就能快速处理。 常见问题 Q: 忘记点同意权限怎么办？ A: 打开系统设置 → 隐私与安全性 → 自动化 → 找到 openinxxx.app，勾选「访达」权限。 亮点 包含了大部分主流IDE 示例代码 markdown 截图或演示视频 <img width=\"2016\" height=\"1498\" alt=\"Image\" src=\" / !Image",
+          "summary": "项目地址 类别 其它 项目标题 macOS Finder 工具栏应用集，快速打开项目，处理文件 项目描述 应用集 openin 系列（20+ app）快速在指定应用中打开文件/目录（VS Code、Terminal、PyCharm 等） apptodmg 将 .app 应用/目录打包为 .dmg 镜像文件 removequarantine 移除应用隔离属性，解决\"无法打开\"问题 TinyImage 图片无损压缩，减小文件大小 安装 1. 下载并打开 apps.dmg，拖拽所需 app 到 Applications/ 2. 按住 ⌘ Command 键，用鼠标将 xxx.app 拖到 Finder 工具栏 3. 打开终端，执行以下命令去除隔离属性，将xxx 替换为安装的app名称 bash xattr d com.apple.quarantine /Applications/xxx.app 使用 在Finder中选择需要处理的文件或者文件夹，然后点击工具栏上的app就能快速处理。 常见问题 Q: 忘记点同意权限怎么办？ A: 打开系统设置 → 隐私与安全性 → 自动化 → 找到 openinxxx.app，勾选「访达」权限。 亮点 包含了大部分主流IDE 示例代码 markdown 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/iHongRen/finder-toolbar-apps\n\n### 类别\n\n其它\n\n### 项目标题\n\nmacOS Finder 工具栏应用集，快速打开项目，处理文件\n\n### 项目描述\n\n## 应用集\n\n- **open-in-** 系列（20+ app）快速在指定应用中打开文件/目录（VS Code、Terminal、PyCharm 等）\n  \n- **app-to-dmg**  将 .app 应用/目录打包为 .dmg 镜像文件\n  \n- **remove_quarantine**  移除应用隔离属性，解决\"无法打开\"问题\n  \n- **[TinyImage](https://github.com/iHongRen/TinyImage)**  图片无损压缩，减小文件大小\n\n<img width=\"2496\" height=\"1364\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d958cf8c-0f4d-4960-a000-51f52512ded0\" />\n\n## 安装\n\n1. 下载并打开 [apps.dmg](https://github.com/iHongRen/finder-toolbar-apps/releases)，拖拽所需 app 到 Applications/ \n\n\n2. 按住 `⌘ Command` 键，用鼠标将 `xxx.app` 拖到 Finder 工具栏  \n\n\n3. 打开终端，执行以下命令去除隔离属性，将`xxx` 替换为安装的app名称\n   ```bash\n   xattr -d com.apple.quarantine /Applications/xxx.app\n   ```\n\n\n## 使用\n\n在Finder中选择需要处理的文件或者文件夹，然后点击工具栏上的app就能快速处理。\n\n## 常见问题\n**Q: 忘记点同意权限怎么办？**\n\nA: 打开系统设置 → 隐私与安全性 → 自动化 → 找到 open-in-xxx.app，勾选「访达」权限。\n\n### 亮点\n\n包含了大部分主流IDE\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"2016\" height=\"1498\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6c91e43b-e207-43c7-b552-69f80df086e1\" />\n\n![Image](https://github.com/user-attachments/assets/d46afd76-3cef-4ebf-a2e4-a56b75fa88ed)\n",
           "metrics": {
             "comments": 0
@@ -264,7 +281,13 @@
             "submission"
           ],
           "externalId": "3155",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3155"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3155",
+          "images": [
+            "https://github.com/user-attachments/assets/d958cf8c-0f4d-4960-a000-51f52512ded0",
+            "https://github.com/user-attachments/assets/6c91e43b-e207-43c7-b552-69f80df086e1",
+            "https://github.com/user-attachments/assets/d46afd76-3cef-4ebf-a2e4-a56b75fa88ed"
+          ],
+          "image": "https://github.com/user-attachments/assets/d958cf8c-0f4d-4960-a000-51f52512ded0"
         },
         {
           "sourceId": "hellogithub-issues",
@@ -273,7 +296,7 @@
           "author": "LeslieLeung",
           "authorUrl": "https://github.com/LeslieLeung",
           "publishedAt": "2026-02-28T06:23:44Z",
-          "summary": "项目地址 类别 Python 项目标题 一个可自建的 RSS 阅读器及个人知识管理工具 项目描述 Glean（拾灵）是一款面向信息重度消费者的个人知识管理工具。在信息过载的时代，工程师、研究者、创作者每天面对来自数十个平台的内容轰炸，优质信息淹没在噪音里。Glean 将分散的 RSS 源集中管理，用 AI 和用户行为数据自动筛选、排序，让你只看真正值得读的内容。 核心功能： RSS 订阅管理：多层文件夹、OPML 导入导出、自适应抓取频率 偏好学习：基于向量相似度的个人偏好模型，实时计算内容偏好分数 智能推荐视图：基于向量偏好模型，给内容按照推荐分数排序 收藏与存档：系统内收藏 + 外部 URL 收藏，网页快照防止原文丢失 亮点 偏好学习和智能推荐：在使用过程中可以对文章标记喜欢/不喜欢，以及收藏等行为，会形成一个个人的偏好向量；在浏览信息流时，可以根据内容偏好分数给内容排序，让你可以优先处理感兴趣的内容，沉底不感兴趣的无效信息，在浏览聚合信息源时尤其有效。 MCP 支持：提供 MCP 服务，可以方便接入各种 AI 工具，实现自动信息整合等功能。 精致打磨的阅读体验：深度打磨的 UI/UX 设计，动画流畅，界面简洁，没有过于臃肿浮夸的 AI 窗口等，同时有针对移动端优化。 示例代码 markdown 截图或演示视频 <img width=\"3800\" height=\"1801\" alt=\"Image\" src=\" /",
+          "summary": "项目地址 类别 Python 项目标题 一个可自建的 RSS 阅读器及个人知识管理工具 项目描述 Glean（拾灵）是一款面向信息重度消费者的个人知识管理工具。在信息过载的时代，工程师、研究者、创作者每天面对来自数十个平台的内容轰炸，优质信息淹没在噪音里。Glean 将分散的 RSS 源集中管理，用 AI 和用户行为数据自动筛选、排序，让你只看真正值得读的内容。 核心功能： RSS 订阅管理：多层文件夹、OPML 导入导出、自适应抓取频率 偏好学习：基于向量相似度的个人偏好模型，实时计算内容偏好分数 智能推荐视图：基于向量偏好模型，给内容按照推荐分数排序 收藏与存档：系统内收藏 + 外部 URL 收藏，网页快照防止原文丢失 亮点 偏好学习和智能推荐：在使用过程中可以对文章标记喜欢/不喜欢，以及收藏等行为，会形成一个个人的偏好向量；在浏览信息流时，可以根据内容偏好分数给内容排序，让你可以优先处理感兴趣的内容，沉底不感兴趣的无效信息，在浏览聚合信息源时尤其有效。 MCP 支持：提供 MCP 服务，可以方便接入各种 AI 工具，实现自动信息整合等功能。 精致打磨的阅读体验：深度打磨的 UI/UX 设计，动画流畅，界面简洁，没有过于臃肿浮夸的 AI 窗口等，同时有针对移动端优化。 示例代码 markdown 截图或演示视频",
           "content": "### 项目地址\n\nhttps://github.com/LeslieLeung/glean\n\n### 类别\n\nPython\n\n### 项目标题\n\n一个可自建的 RSS 阅读器及个人知识管理工具\n\n### 项目描述\n\nGlean（拾灵）是一款面向信息重度消费者的个人知识管理工具。在信息过载的时代，工程师、研究者、创作者每天面对来自数十个平台的内容轰炸，优质信息淹没在噪音里。Glean 将分散的 RSS 源集中管理，用 AI 和用户行为数据自动筛选、排序，让你只看真正值得读的内容。\n\n核心功能：\n- RSS 订阅管理：多层文件夹、OPML 导入导出、自适应抓取频率\n- 偏好学习：基于向量相似度的个人偏好模型，实时计算内容偏好分数\n- 智能推荐视图：基于向量偏好模型，给内容按照推荐分数排序\n- 收藏与存档：系统内收藏 + 外部 URL 收藏，网页快照防止原文丢失\n\n### 亮点\n\n- 偏好学习和智能推荐：在使用过程中可以对文章标记喜欢/不喜欢，以及收藏等行为，会形成一个个人的偏好向量；在浏览信息流时，可以根据内容偏好分数给内容排序，让你可以优先处理感兴趣的内容，沉底不感兴趣的无效信息，在浏览聚合信息源时尤其有效。\n- MCP 支持：提供 MCP 服务，可以方便接入各种 AI 工具，实现自动信息整合等功能。\n- 精致打磨的阅读体验：深度打磨的 UI/UX 设计，动画流畅，界面简洁，没有过于臃肿浮夸的 AI 窗口等，同时有针对移动端优化。\n\n### 示例代码\n\n```markdown\n\n```\n\n### 截图或演示视频\n\n<img width=\"3800\" height=\"1801\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d2023a56-18e5-4164-9f66-38d7d6f40bae\" />",
           "metrics": {
             "comments": 0
@@ -283,7 +306,11 @@
             "submission"
           ],
           "externalId": "3156",
-          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3156"
+          "issueUrl": "https://github.com/521xueweihan/HelloGitHub/issues/3156",
+          "images": [
+            "https://github.com/user-attachments/assets/d2023a56-18e5-4164-9f66-38d7d6f40bae"
+          ],
+          "image": "https://github.com/user-attachments/assets/d2023a56-18e5-4164-9f66-38d7d6f40bae"
         }
       ],
       "error": "gh api 失败: gh: API rate limit exceeded for installation. If you reach out to GitHub Support for help, please include the request ID A438:264F28:376F8E:B6CD21:6A9E8533 and timestamp 2026-09-07 09:34:43 UTC. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service) (HTTP 403)\n"
