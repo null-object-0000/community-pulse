@@ -39,19 +39,25 @@ const TABLES = {
     upsert: `ON DUPLICATE KEY UPDATE product_id=VALUES(product_id), route_kind=VALUES(route_kind),
       updated_at=CURRENT_TIMESTAMP(3)`,
   },
+  // 与 detailRanksHigher 逐字对应：内容分高的赢，同分取更新的那次观测。日更只导入两天，构建期看不到
+  // 更早的好行，所以这条规则必须由 upsert 自己复算一遍，否则第二天一条空描述的观测就会把好行顶掉。
+  // observed_date 跟着赢的那一行走（不再取 GREATEST），让「日期 + 分数」始终描述同一行；真实最新
+  // 观测日期由 products.last_seen_date 承担，详情页的「最近收录」读的是它。
   product_details: {
     columns: ['product_id', 'observed_date', 'content_score', 'item_json', 'content_hash'],
     upsert: `ON DUPLICATE KEY UPDATE
-      item_json=IF(VALUES(observed_date) > product_details.observed_date OR
-        (VALUES(observed_date) = product_details.observed_date AND VALUES(content_score) >= product_details.content_score),
+      item_json=IF(VALUES(content_score) > product_details.content_score OR
+        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
         VALUES(item_json), product_details.item_json),
-      content_hash=IF(VALUES(observed_date) > product_details.observed_date OR
-        (VALUES(observed_date) = product_details.observed_date AND VALUES(content_score) >= product_details.content_score),
+      content_hash=IF(VALUES(content_score) > product_details.content_score OR
+        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
         VALUES(content_hash), product_details.content_hash),
-      content_score=IF(VALUES(observed_date) > product_details.observed_date OR
-        (VALUES(observed_date) = product_details.observed_date AND VALUES(content_score) >= product_details.content_score),
+      content_score=IF(VALUES(content_score) > product_details.content_score OR
+        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
         VALUES(content_score), product_details.content_score),
-      observed_date=GREATEST(product_details.observed_date, VALUES(observed_date)), updated_at=CURRENT_TIMESTAMP(3)`,
+      observed_date=IF(VALUES(content_score) > product_details.content_score OR
+        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
+        VALUES(observed_date), product_details.observed_date), updated_at=CURRENT_TIMESTAMP(3)`,
   },
   product_source_first_seen: {
     columns: ['product_id', 'source_id', 'first_seen_date', 'last_seen_date', 'observation_count'],
@@ -196,6 +202,25 @@ function detailScore(item) {
     + (item.logo || item.icon || item.siteLogo ? 50 : 0);
 }
 
+// 一个产品在 product_details 里只留一行，这一行给详情页当正文。择优规则是**内容分高的赢，同分取
+// 更新的那次观测**。以前是反过来的（日期新的无条件覆盖），于是一条没有描述的 GitHub Trending 观测
+// 会把几周前一条上千字的投稿描述顶掉：详情页只剩占位符，还被收录门禁判成薄页 noindex —— 2026-09-17
+// 的 GSC 报告里 cross-stitch（09-02 的 160 字介绍被 09-04 一条 score 0 的 Show HN 链接帖覆盖）与
+// coding-tools-mcp（05-21 的 1689 字自荐被 9 月一条空描述的 trending 行覆盖）就是这么来的。
+//
+// 为什么是「评分优先」而不是「以最新行为基底、把更好的摘要搬过来」：MySQL 的 upsert 必须独立复算
+// 同一个规则，而日更只导入 TARGET..OBSERVED 两天 —— 构建期根本看不到那条旧的好行。字段级合并要
+// 在 SQL 里做 JSON 手术（且阈值要抄进 SQL），分叉出第二份难测的实现；评分优先只需比较已经存在
+// 的 content_score 列，两条链天然一致。代价是这一行的官网 / 配图也停在更丰富的那次观测上，而
+// 「最近收录」来自 products 表，仍然是最新的。
+// 改 detailScore 的权重就等于换了度量：旧行存的是旧公式算的分，必须跑一次全量导入（catalog-refresh）
+// 才会重新评分。
+function detailRanksHigher(candidate, known) {
+  if (!known) return true;
+  if (candidate.score !== known.score) return candidate.score > known.score;
+  return candidate.date >= known.date;
+}
+
 function collectRows(options) {
   const config = JSON.parse(fs.readFileSync(SOURCE_CONFIG, 'utf8'));
   const sources = config.sources.filter((source) => source.enabled && (!options.sources || options.sources.has(source.id)));
@@ -247,7 +272,7 @@ function collectRows(options) {
         const projected = detailItem(item, source);
         const score = detailScore(projected);
         const knownDetail = details.get(id);
-        if (!knownDetail || date > knownDetail.date || (date === knownDetail.date && score >= knownDetail.score)) {
+        if (detailRanksHigher({ date, score }, knownDetail)) {
           const json = JSON.stringify(projected);
           details.set(id, { id, date, score, json, hash: crypto.createHash('sha256').update(json).digest('hex') });
         }
@@ -346,4 +371,4 @@ if (require.main === module) {
   catch (error) { console.error(error.stack || error.message); process.exitCode = 1; }
 }
 
-module.exports = { parseArgs, sourceDates, sqlValue, taxonomyRows, collectRows, buildMysqlImport, loadEvidence, repositoryEvidenceDate, TABLES };
+module.exports = { parseArgs, sourceDates, sqlValue, taxonomyRows, collectRows, buildMysqlImport, loadEvidence, repositoryEvidenceDate, detailScore, detailRanksHigher, TABLES };

@@ -4,7 +4,7 @@ const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
 const { identitiesFor } = require('../scripts/catalog/identity');
-const { buildMysqlImport, sqlValue, loadEvidence, repositoryEvidenceDate } = require('../scripts/catalog/build-mysql-import');
+const { buildMysqlImport, sqlValue, loadEvidence, repositoryEvidenceDate, detailScore, detailRanksHigher, TABLES } = require('../scripts/catalog/build-mysql-import');
 const { parseArgs, fetchJson, rangeStats, localizeSnapshotProducts } = require('../scripts/catalog/build-site-snapshot');
 const { loadItems } = require('../.agents/skills/community-pulse/scripts/source_raw_items');
 const { readManifest } = require('../scripts/image-store.js');
@@ -248,4 +248,36 @@ test('the MySQL import package stores mirrored marks and their tone, not the web
   // 浅色标志的色调也跟着走，详情页/分类页才会换深色底板。
   for (const tone of detailSql.matchAll(/"markTone":"([a-z]+)"/g)) assert.equal(tone[1], 'light');
   fs.rmSync(directory, { recursive: true, force: true });
+});
+
+test('product details keep the richest observation instead of the newest one', () => {
+  // 详情页那一行以前由「日期新的无条件覆盖」决定，于是 GitHub Trending 那种没有描述的观测会把几周前
+  // 一条上千字的投稿描述顶掉：页面只剩占位符，还被收录门禁判成薄页。2026-09-17 的 GSC 报告里
+  // cross-stitch 与 coding-tools-mcp 就是这么变成 noindex 的。
+  const rich = { summaryZh: '十字绣图纸生成器，照片拖进浏览器几秒变成可绣的 DMC 图纸，454 色自动匹配色号。', github: { url: 'https://github.com/owner/repo' }, logo: '/images/x.png' };
+  const thin = { github: { url: 'https://github.com/owner/repo' } };
+  const richScore = detailScore(rich);
+  const thinScore = detailScore(thin);
+  assert.ok(richScore > thinScore, 'a row with a description must outrank a row without one');
+  // 两周后一条 score 0 的 Show HN 链接帖（无描述、无仓库、无标志）不能顶掉它。
+  assert.equal(detailRanksHigher({ date: '2026-09-04', score: 0 }, { date: '2026-09-02', score: richScore }), false);
+  assert.equal(detailRanksHigher({ date: '2026-09-04', score: thinScore }, { date: '2026-09-02', score: richScore }), false);
+  // 反过来，内容更全的新观测照常升级。
+  assert.equal(detailRanksHigher({ date: '2026-09-04', score: richScore + 20 }, { date: '2026-09-02', score: richScore }), true);
+  // 同分取更新的那次观测；没有旧行时任何一行都算赢。
+  assert.equal(detailRanksHigher({ date: '2026-09-04', score: richScore }, { date: '2026-09-02', score: richScore }), true);
+  assert.equal(detailRanksHigher({ date: '2026-09-02', score: richScore }, { date: '2026-09-04', score: richScore }), false);
+  assert.equal(detailRanksHigher({ date: '2026-09-04', score: 0 }, undefined), true);
+});
+
+test('the MySQL upsert recomputes the same richest-row rule for two-day imports', () => {
+  // 日更只导入 TARGET..OBSERVED，构建期看不到更早的好行，所以规则必须由 upsert 自己复算一遍，
+  // 否则第二天一条空描述的观测又会把好行顶掉。
+  const detailSql = TABLES.product_details.upsert;
+  assert.match(detailSql, /item_json=IF\(VALUES\(content_score\) > product_details\.content_score/);
+  assert.match(detailSql, /VALUES\(content_score\) = product_details\.content_score AND VALUES\(observed_date\) >= product_details\.observed_date/);
+  assert.doesNotMatch(detailSql, /item_json=IF\(VALUES\(observed_date\) > product_details\.observed_date/);
+  // observed_date 跟着赢的那一行走，让「日期 + 分数」始终描述同一行（真实最新观测在 products 表）。
+  assert.match(detailSql, /observed_date=IF\(VALUES\(content_score\) > product_details\.content_score/);
+  assert.doesNotMatch(detailSql, /observed_date=GREATEST\(/);
 });

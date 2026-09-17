@@ -192,7 +192,7 @@ async function buildSiteSnapshot(options) {
     localizeSnapshotProducts(products);
     for (const product of products) if (product.projectPath) productRoutes.set(product.projectPath, {
       route: product.projectPath, date: product.trendDate || latest, productId: product.productId,
-      indexable: String(product.summaryZh || product.summaryEn || product.summary || '').trim().length >= 20,
+      indexable: String(product.summaryZh || product.summaryEn || product.summary || '').trim().length >= D.DETAIL_SUMMARY_MIN,
     });
     const ranges = rangeStats(products, latest);
     const payload = { schemaVersion: 2, type, id, latest, ranges, projects: products };

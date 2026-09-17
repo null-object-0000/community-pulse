@@ -11,6 +11,7 @@ const {
   meetsDescriptionFloor, DESCRIPTION_MIN_LENGTH,
 } = require(path.join(SKILL, 'source_raw_items.js'));
 const { resolvePage } = require(path.join(SKILL, 'capture_site_logos_raw.js'));
+const D = require('../web/shared.js');
 
 const PNG = Buffer.from('89504e470d0a1a0a00000000', 'hex');
 const LONG = 'A tool that does something long enough to clear the forty character floor.';
@@ -60,9 +61,14 @@ test('an icon-cache hit still carries the description and og image parsed from t
 
 // ------------------------------------------------------------ 三级兜底
 
-test('the description floor is the same forty characters the dedupe uses', () => {
-  assert.equal(DESCRIPTION_MIN_LENGTH, 40);
+test('the description floor is the detail page index gate, not the dedupe threshold', () => {
+  // 补描述的目的就是让这一行不是薄页，所以阈值必须是详情页的收录门禁（web/shared.js 那一份）。
+  // 这两条线以前是错的（补描述 40、门禁 20），20~39 字的真仓库描述永远补不上、页面只能显示占位符。
+  assert.equal(DESCRIPTION_MIN_LENGTH, D.DETAIL_SUMMARY_MIN);
+  assert.equal(DESCRIPTION_MIN_LENGTH, 20);
   assert.equal(meetsDescriptionFloor(LONG), true);
+  // 「Chrome DevTools for coding agents」这类真描述落在 20~39 字，现在算数了。
+  assert.equal(meetsDescriptionFloor('Chrome DevTools for coding agents'), true);
   assert.equal(meetsDescriptionFloor(SHORT), false);
   assert.equal(meetsDescriptionFloor(''), false);
   assert.equal(meetsDescriptionFloor(null), false);

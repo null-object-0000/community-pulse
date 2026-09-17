@@ -721,7 +721,13 @@ function attachScreenshots(items, screenshots) {
 //
 // 三级都不满足阈值就保持原样。**只在原描述过短时填补，绝不覆盖已有的社区描述** ——
 // 官网描述常是营销文案（实测有比原描述更差的例子），社区原文才是首选。
-const DESCRIPTION_MIN_LENGTH = 40;
+//
+// 阈值就是详情页的收录门禁（web/shared.js 的 `DETAIL_SUMMARY_MIN`），两件事本来就是一条线：
+// 补描述的目的就是让这一行不是薄页。以前这里写 40、门禁写 20，于是 20~39 字的真描述既补不上、
+// 也永远进不了收录（2026-09-17 实测 github-repositories 层 893 个仓库里 95 个落在这一段）。
+// 注意别和 collect.js 的 `DESCRIPTION_DEDUPE_MIN_LENGTH = 40` 混起来 —— 那是标题+描述去重的
+// 相似度守卫，低于 40 字的两行只是不参与去重，不影响补描述。
+const DESCRIPTION_MIN_LENGTH = D.DETAIL_SUMMARY_MIN;
 
 // 与 web/shared.js 的展示回退链保持一致：summary → tagline → (github.description) → content。
 // 这里不引入 github.description，否则第二级会被自己短路掉、永远走不到第三级。

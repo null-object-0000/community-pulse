@@ -91,7 +91,7 @@ export function renderProductPage(model, locale = 'zh-CN') {
   const zhUrl = ORIGIN + route;
   const enUrl = ORIGIN + `/en${route}`;
   const summary = summaryOf(item, locale) || (en ? 'A product discovered by DevTrends.' : 'DevTrends 收录的开发者产品。');
-  const indexable = String(item.summaryZh || item.summaryEn || item.summary || '').trim().length >= 20;
+  const indexable = String(item.summaryZh || item.summaryEn || item.summary || '').trim().length >= D.DETAIL_SUMMARY_MIN;
   const title = `${text(product.title)} | DevTrends`;
   const description = `${text(product.title)} — ${summary}`.slice(0, 165);
   const links = linkEntries(product, locale);

@@ -8,9 +8,9 @@ const rawDir = path.join(root, '知识', '大家都在做什么', 'raw');
 const config = JSON.parse(fs.readFileSync(path.join(root, 'site.config.json'), 'utf8'));
 const snapshotFile = path.join(root, 'data', 'catalog', 'site-snapshot', 'manifest.json');
 
-// 详情页在摘要短于这个长度时是 `noindex`（判定见 worker/project-page.mjs，两处必须一致）：
-// 把百度引到不该收录的薄页上，等于白白花掉当天只有个位数的配额。
-const DETAIL_SUMMARY_MIN = 20;
+// 详情页在摘要短于这个长度时是 `noindex`（唯一的判定在 web/shared.js 的 DETAIL_SUMMARY_MIN，
+// Worker 与站点快照读的是同一份）：把百度引到不该收录的薄页上，等于白白花掉当天只有个位数的配额。
+const DETAIL_SUMMARY_MIN = D.DETAIL_SUMMARY_MIN;
 // 百度「普通收录」的 API 配额按「当天新产出的链接」发放，官方 FAQ 说得很直接：重复提交已发布
 // 链接既浪费配额，又可能被下调额度、甚至失去 API 推送权限（实测同一个 URL 提交两次也确实各扣
 // 一次配额）。所以百度那份只放当天真正新增的 URL —— 当天日报页 + 当天详情页；首页 `/`、
