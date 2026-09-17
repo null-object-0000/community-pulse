@@ -27,7 +27,15 @@ const cacheControl = 'public, max-age=31536000, immutable';
 const bucket = process.env.R2_BUCKET || 'community-pulse-images';
 const prefix = (process.env.R2_PREFIX || 'images').replace(/^\/+|\/+$/g, '');
 const origin = imageOrigin();
+// Probing is network-bound (one HEAD against the CDN, ~40ms) while uploading spawns a wrangler
+// process per object. They shared one constant before, so the pre-check queue — ~2100 marks, of
+// which ~95% are already published — was pinned to the upload's conservative 4 and became the
+// longest step of the daily run. Give the probe its own, higher default; uploads keep 4.
 const concurrency = Math.max(1, Number(process.env.R2_CONCURRENCY) || 4);
+const probeConcurrency = Math.max(
+  1,
+  Number(process.env.R2_PROBE_CONCURRENCY) || 16,
+);
 const force = process.argv.includes('--force');
 const dryRun = process.argv.includes('--dry-run');
 // npx resolves (and caches) wrangler on demand; installing it locally or globally makes this faster.
@@ -99,9 +107,10 @@ async function main({
   const pending = force ? entries.filter(entry => entry.file) : [];
   const failures = [];
   let present = 0, unknown = 0, probed = 0;
-  // Probe with the same concurrency as the upload: 900 sequential HEADs would take minutes.
+  // Probe with its own concurrency: 2100 sequential HEADs would take minutes, and the probe is a
+  // read-only request, so it can safely run wider than the wrangler-spawning upload queue below.
   const queue = force ? entries.filter(entry => !entry.file) : [...entries];
-  await Promise.all(Array.from({ length: concurrency }, async () => {
+  await Promise.all(Array.from({ length: probeConcurrency }, async () => {
     while (queue.length) {
       const entry = queue.shift();
       const published = await probe(entry.key);
@@ -135,7 +144,7 @@ async function main({
     setExitCode(1);
     return;
   }
-  logger.log(`Images: ${entries.length} mirrored marks, ${present} already on ${origin || 'the origin'}, ${pending.length} to upload to ${bucket} (concurrency ${concurrency}${unknown ? `, ${unknown} unverifiable` : ''}${dryRun ? ', dry run' : ''}).`);
+  logger.log(`Images: ${entries.length} mirrored marks, ${present} already on ${origin || 'the origin'}, ${pending.length} to upload to ${bucket} (probe ${probeConcurrency}, upload ${concurrency}${unknown ? `, ${unknown} unverifiable` : ''}${dryRun ? ', dry run' : ''}).`);
   const total = pending.length;
   let done = 0;
   await Promise.all(Array.from({ length: concurrency }, async () => {

@@ -37,6 +37,13 @@ on:
 permissions:
   contents: write
 
+# 手动补跑可能一跑就是几小时（全量导入），而它没有 concurrency 保护时，重复触发会让多个
+# 运行叠加跑同一份导入 —— 2026-09-17 就是这样白烧了 376 分钟 Actions 配额（两次被手动取消
+# 的运行合计跑了 6 小时，取消同样计费）。队列只保留最新的一个待跑，正在跑的不会被掐断。
+concurrency:
+  group: catalog-refresh
+  cancel-in-progress: false
+
 env:
   # 内部批处理走生产 Worker 的 workers.dev 入口，绕过公开主域的浏览器验证。
   CATALOG_API_ORIGIN: https://community-pulse.nichangen.workers.dev
