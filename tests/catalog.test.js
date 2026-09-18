@@ -274,10 +274,34 @@ test('the MySQL upsert recomputes the same richest-row rule for two-day imports'
   // 日更只导入 TARGET..OBSERVED，构建期看不到更早的好行，所以规则必须由 upsert 自己复算一遍，
   // 否则第二天一条空描述的观测又会把好行顶掉。
   const detailSql = TABLES.product_details.upsert;
-  assert.match(detailSql, /item_json=IF\(VALUES\(content_score\) > product_details\.content_score/);
+  assert.match(detailSql, /item_json=IF\(\(VALUES\(content_score\) > product_details\.content_score/);
   assert.match(detailSql, /VALUES\(content_score\) = product_details\.content_score AND VALUES\(observed_date\) >= product_details\.observed_date/);
   assert.doesNotMatch(detailSql, /item_json=IF\(VALUES\(observed_date\) > product_details\.observed_date/);
+  // 同一次观测（同 observed_date）重算必须覆盖：投稿简介清洗会把文本改短、content_score 只会更低，
+  // 缺这一条的话「清理过的行」永远进不了库（2026-09-18 查出的 1194 行 `<img … src=" />` 残骸）。
+  assert.match(detailSql, /OR VALUES\(observed_date\) = product_details\.observed_date/);
   // observed_date 跟着赢的那一行走，让「日期 + 分数」始终描述同一行（真实最新观测在 products 表）。
-  assert.match(detailSql, /observed_date=IF\(VALUES\(content_score\) > product_details\.content_score/);
+  assert.match(detailSql, /observed_date=IF\(\(VALUES\(content_score\) > product_details\.content_score/);
   assert.doesNotMatch(detailSql, /observed_date=GREATEST\(/);
+});
+
+test('a full rebuild writes the authoritative projection instead of comparing stale scores', () => {
+  // 部分导入必须保留分数比较；全量导入（构建期看到整段历史）时这次构建就是权威投影，直接覆盖 ——
+  // 这也是把「清洗变短」的历史行写回库里的唯一通道。用一个只放一天来源文件的临时 rawRoot 模拟
+  // 「全量」：不带 --start/--end/--sources 就是全量，和日期多少无关。
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'catalog-replace-'));
+  const rawRoot = path.join(root, 'source-raw');
+  fs.mkdirSync(path.join(rawRoot, 'producthunt'), { recursive: true });
+  fs.copyFileSync(path.join(__dirname, '..', '知识', '大家都在做什么', 'source-raw', 'producthunt', '2026-09-15.json'), path.join(rawRoot, 'producthunt', '2026-09-15.json'));
+  const manifest = buildMysqlImport({ rawRoot, out: path.join(root, 'out'), taxonomy: false, replaceDetails: true });
+  assert.equal(manifest.replaceDetails, true);
+  assert.deepEqual(manifest.range, { start: null, end: null });
+  const detailSql = fs.readFileSync(path.join(root, 'out', manifest.files.find((file) => file.table === 'product_details').name), 'utf8');
+  assert.match(detailSql, /ON DUPLICATE KEY UPDATE\s+item_json=VALUES\(item_json\), content_hash=VALUES\(content_hash\), content_score=VALUES\(content_score\),/);
+  assert.doesNotMatch(detailSql, /IF\(/);
+  // 带日期范围或来源过滤时构建期看不到全部观测，无条件覆盖会把范围外更丰富的老观测顶掉 —— 直接拒绝。
+  assert.throws(() => buildMysqlImport({ out: path.join(root, 'out'), start: '2026-09-01', replaceDetails: true }), /只能用于全量导入/);
+  assert.throws(() => buildMysqlImport({ out: path.join(root, 'out'), end: '2026-09-17', replaceDetails: true }), /只能用于全量导入/);
+  assert.throws(() => buildMysqlImport({ out: path.join(root, 'out'), sources: new Set(['weekly-issues']), replaceDetails: true }), /只能用于全量导入/);
+  fs.rmSync(root, { recursive: true, force: true });
 });

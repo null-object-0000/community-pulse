@@ -3,7 +3,9 @@ name: 刷新产品库（MySQL + 站点快照）
 # 手动补跑「产品库投影」。适用场景：
 #   1. 仓库里的 source-raw / raw 修正过之后（例如 2026-09-17 的投稿正文插图回填），MySQL 里的
 #      `product_details.item_json` 还是旧投影，产品详情页与趋势分类页看不到新数据；
-#   2. 只想按当前 MySQL 重建站点快照 —— 传 `skip_import=true`。
+#   2. 只想按当前 MySQL 重建站点快照 —— 传 `skip_import=true`；
+#   3. 修正后的内容比库里那行**更短**（例如清掉简介里的 HTML 残骸）：分数比较天然拒绝覆盖，
+#      必须传 `full_rebuild=true` 跑一次完整历史（详情行无条件覆盖），见 2026-09-18 的 `<img … />` 残骸。
 #
 # 幂等：导入全是 upsert（日期取 LEAST/GREATEST、详情按 observed_date + content_score 覆盖），
 # 重复跑不会写坏数据；快照按 `--to` 复用同版本缓存，重建后 `catalog-version.mjs` 变化会让
@@ -33,6 +35,11 @@ on:
         type: boolean
         required: false
         default: true
+      full_rebuild:
+        description: '全量重建详情行：跑完整历史 + 直接覆盖 product_details（修「清洗后简介变短、分数更低，upsert 永不覆盖」的历史行）'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -86,7 +93,14 @@ jobs:
       - name: 生成 MySQL 导入包
         if: ${{ github.event.inputs.skip_import != 'true' }}
         run: |
-          node scripts/catalog/build-mysql-import.js --start "${{ steps.dates.outputs.start }}" --end "${{ steps.dates.outputs.end }}"
+          if [ "${{ github.event.inputs.full_rebuild }}" = "true" ]; then
+            # 不带 --start/--end：构建期看到整段历史，详情行无条件覆盖（--replace-details 会拒绝
+            # 带范围/来源过滤的调用，见 build-mysql-import.js 的注释）。
+            echo "全量重建：跑完整历史 + 直接覆盖 product_details"
+            node scripts/catalog/build-mysql-import.js --replace-details
+          else
+            node scripts/catalog/build-mysql-import.js --start "${{ steps.dates.outputs.start }}" --end "${{ steps.dates.outputs.end }}"
+          fi
           node scripts/catalog/check-mysql-import.js
 
       - name: 写入 MySQL

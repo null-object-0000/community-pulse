@@ -19,6 +19,19 @@ const TAXONOMY_VERSION = 'legacy-infer-v1';
 const imageManifest = images.readManifest();
 const lightMarks = images.readTones().light;
 
+// 详情行「这次导入的版本该不该覆盖库里那一行」。三条任一成立就覆盖：
+//   ① 内容分更高（更丰富的那次观测赢）；
+//   ② 同分取更新的那次观测；
+//   ③ 同一次观测重算（observed_date 相同）—— 仓库里那天的数据被修正过，直接覆盖，不比分数。
+const DETAIL_ROW_WINS = `(VALUES(content_score) > product_details.content_score
+        OR (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date)
+        OR VALUES(observed_date) = product_details.observed_date)`;
+// 全量导入（`--replace-details`，构建期看到的是整段历史）时详情行无条件覆盖：这一次构建的结果就是
+// 当前仓库数据的权威投影。**这是修历史数据的唯一通道** —— 部分导入必须保留分数比较（日更只看两天，
+// 比不了），而分数比较天然拒绝「变短」的修正，所以清理过的历史行只能靠全量重建写回去。
+const DETAILS_REPLACE_ALL = `ON DUPLICATE KEY UPDATE
+      item_json=VALUES(item_json), content_hash=VALUES(content_hash), content_score=VALUES(content_score),
+      observed_date=VALUES(observed_date), updated_at=CURRENT_TIMESTAMP(3)`;
 const TABLES = {
   sources: {
     columns: ['id', 'name', 'description', 'enabled', 'sort_order'],
@@ -43,21 +56,18 @@ const TABLES = {
   // 更早的好行，所以这条规则必须由 upsert 自己复算一遍，否则第二天一条空描述的观测就会把好行顶掉。
   // observed_date 跟着赢的那一行走（不再取 GREATEST），让「日期 + 分数」始终描述同一行；真实最新
   // 观测日期由 products.last_seen_date 承担，详情页的「最近收录」读的是它。
+  //
+  // 第三个条件是 2026-09-18 补的：**同一个 observed_date 的重导入等于「同一次观测重算」**，仓库里
+  // 那天的数据就是修正后的真值，直接覆盖，不比分数。缺了它就会出现「修不动」的死角 —— 简介清洗把
+  // 文本变短，content_score 只会更低，而前两个条件都要求分数不降，于是清理过的行永远进不了库
+  // （09-17 的投稿插图回填之后，1194 行详情页还挂着 `<img … src=" />` 残骸，就是这么留下来的）。
   product_details: {
     columns: ['product_id', 'observed_date', 'content_score', 'item_json', 'content_hash'],
     upsert: `ON DUPLICATE KEY UPDATE
-      item_json=IF(VALUES(content_score) > product_details.content_score OR
-        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
-        VALUES(item_json), product_details.item_json),
-      content_hash=IF(VALUES(content_score) > product_details.content_score OR
-        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
-        VALUES(content_hash), product_details.content_hash),
-      content_score=IF(VALUES(content_score) > product_details.content_score OR
-        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
-        VALUES(content_score), product_details.content_score),
-      observed_date=IF(VALUES(content_score) > product_details.content_score OR
-        (VALUES(content_score) = product_details.content_score AND VALUES(observed_date) >= product_details.observed_date),
-        VALUES(observed_date), product_details.observed_date), updated_at=CURRENT_TIMESTAMP(3)`,
+      item_json=IF(${DETAIL_ROW_WINS}, VALUES(item_json), product_details.item_json),
+      content_hash=IF(${DETAIL_ROW_WINS}, VALUES(content_hash), product_details.content_hash),
+      content_score=IF(${DETAIL_ROW_WINS}, VALUES(content_score), product_details.content_score),
+      observed_date=IF(${DETAIL_ROW_WINS}, VALUES(observed_date), product_details.observed_date), updated_at=CURRENT_TIMESTAMP(3)`,
   },
   product_source_first_seen: {
     columns: ['product_id', 'source_id', 'first_seen_date', 'last_seen_date', 'observation_count'],
@@ -80,7 +90,7 @@ function parseArgs(argv) {
   const options = { out: DEFAULT_OUTPUT, rawRoot: DEFAULT_RAW_ROOT, taxonomy: true, maxBytes: 3_500_000 };
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
-    const boolean = name === '--no-taxonomy';
+    const boolean = name === '--no-taxonomy' || name === '--replace-details';
     const value = inline === undefined && !boolean ? argv[++index] : inline;
     if (name === '--out') options.out = path.resolve(value);
     else if (name === '--raw-root') options.rawRoot = path.resolve(value);
@@ -89,6 +99,7 @@ function parseArgs(argv) {
     else if (name === '--sources') options.sources = new Set(value.split(',').filter(Boolean));
     else if (name === '--max-bytes') options.maxBytes = Number(value);
     else if (name === '--no-taxonomy') options.taxonomy = false;
+    else if (name === '--replace-details') options.replaceDetails = true;
     else throw new Error(`unknown argument: ${argv[index]}`);
   }
   if (!Number.isFinite(options.maxBytes) || options.maxBytes < 100_000) throw new Error('--max-bytes is too small');
@@ -213,8 +224,11 @@ function detailScore(item) {
 // 在 SQL 里做 JSON 手术（且阈值要抄进 SQL），分叉出第二份难测的实现；评分优先只需比较已经存在
 // 的 content_score 列，两条链天然一致。代价是这一行的官网 / 配图也停在更丰富的那次观测上，而
 // 「最近收录」来自 products 表，仍然是最新的。
-// 改 detailScore 的权重就等于换了度量：旧行存的是旧公式算的分，必须跑一次全量导入（catalog-refresh）
-// 才会重新评分。
+// 改 detailScore 的权重就等于换了度量：旧行存的是旧公式算的分，必须跑一次全量导入（catalog-refresh
+// 的 full_rebuild）才会重新评分 —— 部分导入比的是新分与旧分，改过公式之后两边不可比。
+//
+// 这个函数只负责「本次构建内部，同一个产品的多次观测选哪一次」；与库里的存量行比大小是 upsert 的事
+// （`DETAIL_ROW_WINS`，比这里多一条「同一次观测重算直接覆盖」）。
 function detailRanksHigher(candidate, known) {
   if (!known) return true;
   if (candidate.score !== known.score) return candidate.score > known.score;
@@ -319,6 +333,7 @@ function collectRows(options) {
 function writeTable(directory, table, rows, maxBytes, state) {
   if (!rows.length) return;
   const { columns, upsert } = TABLES[table];
+  const effectiveUpsert = table === 'product_details' && state.replaceDetails ? DETAILS_REPLACE_ALL : upsert;
   // INSERT IGNORE over the taxonomy unique key costs more Worker CPU per byte than the plain
   // detail upsert. Keep those statements smaller so the temporary import Worker stays below 1102.
   const byteLimit = table === 'taxonomy_assignments' ? Math.min(maxBytes, 750_000) : maxBytes;
@@ -326,8 +341,8 @@ function writeTable(directory, table, rows, maxBytes, state) {
   let tupleBytes = 0;
   const flush = () => {
     if (!tuples.length) return;
-    const verb = upsert ? 'INSERT INTO' : 'INSERT IGNORE INTO';
-    const content = `${verb} ${table} (${columns.join(',')}) VALUES\n${tuples.join(',\n')}${upsert ? `\n${upsert}` : ''};\n`;
+    const verb = effectiveUpsert ? 'INSERT INTO' : 'INSERT IGNORE INTO';
+    const content = `${verb} ${table} (${columns.join(',')}) VALUES\n${tuples.join(',\n')}${effectiveUpsert ? `\n${effectiveUpsert}` : ''};\n`;
     const name = `${String(state.sequence++).padStart(5, '0')}-${table}.sql`;
     fs.writeFileSync(path.join(directory, name), content);
     state.files.push({ name, table, rows: tuples.length, bytes: Buffer.byteLength(content), sha256: crypto.createHash('sha256').update(content).digest('hex') });
@@ -348,16 +363,21 @@ function writeTable(directory, table, rows, maxBytes, state) {
 
 function buildMysqlImport(options) {
   options = { ...options, out: path.resolve(options.out || DEFAULT_OUTPUT), rawRoot: path.resolve(options.rawRoot || DEFAULT_RAW_ROOT) };
+  // 无条件覆盖的前提是「构建期看到了这个产品的全部观测」。带上日期范围或来源过滤就不再成立 ——
+  // 那会把范围外那条更丰富的老观测顶掉（正是 detailRanksHigher 要防的事）。
+  if (options.replaceDetails && (options.start || options.end || options.sources)) {
+    throw new Error('--replace-details 只能用于全量导入：不能和 --start / --end / --sources 一起用');
+  }
   fs.mkdirSync(options.out, { recursive: true });
   for (const name of fs.readdirSync(options.out)) {
     if (/^\d{5}-.*\.sql$|^manifest\.json$|^\.uploaded\.json$/.test(name)) fs.rmSync(path.join(options.out, name));
   }
   const collected = collectRows(options);
-  const state = { sequence: 0, files: [] };
+  const state = { sequence: 0, files: [], replaceDetails: Boolean(options.replaceDetails) };
   for (const [table, rows] of Object.entries(collected.tables)) writeTable(options.out, table, rows, options.maxBytes, state);
   const manifest = {
     schemaVersion: 3, dialect: 'mysql', source: 'source-raw', generatedAt: new Date().toISOString(),
-    range: { start: options.start || null, end: options.end || null }, days: collected.days, inputRows: collected.rows,
+    range: { start: options.start || null, end: options.end || null }, replaceDetails: Boolean(options.replaceDetails), days: collected.days, inputRows: collected.rows,
     admissionDecisions: collected.admissionDecisions,
     files: state.files, totalRows: state.files.reduce((sum, file) => sum + file.rows, 0),
     totalBytes: state.files.reduce((sum, file) => sum + file.bytes, 0),
