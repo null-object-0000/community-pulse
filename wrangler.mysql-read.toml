@@ -1,0 +1,11 @@
+# 临时只读查询 Worker（scripts/catalog/live-query.js 部署，用完删除）。
+# 只绑读连接：这个入口在构造上写不了数据。
+name = "devtrends-mysql-read"
+main = "worker/catalog-read.mjs"
+compatibility_date = "2026-09-14"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[[hyperdrive]]
+binding = "HYPERDRIVE_READ"
+id = "e010513efd9240b194cc4ee16d7779e5"

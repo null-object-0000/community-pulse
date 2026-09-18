@@ -483,6 +483,19 @@
 - **顺手修掉自己写的一个参数解析 bug**：布尔开关（`--dry-run` / `--verify`）原来跟着取下一个 argv，于是 `--dry-run --plan x` 会把 `--plan` 当成 `--dry-run` 的值吃掉、再报「unknown argument: x」。两个新脚本都改成布尔开关单独判，并留了注释。
 - **验证**：`npm run check` **256/256**；`revoke-products.js --plan … --verify --dry-run` 干跑（只读线上，不写库）。
 
+### 落地：677 行日报回填 + 库侧 21 个产品行撤销
+
+- **数据 / 日报层**（`fb86133`）：`backfill_issue_entity.js --include-url-only` 改写 **677 行 / 227 个日报日**的 `raw/<date>.json` 与 `.md`，只动 `url`/`githubUrl`/`github` 与 `🔗` 行（1369 插入 / 1372 删除，逐条核对没有顺带改写简介或配图）。
+- **库侧先核对再动手**（经 Hyperdrive 只读通道实测，不是推断）：677 行里 **581 行的产品库早就是对的** —— 产品库是 09-16..09-18 三次全量重建时用当时的代码从 source-raw 建的，已经含 URL 边界与 `user-attachments` 修复；**76 行新旧身份并存**（旧的是重复行）、**9 行的新身份还没进库**（正是显式地址字段那一层的差异）、**11 行本来就没进库**。所以库侧只需要处理 85 行，不是 677 行。
+- **数据 / 库侧**：先按 `--sources weekly-issues,hellogithub-issues --start 2026-01-03 --end 2026-09-02` 重新导入（9 片 / 24,148 行 / 7.4 MB），再按 product_id 撤销 **21 个旧行**（7 条招聘广告 + 7 行身份修正 + 9 行重复身份），**2 个多来源产品被单来源闸挡下并保留**：`wheelpage.com/zh/`（chinese-indie-dev + weekly-issues）与 `webc-site/wedb_embed/tree/main/fastalp`（hellogithub-issues + weekly-issues）——整条删掉会丢掉另一个来源的合法收录。快照随后重建（`catalogVersion` `444ce882…` → `7651159d…`）。
+- **踩到三个坑，都值得记住**：
+  1. **排序规则**：列是 `utf8mb4_0900_ai_ci`，而导入 Worker 的会话默认是 `utf8mb4_general_ci` —— 拿字面量/用户变量跟这些列比会报 `Illegal mix of collations`，事务整体回滚（第一次真跑就是这么失败的，一条都没删）。撤销 SQL 现在先 `SET NAMES utf8mb4 COLLATE utf8mb4_0900_ai_ci`。
+  2. **Hyperdrive 读缓存**：读连接配的是 `max_age=300` + `stale_while_revalidate=900`。写完之后立刻核对会读到**最长 5 分钟（SWR 下 20 分钟）之前**的结果 —— 这次因此误判了两次（撤销后广告页仍 200、补齐导入后 issue/8591 的产品页仍 404，两边其实都对）。**写后核对要么等过缓存窗口，要么换一个等价 pathname。**
+  3. **详情页缓存键**：撤销 + 快照换代之后仍有 2 条广告返回 200，换等价 pathname 立刻 404 —— 是换键那一瞬间被写进新键的旧渲染。改一次渲染源文件让哈希换代即可立刻清掉（不必等 `s-maxage=86400` 自愈）：`worker/render-version.mjs` 自动从 `r6fa4e7…` 变成 `ra8f413…`，正好验证了这套自动换代真的管用。
+- **验收（逐个实测）**：7 条招聘广告的规范地址全部 **404**；14 个身份修正/重复行 **404**；新产品 **81/83 个不同 id 返回 200**（另 2 个是我的本地预测 id，库里实际用的是快照重定向解析后的名字，例如 `webc-site/wedb_embed` → `webc-site/fastalp`）；被单来源闸保留的 2 个 **200**；`/reports/2026-01-03/` 的 winutil 行已指向 `github.com/constansino/WinUtil_CN`；首页 / 趋势 / 归档 / sitemap / feed 等常规路由全部 200。**Recruit OS、CS-Books、面试官手册这类正例没有被动过**（准入规则只排除明确招聘帖，3 个模糊记录仍在 `review`）。
+- **遗留**：`source_items` / `observations` 两张空表还在 schema 里（读路径不用、导入不写），要么补一个 migration 删掉、要么明确标注为历史遗留；老的 `revoke-admissions.js` 应该删掉或改写成走 `revoke-products.js` 的同一条路，免得下次有人再拿它去「撤销」。
+
+
 
 
 ### 详情页缓存版本：从手改字符串改成渲染源码哈希

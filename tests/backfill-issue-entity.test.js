@@ -100,3 +100,12 @@ test('a product the current import will recreate is never revoked', () => {
   // 不传 range 时没有「重建闸」名单；传了 range 才会真的去构建导入包（这里只锁默认行为）。
   assert.equal(survivingProductIds(null).size, 0);
 });
+
+test('revoke SQL aligns the session collation before comparing ids', () => {
+  // 列是 utf8mb4_0900_ai_ci、导入 Worker 的会话默认是 utf8mb4_general_ci：不对齐会
+  // 报 Illegal mix of collations 并整体回滚（第一次真跑就是这么失败的）。
+  const { sqlFor } = require('../scripts/catalog/revoke-products.js');
+  const sql = sqlFor([{ productId: 'prd_abc', reason: 'x', detail: '', before: null, after: null }]);
+  assert.match(sql, /SET NAMES utf8mb4 COLLATE utf8mb4_0900_ai_ci;/);
+  assert.ok(sql.indexOf('SET NAMES') < sql.indexOf('START TRANSACTION'));
+});

@@ -80,7 +80,8 @@ function survivingProductIds(range) {
   if (!range) return new Set();
   const [start, end] = range.split('..');
   const { collectRows } = require('./build-mysql-import.js');
-  const collected = collectRows({ start, end, taxonomy: true });
+  const rawRoot = path.join(ROOT, '知识', '大家都在做什么', 'source-raw');
+  const collected = collectRows({ start, end, taxonomy: true, rawRoot });
   return new Set((collected.tables.products || []).map((row) => row[0]));
 }
 
@@ -103,6 +104,10 @@ function sqlFor(targets) {
   const lines = [
     '-- 按 product_id 定向撤销（revoke-products.js 生成）',
     '-- 只删线上读路径的 5 张表；单来源闸 @shared <= 1 保证跨来源产品不会被整条删掉。',
+    // 列是 utf8mb4_0900_ai_ci，而导入 Worker 的会话默认排序规则是 utf8mb4_general_ci：
+    // 拿字面量/用户变量跟这些列比会报 `Illegal mix of collations`（第一次真跑就撞上了，
+    // 事务整体回滚、没删掉任何行）。先把会话排序规则对齐到列的那一份。
+    'SET NAMES utf8mb4 COLLATE utf8mb4_0900_ai_ci;',
     'START TRANSACTION;',
   ];
   for (const target of targets) {
