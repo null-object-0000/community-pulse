@@ -603,10 +603,14 @@
     const repo = repository(item);
     return repo ? { value: repo.fullName, source: 'github-repository' } : null;
   }
+  // 只去掉开头的投稿标签，其余原样返回。产品详情页的 SEO 标题用它：目录（MySQL / 站点快照）里的
+  // title 是发布时那一行的原始投稿标题，`开源自荐】PiX: …` 这样的标签不该进 <title> / og:title，
+  // 而那里既不该换成 LLM 译文、也不该退到 owner/repo（那是列表行 displayTitle 的口径）。
+  const stripTitleLabel = value => String(value ?? '').replace(TITLE_PREFIX, '').trim();
   function displayTitle(item, locale = 'zh-CN') {
     const localized = locale === 'en' ? item.titleEn || item.title_en : item.titleZh || item.title_zh;
     const title = String(localized || item.title || repository(item)?.fullName || 'Untitled');
-    return titleFallback(item)?.value || title.replace(TITLE_PREFIX, '').trim() || title.trim();
+    return titleFallback(item)?.value || stripTitleLabel(title) || title.trim();
   }
   function withTitleFallback(item) {
     const fallback = titleFallback(item);
@@ -950,5 +954,5 @@
   function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
   }
-  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

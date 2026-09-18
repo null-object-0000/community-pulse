@@ -22,6 +22,17 @@ test('dynamic detail uses projected fallback even if old MySQL product title win
   assert.ok(html.includes('<h1>CanvasCode</h1>'));
   assert.equal(model.product.title, '[开源推荐]');
 });
+test('the detail page drops a submission label that lost its opening bracket', async () => {
+  const { renderProductPage } = await import('../worker/project-page.mjs');
+  const title = '开源自荐】PiX: 把 AI Agent 会话变成一张图的桌面工作台';
+  const item = { title, summary: '基于开源 Agent 框架 Pi 的图形化工作台。', summaryZh: '基于开源 Agent 框架 Pi 的图形化工作台。' };
+  const model = { catalogVersion: 'v1', product: { id: 'prd_0123456789abcdef01234567', title, githubRepo: 'huang-sh/PiX', route: '/products/prd_0123456789abcdef01234567/', canonicalUrl: '', firstSeenDate: '2026-09-17', lastSeenDate: '2026-09-17', item, sources: [] } };
+  const html = renderProductPage(model);
+  // 目录里的原始投稿标题要剥掉标签，但产品名本身（含 `:` 后面的说明）保持原样。
+  assert.ok(html.includes('<title>PiX: 把 AI Agent 会话变成一张图的桌面工作台 | DevTrends</title>'));
+  assert.ok(!html.includes('开源自荐】'));
+  assert.equal(model.product.title, title);
+});
 test('only explicit fields: no prose guessing; conflicts fall back to repository; normal titles untouched', () => {
   assert.equal(D.displayTitle({ title: '[开源推荐]', content: 'This amazing product is Foo' }), '[开源推荐]');
   assert.equal(D.displayTitle({ title: '[开源推荐]', content: '项目名称：A\n项目名称：B', url: 'https://github.com/a/b' }), 'a/b');

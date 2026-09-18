@@ -507,6 +507,9 @@ test('submission labels are stripped from titles in both languages without eatin
   assert.equal(title('支持 Markdown 推荐】输出'), '支持 Markdown 推荐】输出');
   // 整个标题就是标签时同样退回原标题。
   assert.equal(title('开源自荐】'), '开源自荐】');
+  // 详情页的 SEO 标题只剥标签、不换口径（目录里存的是发布时的原始投稿标题）。
+  assert.equal(D.stripTitleLabel('开源自荐】PiX: 把 AI Agent 会话变成一张图'), 'PiX: 把 AI Agent 会话变成一张图');
+  assert.equal(D.stripTitleLabel(''), '');
   // 拿方括号当书名号的产品名、以及其他前缀词不能当成投稿标签。
   assert.equal(title('【Tokenscope】AI tokens dashboard'), '【Tokenscope】AI tokens dashboard');
   assert.equal(title('[MAC] Claude Notch Usage Companion'), '[MAC] Claude Notch Usage Companion');
