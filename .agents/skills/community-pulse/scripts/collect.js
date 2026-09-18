@@ -586,6 +586,7 @@ module.exports = {
   dedupe,
   descriptionSimilarity,
   itemIdentity,
+  itemLinks,
   normalizedProductTitle,
   renderMarkdown,
   recentReports,

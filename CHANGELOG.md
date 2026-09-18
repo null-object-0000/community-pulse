@@ -462,7 +462,17 @@
 - **代码 / 作者写的子页面取仓库根**（`normalizeGitHubRepoUrl(value, { allowSubpath: true })`）：`/releases`、`/tree/main/<子目录>` 这类地址在「项目地址」字段里指的就是这个仓库（#11291 的 `/releases`、#7335 的 `/tree/cool/liubai-frontends/liubai-weixin`）。默认行为不变（仍拒绝子路径，`D.repository` 与列表行不受影响），只有显式地址字段走这条。
 - **量过再改**：全量投稿语料（`weekly-issues` + `hellogithub-issues`，**5,847 行**）新旧逐行对比 —— **30 行 url 变化、18 行仓库身份变化**，逐条核对全部是「改成作者自己声明的那个地址」：#6110 `dzhng/deep-research` → `AnotiaWang/deep-research-web-ui`（正文先提到它复刻的上游）、#7071 `resolver-vs-graphql` → `pydantic-resolve`、#7728 `txstc55/ugly-avatar`（参考项目）→ `xingxingc/stray_avatar`、#7989 `yihong0618/running_page`（参考）→ `chempeng/reading_page`、#9862 `ggkevinnnn/LaunchNow`（底座）→ `RoversX/LaunchNext`、#10761 `bytedance/flowgram.ai`（底座）→ `boommanpro/gaia-workflow-engine`；非 github 的地址也一并改善（#6744 waitbutwhy 的文章 → 项目官网、#6849 Chrome 商店 → 官网、#7152 App Store → 官网、#9113 组织页 → `broxy.dev`）。
 - **决策：多个明确地址不猜**。≥2 个互不相同的项目地址只有 **3 行**（#9615 OpenToggl 两仓、#11358 三个 skills 仓、HelloGitHub#3510 四个 goto-* 仓），都是「前后端分仓 / 一个项目的多个子仓」，没有唯一正确答案。按计划不自动归并：不挂仓库身份、`url` 退回投稿页、记一条 `status: review / reason: multiple_project_addresses`；`repositoryAmbiguous` 只是 `issueItems` 与 `loadItems` 之间的内部标记，`loadItems` 消费掉后再输出，不跟着 `raw/*.json` 和产品库走（有测试钉住）。代价：这 3 行的身份从 `github:` 变成 `url:`，重建后 MySQL 里的旧行不会被 upsert 覆盖（导入只有 upsert、没有撤销），要和招聘广告撤销那套定向通道一起处理。
-- **验证**：`npm run check` **247/247**（`tests/issue-url.test.js` 新增 8 条：显式字段胜出、`官方` 不劫持 fork、字段名单独一行取下一行、子页面取仓库根、多地址记待审且内部标记不外泄、官网胜过组织页、HTML 注释里的示例地址不算）。**本轮只改了归一化代码**：`raw/*.json` 与 MySQL 还是旧投影，要生效得按日重跑 collect + 重建投影 + 快照 + 部署，受影响 **29 个日报日**（2025-02-14 起，最新到 2026-09-03），属于数据与生产写操作，先确认再跑。
+- **验证**：`npm run check` **247/247**（`tests/issue-url.test.js` 新增 8 条：显式字段胜出、`官方` 不劫持 fork、字段名单独一行取下一行、子页面取仓库根、多地址记待审且内部标记不外泄、官网胜过组织页、HTML 注释里的示例地址不算）。**本轮只改了归一化代码**：`raw/*.json` 与 MySQL 还是旧投影。
+
+### 历史影响清单：比预想大 20 倍，所以没有一次落地
+
+按计划里「审核历史受影响记录，定向修正产品身份」那一步，写了 `scripts/backfill_issue_entity.js`（定向回填，**不重跑 collect** —— `raw/*.json` 没有记录当时的 Trending 观察日，老文件连 `sourceRaw` 都没有，重跑会换掉 Trending 那一整段数据，而且今天的规则会顺带重算历史简介与配图，违反 09-17 定下的「历史简介只删残骸、不重算」）。7 条测试锁住它的四个判断：只改该改的字段、老文件不凭空补 `githubUrl`、被改名的仓库（快照里 `repository: webc-site/wedb_embed` 而 `html_url` 是 `fastalp`）不算改动、md 里匹配不唯一就跳过。
+
+- **量出来的规模**：**434 行、198 个日报日**，不是我从 `loadItems` 对比里估的 18 行。差别的原因值得记下来：我最初拿「今天的新旧代码跑同一份 source-raw」对比，两边用的是**同一套** URL 提取规则，自然只看到显式字段那一层差异；而 `raw/*.json` 是**更早的代码**写的，行的地址本身就指错了对象 —— 195 行是图片 / 徽章 / 商店页（`github.com/user-attachments/...`、`img.shields.io`、Chrome 商店、B 站视频…），216 行是官网（当时没认出仓库），15 行是仓库子页面，7 行是「正文先提到的底座项目 / 组织页」，1 行是显式字段与正文冲突。另有 **251 行**只错在 URL 形态（`https://x.com）`、`…/repo）。`这种尾部中文标点）。
+- **决策：先出清单，不整批落**。这 434 行的旧地址就是它们的**旧产品身份**，而 MySQL 导入只有 upsert、没有撤销 —— 直接跑回填 + `catalog-refresh` 会新增约 434 个产品、并把旧身份的产品留成孤儿（其中「官网 → 仓库」那 216 行会让同一个产品在库里出现两份）。所以历史修复必须和招聘广告那套**定向撤销通道**合成一件事：先按旧身份撤销、再按新身份导入。清单已提交为 `docs/投稿实体识别-历史影响清单-2026-09-18.md`（A/C/D 三类是明确改善，E 类 7 行、F 类 1 行需要人工确认一次），回填脚本默认只做 `repo` 类改动，`--include-url-only` 才带上那 251 行的标点修复。
+- **代码 / 顺手把决策逻辑抽成一条实现**（`source_raw_items.issueProjectLinks`）：`issueItems` 与回填脚本共用同一个纯函数，避免「采集用一套规则、回填抄一套」——重构前后对全量 5,847 行投稿逐行对比，**0 处差异**。
+- **验证**：`npm run check` **254/254**；`scripts/backfill_issue_entity.js --dry-run --include-url-only` 干跑不写盘。
+
 
 ### 详情页缓存版本：从手改字符串改成渲染源码哈希
 
