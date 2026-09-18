@@ -8,7 +8,17 @@ const RESERVED_OWNERS = new Set([
 // github.com/owner/repo 后面若还跟着子路径（issue/PR/树/文件/发布等页），不是仓库主页。
 const NON_REPO_SUBPATH = /\/(?:issues|pull|pulls|tree|blob|releases|commits|actions|discussions|wiki|security|pulse|network|forks|watchers|stargazers|tags|branches|packages|projects|settings)(?:\/|$)/i;
 
-function normalizeGitHubRepoUrl(value) {
+/**
+ * github.com/<owner>/<repo> 归一化。
+ *
+ * 默认拒绝带子路径的地址（`/issues/123`、`/blob/main/x.md`）—— 那是页面而不是仓库主页。
+ * 但投稿的「项目地址 / 开源地址」字段是作者自己声明的产品地址，写成 `/releases` 或
+ * `/tree/main/<子目录>` 时指的就是这个仓库（实测 ruanyf/weekly #11291 的 `/releases`、
+ * #7335 的 `/tree/cool/liubai-frontends/liubai-weixin`），所以那种场景传
+ * `{ allowSubpath: true }` 取仓库根。保留 owner/repo 形状与保留名单校验，用户主页
+ * （`github.com/<owner>`）仍返回空。
+ */
+function normalizeGitHubRepoUrl(value, options = {}) {
   if (!value) return '';
   const text = String(value).replace(/\\\//g, '/');
   const match = text.match(/^https?:\/\/github\.com\/([A-Za-z0-9_.-]+)\/([A-Za-z0-9_.-]+)/i);
@@ -18,7 +28,7 @@ function normalizeGitHubRepoUrl(value) {
   if (!owner || !repo || RESERVED_OWNERS.has(owner.toLowerCase())) return '';
   // 若 repo 后面还跟子路径段（如 /issues/123），这是页面而非仓库主页，排除。
   const rest = text.slice(match[0].length);
-  if (NON_REPO_SUBPATH.test(rest)) return '';
+  if (!options.allowSubpath && NON_REPO_SUBPATH.test(rest)) return '';
   return `https://github.com/${owner}/${repo}`;
 }
 

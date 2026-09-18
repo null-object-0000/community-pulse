@@ -23,7 +23,7 @@
 | 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
 | 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，把全站顶栏/页脚收敛成一份实现；修正详情页 GitHub / 官网 / 来源三个入口的取值链；给透明底的浅色产品标志做明暗判定并换深色底板 | community-pulse |
 | 09-17 | 9 | 36 文件 +800/-66 | 545 文件 +14,252/-5,036 | 投稿正文的插图与描述分家：正文 `<img>`/`![]()` 进产品配图集（GitHub 三种地址按路径白名单回源），标签不再漏进简介；回源白名单收敛成一份实现；补产品库手动刷新 workflow（MySQL + 快照 `--refresh`）；GSC 的 noindex 报告追到产品详情「取最新观测」的择优规则与两处不一致的描述阈值；再挖出投稿简介清洗里的指数级正则 —— 产品库全量补跑 4 小时跑不完的真凶 | community-pulse |
-| 09-18 | 8（含 2 次快照提交） | 9 文件 +141/-30 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签 | community-pulse |
+| 09-18 | 8（含 2 次快照提交，另有本轮未提交） | 待统计 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -452,6 +452,24 @@
 - **代码 / 白名单缺口**：`<del>` / `<ins>` 不在 `HTML_TAG_NAME` 里，GitZip Pro 的 `<del>智能忽略规则、</del>` 原样进简介。补进白名单（标签删掉、文字保留），与 09-17 的 `stripHtmlTags` 同一份实现。
 - **验证**：`npm run check` **236/236**（`tests/site.test.js` 的投稿简介用例补了跨行标签、`<del>`、以及「正文里的 `<img` 字样不能被后面某行的 `>` 吃掉一整段」三条）。第二次 `full_rebuild`（run 35314163589）后，快照里带白名单标签的简介行从 6 → **0**（剩下 10 行是 Show HN 英文正文里真的在讲 `<p>` / `<div>` / `<h1>`，不是残骸）；线上 Illustrator / GitZip Pro / 用户报的那条都已是干净正文。
 - **遗留（未做，等定）**：历史日报 `raw/*.json` 里还有 **127 行**简介留着**旧清洗器吃剩的标签汤**（`<div align="center"`、`</p`、`<table <tr <td` 这种半截标签，共 128 行命中、127 行会变）。09-17 的回填只按 `<img … src=" />` 的形状删残骸，这批形状没匹配上，所以只走目录层的产品详情页是干净的、那 127 行所在的**日报页**还看得见。**没有顺手重算**：这些行里的真实文字已经被旧清洗器吞进标签汤（`<div align="center" 程序员专属的英语学习助手 … width="200"`），只删残骸会留下断句；而按今天的规则从正文重算会连带换掉整段简介（抽 10 条看多数变好、个别换成了代码片段），与 09-17「历史简介只删残骸、不重算」的口径冲突。要收的话是改一行触发条件 + 重跑回填。
+
+### 投稿实体识别：显式地址字段优先于正文首个仓库链接
+
+同一天下午按 Codex 会话给出的五阶段收尾计划继续（计划已落盘到 `docs/重构收尾计划-2026-09-18.md`）。第一阶段的四项里，投稿实体识别这一项是**真缺陷**：`issueItems()` 调 `discoverItemRepository()`，而后者在没有 `githubUrl`/`websiteUrl` 时取正文里**第一个** `github.com/owner/repo`。投稿模板会把项目地址写成「项目地址 / 开源地址 / 仓库地址」字段，但正文前半段常先提到**依赖仓库、参考项目、上游仓库** —— 于是产品被并进别人的仓库。
+
+- **代码 / 新增地址字段解析**（`issue-description.js` 的 `explicitProjectUrls(body, labels)`）：按行扫描**原始**正文取地址字段的值。**不能复用 `descriptionFromIssue` 的块解析** —— 那条链先过 `stripInlineMarkup`，裸链接会被整段删掉，取地址只会得到空串。只在两处收口：先删 HTML 注释（模板示例注释里常带假地址），再把裸链接按中文标点终止（与 `extractExternalUrls` 同一条边界规则）。支持「项目地址：URL」同行与「项目地址」单独一行两种写法；单独一行时，下一行自己写成「Github：URL」也照收。
+- **决策：地址字段分两份，`官方` 不能定仓库身份**。`PROJECT_URL_LABELS`（项目地址/项目网址/项目链接/项目主页/作品网址/作品地址/开源地址/源码地址/仓库地址/github 地址/github/repo/repository）才用于仓库判定；`SITE_URL_LABELS`（官网/官方/网站/website/在线体验…）只作行链接兜底。原因是实测 ruanyf/weekly #7164：gemini-cli 汉化版的正文写着「中文版 gemini-cli：<fork>」+「官方：https://github.com/google-gemini/gemini-cli」，把 `官方` 当项目地址就会把这个 fork 并进**上游**仓库（第一版实现确实错了，量完 30 行 diff 才看出来）。
+- **代码 / 作者写的子页面取仓库根**（`normalizeGitHubRepoUrl(value, { allowSubpath: true })`）：`/releases`、`/tree/main/<子目录>` 这类地址在「项目地址」字段里指的就是这个仓库（#11291 的 `/releases`、#7335 的 `/tree/cool/liubai-frontends/liubai-weixin`）。默认行为不变（仍拒绝子路径，`D.repository` 与列表行不受影响），只有显式地址字段走这条。
+- **量过再改**：全量投稿语料（`weekly-issues` + `hellogithub-issues`，**5,847 行**）新旧逐行对比 —— **30 行 url 变化、18 行仓库身份变化**，逐条核对全部是「改成作者自己声明的那个地址」：#6110 `dzhng/deep-research` → `AnotiaWang/deep-research-web-ui`（正文先提到它复刻的上游）、#7071 `resolver-vs-graphql` → `pydantic-resolve`、#7728 `txstc55/ugly-avatar`（参考项目）→ `xingxingc/stray_avatar`、#7989 `yihong0618/running_page`（参考）→ `chempeng/reading_page`、#9862 `ggkevinnnn/LaunchNow`（底座）→ `RoversX/LaunchNext`、#10761 `bytedance/flowgram.ai`（底座）→ `boommanpro/gaia-workflow-engine`；非 github 的地址也一并改善（#6744 waitbutwhy 的文章 → 项目官网、#6849 Chrome 商店 → 官网、#7152 App Store → 官网、#9113 组织页 → `broxy.dev`）。
+- **决策：多个明确地址不猜**。≥2 个互不相同的项目地址只有 **3 行**（#9615 OpenToggl 两仓、#11358 三个 skills 仓、HelloGitHub#3510 四个 goto-* 仓），都是「前后端分仓 / 一个项目的多个子仓」，没有唯一正确答案。按计划不自动归并：不挂仓库身份、`url` 退回投稿页、记一条 `status: review / reason: multiple_project_addresses`；`repositoryAmbiguous` 只是 `issueItems` 与 `loadItems` 之间的内部标记，`loadItems` 消费掉后再输出，不跟着 `raw/*.json` 和产品库走（有测试钉住）。代价：这 3 行的身份从 `github:` 变成 `url:`，重建后 MySQL 里的旧行不会被 upsert 覆盖（导入只有 upsert、没有撤销），要和招聘广告撤销那套定向通道一起处理。
+- **验证**：`npm run check` **247/247**（`tests/issue-url.test.js` 新增 8 条：显式字段胜出、`官方` 不劫持 fork、字段名单独一行取下一行、子页面取仓库根、多地址记待审且内部标记不外泄、官网胜过组织页、HTML 注释里的示例地址不算）。**本轮只改了归一化代码**：`raw/*.json` 与 MySQL 还是旧投影，要生效得按日重跑 collect + 重建投影 + 快照 + 部署，受影响 **29 个日报日**（2025-02-14 起，最新到 2026-09-03），属于数据与生产写操作，先确认再跑。
+
+### 详情页缓存版本：从手改字符串改成渲染源码哈希
+
+- **代码 / 新增 `scripts/render-version.js`**：详情页缓存键的第二段原本是 `worker/index.js` 里手改的 `PRODUCT_RENDERER_VERSION`（`s-maxage` 24 小时，忘了改就线上最长一天读旧渲染 —— 09-17 的投稿标签修复、09-18 的详情行重建都靠手工 `+1` 收尾）。现在对**渲染链路的源码内容**取哈希（`worker/index.js`、`worker/project-page.mjs`、`worker/mysql-db.mjs`、`worker/catalog-api.mjs`、`web/shared.js`），`npm run build` 时重新生成 `worker/render-version.mjs`；版本常量也一并从 `worker/index.js` 挪进生成文件（留在 `index.js` 里会和哈希自指），`index.js` 只 import。
+- **为什么挂在构建期**：Cloudflare Workers Builds 的构建命令就是 `npm run build`，`wrangler deploy` 在同一次作业里后跑，所以部署拿到的必然是重新生成的值；提交进仓库的那份只是让 diff 可读。
+- **验证**：`tests/catalog-cache.test.js` 新增 3 条 —— 提交的值与当前源码哈希一致、`RENDER_SOURCES` 里任一文件改一行哈希必然变、`worker/index.js` 不许再出现硬编码版本。`npm run check` 247/247。
+- **未做**：两个 workflow 都还没有部署后的冒烟步骤（现在靠人肉 curl 详情页 + `/api/v1/sources` 比对 `catalogVersion`），留到「自动化快照与缓存发布收尾」那一项一起加。
 
 ## 值得记录的决策
 

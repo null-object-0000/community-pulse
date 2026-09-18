@@ -6,9 +6,9 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { discoverItemRepository, normalizeGitHubRepoUrl, repositoryKey } = require('./github_repo_utils');
-const { descriptionFromIssue } = require('./issue-description');
+const { descriptionFromIssue, explicitProjectUrls, PROJECT_URL_LABELS, SITE_URL_LABELS } = require('./issue-description');
 const { issueImages } = require('./issue-media');
-const { issueAdmission } = require('./issue-admission');
+const { issueAdmission, VERSION: ADMISSION_VERSION } = require('./issue-admission');
 const D = require('../../../../web/shared.js');
 const { boardBySourceId } = require('./chinese_indie_boards');
 const { candidatePage } = require('./site_logo');
@@ -174,12 +174,36 @@ function issueItems(document, src, options = {}) {
     };
     const admission = issueAdmission(item);
     if (admission.status === 'review') item.admission = admission;
-    const githubUrl = discoverItemRepository(item);
-    if (githubUrl) item.url = githubUrl;
-    else {
-      const found = extractExternalUrls(issue.body);
-      item.url = found?.find((url) => !/\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#]|$)/i.test(url)
-        && !/github\.com\/(?:user-attachments|[^/]+\/[^/]+\/(?:assets|issues|releases))(?:\/|$)/i.test(url)) || issueUrl;
+    // 投稿模板的显式地址字段优先于正文里的普通链接：正文常先提到依赖仓库、参考项目或作者
+    // 主页，按「第一个 github.com 链接」取值会认错产品。只有「项目地址 / 开源地址 / 仓库地址」
+    // 这类字段能定仓库身份；「官网 / 官方」只作为行链接的兜底（fork 投稿的「官方」常指上游）。
+    const projectUrls = explicitProjectUrls(issue.body, PROJECT_URL_LABELS);
+    const siteUrls = explicitProjectUrls(issue.body, SITE_URL_LABELS);
+    const projectRepos = [...new Set(projectUrls.map((url) => normalizeGitHubRepoUrl(url, { allowSubpath: true })).filter(Boolean))];
+    if (projectRepos.length > 1) {
+      // 前后端分仓、一个项目的多个 skills 仓库都会写成多个明确地址，没有唯一正确答案。
+      // 猜第一个会把产品并进错误的仓库，所以退回投稿页身份并记一条待审，交给人工决定。
+      options.onAdmission?.({
+        sourceId: src.id, externalId: String(issue.number), title: issue.title,
+        status: 'review', reason: 'multiple_project_addresses', version: ADMISSION_VERSION,
+      });
+      item.url = issueUrl;
+      item.repositoryAmbiguous = true;
+      return D.withTitleFallback(item);
+    }
+    const githubUrl = projectRepos.length === 1 ? projectRepos[0] : discoverItemRepository(item);
+    if (githubUrl) {
+      item.url = githubUrl;
+      // 显式地址选出的仓库要写回 item，否则 loadItems 会再用正文扫描覆盖成「第一个链接」。
+      item.githubUrl = githubUrl;
+    } else {
+      // 没有仓库可认时，行链接优先取显式地址；非 github 的地址比「github.com/<用户或组织>」
+      // 这种不是仓库主页的地址更有用（实测 ruanyf/weekly #9113 的「项目地址」就是组织页）。
+      const candidates = [...projectUrls, ...siteUrls];
+      item.url = candidates.find((url) => !/^https?:\/\/(?:www\.)?github\.com\//i.test(url)) || candidates[0]
+        || extractExternalUrls(issue.body)?.find((url) => !/\.(?:avif|gif|jpe?g|png|svg|webp)(?:[?#]|$)/i.test(url)
+          && !/github\.com\/(?:user-attachments|[^/]+\/[^/]+\/(?:assets|issues|releases))(?:\/|$)/i.test(url))
+        || issueUrl;
     }
     return D.withTitleFallback(item);
   });
@@ -869,6 +893,12 @@ function loadItems(src, options = {}) {
     admissionDecisions.push(decision);
     options.onAdmission?.(decision);
   } }).map((item) => {
+    // 投稿声明了多个互不相同的项目地址时，issueItems 已决定不猜仓库（url 退回投稿页）。
+    // 这里必须跳过二次推导，否则正文里第一个 github 链接又会被当成产品仓库，等于白记待审。
+    if (item.repositoryAmbiguous) {
+      const { repositoryAmbiguous, ...rest } = item;
+      return rest;
+    }
     const githubUrl = normalizeGitHubRepoUrl(item.githubUrl) || discoverItemRepository(item);
     if (!githubUrl) return item;
     return { ...item, githubUrl, github: { ...(item.github || {}), url: githubUrl } };
@@ -902,7 +932,7 @@ function loadItems(src, options = {}) {
 }
 
 module.exports = {
-  loadItems, attachSiteLogos, attachSiteOgImages, attachMarkImage, loadSiteOgImages, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts, extractExternalUrls,
+  loadItems, issueItems, attachSiteLogos, attachSiteOgImages, attachMarkImage, loadSiteOgImages, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts, extractExternalUrls,
   loadSiteDescriptions, attachDescriptionFallback, loadScreenshots, attachScreenshots, sourceDescriptionLength, meetsDescriptionFloor, DESCRIPTION_MIN_LENGTH,
   latestDate, OBSERVED_SOURCES,
 };

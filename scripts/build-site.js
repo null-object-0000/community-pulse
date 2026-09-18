@@ -5,8 +5,11 @@ const { applyEnhancedMarkdown } = require('./enhanced-report.js');
 const { admitReport } = require('../.agents/skills/community-pulse/scripts/issue-admission.js');
 const R = require('./render-site.js');
 const images = require('./image-store.js');
+const { writeRenderVersion } = require('./render-version.js');
 const imageManifest = images.readManifest();
 const root = path.resolve(__dirname, '..');
+// 详情页的缓存键含渲染源码哈希：必须在构建期重新生成，否则改了渲染逻辑线上最长 24 小时读旧渲染。
+writeRenderVersion(root);
 const siteConfig = JSON.parse(fs.readFileSync(path.join(root, 'site.config.json'), 'utf8'));
 const sourceDir = path.join(root, '知识', '大家都在做什么', 'raw');
 const finalDir = path.join(root, '知识', '大家都在做什么', 'final');

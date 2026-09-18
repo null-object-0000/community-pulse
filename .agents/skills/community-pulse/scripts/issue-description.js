@@ -34,6 +34,28 @@ const LABEL_VALUE = new RegExp(`^(${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[
 // 值里残留的内联字段名（「可选：xxx」挤在同一段时用）。
 const LABEL_INLINE = new RegExp(`(?:^|[\\s，。；、])(${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[：:]\\s*`, 'gi');
 const LABEL_TRAILING = new RegExp(`\\s*(?:${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[：:]?\\s*$`, 'i');
+// 捕获组 1 = 字段名，2 = 字段值；与 LABEL_VALUE 同形，但**不做任何清洗**，用来取地址字段里的 URL。
+const LABEL_URL_VALUE = new RegExp(`^(${FIELD_LABELS.join('|')})${LABEL_SUFFIX}\\s*[：:]\\s*(\\S.*)$`, 'i');
+
+// 「项目地址 / 开源地址 / 仓库地址」这类字段指向的是**产品自己**的仓库或主页。
+// 正文其它地方常混着依赖仓库、参考项目、徽章和作者主页的链接，只按「正文第一个 github.com
+// 链接」取值会认错产品（2026-09-18 走查：正文先提到参考项目时就会认错）。
+// 这份名单必须是 FIELD_LABELS 的子集，否则 LABEL_URL_VALUE 根本匹配不到。
+const PROJECT_URL_LABELS = new Set([
+  '项目地址', '项目网址', '项目链接', '项目主页', '作品网址', '作品地址',
+  '开源地址', '源码地址', '仓库地址', 'github地址', 'github', 'repo', 'repository',
+]);
+// 「官网 / 官方」这类字段指向产品的对外站点，但**不能**用来定仓库身份：
+// 汉化版、fork、二开这类投稿会写「官方：<上游仓库>」，那条地址是上游而不是这个产品
+// （实测 ruanyf/weekly #7164 的 gemini-cli 汉化版就会因此被并进上游仓库）。
+// 它们只在完全找不到仓库时，作为行链接的兜底候选。
+const SITE_URL_LABELS = new Set([
+  '官网地址', '官方网站', '官方网址', '官网', '官方', '网站', 'website',
+  '在线体验', '在线地址', '在线演示', '在线预览',
+]);
+const URL_FIELD_LABELS = new Set([...PROJECT_URL_LABELS, ...SITE_URL_LABELS]);
+// 与 source_raw_items.extractExternalUrls 同一条边界规则：裸链接在中文标点处终止。
+const BARE_URL_RE = /https?:\/\/[^\s<>()[\]{}"'（）［］【】《》〈〉「」『』，。：；！？、…]+/g;
 
 // 字段值里的噪声：空回答、占位符。
 const NOISE_VALUE = /^(?:no response|_?no response_?|none|null|n\/a|na|无|暂无|没有|待补充|todo|tbd|示例|example)$/i;
@@ -188,4 +210,61 @@ function descriptionFromIssue(body) {
   return NOISE_VALUE.test(chosen) ? '' : chosen;
 }
 
-module.exports = { descriptionFromIssue, stripInlineMarkup, stripTrailingLinkItems, FIELD_LABELS };
+/**
+ * Issue 正文里**显式地址字段**的值（按出现顺序、去重）。`labels` 决定认哪些字段名：
+ * 默认认全部地址字段；`PROJECT_URL_LABELS` / `SITE_URL_LABELS` 可分别取「产品自己的地址」
+ * 与「官网类地址」。
+ *
+ * 与 `descriptionFromIssue` 的关键区别：这里不做 markdown / 链接清洗 —— `stripInlineMarkup`
+ * 会把裸链接整段删掉，用它取地址只会得到空串。所以这里按行扫描原始文本，只在两处收口：
+ * 先删 HTML 注释（模板里的示例注释常带假地址），再把裸链接按中文标点终止。
+ *
+ * 支持两种模板写法：「项目地址：https://…」同一行，以及「项目地址」单独一行、值在下一行
+ * （下一行自己又写成「Github：https://…」也照收，见 ruanyf/weekly #7728）。
+ */
+function explicitProjectUrls(body, labels = URL_FIELD_LABELS) {
+  const lines = String(body ?? '').replace(/<!--[\s\S]*?-->/g, '').replace(/\r\n?/g, '\n').split('\n');
+  const urls = [];
+  const seen = new Set();
+  const collect = (text) => {
+    for (const url of String(text).match(BARE_URL_RE) || []) {
+      const key = url.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      urls.push(url);
+    }
+  };
+  const isAddressLabel = (name) => labels.has(String(name).trim().toLowerCase());
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index].trim();
+    if (!line) continue;
+    const pair = line.match(LABEL_URL_VALUE);
+    if (pair) {
+      if (isAddressLabel(pair[1])) collect(pair[2]);
+      continue;
+    }
+    // 地址字段名单独一行：值在下面连续几行里，遇到空行或**别的**字段名就停。
+    if (!isAddressLabel(line.replace(/[：:]\s*$/, ''))) continue;
+    for (let next = index + 1; next < lines.length; next += 1) {
+      const value = lines[next].trim();
+      if (!value) break;
+      const inner = value.match(LABEL_URL_VALUE);
+      if (inner) {
+        if (!isAddressLabel(inner[1])) break;
+        collect(inner[2]);
+        continue;
+      }
+      if (LABEL_ANY.test(value)) {
+        if (!isAddressLabel(value.replace(/[：:]\s*$/, ''))) break;
+        continue;
+      }
+      collect(value);
+    }
+  }
+  return urls;
+}
+
+module.exports = {
+  descriptionFromIssue, explicitProjectUrls, stripInlineMarkup, stripTrailingLinkItems, FIELD_LABELS,
+  PROJECT_URL_LABELS, SITE_URL_LABELS,
+};

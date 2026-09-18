@@ -171,3 +171,44 @@ test('catalog cache skips the database on a hit and never stores errors', async 
     else globalThis.caches = before;
   }
 });
+
+// 详情页的缓存键第二段来自渲染源码哈希（scripts/render-version.js）。以前是一个手改字符串：
+// 改了渲染逻辑忘了改它，线上最长 24 小时还读旧渲染（09-17 投稿标签修复、09-18 详情行重建
+// 都靠手工 +1 收尾）。这三条断言把「自动换代」钉住。
+test('the committed render version matches the current render sources', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { renderVersion, OUTPUT } = require('../scripts/render-version.js');
+  const file = path.join(__dirname, '..', OUTPUT);
+  assert.ok(fs.existsSync(file), `${OUTPUT} 必须提交进仓库`);
+  assert.match(fs.readFileSync(file, 'utf8'), new RegExp(`'${renderVersion()}'`));
+});
+
+test('the render version changes when any render source changes', () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { renderDigest, RENDER_SOURCES } = require('../scripts/render-version.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'render-version-'));
+  for (const relative of RENDER_SOURCES) {
+    fs.mkdirSync(path.dirname(path.join(root, relative)), { recursive: true });
+    fs.copyFileSync(path.join(__dirname, '..', relative), path.join(root, relative));
+  }
+  const before = renderDigest(root);
+  for (const relative of RENDER_SOURCES) {
+    const file = path.join(root, relative);
+    fs.appendFileSync(file, '\n// 改一行渲染逻辑\n');
+    assert.notEqual(renderDigest(root), before, `${relative} 改了必须换代`);
+    fs.writeFileSync(file, fs.readFileSync(path.join(__dirname, '..', relative)));
+    assert.equal(renderDigest(root), before);
+  }
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('the worker imports the generated render version instead of hardcoding one', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const source = fs.readFileSync(path.join(__dirname, '..', 'worker', 'index.js'), 'utf8');
+  assert.match(source, /import \{ PRODUCT_RENDERER_VERSION \} from '\.\/render-version\.mjs';/);
+  assert.doesNotMatch(source, /const PRODUCT_RENDERER_VERSION\s*=/);
+});
