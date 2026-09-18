@@ -498,6 +498,15 @@ test('submission labels are stripped from titles in both languages without eatin
   assert.equal(title('Submit Tool: Gptimage2'), 'Gptimage2');
   assert.equal(title('推荐项目：astock - A股行情工具'), 'astock - A股行情工具');
   assert.equal(title('【开源工具】Vercut 分词工具'), 'Vercut 分词工具');
+  // 漏写开括号的投稿标签（右括号还在）也要清掉：2026-09-17 的 11762 就是 `开源自荐】PiX`。
+  assert.equal(title('开源自荐】PiX: 把 AI Agent 会话变成一张图的桌面工作台'), 'PiX: 把 AI Agent 会话变成一张图的桌面工作台');
+  assert.equal(title('工具自荐】MathLite —— 打开即用的纯前端数学工具箱'), 'MathLite —— 打开即用的纯前端数学工具箱');
+  assert.equal(title('开源推荐] RustDesk 远程桌面'), 'RustDesk 远程桌面');
+  // 右括号出现得早、但那段不是投稿标签时不能动开头。
+  assert.equal(title('C++ 性能优化】实战笔记'), 'C++ 性能优化】实战笔记');
+  assert.equal(title('支持 Markdown 推荐】输出'), '支持 Markdown 推荐】输出');
+  // 整个标题就是标签时同样退回原标题。
+  assert.equal(title('开源自荐】'), '开源自荐】');
   // 拿方括号当书名号的产品名、以及其他前缀词不能当成投稿标签。
   assert.equal(title('【Tokenscope】AI tokens dashboard'), '【Tokenscope】AI tokens dashboard');
   assert.equal(title('[MAC] Claude Notch Usage Companion'), '[MAC] Claude Notch Usage Companion');

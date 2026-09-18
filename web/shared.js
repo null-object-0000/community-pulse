@@ -559,9 +559,14 @@
   const TITLE_PLAIN_VERB = `(?:${TITLE_LOOSE_VERB}|recommend(?:ation|ed|s)?|recomend(?:ation|ed)?|recommandation|open\\s*source|recomendaci[oó]n|おすすめ|お勧め)`;
   // 括号标签可以连着写（[开源推荐] [Tool Recommendation] X、[Show HN] / [Tool] X）。
   const TITLE_BRACKET_LABEL = `[【\\[［〖〔]\\s*(?:[^】\\]］〗〕]*?${TITLE_LOOSE_VERB}[^】\\]］〗〕]*|${TITLE_LABEL_PHRASE})\\s*[】\\]］〗〕]`;
+  // 漏写开括号的投稿标签：`开源自荐】PiX: …`、`工具自荐】MathLite —— …`。右括号还在、左边没有配对，
+  // 是投稿人手打的（2026-05-03 / 2026-09-17 各有一条，其中一条就是 11762）。命中条件与括号标签完全一致
+  // （括号前那段含投稿动词，或整段都是标签词），只是不要求开括号；前缀限定在**第一个空白之前、最多 16 字**，
+  // 所以 `C++ 性能优化】实战笔记`、`【Tokenscope】…` 这类正常标题不会被吃掉开头。
+  const TITLE_DANGLING_LABEL = `(?:[^】\\]］〗〕\\s]{0,16}?${TITLE_LOOSE_VERB}|${TITLE_LABEL_PHRASE})\\s*[】\\]］〗〕]`;
   const TITLE_PLAIN_LABEL = `(?:${TITLE_LABEL_WORD}${TITLE_LABEL_SEP}){0,4}${TITLE_PLAIN_VERB}(?:${TITLE_LABEL_SEP}${TITLE_LABEL_WORD}){0,4}\\s*[:：\\-–—]`;
   const TITLE_PREFIX = new RegExp(
-    `^\\s*(?:(?:${TITLE_BRACKET_LABEL}|${TITLE_PLAIN_LABEL})\\s*[/|｜·、,，\\-–—]?\\s*)+`,
+    `^\\s*(?:(?:${TITLE_BRACKET_LABEL}|${TITLE_DANGLING_LABEL}|${TITLE_PLAIN_LABEL})\\s*[/|｜·、,，\\-–—]?\\s*)+`,
     'i');
   // Preserve source title for final matching; only explicit fields may supply a name.
   // A "项目标题" that is really a release note (v2.18.3发布：…) names a version, not the product;
