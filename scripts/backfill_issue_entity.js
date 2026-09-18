@@ -25,6 +25,7 @@ const {
 } = require('../.agents/skills/community-pulse/scripts/source_raw_items.js');
 const { itemLinks } = require('../.agents/skills/community-pulse/scripts/collect.js');
 const { repositoryKey } = require('../.agents/skills/community-pulse/scripts/github_repo_utils.js');
+const { identityFor, productId } = require('./catalog/identity.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const BASE = path.join(ROOT, '知识', '大家都在做什么');
@@ -32,14 +33,23 @@ const RAW_DIR = path.join(BASE, 'raw');
 const SOURCE_RAW = path.join(BASE, 'source-raw');
 const ISSUE_SOURCES = ['weekly-issues', 'hellogithub-issues'];
 
+// 布尔开关必须单独判，**不能**跟着取下一个 argv：否则 `--dry-run --plan x` 会把 `--plan`
+// 当成 `--dry-run` 的值吃掉，然后报「unknown argument: x」（这个 bug 真出现过一次）。
+const BOOLEAN_FLAGS = new Set(['--dry-run', '--include-url-only']);
+
 function parseArgs(argv) {
-  const options = { dryRun: false, start: null, end: null, dates: null, includeUrlOnly: false, audit: null };
+  const options = { dryRun: false, start: null, end: null, dates: null, includeUrlOnly: false, audit: null, plan: null, categories: null };
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
+    if (BOOLEAN_FLAGS.has(name)) {
+      if (name === '--dry-run') options.dryRun = true;
+      else options.includeUrlOnly = true;
+      continue;
+    }
     const value = inline === undefined ? argv[++index] : inline;
-    if (name === '--dry-run') options.dryRun = true;
-    else if (name === '--include-url-only') options.includeUrlOnly = true;
-    else if (name === '--audit') options.audit = value;
+    if (name === '--audit') options.audit = value;
+    else if (name === '--plan') options.plan = value;
+    else if (name === '--categories') options.categories = new Set(value.split(',').map((item) => item.trim()).filter(Boolean));
     else if (name === '--start') options.start = value;
     else if (name === '--end') options.end = value;
     else if (name === '--date') (options.dates = options.dates || []).push(value);
@@ -198,7 +208,8 @@ function auditMarkdown(report) {
 
 function main() {
   const options = parseArgs(process.argv.slice(2));
-  const report = { version: 'backfill-issue-entity-v1', dryRun: options.dryRun, includeUrlOnly: options.includeUrlOnly, dates: [], changed: [], urlOnlySkipped: [], skipped: [] };  for (const date of rawDates(options)) {
+  const report = { version: 'backfill-issue-entity-v1', dryRun: options.dryRun, includeUrlOnly: options.includeUrlOnly, categories: options.categories ? [...options.categories] : null, dates: [], changed: [], urlOnlySkipped: [], filteredOut: [], skipped: [] };
+  for (const date of rawDates(options)) {
     const jsonPath = path.join(RAW_DIR, `${date}.json`);
     const mdPath = path.join(RAW_DIR, `${date}.md`);
     const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
@@ -220,9 +231,17 @@ function main() {
         }
         const entry = {
           date, sourceId: result.sourceId, externalId: item.externalId, title: item.title, kind,
+          // 旧 / 新产品身份：撤销旧行、核对新行都要用，算法与导入链同一条（identity.js）。
+          oldProductId: productId(identityFor(item)),
+          newProductId: productId(identityFor(next)),
           before: { url: item.url, githubUrl: item.githubUrl || null },
           after: { url: next.url, githubUrl: next.githubUrl || null },
         };
+        entry.category = classify(entry);
+        if (options.categories && !options.categories.has(entry.category)) {
+          report.filteredOut.push({ date, externalId: item.externalId, category: entry.category });
+          continue;
+        }
         if (markdown !== null) {
           const updated = replaceLinkLine(markdown, item, next);
           if (updated === null) { report.skipped.push({ ...entry, reason: 'markdown_line_not_unique' }); continue; }
@@ -242,6 +261,13 @@ function main() {
       fs.writeFileSync(jsonPath, JSON.stringify(raw, null, 2));
       if (markdown !== null) fs.writeFileSync(mdPath, markdown);
     }
+  }
+  if (options.plan) {
+    fs.writeFileSync(path.resolve(options.plan), `${JSON.stringify({
+      version: 'issue-entity-plan-v1', generatedAt: new Date().toISOString(), includeUrlOnly: options.includeUrlOnly,
+      entries: report.changed.map((entry) => ({ ...entry, reason: entry.kind === 'repo' ? 'identity-repair' : 'url-shape' })),
+    }, null, 2)}\n`);
+    console.log(`plan written to ${options.plan}`);
   }
   if (options.audit) {
     fs.writeFileSync(path.resolve(options.audit), auditMarkdown(report));

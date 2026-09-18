@@ -80,3 +80,23 @@ test('audit categories separate junk addresses from real repository swaps', () =
   assert.equal(classify({ before: { url: 'https://example.com' }, after: { url: 'https://github.com/a/b' } }), 'website');
   assert.equal(classify({ before: { url: 'https://github.com/a/b', githubUrl: 'https://github.com/a/b' }, after: { url: 'https://github.com/c/d', githubUrl: 'https://github.com/c/d' } }), 'repo-swap');
 });
+
+// 撤销通道：按 product_id 删读路径上的 5 张表（source_items / observations 从来没被写入过，
+// 老的 revoke-admissions.js 靠它们反查产品，@item_id 恒为 NULL，等于什么都没删）。
+test('revoke SQL deletes the five live tables behind a single-source guard', () => {
+  const { sqlFor } = require('../scripts/catalog/revoke-products.js');
+  const sql = sqlFor([{ productId: 'prd_abc', reason: 'recruitment_advertisement', detail: '2026-09-15 weekly-issues #11707 PDD', before: { url: 'https://x' }, after: null }]);
+  for (const table of ['product_routes', 'product_details', 'taxonomy_assignments', 'product_source_first_seen', 'products']) {
+    assert.match(sql, new RegExp(`DELETE FROM ${table} WHERE`));
+  }
+  assert.match(sql, /@shared <= 1/, '跨来源观察过的产品不能整条删掉');
+  assert.match(sql, /START TRANSACTION;/);
+  assert.match(sql, /COMMIT;/);
+  assert.doesNotMatch(sql, /source_items|observations/, '不能再依赖那两张空表');
+});
+
+test('a product the current import will recreate is never revoked', () => {
+  const { survivingProductIds } = require('../scripts/catalog/revoke-products.js');
+  // 不传 range 时没有「重建闸」名单；传了 range 才会真的去构建导入包（这里只锁默认行为）。
+  assert.equal(survivingProductIds(null).size, 0);
+});

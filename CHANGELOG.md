@@ -473,6 +473,17 @@
 - **代码 / 顺手把决策逻辑抽成一条实现**（`source_raw_items.issueProjectLinks`）：`issueItems` 与回填脚本共用同一个纯函数，避免「采集用一套规则、回填抄一套」——重构前后对全量 5,847 行投稿逐行对比，**0 处差异**。
 - **验证**：`npm run check` **254/254**；`scripts/backfill_issue_entity.js --dry-run --include-url-only` 干跑不写盘。
 
+### 撤销通道：老的 revoke-admissions 是一份不可能生效的 SQL
+
+准备「先落 A/C 类」时顺手核对了撤销这一侧，结果推翻了先前的一个判断：**`scripts/catalog/revoke-admissions.js` 生成的 SQL 执行了也没用**。它按 `source_items` / `observations` 反查产品再删，而这两张表**从来没有被写入过** —— 09-14 初次迁移的分片目录 `.scratch/mysql-window2/` 只有 7 个文件（sources / products / product_routes / product_details / product_source_first_seen / taxonomy_terms / taxonomy_assignments），`build-mysql-import.js` 的 `TABLES` 也是这 7 张，线上读路径 `worker/catalog-api.mjs` 只读其中 5 张。所以那份 SQL 里的 `@item_id` 恒为 NULL、每条 DELETE 都匹配不到行。7 条招聘广告至今在线上（09-18 逐个实测 200），不只是「SQL 没执行」，是「执行了也删不掉」。
+
+- **代码 / 新增 `scripts/catalog/revoke-products.js`**：只认 product_id，直接删读路径上的 5 张表，带两道闸 —— ① `product_source_first_seen` 里只有一个来源才删（跨来源观察过的产品整条删掉会丢掉别的来源的合法收录）；② 本次导入（`--range`）会重建的产品 id 一律不删。`--verify` 逐个请求线上产品页，只保留真的返回 200 的 id。9 条测试（含「不能再依赖那两张空表」这条断言）。
+- **量出来的第二个坑：旧产品 id 不能从 `raw/*.json` 反推**。拿 A/C 那 210 行试：算出来的 209 个候选里**只有 5 个**在线上真实存在，204 个不存在 —— raw 层与产品库是两份不同的投影（raw 是当时的代码写的，产品库是导入链从 source-raw 建的，`githubUrl` 与仓库事实字段不一定一致）。所以撤销名单必须从产品库自己取（按 `canonical_url` / `item_json` 的旧地址反查 product_id），需要一个经 Hyperdrive 的只读通道。例外是招聘广告那 7 条：身份是 `url:<投稿页>`，两层一致，7 个 id 已逐个核对线上 200。
+- **决策：不拿「算出来的 id」去删**。`--verify` 这一步就是为此加的：算出来的 id 必须能在线上兑现，否则宁可不删。A/C 的 210 行 raw 回填已就绪（`--categories junk,subpage`，涉及 128 个日报日），但 MySQL 那一侧要等只读通道拿到真实的旧 product_id 再动。
+- **顺手修掉自己写的一个参数解析 bug**：布尔开关（`--dry-run` / `--verify`）原来跟着取下一个 argv，于是 `--dry-run --plan x` 会把 `--plan` 当成 `--dry-run` 的值吃掉、再报「unknown argument: x」。两个新脚本都改成布尔开关单独判，并留了注释。
+- **验证**：`npm run check` **256/256**；`revoke-products.js --plan … --verify --dry-run` 干跑（只读线上，不写库）。
+
+
 
 ### 详情页缓存版本：从手改字符串改成渲染源码哈希
 
