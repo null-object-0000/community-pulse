@@ -423,6 +423,13 @@ test('submission issue bodies yield the description instead of the template scaf
   assert.equal(descriptionFromIssue('把 a < b > c 的比较结果画成图表，支持导出 PNG。'), '把 a < b > c 的比较结果画成图表，支持导出 PNG。');
   // 属性里带 `>` 的标签照常删干净
   assert.equal(descriptionFromIssue('<img alt="a > b" src="https://x/a.png">文字'), '文字');
+  // 跨行的 `<img>`（投稿模板里常见写法）：整段删掉。按行清洗时只会吃掉 `<img`，
+  // 剩下的 `src="` `alt="…"` 会留在简介里（2026-09-18 的 Illustrator / Skills Manager / MonsterMusic）。
+  assert.equal(descriptionFromIssue('<p align="center">\n  <a href="https://github.com/a/b">\n    <img\n      src="https://github.com/user-attachments/assets/abc"\n      alt="示例"\n      width="860" />\n  </a>\n</p>\n\n一个把命令行输出变好看的终端工具，支持主题。'), '一个把命令行输出变好看的终端工具，支持主题。');
+  // 标签不跨空行：正文里提到 `<img` 时，不能被后面某行的 `>` 吃掉一整段
+  assert.equal(descriptionFromIssue('如果你想插入图片，可以用 <img 标签。\n\n判断大小：a > b 时走左边分支。'), '如果你想插入图片，可以用 <img 标签。 判断大小：a > b 时走左边分支。');
+  // 行内标签 `del` / `ins` 也在白名单里（GitZip Pro 的 `<del>智能忽略规则、</del>`）
+  assert.equal(descriptionFromIssue('提供私有仓库支持、<del>智能忽略规则、</del>文件大小显示。'), '提供私有仓库支持、 智能忽略规则、 文件大小显示。');
   // ruanyf/weekly#9746（WorldX）：属性里多打了一个引号（`…94d7""`），而清洗用的那条
   // `(?:[^<>"']+|"[^"]*"|'[^']*')*` 是有歧义重复的正则，回溯是指数级的 —— 2026-09-17 的产品库
   // 全量补跑卡在这一行 4 小时没出来。现在改成线性扫描，畸形标签整段删掉。

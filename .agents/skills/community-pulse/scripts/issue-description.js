@@ -45,7 +45,7 @@ const MIN_DESCRIPTION_LENGTH = 15;
 // 投稿正文里真正会出现的 HTML 标签。只吃这份白名单，而不是「任意尖括号」——技术投稿的正文里
 // 常有 `<message-id>`、`a < b` 这类内容，它们不是标签。插图 `<img>` 由 issue-media.js 收进配图集。
 const HTML_TAG_NAME = new RegExp(
-  String.raw`<\/?(?:img|br|hr|div|p|a|span|strong|em|b|i|u|s|code|pre|blockquote|ul|ol|li|h[1-6]|table|thead|tbody|tr|td|th|figure|figcaption|picture|source|video|audio|details|summary|small|sub|sup|kbd|mark|center|font|section|article|header|footer)\b`, 'gi');
+  String.raw`<\/?(?:img|br|hr|div|p|a|span|strong|em|b|i|u|s|del|ins|code|pre|blockquote|ul|ol|li|h[1-6]|table|thead|tbody|tr|td|th|figure|figcaption|picture|source|video|audio|details|summary|small|sub|sup|kbd|mark|center|font|section|article|header|footer)\b`, 'gi');
 
 /**
  * 删掉白名单里的 HTML 标签。
@@ -56,6 +56,11 @@ const HTML_TAG_NAME = new RegExp(
  * `…94d7""`）能让它永远跑不完：2026-09-17 的产品库全量补跑就是卡在这一步 4 小时没出来。
  * 顺带它还漏掉了畸形标签（`<img src=" alt="b" width="400"/>` 里只吃掉 `<img src="`）。
  * 改成一次线性扫描：认出标签名后，找引号外的第一个 `>` 收尾；找不到就原样留着。
+ *
+ * 扫描是**跨行**的（`<img\n src="…"\n alt="…" />` 是投稿模板里的常见写法），但**不跨空行**：
+ * 遇到空行说明这段尖括号其实是正文（例如「用 `<img` 标签插图片」后面某行出现 `>`），
+ * 这时原样保留，只把扫描位置挪到标签名之后。2026-09-18 之前简介是按行清洗的，跨行的 `<img>`
+ * 只会被吃掉 `<img`，剩下的 `src="` `alt="…"` 留在简介里。
  */
 function stripHtmlTags(value) {
   const text = String(value ?? '');
@@ -65,16 +70,20 @@ function stripHtmlTags(value) {
   for (let match; (match = HTML_TAG_NAME.exec(text)); ) {
     let index = HTML_TAG_NAME.lastIndex;
     let quote = '';
+    let prose = false;
     for (; index < text.length; index += 1) {
       const char = text[index];
       // 先遇到 `<` 就说明这个标签是畸形的（例如属性里多打了一个引号）：就地收尾，
       // 把残骸整段删掉，而不是像以前那样把 `<img src=" alt="…` 留在简介里。
       if (char === '<') break;
+      // 空行 = 段落边界，标签不会跨段落。
+      if (char === '\n' && text[index + 1] === '\n') { prose = true; break; }
       if (quote) { if (char === quote) quote = ''; continue; }
       if (char === '"' || char === "'") { quote = char; continue; }
       if (char === '>') break;
     }
     if (index >= text.length) break;                 // 到结尾都没收尾：剩下的原样保留
+    if (prose) { HTML_TAG_NAME.lastIndex = match.index + match[0].length; continue; }
     out += `${text.slice(last, match.index)} `;
     // `>` 收尾：跳过它；`<` 收尾：从那个 `<` 继续找下一个标签。
     last = text[index] === '>' ? index + 1 : index;
@@ -156,7 +165,10 @@ function usable(text, minLength) {
  * 都没有时返回空串，让上层按自己的规则回退。
  */
 function descriptionFromIssue(body) {
-  const blocks = splitBlocks(String(body ?? '').replace(/<!--[\s\S]*?-->/g, ''));
+  // 整段先删 HTML 标签，再按行切字段：标签可能跨行（`<img\n src="…"\n alt="…" />`），
+  // 逐行清洗只会把 `<img` 吃掉，剩下的 `src="` `alt="…"` 变成简介里的残骸（2026-09-18 走查：
+  // Illustrator、Skills Manager、MonsterMusic 三条投稿如此）。空行处不跨段，见 stripHtmlTags。
+  const blocks = splitBlocks(stripHtmlTags(String(body ?? '').replace(/<!--[\s\S]*?-->/g, '')));
   if (!blocks.length) return '';
   const pick = () => {
     const described = blocks.filter(block => block.label && DESCRIPTION_LABELS.has(block.label));
