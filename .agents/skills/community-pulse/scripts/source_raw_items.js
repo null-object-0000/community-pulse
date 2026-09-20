@@ -346,7 +346,11 @@ function weeklyPeriodicalItems(document, src) {
       const match = text.match(/^\d+、\s*\[([^\]]+)\]\(([^)]+)\)\s*(.*)$/);
       if (!match) continue;
       const [, name, url, rest] = match;
-      let intro = rest || extractNextParagraph(lines, index);
+      // 正刊的条目行常常只带一个括号里的英文原名（「（Gravity）」），真正的简介在下一段。
+      // 纯括号注解不算行内简介，否则摘要会变成一串没有信息的译名 —— 下游 LLM 分类据此
+      // 判为「无证据」，5 次重试后 useCases 仍为空，整期增强直接 FATAL（2026-09-18 就是这样挂的）。
+      const inlineIntro = /^[（(][^（）()]*[）)]$/.test(rest.trim()) ? '' : rest;
+      let intro = inlineIntro || extractNextParagraph(lines, index);
       let author = '';
       let relatedIssue = null;
       const submission = intro.match(/（\[@([^\]]+)\]\(([^)]+)\)\s*\u6295\u7a3f）$/);
