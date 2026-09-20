@@ -186,6 +186,11 @@ jobs:
           fi
           npm run images:upload
 
+      # 放在提交**之后**：这一步是核对，不是门禁闸门 —— 数据该落的先落下，身份漂移单独变红，
+      # 不因为一次核对失败就把当天的日报挡在门外。
+      - name: 核对日报行与产品库的身份一致
+        run: npm run check:report-identity -- --date "${{ steps.setdate.outputs.date }}"
+
       - name: 提交并推送
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"

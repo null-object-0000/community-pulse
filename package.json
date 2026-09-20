@@ -16,7 +16,8 @@
     "build": "node scripts/build-site.js",
     "preview": "python3 -m http.server 4173 -d dist",
     "test": "node --test tests/*.test.js",
-    "check": "npm run build && npm test"
+    "check": "npm run build && npm test",
+    "check:report-identity": "node scripts/catalog/check-report-identity.js"
   },
   "dependencies": {
     "mysql2": "^3.24.4"

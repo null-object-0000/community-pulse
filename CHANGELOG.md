@@ -23,7 +23,8 @@
 | 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
 | 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，把全站顶栏/页脚收敛成一份实现；修正详情页 GitHub / 官网 / 来源三个入口的取值链；给透明底的浅色产品标志做明暗判定并换深色底板 | community-pulse |
 | 09-17 | 9 | 36 文件 +800/-66 | 545 文件 +14,252/-5,036 | 投稿正文的插图与描述分家：正文 `<img>`/`![]()` 进产品配图集（GitHub 三种地址按路径白名单回源），标签不再漏进简介；回源白名单收敛成一份实现；补产品库手动刷新 workflow（MySQL + 快照 `--refresh`）；GSC 的 noindex 报告追到产品详情「取最新观测」的择优规则与两处不一致的描述阈值；再挖出投稿简介清洗里的指数级正则 —— 产品库全量补跑 4 小时跑不完的真凶 | community-pulse |
-| 09-18 | 8（含 2 次快照提交，另有本轮未提交） | 待统计 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘 | community-pulse |
+| 09-18 | 8（含 2 次快照提交，另有本轮未提交） | 待统计 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘；**677 行日报地址回填 + 库侧撤销 21 个产品行（7 条招聘广告全部下线）** | community-pulse |
+| 09-20 | 待统计 | 待统计 | 待统计 | **日报行绑定产品库身份**（报告行带 `productId` 与发布记录 `publication`，补上「报告行必须与导入链身份一致」的门禁）；**增强结果改按 `productId` 匹配**，不再按「标题 + 作者」匹配 Markdown | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -504,6 +505,19 @@
 - **为什么挂在构建期**：Cloudflare Workers Builds 的构建命令就是 `npm run build`，`wrangler deploy` 在同一次作业里后跑，所以部署拿到的必然是重新生成的值；提交进仓库的那份只是让 diff 可读。
 - **验证**：`tests/catalog-cache.test.js` 新增 3 条 —— 提交的值与当前源码哈希一致、`RENDER_SOURCES` 里任一文件改一行哈希必然变、`worker/index.js` 不许再出现硬编码版本。`npm run check` 247/247。
 - **未做**：两个 workflow 都还没有部署后的冒烟步骤（现在靠人肉 curl 详情页 + `/api/v1/sources` 比对 `catalogVersion`），留到「自动化快照与缓存发布收尾」那一项一起加。
+
+## 2026-09-20 · 日报行绑定产品库身份 + 增强改按 productId 匹配
+
+Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，用户点名先做这两条：**日报仍是主数据、产品库不是它的来源**，以及**增强仍按标题匹配 Markdown**。两条的根子是同一个：**同一行内容在不同链路里被独立推导了两次**。
+
+- **代码 / 日报行带 `productId`**（`collect.js`）：发布出去的每一行都带上产品库身份，用的是与导入链**同一份实现**（`.agents/skills/community-pulse/scripts/product-identity.js`）、同一个时点（`attachGithubRepositories` 之后 —— 仓库事实会带快照里的重定向结果，`webc-site/wedb_embed` → `webc-site/fastalp` 这种，早算就会与库里不一致）。以前日报只存地址，产品路由由站点渲染时用 `D.repository` 重新推导一遍；09-18 修的 677 行漂移就是这种「两条独立推导」的产物。
+- **代码 / 发布记录 `publication`**（`raw/<date>.json` 顶层）：`{ schemaVersion, taxonomyVersion, sourceRaw: [{sourceId, path, contentSha256, targetDate}] }` —— 这一期日报由哪些来源文件、按哪个分类规则版本产出，可复核。选品与顺序就是 `results` 本身（含 `trendingPolicy` 的冷却与持续热门）。`D.taxonomyVersion` 同时被产品库导入复用（原来 `legacy-infer-v1` 是 `build-mysql-import.js` 里的私有常量），两边的加工版本从此是同一个数。
+- **代码 / 增强改按 `productId` 匹配**（`enhance.js` + `scripts/enhanced-report.js`）：增强记录里新增 `productId`、`promptVersion`、`model`；消费端先按 `productId` 匹配，**标题只作历史回退**（仓库里 09-20 之前的 final 没有这个字段），并把 `matchedByProductId` / `matchedByHeading` 写进 `presentation`，让「有多少还在靠标题兜」变成可观测的数字。对齐方式不是再猜一次标题，而是**按「来源分区 + 顺序」**：`renderMarkdown` 就是按 `results → source → items` 渲染的，所以分区里第 k 个 `### ` 必然是那个来源的第 k 条。
+  - 旧实现（只按 `标题 + 👤 作者`）有三种静默失败：同名两条只能靠顺序兜；标题在 raw 与 final 之间被清理过（09-18 的投稿标签清理就改过标题）就匹配不到、整条退回 raw 摘要；来源显示名改了会让整个分区的摘要全丢，而 `summarySource` 只显示 mixed，看不出少了什么。三条都有回归测试。
+  - **不改增强主机脚本**：结构化数据仍然嵌在 `final/<date>.md` 的 `devtrends-i18n` 注释里（本来就带全量记录），所以主机那句 `git add final/<date>.md` 不用动，`enhance.js` 的 CLI 也不变。续跑恢复出来的老 `.work` 记录会被补齐 `productId` 与加工版本，不必为拿这个字段重跑一遍 LLM。
+- **代码 / 一致性门禁**（`scripts/catalog/check-report-identity.js`，`npm run check:report-identity`）：离线重建当天的导入投影（与导入链逐字同源：`loadItems → attachRepositoryFacts → attachDescriptionFallback → identitiesFor`），逐行比对日报行的身份。三态分明 —— `matched` / `mismatched`（真漂移，带 `publication` 的日报直接退出码 1）/ `unverifiable`（这条来源观察已经不在 source-raw 里了，历史产物，只计数）。接进日更 workflow，**放在提交之后**：数据该落的先落下，身份漂移单独变红，不因为一次核对失败就把当天的日报挡在门外。
+- **量出来的历史存量**：262 期日报全跑一遍 —— **157 期干净、105 期有漂移、共 337 行**（11,748 行的 2.9%），按来源是 vibecafe 252、chinese-indie-dev 63、weekly-issue 10、weekly-issues 8、producthunt 3、hellogithub-issue 1。原因都同类：那些日报发布时 source-raw 还没有后来的字段（vibecafe 的官网地址、indie-dev 的链接解析），所以报告行的身份是「平台页」而库里是「官网/仓库」。按计划「已发布日报固定其版本」，**没有回写历史**，只把数字记在这里；新契约从下一期日报起由门禁兜住。
+- **验证**：`npm run check` **265/265**（新增 8 条：顺序对齐、同名不串行、标题漂移仍匹配、同名各拿自己的摘要、历史 final 标题回退计数、续跑补齐、四条链路同一份身份实现、新契约门禁）。实测 2026-09-19 那一期：76 行**全部**能在产品库投影里找到自己的 `product_id`（投影 868 条观察）；2026-09-18 是 97/97；线上库抽查那 76 个 id **76/76 命中**。站点侧的渲染路径本来就调用同一份实现（`build-site.js` 用 `productId(identitiesFor(item))` 补 `projectPath`，仓库行用 `D.repository(item).path`），所以「报告页指向的产品」与「产品库里的那一行」从此由同一个函数决定 —— 剩下的分歧只能来自输入，而输入分歧正是上面那个门禁在查的。
 
 ## 值得记录的决策
 

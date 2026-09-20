@@ -137,6 +137,13 @@ function validateLocalization(value, item) {
   return {
     schemaVersion: 3,
     sourceHash: sourceHash(item),
+    // 产品库身份：消费端（scripts/enhanced-report.js）按它匹配，不再按「标题 + 作者」。
+    // 由调用方从原始 JSON 按「来源分区 + 顺序」挂到 item 上（见 productIdsForItems）；
+    // 老 .work 断点里的记录没有这个字段，续跑时由 normalizeRecords 补上。
+    ...(item.productId ? { productId: item.productId } : {}),
+    // 加工版本：同一份结果由哪个提示词版本、哪个模型产出 —— 换模型/改提示词后要能分辨。
+    promptVersion: PROMPT_VERSION,
+    model: MODEL,
     titleEn: clampEnglish(titleEn),
     summaryZh: clampChinese(summaryZh),
     summaryEn: clampEnglish(summaryEn),
@@ -236,6 +243,41 @@ function extractItems(md) {
   return items;
 }
 
+/**
+ * markdown 条目 → 原始 JSON 条目的 productId，按「来源分区 + 出现顺序」对齐。
+ *
+ * **不按标题匹配**：`renderMarkdown` 是按 `results → source → items` 的顺序渲染的，所以某个
+ * 分区里第 k 个 `### ` 就是该来源的第 k 条 —— 标题被清理过、两条同名、作者为空都不会错位。
+ * 标题匹配那套（旧的消费端实现）在这三种情况下会静默丢摘要或串行。
+ */
+function productIdsForItems(items, report) {
+  const bySection = new Map();
+  for (const result of report?.results || []) {
+    if (!result.items?.length) continue;
+    bySection.set(result.sourceName, result.items);
+  }
+  const cursor = new Map();
+  const ids = new Map();
+  for (const item of items) {
+    const index = cursor.get(item.section) || 0;
+    cursor.set(item.section, index + 1);
+    const productId = bySection.get(item.section)?.[index]?.productId;
+    if (productId) ids.set(item.idx, productId);
+  }
+  return ids;
+}
+
+/** 续跑恢复出来的老记录没有 productId / 加工版本：按当前对齐结果补齐，避免为此重跑 LLM。 */
+function normalizeRecords(items, localizedByIndex, productIds) {
+  for (const item of items) {
+    const localized = localizedByIndex.get(item.idx);
+    if (!localized) continue;
+    if (!localized.productId && productIds.get(item.idx)) localized.productId = productIds.get(item.idx);
+    if (!localized.promptVersion) localized.promptVersion = PROMPT_VERSION;
+    if (!localized.model) localized.model = MODEL;
+  }
+}
+
 function metadataComment(localized) {
   return `<!-- devtrends-i18n:${Buffer.from(JSON.stringify(localized)).toString('base64')} -->`;
 }
@@ -271,6 +313,17 @@ async function main() {
 
   const markdown = fs.readFileSync(inFile, 'utf8');
   const items = extractItems(markdown);
+  // 原始 JSON 默认按同目录同名推断（raw/<date>.md → raw/<date>.json）；缺了不报错，
+  // 只是这一期没有 productId，消费端会退回标题匹配。
+  const jsonFile = getArg('--json') || inFile.replace(/\.md$/, '.json');
+  let productIds = new Map();
+  if (fs.existsSync(jsonFile)) {
+    productIds = productIdsForItems(items, JSON.parse(fs.readFileSync(jsonFile, 'utf8')));
+    for (const item of items) if (productIds.has(item.idx)) item.productId = productIds.get(item.idx);
+    console.error(`产品身份: ${productIds.size}/${items.length} 条对齐到 productId（来源 ${jsonFile}）`);
+  } else {
+    console.error(`⚠️  没有原始 JSON（${jsonFile}）：本期增强结果不带 productId，消费端只能按标题匹配`);
+  }
   const localizedByIndex = new Map();
   const checkpointFile = `${outFile}.work`;
   const cached = fs.existsSync(checkpointFile)
@@ -300,6 +353,7 @@ async function main() {
     if (!dry) fs.writeFileSync(checkpointFile, renderLocalizedMarkdown(markdown, items, localizedByIndex));
     if (failures.length) throw failures[0];
   }
+  normalizeRecords(items, localizedByIndex, productIds);
   if (!dry) {
     if (localizedByIndex.size !== items.length) {
       throw new Error(`双语增强不完整：${localizedByIndex.size}/${items.length}`);
@@ -343,6 +397,8 @@ module.exports = {
   decodeMetadataComment,
   cachedLocalizations,
   renderLocalizedMarkdown,
+  productIdsForItems,
+  normalizeRecords,
   PROMPT_VERSION,
   retryAfterMs,
   rateLimitDelayMs,

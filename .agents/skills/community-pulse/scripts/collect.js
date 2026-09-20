@@ -14,6 +14,8 @@ const fs = require('fs');
 const path = require('path');
 const { loadItems, loadGithubRepositories, attachGithubRepositories, loadSiteDescriptions, attachDescriptionFallback, loadScreenshots, attachScreenshots } = require('./source_raw_items');
 const { repositoryKey } = require('./github_repo_utils');
+const { identityFor, productId } = require('./product-identity');
+const D = require('../../../../web/shared.js');
 
 const ROOT = __dirname;
 const CONFIG = path.join(ROOT, '..', 'config', 'sources.json');
@@ -536,6 +538,29 @@ async function main() {
   // 替换 results 引用 (后续 markdown/json 输出用 deduped)
   results.splice(0, results.length, ...deduped);
 
+  // 发布出去的行必须带上**产品库身份**：与导入链（build-mysql-import）同一条实现、同在
+  // 「仓库事实挂上之后」这个时点计算，所以两边算出的 product_id 天然一致。以前日报只存地址，
+  // 产品路由由站点在渲染时用 `D.repository` 重新推导一遍 —— 2026-09-18 修投稿实体识别时，
+  // 677 行日报行与产品库指向了不同仓库，正是这种「两条独立推导」造成的。
+  // 注意必须在 attachGithubRepositories 之后：仓库事实会带快照里的重定向结果
+  // （`webc-site/wedb_embed` → `webc-site/fastalp`），早算会与库里的身份不一致。
+  for (const result of results) {
+    for (const item of result.items || []) item.productId = productId(identityFor(item));
+  }
+
+  // 发布记录：这一期日报「由哪些来源文件、按哪个加工版本产出」的可复核凭据。
+  // 选品与顺序就是 results 本身（含 trendingPolicy 的冷却与持续热门），这里补上不可变输入。
+  const publication = {
+    schemaVersion: 1,
+    taxonomyVersion: D.taxonomyVersion,
+    sourceRaw: results.filter((result) => result.sourceRaw).map((result) => ({
+      sourceId: result.sourceId,
+      path: result.sourceRaw.path,
+      contentSha256: result.sourceRaw.contentSha256,
+      targetDate: result.sourceRaw.targetDate,
+    })),
+  };
+
   if (markdown) {
     // Markdown 格式产物 (发 .md 文件用)
     const text = renderMarkdown(results, dateFilter, trendingPolicy);
@@ -548,7 +573,7 @@ async function main() {
     // 一次抓取同时输出 JSON (供存档/回溯/分析)
     if (jsonOut) {
       const generatedAt = new Date().toISOString();
-      const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
+      const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, publication, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
       fs.writeFileSync(jsonOut, JSON.stringify(out, null, 2));
       console.log(`written to ${jsonOut}`);
     }
@@ -568,7 +593,7 @@ async function main() {
     }
   } else {
     const generatedAt = new Date().toISOString();
-    const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
+    const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, publication, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
     const text = JSON.stringify(out, null, 2);
     if (outFile) {
       fs.writeFileSync(outFile, text);
@@ -583,6 +608,7 @@ if (require.main === module) main().catch(e => { console.error('FATAL', e); proc
 
 module.exports = {
   applyTrendingPolicy,
+  productIdOf: (item) => productId(identityFor(item)),
   dedupe,
   descriptionSimilarity,
   itemIdentity,

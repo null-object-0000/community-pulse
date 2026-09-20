@@ -14,7 +14,8 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_RAW_ROOT = path.join(ROOT, '知识', '大家都在做什么', 'source-raw');
 const DEFAULT_OUTPUT = path.join(ROOT, 'data', 'catalog', 'mysql-import');
 const SOURCE_CONFIG = path.join(ROOT, '.agents', 'skills', 'community-pulse', 'config', 'sources.json');
-const TAXONOMY_VERSION = 'legacy-infer-v1';
+// 与日报发布记录共用同一个版本号（web/shared.js 的 D.taxonomyVersion）。
+const TAXONOMY_VERSION = D.taxonomyVersion;
 // 图片清单与色调清单读一次即可：导入包是「历史全量」的投影，逐条读盘会让 32 万条观察变成 32 万次 IO。
 const imageManifest = images.readManifest();
 const lightMarks = images.readTones().light;

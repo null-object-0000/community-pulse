@@ -155,6 +155,10 @@
   const taxonomyParents = {
     useCases: { 'novel-writing': 'content-creation' },
   };
+  // 规则分类（`inferTaxonomy` / `itemTaxonomy`）的版本号：产品库把它写进
+  // `taxonomy_assignments.processor_version`，日报的发布记录也记它 —— 规则一改，旧行存的标签
+  // 与新行不可比，必须能一眼看出这一批是哪个版本产出的。
+  const taxonomyVersion = 'legacy-infer-v1';
   // The trend page treats the primary implementation language as a third analytical lens. Keep it
   // deterministic and separate from editorial taxonomy so old reports participate immediately and
   // a model cannot turn synonymous spellings into incompatible time-series buckets.
@@ -954,5 +958,5 @@
   function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
   }
-  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
