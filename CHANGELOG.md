@@ -639,6 +639,9 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 改法（`resultBatchSql`）：一批产品合成 **5 条语句** —— 两条 DELETE 按 `product_id IN (…)`、content 与 assignments 各一条多行 INSERT、status 一条多行 upsert（`attempt_count+1` 与 `model_request_count+VALUES(...)` 都在 upsert 里累加）。默认 `--write-batch 25`，也就是 **每 25 个产品 5 次查询 = 0.2 次/产品**，同样的活**少 60 倍查询**，顺带少 60 倍往返。代价是崩溃粒度变粗：进程在提交前死掉，这批（最多 25 个 ≈ ¥0.18）会停在 `pending` 下次重跑，比把额度打满便宜得多。另外 `flush()` 的异常**故意不接** —— 写入通道坏了就该中止这次运行，继续跑只会白烧模型钱。
 
 **③ 一条操作教训：删掉工作区里的凭据副本会作废刷新链。** 上一轮结束时我把 `.scratch/cf-home/.wrangler/config/default.toml` 删了（出于凭据卫生），但那次刷新已经**轮换**了 refresh token —— 用户的 `~/.wrangler/config/default.toml` 里还是旧的、已被消费掉的那个，于是 wrangler 现在报「In a non-interactive environment, it's necessary to set a CLOUDFLARE_API_TOKEN」。**下一次要重新 `npx wrangler login`**；在那之前我碰不了生产库。以后要保留可用凭据，就别删那个副本（它已被 gitignore），或者干脆用 `CLOUDFLARE_API_TOKEN`（不过期、不需要刷新）。
+**已合入 main 并部署**（2026-09-21）：`73b11d4 merge: 产品级 LLM 加工流水线（第一批：加工层）`，推送后 Cloudflare Workers Builds 自动构建。上线检查全绿 —— `/`、`/styles.css`、`/app.js`、`/data/index.json`、`/robots.txt`、`/sitemap.xml`（索引型 691B）、`/sitemap-baidu.xml`（扁平 3.28MB）、`/feed.xml`、`/en/feed.xml`、`/og-image.png`、`/logo-512.png`、`/reports/2026-09-20/` 全部 200；项目详情页 200、不存在的项目 404、英文详情页 200；最新日报 `summarySource: llm-final`、`matchedByProductId: 103/103`。快照新版本也确认上线：拿那 8 个刚本地化的 `siteLogo` 当指纹，`data.overme.cn/apple-touch-icon.png` 已渲染成 `img.devtrends.site/images/76ee32a4…`。合并前的验证在**合并结果**上又跑了一遍 `npm run check` 287/287，不只是分支上通过。
+
+顺带记一个**既有**缺口（不是这次引入）：`coder.com/favicon-180x180-light.png`、`eskim2001.github.io/dshcloud/brand/mark.svg` 这类**只出现在产品库、没进过任何日报行**的标志不在 `assets/images/manifest.json` 里 —— `images:sync` 只抓日报行引用到的标志，于是快照的宽松本地化保留原地址，Worker 的 `trustedImage()` 又不放行，趋势页那几行只剩首字母。要补的话得让 `images:sync` 也覆盖产品库侧引用的标志，是独立一件事。
 
 ## 值得记录的决策
 
