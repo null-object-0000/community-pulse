@@ -60,29 +60,56 @@ function destroyChannel(kind, options = {}) {
  */
 function createChannelDb(options = {}) {
   const fetchImpl = options.fetch || fetch;
+  const sleep = options.sleep || (ms => new Promise(resolve => setTimeout(resolve, ms)));
   const deployed = { read: null, write: null };
   const log = options.log || (() => {});
-  const ensure = (kind) => {
-    if (!deployed[kind]) deployed[kind] = deployChannel(kind, { ...options, log });
-    return deployed[kind];
-  };
 
   async function post(kind, body, { expectRows }) {
-    const { endpoint, token } = ensure(kind);
-    const response = await fetchImpl(`${endpoint}${CHANNELS[kind].endpoint}`, {
+    const { endpoint, token } = await ensure(kind);
+    const url = `${endpoint}${CHANNELS[kind].endpoint}`;
+    const response = await fetchImpl(url, {
       method: 'POST', headers: { authorization: `Bearer ${token}` }, body,
     });
+    const text = await response.text();
     let payload;
     try {
-      payload = await response.json();
+      payload = JSON.parse(text);
     } catch (error) {
-      throw new Error(`${CHANNELS[kind].label}通道返回的不是 JSON（HTTP ${response.status}，${endpoint}${CHANNELS[kind].endpoint}）`);
+      // 把响应体带出来：404 到底是我们自己的 Worker 答的（`Not found`，说明路径/方法不对），
+      // 还是 Cloudflare 答的（HTML，说明路由还没生效 / 地址不对）—— 只看状态码分不出来。
+      throw new Error(`${CHANNELS[kind].label}通道返回的不是 JSON（HTTP ${response.status}，${url}）：${text.slice(0, 200)}`);
     }
     if (!payload || payload.ok !== true) {
-      throw new Error(`${CHANNELS[kind].label}通道失败（${endpoint}${CHANNELS[kind].endpoint}）：`
-        + `${payload && payload.error ? payload.error : `HTTP ${response.status}`}`);
+      throw new Error(`${CHANNELS[kind].label}通道失败（${url}）：${payload && payload.error ? payload.error : `HTTP ${response.status}`}`);
     }
     return expectRows ? payload.rows : payload;
+  }
+
+  /**
+   * 刚 deploy 出来的 workers.dev 路由不是立刻生效的：2026-09-21 实测，deploy 完 1.5 秒就发请求
+   * 会拿到 404（不是我们 Worker 的响应），隔 ~7 秒就没问题。所以部署后先探测一次 —— 探测语句
+   * 用 `SELECT 1`，它对只读入口合法、对写入入口也是无害的（写入 Worker 会把它放进事务提交），
+   * 顺便把「令牌不对」这种配置错误在第一次真请求之前就暴露出来。
+   */
+  async function waitForRoute(kind, attempts = 6, delayMs = 1500) {
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      try {
+        await post(kind, 'SELECT 1', { expectRows: false });
+        return;
+      } catch (error) {
+        if (attempt === attempts) throw error;
+        log(`[channel] ${CHANNELS[kind].label} Worker 还没就绪（第 ${attempt} 次）：${String(error.message).slice(0, 120)}`);
+        await sleep(delayMs * attempt);
+      }
+    }
+  }
+
+  async function ensure(kind) {
+    if (!deployed[kind]) {
+      deployed[kind] = deployChannel(kind, { ...options, log });
+      await waitForRoute(kind);
+    }
+    return deployed[kind];
   }
 
   return {

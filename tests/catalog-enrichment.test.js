@@ -286,13 +286,13 @@ test('migration applier applies in filename order and validates its transport', 
   assert.equal(parseArgs(['--channel']).channel, true);
 });
 
-test('mysql channel deploys lazily, posts to the right endpoint and tears down', async () => {
+test('mysql channel deploys lazily, probes readiness, posts to the right endpoint and tears down', async () => {
   const { createChannelDb } = require('../scripts/catalog/mysql-channel.js');
   const deployed = [];
   const destroyed = [];
   const calls = [];
+  // 真实调用是 spawnSync('npx', ['wrangler', 'deploy', ...])，所以判 args.includes 而不是 args[0]
   const spawnSync = (command, args) => {
-    // 真实调用是 spawnSync('npx', ['wrangler', 'deploy', ...])，所以判 args.includes 而不是 args[0]
     const config = args[args.indexOf('--config') + 1];
     if (args.includes('deploy')) {
       deployed.push(config);
@@ -303,39 +303,70 @@ test('mysql channel deploys lazily, posts to the right endpoint and tears down',
   };
   const fetch = async (url, init) => {
     calls.push({ url, body: init.body, auth: init.headers.authorization });
-    return url.endsWith('/query')
-      ? { status: 200, json: async () => ({ ok: true, rows: [{ product_id: 'prd_a' }] }) }
-      : { status: 200, json: async () => ({ ok: true, statements: 1 }) };
+    const payload = url.endsWith('/query')
+      ? { ok: true, rows: [{ product_id: 'prd_a' }] }
+      : { ok: true, statements: 1 };
+    return { status: 200, text: async () => JSON.stringify(payload) };
   };
-  const db = createChannelDb({ spawnSync, fetch });
+  const db = createChannelDb({ spawnSync, fetch, sleep: async () => {}, log: () => {} });
   // 懒部署：没用到的那一侧不部署 —— 干跑（只读队列、不写结果）因此不碰写入入口
   assert.deepEqual(deployed, []);
-  assert.deepEqual(await db.select('SELECT 1'), [{ product_id: 'prd_a' }]);
+  assert.deepEqual(await db.select('SELECT product_id FROM products'), [{ product_id: 'prd_a' }]);
   assert.deepEqual(deployed, ['wrangler.mysql-read.toml']);
-  assert.match(calls[0].url, /\/query$/);
-  assert.match(calls[0].auth, /^Bearer [a-f0-9]{64}$/);
+  // 部署后的第一发是就绪探测：刚 deploy 的 workers.dev 路由不是立刻生效的
+  assert.equal(calls[0].body, 'SELECT 1');
+  assert.equal(calls[1].body, 'SELECT product_id FROM products');
+  assert.match(calls[1].url, /\/query$/);
+  assert.match(calls[1].auth, /^Bearer [a-f0-9]{64}$/);
+
   await db.batch(['UPDATE a SET x=1', 'UPDATE b SET x=1']);
   assert.deepEqual(deployed, ['wrangler.mysql-read.toml', 'wrangler.mysql-import.toml']);
-  assert.match(calls[1].url, /\/import$/);
+  assert.equal(calls[2].body, 'SELECT 1');
+  assert.match(calls[3].url, /\/import$/);
   // 一批语句合成一个请求：写入 Worker 会把它放进同一个事务
-  assert.equal(calls[1].body, 'UPDATE a SET x=1;\nUPDATE b SET x=1;');
+  assert.equal(calls[3].body, 'UPDATE a SET x=1;\nUPDATE b SET x=1;');
   await db.execute('UPDATE c SET x=1');
-  assert.equal(calls[2].body, 'UPDATE c SET x=1');
+  assert.equal(calls[4].body, 'UPDATE c SET x=1');
   await db.close();
   assert.deepEqual(destroyed.sort(), ['wrangler.mysql-import.toml', 'wrangler.mysql-read.toml']);
+});
+
+test('mysql channel retries until the freshly deployed route answers', async () => {
+  const { createChannelDb } = require('../scripts/catalog/mysql-channel.js');
+  // 2026-09-21 实测：deploy 完 1.5 秒就发请求会拿到 Cloudflare 的 404（HTML），隔 ~7 秒就好
+  let attempts = 0;
+  const fetch = async () => {
+    attempts += 1;
+    return attempts <= 2
+      ? { status: 404, text: async () => '<html>Not Found</html>' }
+      : { status: 200, text: async () => JSON.stringify({ ok: true, rows: [] }) };
+  };
+  const delays = [];
+  const db = createChannelDb({
+    spawnSync: () => ({ status: 0, stdout: 'https://x.example.workers.dev', stderr: '' }),
+    fetch, sleep: async (ms) => { delays.push(ms); }, log: () => {},
+  });
+  assert.deepEqual(await db.select('SELECT 1'), []);
+  assert.deepEqual(delays, [1500, 3000], '退避应当逐次加大');
+  assert.equal(attempts, 4, '两次探测失败 + 一次探测成功 + 一次真查询');
+  await db.close();
 });
 
 test('mysql channel surfaces worker errors instead of swallowing them', async () => {
   const { createChannelDb } = require('../scripts/catalog/mysql-channel.js');
   const okDeploy = () => ({ status: 0, stdout: 'https://x.example.workers.dev', stderr: '' });
   // 这条错误就是第一次推生产迁移时真实拿到的那个
-  const failing = async () => ({ status: 500, json: async () => ({ ok: false, error: 'Hyperdrive does not currently support MySQL prepared statements' }) });
-  const db = createChannelDb({ spawnSync: okDeploy, fetch: failing });
+  const failing = async () => ({ status: 500, text: async () => JSON.stringify({ ok: false, error: 'Hyperdrive does not currently support MySQL prepared statements' }) });
+  const db = createChannelDb({ spawnSync: okDeploy, fetch: failing, sleep: async () => {}, log: () => {} });
   await assert.rejects(() => db.select('SELECT 1'), /Hyperdrive does not currently support/);
   await assert.rejects(() => db.batch(['ALTER TABLE x ADD COLUMN y INT']), /Hyperdrive does not currently support/);
   await db.close();
+  // 非 JSON 的 404 要把响应体带出来，否则分不清是「我们 Worker 的 Not found」还是「路由没生效」
+  const html404 = createChannelDb({ spawnSync: okDeploy, fetch: async () => ({ status: 404, text: async () => '<html>Not Found</html>' }), sleep: async () => {}, log: () => {} });
+  await assert.rejects(() => html404.select('SELECT 1'), /不是 JSON（HTTP 404[\s\S]*Not Found/);
+  await html404.close();
   // 部署失败要把 wrangler 的输出带出来，否则「为什么连不上」只能靠猜
-  const broken = createChannelDb({ spawnSync: () => ({ status: 1, stdout: 'boom', stderr: 'nope' }), fetch: failing });
+  const broken = createChannelDb({ spawnSync: () => ({ status: 1, stdout: 'boom', stderr: 'nope' }), fetch: failing, sleep: async () => {}, log: () => {} });
   await assert.rejects(() => broken.select('SELECT 1'), /部署失败[\s\S]*boom/);
 });
 
