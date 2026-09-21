@@ -183,6 +183,64 @@ test('report record CLI validates its inputs', () => {
   assert.equal(parseArgs(['--all', '--force']).force, true);
 });
 
+// ---- 派生端（记录 → 日报对象）------------------------------------------------------------------
+
+test('deriving the report from the record reproduces the old chain field by field', () => {
+  // 这是第二批的**核心不变量**：旧链 = raw → admitReport（渲染期准入）；新链 = report_items →
+  // 派生。派生之后两步（合并 final、图片本地化）两边共用，所以这两者必须逐字段相同 ——
+  // 差一点就说明「从记录派生」会改变线上内容。
+  const { deriveReportFromRecord, diffReportObjects } = require('../scripts/catalog/derive-report.js');
+  const { admitReport } = require('../.agents/skills/community-pulse/scripts/issue-admission.js');
+  const dates = fs.readdirSync(RAW_DIR).filter(name => /^\d{4}-\d{2}-\d{2}\.json$/.test(name))
+    .map(name => name.slice(0, 10)).sort();
+  const sample = [...dates.slice(0, 1), ...dates.slice(-5), dates[Math.floor(dates.length / 2)]];
+  for (const date of sample) {
+    const raw = JSON.parse(fs.readFileSync(path.join(RAW_DIR, `${date}.json`), 'utf8'));
+    const oldReport = admitReport(raw);
+    const newReport = deriveReportFromRecord(buildReportRecord(raw, date));
+    assert.deepEqual(diffReportObjects(oldReport, newReport), [], `${date}：从记录派生必须无损`);
+  }
+});
+
+test('derivation keeps the source order and the empty source groups', () => {
+  const { deriveReportFromRecord } = require('../scripts/catalog/derive-report.js');
+  // 某个来源的条目全被排除时，旧链仍然保留这个分组（items: []），派生也必须保留 ——
+  // renderMarkdown 是 results → source → items 渲染的，来源顺序与来源名都是发布内容。
+  const report = rawReport();
+  report.results.push({ sourceId: 'hellogithub-issues', sourceName: 'HelloGitHub·用户投稿', items: [] });
+  const record = buildReportRecord(report, '2026-09-20');
+  const derived = deriveReportFromRecord(record);
+  assert.deepEqual(derived.results.map(source => source.sourceId), ['showhn', 'v2ex', 'hellogithub-issues']);
+  assert.deepEqual(derived.results[2], { sourceId: 'hellogithub-issues', sourceName: 'HelloGitHub·用户投稿', items: [] });
+  // 持续热门回到 trendingPolicy，不混进 results
+  assert.equal(derived.trendingPolicy.continuedItems.length, 1);
+  assert.equal(derived.trendingPolicy.cooldownDays, 3);
+  // 透传字段
+  assert.equal(derived.generatedAt, '2026-09-20T01:00:00.000Z');
+  assert.equal(derived.observedDate, '2026-09-21');
+  assert.equal(derived.publication.selectionVersion, SELECTION_VERSION);
+  assert.equal(derived.admission.version, 'issue-admission-v2');
+});
+
+test('chain diff reports what changed and stays empty for equal reports', () => {
+  const { deriveReportFromRecord, diffReportObjects } = require('../scripts/catalog/derive-report.js');
+  const record = buildReportRecord(rawReport(), '2026-09-20');
+  const derived = deriveReportFromRecord(record);
+  assert.deepEqual(diffReportObjects(derived, deriveReportFromRecord(record)), []);
+  // 少一行主列表（外键筛掉的情形）必须报出来，而不是静默
+  const shrunk = deriveReportFromRecord({ ...record, items: record.items.filter(item => item.productId !== 'prd_b') });
+  const differences = diffReportObjects(derived, shrunk);
+  assert.ok(differences.some(diff => diff.path === 'items.count'), '行数变化必须报出来');
+  assert.ok(differences.some(diff => diff.path === 'items.order'));
+  // 持续热门不在 D.reportItems 里，要单独逐条比
+  const noContinuation = deriveReportFromRecord({ ...record, items: record.items.filter(item => item.selectionReason !== 'trending-continuation') });
+  assert.ok(diffReportObjects(derived, noContinuation).some(diff => diff.path === 'trendingPolicy.continuedItems'),
+    '持续热门少了也要报出来');
+  // 字段级差异也要报
+  const tweaked = { ...record, items: record.items.map((item, index) => index === 0 ? { ...item, snapshot: { ...item.snapshot, title: '改了标题' } } : item) };
+  assert.ok(diffReportObjects(derived, deriveReportFromRecord(tweaked)).some(diff => diff.path === 'items.fieldMismatches'));
+});
+
 // ---- ② 真实数据层 ----------------------------------------------------------------------------
 
 test('report records built from published reports keep their invariants', () => {

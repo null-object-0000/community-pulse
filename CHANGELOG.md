@@ -659,9 +659,16 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **`report_items.product_id` 的外键会把整批拒掉。** 全历史 263 期、12,020 条记录行里有 **460 条（3.83%、151 期）** 的 `product_id` 不在产品库里（`fk_report_item_product` → `products(id)`），而写入是按期一批一个事务 —— 也就是那 151 期会整期失败。**但最近 12 期只有 09-17 缺 1 行**：日更导入覆盖 TARGET..OBSERVED、与日报同源，所以**日更不受影响**，缺的是 6–8 月的历史。写入器因此先筛掉这些行并把清单记进 `selection_json.skippedMissingProduct`（少记了哪几行必须可查），不静默丢。
 - **`published_at` 收不了 ISO 字符串。** `DATETIME(3)` 拒绝 `2026-09-20T01:00:00.000Z`（`Incorrect datetime value`）—— 与第一批在 `product_content.created_at` 上踩的是同一个坑，这次由集成用例在写库时挡下，并补了纯函数层的回归。
 
-**验证**：`npm run check` **297/297**（新增 10 条：记录顺序与冻结、准入冻结、持续热门与版本、身份回退、SQL 纪律与转义、**用真实历史日报跑的不变量**、真 MySQL 集成含重跑幂等与 `published_at` 不被冲掉）。顺带修了两处测试基建：集成用例的迁移列表改成**从目录派生**（以后加迁移不会再因为「数量变了」变红），两个集成测试文件各自固定库名（`node --test` 并行跑文件，共用 `CP_MYSQL_URL` 的库会互相 DROP）。
+**验证**：`npm run check` **300/300**（新增 10 条：记录顺序与冻结、准入冻结、持续热门与版本、身份回退、SQL 纪律与转义、**用真实历史日报跑的不变量**、真 MySQL 集成含重跑幂等与 `published_at` 不被冲掉）。顺带修了两处测试基建：集成用例的迁移列表改成**从目录派生**（以后加迁移不会再因为「数量变了」变红），两个集成测试文件各自固定库名（`node --test` 并行跑文件，共用 `CP_MYSQL_URL` 的库会互相 DROP）。
 
-**还没做**（下一步）：`/api/v1/reports` 端点 + 站点快照携带记录 + `build-site.js` 从记录派生（开关默认关）+ 新旧并行输出到独立目录 + 262 期逐字段 diff 报告 + 日更写记录步骤 + `check:report-identity` 改成「以记录为基准」+ 切分支上的 CHANGELOG。
+**派生端 + 新旧并行比较**（`scripts/catalog/derive-report.js`、`compare-report-chains.js`）：
+
+- 派生：`report_items`（冻结的发布行）→ 重建 `admitReport(raw)` 等价的对象，之后**合并 `final/*.md`、图片本地化、渲染三步两边完全共用**。三条纪律写进了注释：顺序不许重排（按 `position` 分组还原）、准入不许重算（决策已在写入时冻结）、双语不在记录里（按拍板口径仍由 Git final 合并）。
+- 顺带修掉一个真问题：**来源清单（含空分组）也是发布内容**。`renderMarkdown` 是 `results → source → items` 渲染的，只靠 `report_items` 还原不出「某个来源条目全被排除」的空分组，`results.length` 会少。记录因此多存 `selection.sources`（来源顺序 + 来源名）。
+- **离线逐期比较 263 期**：**112 期完全一致**；151 期有差异，而**差异类别只有 `items.count` / `items.order`**（合计 460 行，就是外键筛掉的那些历史行）。`results.length`、`results.sourceOrder`、逐行字段、`generatedAt`、`observedDate`、`publication`、`trendingPolicy`（含持续热门逐条）**全部零差异** —— 也就是**派生本身是无损的**，唯一会变的是「产品库里没有的那 460 行」。
+- 这条结论就是切链的依据：切链不会改变任何一期日报的内容，除了那 460 行本来就指向不存在产品页的历史行（最近 12 期只有 09-17 的 1 行）。
+
+**还没做**（下一步）：`/api/v1/reports` 端点 + 站点快照携带记录 + `build-site.js` 从记录派生（开关默认关，输出到独立目录）+ 日更写记录步骤 + `check:report-identity` 改成「以记录为基准 + 冻住历史」+ 渲染层（HTML/feed/sitemap）的逐字节比较。
 
 ## 值得记录的决策
 

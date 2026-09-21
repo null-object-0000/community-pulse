@@ -117,6 +117,14 @@ function buildReportRecord(rawReport, date, options = {}) {
       publishedAt: rawReport.generatedAt || null,
       selection: {
         observedDate: rawReport.observedDate || null,
+        // 来源清单（含**没有条目**的来源）：`renderMarkdown` 是 results → source → items 渲染的，
+        // 所以来源顺序与来源名也是发布内容；只靠 report_items 还原不出空分组。
+        sources: (admitted.results || []).map(source => ({ sourceId: source.sourceId, sourceName: source.sourceName || null })),
+        // 原始 ISO 时间戳（带 T/Z）也留一份：`reports.published_at` 是 DATETIME(3)、没有时区标记，
+        // 从它反推 ISO 会按本地时区解释，feed 的 pubDate 会整体偏移 8 小时。
+        generatedAt: rawReport.generatedAt || null,
+        date: rawReport.date || date,
+        inputMode: rawReport.inputMode || null,
         // 来源文件哈希 + taxonomyVersion（09-20 起就在 raw 里）：这一期读的是哪些不可变输入。
         publication: rawReport.publication || null,
         // 准入决策（含被排除的条目与原因）——冻在这里，渲染期不再重算。
