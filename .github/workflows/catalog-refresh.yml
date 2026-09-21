@@ -90,6 +90,20 @@ jobs:
         run: |
           node -e 'const { fetchJson } = require("./scripts/catalog/build-site-snapshot"); fetchJson(process.env.CATALOG_API_ORIGIN, "/api/v1/sources").then(data => { if (!Array.isArray(data.sources) || !data.sources.length) throw Error("Catalog API returned no sources"); console.log("Catalog API ready:", data.sources.length, "sources"); }).catch(error => { console.error(error.message); process.exitCode = 1; })'
 
+      - name: 应用待执行的 schema 迁移
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # 迁移与导入解耦：即使 skip_import=true（只重建快照）也照常把 schema 收敛。
+          # 走临时 Worker 通道而不是直连 —— 出口连不上 RDS 3306，而 Hyperdrive 又不支持 SQL 级
+          # PREPARE，所以幂等由 scripts/catalog/apply-mysql-migrations.js 的记账保证。
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "缺少 CLOUDFLARE_API_TOKEN：无法应用迁移。"
+            exit 1
+          fi
+          node scripts/catalog/apply-mysql-migrations.js --channel
+
       - name: 生成 MySQL 导入包
         if: ${{ github.event.inputs.skip_import != 'true' }}
         run: |

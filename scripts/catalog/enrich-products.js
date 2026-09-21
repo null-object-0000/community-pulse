@@ -78,8 +78,9 @@ function parseArgs(argv) {
     out: null,
     sqlOut: null,
     quiet: false,
+    channel: false,
   };
-  const booleans = new Set(['--dry-run', '--resume', '--no-resume', '--no-reentry', '--retry-failed', '--quiet']);
+  const booleans = new Set(['--dry-run', '--resume', '--no-resume', '--no-reentry', '--retry-failed', '--quiet', '--channel']);
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
     const value = inline === undefined && !booleans.has(name) ? argv[++index] : inline;
@@ -98,6 +99,7 @@ function parseArgs(argv) {
     else if (name === '--no-reentry') options.reentry = false;
     else if (name === '--retry-failed') options.retryFailed = true;
     else if (name === '--quiet') options.quiet = true;
+    else if (name === '--channel') options.channel = true;
     else throw new Error(`unknown argument: ${argv[index]}`);
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(options.date || '')) throw new Error('--date YYYY-MM-DD is required');
@@ -108,7 +110,11 @@ function parseArgs(argv) {
   }
   if (!Number.isInteger(options.limit) || options.limit < 0) throw new Error('--limit must be a non-negative integer');
   if (!options.processorVersion) throw new Error('--processor-version must not be empty');
-  if (!options.mysqlUrl) throw new Error('需要 --mysql-url 或环境变量 CATALOG_MYSQL_URL');
+  // 两条到产品库的路：本机直连（`--mysql-url`，公司出口会重置协议，通常只用于本地 MySQL 验收）
+  // 或临时 Worker 通道（`--channel`，生产唯一可用的路）。
+  if (!options.channel && !options.mysqlUrl) {
+    throw new Error('需要 --mysql-url / CATALOG_MYSQL_URL，或 --channel（临时 Worker 通道）');
+  }
   return options;
 }
 
@@ -315,7 +321,7 @@ function resultSql(runId, options, entry, localized, requestCount) {
 
 function failureSql(runId, row, error, requestCount) {
   const message = String(error && (error.stack || error.message) || error).slice(0, 4000);
-  return `UPDATE enrichment_product_status SET status='failed',
+  return `UPDATE enrichment_product_status SET status='failed', attempt_count=attempt_count+1,
     model_request_count=model_request_count+${Number(requestCount) || 0}, error=${sqlValue(message)},
     completed_at=CURRENT_TIMESTAMP(3), updated_at=CURRENT_TIMESTAMP(3)
     WHERE enrichment_run_id=${sqlValue(runId)} AND product_id=${sqlValue(row.product_id)}`;
@@ -339,6 +345,7 @@ function finishRunSql(runId, summary) {
 // ---- 数据库 ---------------------------------------------------------------------------------
 
 async function openDatabase(options) {
+  if (options.channel) return require('./mysql-channel.js').createChannelDb();
   const mysql = require('mysql2/promise');
   // dateStrings：DATE 列回来的是 'YYYY-MM-DD' 字符串，不是本地时区午夜的 JS Date。
   // 这层只在 SQL 里比日期，但把日期当成字符串读掉了一个「拿 Date 对象和字符串比」的隐患。
@@ -503,13 +510,16 @@ async function runEnrichment(options, dependencies = {}) {
     const worker = async () => {
       while (cursor < plan.pending.length) {
         const entry = plan.pending[cursor++];
-        await run(markRunningSql(runId, entry.row.product_id));
         let productRequests = 0;
         try {
           const localized = await localize(entry.input, {
             onRequest: () => { productRequests += 1; modelRequests += 1; },
           });
-          await runBatch(resultSql(runId, options, entry, localized, productRequests));
+          // markRunning 与结果放同一批：批在写入通道里是一个事务，所以「状态 + 内容」原子落地，
+          // 而且通道下每个产品只发一次 POST（分开发是两次）。中断的产品因此停在 `pending` 而不是
+          // `running` —— 两者都不是终态，重跑都会重新排队，语义没有区别。
+          await runBatch([markRunningSql(runId, entry.row.product_id),
+            ...resultSql(runId, options, entry, localized, productRequests)]);
           completedCount += 1;
         } catch (error) {
           await run(failureSql(runId, entry.row, error, productRequests));

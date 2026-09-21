@@ -255,12 +255,43 @@ test('enrichment queue SQL keys on first_seen_date and seeds the controlled voca
   for (const facet of Object.keys(D.taxonomyFacets)) assert.ok(seed.includes(`'${facet}'`), `缺分面 ${facet}`);
 });
 
+test('no migration uses SQL-level PREPARE, because Hyperdrive rejects it', () => {
+  // 生产写入走 Cloudflare Hyperdrive，它**不支持 MySQL 的 SQL 级 prepared statement**：
+  // 0005 最初用 information_schema + PREPARE 让 ALTER 幂等，本地直连 MySQL 8.4 跑得通、
+  // 在 Hyperdrive 上直接 500（error code 1104），第一次跑生产迁移就是这样炸的。
+  // 幂等因此搬到 scripts/catalog/apply-mysql-migrations.js：记账 + 逐条执行 + 「已存在」容错。
+  const directory = path.join(ROOT, 'migrations', 'mysql');
+  const files = fs.readdirSync(directory).filter(name => /^\d{4}_.+\.sql$/.test(name)).sort();
+  assert.ok(files.length >= 5);
+  for (const name of files) {
+    // 只看语句本身：注释里可以（也应该）解释为什么不能用 PREPARE
+    const sql = fs.readFileSync(path.join(directory, name), 'utf8')
+      .replace(/^\s*--.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
+    assert.doesNotMatch(sql, /\bPREPARE\b/i, `${name} 的语句含 PREPARE，Hyperdrive 不支持`);
+    assert.doesNotMatch(sql, /\bDEALLOCATE\b/i, `${name} 的语句含 DEALLOCATE，Hyperdrive 不支持`);
+  }
+  const applier = fs.readFileSync(path.join(ROOT, 'scripts', 'catalog', 'apply-mysql-migrations.js'), 'utf8');
+  assert.match(applier, /schema_migrations/, '幂等必须由应用器记账');
+  assert.match(applier, /Duplicate column name/, '引导路径要容忍「已存在」');
+});
+
+test('migration applier applies in filename order and validates its transport', () => {
+  const { parseArgs, migrationFiles } = require('../scripts/catalog/apply-mysql-migrations.js');
+  const files = migrationFiles();
+  assert.deepEqual(files, [...files].sort());
+  assert.equal(files[0], '0001_catalog.sql');
+  assert.ok(files.includes('0005_enrichment_run_cost.sql'));
+  assert.deepEqual(migrationFiles('0005'), ['0005_enrichment_run_cost.sql']);
+  assert.throws(() => parseArgs([]), /CATALOG_MYSQL_URL/);
+  assert.equal(parseArgs(['--channel']).channel, true);
+});
+
 // ---- ② 集成层（真 MySQL） ---------------------------------------------------------------------
 
-async function connect() {
+async function connect(databaseOverride) {
   const mysql = require('mysql2/promise');
   const url = new URL(MYSQL_URL);
-  const database = url.pathname.replace(/^\//, '') || 'devtrends_enrich_test';
+  const database = databaseOverride || url.pathname.replace(/^\//, '') || 'devtrends_enrich_test';
   const base = { host: url.hostname, port: Number(url.port || 3306), user: url.username, password: url.password, connectTimeout: 3000 };
   // 每次都整库重建：逐表 DROP 会留下指向已删表的旧外键，重建后状态不可预期。
   const admin = await mysql.createConnection(base);
@@ -288,10 +319,10 @@ function makeDb(connection) {
 }
 
 /** 本地没有可达的 MySQL 就跳过集成层（CI 没有容器，不该因此变红）。 */
-async function withDatabase(t) {
+async function withDatabase(t, databaseOverride) {
   let handle;
   try {
-    handle = await connect();
+    handle = await connect(databaseOverride);
   } catch (error) {
     t.skip(`没有可达的 MySQL（${MYSQL_URL}）：${error.message}`);
     return null;
@@ -479,6 +510,41 @@ test('enrichment integration: --dry-run writes nothing at all', async (t) => {
       (SELECT COUNT(*) FROM product_content) AS content,
       (SELECT COUNT(*) FROM taxonomy_assignments) AS taxonomy`);
     assert.deepEqual({ ...counts[0] }, { runs: 0, statuses: 0, content: 0, taxonomy: 0 });
+  } finally {
+    await connection.end();
+  }
+});
+
+test('enrichment integration: migration applier is idempotent and bootstraps an existing schema', async (t) => {
+  const handle = await withDatabase(t, 'devtrends_enrich_migrate_test');
+  if (!handle) return;
+  const { connection } = handle;
+  const { applyAll } = require('../scripts/catalog/apply-mysql-migrations.js');
+  const db = makeDb(connection);
+  try {
+    // 空库：五个迁移全跑，全部记账
+    const first = await applyAll(db, {});
+    assert.equal(first.applied, 5);
+    assert.equal(first.alreadyRecorded, 0);
+    const [recorded] = await connection.query('SELECT COUNT(*) AS n FROM schema_migrations');
+    assert.equal(recorded[0].n, 5);
+
+    // 二次运行：记账挡住，一条都不执行
+    const second = await applyAll(db, {});
+    assert.equal(second.applied, 0);
+    assert.equal(second.alreadyRecorded, 5);
+
+    // 引导路径（生产就是这形状：schema 已在、记账表是空的）：重复的语句被跳过、缺的补上
+    await connection.query('DELETE FROM schema_migrations');
+    const third = await applyAll(db, {});
+    assert.equal(third.applied, 5);
+    const skippedOf = (prefix) => third.migrations.find(entry => entry.name.startsWith(prefix)).skipped;
+    assert.ok(skippedOf('0003') >= 1, '0003 的裸 ADD KEY 应当被容错跳过');
+    // 0005 的 13 个 ADD COLUMN 被容错跳过，MODIFY COLUMN 本身幂等所以会真的执行一次
+    assert.equal(skippedOf('0005'), 13);
+    const [columns] = await connection.query(`SELECT COUNT(*) AS n FROM information_schema.COLUMNS
+      WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='enrichment_runs' AND COLUMN_NAME='model_request_count'`);
+    assert.equal(columns[0].n, 1);
   } finally {
     await connection.end();
   }
