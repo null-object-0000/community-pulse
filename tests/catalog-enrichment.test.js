@@ -286,6 +286,59 @@ test('migration applier applies in filename order and validates its transport', 
   assert.equal(parseArgs(['--channel']).channel, true);
 });
 
+test('mysql channel deploys lazily, posts to the right endpoint and tears down', async () => {
+  const { createChannelDb } = require('../scripts/catalog/mysql-channel.js');
+  const deployed = [];
+  const destroyed = [];
+  const calls = [];
+  const spawnSync = (command, args) => {
+    // 真实调用是 spawnSync('npx', ['wrangler', 'deploy', ...])，所以判 args.includes 而不是 args[0]
+    const config = args[args.indexOf('--config') + 1];
+    if (args.includes('deploy')) {
+      deployed.push(config);
+      return { status: 0, stdout: `Uploaded\nhttps://${config.replace(/\./g, '-')}.example.workers.dev\n`, stderr: '' };
+    }
+    destroyed.push(config);
+    return { status: 0, stdout: '', stderr: '' };
+  };
+  const fetch = async (url, init) => {
+    calls.push({ url, body: init.body, auth: init.headers.authorization });
+    return url.endsWith('/query')
+      ? { status: 200, json: async () => ({ ok: true, rows: [{ product_id: 'prd_a' }] }) }
+      : { status: 200, json: async () => ({ ok: true, statements: 1 }) };
+  };
+  const db = createChannelDb({ spawnSync, fetch });
+  // 懒部署：没用到的那一侧不部署 —— 干跑（只读队列、不写结果）因此不碰写入入口
+  assert.deepEqual(deployed, []);
+  assert.deepEqual(await db.select('SELECT 1'), [{ product_id: 'prd_a' }]);
+  assert.deepEqual(deployed, ['wrangler.mysql-read.toml']);
+  assert.match(calls[0].url, /\/query$/);
+  assert.match(calls[0].auth, /^Bearer [a-f0-9]{64}$/);
+  await db.batch(['UPDATE a SET x=1', 'UPDATE b SET x=1']);
+  assert.deepEqual(deployed, ['wrangler.mysql-read.toml', 'wrangler.mysql-import.toml']);
+  assert.match(calls[1].url, /\/import$/);
+  // 一批语句合成一个请求：写入 Worker 会把它放进同一个事务
+  assert.equal(calls[1].body, 'UPDATE a SET x=1;\nUPDATE b SET x=1;');
+  await db.execute('UPDATE c SET x=1');
+  assert.equal(calls[2].body, 'UPDATE c SET x=1');
+  await db.close();
+  assert.deepEqual(destroyed.sort(), ['wrangler.mysql-import.toml', 'wrangler.mysql-read.toml']);
+});
+
+test('mysql channel surfaces worker errors instead of swallowing them', async () => {
+  const { createChannelDb } = require('../scripts/catalog/mysql-channel.js');
+  const okDeploy = () => ({ status: 0, stdout: 'https://x.example.workers.dev', stderr: '' });
+  // 这条错误就是第一次推生产迁移时真实拿到的那个
+  const failing = async () => ({ status: 500, json: async () => ({ ok: false, error: 'Hyperdrive does not currently support MySQL prepared statements' }) });
+  const db = createChannelDb({ spawnSync: okDeploy, fetch: failing });
+  await assert.rejects(() => db.select('SELECT 1'), /Hyperdrive does not currently support/);
+  await assert.rejects(() => db.batch(['ALTER TABLE x ADD COLUMN y INT']), /Hyperdrive does not currently support/);
+  await db.close();
+  // 部署失败要把 wrangler 的输出带出来，否则「为什么连不上」只能靠猜
+  const broken = createChannelDb({ spawnSync: () => ({ status: 1, stdout: 'boom', stderr: 'nope' }), fetch: failing });
+  await assert.rejects(() => broken.select('SELECT 1'), /部署失败[\s\S]*boom/);
+});
+
 // ---- ② 集成层（真 MySQL） ---------------------------------------------------------------------
 
 async function connect(databaseOverride) {

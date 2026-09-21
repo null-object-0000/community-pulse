@@ -345,7 +345,9 @@ function finishRunSql(runId, summary) {
 // ---- 数据库 ---------------------------------------------------------------------------------
 
 async function openDatabase(options) {
-  if (options.channel) return require('./mysql-channel.js').createChannelDb();
+  if (options.channel) {
+    return require('./mysql-channel.js').createChannelDb({ log: message => console.error(message) });
+  }
   const mysql = require('mysql2/promise');
   // dateStrings：DATE 列回来的是 'YYYY-MM-DD' 字符串，不是本地时区午夜的 JS Date。
   // 这层只在 SQL 里比日期，但把日期当成字符串读掉了一个「拿 Date 对象和字符串比」的隐患。

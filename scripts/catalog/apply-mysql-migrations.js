@@ -67,7 +67,8 @@ function splitSql(sql) {
 }
 
 async function openDb(options) {
-  if (options.channel) return require('./mysql-channel.js').createChannelDb();
+  // 把部署出来的地址回显到日志：通道问题的第一现场就是「它到底请求了哪个 URL」。
+  if (options.channel) return require('./mysql-channel.js').createChannelDb({ log: message => console.log(message) });
   const mysql = require('mysql2/promise');
   const connection = await mysql.createConnection({ uri: options.mysqlUrl, dateStrings: true });
   return {
@@ -82,7 +83,12 @@ async function appliedVersions(db) {
     const rows = await db.select('SELECT version FROM schema_migrations');
     return new Set(rows.map(row => row.version));
   } catch (error) {
-    // 0001 还没跑过的库：没有记账表就没有已应用版本，全量往下走。
+    // 只有「表不存在」（1146）才是「0001 还没跑过」这个正常状态。其它错误（通道挂了、404、
+    // 权限）必须抛出去 —— 否则读失败会被降级成「记账为空」，于是每个迁移都被重跑一遍，
+    // 而真正的原因（读通道不通）在日志里只剩一句「已记账 0 个」。
+    const message = String(error.message || error);
+    if (!/doesn't exist|1146/i.test(message)) throw error;
+    console.warn('[migration] schema_migrations 还不存在，按「全部未应用」处理');
     return new Set();
   }
 }

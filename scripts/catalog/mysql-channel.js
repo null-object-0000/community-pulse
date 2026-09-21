@@ -33,8 +33,15 @@ function deployChannel(kind, options = {}) {
   if (result.status !== 0) {
     throw new Error(`${channel.label} Worker 部署失败：\n${result.stdout || ''}\n${result.stderr || ''}`);
   }
-  const endpoint = `${result.stdout || ''}\n${result.stderr || ''}`.match(/https:\/\/[^\s]+\.workers\.dev/)?.[0];
-  if (!endpoint) throw new Error(`${channel.label} Worker 没有报出地址`);
+  const output = `${result.stdout || ''}\n${result.stderr || ''}`;
+  // 去掉结尾的 `/`：wrangler 的输出格式会随版本变（有时带尾斜杠），而 `endpoint + '/import'`
+  // 一旦变成 `//import`，Worker 的 pathname 判等就不成立，返回的是它自己的 404 —— 症状是
+  // 「部署成功、请求 404」，很难从日志看出来。地址必须回显，否则只能靠猜。
+  const endpoint = output.match(/https:\/\/[^\s]+\.workers\.dev/)?.[0]?.replace(/\/+$/, '');
+  if (!endpoint) {
+    throw new Error(`${channel.label} Worker 没有报出地址，wrangler 输出：\n${output}`);
+  }
+  if (options.log) options.log(`[channel] ${channel.label} Worker: ${endpoint}`);
   return { endpoint, token };
 }
 
@@ -54,8 +61,9 @@ function destroyChannel(kind, options = {}) {
 function createChannelDb(options = {}) {
   const fetchImpl = options.fetch || fetch;
   const deployed = { read: null, write: null };
+  const log = options.log || (() => {});
   const ensure = (kind) => {
-    if (!deployed[kind]) deployed[kind] = deployChannel(kind, options);
+    if (!deployed[kind]) deployed[kind] = deployChannel(kind, { ...options, log });
     return deployed[kind];
   };
 
@@ -68,10 +76,11 @@ function createChannelDb(options = {}) {
     try {
       payload = await response.json();
     } catch (error) {
-      throw new Error(`${CHANNELS[kind].label}通道返回的不是 JSON（HTTP ${response.status}）`);
+      throw new Error(`${CHANNELS[kind].label}通道返回的不是 JSON（HTTP ${response.status}，${endpoint}${CHANNELS[kind].endpoint}）`);
     }
     if (!payload || payload.ok !== true) {
-      throw new Error(`${CHANNELS[kind].label}通道失败：${payload && payload.error ? payload.error : `HTTP ${response.status}`}`);
+      throw new Error(`${CHANNELS[kind].label}通道失败（${endpoint}${CHANNELS[kind].endpoint}）：`
+        + `${payload && payload.error ? payload.error : `HTTP ${response.status}`}`);
     }
     return expectRows ? payload.rows : payload;
   }
