@@ -642,6 +642,26 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 **已合入 main 并部署**（2026-09-21）：`73b11d4 merge: 产品级 LLM 加工流水线（第一批：加工层）`，推送后 Cloudflare Workers Builds 自动构建。上线检查全绿 —— `/`、`/styles.css`、`/app.js`、`/data/index.json`、`/robots.txt`、`/sitemap.xml`（索引型 691B）、`/sitemap-baidu.xml`（扁平 3.28MB）、`/feed.xml`、`/en/feed.xml`、`/og-image.png`、`/logo-512.png`、`/reports/2026-09-20/` 全部 200；项目详情页 200、不存在的项目 404、英文详情页 200；最新日报 `summarySource: llm-final`、`matchedByProductId: 103/103`。快照新版本也确认上线：拿那 8 个刚本地化的 `siteLogo` 当指纹，`data.overme.cn/apple-touch-icon.png` 已渲染成 `img.devtrends.site/images/76ee32a4…`。合并前的验证在**合并结果**上又跑了一遍 `npm run check` 287/287，不只是分支上通过。
 
 顺带记一个**既有**缺口（不是这次引入）：`coder.com/favicon-180x180-light.png`、`eskim2001.github.io/dshcloud/brand/mark.svg` 这类**只出现在产品库、没进过任何日报行**的标志不在 `assets/images/manifest.json` 里 —— `images:sync` 只抓日报行引用到的标志，于是快照的宽松本地化保留原地址，Worker 的 `trustedImage()` 又不放行，趋势页那几行只剩首字母。要补的话得让 `images:sync` 也覆盖产品库侧引用的标志，是独立一件事。
+## 2026-09-21（续）· 第二批「发布层」：发布记录落地（进行中）
+
+第一批（加工层）已合入 main 并上线。第二批要把日报从「Git raw/final 再推一遍」改成**产品库投影**：选品、顺序、冷却、持续热门、当期加工版本落成 MySQL 结构化发布记录，日报 JSON/Markdown/HTML 从记录派生，新旧并行比较后再切。三个口径已拍板：**只冻选品层**（双语仍由 Git `final/*.md` 合并）、**以记录为基准 + 冻住历史**（不回写那 337 行漂移）、**交付到「并行链 + diff 报告 + 开关」**（默认不切）。
+
+**这一批先做记录构建器**（`scripts/catalog/build-report-record.js` + `migrations/mysql/0006_report_selection.sql`）：
+
+- `reports` 一行 = 一期（`report_date` 上有唯一键，所以一期一行、中英双语在同一行的 `selection_json` 里 —— 站点本来就从同一个 report 对象渲染两版）；`report_items` 一行 = **一个去重后的产品**（`(report_id, product_id)` 主键与 `dedupe()` 的跨源合并一致），`position` 是发布顺序，`snapshot_json` 是冻结的发布行。持续热门（折叠展示的那几条）也算这一期发布，进 `report_items` 并标 `selection_reason='trending-continuation'`。
+- 0006 给 `reports` 加 `selection_json`：`publication`（来源哈希 + taxonomyVersion）、`admission`（准入决策含被排除条目）、`trendingPolicy`（冷却期数、被压制条数与**被压制的全部条目**）。最后这项顺带补了 `collect.js` 的 `applyTrendingPolicy` —— 它原来只返回 `suppressedCount`，答不了「这期为什么没有 X」。
+- **准入在写入时冻结，不再在渲染时算。** 现在 `build-site.js` 在渲染期跑 `admitReport`，也就是说改一次准入规则会把历史日报悄悄改写 —— 违反「已发布日报固定其版本」。记录把决策冻进 `selection_json`。
+- **记录一旦写入就不由 raw 重算**（除显式 `--force`）：否则 `revoke-admissions.js` 删掉的 `report_items` 行会被下一次重算加回来。
+- 选品规则版本只有一份实现：`collect.js` 导出 `SELECTION_VERSION`，记录侧引用它；历史日报没有这个字段，冻成 `legacy-pre-record`，**不假装它们按现行规则选出来的**。
+
+**两个实测发现（都不是猜的）：**
+
+- **`report_items.product_id` 的外键会把整批拒掉。** 全历史 263 期、12,020 条记录行里有 **460 条（3.83%、151 期）** 的 `product_id` 不在产品库里（`fk_report_item_product` → `products(id)`），而写入是按期一批一个事务 —— 也就是那 151 期会整期失败。**但最近 12 期只有 09-17 缺 1 行**：日更导入覆盖 TARGET..OBSERVED、与日报同源，所以**日更不受影响**，缺的是 6–8 月的历史。写入器因此先筛掉这些行并把清单记进 `selection_json.skippedMissingProduct`（少记了哪几行必须可查），不静默丢。
+- **`published_at` 收不了 ISO 字符串。** `DATETIME(3)` 拒绝 `2026-09-20T01:00:00.000Z`（`Incorrect datetime value`）—— 与第一批在 `product_content.created_at` 上踩的是同一个坑，这次由集成用例在写库时挡下，并补了纯函数层的回归。
+
+**验证**：`npm run check` **297/297**（新增 10 条：记录顺序与冻结、准入冻结、持续热门与版本、身份回退、SQL 纪律与转义、**用真实历史日报跑的不变量**、真 MySQL 集成含重跑幂等与 `published_at` 不被冲掉）。顺带修了两处测试基建：集成用例的迁移列表改成**从目录派生**（以后加迁移不会再因为「数量变了」变红），两个集成测试文件各自固定库名（`node --test` 并行跑文件，共用 `CP_MYSQL_URL` 的库会互相 DROP）。
+
+**还没做**（下一步）：`/api/v1/reports` 端点 + 站点快照携带记录 + `build-site.js` 从记录派生（开关默认关）+ 新旧并行输出到独立目录 + 262 期逐字段 diff 报告 + 日更写记录步骤 + `check:report-identity` 改成「以记录为基准」+ 切分支上的 CHANGELOG。
 
 ## 值得记录的决策
 

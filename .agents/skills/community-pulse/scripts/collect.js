@@ -23,6 +23,9 @@ const DEFAULT_REPORT_HISTORY_ROOT = path.resolve(ROOT, '..', '..', '..', '..', '
 const TRENDING_SOURCES = new Set(['github-trending', 'github-trending-cn']);
 const TRENDING_COOLDOWN_DAYS = 3;
 const TRENDING_CONTINUATION_LIMIT = 3;
+// 选品规则版本：冷却期数、持续热门上限、跨源去重阈值、准入版本共同定义「这一期是怎么选出来的」。
+// 发布记录（reports.selection_version）引用它；改上面任何一个常量都要一起改这个版本号。
+const SELECTION_VERSION = 'selection-v1';
 
 function loadConfig() {
   return JSON.parse(fs.readFileSync(CONFIG, 'utf8'));
@@ -187,6 +190,12 @@ function applyTrendingPolicy(results, options = {}) {
     }
   }
 
+  // 被冷却压制的**全部**条目（不只是进了折叠列表的那 3 条）：发布记录靠它回答
+  // 「这期为什么没有 X」。只留身份与出现次数，不带大字段。
+  const suppressedItems = continued.map(item => ({
+    sourceId: item.sourceId, externalId: item.externalId, title: item.title,
+    githubUrl: item.githubUrl, trendingContinuation: item.trendingContinuation,
+  }));
   const continuedItems = continued
     .sort((a, b) => Number(b.metrics?.today || 0) - Number(a.metrics?.today || 0))
     .slice(0, continuationLimit)
@@ -204,7 +213,9 @@ function applyTrendingPolicy(results, options = {}) {
     }));
   return {
     cooldownDays,
+    continuationLimit,
     suppressedCount,
+    suppressedItems,
     continuedItems,
   };
 }
@@ -553,6 +564,7 @@ async function main() {
   const publication = {
     schemaVersion: 1,
     taxonomyVersion: D.taxonomyVersion,
+    selectionVersion: SELECTION_VERSION,
     sourceRaw: results.filter((result) => result.sourceRaw).map((result) => ({
       sourceId: result.sourceId,
       path: result.sourceRaw.path,
@@ -607,6 +619,7 @@ async function main() {
 if (require.main === module) main().catch(e => { console.error('FATAL', e); process.exit(1); });
 
 module.exports = {
+  SELECTION_VERSION,
   applyTrendingPolicy,
   productIdOf: (item) => productId(identityFor(item)),
   dedupe,

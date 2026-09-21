@@ -21,8 +21,10 @@ const {
 const { sourceHash, PROMPT_VERSION, translationInput } = require('../.agents/skills/community-pulse/scripts/enhance.js');
 
 const MYSQL_URL = process.env.CP_MYSQL_URL || 'mysql://root:root@127.0.0.1:13306/devtrends_enrich_test';
-const MIGRATIONS = ['0001_catalog', '0002_enrichment_product_status', '0003_first_seen_covering_index',
-  '0004_dynamic_product_pages', '0005_enrichment_run_cost'];
+// 从目录派生：以后新增迁移不会再让这条用例因为「数量变了」而红 —— 它要守的是幂等语义，不是数量。
+const MIGRATION_FILES = require('../scripts/catalog/apply-mysql-migrations.js').migrationFiles();
+const MIGRATIONS = MIGRATION_FILES.map(name => name.replace(/\.sql$/, ''));
+const MIGRATION_COUNT = MIGRATION_FILES.length;
 const ROOT = path.join(__dirname, '..');
 
 function baseArgs(extra = []) {
@@ -684,29 +686,30 @@ test('enrichment integration: migration applier is idempotent and bootstraps an 
     const { applyAll } = require('../scripts/catalog/apply-mysql-migrations.js');
     // 空库：五个迁移全跑，全部记账
     const first = await applyAll(db, {});
-    assert.equal(first.applied, 5);
+    assert.equal(first.applied, MIGRATION_COUNT);
     assert.equal(first.alreadyRecorded, 0);
     const [recorded] = await connection.query('SELECT COUNT(*) AS n FROM schema_migrations');
-    assert.equal(recorded[0].n, 5);
+    assert.equal(recorded[0].n, MIGRATION_COUNT);
 
     // 二次运行：记账挡住，一条都不执行
     const second = await applyAll(db, {});
     assert.equal(second.applied, 0);
-    assert.equal(second.alreadyRecorded, 5);
+    assert.equal(second.alreadyRecorded, MIGRATION_COUNT);
 
     // 历史命名兼容：生产里那条 `0001_catalog`（无 .sql 后缀）也要认，否则 0001 每次白跑一遍
     await connection.query("DELETE FROM schema_migrations WHERE version='0001_catalog.sql'");
     await connection.query("INSERT INTO schema_migrations (version) VALUES ('0001_catalog')");
     const legacy = await applyAll(db, {});
-    assert.equal(legacy.alreadyRecorded, 5, '0001 应当被那条无后缀的记账挡住');
+    assert.equal(legacy.alreadyRecorded, MIGRATION_COUNT, '0001 应当被那条无后缀的记账挡住');
     assert.equal(legacy.applied, 0);
 
     // 引导路径（生产就是这形状：schema 已在、记账表是空的）：重复的语句被跳过、缺的补上
     await connection.query('DELETE FROM schema_migrations');
     const third = await applyAll(db, {});
-    assert.equal(third.applied, 5);
+    assert.equal(third.applied, MIGRATION_COUNT);
     const skippedOf = (prefix) => third.migrations.find(entry => entry.name.startsWith(prefix)).skipped;
     assert.ok(skippedOf('0003') >= 1, '0003 的裸 ADD KEY 应当被容错跳过');
+    assert.ok(skippedOf('0006') >= 1, '0006 的裸 ADD COLUMN 应当被容错跳过');
     // 0005 的 13 个 ADD COLUMN 被容错跳过，MODIFY COLUMN 本身幂等所以会真的执行一次
     assert.equal(skippedOf('0005'), 13);
     const [columns] = await connection.query(`SELECT COUNT(*) AS n FROM information_schema.COLUMNS
