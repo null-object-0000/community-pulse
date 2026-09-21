@@ -125,7 +125,12 @@ async function applyAll(db, options = {}) {
   const files = migrationFiles(options.only);
   const summary = [];
   for (const name of files) {
-    if (done.has(name)) { summary.push({ name, status: 'recorded' }); continue; }
+    // 历史命名兼容：生产里有一条 `0001_catalog`（没有 .sql 后缀），来自最初那次一次性 Worker
+    // 执行的迁移。不认它的话，0001 每次都会被重新应用一遍（`IF NOT EXISTS` 无害但白跑）。
+    if (done.has(name) || done.has(name.replace(/\.sql$/, ''))) {
+      summary.push({ name, status: 'recorded' });
+      continue;
+    }
     const result = await applyMigration(db, name, options);
     if (!options.dryRun) {
       // 记账与 DDL 分开：DDL 在 MySQL 里隐式提交，包不进事务，所以先做完再记账。

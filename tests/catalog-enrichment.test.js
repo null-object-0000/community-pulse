@@ -618,6 +618,13 @@ test('enrichment integration: migration applier is idempotent and bootstraps an 
     assert.equal(second.applied, 0);
     assert.equal(second.alreadyRecorded, 5);
 
+    // 历史命名兼容：生产里那条 `0001_catalog`（无 .sql 后缀）也要认，否则 0001 每次白跑一遍
+    await connection.query("DELETE FROM schema_migrations WHERE version='0001_catalog.sql'");
+    await connection.query("INSERT INTO schema_migrations (version) VALUES ('0001_catalog')");
+    const legacy = await applyAll(db, {});
+    assert.equal(legacy.alreadyRecorded, 5, '0001 应当被那条无后缀的记账挡住');
+    assert.equal(legacy.applied, 0);
+
     // 引导路径（生产就是这形状：schema 已在、记账表是空的）：重复的语句被跳过、缺的补上
     await connection.query('DELETE FROM schema_migrations');
     const third = await applyAll(db, {});
