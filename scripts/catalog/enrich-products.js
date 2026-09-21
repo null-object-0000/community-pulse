@@ -327,17 +327,38 @@ function failureSql(runId, row, error, requestCount) {
     WHERE enrichment_run_id=${sqlValue(runId)} AND product_id=${sqlValue(row.product_id)}`;
 }
 
+/**
+ * 结束这次运行并把成本落成可读数字。
+ *
+ * **成本列累加，状态列取最新** —— 这不是随手选的，是「续跑」这个语义逼出来的：
+ * 一个 run id 对应「某一天 + 某加工版本」，同一天重跑（续跑、补跑、--retry-failed）都落在同一行。
+ * 若成本列也取最新，第二次续跑的 0 请求就会把第一次真实花掉的 630 次请求覆盖成 0 ——
+ * 成本曲线会把所有重跑过的日期记成免费（2026-09-21 实测踩到）。
+ *   - 累加（成本/工作量）：model_request_count / wall_clock_ms / requested_count / resumed_count
+ *     → 派生指标「每条平均耗时 = wall_clock_ms / requested_count」两边都是累计量，自洽
+ *   - 最新（结果状态）：product_count / new_product_count / reentry_count /
+ *     completed_count / failed_count / skipped_no_input_count
+ * summary_json 存**这一次**的完整摘要，所以逐次明细也留得住。
+ */
 function finishRunSql(runId, summary) {
   const terminal = (summary.failedCount || summary.states.pending || summary.states.running) ? 'failed' : 'complete';
   const error = terminal === 'failed'
     ? `${summary.failedCount} failed, ${summary.states.pending} pending, ${summary.states.running} running`
     : null;
+  // runState 是「这个 run 现在是什么状态」（从 enrichment_product_status 数出来的，跨执行稳定）；
+  // 没有它的话，一次 0 请求的续跑会把 completed_count 写成 0，而那一列的含义是「这一天有多少条
+  // 加工完成」—— 成本记录里「处理了多少产品 / 跳过多少 / 失败几条」正是 brief 要求可读的数字。
+  const state = summary.runState || {
+    productCount: summary.productCount, completedCount: summary.completedCount,
+    failedCount: summary.failedCount, skippedNoInputCount: summary.skippedNoInputCount,
+  };
   return `UPDATE enrichment_runs SET status=${sqlValue(terminal)}, completed_at=CURRENT_TIMESTAMP(3),
-    error=${sqlValue(error)}, product_count=${summary.productCount}, new_product_count=${summary.newProductCount},
-    reentry_count=${summary.reentryCount}, requested_count=${summary.requestedCount},
-    completed_count=${summary.completedCount}, failed_count=${summary.failedCount},
-    skipped_no_input_count=${summary.skippedNoInputCount}, resumed_count=${summary.resumedCount},
-    model_request_count=${summary.modelRequests}, wall_clock_ms=${summary.wallClockMs},
+    error=${sqlValue(error)}, product_count=${state.productCount}, new_product_count=${summary.newProductCount},
+    reentry_count=reentry_count+${summary.reentryCount}, requested_count=requested_count+${summary.requestedCount},
+    completed_count=${state.completedCount}, failed_count=${state.failedCount},
+    skipped_no_input_count=${state.skippedNoInputCount}, resumed_count=resumed_count+${summary.resumedCount},
+    model_request_count=model_request_count+${summary.modelRequests},
+    wall_clock_ms=wall_clock_ms+${summary.wallClockMs},
     summary_json=${sqlValue(JSON.stringify(summary))}
   WHERE id=${sqlValue(runId)}`;
 }
@@ -548,6 +569,16 @@ async function runEnrichment(options, dependencies = {}) {
       }
     }
     const wallClockMs = Math.max(0, Math.round(now() - startedAt));
+    // run 的状态（跨执行稳定）：状态表里这个 run 现在有多少条终态。干跑没落库，退回本次计划的数字。
+    const runState = options.dryRun ? {
+      productCount: plan.pending.length + plan.skipped.length,
+      completedCount, failedCount, skippedNoInputCount: plan.skipped.length,
+    } : {
+      productCount: (states.pending || 0) + (states.running || 0) + (states.complete || 0) + (states.failed || 0) + (states.skipped_no_input || 0),
+      completedCount: states.complete || 0,
+      failedCount: states.failed || 0,
+      skippedNoInputCount: states.skipped_no_input || 0,
+    };
     const summary = {
       runId,
       date: options.date,
@@ -578,6 +609,8 @@ async function runEnrichment(options, dependencies = {}) {
         complete: states.complete || 0, failed: states.failed || 0,
         skipped_no_input: states.skipped_no_input || 0,
       },
+      // 这个 run 的状态（写进 enrichment_runs 的那几个结果列）；上面那些是**本次执行**的数字。
+      runState,
     };
     await run(finishRunSql(runId, summary));
 

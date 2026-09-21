@@ -552,6 +552,33 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **生产迁移落地过程中修掉的三个真 bug（都是「本地通过、生产通道不通过」）。** ① **Hyperdrive 不支持 SQL 级 `PREPARE`** —— 见上，幂等搬进应用器。② **新 deploy 的 workers.dev 路由不是立刻生效**：deploy 完 1.5 秒就发请求会拿到 Cloudflare 的 HTML 404（不是我们 Worker 的响应），隔 ~7 秒才好；于是「部署成功 → 立刻 POST」的写法整条挂掉，报的还是「返回的不是 JSON（HTTP 404）」，只看状态码分不清是「我们 Worker 的 `Not found`」还是「路由没生效」。修法是部署后先用 `SELECT 1` 探测（对只读入口合法、对写入入口无害），失败按 1.5s/3s/4.5s 退避重试，并把响应体带进错误。③ **`INSERT IGNORE` 把所有错误一起吞掉**（表不存在、权限不足都静默忽略），于是记账没写进去也看不出来，下一轮又把每个迁移重跑一遍；改成普通 `INSERT` 只容错 1062。三个都补了回归用例。
 - **记账里那条 `0001_catalog`（没有 `.sql` 后缀）是历史遗留**：最初那次一次性 Worker 执行的迁移用的是不带扩展名的版本号。应用器因此同时认 `name` 与 `name.replace(/\.sql$/,'')`，否则 0001 每次都会白跑一遍（`IF NOT EXISTS` 无害，但会让「重放是空操作」这句话不成立）。实测最后一轮：`已记账 6 个`（1 条遗留 + 5 条本轮）、`applied: 0`。
 - **私有仓库的 Actions 额度用尽 → 已改成公开仓库**（2026-09-21，用户操作）。我的第三次 dispatch 被拒：「The job was not started because recent account payments have failed or your spending limit needs to be increased」；改公开后免费额度生效，同日 04:09Z 的 dispatch 正常跑完。这条记在这里是因为**它曾经挡过日更**（私有仓库的分钟按量计费），以后若再改回私有要记得这回事。
+### 生产 shadow 实跑（2026-09-21，TARGET=2026-09-20，只写 `is_current=0`）
+
+| | 值 |
+|---|---|
+| 新增桶 / 队列 | 645（`product_details` 无缺行） |
+| 进模型 / 完成 / 失败 | 599 / 596 / 3（失败率 0.5%） |
+| 门禁跳过 | 46，且**全部 `attempt_count=0`、`model_request_count=0`** |
+| 模型请求 | 630 |
+| 墙钟 / 每条 | 358.7 秒 / 599 ms（并发 20） |
+| 二次运行 | **`modelRequests: 0`**、642 条 0 请求续跑、23.7 秒 |
+| shadow 不变量 | `product_content` 1192 行、`taxonomy_assignments`(llm) 2443 行，`is_current=1` **0 行** |
+| 失败原因 | `taxonomy.useCases` 缺失 ×2、`summaryEn 不是英文译文` ×1（模型输出没过 `validateLocalization`，各重试 5 次） |
+
+**线上口径核对（顺带解决 brief 里的悬案）**：线上 `products.first_seen_date` 是 09-19 = **793**、09-20 = **645**，与我用导入链自己的 `collectRows()` 做的离线投影**逐位一致**（`last_seen_date` 821/670、`product_details.observed_date` 814/659 也都对得上）。brief 里「09-19 是 840、09-20 是 684」在四个口径下都不存在，现在有生产数据坐实。同时纠正方案文档的一处基线：线上 `taxonomy_terms` 是 **50**、`taxonomy_assignments` 是 **384,123**（全是 `rule`）—— 那个「空表」是 `collectRows` 没开 `--taxonomy` 的测量假象，所以「LLM 标签会被外键挡住」这个担心本来就不成立。
+
+### 生产通道上的第四个坑（最贵的那个）：Hyperdrive 按 SQL 文本缓存查询结果
+
+`HYPERDRIVE_READ` 那条路会按 **SQL 文本**缓存结果（实测约十分钟）。加工流水线「读本 run 的既有状态」的 SQL 每轮文本完全相同，于是**第一轮在空表时读出的空结果被缓存**，之后每一轮续跑都读到「没有状态」→ 把整天的产品重新发一遍请求。实测白付 **627 次请求 / 346 秒**（第二次运行 `resumedCount: 0`，而库里 645 条状态一条不少）。诊断方式是同一批数据换 SQL 文本读：`COUNT(*)` 变体返回 645、逐字相同的那条返回 `[]`。
+
+修法：**状态读改走主库连接**（`HYPERDRIVE_WRITE`，不带这层缓存），读也由它承担 —— `mysql-channel.js` 因此从「读 + 写两个临时 Worker」收敛成**一个**，`worker/catalog-import.mjs` 顺带把 SELECT 的行返回回去（新增 `rows` 字段，旧调用方 `upload-mysql.js` 只看 HTTP 状态，不受影响）。队列读（`item_json` 会变、直接影响输入哈希）同理。`live-query.js` 那条只读通道保留给人工核对 —— 那里陈旧只影响观察、不影响写。这条同时解释了记账那两次诡异现象（`已记账 1 个` 与 `alreadyRecorded: 0` 自相矛盾、03:59 那次「已记账 0」）：都是读连接拿到了陈旧结果。
+
+顺带把就绪重试预算从 22.5 秒加到约 60 秒 —— 实测路由生效时间不稳定，同一个 Worker 反复 deploy/delete 之后要等 20 秒以上。
+
+### 成本记录的两次修正
+
+- **成本列必须累加。** 一个 run id 对应「某一天 + 某加工版本」，同一天续跑 / 补跑 / `--retry-failed` 都落在同一行。成本列取最新的话，第二次续跑的 0 请求会把第一次真实花掉的 630 次请求覆盖成 0 —— 成本曲线会把所有重跑过的日期记成免费（实测踩到，2026-09-20 那行的前两次花费被抹掉，已按三次运行的实际输出数字手工回填）。现在 `model_request_count` / `wall_clock_ms` / `requested_count` / `resumed_count` / `reentry_count` 累加；派生的「每条平均耗时 = wall_clock_ms / requested_count」两边都是累计量，自洽。
+- **状态列写 run 的状态，不写本次执行的计数。** 一次 0 请求的续跑会把 `completed_count` 写成 0，而那一列的含义是「这一天有多少条加工完成」—— brief 要的「当天处理了多少产品 / 跳过多少 / 失败几条」正是这几个数。现在从 `enrichment_product_status` 数出来再写（`runState`），跨执行稳定。
 
 ## 值得记录的决策
 

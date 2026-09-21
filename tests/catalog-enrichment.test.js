@@ -211,24 +211,29 @@ test('enrichment run record carries the cost curve columns and a readable summar
     productCount: 793, newProductCount: 762, reentryCount: 31, requestedCount: 732, completedCount: 730,
     failedCount: 2, skippedNoInputCount: 31, resumedCount: 0, modelRequests: 735, wallClockMs: 123456,
     states: { pending: 0, running: 0, complete: 730, failed: 2 },
+    runState: { productCount: 645, completedCount: 596, failedCount: 3, skippedNoInputCount: 46 },
   });
   assert.match(statement, /status='failed'/);
-  assert.match(statement, /product_count=793/);
+  // 状态列写 runState（这个 run 现在的状态，跨执行稳定）—— 一次 0 请求的续跑不该把
+  // 「这一天加工完成多少条」写成 0
+  assert.match(statement, /product_count=645/);
+  assert.match(statement, /completed_count=596/);
+  assert.match(statement, /failed_count=3/);
+  assert.match(statement, /skipped_no_input_count=46/);
   assert.match(statement, /new_product_count=762/);
-  assert.match(statement, /reentry_count=31/);
-  assert.match(statement, /requested_count=732/);
-  assert.match(statement, /completed_count=730/);
-  assert.match(statement, /failed_count=2/);
-  assert.match(statement, /skipped_no_input_count=31/);
-  assert.match(statement, /resumed_count=0/);
-  assert.match(statement, /model_request_count=735/);
-  assert.match(statement, /wall_clock_ms=123456/);
+  // 成本/工作量列必须**累加**：同一天重跑落在同一行，取最新会把第一次真实花费覆盖成 0
+  assert.match(statement, /reentry_count=reentry_count\+31/);
+  assert.match(statement, /requested_count=requested_count\+732/);
+  assert.match(statement, /resumed_count=resumed_count\+0/);
+  assert.match(statement, /model_request_count=model_request_count\+735/);
+  assert.match(statement, /wall_clock_ms=wall_clock_ms\+123456/);
   assert.match(statement, /summary_json='\{/);
   // 没有失败/残留时记为 complete
   assert.match(finishRunSql('enr_test', {
     productCount: 1, newProductCount: 1, reentryCount: 0, requestedCount: 1, completedCount: 1,
     failedCount: 0, skippedNoInputCount: 0, resumedCount: 0, modelRequests: 1, wallClockMs: 1,
     states: { pending: 0, running: 0, complete: 1, failed: 0 },
+    runState: { productCount: 1, completedCount: 1, failedCount: 0, skippedNoInputCount: 0 },
   }), /status='complete'/);
 });
 
@@ -286,7 +291,7 @@ test('migration applier applies in filename order and validates its transport', 
   assert.equal(parseArgs(['--channel']).channel, true);
 });
 
-test('mysql channel deploys lazily, probes readiness, posts to the right endpoint and tears down', async () => {
+test('mysql channel uses one primary-connection worker for reads and writes', async () => {
   const { createChannelDb } = require('../scripts/catalog/mysql-channel.js');
   const deployed = [];
   const destroyed = [];
@@ -296,39 +301,36 @@ test('mysql channel deploys lazily, probes readiness, posts to the right endpoin
     const config = args[args.indexOf('--config') + 1];
     if (args.includes('deploy')) {
       deployed.push(config);
-      return { status: 0, stdout: `Uploaded\nhttps://${config.replace(/\./g, '-')}.example.workers.dev\n`, stderr: '' };
+      return { status: 0, stdout: 'Uploaded\nhttps://devtrends-mysql-import.nichangen.workers.dev\n', stderr: '' };
     }
     destroyed.push(config);
     return { status: 0, stdout: '', stderr: '' };
   };
   const fetch = async (url, init) => {
     calls.push({ url, body: init.body, auth: init.headers.authorization });
-    const payload = url.endsWith('/query')
+    const payload = /^\s*select/i.test(init.body)
       ? { ok: true, rows: [{ product_id: 'prd_a' }] }
       : { ok: true, statements: 1 };
     return { status: 200, text: async () => JSON.stringify(payload) };
   };
   const db = createChannelDb({ spawnSync, fetch, sleep: async () => {}, log: () => {} });
-  // 懒部署：没用到的那一侧不部署 —— 干跑（只读队列、不写结果）因此不碰写入入口
+  // 懒部署：没用到就不部署
   assert.deepEqual(deployed, []);
   assert.deepEqual(await db.select('SELECT product_id FROM products'), [{ product_id: 'prd_a' }]);
-  assert.deepEqual(deployed, ['wrangler.mysql-read.toml']);
-  // 部署后的第一发是就绪探测：刚 deploy 的 workers.dev 路由不是立刻生效的
-  assert.equal(calls[0].body, 'SELECT 1');
+  // 读也走主库 Worker：只读那条路会按 SQL 文本缓存查询结果（实测约十分钟），
+  // 而「读本 run 的既有状态」的 SQL 每轮文本完全相同 —— 吃缓存就会读到空状态、全量重付。
+  assert.deepEqual(deployed, ['wrangler.mysql-import.toml']);
+  assert.equal(calls[0].body, 'SELECT 1', '部署后的第一发是就绪探测');
+  assert.match(calls[1].url, /\/import$/);
   assert.equal(calls[1].body, 'SELECT product_id FROM products');
-  assert.match(calls[1].url, /\/query$/);
   assert.match(calls[1].auth, /^Bearer [a-f0-9]{64}$/);
-
   await db.batch(['UPDATE a SET x=1', 'UPDATE b SET x=1']);
-  assert.deepEqual(deployed, ['wrangler.mysql-read.toml', 'wrangler.mysql-import.toml']);
-  assert.equal(calls[2].body, 'SELECT 1');
-  assert.match(calls[3].url, /\/import$/);
-  // 一批语句合成一个请求：写入 Worker 会把它放进同一个事务
-  assert.equal(calls[3].body, 'UPDATE a SET x=1;\nUPDATE b SET x=1;');
+  // 一批语句合成一个请求：Worker 会把它放进同一个事务
+  assert.equal(calls[2].body, 'UPDATE a SET x=1;\nUPDATE b SET x=1;');
   await db.execute('UPDATE c SET x=1');
-  assert.equal(calls[4].body, 'UPDATE c SET x=1');
+  assert.equal(calls[3].body, 'UPDATE c SET x=1');
   await db.close();
-  assert.deepEqual(destroyed.sort(), ['wrangler.mysql-import.toml', 'wrangler.mysql-read.toml']);
+  assert.deepEqual(destroyed, ['wrangler.mysql-import.toml']);
 });
 
 test('mysql channel retries until the freshly deployed route answers', async () => {
@@ -347,7 +349,7 @@ test('mysql channel retries until the freshly deployed route answers', async () 
     fetch, sleep: async (ms) => { delays.push(ms); }, log: () => {},
   });
   assert.deepEqual(await db.select('SELECT 1'), []);
-  assert.deepEqual(delays, [1500, 3000], '退避应当逐次加大');
+  assert.deepEqual(delays, [2000, 4000], '退避应当逐次加大');
   assert.equal(attempts, 4, '两次探测失败 + 一次探测成功 + 一次真查询');
   await db.close();
 });
@@ -553,11 +555,19 @@ test('enrichment integration: full state machine against a real MySQL', async (t
     const [record] = await connection.query(`SELECT product_count, new_product_count, reentry_count, requested_count,
       completed_count, failed_count, skipped_no_input_count, resumed_count, model_request_count, wall_clock_ms, summary_json, status
       FROM enrichment_runs WHERE id='${fourth.runId}'`);
+    // 状态列 = 这个 run 现在的状态（跨执行稳定）：prd_1/prd_2/prd_old/prd_3 完成、prd_4 仍被门禁挡着。
+    // 一次 0 请求的续跑不该把「这一天加工完成多少条」写成 0 —— 那正是成本记录要读的数字。
+    assert.equal(record[0].product_count, 5);
+    assert.equal(record[0].completed_count, 4);
+    assert.equal(record[0].failed_count, 0);
+    assert.equal(record[0].skipped_no_input_count, 1);
     assert.equal(record[0].new_product_count, 4);
-    assert.equal(record[0].reentry_count, 0);
-    assert.equal(record[0].requested_count, 1);
-    assert.equal(record[0].resumed_count, 4);
-    assert.equal(record[0].model_request_count, 1);
+    // 成本/工作量列累加：R1 2 + R2 0 + R3 1 + R4 1 = 4 次进模型；重入臂只命中过 1 次
+    assert.equal(record[0].requested_count, 4);
+    assert.equal(record[0].reentry_count, 1);
+    assert.equal(record[0].model_request_count, 4);
+    // R1 也有 1 次续跑命中（09-18 那条 prd_old 被重入臂扫到且输入未变）→ 1+5+4+4
+    assert.equal(record[0].resumed_count, 14);
     assert.equal(record[0].status, 'complete');
     // mysql2 会把 JSON 列直接解析成对象；按字符串读的通道（上传 Worker 的返回）才需要 JSON.parse
     const runSummary = typeof record[0].summary_json === 'string' ? JSON.parse(record[0].summary_json) : record[0].summary_json;
