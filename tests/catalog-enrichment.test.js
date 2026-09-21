@@ -255,6 +255,23 @@ test('enrichment queue SQL keys on first_seen_date and seeds the controlled voca
   for (const facet of Object.keys(D.taxonomyFacets)) assert.ok(seed.includes(`'${facet}'`), `缺分面 ${facet}`);
 });
 
+test('every migration replayed by the upload channel is idempotent', () => {
+  // 上传通道每次都会重放这份名单（daily-report 与 catalog-refresh 都走它），所以名单里出现一个
+  // 不可重放的迁移，就等于把日更写库整条链路弄挂。0003 是裸 `ALTER TABLE … ADD KEY`，故意不在名单里。
+  const source = fs.readFileSync(path.join(ROOT, 'scripts', 'catalog', 'upload-mysql.js'), 'utf8');
+  const block = source.match(/const REPLAYED_MIGRATIONS = \[([\s\S]*?)\];/);
+  assert.ok(block, 'upload-mysql.js 应当有 REPLAYED_MIGRATIONS 名单');
+  const names = block[1].match(/'([^']+\.sql)'/g).map(name => name.replaceAll("'", ''));
+  assert.ok(names.length >= 2);
+  assert.ok(names.includes('0005_enrichment_run_cost.sql'), '0005 不在名单里，线上就写不了 skipped_no_input');
+  for (const name of names) {
+    const sql = fs.readFileSync(path.join(ROOT, 'migrations', 'mysql', name), 'utf8');
+    const idempotent = /IF NOT EXISTS/i.test(sql) || /information_schema\.COLUMNS/.test(sql);
+    assert.ok(idempotent, `${name} 不幂等，不能进重放名单`);
+    assert.doesNotMatch(sql, /ALTER TABLE[\s\S]*?ADD KEY/i, `${name} 含不可重放的 ADD KEY`);
+  }
+});
+
 // ---- ② 集成层（真 MySQL） ---------------------------------------------------------------------
 
 async function connect() {
