@@ -213,7 +213,14 @@ test('enrichment run record carries the cost curve columns and a readable summar
     states: { pending: 0, running: 0, complete: 730, failed: 2 },
     runState: { productCount: 645, completedCount: 596, failedCount: 3, skippedNoInputCount: 46 },
   });
-  assert.match(statement, /status='failed'/);
+  // 有非终态残留才记 failed —— 这才是「运行没跑完」
+  assert.match(finishRunSql('enr_test', {
+    productCount: 2, newProductCount: 2, reentryCount: 0, requestedCount: 2, completedCount: 1,
+    failedCount: 1, skippedNoInputCount: 0, resumedCount: 0, modelRequests: 2, wallClockMs: 1,
+    states: { pending: 1, running: 0, complete: 1, failed: 1 },
+  }), /status='failed'/);
+  // states 里 pending=0/running=0（这次跑完了）→ run 记 complete；产品级失败只进 failed_count
+  assert.match(statement, /status='complete'/);
   // 状态列写 runState（这个 run 现在的状态，跨执行稳定）—— 一次 0 请求的续跑不该把
   // 「这一天加工完成多少条」写成 0
   assert.match(statement, /product_count=645/);

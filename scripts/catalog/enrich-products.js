@@ -341,9 +341,13 @@ function failureSql(runId, row, error, requestCount) {
  * summary_json 存**这一次**的完整摘要，所以逐次明细也留得住。
  */
 function finishRunSql(runId, summary) {
-  const terminal = (summary.failedCount || summary.states.pending || summary.states.running) ? 'failed' : 'complete';
-  const error = terminal === 'failed'
-    ? `${summary.failedCount} failed, ${summary.states.pending} pending, ${summary.states.running} running`
+  // `status='failed'` 只表示**这次运行没跑完**（还有非终态行）；产品级的失败记在 failed_count 与
+  // summary_json 里。两者混在一起的话，每天都会因为几十条模型输出没过校验而整行变红 ——
+  // 「运行挂了」这个信号就被淹没了（2026-09-21 的 7 天回溯里 7 行全是 failed，其实每天都是跑完的）。
+  const unfinished = (summary.states.pending || 0) + (summary.states.running || 0);
+  const terminal = unfinished ? 'failed' : 'complete';
+  const error = unfinished
+    ? `未跑完：${summary.states.pending} pending / ${summary.states.running} running（其中 ${summary.failedCount} 条产品失败）`
     : null;
   // runState 是「这个 run 现在是什么状态」（从 enrichment_product_status 数出来的，跨执行稳定）；
   // 没有它的话，一次 0 请求的续跑会把 completed_count 写成 0，而那一列的含义是「这一天有多少条
