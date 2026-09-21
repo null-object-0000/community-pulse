@@ -129,7 +129,14 @@ async function applyAll(db, options = {}) {
     const result = await applyMigration(db, name, options);
     if (!options.dryRun) {
       // 记账与 DDL 分开：DDL 在 MySQL 里隐式提交，包不进事务，所以先做完再记账。
-      await db.execute(`INSERT IGNORE INTO schema_migrations (version) VALUES (${sqlValue(name)})`);
+      // **不用 INSERT IGNORE**：它会把所有错误一起吞掉（包括「表不存在」「权限不足」），
+      // 于是记账悄悄没写进去、下次又把每个迁移重跑一遍 —— 2026-09-21 就是这样丢了一整轮记账。
+      // 只把 1062（重复键，即已经记过）当作成功。
+      try {
+        await db.execute(`INSERT INTO schema_migrations (version) VALUES (${sqlValue(name)})`);
+      } catch (error) {
+        if (!/Duplicate entry/i.test(String(error.message || error))) throw error;
+      }
     }
     summary.push({ name, status: 'applied', ...result });
     console.log(`[migration] ${name}: 执行 ${result.applied} 条，跳过（已存在）${result.skipped} 条`);
@@ -148,7 +155,9 @@ async function main() {
   const db = await openDb(options);
   try {
     const done = await appliedVersions(db);
-    console.log(`迁移目录 ${migrationFiles(options.only).length} 个文件，已记账 ${done.size} 个${options.dryRun ? '（dry-run）' : ''}`);
+    // 版本号要打出来：只报个数的话，「记账没累积」和「读通道看到的是另一个库」分不出来。
+    console.log(`迁移目录 ${migrationFiles(options.only).length} 个文件，已记账 ${done.size} 个`
+      + `${done.size ? `：${[...done].sort().join(', ')}` : ''}${options.dryRun ? '（dry-run）' : ''}`);
     console.log(JSON.stringify(await applyAll(db, options), null, 2));
   } finally {
     await db.close();
