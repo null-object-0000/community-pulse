@@ -66,18 +66,6 @@ function splitSql(sql) {
   return new Function(`${body}; return splitSql;`)()(sql);
 }
 
-async function openDb(options) {
-  // 把部署出来的地址回显到日志：通道问题的第一现场就是「它到底请求了哪个 URL」。
-  if (options.channel) return require('./mysql-channel.js').createChannelDb({ log: message => console.log(message) });
-  const mysql = require('mysql2/promise');
-  const connection = await mysql.createConnection({ uri: options.mysqlUrl, dateStrings: true });
-  return {
-    select: async (sql) => (await connection.query(sql))[0],
-    execute: async (sql) => { await connection.query(sql); },
-    close: async () => { await connection.end(); },
-  };
-}
-
 async function appliedVersions(db) {
   try {
     const rows = await db.select('SELECT version FROM schema_migrations');
@@ -157,7 +145,12 @@ async function applyAll(db, options = {}) {
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
-  const db = await openDb(options);
+  // 直连优先、Hyperdrive 降级（见 db-transport.js）
+  const opened = await require('./db-transport.js').openDb({
+    ...options, preferDirect: !options.channel, log: message => console.log(message),
+  });
+  const db = opened.db;
+  console.log(`[migration] 传输: ${opened.transport}`);
   try {
     const done = await appliedVersions(db);
     // 版本号要打出来：只报个数的话，「记账没累积」和「读通道看到的是另一个库」分不出来。
@@ -173,4 +166,4 @@ if (require.main === module) {
   main().catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
 }
 
-module.exports = { parseArgs, migrationFiles, splitSql, appliedVersions, applyMigration, applyAll, openDb, ALREADY_APPLIED };
+module.exports = { parseArgs, migrationFiles, splitSql, appliedVersions, applyMigration, applyAll, ALREADY_APPLIED };

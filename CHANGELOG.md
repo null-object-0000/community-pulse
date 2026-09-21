@@ -624,6 +624,21 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **run 状态语义**（`finishRunSql`）：`status='failed'` 原本把「有产品失败」和「run 没跑完」混成一个信号，于是 7 天回溯的 7 行全是 failed —— 其实每天都跑完了，只是各有 22–27 条模型输出没过校验。改成**只有存在非终态行才记 failed**，产品级失败只进 `failed_count` / `summary_json`；已把 7 行回填为 complete。这条对以后接进日更很重要：否则每天都会整行变红，「运行挂了」这个信号就被淹没。
 - **我的监控管道杀掉了 09-18 那次运行**：`node … | grep … | head -14` 在失败行超过 14 条时关闭管道，node 收 SIGPIPE 被中途杀掉（1,475 条里只剩 2 条没跑，run 行也没写成）。**断点续跑把它救了** —— 补跑只发 2 次请求就补齐。教训：长跑任务的输出要落文件再 tail，别接 `head`。
 - **瞬时错误全部回收**：`fetch failed` 这类网络错 `localize` 不会重试（只对 429 退避），所以收尾跑了一遍 `--retry-failed`，把 103 个瞬时失败恢复成 complete，最终只剩 31 个持久失败（都是模型输出没过 `validateLocalization`：useCases 缺失/越界 12、summaryZh 不是中文 11、summaryEn 不是英文 7、其它 1）。
+### 传输改成「直连优先 + Hyperdrive 降级」，以及把查询量砍掉 60 倍
+
+用户反馈 Hyperdrive 的查询限额到了，要求直连优先。两件事分开说。
+
+**① 直连在这台机器上不可能成功 —— 是链路问题，不是配置问题。** 2026-09-21 做了字节级实测：
+- TCP 握手**通**；服务端会发出**真正的 MySQL 握手包**（`49 00 00 00` 包头 + `0a` 协议版本 + `8.4.7` 服务端版本 + `caching_sha2_password` 认证插件，共 77 字节）；
+- 客户端**一发握手响应就 `ECONNRESET`**（用原始 socket 只发一个最小握手响应也一样）；SSL 变体是 `HANDSHAKE_SSL_ERROR`。写账号、读账号、带不带 SSL 都一样。
+
+也就是出口防火墙在**协议层**拦 MySQL —— 与 `worker/catalog-read.mjs` 里 09-14 / 09-18 记的结论一致。所以新增的 `scripts/catalog/db-transport.js` 按用户要求实现「直连优先、失败自动降级到临时 Worker 通道」，并把**实际走了哪条路写进运行记录**（`summary.transport`）—— 降级不能是静默的。在这台机器上它每次都会降级；这条代码是给网络恢复时准备的。
+
+**② 限额的真正原因是我写的查询量太大。** 逐产品写是 **12 条语句 = 12 次查询**（2 条 DELETE + 2 条 content INSERT + ~7 条 assignment INSERT + 1 条 status UPDATE），7 天回溯 ≈ **8 万次查询**，额度就是这么打满的。日更导入链没这个问题 —— `build-mysql-import.js` 的 `writeTable` 每张表就是一条多行 INSERT，一个文件一次查询。
+
+改法（`resultBatchSql`）：一批产品合成 **5 条语句** —— 两条 DELETE 按 `product_id IN (…)`、content 与 assignments 各一条多行 INSERT、status 一条多行 upsert（`attempt_count+1` 与 `model_request_count+VALUES(...)` 都在 upsert 里累加）。默认 `--write-batch 25`，也就是 **每 25 个产品 5 次查询 = 0.2 次/产品**，同样的活**少 60 倍查询**，顺带少 60 倍往返。代价是崩溃粒度变粗：进程在提交前死掉，这批（最多 25 个 ≈ ¥0.18）会停在 `pending` 下次重跑，比把额度打满便宜得多。另外 `flush()` 的异常**故意不接** —— 写入通道坏了就该中止这次运行，继续跑只会白烧模型钱。
+
+**③ 一条操作教训：删掉工作区里的凭据副本会作废刷新链。** 上一轮结束时我把 `.scratch/cf-home/.wrangler/config/default.toml` 删了（出于凭据卫生），但那次刷新已经**轮换**了 refresh token —— 用户的 `~/.wrangler/config/default.toml` 里还是旧的、已被消费掉的那个，于是 wrangler 现在报「In a non-interactive environment, it's necessary to set a CLOUDFLARE_API_TOKEN」。**下一次要重新 `npx wrangler login`**；在那之前我碰不了生产库。以后要保留可用凭据，就别删那个副本（它已被 gitignore），或者干脆用 `CLOUDFLARE_API_TOKEN`（不过期、不需要刷新）。
 
 ## 值得记录的决策
 

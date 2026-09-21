@@ -51,6 +51,7 @@ const {
   PROMPT_VERSION,
 } = require('../../.agents/skills/community-pulse/scripts/enhance.js');
 const { sqlValue, taxonomyRows } = require('./build-mysql-import.js');
+const { openDb } = require('./db-transport.js');
 
 const PROCESSOR = 'enhance.localize';
 const PROCESSOR_VERSION = 'catalog-localize-v1';
@@ -74,6 +75,7 @@ function parseArgs(argv) {
     reentry: true,
     retryFailed: false,
     limit: 0,
+    writeBatch: Number(process.env.CP_WRITE_BATCH || 25),
     productId: null,
     out: null,
     sqlOut: null,
@@ -91,6 +93,7 @@ function parseArgs(argv) {
     else if (name === '--processor-version') options.processorVersion = value;
     else if (name === '--product-id') options.productId = value;
     else if (name === '--limit') options.limit = Number(value);
+    else if (name === '--write-batch') options.writeBatch = Number(value);
     else if (name === '--out') options.out = path.resolve(value);
     else if (name === '--sql-out') options.sqlOut = path.resolve(value);
     else if (name === '--dry-run') options.dryRun = true;
@@ -109,6 +112,9 @@ function parseArgs(argv) {
     throw new Error('--concurrency must be an integer between 1 and 50');
   }
   if (!Number.isInteger(options.limit) || options.limit < 0) throw new Error('--limit must be a non-negative integer');
+  if (!Number.isInteger(options.writeBatch) || options.writeBatch < 1 || options.writeBatch > 500) {
+    throw new Error('--write-batch must be an integer between 1 and 500');
+  }
   if (!options.processorVersion) throw new Error('--processor-version must not be empty');
   // 两条到产品库的路：本机直连（`--mysql-url`，公司出口会重置协议，通常只用于本地 MySQL 验收）
   // 或临时 Worker 通道（`--channel`，生产唯一可用的路）。
@@ -275,48 +281,56 @@ function contentSource(options) {
 }
 
 /**
- * 一个产品的成功结果。三条纪律：
- * ① `product_content.created_at` **不写值**，用列默认的 `CURRENT_TIMESTAMP(3)` —— 旧实现写的是
- *    `new Date().toISOString()`（带 T/Z 的字面量），MySQL 的 DATETIME(3) 收不了。
- * ② 先 DELETE 自己的旧 shadow 行再 INSERT：`product_content` 的主键含 created_at，
- *    `taxonomy_assignments` 有 (product_id,facet,term_id,source,processor_version) 唯一键，
- *    不删就会在重跑时撞键。
- * ③ 每一行都显式 `is_current=0`：这是 shadow 模式的唯一保证，读路径只认 is_current=1。
+ * 一批产品的成功结果。三条纪律不变（`created_at` 交给列默认值、先删自己的旧 shadow 行、
+ * 每行显式 `is_current=0`），变的是**粒度**：
+ *
+ * 逐产品写是 12 条语句 = 12 次查询，而写入通道经 Hyperdrive、查询是计量的 —— 2026-09-21 的
+ * 7 天回溯因此烧掉约 8 万次查询，把额度打满。合成多行语句后每 25 个产品只要 5 次查询
+ * （两条 DELETE 按 `product_id IN (…)`、content 与 assignments 各一条多行 INSERT、
+ * status 一条多行 upsert），同样的活少 60 倍查询，顺带少 60 倍往返。
+ *
+ * 代价是崩溃粒度变粗：进程若在这一批提交前死掉，这批产品仍停在 `pending`，下次重跑会重新
+ * 排队（模型请求要重发）。25 个产品 ≈ ¥0.18，比按产品写把额度打满便宜得多。
  */
-function resultSql(runId, options, entry, localized, requestCount) {
-  const row = entry.row;
+function resultBatchSql(runId, options, items) {
   const source = contentSource(options);
-  // zh-CN 的标题是**原标题**，不是译文：`localize()` 产出的是 `summaryZh`（中文摘要）与
-  // `titleEn`（英文标题），中文标题本来就有，没有 `titleZh` 这个字段。
-  const titleZh = localized.titleZh || entry.input.title || '';
-  const titleEn = localized.titleEn || entry.input.title || '';
-  const statements = [
-    `DELETE FROM product_content WHERE product_id=${sqlValue(row.product_id)}
-      AND content_source=${sqlValue(source)} AND is_current=0`,
-    `INSERT INTO product_content (product_id, locale, title, summary, content_source, enrichment_run_id, is_current)
-      VALUES (${sqlValue(row.product_id)}, 'zh-CN', ${sqlValue(titleZh)},
-        ${sqlValue(localized.summaryZh || '')}, ${sqlValue(source)}, ${sqlValue(runId)}, 0)`,
-    `INSERT INTO product_content (product_id, locale, title, summary, content_source, enrichment_run_id, is_current)
-      VALUES (${sqlValue(row.product_id)}, 'en', ${sqlValue(titleEn)},
-        ${sqlValue(localized.summaryEn || '')}, ${sqlValue(source)}, ${sqlValue(runId)}, 0)`,
-    `DELETE FROM taxonomy_assignments WHERE product_id=${sqlValue(row.product_id)}
-      AND assignment_source='llm' AND processor_version=${sqlValue(options.processorVersion)} AND is_current=0`,
-  ];
-  const assignment = (facet, termId) => `INSERT INTO taxonomy_assignments
-    (product_id, facet, term_id, assignment_source, confidence, processor_version, enrichment_run_id, is_current)
-    VALUES (${sqlValue(row.product_id)}, ${sqlValue(facet)}, ${sqlValue(termId)}, 'llm', NULL,
-      ${sqlValue(options.processorVersion)}, ${sqlValue(runId)}, 0)`;
-  // confidence 明确留空：模型没有给出可比的置信度，编一个数字比留空更糟。
-  statements.push(assignment('primaryCategory', localized.primaryCategory));
-  for (const [facet, termIds] of Object.entries(localized.taxonomy || {})) {
-    if (!D.taxonomyFacets[facet] || !Array.isArray(termIds)) continue;
-    for (const termId of termIds) statements.push(assignment(facet, termId));
+  const ids = items.map(item => sqlValue(item.entry.row.product_id)).join(',');
+  const contentRows = [];
+  const assignmentRows = [];
+  const statusRows = [];
+  for (const { entry, localized, requestCount } of items) {
+    const row = entry.row;
+    // zh-CN 的标题是**原标题**，不是译文：`localize()` 产出的是 `summaryZh`（中文摘要）与
+    // `titleEn`（英文标题），中文标题本来就有，没有 `titleZh` 这个字段。
+    const titleZh = localized.titleZh || entry.input.title || '';
+    const titleEn = localized.titleEn || entry.input.title || '';
+    contentRows.push(`(${sqlValue(row.product_id)}, 'zh-CN', ${sqlValue(titleZh)}, ${sqlValue(localized.summaryZh || '')}, ${sqlValue(source)}, ${sqlValue(runId)}, 0)`);
+    contentRows.push(`(${sqlValue(row.product_id)}, 'en', ${sqlValue(titleEn)}, ${sqlValue(localized.summaryEn || '')}, ${sqlValue(source)}, ${sqlValue(runId)}, 0)`);
+    // confidence 明确留空：模型没有给出可比的置信度，编一个数字比留空更糟。
+    const assignment = (facet, termId) => assignmentRows.push(`(${sqlValue(row.product_id)}, ${sqlValue(facet)}, ${sqlValue(termId)}, 'llm', NULL, ${sqlValue(options.processorVersion)}, ${sqlValue(runId)}, 0)`);
+    assignment('primaryCategory', localized.primaryCategory);
+    for (const [facet, termIds] of Object.entries(localized.taxonomy || {})) {
+      if (!D.taxonomyFacets[facet] || !Array.isArray(termIds)) continue;
+      for (const termId of termIds) assignment(facet, termId);
+    }
+    statusRows.push(`(${sqlValue(runId)}, ${sqlValue(row.product_id)}, 'complete', ${sqlValue(entry.inputHash)}, 1, ${Number(requestCount) || 0}, CURRENT_TIMESTAMP(3))`);
   }
-  statements.push(`UPDATE enrichment_product_status SET status='complete',
-    model_request_count=model_request_count+${Number(requestCount) || 0}, error=NULL,
-    completed_at=CURRENT_TIMESTAMP(3), updated_at=CURRENT_TIMESTAMP(3)
-    WHERE enrichment_run_id=${sqlValue(runId)} AND product_id=${sqlValue(row.product_id)}`);
-  return statements;
+  return [
+    `DELETE FROM product_content WHERE product_id IN (${ids}) AND content_source=${sqlValue(source)} AND is_current=0`,
+    `INSERT INTO product_content (product_id, locale, title, summary, content_source, enrichment_run_id, is_current) VALUES ${contentRows.join(',')}`,
+    `DELETE FROM taxonomy_assignments WHERE product_id IN (${ids}) AND assignment_source='llm' AND processor_version=${sqlValue(options.processorVersion)} AND is_current=0`,
+    `INSERT INTO taxonomy_assignments (product_id, facet, term_id, assignment_source, confidence, processor_version, enrichment_run_id, is_current) VALUES ${assignmentRows.join(',')}`,
+    `INSERT INTO enrichment_product_status (enrichment_run_id, product_id, status, input_hash, attempt_count, model_request_count, completed_at)
+      VALUES ${statusRows.join(',')}
+      ON DUPLICATE KEY UPDATE status='complete', attempt_count=attempt_count+1,
+        model_request_count=model_request_count+VALUES(model_request_count), error=NULL,
+        completed_at=CURRENT_TIMESTAMP(3), updated_at=CURRENT_TIMESTAMP(3)`,
+  ];
+}
+
+/** 单产品版本：测试与单条重试用，语义与批版本逐字一致。 */
+function resultSql(runId, options, entry, localized, requestCount) {
+  return resultBatchSql(runId, options, [{ entry, localized, requestCount }]);
 }
 
 function failureSql(runId, row, error, requestCount) {
@@ -368,39 +382,6 @@ function finishRunSql(runId, summary) {
 }
 
 // ---- 数据库 ---------------------------------------------------------------------------------
-
-async function openDatabase(options) {
-  if (options.channel) {
-    return require('./mysql-channel.js').createChannelDb({ log: message => console.error(message) });
-  }
-  const mysql = require('mysql2/promise');
-  // dateStrings：DATE 列回来的是 'YYYY-MM-DD' 字符串，不是本地时区午夜的 JS Date。
-  // 这层只在 SQL 里比日期，但把日期当成字符串读掉了一个「拿 Date 对象和字符串比」的隐患。
-  const connection = await mysql.createConnection({ uri: options.mysqlUrl, dateStrings: true });
-  return {
-    async select(sql) {
-      const [rows] = await connection.query(sql);
-      return rows;
-    },
-    async execute(sql) {
-      await connection.query(sql);
-    },
-    // 一个产品的结果是一个整体：拆成 N 次自动提交的话，中途失败会留下「状态 complete 但只有
-    // 中文行」这种半成品。打包成一个事务，让「状态」与「内容」要么一起进要么都不进。
-    async batch(statements) {
-      if (!statements.length) return;
-      await connection.beginTransaction();
-      try {
-        for (const statement of statements) await connection.query(statement);
-        await connection.commit();
-      } catch (error) {
-        await connection.rollback();
-        throw error;
-      }
-    },
-    async close() { await connection.end(); },
-  };
-}
 
 /**
  * 开工前的 schema 前置检查。0005 迁移没应用时，`skipped_no_input` 会以
@@ -497,7 +478,12 @@ async function runEnrichment(options, dependencies = {}) {
   const localize = dependencies.localize || sharedLocalize;
   const now = dependencies.now || (() => Date.now());
   const log = options.quiet ? () => {} : (message) => console.error(message);
-  const db = dependencies.db || await openDatabase(options);
+  // 传输：直连优先、Hyperdrive 降级（见 db-transport.js 的注释 —— 这台机器上直连会被出口
+  // 防火墙在协议层重置，所以实际总会降级，但「优先」要留在代码里，网络恢复时自动生效）。
+  const opened = dependencies.db
+    ? { db: dependencies.db, transport: dependencies.transport || 'injected' }
+    : await openDb({ ...options, preferDirect: !options.channel, log });
+  const db = opened.db;
   const ownsDb = !dependencies.db;
   const startedAt = now();
   const runId = stableRunId(options);
@@ -534,31 +520,49 @@ async function runEnrichment(options, dependencies = {}) {
     let completedCount = 0;
     let failedCount = 0;
     let processed = 0;
+    // 写入缓冲：见 resultBatchSql 的注释 —— Hyperdrive 的查询是计量的，逐产品写会把额度打满。
+    const buffer = [];
+    let flushChain = Promise.resolve();
+    const flush = () => {
+      // 挂在同一条 promise 链上：并发 worker 同时触发 flush 时不会抢同一批
+      flushChain = flushChain.then(async () => {
+        if (!buffer.length) return;
+        const batch = buffer.splice(0, buffer.length);
+        await runBatch(resultBatchSql(runId, options, batch));
+        completedCount += batch.length;
+      });
+      return flushChain;
+    };
+    const report = async () => {
+      if (processed % 25 === 0 || processed === plan.pending.length) log(`[enrich] ${processed}/${plan.pending.length}`);
+      if (dependencies.onProgress) await dependencies.onProgress({ processed, total: plan.pending.length, modelRequests });
+    };
     const worker = async () => {
       while (cursor < plan.pending.length) {
         const entry = plan.pending[cursor++];
         let productRequests = 0;
+        let localized;
         try {
-          const localized = await localize(entry.input, {
+          localized = await localize(entry.input, {
             onRequest: () => { productRequests += 1; modelRequests += 1; },
           });
-          // markRunning 与结果放同一批：批在写入通道里是一个事务，所以「状态 + 内容」原子落地，
-          // 而且通道下每个产品只发一次 POST（分开发是两次）。中断的产品因此停在 `pending` 而不是
-          // `running` —— 两者都不是终态，重跑都会重新排队，语义没有区别。
-          await runBatch([markRunningSql(runId, entry.row.product_id),
-            ...resultSql(runId, options, entry, localized, productRequests)]);
-          completedCount += 1;
         } catch (error) {
           await run(failureSql(runId, entry.row, error, productRequests));
           failedCount += 1;
+          processed += 1;
           log(`[enrich] 失败 ${entry.row.product_id}: ${error.message}`);
+          await report();
+          continue;
         }
+        buffer.push({ entry, localized, requestCount: productRequests });
+        // flush 的异常**故意不接**：写入通道坏了就该中止这次运行，继续跑只会白烧模型钱。
+        if (buffer.length >= options.writeBatch) await flush();
         processed += 1;
-        if (processed % 25 === 0 || processed === plan.pending.length) log(`[enrich] ${processed}/${plan.pending.length}`);
-        if (dependencies.onProgress) await dependencies.onProgress({ processed, total: plan.pending.length, modelRequests });
+        await report();
       }
     };
     await Promise.all(Array.from({ length: Math.min(options.concurrency, plan.pending.length) }, worker));
+    await flush();
 
     const states = {};
     if (options.dryRun) {
@@ -592,6 +596,8 @@ async function runEnrichment(options, dependencies = {}) {
       taxonomyVersion: D.taxonomyVersion,
       dryRun: options.dryRun,
       statePersisted: !options.dryRun,
+      // 这次走的是哪条路：direct 还是 hyperdrive。降级必须可观测，不能是静默的。
+      transport: opened.transport,
       // 口径与成本 —— 这就是这一批的主要产出。
       newProductCount: plan.newProductCount,
       reentryCount: plan.reentryCount,
@@ -654,6 +660,7 @@ module.exports = {
   runStatusSql,
   seedSql,
   resultSql,
+  resultBatchSql,
   skipStatusSql,
   finishRunSql,
   runEnrichment,

@@ -9,12 +9,13 @@
  */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
 const D = require('../web/shared.js');
 const {
   parseArgs, stableRunId, inputHashFor, localizationInput, hasEvidence,
-  planQueue, newBucketSql, reentrySql, runStatusSql, seedSql, resultSql, skipStatusSql, finishRunSql,
+  planQueue, newBucketSql, reentrySql, runStatusSql, seedSql, resultSql, resultBatchSql, skipStatusSql, finishRunSql,
   runEnrichment, PROCESSOR_VERSION,
 } = require('../scripts/catalog/enrich-products.js');
 const { sourceHash, PROMPT_VERSION, translationInput } = require('../.agents/skills/community-pulse/scripts/enhance.js');
@@ -165,7 +166,7 @@ test('enrichment writes only shadow rows and never invents a created_at literal'
   const statements = resultSql('enr_test', options, entry, localized, 1);
   const text = statements.join('\n');
   // 每一条 product_content / taxonomy_assignments 插入都必须显式 is_current=0（shadow 的唯一保证）
-  for (const statement of statements.filter(s => s.startsWith('INSERT INTO'))) {
+  for (const statement of statements.filter(s => /^INSERT INTO (product_content|taxonomy_assignments)/.test(s))) {
     assert.match(statement, /,\s*0\)$/, `应当以 is_current=0 结尾: ${statement.slice(0, 80)}`);
   }
   // created_at 交给列默认值：旧实现写 new Date().toISOString()，MySQL 的 DATETIME(3) 收不了
@@ -175,7 +176,8 @@ test('enrichment writes only shadow rows and never invents a created_at literal'
   assert.match(text, /'zh-CN', '标题 prd_a'/);
   assert.match(text, /'en', 'English title'/);
   // 主分类 + 各分面都落 assignment，且 confidence 留空
-  assert.equal((text.match(/INSERT INTO taxonomy_assignments/g) || []).length, 3);
+  // 多行语句：一批产品的 assignments 合成**一条** INSERT（逐产品写会把 Hyperdrive 额度打满）
+  assert.equal((text.match(/INSERT INTO taxonomy_assignments/g) || []).length, 1);
   assert.match(text, /'primaryCategory', 'developer-tools', 'llm', NULL/);
   // 模型没返回 titleEn 时回退到原标题，不写空标题
   const noTitle = resultSql('enr_test', options, entry, { ...localized, titleEn: '' }, 1).join('\n');
@@ -379,6 +381,62 @@ test('mysql channel surfaces worker errors instead of swallowing them', async ()
   await assert.rejects(() => broken.select('SELECT 1'), /部署失败[\s\S]*boom/);
 });
 
+test('enrichment writes a batch as five multi-row statements instead of one per product', () => {
+  const options = parseArgs(baseArgs(['--write-batch', '25']));
+  const items = ['prd_a', 'prd_b', 'prd_c'].map((id) => {
+    const row = { product_id: id, first_seen_date: '2026-09-19', product_title: `标题 ${id}` };
+    return {
+      entry: { row, input: { heading: `标题 ${id}`, title: `标题 ${id}`, desc: '描述', section: 'Show HN' }, inputHash: 'h'.repeat(64) },
+      localized: {
+        titleEn: 'English', summaryZh: '中文', summaryEn: 'English summary',
+        primaryCategory: 'ai', taxonomy: { useCases: ['software-development'], platforms: ['macos'] },
+      },
+      requestCount: 1,
+    };
+  });
+  const statements = resultBatchSql('enr_test', options, items);
+  assert.equal(statements.length, 5, '一批产品固定 5 条语句（两条 DELETE + 三条多行 INSERT/upsert）');
+  // 逐产品写是 12 条语句 = 12 次查询；这里 3 个产品 5 条 —— 查询数不随产品数线性增长
+  assert.match(statements[0], /DELETE FROM product_content WHERE product_id IN \('prd_a','prd_b','prd_c'\)/);
+  assert.match(statements[2], /DELETE FROM taxonomy_assignments WHERE product_id IN \('prd_a','prd_b','prd_c'\)/);
+  assert.equal((statements[1].match(/'zh-CN'/g) || []).length, 3);
+  assert.equal((statements[1].match(/'en'/g) || []).length, 3);
+  assert.equal((statements[3].match(/'primaryCategory'/g) || []).length, 3);
+  // 状态是多行 upsert：一次把这一批都推成 complete，并累加 attempt/request
+  assert.match(statements[4], /ON DUPLICATE KEY UPDATE status='complete', attempt_count=attempt_count\+1/);
+  // 3 行 VALUES + ON DUPLICATE 子句里的那一处 = 4
+  assert.equal((statements[4].match(/'complete'/g) || []).length, 4);
+  // 单产品版本与批版本逐字一致（resultSql 只是 items 长度为 1）
+  const entry = items[0].entry;
+  assert.deepEqual(resultSql('enr_test', options, entry, items[0].localized, 1), resultBatchSql('enr_test', options, [items[0]]));
+  // 批大小要校验
+  assert.throws(() => parseArgs(baseArgs(['--write-batch', '0'])), /between 1 and 500/);
+  assert.throws(() => parseArgs(baseArgs(['--write-batch', '501'])), /between 1 and 500/);
+});
+
+test('db transport prefers direct and falls back to Hyperdrive, and says which one it used', async () => {
+  const { directConnectionConfig } = require('../scripts/catalog/db-transport.js');
+  // 没有凭据 → 不给直连配置（就只用通道）
+  assert.equal(directConnectionConfig({ envFile: '/nonexistent' }), null);
+  // 显式 DSN 优先
+  assert.deepEqual(directConnectionConfig({ mysqlUrl: 'mysql://u:p@h:3306/d', envFile: '/nonexistent' }), { uri: 'mysql://u:p@h:3306/d' });
+  // .env 里的 ALIYUN_RDS_* → 拼出直连配置，且**写账号优先**
+  const envFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'cp-env-')), '.env');
+  fs.writeFileSync(envFile, [
+    'ALIYUN_RDS_HOST=rds.example.com', 'ALIYUN_RDS_PORT=3306', 'ALIYUN_RDS_DATABASE=devtrends',
+    'ALIYUN_RDS_READER_USER=reader', 'ALIYUN_RDS_READER_PASSWORD=r',
+    'ALIYUN_RDS_WRITER_USER=writer', 'ALIYUN_RDS_WRITER_PASSWORD=w',
+    'ALIYUN_RDS_SSL=true', 'ALIYUN_RDS_SSL_CA=/nonexistent/ca.pem',
+  ].join('\n'));
+  const config = directConnectionConfig({ envFile });
+  assert.equal(config.host, 'rds.example.com');
+  assert.equal(config.user, 'writer', '有写账号就用写账号');
+  assert.equal(config.database, 'devtrends');
+  assert.equal(config.dateStrings, true);
+  // CA 文件不存在时退到「不校验证书」，而不是直接连不上
+  assert.deepEqual(config.ssl, { rejectUnauthorized: false });
+});
+
 // ---- ② 集成层（真 MySQL） ---------------------------------------------------------------------
 
 async function connect(databaseOverride) {
@@ -486,7 +544,8 @@ test('enrichment integration: full state machine against a real MySQL', async (t
 
     // R1：新增桶 4 个，2 个进模型、2 个被门禁挡下
     const calls1 = [];
-    const first = await run({}, calls1);
+    // writeBatch=2：4 个产品会走两次 flush，顺带覆盖「缓冲链」而不是只测单次 flush
+    const first = await run({ writeBatch: 2 }, calls1);
     assert.equal(first.newProductCount, 4);
     assert.equal(first.requestedCount, 2);
     assert.equal(first.skippedNoInputCount, 2);
@@ -620,9 +679,9 @@ test('enrichment integration: migration applier is idempotent and bootstraps an 
   const handle = await withDatabase(t, 'devtrends_enrich_migrate_test');
   if (!handle) return;
   const { connection } = handle;
-  const { applyAll } = require('../scripts/catalog/apply-mysql-migrations.js');
   const db = makeDb(connection);
   try {
+    const { applyAll } = require('../scripts/catalog/apply-mysql-migrations.js');
     // 空库：五个迁移全跑，全部记账
     const first = await applyAll(db, {});
     assert.equal(first.applied, 5);
