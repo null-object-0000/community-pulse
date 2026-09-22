@@ -711,6 +711,26 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
   - **一处新发现**：这条串**不只躺在仓库里，还在线上产品页**。同一个 `product_id`（`prd_38afbca7…`）的 `product_details.item_json.summary` 带着它，`/products/prd_38afbca7…/` 渲染出来（页面里 `dop_v1…` 出现 3 次，分别是 JSON-LD、原文与转义副本）。导入链读的是 `source-raw`，所以**归档修好不等于线上修好** —— 得跑一次 `catalog-refresh.yml`（`start=end=2025-03-29`）把这一天的投影重写。脱敏后 `content_score` 2981→2920，正是 `DETAIL_ROW_WINS` 规则③「同一次观测重算直接覆盖」负责的场景，所以单日导入就能覆盖，不需要 `full_rebuild`。
 - **决策：历史里的那 1 个提交仍在。** 与上一批「脱敏只改 tip」同样的取舍 —— 真要从历史里抹掉得再跑一次 `filter-repo` + force-push，这次不做（那次改动同时会牵动两个远端特性分支）。
 
+### 同日追加：按「旅行方向」标签重跑一轮 LLM 加工（本机跑模型 + SQL 回放写库）
+
+**需求：把历史上按纯逻辑打标判成「旅行方向」（`useCases` 含 `travel-mobility`）的产品全部重跑一轮大模型 —— 对产品描述归纳 / 翻译，并重新打标。** 费用已授权（≤¥50）。
+
+- **规模与口径（数据）**：受控标签 `travel-mobility` 全历史 **4,146 个**产品，过「有可读描述」门禁（`D.DETAIL_SUMMARY_MIN`，20 字）**4,112 个**，34 个描述过短不发请求。**不是**新增召回问题 —— 只处理「规则判为旅行」这一批（规则漏判的那部分是另一个任务）。
+- **跑的结果**：**4,109 成功 / 3 失败**（2 个模型给出的 `useCases` 词表外、1 个双语增强报错）；其中 2 个模型没给出可用译文（描述本身只有图片链接），最终写库 **4,107 个产品**。
+- **成本与耗时（实测，不是外推）**：模型请求 **4,529 次**，账本口径 **¥11.59**（含探索性小跑；主跑 ¥10.87）—— 比事前的 ¥13–26 外推更低，也在授权额度内。构成：输出 ¥9.76 / 输入未缓存 ¥1.47 / 输入缓存 ¥0.36，**96% 的输入命中 prompt cache**（固定模板几乎免费，钱全在输出）。墙钟约 **55 分钟**（并发 6）。
+- **并发 20 会把网关打爆**：第一轮并发 20 时 **0 429 之外还有 1,316 次 429**，262 个产品在 5 次指数退避后仍失败。降到**并发 6 → 429 归零**。教训：这个自建网关的稳态吞吐约 1.3 req/s，重试不花 token（429 不产生生成），但会让墙钟翻倍。
+- **重新打标的效果（这才是本轮最有信息量的数字）**：**1,241 / 4,109（30%）被模型改判出旅行方向**，2,868 个确认留下。改判去向：`lifestyle-entertainment` 433、`business-growth` 311、`content-creation` 209、`research-learning` 143。改判集中在 Product Hunt 来源（1,023 条），被改判的例子里有 `Financial Life Planner`、`Picross World : Nonogram Puzzle`、`SnapRecall Ai - Screenshot organizer`，以及最直白的反例 —— **`Semi Gantry Crane` / `Beam Lifting Crane`（半龙门起重机 / 梁式起重机）**：规则大概是命中了「travel / mobility」的字面义，把工业起重设备判成了旅行工具。**这就是纯逻辑打标的代价，也是这轮「重新打标」值得做的事。**
+- **为什么必须两跳（架构）**：模型网关是本机自建的（`enhance.js` 的 BASE，`127.0.0.1`），**GitHub Actions 到不了**；而本机所在的公司网络在协议层重置到 RDS 3306 的 TLS 握手，**直连不通**（复测：TCP 通、服务端 MySQL 8.4.7 握手正常，认证阶段被重置）。于是拆成：**本机读 + 本机跑模型 → 一份 SQL 文件 → 有 Cloudflare 凭据的一方写库**。
+  - **读那一步不需要 Actions**：生产只读接口 `workers.dev/api/v1/products?term=<标签>&from=&to=` 本机可达（`from=2025-01-01` 有效，`pageSize=300` + `cursor` 翻页），能直接拉全历史。原计划「Actions 导出数据到分支」因此省掉了 —— 只剩「写」确实需要外部凭据。
+  - **写那一步新增 `apply-catalog-sql.yml` + `scripts/catalog/apply-sql.js`**：把 SQL 作为**唯一契约**经分支交给 Actions，用仓库的 `CLOUDFLARE_API_TOKEN` 经临时通道 Worker 应用（`createChannelDb`，与导入链同一个入口与超时处理）。SQL 支持 `.gz`（5.5MB → 1.28MB）—— 公开仓库里这个 blob 会永久留在对象里，压一下值得。
+- **不分叉第二套语义（代码）**：`scripts/catalog/enrich-travel.js` 的写库形状**直接调用 `enrich-products.js` 导出的 `startRunSql` / `seedSql` / `resultBatchSql` / `finishRunSql` / `inputHashFor` / `localizationInput`**，只把「按标签拉队列 + 本机跑模型」这一段换掉。理由与那一层「不写第二套 prompt」相同：分叉出第二套语义正是当初删掉旧实现的原因。为此给 `enrich-products.js` 补导出 `startRunSql` 与 `contentSource`（原本是模块内函数）。
+  - 第一次实现写出的是 `product_content(…, content_json, …)` 单行 —— 逐字核对规范实现后发现应该是 `(product_id, locale, title, summary, content_source, enrichment_run_id, is_current)` 的 **zh-CN / en 两行**且 `content_source='llm:<版本>'`。**这就是「复用」而不是「重写」的价值**：形状不对会被规范函数直接纠正，而不是等线上渲染出问题。
+  - **加工版本故意用 `travel-localize-v1` 而不是 `catalog-localize-v1`**：`product_content` 的删除边界是 `content_source='llm:<版本>'`，用同一个版本号会让这批的 DELETE 顺手删掉日更链写下的 shadow 行（那一行的输入可能比这里拉到的更新）。分开则两批互不覆盖。
+  - **`enrichment_product_status` 的 `input_hash` 由规范函数算**，不自己拼一个「长得差不多」的（本脚本从只读 API 取输入，与日更链从 `product_details.item_json` 取是不同的数据源，但喂给规范的形状一样，所以哈希可比）。
+  - **结果归一化**：续跑一轮里失败过的产品会在下一轮成功，但 `failed` 里的陈旧条目不会自己消失 —— 出报告前按「是否曾经成功过」剔除（首轮 262 个陈旧 429 记录在最终报告里归零，只剩 3 个真失败）。
+- **测试（代码）**：新增 `tests/catalog-apply-sql.test.js`（5 条）—— 分句与通道 Worker 的 `splitSql` **逐条一致**（引号里的分号是最常见的分歧点，分歧会让「这批 SQL 会做什么」无从判断）、`is_current=1` 被 shadow 闸拦下、语句种类计数。`splitSql` 复刻版写在测试里而不是 import 过来：Worker 与脚本运行在不同运行时，那份复刻就是「两边必须一致」这条断言本身。
+- **本轮只写 shadow，线上不会变（务必记住）**：`enrich-products.js` 的纪律是「所有输出 `is_current=0`，激活是单独的受审操作」，`apply-sql.js` 的 shadow 闸会**拒绝**任何含 `is_current=1` 的 SQL。而且目前 **`product_content` 还没有任何读取端**，`/api/v1/*` 的分类筛选按 `ta.is_current = 1` 取标签 —— 所以这批的归纳 / 翻译 / 重新打标**都已入库但不可见**，让它们生效需要另一次「激活」操作（调 `is_current`），仓库里还没有这个脚本。**这是下一件要做的事，不是这次遗漏的步骤。**
+
 ## 值得记录的决策
 
 - **`source-raw` 离线链路**（09-08）：采集与生成彻底分离，日报只从不可变的来源层重放。这是可回溯、可复现、可回填的基础，也是后面所有数据修复的前提。
