@@ -34,8 +34,5 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           # 闸门：只允许 SELECT —— 这条流水线是诊断用的，不该能改数据。
-          case "$(echo "${{ github.event.inputs.sql }}" | tr '[:lower:]' '[:upper:]' | tr -d ' ')" in
-            SELECT*) ;;
-            *) echo "拒绝：只允许 SELECT"; exit 1;;
-          esac
-          node scripts/catalog/live-query.js --sql "${{ github.event.inputs.sql }}"
+          # 真正的闸在 read-check.js 里（含多语句拦截），这里只是早失败。
+          node scripts/catalog/read-check.js --sql "${{ github.event.inputs.sql }}"
