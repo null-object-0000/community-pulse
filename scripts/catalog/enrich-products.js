@@ -659,6 +659,8 @@ module.exports = {
   reentrySql,
   runStatusSql,
   seedSql,
+  startRunSql,
+  contentSource,
   resultSql,
   resultBatchSql,
   skipStatusSql,

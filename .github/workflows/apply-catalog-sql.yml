@@ -1,0 +1,72 @@
+name: 应用离线增强 SQL（产品库 shadow 写入）
+
+# 用途：本机跑完 LLM 增强（模型网关是本地自建的，Actions 到不了），把生成的 SQL 提交到一个
+# 分支，由这里用仓库的 CLOUDFLARE_API_TOKEN 经临时通道 Worker 应用到产品库。
+#
+# 为什么拆成两跳：模型网关 127.0.0.1:18640 只有本机能到；而本机所在网络在协议层重置到 RDS
+# 3306 的 TLS 握手，直连不通。读走生产只读 API（本机可达），写走这里。
+#
+# 幂等：写入全是 upsert / 先删自己的 shadow 行（见 enrich-products.js 的 resultBatchSql），
+# 重复应用同一份 SQL 不会写坏数据。
+on:
+  workflow_dispatch:
+    inputs:
+      sql_path:
+        description: '仓库内的 SQL 文件路径（相对仓库根；支持 .gz）'
+        required: true
+        default: 'data/catalog/enrich-replay/travel.sql.gz'
+      dry_run:
+        description: '只校验语句数，不写库'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalog-sql-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: 安装项目依赖
+        run: npm ci
+
+      - name: 校验 SQL 文件
+        run: |
+          SQL="${{ github.event.inputs.sql_path }}"
+          if [ ! -f "$SQL" ]; then
+            echo "找不到 $SQL —— 先把本机生成的 SQL（可 gzip）提交到当前分支。"
+            exit 1
+          fi
+          echo "文件: $SQL ($(wc -c < "$SQL") 字节)"
+          # 安全闸：这份 SQL 只该写 shadow 行（is_current=0），不该出现任何激活语句。
+          # gz 会在这里被解开再检查 —— 闸门必须看到真实语句，不能只看压缩流的字节。
+          if ! node scripts/catalog/apply-sql.js --file "$SQL" --dry-run; then
+            echo "校验失败（见上）"
+            exit 1
+          fi
+
+      - name: 应用到产品库
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "缺少 CLOUDFLARE_API_TOKEN：无法部署临时通道 Worker。"
+            exit 1
+          fi
+          node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel
+
