@@ -70,7 +70,7 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 ```
 
 **vibecafe 抓取要点**（`scripts/sources/vibecafe.js`）：
-- 用 `curl -x 代理 -H 'RSC: 1' https://vibecafe.ai/products`，响应是 Next.js RSC flight 流，产品数据在 `initialProducts` 数组里（**干净 JSON**，不是 HTML 转义，别去挖 `self.__next_f`——那个是多重转义很坑）。
+- 读它的前端数据接口（Next.js RSC flight 流），产品数据在 `initialProducts` 数组里（**干净 JSON**）。请求头与路径随站点改版会变，按当时的实现适配即可。
 - 每个产品字段：`id, name, tagline, logoUrl, imageUrls, createdAt($D前缀ISO), owner{handle,name,labels}, websiteUrl`。
 - **图片分两类，不要混用**：`logoUrl` 是产品标志（列表 48px 头像用它，标准化为 `logo`）；`imageUrls` 是软件配图/截图，1~9 张且有顺序，标准化为 `images`（全部保留，不截断），`image` 仍等于首张配图。站点把配图渲染成缩略图条 + 灯箱查看器；只有 logo 会经 `npm run images:sync` 镜像落盘，配图不落盘、页面直接回源（域名白名单见站点侧 `hotlinkOrigins`）。
 - 老日报若缺少 `logo` / `images`，用离线脚本补齐（只改这两个字段，不重跑 collect，避免顺带改写其他来源）：
@@ -120,7 +120,7 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 
 ## 网络/代理（仅来源采集层）
 
-本机系统代理是 Clash `127.0.0.1:7890`（gsettings 配了手动代理但**未导出环境变量**）。
+来源采集层按需走本地代理：地址由 `COMMUNITY_PULSE_PROXY` 指定（未设置时代码里有一个本机默认值，见 `capture_*_raw.js`）。
 代理只由 `capture_*_raw.js` 系列来源采集脚本使用。`collect.js` 是纯本地读取，不设置代理，不执行 `curl`/`gh`。
 
 ## 新增数据源
@@ -133,11 +133,11 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 
 ## 手动重跑/重发前必查
 
-用户要求"重新触发 Actions/重发日报"时，先核对两件事再动手：① cron 列表里日报任务今天的 last run 是否 ok（成功则今早已自动发送过一次）；② final/<日期>.md 的 mtime 是否今天生成。若当天已发送，必须先告知用户并确认再重发，否则会重复发消息（已发生：2026-09-09 用户问"为啥发我了两遍"）。
+用户要求"重新触发 Actions/重发日报"时，先核对两件事再动手：① cron 列表里日报任务今天的 last run 是否 ok（成功则今早已自动发送过一次）；② final/<日期>.md 的 mtime 是否今天生成。若当天已发送，必须先告知用户并确认再重发，否则会重复发消息。
 
 ## 关键坑（务必看）
 
-- **网络/代理**：本机系统代理是 Clash `127.0.0.1:7890`（gsettings 配了手动代理但**未导出环境变量**）。
+- **网络/代理**：来源采集脚本按需走 `COMMUNITY_PULSE_PROXY` 指定的本地代理（未设置时代码里有一个本机默认值）。
   - 只有来源采集脚本使用 `COMMUNITY_PULSE_PROXY`；Actions 将它设为空字符串直连。
   - `collect.js` 完全不联网，不应包含任何代理、`curl`或 `gh` 逻辑。
 - **gh 字段名**：`gh search repos --json` 的字段是 `language`（不是 `primaryLanguage`），否则报 "Unknown JSON field"。
@@ -358,7 +358,7 @@ node scripts/validate_producthunt_raw.js --start 2026-08-01 --end 2026-09-10
 
 `--refresh-featured` 是**增量**的：`officialFeatured.capture.sourceFields` 已含 `thumbnail` 的日期直接跳过，所以限流中断后重跑只补剩余日期，不会反复重刷已升级的日期（这一条对 Actions 的 `while` 重试循环是必需的）。
 
-**注意成本**：刷新精选子集会重写该日精选 records（PH 的 `/r/...` 跳转 token 每次请求都会变），因此每次刷新都会连带重跑这些精选链接的 `linkResolution`——校验器要求链接覆盖与 records 完全一致，不能跳过。实测 Actions 出口访问 PH 跳转页返回 403，这些解析会全部记成 `ok:false` 的失败快照（快速失败，不阻断落盘）。按 253 天估算约 1.5 小时。
+**注意成本**：刷新精选子集会重写该日精选 records（PH 的 `/r/...` 跳转 token 每次请求都会变），因此每次刷新都会连带重跑这些精选链接的 `linkResolution`——校验器要求链接覆盖与 records 完全一致，不能跳过。实测 CI 出口访问 PH 跳转页返回 403（平台对数据中心出口的限制），这些解析会全部记成 `ok:false` 的失败快照（快速失败，不阻断落盘）。按 253 天估算约 1.5 小时。
 
 GitHub Actions 侧用 `producthunt-backfill.yml` 的 `refresh_featured=true` 输入执行同一件事（默认 false，行为不变）：
 
@@ -395,7 +395,7 @@ node scripts/validate_producthunt_raw.js --start 2026-01-01 --end 2026-09-10
 
 新采集的 Product Hunt Post 保留官方 `website` 与 `productLinks { type url }`，并对官方精选的这些 URL 去重后执行链接解析，存入 `linkResolution.links`。最多 3 并发、每请求 12 秒、每次最多 5 跳、最多 2 次尝试（间隔 1 秒）；优先 HEAD，无法取得跳转时 GET，收到响应头立即终止正文传输。只请求 PH 域名，一旦 Location 指向外部即停止，因此 `ok` 表示解析成功，`verified: false` 表示未验证目标可访问性。失败也记录并缓存，`complete` 表示所有链接已尝试，不代表全部成功；已有结果仅 `--refresh-links` 显式刷新，日常 `--resume` 不重试历史失败。
 
-产品页完整 HTML 快照改为默认关闭的可选增强：新日采集设置 `PRODUCT_HUNT_PAGE_CAPTURE=1` 才抓取，已有日期仅 `--refresh-pages` 显式重抓（该参数同时启用抓页）。关闭时不新建 `productPages`，历史快照保持可读。原因：API 已覆盖所需介绍与外链，当前出口页面访问被 PH 封禁（403），页面 description 多数与 API 相同或只是更泛的品牌介绍，没有稳定增量价值。单个链接或页面失败均降级记录，不阻止当日 API 数据落盘。
+产品页完整 HTML 快照改为默认关闭的可选增强：新日采集设置 `PRODUCT_HUNT_PAGE_CAPTURE=1` 才抓取，已有日期仅 `--refresh-pages` 显式重抓（该参数同时启用抓页）。关闭时不新建 `productPages`，历史快照保持可读。原因：API 已覆盖所需介绍与外链，当前 CI 出口访问页面会被 PH 拒绝（403），页面 description 多数与 API 相同或只是更泛的品牌介绍，没有稳定增量价值。单个链接或页面失败均降级记录，不阻止当日 API 数据落盘。
 
 日报摘要优先 API `description` / `tagline`，缺失才回退到历史页面简介；当次发布信息仍保留在 `launch`。官网优先解析结果，再回退历史页面 `websiteUrl`、API `website`；`productLinks` 也使用解析后的 URL，使 GitHub 链接进入统一仓库发现与快照链路。下游完全离线，历史无 `linkResolution`、v1/v2 `productPages` 文件继续兼容。
 
