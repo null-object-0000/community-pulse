@@ -98,19 +98,30 @@ function survivingProductIds(range) {
   return new Set((collected.tables.products || []).map((row) => row[0]));
 }
 
-/** 线上真的有这个产品页吗（只保留 200）。 */
-async function liveProductIds(origin, ids) {
+/**
+ * 线上真的有这个产品页吗 —— **只作参考，别拿它当判据**。
+ *
+ * 产品页有两层缓存：Worker 的 Cache API（键含 CATALOG_VERSION + 渲染版本 + pathname）与
+ * Cloudflare 的边缘缓存，`s-maxage` 是 24 小时。所以撤销之后规范地址仍可能返回 200（旧渲染），
+ * 而一次网络抖动又会被误判成「线上不存在」—— 2026-09-22 实测：`--verify` 把 11 个仍然存在的
+ * 目标全判成了 notLive，差点让撤销空跑。**存在性要看 `inspectTargets` 的产品库读数**，
+ * 这里只在明显 404 时才把目标摘掉（真不存在的话 DELETE 本来就是空操作，摘不摘无所谓）。
+ */
+async function liveProductIds(origin, ids, fetcher = fetch) {
   const live = new Set();
   const missing = [];
+  const unknown = [];
   for (const id of ids) {
-    let ok = false;
     try {
-      const response = await fetch(`${origin}/products/${id}/`, { method: 'GET', redirect: 'manual' });
-      ok = response.status === 200;
-    } catch { ok = false; }
-    if (ok) live.add(id); else missing.push(id);
+      const response = await fetcher(`${origin}/products/${id}/`, { method: 'GET', redirect: 'manual' });
+      if (response.status === 200) live.add(id);
+      else if (response.status === 404) missing.push(id);
+      else unknown.push(`${id} (HTTP ${response.status})`);
+    } catch (error) {
+      unknown.push(`${id} (${error?.message || 'fetch failed'})`);
+    }
   }
-  return { live, missing };
+  return { live, missing, unknown };
 }
 
 /**
@@ -173,10 +184,13 @@ async function main() {
   const skippedSurviving = candidates.filter((target) => surviving.has(target.productId));
   let verified = kept;
   let notLive = [];
+  let probeUnknown = [];
   if (options.verify) {
-    const { live, missing } = await liveProductIds(options.origin, kept.map((target) => target.productId));
-    verified = kept.filter((target) => live.has(target.productId));
+    const { live, missing, unknown } = await liveProductIds(options.origin, kept.map((target) => target.productId));
+    // 只摘掉**明确 404** 的：一次网络抖动不该让撤销空跑（2026-09-22 的教训）。
+    verified = kept.filter((target) => !missing.includes(target.productId));
     notLive = missing;
+    probeUnknown = unknown;
   }
   const sql = sqlFor(verified);
   const report = {
@@ -184,7 +198,7 @@ async function main() {
     origin: options.origin, verified: options.verify, range: options.range, apply: options.apply, inspect: options.inspect,
     candidates: candidates.length, targets: verified.length,
     skippedSurviving: skippedSurviving.map((target) => ({ productId: target.productId, detail: target.detail })),
-    notLive,
+    notLive, probeUnknown,
     entries: verified.map((target) => ({ productId: target.productId, reason: target.reason, detail: target.detail })),
   };
   // SQL 先落盘再执行：执行失败时那份 SQL 还得留着排查（它是这次撤销唯一的记录）。

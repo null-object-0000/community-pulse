@@ -178,3 +178,22 @@ test('inspectTargets reports the source count the single-source guard uses', asy
   // 通道的 select 不吃绑定参数，id 是内联的 —— 形状不对必须拒绝，不能拼进 SQL。
   await assert.rejects(() => inspectTargets(db, [`${a}'; DROP TABLE products; --`]), /形状不对/);
 });
+
+// `--verify` 只是参考：产品页有两层缓存（24 小时的 s-maxage），撤销后规范地址仍可能 200；
+// 而一次网络抖动会被误判成「线上不存在」—— 2026-09-22 实测它把 11 个仍存在的目标全判成了
+// notLive，撤销差点空跑。所以只有**明确 404** 才算不在线上。
+test('only a definite 404 removes a revoke target', async () => {
+  const { liveProductIds } = require('../scripts/catalog/revoke-products.js');
+  const a = 'prd_0f813588ffc0adcbab3da240';
+  const b = 'prd_1e0855fff6d8f8ed522fd28f';
+  const c = 'prd_cc5dc02421c5f183a59744c9';
+  const fetcher = async (url) => {
+    if (String(url).includes(b)) return { status: 404 };
+    if (String(url).includes(c)) return { status: 503 };
+    throw new Error('network');
+  };
+  const result = await liveProductIds('https://example.test', [a, b, c], fetcher);
+  assert.deepEqual(result.missing, [b]);
+  assert.equal(result.live.size, 0);
+  assert.equal(result.unknown.length, 2);
+});
