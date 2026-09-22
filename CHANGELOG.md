@@ -26,7 +26,7 @@
 | 09-18 | 8（含 2 次快照提交，另有本轮未提交） | 待统计 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘；**677 行日报地址回填 + 库侧撤销 21 个产品行（7 条招聘广告全部下线）** | community-pulse |
 | 09-20 | 待统计 | 待统计 | 待统计 | **日报行绑定产品库身份**（报告行带 `productId` 与发布记录 `publication`，补上「报告行必须与导入链身份一致」的门禁）；**增强结果改按 `productId` 匹配**，不再按「标题 + 作者」匹配 Markdown | community-pulse |
 | 09-21 | 1（本轮） | 5 文件 +1,276 | 0 | **产品级 LLM 加工流水线重新落地**（MySQL 原生、按天增量、shadow-only）：口径定成 `products.first_seen_date = TARGET` + 重入臂，入口门禁写独立终态 `skipped_no_input`，成本落 `enrichment_runs`；真数据实跑 793 个产品量出成本曲线，二次运行 **0 请求** | community-pulse |
-| 09-22 | 1（本轮） | 10 文件（含 3 个测试；`worker/render-version.mjs` 是构建生成） | 28 文件（13 期日报的地址与身份） | 投稿地址的 **markdown 装饰尾巴**漏进 `url`：线上产品页「官网」按钮指向 `https://seichigo.com**/`。边界规则收敛成唯一一份 `bareUrls` 并剥掉结尾装饰；`safeUrl` 拒掉不像 host 的 host（第二道）；13 行地址回填，`productId` 与同日 `final` 一起同步；`catalog-refresh.yml` 补 `revoke_ids` 输入（撤销那 13 个旧身份） | community-pulse |
+| 09-22 | 2（本轮） | 12 文件（含 3 个测试、1 个回填脚本；`worker/render-version.mjs` 是构建生成） | 28 文件（13 期日报的地址与身份）+ 14 期日报的 `vibecafeStatus` | 投稿地址的 **markdown 装饰尾巴**漏进 `url`（线上「官网」指向 `https://seichigo.com**/`）：边界规则收敛成唯一一份 `bareUrls`、`safeUrl` 拒掉不像 host 的 host、13 行回填 + 撤销旧身份；同日再补三条线上反馈 —— **同产品重复行合并**、**纯内容投稿不进列表**、**VibeCafé 策划中不收录**，并让**准入规则同时管产品库** | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -668,6 +668,18 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
   - `revoke-products.js` 的 **`--inspect`**：撤销前后各读一次产品库（`products` / `product_routes` / `product_source_first_seen` 的来源数）。`@shared <= 1` 这道单来源闸是在 **SQL 里**判断的，多来源的行一行都不会删，而 `applied.products` 只是「我发了几条 DELETE」，照样报「成功」—— 报告写「已撤销 13 个产品」时脚本其实无从知道有几条真的匹配到行。现在有存活目标时退出码 1，并把剩下的 id 列出来。
   - **`--verify` 只认明确 404**：原来任何非 200 都算「线上不存在」。产品页有两层缓存（Worker 的 Cache API + 边缘缓存，`s-maxage` 24 小时），撤销后规范地址仍可能是旧渲染（**这次复核就是被 11 个这样的 200 骗了半天**）；反过来 5xx / 网络抖动也不该被当成「不存在」。现在只摘明确 404 的，其余记进 `probeUnknown` 并保留，存在性以 `--inspect` 的产品库读数为准。
   - CI 的撤销步骤加 **`continue-on-error: true`**：导入已经写完了，快照必须照建；撤销这一步红着留给人工决定怎么补，不能因为它的退出码把快照和提交一起跳过。
+
+### 同日追加：用户另外三条线上反馈
+
+用户在同一轮工作里还发了三条反馈，被 harness 以 `outcome: canceled` 丢掉了（见文末的流程教训），复核时才从会话记录里找回来：
+
+- **①「今日发现」里同一个产品出现两次**（A2Agent）：VibeCafé 两位作者各贴了一次 `https://a2agent.me/`（`cmuavelg1…` 与 `cmuavcqe7…`），标题不同、`externalId` 不同 —— `collect.js` 的源内去重按「作者 + URL」分组，两条都留下了，于是同一个产品页在列表里出现两次。新增 `D.collapseProductDuplicates`（判据就是 `productId`，留最新、并列留摘要更长的），在 `build-site.js` 里**排在准入之后、增强匹配之前** —— 顺序有讲究：final 按 `productId` 匹配，两行共用一个 id 会让其中一行拿不到译文。09-21 那期改完仍是 `matchedByProductId 75/75`、`matchedByHeading 0`。raw 不动（两条观察都是证据，发布层合成一行）。
+- **②一篇长文被当成产品收录**（ruanyf/weekly #11840「【投稿】人工智能与人脑」）：标题只有内容标签、正文里没有任何产品地址，行链接于是退回投稿页，可它照样进了列表和产品库。准入新增 `content_not_product`：投稿源 + 标题是纯内容标签（文章/内容/言论/随笔/译文/投稿/推荐/分享）+ 行链接就是投稿页。**全量只多挡下这 1 行**；带「投稿」标签但有项目地址的投稿（`【投稿】GuardSSL - …监控工具`）不受影响。
+- **③VibeCafé「策划中」的作品不该收**：状态只存在于作品详情页的 RSC payload（「作品状态」卡片：策划中 / 开发中 / 已发布），`vibecafeItems` 现在把它挂成 `vibecafeStatus`，准入按 `vibecafe_planning` 排除（19 行）。历史行不补字段就挡不住，所以加了 `scripts/backfill_vibecafe_status.js` 回填 **63 行**（42 已发布 / 19 策划中 / 2 开发中，只新增一个字段、其余字节不动）。**只按用户说的「策划中」排除，「开发中」那 2 行先留着** —— 这是同一件事的边界，等确认再动。
+- **④准入从此也管产品库**：`build-mysql-import.js` 的 `collectRows` 过滤掉 `excluded` 的行，并把决定记进 `admissionDecisions`。只做事后撤销是不够的 —— `catalog-refresh` 的任何范围导入都会把撤销掉的行**重新建回来**（导入链读 source-raw，不读发布层的 raw）。这条同时让 09-18 撤销的那 7 条招聘广告不会再被重建。
+- 生产：撤销 20 个旧产品行（19 策划中 + 1 长文）；`npm run check` 300/300。
+
+**一条流程教训（值得记住）**：用户在长任务进行中发的 3 条反馈被 harness 丢掉了 —— `~/.dsh/sessions/<session>/session.v3.jsonl.zstd` 的 `agent/inbox/spliced` 记录显示 seq 71/131/147 各自插入了一条，seq 1217 又用 `outcome: canceled` 把三条一起取消（时间点正好是我中途 `ask_user_question` 的时候）。也就是说**长任务里用提问打断，会把用户排在后面的反馈一起清掉**。两点结论：① 干活期间用户的消息要尽快读掉、别攒着；② 用户问「我发的几个问题都处理了吗」时，先去看 inbox 记录，而不是只看当前上下文 —— 这次就是靠它找回来的。
 
 ## 值得记录的决策
 

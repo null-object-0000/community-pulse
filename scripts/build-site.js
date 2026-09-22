@@ -35,7 +35,10 @@ for (const name of staticFiles) fs.copyFileSync(path.join(root, 'web', name), pa
 const verificationDir = path.join(root, 'verification');
 for (const name of fs.readdirSync(verificationDir)) fs.copyFileSync(path.join(verificationDir, name), path.join(outputDir, name));
 const reports = dates.map(date => {
-  const raw = admitReport(JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8')));
+  // 顺序有讲究：先按准入规则剔除不该发布的行（招聘广告、纯内容投稿、VibeCafé 策划中），
+  // 再按 productId 合并「同一产品的多条观察」（否则被剔掉的那条可能正好是保留者），最后才做
+  // 增强匹配 —— final 是按 productId 匹配的，两行共用一个 id 会让其中一行拿不到译文。
+  const raw = D.collapseProductDuplicates(admitReport(JSON.parse(fs.readFileSync(path.join(sourceDir, `${date}.json`), 'utf8'))));
   const finalPath = path.join(finalDir, `${date}.md`), rawMarkdown = path.join(sourceDir, `${date}.md`);
   const finalExists = fs.existsSync(finalPath);
   const report = finalExists ? applyEnhancedMarkdown(raw, fs.readFileSync(finalPath, 'utf8'), date) : { ...raw, presentation: { summarySource: 'raw', enhancedItemCount: 0, totalItemCount: D.reportItems(raw).length } };

@@ -635,6 +635,36 @@
     return fallback ? { ...item, titleFallback: fallback.value, titleFallbackSource: fallback.source } : item;
   }
   const reportItems = report => (report?.results || []).flatMap(source => (source.items || []).map(item => ({ ...item, sourceId: item.sourceId || source.sourceId, sourceName: source.sourceName })));
+  // 一个产品在列表里只出现一次。
+  //
+  // 同一产品被多条来源观察收录是常态（跨源、跨日合并本来就是设计的一部分），而 VibeCafé 这种
+  // 「发布流」还会出现**同源两条**：2026-09-21 两位作者各贴了一次 https://a2agent.me/
+  // （`cmuavelg1…` 与 `cmuavcqe7…`），标题不同、externalId 不同，而 collect.js 的源内 / 跨源
+  // 去重按「作者 + URL」分组，两条都留下 —— 同一个产品页于是在「今日发现」里出现了两次。
+  //
+  // 判据用 `productId`：它本来就是「这一行是哪个产品」的唯一实现（仓库 → 官网 URL → 来源）。
+  // 保留规则与 collect.js 的去重一致 —— **留最新的一条**（publishedAt 降序），并列时留摘要更长的
+  // 那条。没有 `productId` 的行（历史产物）原样保留，不猜。
+  function collapseProductDuplicates(report) {
+    const results = (report?.results || []).map(source => {
+      const keep = new Map();
+      const drop = new Set();
+      for (const item of source.items || []) {
+        const id = item.productId;
+        if (!id) continue;
+        const current = keep.get(id);
+        if (!current) { keep.set(id, item); continue; }
+        const published = String(item.publishedAt || '');
+        const known = String(current.publishedAt || '');
+        const wins = published > known
+          || (published === known && String(item.summary || '').length > String(current.summary || '').length);
+        if (wins) { drop.add(current); keep.set(id, item); } else drop.add(item);
+      }
+      if (!drop.size) return source;
+      return { ...source, items: (source.items || []).filter(item => !drop.has(item)) };
+    });
+    return { ...report, results };
+  }
   function metric(item, names) {
     for (const name of names) { const value = item.github?.[name] ?? item.metrics?.[name]; if (value !== null && value !== undefined && value !== '') return value; }
     return null;
@@ -972,5 +1002,5 @@
   function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
   }
-  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

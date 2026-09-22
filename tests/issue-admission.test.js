@@ -7,7 +7,8 @@ test('real recruitment ad is excluded, Recruit OS and CS-Books survive', () => {
   const result = admitReport(report);
   assert.equal(report.results.flatMap(s => s.items).length, 91);
   const items = result.results.flatMap(s => s.items);
-  assert.equal(items.length, 90);
+  // 91 → 88：一条招聘广告 + 两条 VibeCafé「策划中」作品（indietools.work、小小魔塔）。
+  assert.equal(items.length, 88);
   assert.ok(!items.some(i => i.externalId === '11707'));
   assert.ok(items.some(i => i.externalId === '11714'));
   assert.ok(items.some(i => i.title.includes('CS-Books')));
@@ -50,4 +51,46 @@ test('source normalization excludes before source limits and records the exact r
   assert.ok(!r.items.some(i => i.externalId === '11707'));
   assert.ok(r.items.some(i => i.externalId === '11714'));
   assert.equal(r.sourceRaw.admissionDecisions.find(d => d.externalId === '11707').reason, 'recruitment_advertisement');
+});
+
+// VibeCafé 的「策划中」作品只是占位，不进列表也不进产品库。状态只有详情页拿得到，采集时挂在
+// `vibecafeStatus` 上（历史行由 scripts/backfill_vibecafe_status.js 回填）。
+test('VibeCafé planning-stage works are excluded, published ones are not', () => {
+  const planning = issueAdmission({ sourceId: 'vibecafe', title: 'ai集', vibecafeStatus: '策划中' });
+  assert.equal(planning.status, 'excluded');
+  assert.equal(planning.reason, 'vibecafe_planning');
+  assert.equal(issueAdmission({ sourceId: 'vibecafe', title: 'IGPuller', vibecafeStatus: '已发布' }).status, 'accepted');
+  // 状态拿不到（2026-09-03…09-06 的采集没有详情页）时放行，不猜。
+  assert.equal(issueAdmission({ sourceId: 'vibecafe', title: '旧作品' }).status, 'accepted');
+});
+
+// 纯内容投稿：标题只有内容标签、正文里没有任何产品地址。ruanyf/weekly #11840 的
+// 「【投稿】人工智能与人脑」是一篇长文，却被当成产品收进了列表。
+test('a content submission with no product address is excluded, a labelled product is not', () => {
+  const article = issueAdmission({
+    sourceId: 'weekly-issues', title: '【投稿】人工智能与人脑',
+    url: 'https://github.com/ruanyf/weekly/issues/11840', issueUrl: 'https://github.com/ruanyf/weekly/issues/11840',
+  });
+  assert.equal(article.status, 'excluded');
+  assert.equal(article.reason, 'content_not_product');
+  // 同样带「投稿」标签、但有项目地址的投稿照收。
+  assert.equal(issueAdmission({
+    sourceId: 'weekly-issues', title: '【投稿】GuardSSL - 现代化 SSL 证书监控与安全分析工具',
+    url: 'https://github.com/guardssl/guardssl', issueUrl: 'https://github.com/ruanyf/weekly/issues/8846',
+  }).status, 'accepted');
+});
+
+// 一个产品在列表里只出现一次：VibeCafé 两位作者各贴了一次 a2agent.me，externalId 不同、
+// 标题不同，collect.js 的源内去重按「作者 + URL」分组，两条都留了下来。
+test('rows that resolve to the same product collapse to the newest one', () => {
+  const D = require('../web/shared.js');
+  const older = { sourceId: 'vibecafe', externalId: 'cmuavcqe700000agm4xubfmo2', productId: 'prd_a2agent', title: 'Affordable LLM API Gateway · A2Agent', publishedAt: '2026-09-21T06:33:24.127Z', summary: 'GLM, Kimi, DeepSeek, Qwen, MiniMax, and more through one OpenAI-compatible API. Pay-as-you-goAccess' };
+  const newer = { sourceId: 'vibecafe', externalId: 'cmuavelg100000agmkrjg1foc', productId: 'prd_a2agent', title: 'A2Agent--Access multiple LLMs via a single OpenAI-compatible API.', publishedAt: '2026-09-21T06:34:51.025Z', summary: 'Access GLM, Kimi, DeepSeek, Qwen, MiniMax, and more through one OpenAI-compatible API. Pay-as-you-go' };
+  const other = { sourceId: 'vibecafe', externalId: 'x', productId: 'prd_other', title: '别的产品', publishedAt: '2026-09-21T05:00:00Z', summary: '别的' };
+  const report = { results: [{ sourceId: 'vibecafe', sourceName: 'VibeCafé', items: [older, newer, other] }] };
+  const collapsed = D.collapseProductDuplicates(report);
+  assert.deepEqual(collapsed.results[0].items.map(i => i.externalId), [newer.externalId, 'x']);
+  // 没有 productId 的历史行原样保留，不猜。
+  const legacy = { results: [{ sourceId: 'x', items: [{ externalId: 'a', title: 'A' }, { externalId: 'b', title: 'B' }] }] };
+  assert.equal(D.collapseProductDuplicates(legacy).results[0].items.length, 2);
 });

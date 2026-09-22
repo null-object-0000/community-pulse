@@ -9,6 +9,7 @@ const {
   loadItems, loadGithubRepositories, attachRepositoryFacts,
   loadSiteDescriptions, attachDescriptionFallback,
 } = require('../../.agents/skills/community-pulse/scripts/source_raw_items');
+const { issueAdmission } = require('../../.agents/skills/community-pulse/scripts/issue-admission');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_RAW_ROOT = path.join(ROOT, '知识', '大家都在做什么', 'source-raw');
@@ -258,7 +259,16 @@ function collectRows(options) {
       });
       admissionDecisions.push(...(loaded.sourceRaw?.admissionDecisions || []).map(d => ({ date, ...d })));
       const evidence = loadEvidence(evidenceCache, options.rawRoot, date);
-      const items = attachDescriptionFallback(attachRepositoryFacts(loaded.items, evidence.repositories), evidence);
+      const items = attachDescriptionFallback(attachRepositoryFacts(loaded.items, evidence.repositories), evidence)
+        // 发布准入同样管产品库：招聘广告、纯内容投稿、VibeCafé「策划中」的作品不该有产品行。
+        // 只做事后撤销是不够的 —— 撤销之后任何一次范围导入（`catalog-refresh`）都会把它们重新
+        // 建回来，因为导入链读的是 source-raw 而不是发布层的 raw。判据与站点构建完全同一份实现。
+        .filter((item) => {
+          const admission = issueAdmission({ ...item, sourceId: item.sourceId || source.id });
+          if (admission.status !== 'excluded') return true;
+          admissionDecisions.push({ date, sourceId: source.id, externalId: item.externalId, title: item.title, ...admission });
+          return false;
+        });
       days += 1;
       rows += items.length;
       for (const item of items) {

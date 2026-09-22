@@ -279,6 +279,10 @@ function vibecafeItems(document, src) {
     // may be a completely different product. The current product's canonical
     // website is the link attached to the detail page's "体验作品" action.
     const detailWebsiteUrl = extractJsonStringBefore(detailText, '"children":"体验作品 ↗"', 'href');
+    // 作品状态（策划中 / 开发中 / 已发布）：详情页「作品状态」卡片里的那个 badge，只有详情页拿得到。
+    // 策划中的作品还只是占位（2026-09-21 的「ai集」摘要就是「工作台」两个字），发布层按它排除 ——
+    // 准入规则在 issue-admission.js，这里只负责把状态挂到行上（历史行由回填补）。
+    const vibecafeStatus = extractJsonStringField(detailText, '"作品状态"', 'children');
     const selectedProductWebsite = product.owner?.selectedProduct?.id === product.id
       ? product.owner.selectedProduct.websiteUrl
       : '';
@@ -310,6 +314,7 @@ function vibecafeItems(document, src) {
       websiteUrl,
       githubUrl,
       github: githubUrl ? { url: githubUrl } : undefined,
+      ...(vibecafeStatus ? { vibecafeStatus } : {}),
     };
   });
 }
@@ -956,5 +961,5 @@ function loadItems(src, options = {}) {
 module.exports = {
   loadItems, issueItems, issueProjectLinks, attachSiteLogos, attachSiteOgImages, attachMarkImage, loadSiteOgImages, loadGithubRepositories, attachGithubRepositories, attachRepositoryFacts, extractExternalUrls,
   loadSiteDescriptions, attachDescriptionFallback, loadScreenshots, attachScreenshots, sourceDescriptionLength, meetsDescriptionFloor, DESCRIPTION_MIN_LENGTH,
-  latestDate, OBSERVED_SOURCES,
+  latestDate, OBSERVED_SOURCES, vibecafeItems,
 };

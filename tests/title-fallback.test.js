@@ -50,7 +50,8 @@ test("a release note never becomes a product name", () => {
 });
 test('enhancement input preserves original match headings and removes only the ad', () => {
   const job = prepare('2026-09-15');
-  assert.equal(job.report.results.flatMap(s => s.items).length, 90);
+  // 91 → 88：一条招聘广告 + 两条 VibeCafé「策划中」作品（见 issue-admission 的 vibecafe_planning）。
+  assert.equal(job.report.results.flatMap(s => s.items).length, 88);
   assert.ok(job.markdown.includes('[开源推荐]'));
   assert.ok(job.markdown.includes('Recruit OS'));
   assert.ok(!job.markdown.includes('11707'));
