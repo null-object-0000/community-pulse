@@ -179,9 +179,9 @@ test('inspectTargets reports the source count the single-source guard uses', asy
   await assert.rejects(() => inspectTargets(db, [`${a}'; DROP TABLE products; --`]), /形状不对/);
 });
 
-// `--verify` 只是参考：产品页有两层缓存（24 小时的 s-maxage），撤销后规范地址仍可能 200；
-// 而一次网络抖动会被误判成「线上不存在」—— 2026-09-22 实测它把 11 个仍存在的目标全判成了
-// notLive，撤销差点空跑。所以只有**明确 404** 才算不在线上。
+// `--verify` 只是参考：产品页有两层缓存（24 小时的 s-maxage），撤销后规范地址仍可能 200
+// （2026-09-22 复核时就被 11 个这样的旧渲染骗过一次）；反过来 5xx / 网络抖动也不是「不存在」
+// 的证据。所以只有**明确 404** 才算不在线上，其余保留。
 test('only a definite 404 removes a revoke target', async () => {
   const { liveProductIds } = require('../scripts/catalog/revoke-products.js');
   const a = 'prd_0f813588ffc0adcbab3da240';

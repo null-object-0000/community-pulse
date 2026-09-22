@@ -26,9 +26,9 @@
  *
  * `--inspect` 撤销前后各读一次产品库现状（`products` / `product_routes` /
  * `product_source_first_seen` 的来源数），把「单来源闸到底挡下了几行」写进报告。**别只看
- * 「SQL 没报错」**：`@shared <= 1` 是在 SQL 里生效的，多来源的行一行都不会删，而退出码与
- * `applied.products` 都还是「成功」—— 2026-09-22 就这样被骗过一次（报告说撤销 13 个，
- * 线上 11 个产品页仍然 200）。现在有存活目标时退出码 1。
+ * 「SQL 没报错」**：`@shared <= 1` 是在 SQL 里生效的，多来源的行一行都不会删，而 `applied.products`
+ * 只是「我发了几条 DELETE」，照样报「成功」—— 2026-09-22 那次报告写「已撤销 13 个产品」，
+ * 脚本其实无从知道有几条 DELETE 真的匹配到了行。现在有存活目标时退出码 1。
  *
  * 用法：
  *   node scripts/catalog/revoke-products.js --plan .scratch/issue-entity-plan.json \
@@ -102,10 +102,11 @@ function survivingProductIds(range) {
  * 线上真的有这个产品页吗 —— **只作参考，别拿它当判据**。
  *
  * 产品页有两层缓存：Worker 的 Cache API（键含 CATALOG_VERSION + 渲染版本 + pathname）与
- * Cloudflare 的边缘缓存，`s-maxage` 是 24 小时。所以撤销之后规范地址仍可能返回 200（旧渲染），
- * 而一次网络抖动又会被误判成「线上不存在」—— 2026-09-22 实测：`--verify` 把 11 个仍然存在的
- * 目标全判成了 notLive，差点让撤销空跑。**存在性要看 `inspectTargets` 的产品库读数**，
- * 这里只在明显 404 时才把目标摘掉（真不存在的话 DELETE 本来就是空操作，摘不摘无所谓）。
+ * Cloudflare 的边缘缓存，`s-maxage` 是 24 小时。撤销之后规范地址仍可能返回 200 —— 那是旧渲染，
+ * 2026-09-22 复核时就被它骗过一次（11 个页面看着还活着，其实产品库里的行早就删了）。
+ * 反过来，一次 5xx 或网络抖动也不是「不存在」的证据。所以这里只在**明确 404** 时才把目标摘掉，
+ * 其余（含探测失败）记进 `unknown` 并保留；真正的存在性判断看 `inspectTargets` 的产品库读数。
+ * （真不存在的话 DELETE 本来就是空操作，摘不摘都无所谓。）
  */
 async function liveProductIds(origin, ids, fetcher = fetch) {
   const live = new Set();
@@ -128,7 +129,10 @@ async function liveProductIds(origin, ids, fetcher = fetch) {
  * 这些 id 现在在产品库里长什么样（只读）。
  *
  * 关键是 `sources`：撤销 SQL 的 `@shared <= 1` 闸就是拿它判断的，多来源的行**一行都不会删**，
- * 而脚本从返回值上看不出这个区别。核对时必须看这里，不能只看「SQL 有没有报错」。
+ * 而脚本从返回值上看不出这个区别 —— `applied.products` 只是「我发了几条 DELETE」。2026-09-22
+ * 那次撤销的报告写「已撤销 13 个产品」，脚本其实无从知道每条 DELETE 有没有匹配到行。结论：
+ * 撤销必须能核对结果，不能只看「SQL 没报错」。
+ *
  * 通道的 `select` 不接受绑定参数（Worker 直接 `connection.query(text)`），所以 id 是内联的 ——
  * 因此先按 `prd_<24 位十六进制>` 校验，形状不对直接拒绝，不拼进 SQL。
  */

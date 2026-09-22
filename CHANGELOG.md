@@ -663,6 +663,11 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **第二道防线（`web/shared.js` 的 `safeUrl`）**：`new URL()` 接受 `seichigo.com**` 是这条 bug 之所以**静默**的原因 —— 数据层修好了，但下一个漏网的脏地址还会照常渲染成一个点不开的按钮。所以 `safeUrl` 现在要求 host 落在 DNS/IPv6 字符集里（IDN 到这里已经是 punycode、IPv6 保留方括号、`_` 放行因为实践中存在），host 不像 host 就返回空 —— 没有链接，而不是死链接。全量 18,705 个地址里只有 2 个会被这道闸拦下，正是上一条里那批没修的 `createvision.ai)` / `capybuddy.atlai.co.uk)`。
 - **顺手解决了「脏渲染被写进新缓存键」**：`catalog-refresh` 跑完后我复核旧地址，页面仍是 200 —— 数据库里那行确实删了（重建后的快照已经没有它，`prd_ae3af7eb…` 的「收录记录」也多了「科技爱好者周刊投稿」这一条），但**产品页的边缘缓存是 24 小时**，而第一批发请求赶在 Hyperdrive 读缓存（按 SQL 文本，约十分钟）过期之前，于是「撤销前的渲染」被写进了**新** `CATALOG_VERSION` 的键里（这正是 09-17 记过的同一个坑）。改 `web/shared.js` 让 `PRODUCT_RENDERER_VERSION` 从 `rcd378ee…` 换到 `rcdd497f…`，缓存键随之换代，旧渲染立刻不可达 —— 不改渲染源文件的话要等第二天日更换 `CATALOG_VERSION` 才自愈。
   - **教训**：撤销 / 改数据之后不能只看规范地址，要拿**等价 pathname** 复核（`run_worker_first` 现在按大小写敏感的前缀列了 `/products/*`，所以 `/PRODUCTS/…` 已经不走 Worker 了 —— 用**去掉尾斜杠**的同路由地址，缓存键里的 pathname 不同、DB 路由相同）。
+- **最终结果（2026-09-22 复核）**：13 个旧 `product_id` 全部 404（`/products/<old>/` 与 `/en/products/<old>` 都查过），13 期日报的 `/data/reports/<date>.json` 里 `url` 与 `productId` 都是新值，重建后的快照里没有旧 id、`/sitemap-4.xml` 也不再列它们；用户报的那条 `/products/prd_94546b6a…/` → 404，产品落在 `/products/prd_ae3af7eb…/`（「官网」= `https://seichigo.com/`，「收录记录」里多了「科技爱好者周刊投稿」，与 09-07 的中国独立开发者版块合并成一条）。**第一次撤销其实是成功的** —— 复核时看到的 11 个「还活着」的页面全是缓存里的旧渲染（见上一条）。
+- **撤销补了三处「看不见」**（都不是这次 bug 引入的，是被这次复核逼出来的）：
+  - `revoke-products.js` 的 **`--inspect`**：撤销前后各读一次产品库（`products` / `product_routes` / `product_source_first_seen` 的来源数）。`@shared <= 1` 这道单来源闸是在 **SQL 里**判断的，多来源的行一行都不会删，而 `applied.products` 只是「我发了几条 DELETE」，照样报「成功」—— 报告写「已撤销 13 个产品」时脚本其实无从知道有几条真的匹配到行。现在有存活目标时退出码 1，并把剩下的 id 列出来。
+  - **`--verify` 只认明确 404**：原来任何非 200 都算「线上不存在」。产品页有两层缓存（Worker 的 Cache API + 边缘缓存，`s-maxage` 24 小时），撤销后规范地址仍可能是旧渲染（**这次复核就是被 11 个这样的 200 骗了半天**）；反过来 5xx / 网络抖动也不该被当成「不存在」。现在只摘明确 404 的，其余记进 `probeUnknown` 并保留，存在性以 `--inspect` 的产品库读数为准。
+  - CI 的撤销步骤加 **`continue-on-error: true`**：导入已经写完了，快照必须照建；撤销这一步红着留给人工决定怎么补，不能因为它的退出码把快照和提交一起跳过。
 
 ## 值得记录的决策
 
