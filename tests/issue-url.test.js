@@ -31,6 +31,42 @@ test('plain-text issue URLs stop before Chinese prose punctuation', () => {
   ]);
 });
 
+// 投稿作者爱把链接加粗 / 放进行内代码，收尾符号会跟着进地址。ruanyf/weekly #11845 的
+// `**https://seichigo.com**` 因此变成 `https://seichigo.com**`，线上产品页的「官网」按钮指向
+// 一个 DNS 解析不了的主机（curl: Bad hostname），官网 Logo 兜底采集也一起失败。
+// 全量语料里 14 行如此（另有 1 行是英文句末句点），修的是同一件事。
+test('markdown emphasis and inline-code wrappers never reach the URL', () => {
+  assert.deepEqual(extractExternalUrls('做攻略的时候发现这类信息很散。\n\n**https://seichigo.com**\n\n它做两件事：'), ['https://seichigo.com']);
+  assert.deepEqual(extractExternalUrls('项目地址：**https://smartplot.app/**'), ['https://smartplot.app/']);
+  assert.deepEqual(extractExternalUrls('## 项目地址\n\n**_https://vokie.com/_**'), ['https://vokie.com/']);
+  assert.deepEqual(extractExternalUrls('访问 `http://localhost:5173` 即可'), ['http://localhost:5173']);
+  assert.deepEqual(extractExternalUrls('~~https://github.com/CassInfra/KubeDoor~~'), ['https://github.com/CassInfra/KubeDoor']);
+  // 方括号里的加粗链接：两个地址都要干净。
+  assert.deepEqual(extractExternalUrls('[*https://github.com/wswmsword/naviix*](https://wswmsword.github.io/examples/navix-music/*)'), [
+    'https://github.com/wswmsword/naviix',
+    'https://wswmsword.github.io/examples/navix-music/',
+  ]);
+});
+
+test('English sentence punctuation after a bare URL is not part of the address', () => {
+  assert.deepEqual(extractExternalUrls('https://github.com/larryteal/mcp-workspace.\n\n**Please star it!**'), ['https://github.com/larryteal/mcp-workspace']);
+  assert.deepEqual(extractExternalUrls('Check it out at https://example.com!'), ['https://example.com']);
+});
+
+test('decoration stripping leaves real URL characters alone', () => {
+  // 地址中间的 `~` 与 `_` 是路径的一部分，不能碰。
+  assert.deepEqual(extractExternalUrls('https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/copy.html'), [
+    'https://www.cs.huji.ac.il/~shais/UnderstandingMachineLearning/copy.html',
+  ]);
+  assert.deepEqual(extractExternalUrls('https://example.com/a_b_c'), ['https://example.com/a_b_c']);
+});
+
+test('a bolded website URL becomes the published row link without the markers', () => {
+  const { item } = submit('做攻略的时候发现这类信息散在很多篇博客里，于是做了这个网站。\n\n**https://seichigo.com**\n\n它做两件事：一张地图、一个行程规划器。');
+  assert.equal(item.url, 'https://seichigo.com');
+  assert.equal(item.githubUrl, undefined);
+});
+
 test('duplicate submissions with a Chinese-wrapped and a plain website URL collapse', () => {
   const [wrapped] = extractExternalUrls('项目（https://makebingocards.com/）。它是一个工具');
   const results = [{

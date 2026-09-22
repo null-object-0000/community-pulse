@@ -19,9 +19,14 @@
  * `--verify` 会逐个请求线上产品页，只保留真的返回 200 的 id：算出来的 id 必须能在线上
  * 兑现，否则宁可不删（历史 raw 与当初那次导入的输入未必逐字节一致）。
  *
+ * `--apply` 直接把生成的那份 SQL 发给产品库（走 `db-transport.openDb`：直连优先，连不上就
+ * 降级到临时 Worker 通道）。本机出口在协议层拦 MySQL，所以本地只会走通道、且需要 Cloudflare
+ * 凭据；CI 里由 `catalog-refresh.yml` 的 `revoke_ids` 输入调用 —— 撤销必须排在**导入之后、
+ * 快照之前**，顺序错了会把刚删掉的行又写进快照。
+ *
  * 用法：
  *   node scripts/catalog/revoke-products.js --plan .scratch/issue-entity-plan.json \
- *     --range 2026-01-03..2026-09-03 --verify --out .scratch/revoke-entity [--dry-run]
+ *     --range 2026-01-03..2026-09-03 --verify --out .scratch/revoke-entity [--dry-run] [--apply]
  */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -30,14 +35,15 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_ORIGIN = 'https://community-pulse.nichangen.workers.dev';
 
 // 布尔开关不取下一个 argv（见 backfill_issue_entity.js 里同一条注释）。
-const BOOLEAN_FLAGS = new Set(['--verify', '--dry-run']);
+const BOOLEAN_FLAGS = new Set(['--verify', '--dry-run', '--apply']);
 
 function parseArgs(argv) {
-  const options = { out: path.join(ROOT, '.scratch', 'revoke-products'), plan: null, products: [], range: null, verify: false, dryRun: false, origin: process.env.CATALOG_API_ORIGIN || DEFAULT_ORIGIN };
+  const options = { out: path.join(ROOT, '.scratch', 'revoke-products'), plan: null, products: [], range: null, verify: false, dryRun: false, apply: false, origin: process.env.CATALOG_API_ORIGIN || DEFAULT_ORIGIN };
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
     if (BOOLEAN_FLAGS.has(name)) {
       if (name === '--verify') options.verify = true;
+      else if (name === '--apply') options.apply = true;
       else options.dryRun = true;
       continue;
     }
@@ -141,19 +147,37 @@ async function main() {
   const sql = sqlFor(verified);
   const report = {
     version: 'revoke-products-v1', generatedAt: new Date().toISOString(), dryRun: options.dryRun,
-    origin: options.origin, verified: options.verify, range: options.range,
+    origin: options.origin, verified: options.verify, range: options.range, apply: options.apply,
     candidates: candidates.length, targets: verified.length,
     skippedSurviving: skippedSurviving.map((target) => ({ productId: target.productId, detail: target.detail })),
     notLive,
     entries: verified.map((target) => ({ productId: target.productId, reason: target.reason, detail: target.detail })),
   };
+  // SQL 先落盘再执行：执行失败时那份 SQL 还得留着排查（它是这次撤销唯一的记录）。
   if (!options.dryRun) {
     fs.mkdirSync(options.out, { recursive: true });
     fs.writeFileSync(path.join(options.out, 'revoke.sql'), sql);
+  }
+  if (options.apply) {
+    if (options.dryRun) throw new Error('--apply 不能和 --dry-run 一起用：dry-run 承诺不碰生产库');
+    if (!verified.length) {
+      report.applied = { transport: null, products: 0, note: 'no_targets' };
+    } else {
+      const { openDb } = require('./db-transport.js');
+      const opened = await openDb({ log: (message) => console.log(message) });
+      try {
+        await opened.db.execute(sql);
+        report.applied = { transport: opened.transport, products: verified.length };
+      } finally {
+        await opened.db.close();
+      }
+    }
+  }
+  if (!options.dryRun) {
     fs.writeFileSync(path.join(options.out, 'manifest.json'), `${JSON.stringify(report, null, 2)}\n`);
   }
   console.log(JSON.stringify(report, null, 2));
-  console.log(`${options.dryRun ? '[dry-run] ' : ''}待撤销 ${verified.length} 个产品（候选 ${candidates.length}，重建闸挡下 ${skippedSurviving.length}，线上不存在 ${notLive.length}）`);
+  console.log(`${options.dryRun ? '[dry-run] ' : ''}${options.apply && report.applied?.products ? '已撤销' : '待撤销'} ${verified.length} 个产品（候选 ${candidates.length}，重建闸挡下 ${skippedSurviving.length}，线上不存在 ${notLive.length}）`);
 }
 
 if (require.main === module) {

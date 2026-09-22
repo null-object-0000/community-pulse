@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { discoverItemRepository, normalizeGitHubRepoUrl, repositoryKey } = require('./github_repo_utils');
-const { descriptionFromIssue, explicitProjectUrls, PROJECT_URL_LABELS, SITE_URL_LABELS } = require('./issue-description');
+const { descriptionFromIssue, explicitProjectUrls, bareUrls, PROJECT_URL_LABELS, SITE_URL_LABELS } = require('./issue-description');
 const { issueImages } = require('./issue-media');
 const { issueAdmission, VERSION: ADMISSION_VERSION } = require('./issue-admission');
 const D = require('../../../../web/shared.js');
@@ -131,10 +131,13 @@ function issueSummary(body) {
 }
 
 // Plain-text submissions often wrap a URL in Chinese punctuation without a
-// separating space (`https://example.com/）。说明…`). Stop at prose punctuation
-// instead of percent-encoding the following sentence into a bogus URL.
+// separating space (`https://example.com/）。说明…`) or in markdown emphasis
+// (`**https://example.com**`). The boundary rule lives in issue-description.js
+// (`bareUrls`) so the row link and the explicit address fields can never drift apart.
+// bareUrls also drops repeats (case-insensitively, first occurrence wins) — the only
+// consumer here takes the first usable one, so this only removes noise.
 function extractExternalUrls(value) {
-  return String(value || '').match(/https?:\/\/[^\s<>()[\]{}"'（）［］【】《》〈〉「」『』，。：；！？、…]+/g) || [];
+  return bareUrls(value);
 }
 
 function issueItems(document, src, options = {}) {

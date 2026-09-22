@@ -40,6 +40,10 @@ on:
         type: boolean
         required: false
         default: false
+      revoke_ids:
+        description: '要定向撤销的旧 product_id（逗号分隔，留空 = 不撤销）。用于「地址修好、身份跟着变了」的历史行：导入会建出新身份，旧行不会被 upsert 覆盖，必须显式删掉'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -128,6 +132,29 @@ jobs:
             exit 1
           fi
           node scripts/catalog/upload-mysql.js
+
+      # 撤销必须排在「写入 MySQL」之后、「生成站点快照」之前：导入按新身份建行，旧身份那行不会被
+      # upsert 覆盖，得定向删；快照读的是删完之后的库，顺序反了会把刚删掉的行又写进快照。
+      # 撤销 SQL 由 revoke-products.js 生成（只认 product_id，单来源闸 @shared <= 1，
+      # 并且挡下本次 --range 会重建的 id），--verify 只保留线上真的返回 200 的那些。
+      - name: 撤销身份被修正的旧产品行
+        if: ${{ github.event.inputs.revoke_ids != '' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "缺少 CLOUDFLARE_API_TOKEN：无法撤销产品行。"
+            exit 1
+          fi
+          ARGS=""
+          for id in $(echo "${{ github.event.inputs.revoke_ids }}" | tr ',' ' '); do
+            ARGS="$ARGS --product $id"
+          done
+          echo "待撤销：$ARGS"
+          node scripts/catalog/revoke-products.js $ARGS \
+            --range "${{ steps.dates.outputs.start }}..${{ steps.dates.outputs.end }}" \
+            --verify --apply --out .scratch/revoke-products
 
       - name: 从 MySQL 生成版本化站点快照
         run: |

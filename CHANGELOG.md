@@ -26,6 +26,7 @@
 | 09-18 | 8（含 2 次快照提交，另有本轮未提交） | 待统计 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘；**677 行日报地址回填 + 库侧撤销 21 个产品行（7 条招聘广告全部下线）** | community-pulse |
 | 09-20 | 待统计 | 待统计 | 待统计 | **日报行绑定产品库身份**（报告行带 `productId` 与发布记录 `publication`，补上「报告行必须与导入链身份一致」的门禁）；**增强结果改按 `productId` 匹配**，不再按「标题 + 作者」匹配 Markdown | community-pulse |
 | 09-21 | 1（本轮） | 5 文件 +1,276 | 0 | **产品级 LLM 加工流水线重新落地**（MySQL 原生、按天增量、shadow-only）：口径定成 `products.first_seen_date = TARGET` + 重入臂，入口门禁写独立终态 `skipped_no_input`，成本落 `enrichment_runs`；真数据实跑 793 个产品量出成本曲线，二次运行 **0 请求** | community-pulse |
+| 09-22 | 1（本轮） | 7 文件（含 2 个测试） | 28 文件（13 期日报的地址与身份） | 投稿地址的 **markdown 装饰尾巴**漏进 `url`：线上产品页「官网」按钮指向 `https://seichigo.com**/`。边界规则收敛成唯一一份 `bareUrls` 并剥掉结尾装饰；13 行地址回填，`productId` 与同日 `final` 一起同步；`catalog-refresh.yml` 补 `revoke_ids` 输入（撤销那 13 个旧身份） | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -642,6 +643,23 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 **已合入 main 并部署**（2026-09-21）：`73b11d4 merge: 产品级 LLM 加工流水线（第一批：加工层）`，推送后 Cloudflare Workers Builds 自动构建。上线检查全绿 —— `/`、`/styles.css`、`/app.js`、`/data/index.json`、`/robots.txt`、`/sitemap.xml`（索引型 691B）、`/sitemap-baidu.xml`（扁平 3.28MB）、`/feed.xml`、`/en/feed.xml`、`/og-image.png`、`/logo-512.png`、`/reports/2026-09-20/` 全部 200；项目详情页 200、不存在的项目 404、英文详情页 200；最新日报 `summarySource: llm-final`、`matchedByProductId: 103/103`。快照新版本也确认上线：拿那 8 个刚本地化的 `siteLogo` 当指纹，`data.overme.cn/apple-touch-icon.png` 已渲染成 `img.devtrends.site/images/76ee32a4…`。合并前的验证在**合并结果**上又跑了一遍 `npm run check` 287/287，不只是分支上通过。
 
 顺带记一个**既有**缺口（不是这次引入）：`coder.com/favicon-180x180-light.png`、`eskim2001.github.io/dshcloud/brand/mark.svg` 这类**只出现在产品库、没进过任何日报行**的标志不在 `assets/images/manifest.json` 里 —— `images:sync` 只抓日报行引用到的标志，于是快照的宽松本地化保留原地址，Worker 的 `trustedImage()` 又不放行，趋势页那几行只剩首字母。要补的话得让 `images:sync` 也覆盖产品库侧引用的标志，是独立一件事。
+
+## 2026-09-22 · 投稿地址的 markdown 装饰尾巴
+
+**主线：线上产品页 `/products/prd_94546b6a51379787bbb9916a/` 的「官网」按钮指向 `https://seichigo.com**/` —— 投稿作者把链接加粗成 `**https://seichigo.com**`，收尾的两个星号被当成了地址的一部分。**
+
+- **根因**：裸链接的边界正则 `https?:\/\/[^\s<>()[\]{}"'（）…]+` 里 `*` `_` `~` `` ` `` 都是合法字符（它们确实可能出现在路径里），所以 `**https://seichigo.com**` 只被剥掉了开头（正则从 `https://` 起匹配），尾巴留了下来。`new URL()` 又**接受** `seichigo.com**` 这个 host（`*` 不在 URL 的 forbidden host code point 里），所以整条链路一声不响：页面渲染成功、按钮点开才失败。同一批还有 `项目地址：**https://smartplot.app/**`、`**_https://vokie.com/_**`。
+- **波及面**：全量 264 期日报里 13 行 `url` 带这类尾巴（另有 1 行是英文句末句点 `…/mcp-workspace.`）；更隐蔽的是 `source-raw/site-logos/` 里 **14 条 `status: failed`** 的官网 Logo 兜底采集 —— `curl: (3) URL rejected: Bad hostname`，SeichiGo 因此只剩首字母头像「Se」。
+- **改法（代码）**：`issue-description.js` 新增 `bareUrls` / `cleanBareUrl`，成为**唯一一份**边界规则：中文标点终止 + 剥掉结尾的 markdown 装饰（`* _ ~ \``）与英文句末标点（`.,;:!?`）。`source_raw_items.extractExternalUrls` 改成转发过去 —— 以前这两处是各抄一份正则（注释里写着「同一条边界规则」），改一处漏一处正是这类 bug 的温床。
+- **只剥结尾，不动中间**：`~` 与 `_` 在地址内部是真实路径（`/~shais/UnderstandingMachineLearning/…`、`p2-3_{yaer}0728.png`），一律保留；`)` 这类括号本来就不进字符集。剥结尾 `_` 有理论上的误伤，但全量语料里没有一条地址真的以 `_` 结尾，而留在尾巴上的 `_**` 一定错。
+- **回填（数据）**：13 行 / 13 个日报日（2026-03-20 … 09-21），只动 `raw/<date>.json` 的 `url`、`raw/<date>.md` 的 `🔗` 行，以及同日 `final/<date>.md` 的增强记录键。`npm run check` **293/293**。
+- **两个连带缺口，一起补在 `backfill_issue_entity.js` 里**（这个脚本写在 09-18，早于 09-20 的「日报行绑定产品库身份」）：
+  - **`productId` 要跟着地址走**。已发布日报自带 `productId`，地址变了身份就变；不同步改写，`check:report-identity` 门禁直接退出码 1（第一次跑就是这么红的：2026-09-20 / 11810 一行报 `published prd_591da1bc…` vs `expected prd_631dfffb…`）。条件写成「有 `productId` 就对齐」而不是「地址变了才对齐」，脚本才能重复跑并收敛。
+  - **同日 `final` 的匹配键要一起换**。增强结果按 `productId` 匹配（09-20 改的口径），换 key 后 final 里那条记录的 `productId` 不同步，整行的 LLM 摘要、英文标题与分类就掉回 raw，`presentation.summarySource` 从 `llm-final` 变 `mixed`（`tests/site.test.js` 抓到的正是这一条）。只改 base64 里的 `productId` 一个字段，`sourceHash` 等其余字节逐字不动 —— 这是同一条投稿的同一次增强，换的只是身份键。
+- **决策：另外 9 行 URL 尾巴损坏这轮不碰。** 它们是 MyVault 时代旧抽取器留下的（`https://post-easy.org/zh）`、`http://localhost:3000\`，双方通过文件系统协作…`），`backfill_issue_entity.js` 一直跳过它们，原因是它按「md 里含旧地址」定位 `🔗` 行，而这些 md 早就被 `collect.js` 的 `itemLinks` 顺手清过（`[),。.）\s]+$`）—— json 脏、md 干净，于是匹配不到。要修得同时改匹配口径，而其中 9130 是已下线的招聘广告行，动它会凭空造出一个新产品身份（09-18 那批刚把 7 条广告全部撤销）。**「修 URL 形态」和「重造产品身份」是两件事，混在一批里做会把撤销范围搞糊**，所以留作独立一批，先记在这里。
+- **库侧**：13 行的身份**全部变了**（`prd_94546b6a…` → `prd_ae3af7eb…`），所以产品库要按 `catalog-refresh.yml` 重导入这段范围，再撤销 13 个旧 `product_id` —— 否则用户看到的那个地址仍然返回 200、仍然指向 `https://seichigo.com**/`。本机 `wrangler` 的 refresh token 在 09-21 那次刷新后已失效（`.scratch/cf-home` 那份副本同样过期），写入只能走 Actions 的仓库密钥，所以顺手给 `catalog-refresh.yml` 加了 `revoke_ids` 输入（逗号分隔的旧 id），并给 `revoke-products.js` 加了 `--apply`（走 `db-transport.openDb`，直连优先、连不上降级到临时 Worker 通道）。撤销排在**导入之后、快照之前**：导入按新身份建行、旧行不会被 upsert 覆盖，而快照读的是撤销后的库，顺序反了会把刚删掉的行又写进快照。
+  - **一个值得记的巧合**：SeichiGo 并不是新面孔 —— 2026-09-07 的「中国独立开发者」版块早就以干净地址收录过它（`prd_ae3af7eb…`，现在线上就是对的）。09-21 的投稿用脏地址**又建了一个重复产品行**。所以这次「修地址」的结果是两条行**合并回同一个身份**，而不是换一个地址继续错。这也说明这条 bug 的真实代价是**重复收录 + 一条永久打不开的官网链接**，不是单纯显示问题。
+  - 撤销前先跑 `--verify`：13 个旧 id 线上全部返回 200（都是活行），重建闸挡下 0 个 —— 它们确实都是该删的重复行，不是本次导入会重建的身份。
 
 ## 值得记录的决策
 

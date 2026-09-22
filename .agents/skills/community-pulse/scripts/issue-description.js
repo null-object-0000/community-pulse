@@ -54,8 +54,43 @@ const SITE_URL_LABELS = new Set([
   '在线体验', '在线地址', '在线演示', '在线预览',
 ]);
 const URL_FIELD_LABELS = new Set([...PROJECT_URL_LABELS, ...SITE_URL_LABELS]);
-// 与 source_raw_items.extractExternalUrls 同一条边界规则：裸链接在中文标点处终止。
+
+// 裸链接的边界（全站唯一一份，`source_raw_items.extractExternalUrls` 直接转发到这里）：
+// 在空白、尖括号、引号、括号与中英句末标点处终止。
 const BARE_URL_RE = /https?:\/\/[^\s<>()[\]{}"'（）［］【】《》〈〉「」『』，。：；！？、…]+/g;
+
+/**
+ * 地址尾巴上不属于地址本身的装饰。
+ *
+ * 投稿正文里作者爱把链接加粗或放进行内代码，`**` / `_` / `~` / `` ` `` 都在 BARE_URL_RE 的
+ * 字符集里，于是收尾符号被当成地址的一部分：ruanyf/weekly #11845 的 `**https://seichigo.com**`
+ * 变成了 `https://seichigo.com**`，线上的「官网」按钮指向一个 DNS 解析不了的主机
+ * （同一批还有 #11186 `项目地址：**https://smartplot.app/**`、#11246 `**_https://vokie.com/_**`）。
+ * 英文句末标点同理：`https://github.com/larryteal/mcp-workspace.` 的句点不是仓库名的一部分。
+ *
+ * 只剥**结尾**的装饰，地址中间的 `~`（`/~shais/…`）与 `_`（`p2-3_x`）不动；`)` 这类括号本来
+ * 就不进 BARE_URL_RE。剥 `_` 有理论上的误伤（地址真的以 `_` 结尾），但实测全量语料里没有，
+ * 而留在尾巴上的 `_**` 一定错。
+ */
+const URL_TAIL_DECORATION = /(?:[*_`~]+|[.,;:!?])+$/;
+
+/** 去掉一条裸链接尾部的 markdown 装饰与句末标点。 */
+function cleanBareUrl(value) {
+  return String(value ?? '').replace(URL_TAIL_DECORATION, '');
+}
+
+/** 文本里的裸链接（按出现顺序、去重），尾部装饰已剥掉。 */
+function bareUrls(value) {
+  const urls = [];
+  const seen = new Set();
+  for (const match of String(value ?? '').matchAll(BARE_URL_RE)) {
+    const url = cleanBareUrl(match[0]);
+    if (!url || seen.has(url.toLowerCase())) continue;
+    seen.add(url.toLowerCase());
+    urls.push(url);
+  }
+  return urls;
+}
 
 // 字段值里的噪声：空回答、占位符。
 const NOISE_VALUE = /^(?:no response|_?no response_?|none|null|n\/a|na|无|暂无|没有|待补充|todo|tbd|示例|example)$/i;
@@ -217,7 +252,8 @@ function descriptionFromIssue(body) {
  *
  * 与 `descriptionFromIssue` 的关键区别：这里不做 markdown / 链接清洗 —— `stripInlineMarkup`
  * 会把裸链接整段删掉，用它取地址只会得到空串。所以这里按行扫描原始文本，只在两处收口：
- * 先删 HTML 注释（模板里的示例注释常带假地址），再把裸链接按中文标点终止。
+ * 先删 HTML 注释（模板里的示例注释常带假地址），再按 `bareUrls` 的边界（中文标点终止 +
+ * 剥掉包裹链接的 markdown 装饰）取值。
  *
  * 支持两种模板写法：「项目地址：https://…」同一行，以及「项目地址」单独一行、值在下一行
  * （下一行自己又写成「Github：https://…」也照收，见 ruanyf/weekly #7728）。
@@ -227,7 +263,7 @@ function explicitProjectUrls(body, labels = URL_FIELD_LABELS) {
   const urls = [];
   const seen = new Set();
   const collect = (text) => {
-    for (const url of String(text).match(BARE_URL_RE) || []) {
+    for (const url of bareUrls(text)) {
       const key = url.toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);
@@ -265,6 +301,6 @@ function explicitProjectUrls(body, labels = URL_FIELD_LABELS) {
 }
 
 module.exports = {
-  descriptionFromIssue, explicitProjectUrls, stripInlineMarkup, stripTrailingLinkItems, FIELD_LABELS,
+  descriptionFromIssue, explicitProjectUrls, stripInlineMarkup, stripTrailingLinkItems, bareUrls, FIELD_LABELS,
   PROJECT_URL_LABELS, SITE_URL_LABELS,
 };

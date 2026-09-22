@@ -12,6 +12,11 @@
  *   - 只处理 `weekly-issues` / `hellogithub-issues`（投稿源），其它来源一行都不碰；
  *   - `githubUrl` / `github` 只在**原来就有**的时候改写或删除 —— 老 raw 文件本来就没有这两个字段
  *     （仓库事实是 09-13 才进 item 的），凭空加上会带出与本次修复无关的形状变化；
+ *   - `productId` 同理只在**原来就有**的时候改写（已发布日报 2026-09-20 起带这个字段）：地址变了
+ *     身份就变了，不同步改写会让 `check:report-identity` 门禁判「日报行与产品库漂移」，而产品库
+ *     那一行正是按新身份导入的。写成「有就对齐」而不是「地址变了才对齐」，是为了让脚本可重复跑：
+ *     第一次修地址、第二次补身份，两次都收敛到同一个结果（`revoke-products.js` 的撤销计划也才能
+ *     在重跑后复现）；
  *   - 找不到对应 source-raw 正文、或 md 里匹配不唯一时跳过并报告，不猜。
  *
  * 用法：
@@ -30,6 +35,7 @@ const { identityFor, productId } = require('./catalog/identity.js');
 const ROOT = path.resolve(__dirname, '..');
 const BASE = path.join(ROOT, '知识', '大家都在做什么');
 const RAW_DIR = path.join(BASE, 'raw');
+const FINAL_DIR = path.join(BASE, 'final');
 const SOURCE_RAW = path.join(BASE, 'source-raw');
 const ISSUE_SOURCES = ['weekly-issues', 'hellogithub-issues'];
 
@@ -110,10 +116,17 @@ function reidentify(item, issue, repositories) {
       delete next.github;
     }
   }
+  // 地址（或仓库身份）变了，product_id 就会变。已发布日报 2026-09-20 起自带 `productId`，
+  // 不同步改写会与导入链算出的身份漂移，`check:report-identity` 直接退出码 1。
+  if (item.productId) {
+    const nextProductId = productId(identityFor(next));
+    if (nextProductId !== item.productId) next.productId = nextProductId;
+  }
   // 比**最终字段值**，不是比仓库 key：`webc-site/wedb_embed` 已被改名成 `fastalp`，快照里的
   // 事实带着改名后的地址，于是「key 变了」但 `githubUrl` 原样 —— 那种行不该被算成改动。
   const same = next.url === item.url
     && (next.githubUrl || '') === (item.githubUrl || '')
+    && (next.productId || '') === (item.productId || '')
     && JSON.stringify(next.github || null) === JSON.stringify(item.github || null);
   if (same) return null;
   // 两类改动：`repo` 是实体识别（仓库身份变了，或仓库地址被换成快照里的规范地址），
@@ -140,6 +153,33 @@ function replaceLinkLine(markdown, item, next) {
   const updated = [...lines];
   updated[candidates[0]] = replacement;
   return updated.join('\n');
+}
+
+/**
+ * 同日 `final/<date>.md` 的增强记录按 `productId` 匹配（`scripts/enhanced-report.js`），
+ * 所以地址修好、身份变了之后，final 里那条记录也要跟着换 key —— 否则那一行的 LLM 摘要、
+ * 英文标题与分类整条掉回 raw，`presentation.summarySource` 从 `llm-final` 变成 `mixed`。
+ *
+ * 只改 base64 里的 `productId` 一个字段，其余字节（含 `sourceHash`）原样：这是同一条投稿的
+ * 同一次增强结果，换的只是它的身份键。返回 `{ markdown, replaced }`。
+ */
+function replaceFinalProductId(markdown, oldId, newId) {
+  let replaced = 0;
+  const lines = String(markdown).split('\n').map((line) => {
+    const encoded = line.match(/^<!-- devtrends-i18n:([A-Za-z0-9+/=]+) -->$/)?.[1];
+    if (!encoded) return line;
+    let localized;
+    try {
+      localized = JSON.parse(Buffer.from(encoded, 'base64').toString('utf8'));
+    } catch {
+      return line;
+    }
+    if (!localized || localized.productId !== oldId) return line;
+    replaced += 1;
+    // 展开式保持键序（`productId` 本来就在原位），所以除这一个值外 base64 解回来逐字相同。
+    return `<!-- devtrends-i18n:${Buffer.from(JSON.stringify({ ...localized, productId: newId })).toString('base64')} -->`;
+  });
+  return { markdown: lines.join('\n'), replaced };
 }
 
 /** 历史影响清单：按「旧地址是什么」分类，方便人工判断这批改动该不该整批落。 */
@@ -208,14 +248,16 @@ function auditMarkdown(report) {
 
 function main() {
   const options = parseArgs(process.argv.slice(2));
-  const report = { version: 'backfill-issue-entity-v1', dryRun: options.dryRun, includeUrlOnly: options.includeUrlOnly, categories: options.categories ? [...options.categories] : null, dates: [], changed: [], urlOnlySkipped: [], filteredOut: [], skipped: [] };
+  const report = { version: 'backfill-issue-entity-v1', dryRun: options.dryRun, includeUrlOnly: options.includeUrlOnly, categories: options.categories ? [...options.categories] : null, dates: [], changed: [], urlOnlySkipped: [], filteredOut: [], finalPatched: [], finalMissing: [], skipped: [] };
   for (const date of rawDates(options)) {
     const jsonPath = path.join(RAW_DIR, `${date}.json`);
     const mdPath = path.join(RAW_DIR, `${date}.md`);
+    const finalPath = path.join(FINAL_DIR, `${date}.md`);
     const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     const bodies = issueBodies(date);
     const repositories = repositoryFacts(date);
     let markdown = fs.existsSync(mdPath) ? fs.readFileSync(mdPath, 'utf8') : null;
+    let finalMarkdown = fs.existsSync(finalPath) ? fs.readFileSync(finalPath, 'utf8') : null;
     const touched = [];
     for (const result of raw.results || []) {
       if (!ISSUE_SOURCES.includes(result.sourceId)) continue;
@@ -234,8 +276,8 @@ function main() {
           // 旧 / 新产品身份：撤销旧行、核对新行都要用，算法与导入链同一条（identity.js）。
           oldProductId: productId(identityFor(item)),
           newProductId: productId(identityFor(next)),
-          before: { url: item.url, githubUrl: item.githubUrl || null },
-          after: { url: next.url, githubUrl: next.githubUrl || null },
+          before: { url: item.url, githubUrl: item.githubUrl || null, productId: item.productId || null },
+          after: { url: next.url, githubUrl: next.githubUrl || null, productId: next.productId || null },
         };
         entry.category = classify(entry);
         if (options.categories && !options.categories.has(entry.category)) {
@@ -246,6 +288,17 @@ function main() {
           const updated = replaceLinkLine(markdown, item, next);
           if (updated === null) { report.skipped.push({ ...entry, reason: 'markdown_line_not_unique' }); continue; }
           markdown = updated;
+        }
+        // 身份变了就把同日 final 的匹配键一起换掉，否则这一行的 LLM 增强会掉回 raw。
+        if (finalMarkdown !== null && entry.before.productId && entry.before.productId !== entry.after.productId) {
+          const patched = replaceFinalProductId(finalMarkdown, entry.before.productId, entry.after.productId);
+          if (patched.replaced) {
+            finalMarkdown = patched.markdown;
+            report.finalPatched.push({ date, externalId: item.externalId, from: entry.before.productId, to: entry.after.productId, records: patched.replaced });
+          } else {
+            // final 里没有这条记录：那一行本来就没拿到 LLM 增强，只记一笔，不算失败。
+            report.finalMissing.push({ date, externalId: item.externalId, productId: entry.before.productId });
+          }
         }
         // 就地改写：先删掉 next 里已经没有的键（仓库身份消失时），再合并。
         for (const key of Object.keys(item)) if (!(key in next)) delete item[key];
@@ -260,6 +313,7 @@ function main() {
       // 与 collect.js 完全一致的序列化：2 空格缩进、结尾没有换行。
       fs.writeFileSync(jsonPath, JSON.stringify(raw, null, 2));
       if (markdown !== null) fs.writeFileSync(mdPath, markdown);
+      if (finalMarkdown !== null) fs.writeFileSync(finalPath, finalMarkdown);
     }
   }
   if (options.plan) {
@@ -278,4 +332,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { parseArgs, rawDates, issueBodies, reidentify, replaceLinkLine, classify, auditMarkdown };
+module.exports = { parseArgs, rawDates, issueBodies, reidentify, replaceLinkLine, replaceFinalProductId, classify, auditMarkdown };

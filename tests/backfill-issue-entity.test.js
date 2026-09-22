@@ -1,7 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 
-const { reidentify, replaceLinkLine, classify } = require('../scripts/backfill_issue_entity.js');
+const { reidentify, replaceLinkLine, replaceFinalProductId, classify } = require('../scripts/backfill_issue_entity.js');
+const { identityFor, productId } = require('../scripts/catalog/identity.js');
 
 const ISSUE = { body: '仓库地址：https://github.com/AnotiaWang/deep-research-web-ui', html_url: 'https://github.com/ruanyf/weekly/issues/6110' };
 
@@ -73,6 +74,40 @@ test('replaceLinkLine refuses to guess when the block is not unique', () => {
   assert.equal(replaceLinkLine(markdown, item, { ...item, url: 'https://github.com/x/z' }), null);
 });
 
+// 地址变了身份就变了。已发布日报（2026-09-20 起）自带 productId，不同步改写会让
+// `check:report-identity` 判「日报行与产品库漂移」—— 产品库那一行正是按新身份导入的。
+test('a repaired address carries the published productId along', () => {
+  const issue = { body: '做攻略的时候发现信息很散。\n\n**https://seichigo.com**', html_url: ISSUE.html_url };
+  const item = { url: 'https://seichigo.com**', issueUrl: ISSUE.html_url, title: 'x', productId: 'prd_stale' };
+  const outcome = reidentify(item, issue, null);
+  assert.equal(outcome.next.url, 'https://seichigo.com');
+  assert.notEqual(outcome.next.productId, 'prd_stale');
+  assert.equal(outcome.next.productId, productId(identityFor(outcome.next)));
+  // 老 raw 行本来就没有 productId：不能凭空补出来。
+  const { productId: _published, ...legacyItem } = item;
+  const legacy = reidentify(legacyItem, issue, null);
+  assert.equal('productId' in legacy.next, false);
+});
+
+// 同日 final 的增强记录按 productId 匹配，身份换了它也得跟着换，否则整条 LLM 增强掉回 raw
+// （presentation.summarySource 从 llm-final 变 mixed）。
+test('replaceFinalProductId rewrites only the matching enhancement record', () => {
+  const encode = (value) => `<!-- devtrends-i18n:${Buffer.from(JSON.stringify(value)).toString('base64')} -->`;
+  const decode = (line) => JSON.parse(Buffer.from(line.match(/devtrends-i18n:([A-Za-z0-9+/=]+)/)[1], 'base64').toString('utf8'));
+  const markdown = [
+    '### 甲', '> 摘要', encode({ schemaVersion: 3, sourceHash: 'aaa', productId: 'prd_old', summaryZh: '甲摘要' }), '',
+    '### 乙', '> 摘要', encode({ schemaVersion: 3, sourceHash: 'bbb', productId: 'prd_other', summaryZh: '乙摘要' }), '',
+  ].join('\n');
+  const { markdown: updated, replaced } = replaceFinalProductId(markdown, 'prd_old', 'prd_new');
+  assert.equal(replaced, 1);
+  const records = updated.split('\n').filter((line) => line.startsWith('<!--')).map(decode);
+  assert.deepEqual(records.map((record) => record.productId), ['prd_new', 'prd_other']);
+  // 只有身份键变，其余字段（含 sourceHash）逐字不动。
+  assert.equal(records[0].summaryZh, '甲摘要');
+  assert.equal(records[0].sourceHash, 'aaa');
+  assert.equal(replaceFinalProductId(markdown, 'prd_missing', 'prd_new').replaced, 0);
+});
+
 test('audit categories separate junk addresses from real repository swaps', () => {
   assert.equal(classify({ before: { url: 'https://github.com/user-attachments/assets/abc' }, after: { url: 'https://github.com/a/b' } }), 'junk');
   assert.equal(classify({ before: { url: 'https://chromewebstore.google.com/detail/x/y' }, after: { url: 'https://github.com/a/b' } }), 'junk');
@@ -99,6 +134,17 @@ test('a product the current import will recreate is never revoked', () => {
   const { survivingProductIds } = require('../scripts/catalog/revoke-products.js');
   // 不传 range 时没有「重建闸」名单；传了 range 才会真的去构建导入包（这里只锁默认行为）。
   assert.equal(survivingProductIds(null).size, 0);
+});
+
+// `--apply` 是 CI 那条路（catalog-refresh.yml 的 revoke_ids 输入）：布尔开关不能吃掉下一个 argv，
+// 否则 `--apply --verify` 会把 `--verify` 当成 apply 的值。
+test('--apply and --verify are booleans that never consume the next argument', () => {
+  const { parseArgs } = require('../scripts/catalog/revoke-products.js');
+  const options = parseArgs(['--product', 'prd_a', '--product', 'prd_b', '--apply', '--verify']);
+  assert.deepEqual(options.products, ['prd_a', 'prd_b']);
+  assert.equal(options.apply, true);
+  assert.equal(options.verify, true);
+  assert.equal(options.dryRun, false);
 });
 
 test('revoke SQL aligns the session collation before comparing ids', () => {
