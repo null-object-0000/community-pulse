@@ -19,11 +19,12 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # 供来源层 GitHub 采集脚本使用
   CATALOG_API_ORIGIN: https://community-pulse.nichangen.workers.dev # 内部快照读入口，绕过公开主域的浏览器验证
   COMMUNITY_PULSE_PROXY: ''               # Actions 环境不走代理 (runner 直连/gh 认证)
-  PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}  # Product Hunt API token (账号1, GitHub授权主)
-  PRODUCT_HUNT_TOKEN_2: ${{ secrets.PRODUCT_HUNT_TOKEN_2 }}  # 账号2 Google/icloud
-  PRODUCT_HUNT_TOKEN_3: ${{ secrets.PRODUCT_HUNT_TOKEN_3 }}  # 账号3 Google/me
-  PRODUCT_HUNT_TOKEN_4: ${{ secrets.PRODUCT_HUNT_TOKEN_4 }}  # 账号4 Google/tripwhims
-  PRODUCT_HUNT_TOKEN_5: ${{ secrets.PRODUCT_HUNT_TOKEN_5 }}  # 账号5 Google/hopegoo
+  # Product Hunt GraphQL token（按官方配额退避重试；多 token 时按顺序轮询，见 ph_tokens.js）
+  PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
+  PRODUCT_HUNT_TOKEN_2: ${{ secrets.PRODUCT_HUNT_TOKEN_2 }}
+  PRODUCT_HUNT_TOKEN_3: ${{ secrets.PRODUCT_HUNT_TOKEN_3 }}
+  PRODUCT_HUNT_TOKEN_4: ${{ secrets.PRODUCT_HUNT_TOKEN_4 }}
+  PRODUCT_HUNT_TOKEN_5: ${{ secrets.PRODUCT_HUNT_TOKEN_5 }}
 
 jobs:
   daily-report:
