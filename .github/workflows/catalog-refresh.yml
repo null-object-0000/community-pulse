@@ -137,8 +137,13 @@ jobs:
       # upsert 覆盖，得定向删；快照读的是删完之后的库，顺序反了会把刚删掉的行又写进快照。
       # 撤销 SQL 由 revoke-products.js 生成（只认 product_id，单来源闸 @shared <= 1，
       # 并且挡下本次 --range 会重建的 id），--verify 只保留线上真的返回 200 的那些。
+      #
+      # `--inspect` 把「单来源闸挡下了哪几行」写进报告并以退出码 1 收尾：多来源的旧行一行都删不掉，
+      # 而脚本从返回值上看不出这个区别（2026-09-22 就这样漏过一次）。`continue-on-error` 是刻意的 ——
+      # 导入已经写完了，快照必须照建，红着的这一步留给人工决定怎么补撤销。
       - name: 撤销身份被修正的旧产品行
         if: ${{ github.event.inputs.revoke_ids != '' }}
+        continue-on-error: true
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -154,7 +159,7 @@ jobs:
           echo "待撤销：$ARGS"
           node scripts/catalog/revoke-products.js $ARGS \
             --range "${{ steps.dates.outputs.start }}..${{ steps.dates.outputs.end }}" \
-            --verify --apply --out .scratch/revoke-products
+            --verify --inspect --apply --out .scratch/revoke-products
 
       - name: 从 MySQL 生成版本化站点快照
         run: |

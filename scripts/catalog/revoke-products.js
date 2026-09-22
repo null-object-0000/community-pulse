@@ -24,9 +24,15 @@
  * 凭据；CI 里由 `catalog-refresh.yml` 的 `revoke_ids` 输入调用 —— 撤销必须排在**导入之后、
  * 快照之前**，顺序错了会把刚删掉的行又写进快照。
  *
+ * `--inspect` 撤销前后各读一次产品库现状（`products` / `product_routes` /
+ * `product_source_first_seen` 的来源数），把「单来源闸到底挡下了几行」写进报告。**别只看
+ * 「SQL 没报错」**：`@shared <= 1` 是在 SQL 里生效的，多来源的行一行都不会删，而退出码与
+ * `applied.products` 都还是「成功」—— 2026-09-22 就这样被骗过一次（报告说撤销 13 个，
+ * 线上 11 个产品页仍然 200）。现在有存活目标时退出码 1。
+ *
  * 用法：
  *   node scripts/catalog/revoke-products.js --plan .scratch/issue-entity-plan.json \
- *     --range 2026-01-03..2026-09-03 --verify --out .scratch/revoke-entity [--dry-run] [--apply]
+ *     --range 2026-01-03..2026-09-03 --verify --out .scratch/revoke-entity [--dry-run] [--inspect] [--apply]
  */
 const fs = require('node:fs');
 const path = require('node:path');
@@ -35,15 +41,16 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_ORIGIN = 'https://community-pulse.nichangen.workers.dev';
 
 // 布尔开关不取下一个 argv（见 backfill_issue_entity.js 里同一条注释）。
-const BOOLEAN_FLAGS = new Set(['--verify', '--dry-run', '--apply']);
+const BOOLEAN_FLAGS = new Set(['--verify', '--dry-run', '--apply', '--inspect']);
 
 function parseArgs(argv) {
-  const options = { out: path.join(ROOT, '.scratch', 'revoke-products'), plan: null, products: [], range: null, verify: false, dryRun: false, apply: false, origin: process.env.CATALOG_API_ORIGIN || DEFAULT_ORIGIN };
+  const options = { out: path.join(ROOT, '.scratch', 'revoke-products'), plan: null, products: [], range: null, verify: false, dryRun: false, apply: false, inspect: false, origin: process.env.CATALOG_API_ORIGIN || DEFAULT_ORIGIN };
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
     if (BOOLEAN_FLAGS.has(name)) {
       if (name === '--verify') options.verify = true;
       else if (name === '--apply') options.apply = true;
+      else if (name === '--inspect') options.inspect = true;
       else options.dryRun = true;
       continue;
     }
@@ -106,6 +113,33 @@ async function liveProductIds(origin, ids) {
   return { live, missing };
 }
 
+/**
+ * 这些 id 现在在产品库里长什么样（只读）。
+ *
+ * 关键是 `sources`：撤销 SQL 的 `@shared <= 1` 闸就是拿它判断的，多来源的行**一行都不会删**，
+ * 而脚本从返回值上看不出这个区别。核对时必须看这里，不能只看「SQL 有没有报错」。
+ * 通道的 `select` 不接受绑定参数（Worker 直接 `connection.query(text)`），所以 id 是内联的 ——
+ * 因此先按 `prd_<24 位十六进制>` 校验，形状不对直接拒绝，不拼进 SQL。
+ */
+async function inspectTargets(db, ids) {
+  const wanted = ids.filter((id) => /^prd_[a-f0-9]{24}$/.test(id));
+  if (wanted.length !== ids.length) throw new Error(`product_id 形状不对，拒绝内联进 SQL：${ids.filter((id) => !wanted.includes(id)).join(' ')}`);
+  if (!wanted.length) return [];
+  const list = wanted.map((id) => `'${id}'`).join(',');
+  const rows = await db.select(`SELECT p.id AS id,
+      (SELECT COUNT(*) FROM product_routes r WHERE r.product_id = p.id) AS routes,
+      (SELECT COUNT(*) FROM product_source_first_seen f WHERE f.product_id = p.id) AS sources,
+      (SELECT GROUP_CONCAT(f.source_id ORDER BY f.source_id) FROM product_source_first_seen f WHERE f.product_id = p.id) AS sourceIds
+    FROM products p WHERE p.id IN (${list})`);
+  const byId = new Map(rows.map((row) => [String(row.id), row]));
+  return wanted.map((id) => {
+    const row = byId.get(id);
+    return row
+      ? { productId: id, exists: true, routes: Number(row.routes || 0), sources: Number(row.sources || 0), sourceIds: String(row.sourceIds || '') }
+      : { productId: id, exists: false, routes: 0, sources: 0, sourceIds: '' };
+  });
+}
+
 function sqlFor(targets) {
   const lines = [
     '-- 按 product_id 定向撤销（revoke-products.js 生成）',
@@ -147,7 +181,7 @@ async function main() {
   const sql = sqlFor(verified);
   const report = {
     version: 'revoke-products-v1', generatedAt: new Date().toISOString(), dryRun: options.dryRun,
-    origin: options.origin, verified: options.verify, range: options.range, apply: options.apply,
+    origin: options.origin, verified: options.verify, range: options.range, apply: options.apply, inspect: options.inspect,
     candidates: candidates.length, targets: verified.length,
     skippedSurviving: skippedSurviving.map((target) => ({ productId: target.productId, detail: target.detail })),
     notLive,
@@ -158,29 +192,38 @@ async function main() {
     fs.mkdirSync(options.out, { recursive: true });
     fs.writeFileSync(path.join(options.out, 'revoke.sql'), sql);
   }
-  if (options.apply) {
-    if (options.dryRun) throw new Error('--apply 不能和 --dry-run 一起用：dry-run 承诺不碰生产库');
-    if (!verified.length) {
-      report.applied = { transport: null, products: 0, note: 'no_targets' };
-    } else {
-      const { openDb } = require('./db-transport.js');
-      const opened = await openDb({ log: (message) => console.log(message) });
-      try {
+  if (options.apply && options.dryRun) throw new Error('--apply 不能和 --dry-run 一起用：dry-run 承诺不碰生产库');
+  if ((options.apply || options.inspect) && verified.length) {
+    const { openDb } = require('./db-transport.js');
+    const opened = await openDb({ log: (message) => console.log(message) });
+    try {
+      // 撤销前先看清现状：`@shared <= 1` 的单来源闸是在 **SQL 里**生效的，脚本只看得到「发了 N 条
+      // DELETE」。2026-09-22 那次就是这样被骗过一次 —— 报告写「已撤销 13 个产品」，线上却有 11 个
+      // 产品页仍然 200（多来源的行被闸挡下，一行没删）。所以撤销必须能核对结果。
+      report.before = await inspectTargets(opened.db, verified.map((target) => target.productId));
+      if (options.apply) {
         await opened.db.execute(sql);
-        report.applied = { transport: opened.transport, products: verified.length };
-      } finally {
-        await opened.db.close();
+        report.after = await inspectTargets(opened.db, verified.map((target) => target.productId));
+        const remaining = report.after.filter((row) => row.exists).map((row) => row.productId);
+        report.applied = { transport: opened.transport, products: verified.length, removed: verified.length - remaining.length, remaining };
       }
+    } finally {
+      await opened.db.close();
     }
   }
   if (!options.dryRun) {
     fs.writeFileSync(path.join(options.out, 'manifest.json'), `${JSON.stringify(report, null, 2)}\n`);
   }
   console.log(JSON.stringify(report, null, 2));
-  console.log(`${options.dryRun ? '[dry-run] ' : ''}${options.apply && report.applied?.products ? '已撤销' : '待撤销'} ${verified.length} 个产品（候选 ${candidates.length}，重建闸挡下 ${skippedSurviving.length}，线上不存在 ${notLive.length}）`);
+  const remaining = report.applied?.remaining?.length ?? 0;
+  const label = options.dryRun ? '[dry-run] 待撤销' : (report.applied ? '已撤销' : '待撤销');
+  console.log(`${label} ${report.applied ? report.applied.removed : verified.length} 个产品`
+    + `（候选 ${candidates.length}，重建闸挡下 ${skippedSurviving.length}，线上不存在 ${notLive.length}`
+    + `${report.applied ? `，单来源闸挡下 ${remaining}${remaining ? `：${report.applied.remaining.join(' ')}` : ''}` : ''}）`);
+  if (remaining) process.exitCode = 1;
 }
 
 if (require.main === module) {
   main().catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
 }
-module.exports = { parseArgs, targets, survivingProductIds, sqlFor, liveProductIds };
+module.exports = { parseArgs, targets, survivingProductIds, sqlFor, liveProductIds, inspectTargets };

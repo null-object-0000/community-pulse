@@ -155,3 +155,26 @@ test('revoke SQL aligns the session collation before comparing ids', () => {
   assert.match(sql, /SET NAMES utf8mb4 COLLATE utf8mb4_0900_ai_ci;/);
   assert.ok(sql.indexOf('SET NAMES') < sql.indexOf('START TRANSACTION'));
 });
+
+// 撤销必须能核对结果：`@shared <= 1` 的单来源闸在 SQL 里生效，多来源的行一行都不会删，
+// 而脚本从返回值上看不出这个区别（2026-09-22：报告说撤销 13 个，线上 11 个页面仍然 200）。
+test('inspectTargets reports the source count the single-source guard uses', async () => {
+  const { inspectTargets } = require('../scripts/catalog/revoke-products.js');
+  const a = 'prd_0f813588ffc0adcbab3da240';
+  const b = 'prd_94546b6a51379787bbb9916a';
+  const seen = [];
+  const db = {
+    select: async (sql) => {
+      seen.push(sql);
+      return [{ id: a, routes: 1, sources: 2, sourceIds: 'chinese-indie-dev,weekly-issues' }];
+    },
+  };
+  const rows = await inspectTargets(db, [a, b]);
+  assert.deepEqual(rows, [
+    { productId: a, exists: true, routes: 1, sources: 2, sourceIds: 'chinese-indie-dev,weekly-issues' },
+    { productId: b, exists: false, routes: 0, sources: 0, sourceIds: '' },
+  ]);
+  assert.match(seen[0], new RegExp(`IN \\('${a}','${b}'\\)`));
+  // 通道的 select 不吃绑定参数，id 是内联的 —— 形状不对必须拒绝，不能拼进 SQL。
+  await assert.rejects(() => inspectTargets(db, [`${a}'; DROP TABLE products; --`]), /形状不对/);
+});
