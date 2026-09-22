@@ -1,0 +1,41 @@
+name: 只读核对产品库（一次性诊断）
+
+# 本机没有 Cloudflare 凭据（写库走 Actions 的 CLOUDFLARE_API_TOKEN），所以「写进去没有」
+# 这类核对也只能借 Actions 的凭据跑。只读：只放行单条 SELECT，且不写任何东西。
+on:
+  workflow_dispatch:
+    inputs:
+      sql:
+        description: '要执行的 SELECT（只读）'
+        required: true
+        default: 'SELECT 1'
+
+permissions:
+  contents: read
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: 安装项目依赖
+        run: npm ci
+
+      - name: 只读查询
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # 闸门：只允许 SELECT —— 这条流水线是诊断用的，不该能改数据。
+          case "$(echo "${{ github.event.inputs.sql }}" | tr '[:lower:]' '[:upper:]' | tr -d ' ')" in
+            SELECT*) ;;
+            *) echo "拒绝：只允许 SELECT"; exit 1;;
+          esac
+          node scripts/catalog/live-query.js --sql "${{ github.event.inputs.sql }}"
