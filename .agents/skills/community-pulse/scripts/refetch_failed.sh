@@ -3,8 +3,11 @@
 # 用法: bash refetch_failed.sh [日期文件]  默认 /tmp/failed_days.txt
 set -uo pipefail
 DAYS_FILE="${1:-/tmp/failed_days.txt}"
-SKILL="/home/nichangen/文档/MyVault/.agents/skills/community-pulse"
-RAW="/home/nichangen/文档/MyVault/知识/大家都在做什么/raw"
+# 仓库根从脚本位置推导，不写死本机路径。
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+SKILL="$ROOT/.agents/skills/community-pulse"
+RAW="$ROOT/知识/大家都在做什么/raw"
 cd "$SKILL"
 
 ok=0; fail=0

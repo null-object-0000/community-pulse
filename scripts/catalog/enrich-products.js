@@ -34,8 +34,8 @@
  *   node scripts/catalog/enrich-products.js --date 2026-09-19 --limit 30 --product-id prd_xxx
  * 连接串取 `--mysql-url` 或环境变量 `CATALOG_MYSQL_URL`。
  *
- * 为什么这一层要跑在**本机**而不是日报 workflow 里：模型网关是 `127.0.0.1:18640`（见 enhance.js
- * 的 BASE），GitHub Actions 到不了；而本机连不上 RDS 的 3306（公司出口重置 TLS 握手），所以
+ * 为什么这一层要跑在**本机**而不是日报 workflow 里：模型网关是本地自建网关（见 enhance.js
+ * 的 BASE），GitHub Actions 到不了；而本机连不上 RDS 的 3306（本机网络重置 TLS 握手），所以
  * 生产运行需要一个到产品库的通道 —— 与「生产写入」是同一件事的两面，属于单独的受审操作。
  * 这一批只到「工具就绪 + 干跑证据」：可复现的验收在 `tests/catalog-enrichment.test.js` 的集成层
  * （真 MySQL 上跑完整状态机，没有可达数据库时自动跳过），真实数据实跑的数字见 CHANGELOG 2026-09-21。
@@ -116,7 +116,7 @@ function parseArgs(argv) {
     throw new Error('--write-batch must be an integer between 1 and 500');
   }
   if (!options.processorVersion) throw new Error('--processor-version must not be empty');
-  // 两条到产品库的路：本机直连（`--mysql-url`，公司出口会重置协议，通常只用于本地 MySQL 验收）
+  // 两条到产品库的路：本机直连（`--mysql-url`，本机网络出口会重置协议，通常只用于本地 MySQL 验收）
   // 或临时 Worker 通道（`--channel`，生产唯一可用的路）。
   if (!options.channel && !options.mysqlUrl) {
     throw new Error('需要 --mysql-url / CATALOG_MYSQL_URL，或 --channel（临时 Worker 通道）');

@@ -3,7 +3,9 @@
 import json, glob, re, os
 from collections import defaultdict, Counter
 
-RAW = os.path.expanduser("~/文档/MyVault/知识/大家都在做什么/raw")
+# 仓库根从脚本位置推导，不写死本机路径。
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+RAW = os.path.join(ROOT, "知识", "大家都在做什么", "raw")
 
 # 项目类型关键词 (从标题/描述里匹配)
 CATEGORIES = {

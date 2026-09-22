@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 生产产品库的**临时 Worker 通道**：本机连不上 RDS 的 3306（公司出口在协议层重置，2026-09-21
+ * 生产产品库的**临时 Worker 通道**：本机连不上 RDS 的 3306（本机网络出口在协议层重置，2026-09-21
  * 复测：TCP 通、MySQL `ECONNRESET`、TLS `HANDSHAKE_SSL_ERROR`），所以读写都经 Cloudflare
  * Hyperdrive —— 与 `scripts/catalog/live-query.js`（只读核对）和 `scripts/catalog/upload-mysql.js`
  * （批量导入）同一个模式。

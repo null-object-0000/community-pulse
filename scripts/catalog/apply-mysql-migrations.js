@@ -15,7 +15,7 @@
  *      生产库是**先有 schema 再有记账表**的，第一次跑必然要把 0001..0004 也判成已应用。
  *      其它任何错误立刻中止并退出码 1，不会把半截 schema 记成成功。
  *
- * 传输有两条（与 `enrich-products.js` 一致）：`--mysql-url` 直连（本地验收用；公司出口会重置
+ * 传输有两条（与 `enrich-products.js` 一致）：`--mysql-url` 直连（本地验收用；本机网络出口会重置
  * 协议，所以生产只能用第二条）、`--channel` 走临时 Worker（`mysql-channel.js`）。
  *
  * 用法：

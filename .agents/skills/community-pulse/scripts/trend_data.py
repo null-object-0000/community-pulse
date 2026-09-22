@@ -3,7 +3,9 @@
 import json, glob, os
 from collections import defaultdict, Counter
 
-RAW = os.path.expanduser("~/文档/MyVault/知识/大家都在做什么/raw")
+# 仓库根从脚本位置推导，不写死本机路径。
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+RAW = os.path.join(ROOT, "知识", "大家都在做什么", "raw")
 CATEGORIES = {
     "AI工具": ["ai", "llm", "gpt", "claude", "agent", "大模型", "模型", "提示词", "prompt", "智能", "chatgpt", "copilot", "deepseek", "mcp"],
     "开发工具": ["cli", "命令行", "ide", "编辑器", "调试", "测试", "编译器", "数据库", "框架", "sdk", "api", "库", "git"],

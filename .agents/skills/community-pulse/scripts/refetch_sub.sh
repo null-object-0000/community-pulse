@@ -2,8 +2,11 @@
 # 补投稿源缺失的天: 只跑 weekly-issues + hellogithub-issues, 合并进 raw json
 set -uo pipefail
 DAYS_FILE="${1:-/tmp/missing_sub.txt}"
-SKILL="/home/nichangen/文档/MyVault/.agents/skills/community-pulse"
-RAW="/home/nichangen/文档/MyVault/知识/大家都在做什么/raw"
+# 仓库根从脚本位置推导，不写死本机路径。
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+SKILL="$ROOT/.agents/skills/community-pulse"
+RAW="$ROOT/知识/大家都在做什么/raw"
 cd "$SKILL"
 
 ok=0; fail=0

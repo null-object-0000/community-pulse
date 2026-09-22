@@ -47,6 +47,11 @@ const RESUME_FIELDS = ['description', 'ogImage'];
 const TIMEZONE = 'Asia/Shanghai';
 const VAULT = path.resolve(__dirname, '..', '..', '..', '..');
 const CONFIG = path.join(__dirname, '..', 'config', 'sources.json');
+// 诊断信息要落进提交的日文件，所以只保留仓库内相对路径：来源文件缺失的报错本身带绝对路径，
+// 直接把 error.message 写进 capture.skippedSources 会把本机目录结构一起提交。
+function repoRelative(text) {
+  return String(text).split(`${VAULT}${path.sep}`).join('');
+}
 const DEFAULT_SOURCE_RAW_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'source-raw');
 const DEFAULT_RAW_ROOT = path.join(VAULT, '知识', '大家都在做什么', 'raw');
 const DEFAULT_OUT_ROOT = path.join(DEFAULT_SOURCE_RAW_ROOT, SOURCE_ID);
@@ -152,7 +157,7 @@ function collectCandidates(args, sources) {
     try {
       repositories = loadGithubRepositories(args.sourceRawRoot, date).repositories;
     } catch (error) {
-      skippedSources.push(`github-repositories@${date}: ${shorten(error.message, 120)}`);
+      skippedSources.push(`github-repositories@${date}: ${repoRelative(shorten(error.message, 120))}`);
     }
     for (const source of sources) {
       const observedSource = OBSERVED_SOURCES.has(source.id);
@@ -165,7 +170,7 @@ function collectCandidates(args, sources) {
         loaded = loadItems(source, { date, observedDate: observedDate || date, rawRoot: args.sourceRawRoot });
       } catch (error) {
         if (args.strict) throw error;
-        skippedSources.push(`${source.id}@${date}: ${shorten(error.message, 120)}`);
+        skippedSources.push(`${source.id}@${date}: ${repoRelative(shorten(error.message, 120))}`);
         continue;
       }
       const fileDate = observedSource ? observedDate : date;

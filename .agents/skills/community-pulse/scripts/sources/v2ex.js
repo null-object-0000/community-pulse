@@ -1,6 +1,6 @@
 /**
  * V2EX 热门主题 (官方公开 API)
- * 注意: 公司网络直连被墙；且 Node fetch 走本机代理(undici)对 v2ex 会 ETIMEDOUT，
+ * 注意: 本机网络直连被墙；且 Node fetch 走本机代理(undici)对 v2ex 会 ETIMEDOUT，
  *       但 curl 走代理可通 → 本模块用 curl 子进程抓取。
  */
 const { execFile } = require('child_process');
