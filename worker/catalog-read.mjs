@@ -1,13 +1,14 @@
 /**
  * 临时只读查询 Worker。
  *
- * 本机直连阿里云 RDS 的 3306 会被公司出口在 TLS 握手阶段重置（2026-09-14 与 09-18 各实测一次），
+ * 本机直连阿里云 RDS 的 3306 会被本机网络出口在 TLS 握手阶段重置（2026-09-14 与 09-18 各实测一次），
  * 所以查询生产产品库只能经 Cloudflare Hyperdrive —— 与 `worker/catalog-import.mjs` 同一个模式，
  * 区别是这里**只绑 HYPERDRIVE_READ**，读账号本身也没有写权限，所以这个入口在构造上就写不了数据。
  *
  * 由 `scripts/catalog/live-query.js` 临时部署、用完立刻删除；令牌是每次随机生成的。
  */
 import { createConnection } from 'mysql2/promise';
+import { authorized } from './bearer-auth.mjs';
 
 // 只放行单条 SELECT：这个入口只用于核对（`source_items` 到底有没有数据、旧地址对应哪个 product_id），
 // 不承担任何写入职责 —— 写走 `worker/catalog-import.mjs`。
@@ -25,7 +26,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method !== 'POST' || url.pathname !== '/query') return new Response('Not found', { status: 404 });
-    if (request.headers.get('authorization') !== `Bearer ${env.READ_TOKEN}`) return new Response('Unauthorized', { status: 401 });
+    if (!authorized(request, env.READ_TOKEN)) return new Response('Unauthorized', { status: 401 });
     let sql;
     try {
       sql = assertReadOnly(await request.text());

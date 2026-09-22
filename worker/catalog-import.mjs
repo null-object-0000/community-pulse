@@ -1,4 +1,5 @@
 import { createConnection } from 'mysql2/promise';
+import { authorized } from './bearer-auth.mjs';
 
 export function splitSql(sql) {
   const result = [];
@@ -22,7 +23,7 @@ export function splitSql(sql) {
 export default {
   async fetch(request, env) {
     if (request.method !== 'POST' || new URL(request.url).pathname !== '/import') return new Response('Not found', { status: 404 });
-    if (request.headers.get('authorization') !== `Bearer ${env.IMPORT_TOKEN}`) return new Response('Unauthorized', { status: 401 });
+    if (!authorized(request, env.IMPORT_TOKEN)) return new Response('Unauthorized', { status: 401 });
     const statements = splitSql(await request.text());
     const connection = await createConnection({
       host: env.HYPERDRIVE_WRITE.host, port: env.HYPERDRIVE_WRITE.port,
