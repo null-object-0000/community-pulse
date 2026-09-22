@@ -700,6 +700,17 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
   - **记进报告但这次不改**：`catalog-import` 仍是「任意 SQL + 一个 bearer」的入口（令牌经 `--var` 会进 runner argv，且清理只在 `finally`，任务被取消就留下一个无 TTL 的写入口）；`/api/v1/*` 公开、无鉴权无速率限制，且 `workers.dev` 备用入口不受主域 WAF 质询；抓取层的 SSRF 只有平台黑名单。这些是设计层面的事，属于另一批。
 - **验证**：`npm run check` **303/303**（新增 3 条鉴权用例）。
 
+### 同日追加：开启 secret scanning 与 push protection，并处理它捞出的两条告警
+
+**背景：转公开时没开 secret scanning**，所以仓库里早就存在的两处「第三方凭据形态」一直没被看见。开完立刻浮现两条告警，都不是本仓库的凭据：
+
+- **告警 #2 是误报**：`wx8dcd7cad358929ea` 是一篇阮一峰周刊投稿正文里的微信小程序深链 `weixin://dl/business/?appid=…&path=pages/index/index`（背单词小程序「词小悟」）。AppID 是公开标识符，每个小程序分享链接里都有，不是凭据 → 按 `false_positive` 关闭，不动数据。
+- **告警 #1 是真人贴出来的第三方 token**：`dop_v1_…`（DigitalOcean PAT，71 位、格式合法）出现在 `source-raw/showhn/2025-03-29.json`，是那天 Show HN 帖子 43512666 的**正文原文** —— 作者自己写「List my digitalocean servers, my api key is dop_v1…」。我们只是逐字节归档了这条公开帖子，所以**不需要轮换本仓库的任何凭据**；但它确实被公开仓库又发布了一遍（`publicly_leaked: true`）。
+  - **数据 / 两处都换**：串在归档文件里出现两次 —— `records[33].storyText`（采集层给日报行用的纯文本）与 `response.body`（gzip+base64 的上游原始响应，验证器的比对基准）。只清一处文件里还留着，所以两处都换成 `[REDACTED]`。
+  - **可验证性不能丢**：`contentSha256` 改成**脱敏后**字节的哈希（validator 因此仍然通过），上游原始字节的哈希挪到 `contentSha256Original`；另加 `redactions[]` 记明改了哪个字段、为什么、占位符是什么。实测 `records` 只有 1 个字段变化、字节数只少 61（71 位 token 换 10 位占位符），`validate_showhn_raw.js --date 2025-03-29` 复跑 `errorCount: 0`、63 条故事不变，`npm run check` 303/303。
+  - **一处新发现**：这条串**不只躺在仓库里，还在线上产品页**。同一个 `product_id`（`prd_38afbca7…`）的 `product_details.item_json.summary` 带着它，`/products/prd_38afbca7…/` 渲染出来（页面里 `dop_v1…` 出现 3 次，分别是 JSON-LD、原文与转义副本）。导入链读的是 `source-raw`，所以**归档修好不等于线上修好** —— 得跑一次 `catalog-refresh.yml`（`start=end=2025-03-29`）把这一天的投影重写。脱敏后 `content_score` 2981→2920，正是 `DETAIL_ROW_WINS` 规则③「同一次观测重算直接覆盖」负责的场景，所以单日导入就能覆盖，不需要 `full_rebuild`。
+- **决策：历史里的那 1 个提交仍在。** 与上一批「脱敏只改 tip」同样的取舍 —— 真要从历史里抹掉得再跑一次 `filter-repo` + force-push，这次不做（那次改动同时会牵动两个远端特性分支）。
+
 ## 值得记录的决策
 
 - **`source-raw` 离线链路**（09-08）：采集与生成彻底分离，日报只从不可变的来源层重放。这是可回溯、可复现、可回填的基础，也是后面所有数据修复的前提。
