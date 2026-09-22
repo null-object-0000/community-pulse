@@ -330,8 +330,22 @@
       + `<div class="chip-menu" id="${meta.menuId}" hidden></div>`
       + `<label class="chip-select"><span class="chip-select-label">${escapeHtml(meta.field)}</span><select id="${meta.selectId}" aria-label="${escapeHtml(meta.aria)}">${listOptions}</select><svg class="select-control-chevron" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></label>`;
   }
+  // A host that cannot resolve is not a usable link. Submission text used to leak markdown
+  // emphasis into the address (`**https://seichigo.com**` → host `seichigo.com**`), and
+  // `new URL()` accepts that (`*` is not a forbidden host code point), so the 官网 button
+  // rendered happily and only failed when clicked. `issue-description.bareUrls` now strips
+  // that at the data layer; this is the second line — the 9 historical rows that still carry
+  // a trailing `）` in the host (`createvision.ai)`) render as no link instead of a dead one.
+  // IDN hosts arrive here already punycoded, IPv6 keeps its brackets, and `_` is allowed
+  // because it shows up in real hostnames even though DNS proper forbids it.
+  const HOSTNAME_OK = /^[a-z0-9._-]+$/i;
+  const IPV6_HOST = /^\[[0-9a-f:.]+\]$/i;
   function safeUrl(value) {
-    try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password ? url.href : ''; } catch { return ''; }
+    try {
+      const url = new URL(value);
+      if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return '';
+      return HOSTNAME_OK.test(url.hostname) || IPV6_HOST.test(url.hostname) ? url.href : '';
+    } catch { return ''; }
   }
   // Only the newest reports are mirrored into this site; the archive keeps referencing the
   // source CDN. Un-mirrored images may render only from these hosts, so an unexpected or

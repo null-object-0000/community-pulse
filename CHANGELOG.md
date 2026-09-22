@@ -26,7 +26,7 @@
 | 09-18 | 8（含 2 次快照提交，另有本轮未提交） | 待统计 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘；**677 行日报地址回填 + 库侧撤销 21 个产品行（7 条招聘广告全部下线）** | community-pulse |
 | 09-20 | 待统计 | 待统计 | 待统计 | **日报行绑定产品库身份**（报告行带 `productId` 与发布记录 `publication`，补上「报告行必须与导入链身份一致」的门禁）；**增强结果改按 `productId` 匹配**，不再按「标题 + 作者」匹配 Markdown | community-pulse |
 | 09-21 | 1（本轮） | 5 文件 +1,276 | 0 | **产品级 LLM 加工流水线重新落地**（MySQL 原生、按天增量、shadow-only）：口径定成 `products.first_seen_date = TARGET` + 重入臂，入口门禁写独立终态 `skipped_no_input`，成本落 `enrichment_runs`；真数据实跑 793 个产品量出成本曲线，二次运行 **0 请求** | community-pulse |
-| 09-22 | 1（本轮） | 7 文件（含 2 个测试） | 28 文件（13 期日报的地址与身份） | 投稿地址的 **markdown 装饰尾巴**漏进 `url`：线上产品页「官网」按钮指向 `https://seichigo.com**/`。边界规则收敛成唯一一份 `bareUrls` 并剥掉结尾装饰；13 行地址回填，`productId` 与同日 `final` 一起同步；`catalog-refresh.yml` 补 `revoke_ids` 输入（撤销那 13 个旧身份） | community-pulse |
+| 09-22 | 1（本轮） | 10 文件（含 3 个测试；`worker/render-version.mjs` 是构建生成） | 28 文件（13 期日报的地址与身份） | 投稿地址的 **markdown 装饰尾巴**漏进 `url`：线上产品页「官网」按钮指向 `https://seichigo.com**/`。边界规则收敛成唯一一份 `bareUrls` 并剥掉结尾装饰；`safeUrl` 拒掉不像 host 的 host（第二道）；13 行地址回填，`productId` 与同日 `final` 一起同步；`catalog-refresh.yml` 补 `revoke_ids` 输入（撤销那 13 个旧身份） | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 ---
@@ -660,6 +660,9 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **库侧**：13 行的身份**全部变了**（`prd_94546b6a…` → `prd_ae3af7eb…`），所以产品库要按 `catalog-refresh.yml` 重导入这段范围，再撤销 13 个旧 `product_id` —— 否则用户看到的那个地址仍然返回 200、仍然指向 `https://seichigo.com**/`。本机 `wrangler` 的 refresh token 在 09-21 那次刷新后已失效（`.scratch/cf-home` 那份副本同样过期），写入只能走 Actions 的仓库密钥，所以顺手给 `catalog-refresh.yml` 加了 `revoke_ids` 输入（逗号分隔的旧 id），并给 `revoke-products.js` 加了 `--apply`（走 `db-transport.openDb`，直连优先、连不上降级到临时 Worker 通道）。撤销排在**导入之后、快照之前**：导入按新身份建行、旧行不会被 upsert 覆盖，而快照读的是撤销后的库，顺序反了会把刚删掉的行又写进快照。
   - **一个值得记的巧合**：SeichiGo 并不是新面孔 —— 2026-09-07 的「中国独立开发者」版块早就以干净地址收录过它（`prd_ae3af7eb…`，现在线上就是对的）。09-21 的投稿用脏地址**又建了一个重复产品行**。所以这次「修地址」的结果是两条行**合并回同一个身份**，而不是换一个地址继续错。这也说明这条 bug 的真实代价是**重复收录 + 一条永久打不开的官网链接**，不是单纯显示问题。
   - 撤销前先跑 `--verify`：13 个旧 id 线上全部返回 200（都是活行），重建闸挡下 0 个 —— 它们确实都是该删的重复行，不是本次导入会重建的身份。
+- **第二道防线（`web/shared.js` 的 `safeUrl`）**：`new URL()` 接受 `seichigo.com**` 是这条 bug 之所以**静默**的原因 —— 数据层修好了，但下一个漏网的脏地址还会照常渲染成一个点不开的按钮。所以 `safeUrl` 现在要求 host 落在 DNS/IPv6 字符集里（IDN 到这里已经是 punycode、IPv6 保留方括号、`_` 放行因为实践中存在），host 不像 host 就返回空 —— 没有链接，而不是死链接。全量 18,705 个地址里只有 2 个会被这道闸拦下，正是上一条里那批没修的 `createvision.ai)` / `capybuddy.atlai.co.uk)`。
+- **顺手解决了「脏渲染被写进新缓存键」**：`catalog-refresh` 跑完后我复核旧地址，页面仍是 200 —— 数据库里那行确实删了（重建后的快照已经没有它，`prd_ae3af7eb…` 的「收录记录」也多了「科技爱好者周刊投稿」这一条），但**产品页的边缘缓存是 24 小时**，而第一批发请求赶在 Hyperdrive 读缓存（按 SQL 文本，约十分钟）过期之前，于是「撤销前的渲染」被写进了**新** `CATALOG_VERSION` 的键里（这正是 09-17 记过的同一个坑）。改 `web/shared.js` 让 `PRODUCT_RENDERER_VERSION` 从 `rcd378ee…` 换到 `rcdd497f…`，缓存键随之换代，旧渲染立刻不可达 —— 不改渲染源文件的话要等第二天日更换 `CATALOG_VERSION` 才自愈。
+  - **教训**：撤销 / 改数据之后不能只看规范地址，要拿**等价 pathname** 复核（`run_worker_first` 现在按大小写敏感的前缀列了 `/products/*`，所以 `/PRODUCTS/…` 已经不走 Worker 了 —— 用**去掉尾斜杠**的同路由地址，缓存键里的 pathname 不同、DB 路由相同）。
 
 ## 值得记录的决策
 

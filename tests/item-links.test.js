@@ -57,3 +57,17 @@ test('a repository with no declared website publishes no 官网 rather than the 
   assert.equal(byKey(links, 'website'), '');
   assert.equal(links.filter(([, url]) => url.startsWith('https://github.com/Homebrew')).length, 0);
 });
+// 投稿正文里的 markdown 装饰会漏进地址（`**https://seichigo.com**` → host `seichigo.com**`），
+// 而 `new URL()` 接受它，所以「官网」按钮照常渲染、点开才失败。数据层已经剥掉了（bareUrls），
+// 这里是第二道：host 不像 host 就不渲染成链接。
+test('a host that cannot resolve is never published as a link', () => {
+  assert.equal(D.safeUrl('https://seichigo.com**'), '');
+  assert.equal(D.safeUrl('https://createvision.ai)'), '');
+  assert.equal(D.itemLinks({ sourceId: 'weekly-issues', url: 'https://seichigo.com**', issueUrl: 'https://github.com/ruanyf/weekly/issues/11845' })
+    .find(([label]) => label === 'website'), undefined);
+  // 正常形状照旧：IDN 到这里已经是 punycode，IPv6 保留方括号，下划线主机在实践中存在。
+  assert.equal(D.safeUrl('https://例え.jp/a'), 'https://xn--r8jz45g.jp/a');
+  assert.equal(D.safeUrl('https://[::1]/x'), 'https://[::1]/x');
+  assert.equal(D.safeUrl('https://foo_bar.example.com/x'), 'https://foo_bar.example.com/x');
+  assert.equal(D.safeUrl('https://www.cs.huji.ac.il/~shais/x'), 'https://www.cs.huji.ac.il/~shais/x');
+});
