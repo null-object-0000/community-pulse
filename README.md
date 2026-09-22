@@ -1,64 +1,172 @@
-# DevTrends 开发者趋势
+# DevTrends · 开发者趋势
 
-「大家都在做什么」开发者趋势日报的独立工作区与独立 Hermes agent（profile: `communitypulse`）。对外网站：<https://devtrends.site>。
+**大家都在做什么** —— 每天从开发者社区、独立开发者圈子与开源生态里，找出值得关注的新项目、新产品和新趋势。
 
-## 职责边界
+- 网站：<https://devtrends.site> ｜ English: <https://devtrends.site/en/>
+- 历史日报：<https://devtrends.site/reports/> ｜ RSS：<https://devtrends.site/feed.xml>
 
-- **采集层**：仅由 GitHub Actions 每天北京时间 00:07 执行（`cron: 7 16 * * *`），负责来源采集 → source-raw 校验 → raw 日报生成（md + json）→ 提交推送。
-- **交付层**：Hermes `communitypulse` profile 每天北京时间 07:30 执行 `~/.hermes/scripts/community_pulse_send.sh`，git pull → 校验 raw 完整 → LLM 增强（`enhance.js`）→ 写入并推送 final/ 触发网站重建 → 输出 final 路径，由 agent 用 MEDIA: 发送飞书。
-- 交付层**禁止**：调用任何来源 API、重跑/dispatch Actions、探测 Product Hunt、把 raw 复制成 final、发送缺源/过期/未增强文件。脚本失败只报告原始错误并停止。
+## 这是什么
 
-## 目录
+DevTrends 是一个自动运行的开发者趋势日报站。它每天采集多个公开来源（Show HN、V2EX、GitHub Trending、Product Hunt、独立开发者社区、科技周刊投稿等），把同一批发现标准化、去重、归类，生成当日日报，并构建成一份可索引的静态站点。
 
-- `知识/大家都在做什么/source-raw/<source>/YYYY-MM-DD.json` — 不可变来源原始层
-- `知识/大家都在做什么/raw/YYYY-MM-DD.{md,json}` — Actions 生成的当日日报
-- `知识/大家都在做什么/final/YYYY-MM-DD.md` — 本地 LLM 增强后的最终日报
-- `.agents/skills/community-pulse/` — 技能（采集/校验/增强脚本 + SKILL.md）
+- **只看公开信息**：所有内容来自公开榜单、公开 API、公开仓库和公开投稿，不抓取登录后的私有内容。
+- **每天一期**：北京时间 00:07 采集，产出 `知识/大家都在做什么/raw/<日期>.{json,md}`，站点随之重建。
+- **中英双语**：中文与英文页面共用同一份数据，URL 决定语言。
+- **可回溯**：来源层按来源、按天保存原始快照，日报的每一条都能追回当时的输入。
 
-## 迁移自
+## 数据来源
 
-2026-09-09 从 MyVault 独立出来（原 `知识/大家都在做什么/` + `.agents/skills/community-pulse/`），原因：日报数据量大（source-raw 28M + raw 22M）且需独立 profile 隔离，myvault 不再维护日报。
+| 来源 | 内容 | 采集方式 |
+| --- | --- | --- |
+| [Show HN](https://news.ycombinator.com/show) | Hacker News 的 Show HN 投稿 | Algolia 搜索 API，按北京时间日区间取全量 |
+| [V2EX · 分享创造](https://www.v2ex.com/?tab=create) | 分享创造节点的最新主题 | 官方公开 API |
+| [GitHub Trending](https://github.com/trending) | 每日热榜（全球榜 / 中文圈榜） | 榜单 HTML 快照 |
+| [Product Hunt](https://www.producthunt.com/) | 每日新品与官方精选 | 官方 GraphQL API |
+| [VibeCafé](https://vibecafe.ai/) | 社区最新作品 | 公开 API + 产品详情 |
+| [中国独立开发者](https://github.com/1c7/chinese-independent-developer) | 主版面 / 程序员版 / 游戏版每日新增项目 | 仓库 README 日分节 |
+| [阮一峰《科技爱好者周刊》](https://www.ruanyifeng.com/blog/) | 正刊推荐 + 用户投稿 Issue | 发布提交 + Issues |
+| [HelloGitHub](https://hellogithub.com/) | 月刊推荐 + 用户投稿 Issue | 发布提交 + Issues |
+| GitHub Issues 投稿 | 各周刊仓库里的自荐 / 推荐 Issue | GitHub API |
 
-## 网站
+只要能从结构化字段或正文里识别出 `github.com/owner/repo`，就会通过 GitHub Repository API 补一份仓库快照（star、fork、主语言、许可证等），日报里的指标都来自那次快照。
 
-DevTrends 使用统一的品牌主题，支持简体中文 / 英文和浅色 / 深色 / 跟随系统。导航包含今日发现和历史日报，适配手机与电脑。
+## 网站包含什么
 
-网站以 `raw/*.json` 保留指标与链接；存在同日 `final/*.md` 时，将增强摘要匹配回填。历史 final 若只覆盖部分内容，则保留 `mixed` 状态，其他条目使用 raw。2026-09-06 的旧 final 为部分覆盖；构建不会伪造完整增强状态。
+| 路径 | 内容 |
+| --- | --- |
+| `/`、`/en/` | 今日发现：当天全部项目，支持搜索、分类筛选、列表 / 宫格视图 |
+| `/cards/` | 今日卡片：一张一张浏览当天的新发现 |
+| `/trends/` | 趋势洞察：按业务场景、Agent 生态、编程语言比较最近 7 天与此前 28 天 |
+| `/trends/<维度>/<分类>/` | 分类库：可切换本周期 / 近 4 周 / 近 12 周 / 全部历史 |
+| `/reports/` | 历史日报归档（月历视图，带项目数与评论数） |
+| `/reports/<日期>/` | 单期日报，可下载 Markdown |
+| `/projects/<owner>/<repo>/` | 项目详情：介绍、仓库信息、收录记录、相关项目 |
+| `/products/<id>/` | 产品详情：没有仓库地址的产品走产品库页面 |
+| `/feed.xml`、`/sitemap.xml`、`/sitemap-baidu.xml`、`/robots.txt` | RSS、站点地图与爬虫声明 |
 
-```bash
-npm run build
-npm run preview
-npm run check
+日报和项目页的评论由公开仓库 [null-object-0000/devtrends-comments](https://github.com/null-object-0000/devtrends-comments) 的 GitHub Discussions（giscus）承载，中英文共用同一条讨论。
+
+## 数据链路
+
+```text
+公开来源 ──► 采集层（GitHub Actions，每天 00:07 北京时间）
+              │  来源采集脚本 + 离线校验
+              ▼
+         source-raw/<source>/<日期>.json      不可变原始层：只忠实落盘，不做摘要与去重
+              │
+              ▼
+         raw/<日期>.{json,md}                 发布层：标准化、跨源去重、3 期冷却、分类渲染
+              │
+              ▼
+         final/<日期>.md                      增强层：LLM 生成双语摘要与受控分类标签
+              │
+              ▼
+         dist/                                构建层：静态 HTML + data JSON + sitemap / feed
+              │
+              ▼
+         Cloudflare Workers                  部署：推送到 main 自动构建发布
 ```
 
-### 页面与内容
+几个刻意的设计：
 
-- `/`、`/en/`：最新发现。
-- `/reports/`、`/en/reports/`：历史日报归档。
-- `/reports/YYYY-MM-DD/`：独立静态日报，支持对应英文页面。
-- `/projects/owner/repo/`：有 GitHub 仓库地址的项目详情，支持对应英文页面。
+- **来源层不可变**。原始日文件只落盘、不改写；后来修正的日报是重新生成 `raw`，而不是回头改 `source-raw`。
+- **发布层有冷却**。GitHub Trending 是滚动窗口，同一个仓库在 3 期已发布日报里出现过就不再进普通列表，避免榜单前部的旧项目挤掉新发现。
+- **产品身份只有一份实现**。日报行、增强匹配、产品库导入、站点构建共用同一个 `productId` 规则，日报里带着生成时的来源哈希，可以离线复算校验。
+- **收录是投影**。产品库（MySQL）是发布时的投影，改了历史数据要按范围补跑导入并重建站点快照。
 
-详情页按规范化的 `owner/repo` 聚合跨来源和跨日期的条目，展示现有介绍、仓库信息、收录记录及按仓库 topics 匹配的相关项目。只识别仓库根地址，避免把 Issue、文件和用户主页当作项目。暂不为无仓库地址的产品生成详情页，也不会在构建时请求 GitHub 或编造额外项目介绍。指标显示采集快照日期。
+## 仓库结构
 
-语言字典、内容选择和列表组件集中在 `web/shared.js`，供浏览器和构建阶段共用。筛选栏只有「分类」一种（首页与日报页都按主题分类，日报页侧栏的「数据来源」只是带官网链接的目录）在构建时渲染全部 chip，浏览器只按容器宽度把放不下的部分收进「更多分类」菜单，因此桌面端始终单行、不出现横向滚动条，英文长标签也适用；`0` 条的分类保留但置灰不可点，`≤600px` 换成原生下拉选择器。若被收纳的正是当前选中的分类，触发按钮会显示它的名字。网站使用经过近 90 天历史日报验证的单一主题分类：AI 与智能体、开发工具、数据与基础设施、设计与媒体、效率与协作、商业与增长、学习与研究、生活与娱乐、其他。每日 LLM 增强会在 final Markdown 中写入隐藏元数据，一次完成双语摘要和 `primaryCategory` 归类；构建阶段校验分类 ID，旧日报缺少分类时使用同一模块中的本地规则回退。中文页面使用 `summaryZh`，英文页面使用 `summaryEn`；中文产品名称同时生成 `titleEn`。兼容旧的 `summary_en` / `summary_zh` 字段，历史日报缺少译文时标注原文，不在构建阶段联网补译。
+```text
+web/                        站点前端（构建与浏览器共用的 shared.js、样式、主题、品牌资源）
+worker/                     Cloudflare Worker：产品页 / 项目页渲染、Catalog API、验证文件直出
+scripts/                    构建与运维脚本（build-site.js、projects.js、trends.js、图片、搜索推送…）
+scripts/catalog/            产品库：导入包构建、校验、上传、站点快照、趋势查询
+.agents/skills/community-pulse/
+                            采集与日报技能：来源采集脚本、离线校验、collect.js、增强、SKILL.md
+知识/大家都在做什么/
+  source-raw/<source>/      按来源、按天的原始快照（不可变层）
+  raw/<日期>.{json,md}      当日日报
+  final/<日期>.md           LLM 增强后的最终日报
+assets/images/              图片清单 manifest.json 与标志明暗判定 tones.json（图片字节在 R2）
+data/catalog/site-snapshot/ 站点快照：分类库、收录历史、可索引性
+migrations/mysql/           产品库表结构
+tests/                      node:test 用例（构建产物、路由、SEO、解析回归）
+docs/                       架构与重构文档
+AGENTS.md                   维护者手册：目录约定、数据链路规则、部署检查清单
+CHANGELOG.md                按天记录的项目开发史（含取舍与放弃的方案）
+```
 
-主题使用 `localStorage` 的 `devtrends-theme-v1`，语言偏好使用 `devtrends-locale-v1`。语言切换保留当前页面和筛选参数。旧 `?date=` 链接仍能导航到日报，旧 `?style=` 参数不再改变界面，旧 `?source=` 参数不再过滤（加载时从地址栏清掉）。
+## 本地运行
 
-### 构建与部署
+需要 Node.js 24 与 npm。
 
-构建产物位于 `dist/`，不提交 Git。静态 HTML 已包含正文和 SEO 元数据，不依赖浏览器请求完成后才能索引；详情页同时加入 sitemap。无效地址由 Cloudflare `404-page` 返回真实 404。
+```bash
+npm ci          # 安装依赖（只有 mysql2 一个运行时依赖）
+npm run build   # 构建站点到 dist/，只读仓库内的日报数据，不联网
+npm run preview # 本地预览 http://localhost:4173
+npm test        # node:test 用例
+npm run check   # build + test，提交前跑这个
+```
 
-Cloudflare Workers Builds 连接本仓库 `main` 分支，每次推送（包括每日数据任务）都会自动构建和发布。对外主域名统一使用 <https://devtrends.site>。
+`npm run build` 完全离线：它读 `知识/大家都在做什么/raw/*.json`，在同日 `final/*.md` 存在时合并 LLM 增强摘要，否则回退到 raw 摘要。没有同步过的图片、非法分类 ID 这类问题会让构建直接失败，而不是产出一个静默降级的页面。
 
-发布前运行 `npm run check`。发布后检查首页、静态资源、最新日报 JSON、robots、sitemap、中英文日报及项目详情页，同时核对 canonical、最新日报 `llm-final` 状态和不存在页面的 404 状态。
+## 配置
 
-### 站点图片存储
+站点级配置在 `site.config.json`（提交进 Git，所以 CI 不需要额外变量）：图片镜像域名、IndexNow key、评论仓库。需要密钥的环节如下，**都不提交进仓库**：
 
-列表使用的 `image` / `logo` / `icon` / `siteLogo` 由 `npm run images:sync` 增量下载到 `assets/images/`，按文件内容 SHA-256 去重；`manifest.json` 保存原始 URL 到本地文件的映射。图片文件与清单需一起提交，随 Cloudflare 静态资源发布，访问地址为 `https://devtrends.site/images/<hash>.<ext>`。原始日报保留来源 URL 供追溯。
+| 变量 | 用途 | 何时需要 |
+| --- | --- | --- |
+| `GITHUB_TOKEN` / `GH_TOKEN` | GitHub API 采集（仓库快照、Issues） | 采集层；GitHub Actions 自动提供 |
+| `PRODUCT_HUNT_TOKEN` | Product Hunt GraphQL 采集（可配 `PRODUCT_HUNT_TOKEN_2..N` 轮换） | 只采 Product Hunt 时需要 |
+| `ALIYUN_RDS_*` | 产品库 MySQL 连接（读 / 写账号、SSL CA） | 只跑产品库导入与查询时需要 |
+| `CLOUDFLARE_API_TOKEN`、`CLOUDFLARE_ACCOUNT_ID` | R2 图片上传、手动部署 | `npm run images:upload` / 手动 `wrangler deploy` |
+| `BAIDU_SITE_TOKEN` | 百度搜索资源平台主动推送 | 可选，缺省时整步跳过 |
+| `IMAGE_BASE` | 覆盖 `site.config.json` 的镜像域名；`IMAGE_BASE=`（空值）强制回仓库内镜像模式 | 可选 |
+| `R2_BUCKET`、`R2_PREFIX`、`R2_CONCURRENCY` | 覆盖 `images:upload` 的桶名 / 前缀 / 并发 | 可选 |
 
-每日工作流在日报生成后自动同步并提交图片。手动新增、回填日报后先运行 `npm run images:sync`，再运行 `npm run check`。构建不访问外网，发现未经同步的新图片会提示先运行同步命令；生成的日报 JSON 和页面只使用本地图片。外网失效、超过 10 MiB 或非支持的图片会记录为空并显示文字占位，后续同步会重试，浏览器不会回退到外网。已有成功文件会复用，不重复下载。
+`.env` 与 `.env.*` 已被 `.gitignore` 忽略。
 
-本地 Node.js 24 使用代理时可运行 `NODE_USE_ENV_PROXY=1 npm run images:sync`。下载支持 PNG、JPEG、GIF、WebP、AVIF 、ICO 和 SVG，通过文件字节识别格式，不把源站错误页保存成图片。
-SVG 随图片响应附带 CSP sandbox，禁止脚本及外部资源请求。
+## 图片与存储
 
-没有平台产品标志的行（阮一峰/HelloGitHub 投稿、中国独立开发者、GitHub Trending 等）会兜底使用项目官网自己声明的图标，以 `siteLogo` 字段保存：每日工作流在 GitHub 仓库快照之后抓取并离线校验（`source-raw/site-logos/<date>.json`），`logo` → `icon` → `siteLogo` → 文字首字母 依次回退，官网也拿不到时才显示首字母。历史日报可用 `node scripts/backfill_site_logos.js --start <开始> --end <结束>` 回填后再同步图片；命令与取舍见 `.agents/skills/community-pulse/SKILL.md` 的「官网 Logo 兜底层」。
+- 列表头像只镜像**产品标志**（VibeCafé logo、平台自带图标、项目官网页图标），配图与截图一律回源，不落盘。
+- 图片字节存在 Cloudflare R2（`https://img.devtrends.site`），仓库里只提交 `assets/images/manifest.json`（内容寻址的地址清单）和 `tones.json`（浅色标志判定，用来换深色底板）。
+- 清单里的地址是相对路径，所以同一份 checkout 在「R2 外置」和「仓库内镜像」两种模式下都能构建。
+- 相关命令：`npm run images:sync`（增量下载并更新清单）、`npm run images:upload`（上传到 R2）、`npm run images:verify`（校验全部镜像可达）。
+- 页面上的图片地址只有一条本地化通道，白名单以外的外链会被拦掉，避免把第三方图床当成自家资源。
+
+## 数据来源的署名与移除请求
+
+- 日报收录的是**他人的项目与内容**，版权归原作者所有。站内只展示摘要与链接，正文请点击原文或仓库。
+- 每个来源都在列表里标明出处并链接回原站；`source-raw` 保留当时的原始记录以便追溯。
+- 如果某个项目 / 页面不希望被收录，请在本仓库提 Issue（附上链接），我们会把它从日报和站点中移除。
+- 站点 `robots.txt` 对搜索爬虫放行、对训练爬虫（`GPTBot`、`CCBot`、`ClaudeBot`、`Google-Extended`、`Bytespider` 等）声明 `Disallow`；内容信号为 `search=yes,ai-train=no,use=reference`。
+
+## 参与贡献
+
+欢迎提 Issue 反馈数据错误（来源失效、分类错误、重复收录、图片丢失等）。提交 PR 前请先跑 `npm run check`；改动数据链路时请同步更新 `CHANGELOG.md`（按天记录，写清为什么这么选），并遵守 `AGENTS.md` 里的目录与分层约定。细节见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+安全漏洞请走私密渠道（[SECURITY.md](SECURITY.md)），不要在公开 Issue 里贴密钥或日志。
+
+## 许可
+
+- **代码**（`web/`、`worker/`、`scripts/`、`tests/`、`.github/` 等）：[MIT](LICENSE)
+- **数据与文档**（`知识/`、`assets/images/*.json`、`data/`、`docs/`、`CHANGELOG.md`、`AGENTS.md` 等）：[CC BY 4.0](LICENSE-DATA)
+
+日报中收录的第三方项目介绍、图片与商标归各自作者所有，不在上述许可范围内。
+
+## 更多文档
+
+- `AGENTS.md` —— 维护者手册：目录职责、数据链路规则、发布检查清单
+- `CHANGELOG.md` —— 项目开发史：每天做了什么、为什么这么做、试过什么又放弃了
+- `CONTRIBUTING.md` —— 怎么报数据错误、怎么提 PR、哪些东西不要提交
+- `SECURITY.md` —— 安全漏洞的私密报告渠道
+- `docs/` —— 架构与重构规划
+- `.agents/skills/community-pulse/SKILL.md` —— 采集与日报技能说明
+
+---
+
+## About (English)
+
+DevTrends aggregates what developers are building right now. Every day it collects public signals from Show HN, V2EX, GitHub Trending, Product Hunt, independent developer communities and tech weekly submissions, then normalizes, deduplicates and classifies them into a daily report published as a static site at <https://devtrends.site> (Chinese and English).
+
+Only public sources are used. The raw layer keeps an immutable per-source snapshot, so every published row can be traced back to its inputs. Code is MIT licensed; data and documentation are CC BY 4.0. Third-party project descriptions, images and trademarks belong to their respective owners — open an issue if you want a project removed.
