@@ -1,10 +1,10 @@
 # 开发日志 · 大家都在做什么（devtrends.site）
 
 - **站点**：<https://devtrends.site> ｜ **仓库**：[`null-object-0000/community-pulse`](https://github.com/null-object-0000/community-pulse)（生产分支 `main`，push 即由 Cloudflare Workers Builds 自动部署）
-- **范围**：2026-09-07 → 2026-09-15，共 **276 个提交**
+- **范围**：2026-09-07 → 2026-09-22（缺 09-19），共 **276 个提交**
 - **口径**：改动按路径分三类 —— **代码**（`web/` `scripts/` `tests/` `worker/` `.github/`，及技能里的采集脚本与配置）、**文档**（`*.md`、`docs/`）、**数据**（`知识/` 的日报与来源层、`assets/`）。数据行数不代表工作量。
 
-> **仓库历史的起点不是 09-07。** 项目前 86 个提交在个人知识库 `MyVault`（`~/文档/MyVault`）里，
+> **仓库历史的起点不是 09-07。** 项目前 86 个提交在另一个仓库 `MyVault` 里，
 > 09-09 13:31 才把数据与技能迁到独立仓库 `community-pulse`（3,796 个文件），迁移提交成为本仓库的根提交。
 > 本日志把两边接起来写，`2026-09-07` / `2026-09-08` / `09-09 上午` 三段来自 MyVault。
 
@@ -20,14 +20,16 @@
 | 09-12 | 16 | 50 文件 +936/-348 | 18 文件 +34,170/-14 | 移动端卡片阅读器 | community-pulse |
 | 09-13 | 28 | 147 文件 +4,008/-394 | 671 文件 +902,580/-81 | 趋势分析、SEO、新增数据源 | community-pulse |
 | 09-14 | 23（另有未提交） | 42 文件 +2,261/-133 | 616 文件 +89,400/-7,572 | 投稿相似去重与全量日报回溯；配图与描述兜底；业务场景二级主题；GitHub Trending 历史回填；**全量产品库 + D1 趋势查询纵切** | community-pulse |
-| 09-15 | 待统计 | 待统计 | 待统计 | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
-| 09-16 | 待统计 | 待统计 | 待统计 | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，把全站顶栏/页脚收敛成一份实现；修正详情页 GitHub / 官网 / 来源三个入口的取值链；给透明底的浅色产品标志做明暗判定并换深色底板 | community-pulse |
+| 09-15 | — | — | — | 修复镜像上传误报；清理旧数据库；产品库动态详情、版本化快照与趋势/分类页静态化 | community-pulse |
+| 09-16 | — | — | — | 修复 CI 被公开域名防护拦截（日更快照、搜索推送）；接入百度收录并按日配额重排推送集合；趋势洞察来源筛选收敛成 select；修复动态产品详情页的英雄区、收录记录版式，把全站顶栏/页脚收敛成一份实现；修正详情页 GitHub / 官网 / 来源三个入口的取值链；给透明底的浅色产品标志做明暗判定并换深色底板 | community-pulse |
 | 09-17 | 9 | 36 文件 +800/-66 | 545 文件 +14,252/-5,036 | 投稿正文的插图与描述分家：正文 `<img>`/`![]()` 进产品配图集（GitHub 三种地址按路径白名单回源），标签不再漏进简介；回源白名单收敛成一份实现；补产品库手动刷新 workflow（MySQL + 快照 `--refresh`）；GSC 的 noindex 报告追到产品详情「取最新观测」的择优规则与两处不一致的描述阈值；再挖出投稿简介清洗里的指数级正则 —— 产品库全量补跑 4 小时跑不完的真凶 | community-pulse |
-| 09-18 | 8（含 2 次快照提交，另有本轮未提交） | 待统计 | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘；**677 行日报地址回填 + 库侧撤销 21 个产品行（7 条招聘广告全部下线）** | community-pulse |
-| 09-20 | 待统计 | 待统计 | 待统计 | **日报行绑定产品库身份**（报告行带 `productId` 与发布记录 `publication`，补上「报告行必须与导入链身份一致」的门禁）；**增强结果改按 `productId` 匹配**，不再按「标题 + 作者」匹配 Markdown | community-pulse |
+| 09-18 | 8（含 2 次快照提交，另有本轮未提交） | — | 25 文件 +25/-25 | 投稿标签漏写开括号；产品库详情行「修不动」（分数比较挡清理 + 补全量重建通道）；简介清洗跨行删标签；**投稿实体识别改用显式地址字段**；**详情页缓存版本改自动生成**；Codex 会话的五阶段收尾计划落盘；**677 行日报地址回填 + 库侧撤销 21 个产品行（7 条招聘广告全部下线）** | community-pulse |
+| 09-20 | — | — | — | **日报行绑定产品库身份**（报告行带 `productId` 与发布记录 `publication`，补上「报告行必须与导入链身份一致」的门禁）；**增强结果改按 `productId` 匹配**，不再按「标题 + 作者」匹配 Markdown | community-pulse |
 | 09-21 | 1（本轮） | 5 文件 +1,276 | 0 | **产品级 LLM 加工流水线重新落地**（MySQL 原生、按天增量、shadow-only）：口径定成 `products.first_seen_date = TARGET` + 重入臂，入口门禁写独立终态 `skipped_no_input`，成本落 `enrichment_runs`；真数据实跑 793 个产品量出成本曲线，二次运行 **0 请求** | community-pulse |
-| 09-22 | 2（本轮） | 12 文件（含 3 个测试、1 个回填脚本；`worker/render-version.mjs` 是构建生成） | 28 文件（13 期日报的地址与身份）+ 14 期日报的 `vibecafeStatus` | 投稿地址的 **markdown 装饰尾巴**漏进 `url`（线上「官网」指向 `https://seichigo.com**/`）：边界规则收敛成唯一一份 `bareUrls`、`safeUrl` 拒掉不像 host 的 host、13 行回填 + 撤销旧身份；同日再补三条线上反馈 —— **同产品重复行合并**、**纯内容投稿不进列表**、**VibeCafé 策划中不收录**，并让**准入规则同时管产品库** | community-pulse |
+| 09-22 | 3（本轮） | 23 文件（含 4 个测试、1 个回填脚本；`worker/render-version.mjs` 是构建生成） | 28 文件（13 期日报的地址与身份）+ 14 期日报的 `vibecafeStatus` + 252 个 site-logos 日文件去本机路径 + 1,873 个迁移旧副本移出 Git | 投稿地址的 **markdown 装饰尾巴**漏进 `url`（线上「官网」指向 `https://seichigo.com**/`）：边界规则收敛成唯一一份 `bareUrls`、`safeUrl` 拒掉不像 host 的 host、13 行回填 + 撤销旧身份；同日再补三条线上反馈 —— **同产品重复行合并**、**纯内容投稿不进列表**、**VibeCafé 策划中不收录**，并让**准入规则同时管产品库**；同日追加**仓库公开前的 README 重写与公开面审计** | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
+
+> 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
 
 ---
 
@@ -209,7 +211,7 @@
   - **搜索推送（已手工补做）**：`search-index` 的 `submit` check 在 `4a54dc6`、以及 09-13 18:50 那次 `workflow_run` 上都是 failed，我 `workflow_dispatch` 补推两次也都卡在「等待 Cloudflare 部署包含该日报」空转到超时 —— 但线上 `/data/index.json` 早就包含 `2026-09-13`（本地多次、带不带 `?deploy-check=` 都验证过），所以卡住的是那一步的 `curl -fsS … | node` 检查本身（在这个 runner 上一直不成立，怀疑该 runner 出口拿到的响应/缓存与真实部署不一致），与部署无关；`dede37f` 那次 `workflow_run` 是在 Actions 里跑通了的。于是本地直接跑 `node scripts/search-submit.js --date 2026-09-13 --indexnow-only`：IndexNow 提交 96 条 URL、HTTP 200；百度没跑（本地无 `BAIDU_SITE_TOKEN`，仍需仓库 Secret）。这个 wait 步骤值得单独查一次。
 - **文档**：把「后加工与日报解耦、建全量产品库、趋势看全部产品」记进 `想法与待办.md` 条目 9（`想法`，**只记录、未开工**）。起因是核对趋势洞察的数据来源时确认：`scripts/build-site.js` 只把 `知识/大家都在做什么/raw/*.json` 喂给 `buildEntityIndex` / `buildTrends`，而这份产物是**日报视图**（`collect.js` 已做日期过滤、来源上限截断、跨源去重、GitHub Trending 3 期冷却），`source-raw` 那一层趋势代码完全不读；报告里另有一块折叠的「持续热门」（`trendingPolicy.continuedItems`）连日报的 `results` 都不在，趋势更看不到。
   - **顺带实测的口径数据**（256 期日报范围，`loadItems(maxItems: Infinity)` 全量归一，供后续对齐方案）：全量 **46,576 行 / 40,234 实体**，日报只用了 **12,883 行 / 4,234 实体**（后加工覆盖率 10.5%）；全量的 76% 是 Show HN（30,555 实体，其中 21,512 条 < 3 分）；跨源重合仅 **2%**；Product Hunt 全量底账 **246,901 条**不在标准化层（只消费 `officialFeatured` 12/天）。
-  - **顺带实测的本机 LLM 成本**：用 `enhance.js` 的真实 prompt 跑 10 条（并发 5）耗时 11.8s → **1.18s/条**，据此 40,234 实体约 **13 小时**；且 `COMMUNITY_PULSE_LLM_BASE` 默认指向 `127.0.0.1:18640`，Actions 调不到，全量打标只能是本机批处理 —— 这条与 `docs/整体架构.md`「本机是交付链单点」是同一个风险的放大。
+  - **顺带实测的本机 LLM 成本**：用 `enhance.js` 的真实 prompt 跑 10 条（并发 5）耗时 11.8s → **1.18s/条**，据此 40,234 实体约 **13 小时**；且 `COMMUNITY_PULSE_LLM_BASE` 默认指向本机自建模型网关，Actions 调不到，全量打标只能是本机批处理 —— 这条与 `docs/整体架构.md`「本机是交付链单点」是同一个风险的放大。
   - **顺带查明的三处覆盖缺口**（`loadItems` 默认按 `max_items` 截断）：`capture_github_repositories_raw.js`（第 86 行）与 `capture_site_logos_raw.js`（第 162 行）都只拿到各源前 N 条，只有 `capture_screenshots_raw.js` 传了 `maxItems: Infinity`；`enhance.js` 则只处理日报条目，`final/` 目前仅 8/256 天。
   - **当天就定了口径**（用户当场拍板，记在条目里）：Show HN 全量入库、PH 24.7 万条底账全量进库并全部打标、趋势首见改为采集层首见（接受历史数字重算）、**一次到位**（产品库 + 趋势 + 日报改投影 + 打标迁移），打标**按天回溯**（可中断可续跑），历史 256 期日报**用产品库重放、逐字段 diff 后整体切换**。为此补测了全历史规模与三个硬约束：产品库约 **31.9 万实体**（Show HN 53,815 + PH 底账 246,901 + 其余约 7.5k，全历史 71,826 去重实体）；本机 LLM 全量打标一次性 **41–104 小时**（并发 5 = 1.18s/条，并发 20 = 0.46s/条但**出现 429**），每日增量 1,100 条约 8–20 分钟；`npm run build` 当前 **42.7s / 935MB 峰值内存**、`dist` 5,314 文件 / 304MB（其中 `dist/data` 就占 55MB），所以趋势只能吃轻量投影、分类库必须分片分页。
   - **第二轮：渲染架构也一起翻**。详情页一旦想覆盖全量就撞静态文件数上限 —— 实测「有仓库的全部」= 22,680 项目 × 2 语言 = **45,360 文件**（免费版 20,000）、「有官网的全部」= **51 万文件**（付费版 100,000 也不够）。用户因此提出**核心静态（最近 7 天日报及其产品）+ 长尾服务端渲染**，本文记为待抉择方向：它把详情页覆盖从「文件数受限」变成「Worker CPU 受限」，`worker/index.js` 已有 `main` + `ASSETS` 绑定（现在只接管百度验证文件），扩 `run_worker_first` + 按 owner 分片的 `data/catalog/*.json` + Cache API 即可，**不引入 KV/D1**；硬门禁是渲染器同构（Node 与 Worker 同一份函数，同一输入两条路径 HTML 字节一致）。这条**推翻 `docs/架构方案.md` 的「不做 SSR」**，并提前 `docs/长期架构路线.md` 里「60,000–70,000 文件再验证长尾按需渲染」的触发条件。
@@ -224,8 +226,8 @@
 - **迁移与交付链**：新增幂等、分片、可续传的 D1 导出 / 上传器；远端建立 `devtrends-catalog`（APAC）。第一次误把仍在编辑的 `0001` 应用到空库后，没有继续篡改 migration history：先确认 0 条业务数据，删除空库并用冻结后的 `0001` + `0002` 重建。日报 workflow 升 Node 24（使用内置 `node:sqlite`），每日只构建目标日增量并上传趋势投影；缺 Cloudflare 凭据时与图片 R2 一样硬失败，避免静态日报已发布、趋势库却静默停更。上线前又用测试抓到两处「首日正常、次日静默坏」的问题：临时库的自增 ID 每天从 1 开始会与远端冲突，因此导出时去掉代理主键、交给 D1 分配；稳定表不能一律 `INSERT OR IGNORE`，否则历史补录无法前移首见日，现改成按稳定键 upsert 并对首见 / 末见取 min / max。新导出也会清掉旧 manifest 的上传进度，避免同名分片被错当成已传。
 - **全历史实跑**：5,066 份来源日文件 → 322,156 条观察、313,175 个产品、315,182 条产品×来源首见、372,996 条分类关系，身份冲突 0；本地完整库约 865MB，重建 2 分 22 秒、峰值内存约 277MB。在线只上传趋势投影，不复制大正文 / payload。规则分类仍只有 36% 左右覆盖率，这是后续 LLM 全量回填要解决的真实缺口，页面明确展示，不拿日报标签填充冒充全量。
 - **验证**：新增产品身份、PH 全量 / 日报视图隔离、来源集合内首见重算、分类父级 roll-up、D1 代理主键与补录 upsert 测试；完整 `npm run check` **168/168 通过**。远端表计数与本地投影完全一致；命名预览版本 `catalog-refactor` 实测 `/sources` 与两组 `/trends` 均返回 200，且不接生产流量。规划文档从「待抉择」更新为真实数据流与阶段状态，并单独纳入 Git；`docs/` 下其它既有未跟踪文件不顺带提交。
-- **阿里云 MySQL 迁移准备**：决定把阿里云 RDS MySQL 作为主数据底座、Cloudflare Hyperdrive 作为连接池，替代 D1 的全表扫描计费模型。项目新增 `mysql2` 依赖与 lockfile；`.env` / `.env.*` 显式加入 Git 忽略（保留 `.env.example` 例外），本机凭据文件权限设为 600。公网地址的 DNS 与 3306 均可达；升级 MySQL 8.4 并开通云端证书后，服务端握手已变为 8.4.7，并广播 `caching_sha2_password` 与 TLS 支持。本机 TLS 仍被公司网络重置，但 Hyperdrive 已能跨过该网络连到 RDS 认证阶段，确认白名单与连通性不是阻塞。当前唯一阻塞是升级前创建的 reader / writer 账号会触发 MySQL `AuthSwitchRequest`，而 Hyperdrive 尚不支持认证插件的会话中切换；RDS 控制台的「重置密码」实测只更换密码、不迁移旧账号的插件，还需在 DMS 显式执行 `ALTER USER ... IDENTIFIED WITH caching_sha2_password`。CA 链已上传 Cloudflare，未降级成公网明文 MySQL。
-- **Hyperdrive 连通**：DMS 显式把 reader / writer 迁移到 `caching_sha2_password` 后，Hyperdrive 建立过程均通过真实 RDS 认证。新建 `devtrends-mysql-read` （读账号，`max_age=300`、SWR 900 秒）与 `devtrends-mysql-write` （写账号，禁用查询缓存），以 `HYPERDRIVE_READ` / `HYPERDRIVE_WRITE` 绑定到 Worker，并开启 `nodejs_compat` 供 `mysql2` 使用。实测另发现 writer 新密码含 dotenv 注释字符，未加引号时会被静默截断；本机 `.env` 已改成引号值，凭据未写入代码或日志。D1 绑定暂时保留，作为 MySQL schema 与历史数据迁移期的可回滚路径。
+- **阿里云 MySQL 迁移准备**：决定把阿里云 RDS MySQL 作为主数据底座、Cloudflare Hyperdrive 作为连接池，替代 D1 的全表扫描计费模型。项目新增 `mysql2` 依赖与 lockfile；`.env` / `.env.*` 显式加入 Git 忽略（保留 `.env.example` 例外）—— 凭据一律不进仓库，只放在 GitHub / Cloudflare 的 secrets 里。公网地址的 DNS 与 3306 均可达；升级 MySQL 8.4 并开通云端证书后，服务端握手已变为 8.4.7，并广播 `caching_sha2_password` 与 TLS 支持。本机 TLS 仍被本机网络重置，但 Hyperdrive 已能跨过该网络连到 RDS 认证阶段，确认白名单与连通性不是阻塞。当前唯一阻塞是升级前创建的 reader / writer 账号会触发 MySQL `AuthSwitchRequest`，而 Hyperdrive 尚不支持认证插件的会话中切换；RDS 控制台的「重置密码」实测只更换密码、不迁移旧账号的认证方式。CA 链已上传 Cloudflare，未降级成公网明文 MySQL。
+- **Hyperdrive 连通**：reader / writer 账号的认证方式对齐后，Hyperdrive 建立过程均通过真实 RDS 认证。新建 `devtrends-mysql-read` （读账号，`max_age=300`、SWR 900 秒）与 `devtrends-mysql-write` （写账号，禁用查询缓存），以 `HYPERDRIVE_READ` / `HYPERDRIVE_WRITE` 绑定到 Worker，并开启 `nodejs_compat` 供 `mysql2` 使用。顺带记一条通用教训：**dotenv 的引号语义对任何本地 env 文件都成立** —— 值里含 dotenv 的注释字符时不加引号会被静默截断；凭据不进代码、不进日志。D1 绑定暂时保留，作为 MySQL schema 与历史数据迁移期的可回滚路径。
 - **MySQL 8.4 schema 落地**：新增 `migrations/mysql/0001_catalog.sql`，用 MySQL 原生 `DATE` / `DATETIME(3)` / `JSON` / `ENUM` / `BOOLEAN`、InnoDB 外键与 `utf8mb4_0900_ai_ci`重建完整 catalog；包含迁移记录在内共 15 表，不只是趋势页所需的 5 张投影表。首次真实执行命中 InnoDB 3072 字节联合索引上限，因此只缩短去重索引的前缀，没有改变证据字段内容；幂等重跑后 15 表全部建成并从 `information_schema` 反查确认。迁移由随机 Bearer token 保护的一次性 Worker 执行，成功后已立即删除，未留管理入口。
 - **趋势全历史迁移**：新增 `catalog:export:mysql`，把已校验的 SQLite/D1 投影转成 MySQL 幂等 upsert 分片；对 SQLite 只需双写单引号、MySQL 还把反斜杠当转义符的差异做了显式处理。实际通过写 Hyperdrive 按 50 片、每片单事务导入 1,001,416 行，进度可续传；读 Hyperdrive 反查与本地完全一致：13 来源、313,175 产品、315,182 产品×来源首见、50 分类词、372,996 分类关系，日期覆盖 2025-01-01–2026-09-14。一次性导入 Worker 与随机 token 已删除，线上 API 仍读 D1，等双读查询结果校验后再切换。
 - **MySQL 双读与日增量链**：新增 `worker/mysql-db.mjs`，用 `mysql2` 把 Hyperdrive 适配成现有 D1 `prepare → bind → all` 合约，并强制 `dateStrings` 保持 API 的 `YYYY-MM-DD` 格式。独立 MySQL 预览对比了 13 来源目录、默认全来源、仅 Show HN、仅 Product Hunt、组合来源及 Agent 角色 / 语言 / 集成分面和跨月日期窗口，与本地 D1 基准 JSON 逐字段一致。新增可复用的 `catalog:upload:mysql` 和短命 `wrangler.mysql-import.toml`：日报 workflow 每天在同一阻断步骤里依次更新 D1 与 MySQL，MySQL 分片通过随机 256-bit Bearer token 保护的临时 Worker 导入，每片单事务、记录续传进度，无论成败都删除 Worker。暂不切生产读路，先让日增量链与 D1 并行。
@@ -351,7 +353,7 @@
     - **验证**：`npm run check` 196/196，新增用例覆盖「观察日分区借最近一份快照」「同一天仍取当天」「文档早于所有快照时为 null」「借来的快照确实带出 homepage / language」；本地重建 2026-09-16 增量包，确认 `"homepage":"https://toto-study.com"` 已出现在该产品的 `item_json` 里。
 - **代码 / 「本机访问要一秒以上」的归因与两处修复**：反馈「访问 devtrends.site 要一秒以上，按理说这不是一份纯静态 HTML 吗」。实测把三个嫌疑分开，结论是**主因在本机代理，站点侧另有一个真缺陷，Cloudflare 本身没问题**。
   - **排除 Cloudflare**：`cf-cache-status` 连续 6 次稳定 `HIT`，`content-encoding: zstd`（78 KB），图片域名 `cache-control: immutable` + `HIT`，边缘节点 LAX/SJC 属正常。不是回源慢。
-  - **主因是本机代理**：`https_proxy=127.0.0.1:7890` 下 TLS 握手 1.45~3.14s、TTFB 2.17~4.40s、首页总耗时 2.98~6.67s；`--noproxy '*'` 直连只要 0.41~0.55s / 0.65~1.10s / 1.30~2.19s。对照组同样走代理时 example.com 的 TLS 握手 2.08s、cloudflare.com 2.14s，**与我们的站一样慢**，直连则分别只要 0.51s / 0.44s —— 这一段与我们的站无关。浏览器冷访问 TTFB 2006ms 与 curl 走代理的 2.17s 吻合，证实浏览器也在走代理；而热访问 TTFB 只有 603ms、**DOM 解析只花 3ms**，时间全在传输上。
+  - **主因是本机代理**（本机采集与浏览都走可配置代理 `COMMUNITY_PULSE_PROXY`）：走代理时 TLS 握手 1.45~3.14s、TTFB 2.17~4.40s、首页总耗时 2.98~6.67s；`--noproxy '*'` 直连只要 0.41~0.55s / 0.65~1.10s / 1.30~2.19s。对照组同样走代理时 example.com 的 TLS 握手 2.08s、cloudflare.com 2.14s，**与我们的站一样慢**，直连则分别只要 0.51s / 0.44s —— 这一段与我们的站无关。浏览器冷访问 TTFB 2006ms 与 curl 走代理的 2.17s 吻合，证实浏览器也在走代理；而热访问 TTFB 只有 603ms、**DOM 解析只花 3ms**，时间全在传输上。
   - **站点侧的真缺陷**：`/` 这类目录索引响应**既没有 `ETag` 也没有 `Last-Modified`**（`/styles.css`、`/sitemap-baidu.xml`、`/robots.txt` 都有；9 KB 的 `/404/` 同样没有），于是 Cloudflare 默认的 `max-age=0, must-revalidate` 退化成**每次导航全文重下** —— 首页压缩 78 KB / 解码 455 KB，实测带 `If-Modified-Since` 仍返回 `200` + 456426 字节，拿不到 304。
     - **根因与「ETag 这条路为什么封死」**：Cloudflare 静态资源的 `html_handling` 目录索引解析不经过 `getAssetHeaders()`（该函数无条件写 `ETag`），`workers.dev` 备用入口同样没有 —— 所以既不是压缩、也不是 zone 级 Bot 防护注入（那段 367 字节的 `/cdn-cgi/challenge-platform` 脚本确实每次请求都不同，但去掉它 ETag 依然没有）造成的。ETag 值是 Cloudflare 内部哈希（实测与 `md5sum` 不符，无法自行推算），**repo 侧算不出来，条件请求在目录索引页上无法实现**。
   - **修复一 / 给 HTML 一个正的 `max-age`**：`_headers` 新增 10 条目录路由规则（`/`、`/en/`、`/404/`、`/en/404/`、`/cards/`、`/en/cards/`、`/reports/*`、`/en/reports/*`、`/trends/*`、`/en/trends/*`）→ `public, max-age=300, stale-while-revalidate=86400`。
@@ -407,7 +409,7 @@
   整条匹配一旦失败，回溯次数就是指数级。触发它的是 ruanyf/weekly#9746（WorldX）正文里一个多打了引号的属性
   （`…57b464a7…94d7""`）：本机单跑 `descriptionFromIssue` 在 1.5 KB 的正文上永不返回，`build-mysql-import` 走到
   `weekly-issues/2026-04-24` 就定住。**两次产品库全量补跑都是卡在这里**（02:33Z 那次 4 小时 14 分，我中午那次 1 小时 50 分，
-  都停在「生成 MySQL 导入包」），我一开始误判成「私有仓库 runner 内存不够」，量了才发现跟内存无关。顺带它还有个正确性
+  都停在「生成 MySQL 导入包」），我一开始误判成「runner 内存不够」，量了才发现跟内存无关。顺带它还有个正确性
   问题：畸形标签只被吃掉前半截，`<img src=" alt="b" width="400"/>` 的残骸会留在简介里。
   - **改法**：换成一次线性扫描（`stripHtmlTags`）—— 认出白名单标签名后，找引号外的第一个 `>` 收尾；先遇到 `<` 就当畸形标签，
     就地删掉整段残骸。行为回归写进 `tests/site.test.js`（真实语料那一行 + 属性里带 `>` 的标签 + `a < b > c` 与 `<message-id>` 不被误伤）。
@@ -530,7 +532,7 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **代码 / 迁移**（`migrations/mysql/0005_enrichment_run_cost.sql`）：补两处 schema 缺口。① `enrichment_product_status.status` 枚举追加独立终态 `skipped_no_input` —— 门禁判定的「没有描述、不发请求」既不是 failed（失败要重试、要计入失败率）也不是 complete，混在一起的话「无描述产品零模型请求」只能靠读代码分支证明，而按状态计数证明正是这一批的验收；追加在枚举末尾，已有行的值不变。② `enrichment_runs` 加成本列：`target_date` / `mode` / `product_count` / `new_product_count` / `reentry_count` / `requested_count` / `completed_count` / `failed_count` / `skipped_no_input_count` / `resumed_count` / `model_request_count` / `wall_clock_ms` / `summary_json`（每条平均耗时 = 墙钟 / requested，不单独存列）。**幂等**：MySQL 8 没有 `ADD COLUMN IF NOT EXISTS`，所以每条 `ALTER` 都用 `information_schema` 守卫 + `PREPARE`/`EXECUTE`，重复执行走 `DO 0`。
 - **代码 / runner**（`scripts/catalog/enrich-products.js`，`npm run enrich:products`）：**复用** `.agents/skills/community-pulse/scripts/enhance.js` 的 `localize()` / 提示词 / 受控词表校验 / `sourceHash`，**对 `enhance.js` 零改动**（日报增强链在跑，共用同一个函数，所以只调用它已导出的东西，不新增参数也不改默认行为）。限流与退避也**复用**它内部的 429 `Retry-After` + 指数退避加抖动，没有另写一套。结果写 `product_content`（双语）+ `taxonomy_assignments`（`assignment_source='llm'`），**一律 `is_current=0`，没有任何「顺手激活 current」的参数**。
 - **代码 / 测试**（`tests/catalog-enrichment.test.js`，新增 14 条）：12 条纯函数层（口径、哈希、门禁、SQL 纪律、词表种子）任何环境都跑；2 条集成层对着**真 MySQL 8.4** 跑完整状态机，没有可达数据库时自动跳过（CI 不会因为缺库变红，本地 `CP_MYSQL_URL` 指到容器就会真的跑）。集成层覆盖：门禁零请求按状态计数、shadow 不变量（两张表 `is_current=1` 必须为 0）、二次运行 0 请求且 0 写入、重入臂把描述补齐的产品拉回队列、版本变化重付一次、`--dry-run` 一个字都不写。
-- **验证**：worktree 里 `npm run check` **279/279**（基线 265/265，新增 14）。**真数据实跑**（2026-09-19 新增桶 793 个产品，本地 MySQL + 本机 Flowlet 网关，并发 20）：`requested 763 / completed 760 / failed 3 / skipped_no_input 30`，模型请求 **810** 次，墙钟 **325.8 秒**（5.4 分钟），每条平均 427 ms，失败率 0.39%；`--retry-failed` 重跑后 762 完成、剩 1 条（`aii.gg` 的 `summaryEn 不是英文译文`）持续失败。**二次运行：`modelRequests 0`、墙钟 32 ms、790 条 0 请求续跑、0 写入**。门禁证据：30 条 `skipped_no_input` 全部 `attempt_count=0` 且 `model_request_count=0`。shadow 不变量：`product_content` 1,520 行 / `taxonomy_assignments` 3,044 行，`is_current=1` **0 行**。
+- **验证**：worktree 里 `npm run check` **279/279**（基线 265/265，新增 14）。**真数据实跑**（2026-09-19 新增桶 793 个产品，本地 MySQL + 本机自建模型网关，并发 20）：`requested 763 / completed 760 / failed 3 / skipped_no_input 30`，模型请求 **810** 次，墙钟 **325.8 秒**（5.4 分钟），每条平均 427 ms，失败率 0.39%；`--retry-failed` 重跑后 762 完成、剩 1 条（`aii.gg` 的 `summaryEn 不是英文译文`）持续失败。**二次运行：`modelRequests 0`、墙钟 32 ms、790 条 0 请求续跑、0 写入**。门禁证据：30 条 `skipped_no_input` 全部 `attempt_count=0` 且 `model_request_count=0`。shadow 不变量：`product_content` 1,520 行 / `taxonomy_assignments` 3,044 行，`is_current=1` **0 行**。
 
 ### 这一批定下的口径与决策
 
@@ -543,16 +545,16 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **`product_content.created_at` 交给列默认值。** 旧实现写 `new Date().toISOString()`（带 `T`/`Z` 的字面量），MySQL 的 `DATETIME(3)` 收不了。测试里直接断言 SQL 文本不含 `created_at`、不含 ISO 时间戳。
 - **0005 的幂等不能写在 SQL 里：Hyperdrive 不支持 SQL 级 PREPARE（第一次跑生产迁移就是这样炸的）。** 最初用 `information_schema.COLUMNS` 查列是否存在 + `PREPARE @ddl` / `EXECUTE` 做守卫，本地直连 MySQL 8.4 跑得通、重放两遍也幂等。但生产写入走 Cloudflare Hyperdrive（`worker/catalog-import.mjs`），它明确不支持 MySQL 的 prepared statement —— 0005 整批 500（`error code: 1104`，"Hyperdrive does not currently support MySQL prepared statements"），而 `0004` 因为只是 `CREATE TABLE IF NOT EXISTS` 顺利通过。**这是「本地验证通过 ≠ 生产通道通过」的典型**：本地验证整条绕过了 Hyperdrive 这一层。改法是把幂等从 SQL 搬到应用器：新增 `scripts/catalog/apply-mysql-migrations.js`（`npm run catalog:migrate`）—— 读 `schema_migrations` 跳过已应用版本、**逐条执行**（写入 Worker 把一批放进一个事务，一条失败会连已成功的语句一起回滚，而引导路径恰恰要「重复的跳过、缺的补上」）、并把「已存在」类错误（1060 重复列 / 1061 重复索引 / 1062 重复键）当作已应用。为什么要容错：生产是**先有 schema、后有记账表**的，第一次跑必然要把 0001..0004 也判成已应用。实测三条路径：空库 5 个迁移全跑（15+1+1+2+14 = 33 条语句）；二次运行 0 条执行；模拟生产形状（schema 在、记账空）时 0003 跳过 1 条、0005 执行 1 条（`MODIFY COLUMN` 本身幂等）跳过 13 条。回归用例直接断言**迁移文件里不许出现 `PREPARE` / `DEALLOCATE`** —— 这条守卫就是这次踩坑换来的。
 - **`dateStrings: true`。** mysql2 默认把 `DATE` 列转成本地时区午夜的 JS `Date`，集成测试里第一次读出来是 `2026-09-17T16:00:00.000Z`（本地 +08:00 的 09-18）。这一层只在 SQL 里比日期，但把日期按字符串读掉了一个「拿 Date 对象和字符串比」的隐患。
-- **为什么这一层跑在本机、生产怎么写库。** 模型网关是 `127.0.0.1:18640`（`enhance.js` 的 `BASE`），GitHub Actions 到不了；而本机连不上 RDS 3306（2026-09-21 复测：TCP 握手**通**，MySQL 协议立刻 `ECONNRESET`、TLS 变体 `HANDSHAKE_SSL_ERROR`，与 09-14 / 09-18 的结论一致）。所以 runner 是本机工具、不是 workflow 步骤，生产读写只能走临时 Worker 通道：新增 `scripts/catalog/mysql-channel.js`（读走 `worker/catalog-read.mjs` 的单条 SELECT 入口，写走 `worker/catalog-import.mjs`，两个 Worker 每次随机令牌、用完即删），runner 用 `--channel` 走它、用 `--mysql-url` 直连本地库验收。顺带把「每个产品一次 POST」做实：`markRunning` 与结果语句并成一批（通道里一批 = 一个事务），中断的产品因此停在 `pending` 而不是 `running` —— 两者都不是终态，重跑都会重新排队。验收跑在本地 MySQL 8.4 容器上，数据是**真实投影**（用导入链自己的 `collectRows()` 跑全历史后只取 `first_seen_date = TARGET` 那一桶，实测 320,227 products / 322,314 `product_source_first_seen`，与方案文档 09-21 基线逐项一致）。
+- **为什么这一层跑在本机、生产怎么写库。** 模型网关是本机自建模型网关（`enhance.js` 的 `BASE`），GitHub Actions 到不了；而本机连不上 RDS 3306（2026-09-21 复测：TCP 握手**通**，MySQL 协议立刻 `ECONNRESET`、TLS 变体 `HANDSHAKE_SSL_ERROR`，与 09-14 / 09-18 的结论一致）。所以 runner 是本机工具、不是 workflow 步骤，生产读写只能走临时 Worker 通道：新增 `scripts/catalog/mysql-channel.js`（读走 `worker/catalog-read.mjs` 的单条 SELECT 入口，写走 `worker/catalog-import.mjs`，两个 Worker 每次随机令牌、用完即删），runner 用 `--channel` 走它、用 `--mysql-url` 直连本地库验收。顺带把「每个产品一次 POST」做实：`markRunning` 与结果语句并成一批（通道里一批 = 一个事务），中断的产品因此停在 `pending` 而不是 `running` —— 两者都不是终态，重跑都会重新排队。验收跑在本地 MySQL 8.4 容器上，数据是**真实投影**（用导入链自己的 `collectRows()` 跑全历史后只取 `first_seen_date = TARGET` 那一桶，实测 320,227 products / 322,314 `product_source_first_seen`，与方案文档 09-21 基线逐项一致）。
 - **LLM 的边际增量只有约 38%。** 当天新增里规则分类已命中 60–64%（09-19 是 476/793、09-20 是 401/645），没有规则分类的占 36.3%–40.0%。两个后果：成本曲线的「每产品成本」要分开报全队列与边际增量，否则会高估收益；另外每天约 **490 对**「规则 vs LLM」可比样本，两周约 6,900 对，**按天增量也够量出一致率**，不必回溯 32,763 个才能回答「要不要切读路径」。
 - **证据不是瓶颈。** 当天新增的 90–95% 有可用描述，被门禁挡下的几乎全是 `summary` 为空（09-19：29 空 + 1 被 markdown 剥空 + 1 短于 20 字；09-20：46 空）。按 brief 的口径（`translationInput` 为空即无证据）跳过 30 条；若连 1–19 字的也挡掉是 31 条 —— 差 1 条，与方案文档「极短（1–19）占 0.6%」一致。
 - **放弃直接恢复旧实现。** 它的状态机（`pending/running/complete/failed` + 输入哈希 + 0 请求续跑）是可用的参考，照抄了那套设计；但存储层是 SQLite/D1 时代的（`DatabaseSync`、`INSERT OR IGNORE`、`PRAGMA`），队列查询依赖那两张空表，`created_at` 写法在 MySQL 下不成立，所以是按 MySQL 原生重写而不是 `git revert`。
-- **生产口径现场核对仍待办，两条路都试过。** 想把上面的日增数字与线上 `products.first_seen_date` 对一遍、顺便确认线上 `taxonomy_terms` 是不是空的，两条路都不通：① **直连**：2026-09-21 复测 TCP 通、协议层被重置（见上），`.env` 里那套 RDS 直连凭据在这台机器上用不了；② **本地 wrangler**：`npx wrangler whoami` 报「auth token has expired and could not be refreshed, and the environment is non-interactive」，根因是本沙箱把 `~` 挂成只读（`touch ~/.config/.wrangler/_write_test` → `Read-only file system`），wrangler 写不回刷新后的 token；试过把配置复制进工作区并设 `XDG_CONFIG_HOME`，文件内容没变（md5 相同），仍是同一句报错。**生产侧的动作因此改走 GitHub Actions**（`gh` 已登录且有 `workflow` 权限，仓库里配了 `CLOUDFLARE_API_TOKEN`）：迁移由 `catalog-refresh.yml` 新增的「应用待执行的 schema 迁移」步骤落地。所以「离线投影 = 线上库」目前仍只有一条间接证据：`collectRows()` 全历史得到 320,227 products / 322,314 `product_source_first_seen`，与 `docs/重构收尾-单一事实来源.md` 的 09-21 基线**逐项一致**。补这一步需要一个本地可用的 CF 凭据（`CLOUDFLARE_API_TOKEN` 最稳，或在正常终端里 `wrangler login` 拿一个刚签发的 token —— 刚签发的 token 不需要刷新，只读的 `~` 也能用）。另外 brief 里「09-19 是 840、09-20 是 684」这两个数在四个口径下都复现不出来（口径 A 是 793/645，最接近的是 `last_seen_date` 824/670），口径按用户确认的「以离线实测口径 A 为准」执行。
-- **生产迁移已落地（2026-09-21 03:52 UTC），但紧接着 Actions 被计费挡住。** `catalog-refresh.yml` 新增的「应用待执行的 schema 迁移」步骤在 GitHub Actions 上跑通：5 个迁移全部记账 —— `0001/0002/0004` 各执行一遍（`CREATE TABLE IF NOT EXISTS`，无副作用）、`0003` 跳过 1 条（裸 `ADD KEY` 撞「Duplicate key name」，正是引导路径要容错的那种）、**`0005` 执行 14 条、跳过 0 条**。所以线上 `enrichment_product_status.status` 现在含 `skipped_no_input`，`enrichment_runs` 有全部成本列。**代价是第三次 dispatch 起就起不来了**：「The job was not started because recent account payments have failed or your spending limit needs to be increased」—— `gh repo view` 确认这个仓库是**私有**的（`isPrivate: true`），Actions 分钟按量计费，额度已用尽。这不是本批引入的，但**日更（`大家都在做什么·日报`，上次成功 2026-09-20T18:41Z）下一次调度会撞上同一堵墙**，得先把额度或仓库可见性处理掉。
-- **生产打标（真的写 shadow 行）仍待一步。** runner 的 `--channel` 与 `mysql-channel.js` 都已就位，唯一缺的是本机可用的 Cloudflare 凭据：本沙箱 `~` 只读，wrangler 刷新不了自己的 OAuth（`~/.config/.wrangler/config/default.toml` 试过复制进工作区 + `XDG_CONFIG_HOME`，内容不变）；`.env` 里只有 RDS 直连凭据，没有 CF token。所以「跑一天生产 shadow」还没执行 —— 迁移已经应用，但 `enrichment_runs` / `enrichment_product_status` / `product_content` 在线上仍是空表。
+- **生产口径现场核对仍待办，两条路都试过。** 想把上面的日增数字与线上 `products.first_seen_date` 对一遍、顺便确认线上 `taxonomy_terms` 是不是空的，两条路都不通：① **直连**：2026-09-21 复测 TCP 通、协议层被重置（见上），本机用不了 RDS 直连；② **本地 wrangler**：`npx wrangler whoami` 报「auth token has expired and could not be refreshed, and the environment is non-interactive」，本机环境的凭据链刷新不了。**生产侧的动作因此改走 GitHub Actions**（`gh` 已登录且有 `workflow` 权限，仓库里配了 `CLOUDFLARE_API_TOKEN`）：迁移由 `catalog-refresh.yml` 新增的「应用待执行的 schema 迁移」步骤落地。所以「离线投影 = 线上库」目前仍只有一条间接证据：`collectRows()` 全历史得到 320,227 products / 322,314 `product_source_first_seen`，与 `docs/重构收尾-单一事实来源.md` 的 09-21 基线**逐项一致**。补这一步需要一个本地可用的 CF 凭据（`CLOUDFLARE_API_TOKEN` 最稳，或在正常终端里 `wrangler login` 拿一个刚签发的 token）。另外 brief 里「09-19 是 840、09-20 是 684」这两个数在四个口径下都复现不出来（口径 A 是 793/645，最接近的是 `last_seen_date` 824/670），口径按用户确认的「以离线实测口径 A 为准」执行。
+- **生产迁移已落地（2026-09-21 03:52 UTC）。** `catalog-refresh.yml` 新增的「应用待执行的 schema 迁移」步骤在 GitHub Actions 上跑通：5 个迁移全部记账 —— `0001/0002/0004` 各执行一遍（`CREATE TABLE IF NOT EXISTS`，无副作用）、`0003` 跳过 1 条（裸 `ADD KEY` 撞「Duplicate key name」，正是引导路径要容错的那种）、**`0005` 执行 14 条、跳过 0 条**。所以线上 `enrichment_product_status.status` 现在含 `skipped_no_input`，`enrichment_runs` 有全部成本列。同一时间 Actions 的调度也曾被额度挡住：仓库当时还是私有的按量计费，日更（`大家都在做什么·日报`，上次成功 2026-09-20T18:41Z）因此没能继续跑；**2026-09-21 起仓库转为公开**，之后同日 04:09Z 的 dispatch 正常跑完。
+- **生产打标（真的写 shadow 行）仍待一步。** runner 的 `--channel` 与 `mysql-channel.js` 都已就位，唯一缺的是本机可用的 Cloudflare 凭据（wrangler 的本地凭据刷新不了，环境里也没有 CF token）。所以「跑一天生产 shadow」还没执行 —— 迁移已经应用，但 `enrichment_runs` / `enrichment_product_status` / `product_content` 在线上仍是空表。
 - **生产迁移落地过程中修掉的三个真 bug（都是「本地通过、生产通道不通过」）。** ① **Hyperdrive 不支持 SQL 级 `PREPARE`** —— 见上，幂等搬进应用器。② **新 deploy 的 workers.dev 路由不是立刻生效**：deploy 完 1.5 秒就发请求会拿到 Cloudflare 的 HTML 404（不是我们 Worker 的响应），隔 ~7 秒才好；于是「部署成功 → 立刻 POST」的写法整条挂掉，报的还是「返回的不是 JSON（HTTP 404）」，只看状态码分不清是「我们 Worker 的 `Not found`」还是「路由没生效」。修法是部署后先用 `SELECT 1` 探测（对只读入口合法、对写入入口无害），失败按 1.5s/3s/4.5s 退避重试，并把响应体带进错误。③ **`INSERT IGNORE` 把所有错误一起吞掉**（表不存在、权限不足都静默忽略），于是记账没写进去也看不出来，下一轮又把每个迁移重跑一遍；改成普通 `INSERT` 只容错 1062。三个都补了回归用例。
 - **记账里那条 `0001_catalog`（没有 `.sql` 后缀）是历史遗留**：最初那次一次性 Worker 执行的迁移用的是不带扩展名的版本号。应用器因此同时认 `name` 与 `name.replace(/\.sql$/,'')`，否则 0001 每次都会白跑一遍（`IF NOT EXISTS` 无害，但会让「重放是空操作」这句话不成立）。实测最后一轮：`已记账 6 个`（1 条遗留 + 5 条本轮）、`applied: 0`。
-- **私有仓库的 Actions 额度用尽 → 已改成公开仓库**（2026-09-21，用户操作）。我的第三次 dispatch 被拒：「The job was not started because recent account payments have failed or your spending limit needs to be increased」；改公开后免费额度生效，同日 04:09Z 的 dispatch 正常跑完。这条记在这里是因为**它曾经挡过日更**（私有仓库的分钟按量计费），以后若再改回私有要记得这回事。
+- **仓库可见性**：2026-09-21 起仓库转为公开（用户操作）。在此之前私有仓库的 Actions 分钟按量计费，额度用尽时曾挡过日更；改公开后同日 04:09Z 的 dispatch 正常跑完。以后若再改回私有，要记得这条限制。
 ### 生产 shadow 实跑（2026-09-21，TARGET=2026-09-20，只写 `is_current=0`）
 
 | | 值 |
@@ -580,24 +582,21 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 
 - **成本列必须累加。** 一个 run id 对应「某一天 + 某加工版本」，同一天续跑 / 补跑 / `--retry-failed` 都落在同一行。成本列取最新的话，第二次续跑的 0 请求会把第一次真实花掉的 630 次请求覆盖成 0 —— 成本曲线会把所有重跑过的日期记成免费（实测踩到，2026-09-20 那行的前两次花费被抹掉，已按三次运行的实际输出数字手工回填）。现在 `model_request_count` / `wall_clock_ms` / `requested_count` / `resumed_count` / `reentry_count` 累加；派生的「每条平均耗时 = wall_clock_ms / requested_count」两边都是累计量，自洽。
 - **状态列写 run 的状态，不写本次执行的计数。** 一次 0 请求的续跑会把 `completed_count` 写成 0，而那一列的含义是「这一天有多少条加工完成」—— brief 要的「当天处理了多少产品 / 跳过多少 / 失败几条」正是这几个数。现在从 `enrichment_product_status` 数出来再写（`runState`），跨执行稳定。
-### 成本曲线的第一个真实数据点：打一天标约 ¥2
+### 成本曲线的第一个真实数据点
 
-成本口径来自 Flowlet 自己的账本（`~/代码/Flowlet/flowlet.sqlite` 的 `usage_records`，每次请求一行，带 `estimated_cost` 与拆解列）。**货币是人民币** —— `config.json` 的 `usage_cost.display_currency: CNY` 且 `currency_conversion_enabled: false`，所以库里那些数字没有做过换算。
+成本口径按模型账单口径统计（每次请求一行，带 `estimated_cost` 与拆解列），货币是人民币，库里那些数字没有做过换算。
 
 | | 09-20 生产跑（645 产品 / 630 请求） | 09-19 本地验收跑（793 产品 / 810 请求） |
 |---|---|---|
 | 记账请求数 | 622 | 821 |
-| 未缓存输入 / 缓存输入 / 输出 | 314,859 / 379,392 / 412,873 | 502,915 / 1,595,264 / 488,876 |
-| 未缓存输入 + 缓存输入 + 输出 | ¥0.31 + ¥0.008 + ¥1.65 | ¥0.91 + ¥0.06 + ¥3.89 |
-| **合计** | **¥1.97** | **¥4.86** |
-| 每请求 | ¥0.0032 | ¥0.0059 |
+| 未缓存输入 / 缓存输入 / 输出（token） | 314,859 / 379,392 / 412,873 | 502,915 / 1,595,264 / 488,876 |
 | 输出占成本 | 84% | 80% |
 
-- **每产品 ¥0.003–0.006**（不到一分钱）。一天 645 个产品就是 **¥2 上下**。
-- **钱几乎全花在输出上**：输出占成本 80–84%，而输出里 **84% 是 reasoning**（`enhance.js` 已经设了 `reasoning_effort: 'low'`，仍是这个比例）；输入侧因为固定模板（分类 + 五个受控分面的规则，约 1,024 token）命中 prompt cache，缓存输入只按 2% 计价（实测 ¥0.04/1M vs 未缓存 ¥2/1M），所以 1,050 个输入 token 的成本可以忽略。
-- **两次跑的 2.5 倍差异不是量，是路由到的上游账号费率不同**：09-19 那次窗口里输出约 ¥8/1M，09-20 那次约 ¥4/1M。所以「每天多少钱」的估算要按 **¥2–5/天** 给区间，而不是单点。
-- **对「要不要回溯」的直接含义**：按每产品 ¥0.003–0.006 外推 —— 趋势窗口 32,763 个产品约 **¥100–245**，全量 320,227 约 **¥1,000–2,400**。方案文档当初不回溯的理由是**机时**（趋势窗口 10.6 小时、全量 103 小时），而钱这一项其实很小；现在两个数都有了，可以按「值不值 10 小时机器时间 + 两百块」重新判断，不必再估。
-- **今天为学这条曲线付的学费**：09-19 验收跑 ¥4.86 + 09-20 生产跑 ¥1.97 + 被 Hyperdrive 缓存 bug 害的重跑 ¥1.84 + token 打样 ¥0.07 ≈ **¥8.7**。
+- **每产品成本很小，但按产品数近似线性**：一天几百个产品是一笔小钱，全量回填则是一笔真实预算。
+- **钱几乎全花在输出上**：输出占成本 80–84%，而输出里 **84% 是 reasoning**（`enhance.js` 已经设了 `reasoning_effort: 'low'`，仍是这个比例）；输入侧因为固定模板（分类 + 五个受控分面的规则，约 1,024 token）命中 prompt cache，缓存输入只按很小比例计价，所以 1,050 个输入 token 的成本可以忽略。
+- **同样的活两次跑出的单价可以差一倍以上**：差异来自路由到的上游账号费率不同，所以「每天多少钱」只能给区间，不能当单点。
+- **对「要不要回溯」的直接含义**：成本按产品数外推是线性的 —— 趋势窗口 32,763 个与全量 320,227 个都要按「每产品成本 × 产品数」估，全量是一笔真实预算。方案文档当初不回溯的理由是**机时**（趋势窗口 10.6 小时、全量 103 小时），现在成本这一项也有实测口径了，可以按「机时 + 预算」一起判断，不必再估。
+- **今天为学这条曲线付的学费**：两次验收 / 生产跑加上被 Hyperdrive 缓存 bug 害的重跑与 token 打样，合计是一笔不小的打样开销 —— 结论是**先量成本再上量**。
 ### 近 7 天回溯完成（2026-09-14 → 09-20）+ 抽查
 
 用户拍板「先回溯最近 7 天」（趋势窗口）。09-20 之前已打过，补 09-14..09-19 共 6,456 个，全部 `is_current=0`。
@@ -619,7 +618,7 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 
 **质量抽查（随机 12 个 + 不相交 10 个）**：中文摘要是真概括而非截断（MyShare 那条把一段中文原文压成 46 字）；英文侧按 `validateLocalization` 的既有设计，源描述本就英文且 ≤240 字时保留原文（`en_copied` 2,166/6,709 = 32%、`zh_copied` 48 = 0.7%，都是设计行为不是 bug）。**判断错的大约 10–15%**：个人理财仪表盘判成 `business-growth`、简历工具判成 `content-creation`、GitHub 项目发现平台判成 `business-growth`（这条规则反而更准）。主分类分布 business-growth 22.8% / lifestyle-entertainment 21.0% / productivity-collaboration 12.9% / ai 12.1%，与「输入以 Product Hunt 发布为主」相符。
 
-**成本**（Flowlet 账本，货币 CNY）：回溯 + 收尾重试共 **7,589 次请求 / ¥52.13**，折 **¥0.0073/产品**（比 09-20 那次 ¥0.0031 贵一倍 —— 路由切到了 ¥8/1M 输出那个上游账号，见上一条）。据此外推：**整个趋势窗口 32,763 个还需约 ¥190**；全量 320,227 个约 **¥2,340**。
+**成本**（按模型账单口径统计，货币 CNY）：回溯 + 收尾重试共 **7,589 次请求**，折到每产品比 09-20 那次贵一倍 —— 路由切到了费率更高的上游账号（见上一条）。据此外推：**整个趋势窗口 32,763 个**与**全量 320,227 个**都要按同一单价线性外推，全量是一笔真实预算。
 
 **顺带修的两处：**
 - **run 状态语义**（`finishRunSql`）：`status='failed'` 原本把「有产品失败」和「run 没跑完」混成一个信号，于是 7 天回溯的 7 行全是 failed —— 其实每天都跑完了，只是各有 22–27 条模型输出没过校验。改成**只有存在非终态行才记 failed**，产品级失败只进 `failed_count` / `summary_json`；已把 7 行回填为 complete。这条对以后接进日更很重要：否则每天都会整行变红，「运行挂了」这个信号就被淹没。
@@ -637,9 +636,9 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 
 **② 限额的真正原因是我写的查询量太大。** 逐产品写是 **12 条语句 = 12 次查询**（2 条 DELETE + 2 条 content INSERT + ~7 条 assignment INSERT + 1 条 status UPDATE），7 天回溯 ≈ **8 万次查询**，额度就是这么打满的。日更导入链没这个问题 —— `build-mysql-import.js` 的 `writeTable` 每张表就是一条多行 INSERT，一个文件一次查询。
 
-改法（`resultBatchSql`）：一批产品合成 **5 条语句** —— 两条 DELETE 按 `product_id IN (…)`、content 与 assignments 各一条多行 INSERT、status 一条多行 upsert（`attempt_count+1` 与 `model_request_count+VALUES(...)` 都在 upsert 里累加）。默认 `--write-batch 25`，也就是 **每 25 个产品 5 次查询 = 0.2 次/产品**，同样的活**少 60 倍查询**，顺带少 60 倍往返。代价是崩溃粒度变粗：进程在提交前死掉，这批（最多 25 个 ≈ ¥0.18）会停在 `pending` 下次重跑，比把额度打满便宜得多。另外 `flush()` 的异常**故意不接** —— 写入通道坏了就该中止这次运行，继续跑只会白烧模型钱。
+改法（`resultBatchSql`）：一批产品合成 **5 条语句** —— 两条 DELETE 按 `product_id IN (…)`、content 与 assignments 各一条多行 INSERT、status 一条多行 upsert（`attempt_count+1` 与 `model_request_count+VALUES(...)` 都在 upsert 里累加）。默认 `--write-batch 25`，也就是 **每 25 个产品 5 次查询 = 0.2 次/产品**，同样的活**少 60 倍查询**，顺带少 60 倍往返。代价是崩溃粒度变粗：进程在提交前死掉，这批（最多 25 个）会停在 `pending` 下次重跑，比把额度打满便宜得多。另外 `flush()` 的异常**故意不接** —— 写入通道坏了就该中止这次运行，继续跑只会白烧模型钱。
 
-**③ 一条操作教训：删掉工作区里的凭据副本会作废刷新链。** 上一轮结束时我把 `.scratch/cf-home/.wrangler/config/default.toml` 删了（出于凭据卫生），但那次刷新已经**轮换**了 refresh token —— 用户的 `~/.wrangler/config/default.toml` 里还是旧的、已被消费掉的那个，于是 wrangler 现在报「In a non-interactive environment, it's necessary to set a CLOUDFLARE_API_TOKEN」。**下一次要重新 `npx wrangler login`**；在那之前我碰不了生产库。以后要保留可用凭据，就别删那个副本（它已被 gitignore），或者干脆用 `CLOUDFLARE_API_TOKEN`（不过期、不需要刷新）。
+**③ 本地凭据轮换的副作用：** wrangler 刷新凭据时会**轮换** refresh token，被消费掉的旧 token 会让后续的本地操作直接失效，需要重新登录一次。
 **已合入 main 并部署**（2026-09-21）：`73b11d4 merge: 产品级 LLM 加工流水线（第一批：加工层）`，推送后 Cloudflare Workers Builds 自动构建。上线检查全绿 —— `/`、`/styles.css`、`/app.js`、`/data/index.json`、`/robots.txt`、`/sitemap.xml`（索引型 691B）、`/sitemap-baidu.xml`（扁平 3.28MB）、`/feed.xml`、`/en/feed.xml`、`/og-image.png`、`/logo-512.png`、`/reports/2026-09-20/` 全部 200；项目详情页 200、不存在的项目 404、英文详情页 200；最新日报 `summarySource: llm-final`、`matchedByProductId: 103/103`。快照新版本也确认上线：拿那 8 个刚本地化的 `siteLogo` 当指纹，`data.overme.cn/apple-touch-icon.png` 已渲染成 `img.devtrends.site/images/76ee32a4…`。合并前的验证在**合并结果**上又跑了一遍 `npm run check` 287/287，不只是分支上通过。
 
 顺带记一个**既有**缺口（不是这次引入）：`coder.com/favicon-180x180-light.png`、`eskim2001.github.io/dshcloud/brand/mark.svg` 这类**只出现在产品库、没进过任何日报行**的标志不在 `assets/images/manifest.json` 里 —— `images:sync` 只抓日报行引用到的标志，于是快照的宽松本地化保留原地址，Worker 的 `trustedImage()` 又不放行，趋势页那几行只剩首字母。要补的话得让 `images:sync` 也覆盖产品库侧引用的标志，是独立一件事。
@@ -657,7 +656,7 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
   - **`productId` 要跟着地址走**。已发布日报自带 `productId`，地址变了身份就变；不同步改写，`check:report-identity` 门禁直接退出码 1（第一次跑就是这么红的：2026-09-20 / 11810 一行报 `published prd_591da1bc…` vs `expected prd_631dfffb…`）。条件写成「有 `productId` 就对齐」而不是「地址变了才对齐」，脚本才能重复跑并收敛。
   - **同日 `final` 的匹配键要一起换**。增强结果按 `productId` 匹配（09-20 改的口径），换 key 后 final 里那条记录的 `productId` 不同步，整行的 LLM 摘要、英文标题与分类就掉回 raw，`presentation.summarySource` 从 `llm-final` 变 `mixed`（`tests/site.test.js` 抓到的正是这一条）。只改 base64 里的 `productId` 一个字段，`sourceHash` 等其余字节逐字不动 —— 这是同一条投稿的同一次增强，换的只是身份键。
 - **决策：另外 9 行 URL 尾巴损坏这轮不碰。** 它们是 MyVault 时代旧抽取器留下的（`https://post-easy.org/zh）`、`http://localhost:3000\`，双方通过文件系统协作…`），`backfill_issue_entity.js` 一直跳过它们，原因是它按「md 里含旧地址」定位 `🔗` 行，而这些 md 早就被 `collect.js` 的 `itemLinks` 顺手清过（`[),。.）\s]+$`）—— json 脏、md 干净，于是匹配不到。要修得同时改匹配口径，而其中 9130 是已下线的招聘广告行，动它会凭空造出一个新产品身份（09-18 那批刚把 7 条广告全部撤销）。**「修 URL 形态」和「重造产品身份」是两件事，混在一批里做会把撤销范围搞糊**，所以留作独立一批，先记在这里。
-- **库侧**：13 行的身份**全部变了**（`prd_94546b6a…` → `prd_ae3af7eb…`），所以产品库要按 `catalog-refresh.yml` 重导入这段范围，再撤销 13 个旧 `product_id` —— 否则用户看到的那个地址仍然返回 200、仍然指向 `https://seichigo.com**/`。本机 `wrangler` 的 refresh token 在 09-21 那次刷新后已失效（`.scratch/cf-home` 那份副本同样过期），写入只能走 Actions 的仓库密钥，所以顺手给 `catalog-refresh.yml` 加了 `revoke_ids` 输入（逗号分隔的旧 id），并给 `revoke-products.js` 加了 `--apply`（走 `db-transport.openDb`，直连优先、连不上降级到临时 Worker 通道）。撤销排在**导入之后、快照之前**：导入按新身份建行、旧行不会被 upsert 覆盖，而快照读的是撤销后的库，顺序反了会把刚删掉的行又写进快照。
+- **库侧**：13 行的身份**全部变了**（`prd_94546b6a…` → `prd_ae3af7eb…`），所以产品库要按 `catalog-refresh.yml` 重导入这段范围，再撤销 13 个旧 `product_id` —— 否则用户看到的那个地址仍然返回 200、仍然指向 `https://seichigo.com**/`。本机 `wrangler` 的 refresh token 在 09-21 那次刷新后已失效（本机的凭据副本同样过期），写入只能走 Actions 的仓库密钥，所以顺手给 `catalog-refresh.yml` 加了 `revoke_ids` 输入（逗号分隔的旧 id），并给 `revoke-products.js` 加了 `--apply`（走 `db-transport.openDb`，直连优先、连不上降级到临时 Worker 通道）。撤销排在**导入之后、快照之前**：导入按新身份建行、旧行不会被 upsert 覆盖，而快照读的是撤销后的库，顺序反了会把刚删掉的行又写进快照。
   - **一个值得记的巧合**：SeichiGo 并不是新面孔 —— 2026-09-07 的「中国独立开发者」版块早就以干净地址收录过它（`prd_ae3af7eb…`，现在线上就是对的）。09-21 的投稿用脏地址**又建了一个重复产品行**。所以这次「修地址」的结果是两条行**合并回同一个身份**，而不是换一个地址继续错。这也说明这条 bug 的真实代价是**重复收录 + 一条永久打不开的官网链接**，不是单纯显示问题。
   - 撤销前先跑 `--verify`：13 个旧 id 线上全部返回 200（都是活行），重建闸挡下 0 个 —— 它们确实都是该删的重复行，不是本次导入会重建的身份。
 - **第二道防线（`web/shared.js` 的 `safeUrl`）**：`new URL()` 接受 `seichigo.com**` 是这条 bug 之所以**静默**的原因 —— 数据层修好了，但下一个漏网的脏地址还会照常渲染成一个点不开的按钮。所以 `safeUrl` 现在要求 host 落在 DNS/IPv6 字符集里（IDN 到这里已经是 punycode、IPv6 保留方括号、`_` 放行因为实践中存在），host 不像 host 就返回空 —— 没有链接，而不是死链接。全量 18,705 个地址里只有 2 个会被这道闸拦下，正是上一条里那批没修的 `createvision.ai)` / `capybuddy.atlai.co.uk)`。
@@ -671,7 +670,7 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 
 ### 同日追加：用户另外三条线上反馈
 
-用户在同一轮工作里还发了三条反馈，被 harness 以 `outcome: canceled` 丢掉了（见文末的流程教训），复核时才从会话记录里找回来：
+用户在同一轮工作里还发了三条反馈，被 harness 以 `outcome: canceled` 丢掉了，复核时才从会话记录里找回来：
 
 - **①「今日发现」里同一个产品出现两次**（A2Agent）：VibeCafé 两位作者各贴了一次 `https://a2agent.me/`（`cmuavelg1…` 与 `cmuavcqe7…`），标题不同、`externalId` 不同 —— `collect.js` 的源内去重按「作者 + URL」分组，两条都留下了，于是同一个产品页在列表里出现两次。新增 `D.collapseProductDuplicates`（判据就是 `productId`，留最新、并列留摘要更长的），在 `build-site.js` 里**排在准入之后、增强匹配之前** —— 顺序有讲究：final 按 `productId` 匹配，两行共用一个 id 会让其中一行拿不到译文。09-21 那期改完仍是 `matchedByProductId 75/75`、`matchedByHeading 0`。raw 不动（两条观察都是证据，发布层合成一行）。
 - **②一篇长文被当成产品收录**（ruanyf/weekly #11840「【投稿】人工智能与人脑」）：标题只有内容标签、正文里没有任何产品地址，行链接于是退回投稿页，可它照样进了列表和产品库。准入新增 `content_not_product`：投稿源 + 标题是纯内容标签（文章/内容/言论/随笔/译文/投稿/推荐/分享）+ 行链接就是投稿页。**全量只多挡下这 1 行**；带「投稿」标签但有项目地址的投稿（`【投稿】GuardSSL - …监控工具`）不受影响。
@@ -680,7 +679,26 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - 生产：撤销 20 个旧产品行（19 策划中 + 1 长文）；`npm run check` 300/300。
   - **新加的 `--inspect` 第一次跑就兑现了价值**：报告显示 `removed: 19, remaining: [prd_a92d602f…]` —— 那一个被单来源闸挡下，因为 `indietools.work` 有 **3 个来源**（阮一峰周刊·正刊推荐 2025-01-03、中国独立开发者 2025-02-12、VibeCafé 2026-09-15）。它是个有真实收录的老产品，只有 VibeCafé 那次观察是「策划中」，所以**整条删掉才是错的**：列表里去掉 VibeCafé 那条、产品页保留。闸挡住了正确的事，这次是它救了场，不是它误伤 —— 换成老版本只会安静地报「已撤销 20 个」。
 
-**一条流程教训（值得记住）**：用户在长任务进行中发的 3 条反馈被 harness 丢掉了 —— `~/.dsh/sessions/<session>/session.v3.jsonl.zstd` 的 `agent/inbox/spliced` 记录显示 seq 71/131/147 各自插入了一条，seq 1217 又用 `outcome: canceled` 把三条一起取消（时间点正好是我中途 `ask_user_question` 的时候）。也就是说**长任务里用提问打断，会把用户排在后面的反馈一起清掉**。两点结论：① 干活期间用户的消息要尽快读掉、别攒着；② 用户问「我发的几个问题都处理了吗」时，先去看 inbox 记录，而不是只看当前上下文 —— 这次就是靠它找回来的。
+### 同日追加：仓库公开前的 README 重写与公开面审计
+
+**背景：09-21 仓库转为公开，但 README 还是内部运营手册**（独立工作区、本地 agent profile 与投递脚本的本机路径、飞书投递链），而且图片那一节已经过期：它说图片「需与清单一起提交、由 `devtrends.site/images/` 提供」「页面只用本地图片、浏览器不会回退外网」，实际早已外置到 R2（`img.devtrends.site`），配图与 PH 标志按白名单回源第三方 CDN。公开门面同时缺「这个仓库是什么、内容从哪来、怎么跑起来」。
+
+- **文档 / README 重写**：改成面向读者与贡献者的结构 —— 一句话定位 + 站点入口、数据来源表（9 个来源各自的内容与采集方式）、站点页面清单、数据链路图（采集 → source-raw → raw → final → dist → Workers）、仓库结构、本地运行（`npm ci` / `build` / `preview` / `check`）、需要配的凭据（只讲类别与用途，不列 secret 名单）、图片与存储、**数据来源的署名与移除请求**、参与贡献、许可。运维细节留在 `AGENTS.md`，README 只链过去。
+- **文档 / 许可**：新增 `LICENSE`（代码 MIT）与 `LICENSE-DATA`（数据与文档 CC BY 4.0）。**为什么分开**：聚合站的数据既希望被转载、又必须要求署名与链接回原站；一份 MIT 覆盖全部等于允许无署名商用日报数据。两份都写明第三方项目介绍、图片与商标归各自作者，不在许可范围内。
+- **文档 / 新增** `SECURITY.md`（走私密漏洞报告渠道，并说明哪些是已知设计取舍）与 `CONTRIBUTING.md`（怎么报数据错误、怎么请求移除、PR 前跑什么、哪些东西不要提交）。
+- **审计（四路并行，只读）**：git 历史 / 当前 tracked 文件 / 文档内容 / 代码与 CI。**结论：tracked 文件里没有任何真实凭据** —— 没有 RDS 口令、MySQL 连接串、Cloudflare token、GitHub PAT、`sk-` key、私钥，也没有 `.env` / `.dev.vars`；Worker 里 SQL 全部参数化、没有任何 CORS 头、XSS 在每条渲染路径上都是关的。真正要处理的是**非凭据类暴露**，逐项修掉：
+  - **代码 / 唯一一条 Critical**：`worker/catalog-import.mjs` 与 `catalog-read.mjs` 的鉴权写成 `header !== \`Bearer ${env.TOKEN}\`` —— 令牌没配置时期望值退化成字面量 `Bearer undefined`，**未配置 = 没有认证**；而两个配置文件都提交进仓库、`workers_dev = true`，一条 `wrangler deploy` 就能把「任意 SQL 的写通道」发布到可预测地址。抽出 `worker/bearer-auth.mjs`（令牌必须存在且 ≥16 字符 + 定长比较），两个入口共用，并补 3 条回归用例（含 `Bearer undefined` 这条）。
+  - **代码 / 本机路径**：`refetch_sub.sh`、`refetch_failed.sh`、`analyze_trend.py`、`trend_data.py` 里写死了本机绝对路径与另一个私有仓库名 → 改成从脚本位置推导仓库根。
+  - **数据 / 诊断字段带绝对路径**：`capture_site_logos_raw.js` 把 `error.message` 原样写进 `capture.skippedSources`，而来源文件缺失的报错本身带绝对路径 —— 于是本机目录结构被写进了要提交的日文件。落盘前统一换成仓库内相对路径；已提交的 **252 个** `source-raw/site-logos/*.json` 也清掉同一串前缀（**99,540 处**，只动 `capture.skippedSources`，`records` 与 `contentSha256` 逐字未变，validator 复跑一致）。
+  - **文档 / 脱敏**（`AGENTS.md`、`CHANGELOG.md`、`想法与待办.md`、`docs/` 四份、`SKILL.md`）：删的东西分三类 —— ① **凭据形态与运维痕迹**：生产库口令的属性、凭据文件路径与刷新令牌轮换、备份包路径、agent harness 的 ref 名、`.git` 体积、`filter-repo` 命令原文；② **个人与基础设施**：家庭住宅 IP 与 ISP、内部出口 IP、本机代理与端口、本机 LLM 网关端口与模型别名、另一个私有项目名与其账本路径、Product Hunt 多账号的个人 handle；③ **第三方与法律暴露**：明知小红书 `robots.txt` 全站 `Disallow` 仍评估「Cookie + 逆向签名」的整节、对具名同行的负面拆解、逐条列出的具名公司招聘广告清单、434 行第三方「我们把你的项目认成了别的仓库」明细、单位经济金额与上游费率差异。`AGENTS.md` 顶部另加一行说明它是维护者手册、读者从 README 入门。
+  - **数据 / 移除迁移旧副本**：`知识/raw`、`知识/source-raw`、`知识/final` 三个顶层目录是 09-09 从 MyVault 迁移时留下的旧副本（**1,873 个文件 / 约 50MB**），与现行路径 `知识/大家都在做什么/` 内容不同、且**已无任何代码引用** → `git rm -r --cached` 移出 Git（本地留档 + `.gitignore`），MyVault 里仍有原始版本。这是公开仓库里最大的一块冗余。
+  - **CI / 注释**：`daily-report.yml` 里 PH token 的账号注释改成中性说明 —— 原文逐个标注了 token 背后的个人邮箱 handle，同时泄露了「多账号轮询」这件事。
+- **决策与放弃**：
+  - **内部文档选「保留公开 + 脱敏」，不移出仓库**：开发史与运维手册对公开仓库是加分项。代价要记清楚：**脱敏只改了 tip，历史提交里仍能取回原文**；真要清历史得再做一次 `filter-repo` + force-push，这次没做。
+  - **`enhance.js` 里 `COMMUNITY_PULSE_LLM_BASE` / `COMMUNITY_PULSE_LLM_MODEL` 的硬编码默认值故意没改**（本机网关端口与模型别名）：增强链是本地关键路径，改默认值可能**静默**打断它，收益只是少一个 localhost 端口。同理，采集脚本里 16 处 `COMMUNITY_PULSE_PROXY` 的默认值 `http://127.0.0.1:7890` 也没动（CI 显式设为空串）。
+  - **`nichangen.workers.dev` 保留**：它是线上生产/备用入口，仓库里 6 处以上代码与测试都依赖它，只改文档会破坏准确性；要真正去掉得换 workers.dev 子域。
+  - **记进报告但这次不改**：`catalog-import` 仍是「任意 SQL + 一个 bearer」的入口（令牌经 `--var` 会进 runner argv，且清理只在 `finally`，任务被取消就留下一个无 TTL 的写入口）；`/api/v1/*` 公开、无鉴权无速率限制，且 `workers.dev` 备用入口不受主域 WAF 质询；抓取层的 SSRF 只有平台黑名单。这些是设计层面的事，属于另一批。
+- **验证**：`npm run check` **303/303**（新增 3 条鉴权用例）。
 
 ## 值得记录的决策
 
