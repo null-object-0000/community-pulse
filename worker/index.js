@@ -16,6 +16,11 @@ import { CATALOG_VERSION } from './catalog-version.mjs';
 // 立刻 404，说明是**换键之前那一瞬间被写进新键的旧渲染**。所以撤销数据之后不能只看规范地址，
 // 要拿等价 pathname 复核一次；真要立刻清掉，就改一次渲染源文件让这个哈希换代（下面这段注释本身就是
 // 一次这样的换代）。s-maxage 是 86400，不换代的话最长一天自愈。
+//
+// 2026-09-22 第三次，同一条规律的另一面：`source-raw/showhn/2025-03-29.json` 里一条第三方 token 被
+// 脱敏（commit 3cf336e）后重跑了 `catalog-refresh`，数据库那行确实改了（`/en/` 去掉尾斜杠的等价
+// pathname 立刻显示 `[REDACTED]`），但**规范地址仍是旧渲染** —— 它在数据更新前就被写进了当前键，
+// 而 `CATALOG_VERSION` 换代不覆盖它。所以这次也换代：改渲染源文件让哈希变，旧键整片作废。
 import { PRODUCT_RENDERER_VERSION } from './render-version.mjs';
 
 // 站长平台的归属验证文件（仓库根的 verification/ 目录，构建时复制到站点根）。
