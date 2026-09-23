@@ -296,6 +296,13 @@ node scripts/catalog/activate-enrichment.js --processor-version travel-localize-
 node scripts/catalog/activate-enrichment.js --content --versions travel-localize-v1,catalog-localize-v1 --out .scratch/c.sql
 ```
 
+**标签与正文是两次独立的激活，做了一边不等于另一边也生效**（2026-09-23 踩过：只跑了 `--content`，`catalog-localize-v1` 的 35,893 条标签一直躺在 shadow，读端全走规则推断 —— 症状是**分类页/详情页的分类归属不对**，例如 `Lingua Playlist` 被规则打成 `travel-mobility`，而模型给的 `research-learning` 根本没上）。**改完数据要问一句「标签和正文分别激活了吗」。**
+
+- **两批 LLM 标签在同 facet 上不能同时 current**：读端只按 `is_current=1` 过滤、不看 `assignment_source`，所以同时成立会让**分面计数翻倍**（同一产品在一个分面里算两次）。`buildStatements` 因此有第三个语句：低优先级版本把自己的行让给高优先级版本。
+- **优先级保护是自动推导的**（`higherPriorityVersions` + `VERSION_PRIORITY`），不需要调用方记得传全 —— 此前做成「调用方自己传 `--versions`」，实测忘了传就整闸失效（travel 那批 8,214 行正文被误撤）。`VERSION_PRIORITY = ['travel-localize-v1', 'catalog-localize-v1']`，**标签与正文共用一份**。
+- **多批同时激活要按优先级从高到低执行**：低优先级那步的「让位」判断依赖高优先级行**已经是 current**。顺序反了会让低优先级先提为 current、再被高优先级挤掉，白跑一轮（结果对，但多一次无谓写）。
+- **激活稿必须与回滚稿同时提交**：改线上数据却没有退路，等于把「能不能回头」寄托在记性上（`--out` 会自动生成同名 `.rollback.sql`）。
+
 **判断「某期/某产品为什么没中文」的排查顺序**：
 
 1. 分类页是**构建期快照**（`data/catalog/site-snapshot/categories/**`，由 `catalog-refresh.yml` 的 `catalog:snapshot` 重建），详情页与列表 API 是**实时读库**。改完数据必须重建快照才反映到分类页。
