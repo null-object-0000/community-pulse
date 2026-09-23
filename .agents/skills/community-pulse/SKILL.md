@@ -147,7 +147,11 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 
 `collect.js` 可从同一批本地输入一次生成 JSON 和 Markdown。后续如需 HTML 报纸/LLM 分组，只读取这些已生成产物，不动抓取层。
 
-`enhance.js` 为每条内容生成中文摘要与英文摘要，并为含中文的标题生成英文标题。它还必须从 `web/shared.js` 的固定分类中选择一个 `primaryCategory`；分类与翻译在同一次 LLM 请求中完成。中文 final Markdown 保持可直接发送，同时用隐藏的 `devtrends-i18n` 元数据保存 `titleEn`、`summaryZh`、`summaryEn`、`primaryCategory`，供网站构建中英文页面与分类筛选；构建阶段不得再调用 LLM。旧 final 缺少分类时由 `web/shared.js` 的本地规则回退，不修改历史文件。
+`enhance.js` 为每条内容生成中文摘要与英文摘要，并为含中文的标题生成英文标题。它还必须从 `web/shared.js` 的固定分类中选择一个 `primaryCategory`；分类与翻译在同一次 LLM 请求中完成。中文 final Markdown 保持可直接发送，同时用隐藏的 `devtrends-i18n` 元数据保存 `productId`、`titleEn`、`summaryZh`、`summaryEn`、`primaryCategory`，供网站构建中英文页面与分类筛选；构建阶段不得再调用 LLM。旧 final 缺少分类时由 `web/shared.js` 的本地规则回退，不修改历史文件。
+
+**`productId` 靠 `--json` 显式指路，别依赖「同目录同名」推断**：`enhance.js` 默认按 `inFile.replace(/\.md$/, '.json')` 找原始 JSON（`raw/<date>.md` → `raw/<date>.json`）。**只要输入 md 是从别处拷来的**（例如 `enhance-report.js` 会先写到 `.scratch/enhancement/<date>.md`），同目录就没有 json，脚本只打一行警告就继续跑 —— 结果是这一期 final 的每条记录都不带 `productId`，`presentation.matchedByProductId=0`、全部退回 `matchedByHeading`。增强本身看着「成功」（`summarySource=llm-final`），只有查 `matchedByProductId` 才发现匹配口径退化了。所以：**凡是不在 `raw/` 目录里跑的增强，必须显式传 `--json <raw>/<date>.json`**，并确认日志里那行「产品身份: N/N 条对齐到 productId」。事后补救不用重跑 LLM —— 带 `--json` 重跑，`normalizeRecords` 会从 `.work` 断点恢复已有结果并按对齐结果补上 `productId`（前提是 `.work` 文件还在；被 `--dry-run` 消耗掉就只能全量重生成）。
+
+**定时任务的失败点会连带吞掉增强**：`~/.hermes/scripts/community_pulse_send.sh` 的第一步是 `git pull --ff-only`，失败即 `exit 1`。这本身是对的（避免发过期日报），但**增强是同一个脚本的第 3 步**，于是网络一断（公司网络到 `github.com` 的 TLS 握手被中断是常态）这一期的 final 就永远不会生成，站点静默回落到 raw 文案（`summarySource=raw`）。补跑办法：网络恢复后 `git checkout FETCH_HEAD -- 知识/大家都在做什么/raw/<date>.{json,md}` 取回 raw，再跑 `node scripts/enhance-report.js --date <date>`；**别直接跑 `enhance.js`**，`enhance-report.js` 才会做投稿准入与去重队列的重写，否则 final 与站点的列表口径不一致。判断某期是否掉队就看线上 `presentation.summarySource`：`llm-final` 正常、`raw` 即未增强。
 
 Markdown 条目的三级标题统一使用纯文字，不在产品名称上包超链接。主链接和补充链接统一放在描述/指标下方的 `🔗` 行，按目标标注为“官网 / GitHub / VibeCafé / Product Hunt / 原文 / 投稿页”。
 
