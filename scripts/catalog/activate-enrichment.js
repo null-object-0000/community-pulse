@@ -174,8 +174,11 @@ function contentVersions(requested) {
 function buildContentStatements(versions) {
   const statements = [];
   const ordered = contentVersions(versions);
-  ordered.forEach((version, index) => {
-    const higher = ordered.slice(0, index).map(v => quote(`llm:${v}`));
+  ordered.forEach((version) => {
+    // 保护的版本**从优先级列表推导**，不依赖调用方传全 —— 与标签侧同一个理由
+    // （2026-09-23 实测：只传本次要激活的版本时闸消失，更高优先级那批会被覆盖）。
+    // 列表外的版本（`higherPriorityVersions` 返回空）不受保护，这是刻意的：无从判断谁高谁低。
+    const higher = higherPriorityVersions(version).map(v => quote(`llm:${v}`));
     // ① 提为 current，跳过已经有更高优先级 current 行的 (产品, locale)。
     const keepGuard = higher.length
       ? `LEFT JOIN product_content keep

@@ -285,9 +285,25 @@ cd ../../.. && npm run build
 
 - **一次取中英两行，不按请求语言取一行**：Worker 同一份数据要渲染 `/` 与 `/en/`，而产品页缓存键只含 pathname —— 按语言取会让英文页拿到中文标题。
 - **列表在 `productRows` 的 map 之外批量取**（一页 60~300 行，N+1 会打穿 Hyperdrive）。
-- **读取端只认 `is_current=1`**：不自己发明「读 shadow」的第二套语义。**新加工的内容必须先激活才可见**，否则页面看起来毫无变化 —— 那是静默失效，不是「暂时没数据」。
+- **读取端只认 `is_current=1`**：不自己发明「读 shadow」的第二套语义。**新加工的内容必须先上架才可见**，否则页面看起来毫无变化 —— 那是静默失效，不是「暂时没数据」。
 
-**激活是受审操作**（`scripts/catalog/activate-enrichment.js`，`apply-sql.js` 默认拒绝 `is_current=1`，需显式 `--allow-activation`）：
+**上架（激活）默认自动做，不再是「要人记得的第二步」**（2026-09-23 改）：
+
+```bash
+# 常规：写库那一跳顺手把这一批上架 —— 版本从 SQL 里认，不需要调用方传
+node scripts/catalog/apply-sql.js --file <sql> --channel
+# 只在「想先看数据再上架」时才 hold（写 shadow 后停住）
+node scripts/catalog/apply-sql.js --file <sql> --channel --hold
+```
+
+**为什么改成自动**：原来的纪律是「所有输出 shadow，激活是单独的受审操作」，理由是「曾经自动激活导致线上短暂出现半成品描述」。但这条纪律在 2026-09-23 被证明**只在纸面上成立** —— 一批 2,000 条没人会逐条看，那道「人工关卡」实际什么都没拦，只拦住了忘记敲命令的人。代价是静默失效：`catalog-localize-v1` 的 **35,893 条标签跑完 7 天从没激活过**，网站一直用规则推断（用户发现的 `Lingua Playlist` 被算成旅行产品就是这么来的）。现在由**自动上架 + 回滚稿 + 显式日志**取代「靠人记得」。
+
+- **版本从 SQL 里认**（`detectVersions`）：只认 `enrich-products.js` 的 `resultBatchSql` 产出的两种 INSERT 形状，认不出的一律不碰。**不让调用方传版本** —— 传就等于「又要记得」，而那正是这次事故的形状。
+- **上架顺序从高优先级到低优先级**：低优先级那步的「让位」判断依赖高优先级行已经是 current。
+- **回滚稿与上架同时产出**（`<sql>.rollback.sql`），workflow 会把它提交回仓库 —— 改线上数据却没有退路，等于把「能不能回头」寄托在记性上。
+- **`--hold` 仍在**：需要先看数据再上架时用它。人工补激活稿仍可走 `activate-enrichment.js` + `--allow-activation`（那条路没变）。
+
+**手工激活入口**（`scripts/catalog/activate-enrichment.js`；`apply-sql.js` 的 `--allow-activation` 只用于放行文件里带的激活语句，`--hold` 之后手工补跑时用）：
 
 ```bash
 # 标签：提 LLM 行 + 撤同产品的规则行（languages facet 保留 —— LLM 不产出它）
@@ -296,7 +312,7 @@ node scripts/catalog/activate-enrichment.js --processor-version travel-localize-
 node scripts/catalog/activate-enrichment.js --content --versions travel-localize-v1,catalog-localize-v1 --out .scratch/c.sql
 ```
 
-**标签与正文是两次独立的激活，做了一边不等于另一边也生效**（2026-09-23 踩过：只跑了 `--content`，`catalog-localize-v1` 的 35,893 条标签一直躺在 shadow，读端全走规则推断 —— 症状是**分类页/详情页的分类归属不对**，例如 `Lingua Playlist` 被规则打成 `travel-mobility`，而模型给的 `research-learning` 根本没上）。**改完数据要问一句「标签和正文分别激活了吗」。**
+**标签与正文是两次独立的激活**：自动上架两条都做，但手工补跑时容易只做一边 —— 只做正文的症状是**分类归属不对**（标签仍是规则推断的）。**改完数据要问一句「标签和正文分别上架了吗」。**
 
 - **两批 LLM 标签在同 facet 上不能同时 current**：读端只按 `is_current=1` 过滤、不看 `assignment_source`，所以同时成立会让**分面计数翻倍**（同一产品在一个分面里算两次）。`buildStatements` 因此有第三个语句：低优先级版本把自己的行让给高优先级版本。
 - **优先级保护是自动推导的**（`higherPriorityVersions` + `VERSION_PRIORITY`），不需要调用方记得传全 —— 此前做成「调用方自己传 `--versions`」，实测忘了传就整闸失效（travel 那批 8,214 行正文被误撤）。`VERSION_PRIORITY = ['travel-localize-v1', 'catalog-localize-v1']`，**标签与正文共用一份**。
@@ -331,9 +347,10 @@ node scripts/catalog/enrich-queue.js \
   --date <date> --concurrency 6 \
   --out .scratch/sql-<date>.sql --summary .scratch/summary-<date>.json
 
-# ③ Actions：写库（shadow）→ 激活
+# ③ Actions：写库 —— **顺手上架**（版本从 SQL 里认，不用再手工激活）
 gh workflow run apply-catalog-sql.yml --ref main -f sql_path=.scratch/sql-<date>.sql
-node scripts/catalog/activate-enrichment.js --content --versions catalog-localize-v1 --out .scratch/act.sql
+# 只有「想先看数据再上架」时才加 -f hold=true，然后手工补：
+node scripts/catalog/activate-enrichment.js --content --versions travel-localize-v1,catalog-localize-v1 --out .scratch/act.sql
 ```
 
 **这条链为什么不能自己拼 SQL**：`enrich-queue.js` 把导出的**原始行**喂给一个假 db，调 `runEnrichment()` 走**与日更链逐字相同**的代码路径（`localizationInput` → `inputHashFor` → `planQueue` → `resultBatchSql`）。所以输入哈希、批次形状、`content_source` 命名天然同源。导出器若把行压成 `{title, desc}`，那条路径上任何未来改动都不会反映到补跑 —— 哈希分叉 → 同一批被反复重付。

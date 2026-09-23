@@ -20,8 +20,8 @@ on:
         type: boolean
         required: false
         default: false
-      allow_activation:
-        description: '受审开关：放行 taxonomy_assignments 的 is_current=1 激活语句（默认拒绝）'
+      hold:
+        description: '只写 shadow、不自动上架（默认写库后顺手上架；仅在需要先看数据时才开）'
         type: boolean
         required: false
         default: false
@@ -56,14 +56,9 @@ jobs:
             exit 1
           fi
           echo "文件: $SQL ($(wc -c < "$SQL") 字节)"
-          # 安全闸：这份 SQL 默认只该写 shadow 行（is_current=0），不该出现任何激活语句。
-          # 要激活必须显式打开 allow_activation（受审操作），且仍限 taxonomy_assignments。
-          # gz 会在这里被解开再检查 —— 闸门必须看到真实语句，不能只看压缩流的字节。
-          if [ "${{ github.event.inputs.allow_activation }}" = "true" ]; then
-            node scripts/catalog/apply-sql.js --file "$SQL" --dry-run --allow-activation || { echo "校验失败（见上）"; exit 1; }
-          else
-            node scripts/catalog/apply-sql.js --file "$SQL" --dry-run || { echo "校验失败（见上）"; exit 1; }
-          fi
+          # 安全闸：这份 SQL 只该写 shadow 行（is_current=0），不该出现任何激活语句 ——
+          # 上架走的是「写库后由 activate-enrichment.js 现算」那条路，不靠文件里带激活语句。
+          node scripts/catalog/apply-sql.js --file "$SQL" --dry-run || { echo "校验失败（见上）"; exit 1; }
 
       - name: 应用到产品库
         if: ${{ github.event.inputs.dry_run != 'true' }}
@@ -75,9 +70,27 @@ jobs:
             echo "缺少 CLOUDFLARE_API_TOKEN：无法部署临时通道 Worker。"
             exit 1
           fi
-          if [ "${{ github.event.inputs.allow_activation }}" = "true" ]; then
-            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel --allow-activation
+          # 写库后顺手上架（默认）。回滚稿落在 SQL 旁边，与它一起提交才有退路。
+          if [ "${{ github.event.inputs.hold }}" = "true" ]; then
+            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel --hold
           else
             node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel
+          fi
+
+      - name: 提交回滚稿
+        if: ${{ github.event.inputs.dry_run != 'true' && github.event.inputs.hold != 'true' }}
+        run: |
+          # 回滚稿是这次上架的唯一退路，必须留在仓库里；否则「能不能回头」又变成靠记性。
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          ROLLBACK="$(echo "${{ github.event.inputs.sql_path }}" | sed 's/\.gz$//').rollback.sql"
+          if [ -f "$ROLLBACK" ]; then
+            git add "$ROLLBACK"
+            git diff --cached --quiet || {
+              git commit -m "data(catalog): 上架回滚稿 $(basename "$ROLLBACK")"
+              git push
+            }
+          else
+            echo "没有回滚稿（这批 SQL 未识别到可上架的加工版本）"
           fi
 
