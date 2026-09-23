@@ -730,6 +730,10 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
   - **结果归一化**：续跑一轮里失败过的产品会在下一轮成功，但 `failed` 里的陈旧条目不会自己消失 —— 出报告前按「是否曾经成功过」剔除（首轮 262 个陈旧 429 记录在最终报告里归零，只剩 3 个真失败）。
 - **测试（代码）**：新增 `tests/catalog-apply-sql.test.js`（5 条）—— 分句与通道 Worker 的 `splitSql` **逐条一致**（引号里的分号是最常见的分歧点，分歧会让「这批 SQL 会做什么」无从判断）、`is_current=1` 被 shadow 闸拦下、语句种类计数。`splitSql` 复刻版写在测试里而不是 import 过来：Worker 与脚本运行在不同运行时，那份复刻就是「两边必须一致」这条断言本身。
 - **本轮只写 shadow，线上不会变（务必记住）**：`enrich-products.js` 的纪律是「所有输出 `is_current=0`，激活是单独的受审操作」，`apply-sql.js` 的 shadow 闸会**拒绝**任何含 `is_current=1` 的 SQL。而且目前 **`product_content` 还没有任何读取端**，`/api/v1/*` 的分类筛选按 `ta.is_current = 1` 取标签 —— 所以这批的归纳 / 翻译 / 重新打标**都已入库但不可见**，让它们生效需要另一次「激活」操作（调 `is_current`），仓库里还没有这个脚本。**这是下一件要做的事，不是这次遗漏的步骤。**
+- **已入库并独立核对（数据）**：`apply-catalog-sql.yml` run `35757167840` 应用 828/828 条语句成功（走临时通道 Worker，约 8 分钟）；随后用 `catalog-read-check.yml` 借 Actions 的 CF 凭据直查产品库核对 —— `product_content` **8,214 行 / 4,107 个产品**且 **`is_current` 全为 0**（无任何激活行）、`taxonomy_assignments` **15,059 条 / 4,107 个产品**。三条数字与 SQL 生成时的预期逐项吻合。
+  - 新增 `catalog-read-check.yml` + `scripts/catalog/read-check.js`：本机没有 CF 凭据（所以写库才必须走 Actions），连「写进去没有」这类**只读**核对也只能借 Actions 的凭据跑。**不要用 `live-query.js` 做这件事** —— 它部署临时 Worker 后直接发请求，而刚 deploy 的 `workers.dev` 路由不是立刻生效（实测会拿到 Cloudflare 的 HTML 404），`createChannelDb` 里有 `waitForRoute` 才处理得了；第一次就是踩了这个（`SyntaxError: Unexpected token '<'`）。
+- **GitHub 主站被墙时的推送方式（环境）**：2026-09-22 晚本机代理（FlClash）的境外节点失效，实测 `github.com` 超时、但 **`api.github.com` / `codeload.github.com` 直连可达**，而 `gh` 的 token 有 `repo`+`workflow` 权限 —— 于是用 Git REST API（blob → tree → commit → ref）把提交推上去，绕开 `git push` 的 HTTPS 通道。两个坑：① blob 的 base64 必须走 **stdin 的 JSON body**，当命令行参数会 E2BIG（「参数列表过长」）；② API 建的提交**不保留作者/时间戳**，所以远端 sha 与本地不同，父链与「内容是否一致」要按 **tree 比对**而不是 sha。脚本在 `.scratch/push_via_api.py`（增量推一个提交）与 `.scratch/push_content.py`（让远端分支内容等于本地某提交，带「远端内容必须是本地基线」的防覆盖闸）。
+  - **workflow 必须先落到默认分支才能 `gh workflow run`**（`HTTP 404: not found on the default branch`）—— 这是这次把 `apply-catalog-sql.yml` 合进 main 的直接原因。改动全是新增文件、不被站点构建引用，所以推 main 只触发一次常规重建，没有产物变化。
 
 ## 值得记录的决策
 
