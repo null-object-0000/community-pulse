@@ -83,23 +83,27 @@ test('shadow 闸拦下任何 is_current=1（激活不是这条流水线的职责
   ]));
 });
 
-test('--allow-activation 是受审入口：放行 taxonomy_assignments 的激活，其余仍拒绝', () => {
+test('--allow-activation 是受审入口：放行激活形状，其余仍拒绝', () => {
   const activation = ["UPDATE taxonomy_assignments SET is_current=1 WHERE processor_version='travel-localize-v1'"];
   // 不传开关 → 拒绝（默认永远是 shadow）。
   assert.throws(() => assertShadowOnly(activation), /--allow-activation/);
   // 传开关且形状正确 → 放行。
   assert.doesNotThrow(() => assertShadowOnly(activation, { allowActivation: true }));
+  // 正文激活是第二种受审形状（0006 之后 Worker 会读 product_content）。
+  assert.doesNotThrow(() => assertShadowOnly(
+    ["UPDATE product_content pc SET pc.is_current = 1 WHERE pc.content_source = 'llm:travel-localize-v1'"],
+    { allowActivation: true }));
   // 传开关但改的是别的表 → 仍然拒绝（开关不是万能钥匙）。
   assert.throws(
-    () => assertShadowOnly(["UPDATE product_content SET is_current=1 WHERE product_id='x'"],
+    () => assertShadowOnly(["UPDATE products SET is_current=1 WHERE id='x'"],
       { allowActivation: true }),
-    /不是 taxonomy_assignments 的激活形状/,
+    /不是受审的激活形状/,
   );
   // 混入一条越界的激活语句，整批都要被拒。
   assert.throws(
-    () => assertShadowOnly([...activation, "UPDATE products SET is_current=1 WHERE id='x'"],
+    () => assertShadowOnly([...activation, "UPDATE sources SET is_current=1 WHERE id='x'"],
       { allowActivation: true }),
-    /不是 taxonomy_assignments 的激活形状/,
+    /不是受审的激活形状/,
   );
 });
 

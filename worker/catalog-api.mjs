@@ -92,6 +92,64 @@ async function all(db, sql, bindings = [], timings = null, label = '') {
   }
 }
 
+/**
+ * 把 `product_content` 里「当前生效」的双语正文并进 item 对象。
+ *
+ * 为什么需要它：`item_json` 是 `source-raw` 的投影（原始抓取），**从不包含 LLM 增强结果**，
+ * 所以分类页与产品详情页的产品名一直是英文原文 —— 即使中文译文早就躺在 `product_content` 里
+ * （实测 travel-mobility 分类页 2,924 个产品里 2,916 个有中文行，覆盖率 99.7%）。
+ * `D.displayTitle` / `D.summary` 本来就认 `titleZh` / `summaryZh`，缺的只是把值填进去。
+ *
+ * 一次取回中英两行而不是按请求的 locale 取一行：Worker 同时服务 `/`（中文）与 `/en/`（英文），
+ * 而产品页的缓存键只含 pathname —— 同一份数据要能渲染两种语言，否则英文页会拿到中文标题。
+ * 缓存命中时这条查询不会发生（边缘缓存按 pathname 分语言）。
+ *
+ * 只读 `is_current = 1` 的行 —— 不在这里发明第二套「读 shadow」的语义。加工结果默认是 shadow
+ * （`is_current=0`），让它们可见是单独的受审操作（`scripts/catalog/activate-enrichment.js`
+ * 的 `--content` 模式）。因此这条读取端上线时**必须**先跑一次内容激活，否则它查不到任何行、
+ * 页面看起来毫无变化 —— 那是静默失效，不是「暂时没数据」。
+ *
+ * 同产品同 locale 可能有多行（不同 `content_source`、以及每次重跑都新增一行，PK 含 created_at），
+ * 取 `created_at` 最新的那行（`ORDER BY … DESC` 后在应用层取首条）。
+ */
+async function attachProductContent(db, rows, timings = null) {
+  const ids = [...new Set(rows.map((row) => row.id).filter(Boolean))];
+  if (!ids.length) return rows;
+  const placeholders = ids.map(() => '?').join(', ');
+  const content = await all(db, `SELECT product_id AS productId, locale, title, summary
+    FROM product_content
+    WHERE product_id IN (${placeholders}) AND is_current = 1
+    ORDER BY product_id, locale, created_at DESC`, ids, timings, 'productContent');
+  const byProduct = new Map();
+  for (const row of content) {
+    // ORDER BY created_at DESC + 只覆盖不覆盖：每个 (product_id, locale) 的第一条即最新。
+    const key = `${row.productId}\0${row.locale}`;
+    if (!byProduct.has(key)) byProduct.set(key, row);
+  }
+  for (const row of rows) {
+    const zh = byProduct.get(`${row.id}\0zh-CN`);
+    const en = byProduct.get(`${row.id}\0en`);
+    if (!zh && !en) continue;
+    row.contentZh = zh || null;
+    row.contentEn = en || null;
+  }
+  return rows;
+}
+
+/** 把 attachProductContent 取到的两行并进 detail item（`titleZh`/`summaryZh`/`titleEn`/`summaryEn`）。 */
+function mergeContent(detail, row) {
+  const merged = { ...detail };
+  if (row.contentZh) {
+    if (row.contentZh.title) merged.titleZh = row.contentZh.title;
+    if (row.contentZh.summary) merged.summaryZh = row.contentZh.summary;
+  }
+  if (row.contentEn) {
+    if (row.contentEn.title) merged.titleEn = row.contentEn.title;
+    if (row.contentEn.summary) merged.summaryEn = row.contentEn.summary;
+  }
+  return merged;
+}
+
 export async function availableSources(db, timings = null) {
   return all(db, `SELECT s.id, s.name, s.description,
     COUNT(f.product_id) AS productCount,
@@ -315,7 +373,7 @@ export async function queryProducts(db, filters, term, timings = null, options =
       ) page
       LEFT JOIN product_details pd ON pd.product_id = page.id
       ORDER BY page.date DESC, page.id`, [term, filters.facet, filters.from, filters.to, ...cursorBindings, filters.facet], timings, 'productsAllSources');
-    return productRows(rows, filters, term, page, pageSize, true);
+    return await productRows(db, rows, filters, term, page, pageSize, true, timings);
   }
   const selected = selectedPlan(filters, false, filters.from);
   const cte = selected.cte;
@@ -356,12 +414,14 @@ export async function queryProducts(db, filters, term, timings = null, options =
     ...selected.bindings, filters.facet, filters.facet, ...filters.sources,
     term, filters.from, filters.to,
   ], timings, 'products');
-  return productRows(rows, filters, term, page, pageSize);
+  return await productRows(db, rows, filters, term, page, pageSize, false, timings);
 }
 
-function productRows(rows, filters, term, page, pageSize, cursorMode = false) {
+async function productRows(db, rows, filters, term, page, pageSize, cursorMode = false, timings = null) {
   const hasMore = rows.length > pageSize;
   const sources = new Set();
+  // 先按 product_id 一次取回当前生效的双语正文，再逐行合并 —— 不能放在 map 里逐条查（N+1）。
+  await attachProductContent(db, rows.slice(0, pageSize), timings);
   const products = rows.slice(0, pageSize).map(row => {
     const sourceIds = String(row.sourceIds || '').split(',').filter(Boolean);
     sourceIds.forEach(source => sources.add(source));
@@ -369,6 +429,7 @@ function productRows(rows, filters, term, page, pageSize, cursorMode = false) {
     if (typeof detail === 'string') {
       try { detail = JSON.parse(detail); } catch { detail = {}; }
     }
+    detail = mergeContent(detail, row);
     const projectPath = row.githubRepo ? `/projects/${String(row.githubRepo).toLowerCase()}/` : `/products/${row.id}/`;
     return {
       ...detail, sourceId: detail.sourceId || sourceIds[0] || 'catalog', sourceIds,
@@ -399,6 +460,9 @@ export async function queryProductDetail(db, routePath, timings = null) {
   if (typeof item === 'string') {
     try { item = JSON.parse(item); } catch { item = {}; }
   }
+  // 详情页的产品名与简介同样来自 item_json（原始抓取），这里并上 product_content 的双语正文。
+  await attachProductContent(db, rows, timings);
+  item = mergeContent(item, row);
   const taxonomy = await all(db, `SELECT ta.facet, ta.term_id AS termId
     FROM taxonomy_assignments ta
     WHERE ta.product_id = ? AND ta.is_current = 1

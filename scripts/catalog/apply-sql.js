@@ -81,20 +81,27 @@ function splitSql(sql) {
  * 曾经就是因为自动激活，线上短暂出现过半成品描述。
  *
  * `--allow-activation` 是那道受审入口：只有显式传它才放行含 `is_current=1` 的语句，且仍然要求
- * 每一条这样的语句都来自 `activate-enrichment.js` 的形状（`UPDATE taxonomy_assignments`），
- * 不允许任意写。默认（不传）保持拒绝。
+ * 每一条这样的语句都来自 `activate-enrichment.js` 的形状，不允许任意写。默认（不传）保持拒绝。
+ * 两种受审形状：
+ *   · `UPDATE taxonomy_assignments … SET is_current=1`（标签激活）
+ *   · `UPDATE product_content … SET …is_current = 1`（正文激活，Worker 读取端）
  */
+const ACTIVATION_SHAPES = [
+  /^\s*UPDATE\s+taxonomy_assignments\b/i,
+  /^\s*UPDATE\s+product_content\b/i,
+];
+
 function assertShadowOnly(statements, { allowActivation = false } = {}) {
   const offenders = statements.filter((statement) => /is_current\s*=\s*1/.test(statement));
   if (!offenders.length) return;
   if (!allowActivation) {
     throw new Error(`拒绝应用：${offenders.length} 条语句含 is_current=1，激活需要显式 --allow-activation`);
   }
-  const unexpected = offenders.filter((statement) => !/^\s*UPDATE\s+taxonomy_assignments/i.test(statement));
+  const unexpected = offenders.filter((statement) => !ACTIVATION_SHAPES.some(shape => shape.test(statement)));
   if (unexpected.length) {
-    throw new Error(`拒绝应用：${unexpected.length} 条激活语句不是 taxonomy_assignments 的激活形状`);
+    throw new Error(`拒绝应用：${unexpected.length} 条激活语句不是受审的激活形状（只允许 taxonomy_assignments / product_content）`);
   }
-  console.log(`[apply] --allow-activation：放行 ${offenders.length} 条激活语句（taxonomy_assignments）`);
+  console.log(`[apply] --allow-activation：放行 ${offenders.length} 条激活语句`);
 }
 
 function summarize(file, sql, statements) {
