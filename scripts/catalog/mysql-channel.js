@@ -107,19 +107,48 @@ function createChannelDb(options = {}) {
     return deployed;
   }
 
+  /**
+   * 通道**中途**失联（不是刚部署时的路由延迟）：临时 Worker 被删/漂移后，后续请求由 Cloudflare
+   * 用 HTML 404 答，而 `ensure()` 缓存了 `deployed`、不会重部署 —— 症状是长批次写到一半整批失败
+   * （2026-09-23 实测：430 条语句写到 100/430 时 404 中断，同一份 SQL 重派又在第 1 批就断）。
+   *
+   * **只在「请求根本没到 Worker」时重试**：判据是响应体不是 JSON（Cloudflare 的 HTML 页）。
+   * 那种情况事务必然没有提交，重试安全。反过来，Worker 自己答的 JSON 错误（`ok:false`，
+   * 例如 SQL 报错）**绝不重试** —— 那可能是事务已部分生效后的失败，重试会掩盖真问题。
+   */
+  function isChannelLost(error) {
+    return /通道返回的不是 JSON/.test(String(error && error.message));
+  }
+
+  async function withReconnect(fn, attempts = 4) {
+    for (let attempt = 1; ; attempt += 1) {
+      try {
+        return await fn();
+      } catch (error) {
+        if (attempt >= attempts || !isChannelLost(error)) throw error;
+        log(`[channel] ${CHANNEL.label} 通道失联（第 ${attempt} 次），重新部署后重试：${String(error.message).slice(0, 100)}`);
+        // 丢掉缓存的 endpoint：重部署会拿到新的 workers.dev 地址。
+        deployed = null;
+        await sleep(Math.min(2000 * attempt, 8000));
+        await ensure();
+      }
+    }
+  }
+
   return {
     async select(sql) {
       // 走主库连接：Hyperdrive 的读连接按 SQL 文本缓存，状态读不能吃那层缓存。
-      return post(sql, { expectRows: true });
+      return withReconnect(() => post(sql, { expectRows: true }));
     },
     async execute(sql) {
-      await post(sql, { expectRows: false });
+      await withReconnect(() => post(sql, { expectRows: false }));
     },
     async batch(statements) {
       if (!statements.length) return;
       // 一个产品的结果是一批语句，Worker 会把它们放进**同一个事务**，所以「状态」与
       // 「内容」要么一起进要么都不进 —— 与直连时 `openDatabase().batch()` 的语义一致。
-      await post(statements.map(statement => `${statement};`).join('\n'), { expectRows: false });
+      // 重试安全：只有「请求没到 Worker」才会走到重连分支，那时事务没提交。
+      await withReconnect(() => post(statements.map(statement => `${statement};`).join('\n'), { expectRows: false }));
     },
     async close() {
       if (!deployed) return;
