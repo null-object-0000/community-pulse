@@ -26,20 +26,40 @@ const path = require('path');
 const RULE_ONLY_FACETS = ['languages'];
 
 /**
- * 正文激活的版本优先级。**同产品同 locale 只允许一行 current**，否则读取端（取最新一条）
- * 的行为就取决于 `created_at` 的偶然顺序。列表按优先级从高到低：按标签专门跑的那批（描述更全、
- * 是授权付费跑的）优先于日更链按天增量跑的那批（覆盖面广但每条更短）。
+ * 加工版本优先级，**标签与正文共用一份**。同产品同 facet（标签）/ 同 locale（正文）
+ * 只允许一行 current，所以低优先级版本激活时要把自己的行让给高优先级的。
+ *
+ * 列表按优先级从高到低：按标签专门跑的那批（描述更全、是授权付费跑的）优先于日更链
+ * 按天增量跑的那批（覆盖面广但每条更短）。新版本加进来时排在其后（按版本名），
+ * 永远赢不过列表里的版本。
  */
-const CONTENT_PRIORITY = ['travel-localize-v1', 'catalog-localize-v1'];
+const VERSION_PRIORITY = ['travel-localize-v1', 'catalog-localize-v1'];
+
+/** @deprecated 旧名，正文激活沿用；新代码用 `VERSION_PRIORITY`。 */
+const CONTENT_PRIORITY = VERSION_PRIORITY;
+
+/**
+ * 某个版本激活时，**自动**保护比它优先级高的版本。
+ *
+ * 这一步做成自动推导而不是「调用方自己传」：2026-09-23 实测踩过这个坑 ——
+ * 激活 `catalog-localize-v1` 时忘了带上 `travel-localize-v1`，闸门整体失效，
+ * travel 那批（4,107 个产品、描述更全）被误撤成 shadow。**只要版本在优先级列表里，
+ * 它上面的版本就不需要调用方记得传。** 列表外的版本不受保护（无从判断谁高谁低）。
+ */
+function higherPriorityVersions(processorVersion) {
+  const index = VERSION_PRIORITY.indexOf(processorVersion);
+  return index <= 0 ? [] : VERSION_PRIORITY.slice(0, index);
+}
 
 function parseArgs(argv) {
-  const options = { processorVersion: null, out: null, dryRun: false, mode: 'taxonomy', versions: null };
+  const options = { processorVersion: null, out: null, dryRun: false, mode: 'taxonomy', versions: null, protect: null };
   const booleans = new Set(['--dry-run', '--content', '--taxonomy']);
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
     const value = inline === undefined && !booleans.has(name) ? argv[++index] : inline;
     if (name === '--processor-version') options.processorVersion = value;
     else if (name === '--versions') options.versions = String(value).split(',').map(v => v.trim()).filter(Boolean);
+    else if (name === '--protect') options.protect = String(value).split(',').map(v => v.trim()).filter(Boolean);
     else if (name === '--out') options.out = path.resolve(value);
     else if (name === '--dry-run') options.dryRun = true;
     else if (name === '--content') options.mode = 'content';
@@ -49,7 +69,7 @@ function parseArgs(argv) {
   if (options.mode === 'taxonomy' && !options.processorVersion) {
     throw new Error('需要 --processor-version（例如 travel-localize-v1）');
   }
-  if (options.mode === 'content' && !options.versions) options.versions = [...CONTENT_PRIORITY];
+  if (options.mode === 'content' && !options.versions) options.versions = [...VERSION_PRIORITY];
   if (!options.dryRun && !options.out) throw new Error('需要 --out（或 --dry-run）');
   return options;
 }
@@ -72,10 +92,16 @@ function activationScope(processorVersion) {
  *
  * ② 用**自连接**而不是子查询：MySQL 不允许在 UPDATE 的子查询里引用同一张表
  * （`You can't specify target table for update in FROM clause`），而多表 UPDATE 允许。
+ *
+ * `protectVersions`：**已经在 current 的更高优先级版本**。同一个 facet 上两批 LLM 标签
+ * 同时 current 会让分面计数翻倍（同一个产品在一个分面里被算两次），所以低优先级版本
+ * 激活时要把自己的行撤下来。**必须传全**：只传自己会让这个闸整体失效
+ * （2026-09-23 实测：正文激活只传 `catalog-localize-v1` 时，travel 那批 8,214 行会被误撤；
+ * 标签侧同理，travel 批 4,107 个产品的 330 个冲突对会变成双份计数）。
  */
-function buildStatements(processorVersion) {
+function buildStatements(processorVersion, protectVersions = []) {
   const version = quote(processorVersion);
-  return [
+  const statements = [
     `UPDATE taxonomy_assignments SET is_current=1
 WHERE processor_version=${version} AND is_current=0`,
 
@@ -87,6 +113,23 @@ SET ta.is_current=0
 WHERE ta.assignment_source='rule'
   AND ta.facet NOT IN (${RULE_ONLY_FACETS.map(quote).join(',')})`,
   ];
+
+  if (protectVersions.length) {
+    // 同 facet 上已有更高优先级的 LLM 行时，本版本那一行退回 shadow —— 否则同分面双计数。
+    statements.push(
+      `UPDATE taxonomy_assignments ta
+JOIN taxonomy_assignments hi
+  ON hi.product_id = ta.product_id
+ AND hi.facet = ta.facet
+ AND hi.is_current = 1
+ AND hi.processor_version IN (${protectVersions.map(quote).join(',')})
+SET ta.is_current=0
+WHERE ta.processor_version=${version}
+  AND ta.is_current=1`
+    );
+  }
+
+  return statements;
 }
 
 function buildRollbackStatements(processorVersion) {
@@ -199,15 +242,19 @@ function verifyContentQueries(versions) {
 
 function main(options) {
   const content = options.mode === 'content';
+  // 标签侧也自动保护更高优先级版本：否则两批 LLM 标签在同 facet 上同时 current，计数翻倍。
+  const protect = options.protect || higherPriorityVersions(options.processorVersion);
   const statements = content
     ? buildContentStatements(options.versions)
-    : buildStatements(options.processorVersion);
+    : buildStatements(options.processorVersion, protect);
   const rollback = content
     ? buildContentRollbackStatements(options.versions)
     : buildRollbackStatements(options.processorVersion);
   const report = {
     mode: options.mode,
-    ...(content ? { versions: contentVersions(options.versions) } : { processorVersion: options.processorVersion, ruleOnlyFacets: RULE_ONLY_FACETS }),
+    ...(content
+      ? { versions: contentVersions(options.versions) }
+      : { processorVersion: options.processorVersion, ruleOnlyFacets: RULE_ONLY_FACETS, protectVersions: protect }),
     statements: statements.length,
     verify: content ? verifyContentQueries(options.versions) : verifyQueries(options.processorVersion),
   };
@@ -241,5 +288,5 @@ if (require.main === module) {
 module.exports = {
   parseArgs, buildStatements, buildRollbackStatements, verifyQueries,
   buildContentStatements, buildContentRollbackStatements, verifyContentQueries, contentVersions,
-  RULE_ONLY_FACETS, CONTENT_PRIORITY, activationScope,
+  RULE_ONLY_FACETS, CONTENT_PRIORITY, VERSION_PRIORITY, higherPriorityVersions, activationScope,
 };
