@@ -1,0 +1,60 @@
+name: 导出产品增强队列（离线补跑用）
+
+# 为什么单独一个 workflow：队列在 RDS 里，本机网络在协议层重置到 3306 的 TLS 握手（只能借
+# Actions 的 Cloudflare 凭据经临时 Worker 通道读）；而模型网关 127.0.0.1:18640 是本机自建，
+# Actions 到不了。所以「读队列」和「跑模型」必须分处两地：
+#   ① 这里：导出队列 + 该 run 的既有状态 → 产物（artifact）
+#   ② 本机：node scripts/catalog/enrich-queue.js --in ... --status ... --out <sql>
+#   ③ 回到 Actions：apply-catalog-sql.yml 写库（shadow），再 activate-enrichment.js 激活
+#
+# 只读：只用 SELECT，不写任何东西。
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: '目标日期（products.first_seen_date = 该日，即当天新增桶）'
+        required: true
+        default: '2026-09-22'
+      retention_days:
+        description: '产物保留天数'
+        required: false
+        default: '14'
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: 安装项目依赖
+        run: npm ci
+
+      - name: 导出队列与该 run 的既有状态
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          mkdir -p .scratch
+          node scripts/catalog/export-queue.js \
+            --date "${{ github.event.inputs.date }}" \
+            --out ".scratch/queue-${{ github.event.inputs.date }}.json" \
+            --status-out ".scratch/status-${{ github.event.inputs.date }}.json"
+
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: enrich-queue-${{ github.event.inputs.date }}
+          path: |
+            .scratch/queue-${{ github.event.inputs.date }}.json
+            .scratch/status-${{ github.event.inputs.date }}.json
+          retention-days: ${{ github.event.inputs.retention_days }}

@@ -649,6 +649,7 @@ if (require.main === module) {
 module.exports = {
   PROCESSOR,
   PROCESSOR_VERSION,
+  MODE,
   parseArgs,
   stableRunId,
   inputHashFor,
