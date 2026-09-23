@@ -305,7 +305,37 @@ node scripts/catalog/activate-enrichment.js --content --versions travel-localize
 3. 按 `first_seen_date` 分组看哪一天整批没中文 —— 日更链按天跑 `enrich-products.js --date <日期>`，**某天没跑就是整批缺**。队列口径是 `products.first_seen_date = target_date`（全局首次出现，互斥、恰好一次）。
    - **日更链不是自动的**：`enrich-products.js` 需要 `--channel`（临时 Worker 通道）或 `--mysql-url`，而**本机没有 Cloudflare 凭据**（`wrangler whoami` 报 token 过期）；仓库里也没有任何定时 workflow 跑它（`.github/workflows/` 里只有 `apply-catalog-sql.yml` 引用到它，且是 `workflow_dispatch`）。目前跑过的批次都是手工的：`catalog-localize-v1` 只覆盖 **09-14..09-20 七天**，`travel-localize-v1` 是 09-22 按标签全历史那一批。**所以「某天之后整批没中文」是常态，不是故障。**
    - 只读 API **不能**当队列源：`/api/v1/products` 强制 `term`（`queryProducts` 第 344 行的 `^[a-z0-9-]+$` 校验），传日期区间不传 term 会得到 `invalid taxonomy term`。`enrich-travel.js --pull` 能按标签拉，是因为它传了 `term`。
-4. 补跑走 `node scripts/catalog/enrich-products.js --date <YYYY-MM-DD> --out <sql>`（**本机跑模型**，网关在 `127.0.0.1:18640`，Actions 到不了），再 `apply-catalog-sql.yml` 写库，再 `activate-enrichment.js --content` 激活。
+4. 补跑走**三跳**（见下一节）—— 不能直接跑 `enrich-products.js`，它需要 `--channel`（本机无 CF 凭据）。
+
+### 补跑某一天：三跳（因为队列与模型分处两地）
+
+`enrich-products.js` 自己取队列也自己写库，而这两件事的可用环境**互斥** —— 队列在 RDS（本机到 3306 的 TLS 握手被出口重置），模型网关 `127.0.0.1:18640` 是本机自建（Actions 到不了）。所以补跑拆三跳：
+
+```bash
+# ① Actions：导出队列 + 该 run 的既有状态（只读 SELECT）
+gh workflow run catalog-queue-export.yml --ref main -f date=2026-09-22
+gh run download <run-id> -D .scratch/qexp
+
+# ② 本机：跑模型，出回放 SQL（--dry-run 收集语句，不碰库）
+node scripts/catalog/enrich-queue.js \
+  --in .scratch/qexp/enrich-queue-<date>/queue-<date>.json \
+  --status .scratch/qexp/enrich-queue-<date>/status-<date>.json \
+  --date <date> --concurrency 6 \
+  --out .scratch/sql-<date>.sql --summary .scratch/summary-<date>.json
+
+# ③ Actions：写库（shadow）→ 激活
+gh workflow run apply-catalog-sql.yml --ref main -f sql_path=.scratch/sql-<date>.sql
+node scripts/catalog/activate-enrichment.js --content --versions catalog-localize-v1 --out .scratch/act.sql
+```
+
+**这条链为什么不能自己拼 SQL**：`enrich-queue.js` 把导出的**原始行**喂给一个假 db，调 `runEnrichment()` 走**与日更链逐字相同**的代码路径（`localizationInput` → `inputHashFor` → `planQueue` → `resultBatchSql`）。所以输入哈希、批次形状、`content_source` 命名天然同源。导出器若把行压成 `{title, desc}`，那条路径上任何未来改动都不会反映到补跑 —— 哈希分叉 → 同一批被反复重付。
+
+**三个会静默烧钱的坑**（都已在代码里设成硬失败）：
+
+- **`MODE` 必须从 `enrich-products.js` 导出**：`stableRunId` 把它算进 run id，漏了（`mode: undefined`）就得到与日更链**不同**的 run id，续跑判定读不到该 run 的状态行 → 整批当新的重付。实测漏掉时 `enr_5b38f526…` vs 正确 `enr_0de7c26d…`。
+- **假 db 不许对不认识的查询静默返回空数组**：那会把「查不到状态」伪装成「全新一批」。
+- **`--status` 必需**：本机查不到库，没有状态文件就无从判定续跑。
+- 导出 workflow **一次只跑一天**：两个并发会部署同名临时 Worker 互相踩（实测 09-21/09-22 同时派发，后一个 `waitForRoute` 十次全失败）。
 
 ## 原始来源层（source-raw）
 
