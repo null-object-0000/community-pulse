@@ -20,6 +20,11 @@ on:
         type: boolean
         required: false
         default: false
+      allow_activation:
+        description: '受审开关：放行 taxonomy_assignments 的 is_current=1 激活语句（默认拒绝）'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -51,11 +56,13 @@ jobs:
             exit 1
           fi
           echo "文件: $SQL ($(wc -c < "$SQL") 字节)"
-          # 安全闸：这份 SQL 只该写 shadow 行（is_current=0），不该出现任何激活语句。
+          # 安全闸：这份 SQL 默认只该写 shadow 行（is_current=0），不该出现任何激活语句。
+          # 要激活必须显式打开 allow_activation（受审操作），且仍限 taxonomy_assignments。
           # gz 会在这里被解开再检查 —— 闸门必须看到真实语句，不能只看压缩流的字节。
-          if ! node scripts/catalog/apply-sql.js --file "$SQL" --dry-run; then
-            echo "校验失败（见上）"
-            exit 1
+          if [ "${{ github.event.inputs.allow_activation }}" = "true" ]; then
+            node scripts/catalog/apply-sql.js --file "$SQL" --dry-run --allow-activation || { echo "校验失败（见上）"; exit 1; }
+          else
+            node scripts/catalog/apply-sql.js --file "$SQL" --dry-run || { echo "校验失败（见上）"; exit 1; }
           fi
 
       - name: 应用到产品库
@@ -68,5 +75,9 @@ jobs:
             echo "缺少 CLOUDFLARE_API_TOKEN：无法部署临时通道 Worker。"
             exit 1
           fi
-          node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel
+          if [ "${{ github.event.inputs.allow_activation }}" = "true" ]; then
+            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel --allow-activation
+          else
+            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel
+          fi
 

@@ -34,15 +34,19 @@ function readSql(file) {
 }
 
 function parseArgs(argv) {
-  const options = { file: null, channel: false, mysqlUrl: process.env.CATALOG_MYSQL_URL || '', dryRun: false, batch: STATEMENTS_PER_BATCH };
+  const options = { file: null, channel: false, mysqlUrl: process.env.CATALOG_MYSQL_URL || '', dryRun: false, batch: STATEMENTS_PER_BATCH, allowActivation: false };
+  // 布尔开关必须在这里列出：否则 `--allow-activation` 会被当成「取值开关」，
+  // 把下一个参数（这里是 `--dry-run`）吃掉当值 —— 与 enrich-travel.js 的 `--pull` 同一个坑。
+  const booleans = new Set(['--channel', '--dry-run', '--allow-activation']);
   for (let i = 0; i < argv.length; i += 1) {
     const [name, inline] = argv[i].split('=', 2);
-    const value = inline === undefined ? argv[++i] : inline;
+    const value = inline === undefined && !booleans.has(name) ? argv[++i] : inline;
     if (name === '--file') options.file = path.resolve(value);
     else if (name === '--channel') options.channel = true;
     else if (name === '--mysql-url') options.mysqlUrl = value;
     else if (name === '--dry-run') options.dryRun = true;
     else if (name === '--batch') options.batch = Number(value);
+    else if (name === '--allow-activation') options.allowActivation = true;
     else throw new Error(`unknown argument: ${argv[i]}`);
   }
   if (!options.file) throw new Error('需要 --file <sql 文件>');
@@ -73,14 +77,24 @@ function splitSql(sql) {
 }
 
 /**
- * shadow 闸：这条流水线只写 `is_current=0` 的行。激活是单独的受审操作（改 `is_current`），
- * 由人决定，不由自动流水线代做 —— 曾经就是因为自动激活，线上短暂出现过半成品描述。
+ * shadow 闸：默认只允许写 `is_current=0` 的行。激活（改 `is_current`）是单独的受审操作 ——
+ * 曾经就是因为自动激活，线上短暂出现过半成品描述。
+ *
+ * `--allow-activation` 是那道受审入口：只有显式传它才放行含 `is_current=1` 的语句，且仍然要求
+ * 每一条这样的语句都来自 `activate-enrichment.js` 的形状（`UPDATE taxonomy_assignments`），
+ * 不允许任意写。默认（不传）保持拒绝。
  */
-function assertShadowOnly(statements) {
+function assertShadowOnly(statements, { allowActivation = false } = {}) {
   const offenders = statements.filter((statement) => /is_current\s*=\s*1/.test(statement));
-  if (offenders.length) {
-    throw new Error(`拒绝应用：${offenders.length} 条语句含 is_current=1，激活不是这条流水线的职责`);
+  if (!offenders.length) return;
+  if (!allowActivation) {
+    throw new Error(`拒绝应用：${offenders.length} 条语句含 is_current=1，激活需要显式 --allow-activation`);
   }
+  const unexpected = offenders.filter((statement) => !/^\s*UPDATE\s+taxonomy_assignments/i.test(statement));
+  if (unexpected.length) {
+    throw new Error(`拒绝应用：${unexpected.length} 条激活语句不是 taxonomy_assignments 的激活形状`);
+  }
+  console.log(`[apply] --allow-activation：放行 ${offenders.length} 条激活语句（taxonomy_assignments）`);
 }
 
 function summarize(file, sql, statements) {
@@ -100,7 +114,7 @@ function summarize(file, sql, statements) {
 async function main(options) {
   const sql = readSql(options.file);
   const statements = splitSql(sql);
-  assertShadowOnly(statements);
+  assertShadowOnly(statements, { allowActivation: options.allowActivation });
   const summary = summarize(options.file, sql, statements);
   console.log(`[apply] ${summary.file}: ${summary.bytes} 字节 / ${statements.length} 条语句`);
   console.log(`[apply] ${JSON.stringify(summary.kinds)}`);
