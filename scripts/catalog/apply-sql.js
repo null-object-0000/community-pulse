@@ -141,7 +141,7 @@ async function main(options) {
   } finally {
     await db.close();
   }
-  console.log(`[apply] 完成：${applied} 条语句已应用（shadow，未激活）`);
+  console.log(`[apply] 完成：${applied} 条语句已应用（${options.allowActivation ? '含激活语句' : 'shadow，未激活'}）`);
   return { ...summary, applied };
 }
 
