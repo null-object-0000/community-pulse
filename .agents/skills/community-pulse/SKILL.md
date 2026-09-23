@@ -300,8 +300,9 @@ node scripts/catalog/activate-enrichment.js --content --versions travel-localize
 
 1. 分类页是**构建期快照**（`data/catalog/site-snapshot/categories/**`，由 `catalog-refresh.yml` 的 `catalog:snapshot` 重建），详情页与列表 API 是**实时读库**。改完数据必须重建快照才反映到分类页。
 2. 分类页列表按**首见日期倒序**，所以**最上面几条恰好是当天新收录、还没跑增强的产品** —— 别用「前 3 条有没有中文」判断成没成，要看比例。
-   - **比例也别只看单个分类**：`travel-mobility` 因为整批补跑过是 **713/743 = 95%**，而同期其他分类（`capability-extension`、`business-growth`、`data-operations` 等）只有 **8~17%** —— 全站分类快照去重 **30,652 个产品里 3,815 个有中文（12%）**。分类之间的差距来自「有没有专门跑过那一批」，不是读取端坏了。
-   - 全库口径（2026-09-23 实测）：`products` **322,393**、`product_content` current **10,725 个产品**（= `travel-localize-v1` 4,107 + `catalog-localize-v1` 6,704，两批无重叠）。
+   - **产品名是专有名词时本来就该是英文**：`Paralight` / `Lingua Playlist` / `Hostelcare` 这些品牌名，模型按设计**不翻译**（zh-CN 行的 `title` 就等于原名），所以「标题还是英文」不等于没生效 —— 看 `summaryZh`（实测这几条的中文摘要 55~60 字都在）。`D.displayTitle` 的取值链是 `titleZh` → `title`，标题相同时自然显示原名。**判据是「有没有中文摘要」，不是「标题变没变中文」。**
+   - **比例也别只看单个分类**：`travel-mobility` 因为整批补跑过是 **95%**，而同期其他分类（`capability-extension`、`business-growth`、`data-operations` 等）只有 **8~17%** —— 全站分类快照去重 **30,652 个产品里 3,815 个有中文（12%）**。分类之间的差距来自「有没有专门跑过那一批」，不是读取端坏了。
+   - 全库口径（2026-09-23 补跑 09-21/09-22 并激活后实测）：`products` **322,393**、`product_content` current **25,370 行 / 12,685 个产品**（`catalog-localize-v1` 8,679 + `travel-localize-v1` 4,107，两批无重叠；另有 **202 行刻意保持 shadow** —— 那是被 travel 优先级保护挡下的同 (产品, locale) 行）。**仍是少数**：激活只是让已入库的可见，覆盖率要靠继续按天/按标签跑增强才涨。
 3. 按 `first_seen_date` 分组看哪一天整批没中文 —— 日更链按天跑 `enrich-products.js --date <日期>`，**某天没跑就是整批缺**。队列口径是 `products.first_seen_date = target_date`（全局首次出现，互斥、恰好一次）。
    - **日更链不是自动的**：`enrich-products.js` 需要 `--channel`（临时 Worker 通道）或 `--mysql-url`，而**本机没有 Cloudflare 凭据**（`wrangler whoami` 报 token 过期）；仓库里也没有任何定时 workflow 跑它（`.github/workflows/` 里只有 `apply-catalog-sql.yml` 引用到它，且是 `workflow_dispatch`）。目前跑过的批次都是手工的：`catalog-localize-v1` 只覆盖 **09-14..09-20 七天**，`travel-localize-v1` 是 09-22 按标签全历史那一批。**所以「某天之后整批没中文」是常态，不是故障。**
    - 只读 API **不能**当队列源：`/api/v1/products` 强制 `term`（`queryProducts` 第 344 行的 `^[a-z0-9-]+$` 校验），传日期区间不传 term 会得到 `invalid taxonomy term`。`enrich-travel.js --pull` 能按标签拉，是因为它传了 `term`。
