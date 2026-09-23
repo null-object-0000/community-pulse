@@ -270,6 +270,39 @@ cd ../../.. && npm run build
 （实测约一半的行会变）。MySQL / 站点快照里的历史行要另跑 `catalog:build --start --end` +
 `catalog:upload:mysql` 才会刷新。
 
+## 产品库（MySQL）：分类页 / 详情页的正文来自哪张表
+
+**站点有两条互不相通的内容链**，这是最容易误判的地方：
+
+| 页面 | 数据来源 | 有中文吗 |
+|------|----------|----------|
+| 日报 `/reports/<date>/` | `final/<date>.md`（LLM 增强） | ✅ `titleZh` / `summaryZh` |
+| 分类页 `/trends/...`、详情页 `/products/prd_*` | MySQL `product_details.item_json` | 取决于 `product_content` |
+
+`item_json` 是 **`source-raw` 的投影，从不包含 LLM 增强结果**（`scripts/catalog/build-mysql-import.js` 的 `DEFAULT_RAW_ROOT` 就是 `source-raw/`，全仓没有 `enhanced-report` 的引用）。所以「日报有中文、分类页没有」不是 bug，是两条链本来就分开。
+
+**中文正文在 `product_content`，由读取端合并进 item**：`worker/catalog-api.mjs` 的 `attachProductContent` / `mergeContent` 按 `product_id` 取 `is_current=1` 的中英两行，写成 `titleZh`/`summaryZh`/`titleEn`/`summaryEn` —— 这四个键是 `D.displayTitle` / `D.summary` / 详情页 `summaryOf` 唯一认的名字，**改名等于静默不显示**。三条纪律：
+
+- **一次取中英两行，不按请求语言取一行**：Worker 同一份数据要渲染 `/` 与 `/en/`，而产品页缓存键只含 pathname —— 按语言取会让英文页拿到中文标题。
+- **列表在 `productRows` 的 map 之外批量取**（一页 60~300 行，N+1 会打穿 Hyperdrive）。
+- **读取端只认 `is_current=1`**：不自己发明「读 shadow」的第二套语义。**新加工的内容必须先激活才可见**，否则页面看起来毫无变化 —— 那是静默失效，不是「暂时没数据」。
+
+**激活是受审操作**（`scripts/catalog/activate-enrichment.js`，`apply-sql.js` 默认拒绝 `is_current=1`，需显式 `--allow-activation`）：
+
+```bash
+# 标签：提 LLM 行 + 撤同产品的规则行（languages facet 保留 —— LLM 不产出它）
+node scripts/catalog/activate-enrichment.js --processor-version travel-localize-v1 --out .scratch/a.sql
+# 正文：同产品同 locale 只能有一行 current（否则「取最新一条」取决于 created_at 的偶然顺序）
+node scripts/catalog/activate-enrichment.js --content --versions travel-localize-v1,catalog-localize-v1 --out .scratch/c.sql
+```
+
+**判断「某期/某产品为什么没中文」的排查顺序**：
+
+1. 分类页是**构建期快照**（`data/catalog/site-snapshot/categories/**`，由 `catalog-refresh.yml` 的 `catalog:snapshot` 重建），详情页与列表 API 是**实时读库**。改完数据必须重建快照才反映到分类页。
+2. 分类页列表按**首见日期倒序**，所以**最上面几条恰好是当天新收录、还没跑增强的产品** —— 别用「前 3 条有没有中文」判断成没成，要看比例（`sum(1 for p in projects if p.get('titleZh'))`）。
+3. 按 `first_seen_date` 分组看哪一天整批没中文 —— 日更链按天跑 `enrich-products.js --date <日期>`，**某天没跑就是整批缺**。队列口径是 `products.first_seen_date = target_date`（全局首次出现，互斥、恰好一次）。
+4. 补跑走 `node scripts/catalog/enrich-products.js --date <YYYY-MM-DD> --out <sql>`（**本机跑模型**，网关在 `127.0.0.1:18640`，Actions 到不了），再 `apply-catalog-sql.yml` 写库，再 `activate-enrichment.js --content` 激活。
+
 ## 原始来源层（source-raw）
 
 `知识/大家都在做什么/raw/` 是旧的混合日报层，已经包含标准化、去重和渲染逻辑，不能作为不可变的源站原始数据。新的来源层按来源独立建设在：

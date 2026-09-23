@@ -729,11 +729,29 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
   - **`enrichment_product_status` 的 `input_hash` 由规范函数算**，不自己拼一个「长得差不多」的（本脚本从只读 API 取输入，与日更链从 `product_details.item_json` 取是不同的数据源，但喂给规范的形状一样，所以哈希可比）。
   - **结果归一化**：续跑一轮里失败过的产品会在下一轮成功，但 `failed` 里的陈旧条目不会自己消失 —— 出报告前按「是否曾经成功过」剔除（首轮 262 个陈旧 429 记录在最终报告里归零，只剩 3 个真失败）。
 - **测试（代码）**：新增 `tests/catalog-apply-sql.test.js`（5 条）—— 分句与通道 Worker 的 `splitSql` **逐条一致**（引号里的分号是最常见的分歧点，分歧会让「这批 SQL 会做什么」无从判断）、`is_current=1` 被 shadow 闸拦下、语句种类计数。`splitSql` 复刻版写在测试里而不是 import 过来：Worker 与脚本运行在不同运行时，那份复刻就是「两边必须一致」这条断言本身。
-- **本轮只写 shadow，线上不会变（务必记住）**：`enrich-products.js` 的纪律是「所有输出 `is_current=0`，激活是单独的受审操作」，`apply-sql.js` 的 shadow 闸会**拒绝**任何含 `is_current=1` 的 SQL。而且目前 **`product_content` 还没有任何读取端**，`/api/v1/*` 的分类筛选按 `ta.is_current = 1` 取标签 —— 所以这批的归纳 / 翻译 / 重新打标**都已入库但不可见**，让它们生效需要另一次「激活」操作（调 `is_current`），仓库里还没有这个脚本。**这是下一件要做的事，不是这次遗漏的步骤。**
+- **本轮只写 shadow，线上不会变（当时的状态）**：`enrich-products.js` 的纪律是「所有输出 `is_current=0`，激活是单独的受审操作」，`apply-sql.js` 的 shadow 闸会**拒绝**任何含 `is_current=1` 的 SQL；而当时 **`product_content` 还没有任何读取端** —— 所以这批的归纳 / 翻译 / 重新打标入库后不可见。**当天晚些时候已补齐这两步，见下面两条。**
 - **已入库并独立核对（数据）**：`apply-catalog-sql.yml` run `35757167840` 应用 828/828 条语句成功（走临时通道 Worker，约 8 分钟）；随后用 `catalog-read-check.yml` 借 Actions 的 CF 凭据直查产品库核对 —— `product_content` **8,214 行 / 4,107 个产品**且 **`is_current` 全为 0**（无任何激活行）、`taxonomy_assignments` **15,059 条 / 4,107 个产品**。三条数字与 SQL 生成时的预期逐项吻合。
   - 新增 `catalog-read-check.yml` + `scripts/catalog/read-check.js`：本机没有 CF 凭据（所以写库才必须走 Actions），连「写进去没有」这类**只读**核对也只能借 Actions 的凭据跑。**不要用 `live-query.js` 做这件事** —— 它部署临时 Worker 后直接发请求，而刚 deploy 的 `workers.dev` 路由不是立刻生效（实测会拿到 Cloudflare 的 HTML 404），`createChannelDb` 里有 `waitForRoute` 才处理得了；第一次就是踩了这个（`SyntaxError: Unexpected token '<'`）。
 - **GitHub 主站被墙时的推送方式（环境）**：2026-09-22 晚本机代理（FlClash）的境外节点失效，实测 `github.com` 超时、但 **`api.github.com` / `codeload.github.com` 直连可达**，而 `gh` 的 token 有 `repo`+`workflow` 权限 —— 于是用 Git REST API（blob → tree → commit → ref）把提交推上去，绕开 `git push` 的 HTTPS 通道。两个坑：① blob 的 base64 必须走 **stdin 的 JSON body**，当命令行参数会 E2BIG（「参数列表过长」）；② API 建的提交**不保留作者/时间戳**，所以远端 sha 与本地不同，父链与「内容是否一致」要按 **tree 比对**而不是 sha。脚本在 `.scratch/push_via_api.py`（增量推一个提交）与 `.scratch/push_content.py`（让远端分支内容等于本地某提交，带「远端内容必须是本地基线」的防覆盖闸）。
   - **workflow 必须先落到默认分支才能 `gh workflow run`**（`HTTP 404: not found on the default branch`）—— 这是这次把 `apply-catalog-sql.yml` 合进 main 的直接原因。改动全是新增文件、不被站点构建引用，所以推 main 只触发一次常规重建，没有产物变化。
+
+### 同日追加：激活标签与正文，并给 `product_content` 接上读取端
+
+**起因：用户打开 `/trends/use-cases/travel-mobility/`，问「为啥产品名称还是英文」。**
+
+- **根因（数据）**：分类页与产品详情页的产品名 / 简介来自 MySQL 的 `product_details.item_json`，而它是 **`source-raw`（原始抓取层）的投影，从不包含 LLM 增强结果** —— 全仓搜不到 `scripts/catalog/` 里对 `enhanced-report` 的引用。日报页有中文是因为它读 `final/`，走的是另一条链。**同一批产品的中文译文早就躺在 `product_content` 里**（实测 PGM 的中文行 `一体化 PG（合租公寓）管理门户与实名房源目录…` 就在库里，而页面读的 `item_json` 的 JSON 键里一个中文字段都没有）。
+- **顺带量出真实覆盖率（数据）**：`travel-mobility` 分类页 **2,924 个**产品里，**2,916 个（99.7%）**有可用的中文行（我那批 2,866 + 日更链 50）。所以「接读取端」这一步的收益是确定的，不是赌。
+- **为什么不做「让导入链读 final」那条路（决策）**：`final/` 只有 **17 期**（09-06 起），覆盖 1,381 条目 / **270 个去重产品**；全部 265 期日报去重后也只有 **271 个产品**。花 ¥848 跑全站 322k 产品才能全覆盖，远超授权额度，而收益只有 270 个产品。**改成接 `product_content` 读取端**：中文已在库里、钱已经花了，改的是查询不是数据 —— **零 LLM 成本**。
+- **两处实现（代码）**：
+  - **`worker/catalog-api.mjs` 三处接上**（列表两条查询 + 详情查询），共用 `attachProductContent` / `mergeContent`。合并只写 `titleZh` / `summaryZh` / `titleEn` / `summaryEn` —— 这正是 `D.displayTitle` / `D.summary` / 详情页 `summaryOf` 唯一认的键名，改名等于静默不显示。
+  - **一次取回中英两行，不按请求语言取一行**：Worker 同一份数据要渲染 `/`（中文）与 `/en/`（英文），而产品页的缓存键只含 pathname —— 按语言取会让英文页拿到中文标题。列表页在 `productRows` 的 map **之外**批量取（一页 60~300 行，N+1 会打穿 Hyperdrive）。
+  - **`migrations/mysql/0006_product_content_read_index.sql`**：主键是 `(product_id, locale, content_source, created_at)`，`locale` 夹在中间，按 `product_id + is_current` 过滤时只能用第一列、`is_current` 退化成回表。补 `idx_content_current (product_id, locale, is_current, created_at)`。
+  - **`activate-enrichment.js` 加 `--content` 模式**：正文激活比标签多一层约束 —— **同产品同 locale 只能有一行 current**，否则「取最新一条」就取决于 `created_at` 的偶然顺序。按 `CONTENT_PRIORITY`（`travel-localize-v1` 优先于 `catalog-localize-v1`：按标签专门跑的那批描述更全）逐版本处理，用 `LEFT JOIN` 自连接跳过已有更高优先级 current 的行（`NOT EXISTS` 子查询会撞 MySQL 的「不能在 UPDATE 子查询里引用目标表」）。
+  - `apply-sql.js` 的受审激活形状加上 `product_content`（此前只放行 `taxonomy_assignments`）。
+- **测试（代码）**：新增 `tests/catalog-content-read.test.js`（7 条）守这条链的四件不能退化的事：字段名必须是渲染层认的那四个、必须一次取中英两行、列表必须批量取、读取端只认 `is_current=1`（不自己发明「读 shadow」的第二套语义）。`catalog-apply-sql.test.js` 的受审形状断言同步更新。`npm run check` **313/313**。
+- **上线顺序（三步，都是受审操作）**：① 应用 0006 迁移（`catalog-refresh.yml` 传 `skip_import=true`，只跑迁移不重跑导入）；② 激活正文（`apply-catalog-sql.yml` 传 `allow_activation=true`）—— **必须先激活，否则读取端查不到任何行、页面看起来毫无变化，那是静默失效**；③ Workers Builds 自动部署。
+- **实测结果（数据）**：迁移 `0006: 执行 1 条`；激活 run `35813825623` **4/4 条语句成功**；独立核对 —— `product_content` **21,450 行 current / 10,725 个产品**、**`dup_keys = 0`**（同产品同 locale 严格一行）、travel 8,214 + 日更 13,236。线上验证：**产品详情页已显示中文**（`PGM - Smart PG Management` 页出现「一体化」「实名房源目录」），**列表 API 100 条里 78 条带 `titleZh`**。
+  - **前几条恰好没中文是正常的**：列表按首见日期倒序，而 `Paralight` 这类既不在我那批 4,107 里、也不在日更链那 6,704 里 —— 它在 `product_content` 里 0 行。**别用「前 3 条有没有中文」判断这一步成没成**，要看比例。
 
 ## 值得记录的决策
 
