@@ -142,6 +142,12 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
   - `collect.js` 完全不联网，不应包含任何代理、`curl`或 `gh` 逻辑。
 - **gh 字段名**：`gh search repos --json` 的字段是 `language`（不是 `primaryLanguage`），否则报 "Unknown JSON field"。
 - 交互查看时单个源失败会写入 `error`；生产 workflow 必须使用 `--strict`，任一输入失败就停止。
+- **日报 workflow 的步骤顺序：必需产物必须先落盘，非必需附件排后面**（2026-09-24 两天两次整期缺失换来的）。
+  - 两天两次「整期日报消失」机制不同、后果一样：**都不是数据坏，而是某个非必需环节有权让日报不存在**。① 身份核对（一个可能出错的检查）排在「提交并推送」之前 —— 它自己算出的假漂移让当期 raw / final / 站点全没了；② 站点快照（只是分类页的窗口刷新，缺一天不致命、能事后补）与日报产物挤在同一次提交 —— 它拉数据撞上一次 502，日报也进不了仓库。
+  - 现在的顺序：`提交日报并推送`（raw + source-raw + 图片 + 评论数）→ `站点快照` + 单独提交 → 最后才是 `核对日报行与产品库的身份一致`。**改 workflow 步骤顺序时先问：这一步失败了，当天的日报还在吗？**
+  - 快照失败只损失一次窗口刷新，用 `catalog-refresh.yml` 补即可；身份核对失败是**报告**，不是闸门。
+- **判断「永久失败 vs 暂时重试」只能看状态码，不能看 content-type**：Cloudflare 验证页是 `403, text/html`，而源站错误页 `502/503/504` **也是 `text/html`** —— 拿 `/html/i.test(contentType)` 判永久，就会让一个重试就好的 5xx 让整批数据被丢弃（2026-09-24 实测：快照因此整批失败）。判据：403 与 4xx（429 除外）永久，5xx 与 429 一律重试；网络异常（fetch 直接抛）也重试。
+- **两条链核对同一份数据时，取输入的口径必须共用同一个函数**：日报链与导入链都按日期取 GitHub 仓库快照，但一个「找不到就回退最近一份」、另一个「找不到就当没有」。两条链分叉后，**核对方报出的「漂移」其实是它自己换了输入** —— 门禁假警报拦住的不是坏数据，是它自己造成的差异。改这类「离线重建 + 逐行比对」的校验时，先问：**核对方和被核对方，读的是同一份输入吗？**
 
 ## 渲染
 
@@ -151,7 +157,9 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 
 **`productId` 靠 `--json` 显式指路，别依赖「同目录同名」推断**：`enhance.js` 默认按 `inFile.replace(/\.md$/, '.json')` 找原始 JSON（`raw/<date>.md` → `raw/<date>.json`）。**只要输入 md 是从别处拷来的**（例如 `enhance-report.js` 会先写到 `.scratch/enhancement/<date>.md`），同目录就没有 json，脚本只打一行警告就继续跑 —— 结果是这一期 final 的每条记录都不带 `productId`，`presentation.matchedByProductId=0`、全部退回 `matchedByHeading`。增强本身看着「成功」（`summarySource=llm-final`），只有查 `matchedByProductId` 才发现匹配口径退化了。所以：**凡是不在 `raw/` 目录里跑的增强，必须显式传 `--json <raw>/<date>.json`**，并确认日志里那行「产品身份: N/N 条对齐到 productId」。事后补救不用重跑 LLM —— 带 `--json` 重跑，`normalizeRecords` 会从 `.work` 断点恢复已有结果并按对齐结果补上 `productId`（前提是 `.work` 文件还在；被 `--dry-run` 消耗掉就只能全量重生成）。
 
-**定时任务的失败点会连带吞掉增强**：`~/.hermes/scripts/community_pulse_send.sh` 的第一步是 `git pull --ff-only`，失败即 `exit 1`。这本身是对的（避免发过期日报），但**增强是同一个脚本的第 3 步**，于是网络一断（公司网络到 `github.com` 的 TLS 握手被中断是常态）这一期的 final 就永远不会生成，站点静默回落到 raw 文案（`summarySource=raw`）。补跑办法：网络恢复后 `git checkout FETCH_HEAD -- 知识/大家都在做什么/raw/<date>.{json,md}` 取回 raw，再跑 `node scripts/enhance-report.js --date <date>`；**别直接跑 `enhance.js`**，`enhance-report.js` 才会做投稿准入与去重队列的重写，否则 final 与站点的列表口径不一致。判断某期是否掉队就看线上 `presentation.summarySource`：`llm-final` 正常、`raw` 即未增强。
+**一条垃圾投稿不该让整期日报没有中文**（2026-09-24 实测，形状已出现三次）：`enhance.js` 的批处理原来是「任一条失败 → 整期中止」（`if (failures.length) throw failures[0]`），而**永久性失败确实存在且来自条目本身** —— 阮一峰周刊 Issue 11874 标题字面是 `lost`、正文只有 `good`，模型读这段描述无论如何给不出受控业务场景，校验层拒绝（拒绝是对的），重试 5 次也不会变好。于是 71 条的整期增强在最后一条上全挂、final 一个字节都没产出。**现在分两种失败**：① **条目级**（校验层拒绝，`error.itemLevel = true`）→ 只试一次、跳过这一条（日报里保留原文）、**显式列出跳过了谁**，完整性检查改成 `localized + skipped === items`；② **系统性**（LLM 网关 HTTP/网络、限流打满）→ 仍然整批停下来 —— 绝不能静默产出一期只有零星中文的残缺日报。改这里时留意**标记要转递**：`localize()` 在重试循环结束后另抛新 Error，早先就把 `itemLevel` 丢掉了，结果调用方仍按系统性故障处理。
+
+**定时任务的失败点会连带吞掉增强**：`~/.hermes/scripts/community_pulse_send.sh` 的第一步是 `git pull --ff-only`，失败即 `exit 1`。这本身是对的（避免发过期日报），但**增强是同一个脚本的第 3 步**，于是网络一断（公司网络到 `github.com` 的 TLS 握手被中断是常态）这一期的 final 就永远不会生成，站点静默回落到 raw 文案（`summarySource=raw`）。补跑办法：网络恢复后 `git checkout FETCH_HEAD -- 知识/大家都在做什么/raw/<date>.{json,md}` 取回 raw，再跑 `node scripts/enhance-report.js --date <date>`；**别直接跑 `enhance.js`**，`enhance-report.js` 才会做投稿准入与去重队列的重写，否则 final 与站点的列表口径不一致。判断某期是否掉队就看线上 `presentation.summarySource`：`llm-final` 正常、`raw` 即未增强。**本机已在正确的提交上时，pull 那步可以跳过**（`git log -1` 确认 HEAD 已含当日 raw，就直接跑 `enhance.js --md raw/<date>.md --out final/<date>.md`）。
 
 Markdown 条目的三级标题统一使用纯文字，不在产品名称上包超链接。主链接和补充链接统一放在描述/指标下方的 `🔗` 行，按目标标注为“官网 / GitHub / VibeCafé / Product Hunt / 原文 / 投稿页”。
 

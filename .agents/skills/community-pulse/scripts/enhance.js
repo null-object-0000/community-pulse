@@ -192,23 +192,40 @@ useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二�
   for (let attempt = 1; attempt <= 5; attempt += 1) {
     try {
       const translated = parseJsonResponse(await callLlm(prompt, options));
-      return validateLocalization({
-        titleEn: needsEnglishTitle ? translated.titleEn : item.title,
-        summaryZh: translated.summaryZh,
-        summaryEn: sourceIsChinese ? translated.summaryEn : sourceDescription,
-        primaryCategory: translated.primaryCategory,
-        taxonomy: translated.taxonomy,
-      }, item);
+      let localized;
+      try {
+        localized = validateLocalization({
+          titleEn: needsEnglishTitle ? translated.titleEn : item.title,
+          summaryZh: translated.summaryZh,
+          summaryEn: sourceIsChinese ? translated.summaryEn : sourceDescription,
+          primaryCategory: translated.primaryCategory,
+          taxonomy: translated.taxonomy,
+        }, item);
+      } catch (error) {
+        // 校验层拒绝是**条目本身的属性**：模型读完这段描述仍给不出受控业务场景
+        // （典型是「标题 lost、正文 good」这类垃圾投稿），重试 5 次也不会变好。
+        // 标成 itemLevel 交给调用方决定 —— 跳过这一条，而不是让它卡死整期。
+        // 与它相对的是 callLlm 的 HTTP/网络错误：那是系统性故障，必须整批失败。
+        error.itemLevel = true;
+        throw error;
+      }
+      return localized;
     } catch (error) {
       lastError = error;
       console.error(`  ${item.title.slice(0, 30)} 尝试${attempt}: ${error.message}`);
+      // 条目级失败（校验层拒绝）：重试不会变好，立刻停手交给调用方跳过。
+      if (error.itemLevel) break;
       if (error.status === 429 && attempt < 5) {
         const delay = rateLimitDelayMs(attempt, error.retryAfterMs, options.random);
         await (options.sleep || (ms => new Promise(resolve => setTimeout(resolve, ms))))(delay);
       }
     }
   }
-  throw new Error(`${item.title}: 双语增强失败（${lastError?.message || '未知错误'}）`);
+  // **标记必须转递**：这里另抛一个新 Error，如果丢掉 `itemLevel`，调用方就会把
+  // 一条垃圾投稿误判成系统性故障、整期中止 —— 那正是这个函数要修的问题本身。
+  const fatal = new Error(`${item.title}: 双语增强失败（${lastError?.message || '未知错误'}）`);
+  if (lastError?.itemLevel) fatal.itemLevel = true;
+  throw fatal;
 }
 
 function decodeMetadataComment(line) {
@@ -336,6 +353,8 @@ async function main() {
   const concurrency = parseInt(process.env.ENHANCE_CONCURRENCY || '5', 10);
   const pending = items.filter(item => !localizedByIndex.has(item.idx));
   console.error(`共 ${items.length} 条，已恢复 ${localizedByIndex.size} 条，待生成 ${pending.length} 条中英双语内容...`);
+  /** 条目级失败：模型读完这段描述仍给不出受控业务场景（垃圾投稿居多）。跳过，不卡死整期。 */
+  const skipped = new Map();
   for (let index = 0; index < pending.length; index += concurrency) {
     const batch = pending.slice(index, index + concurrency);
     const results = await Promise.allSettled(batch.map(localize));
@@ -343,6 +362,13 @@ async function main() {
     results.forEach((result, resultIndex) => {
       const item = batch[resultIndex];
       if (result.status === 'rejected') {
+        // **区分两种失败**：条目自身分类不了（跳过，本期少这一条的中文）
+        // 与系统性故障（LLM 网关/网络/限流打满 —— 必须整批停下来，绝不静默产出一期残缺日报）。
+        if (result.reason?.itemLevel) {
+          skipped.set(item.idx, String(result.reason.message || '未知原因'));
+          console.error(`[跳过] ${item.title.slice(0, 30)}：${result.reason.message}`);
+          return;
+        }
         failures.push(result.reason);
         return;
       }
@@ -355,13 +381,23 @@ async function main() {
   }
   normalizeRecords(items, localizedByIndex, productIds);
   if (!dry) {
-    if (localizedByIndex.size !== items.length) {
-      throw new Error(`双语增强不完整：${localizedByIndex.size}/${items.length}`);
+    if (localizedByIndex.size + skipped.size !== items.length) {
+      throw new Error(`双语增强不完整：${localizedByIndex.size}+${skipped.size}/${items.length}`);
+    }
+    if (skipped.size) {
+      // 跳过的条目在日报里保持原文（无中文摘要），所以必须显式报出来 —— 静默少几条
+      // 比整期失败更难发现。数量异常多通常说明提示词或分类表出了问题，不只是投稿质量差。
+      console.error(`⚠️  ${skipped.size} 条因无法归类被跳过（保留原文）：`);
+      for (const [idx, reason] of skipped) {
+        const item = items.find(entry => entry.idx === idx);
+        console.error(`    - ${item ? item.title.slice(0, 40) : `#${idx}`}：${reason}`);
+      }
     }
     // 摘要为空本身不算错（源描述缺失时 validateLocalization 会主动清空，宁可留空也不让模型编），
     // 但「源描述非空却产出空摘要」一律是 bug —— 校验只查条数查不到它，历史上 13 条 Show HN
     // 空摘要就是这样静默通过了整条流水线。这里把它变成硬失败。
     const hollow = items.filter((item) => {
+      if (skipped.has(item.idx)) return false; // 跳过的条目本来就没有摘要，不是「源描述非空却产出空摘要」
       if (!translationInput(item.desc)) return false;
       const localized = localizedByIndex.get(item.idx);
       return !localized || !String(localized.summaryZh || '').trim() || !String(localized.summaryEn || '').trim();
