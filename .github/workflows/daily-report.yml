@@ -158,13 +158,6 @@ jobs:
           node scripts/catalog/check-mysql-import.js
           node scripts/catalog/upload-mysql.js
 
-      - name: 从 MySQL 生成版本化站点快照
-        run: |
-          # 公共趋势与全部受控分类页只读这份可重建快照；来源自定义才走实时 API。
-          # 快照生成器会分页拉取固定 12 周分类列表，并同时更新 Worker 的缓存版本；
-          # 全历史与任意日期范围保留给实时 API，避免把数百 MB 数据重复提交到 Git。
-          npm run catalog:snapshot -- --to "${{ steps.setdate.outputs.date }}"
-
       - name: 持久化站点图片
         run: npm run images:sync
 
@@ -187,17 +180,21 @@ jobs:
           fi
           npm run images:upload
 
-      - name: 提交并推送
-        id: commit
+      # **日报产物在这里就先落地**，不等后面的站点快照。
+      #
+      # 为什么把提交提前：日报需要的是 `raw/<date>.md|json` + 图片来源 + 评论数，而站点快照
+      # 只是**分类页的窗口刷新**（缺一天不致命，实时 API 兜得住，也可以事后
+      # `catalog-refresh.yml` 补）。原来全部挤在一次提交里，于是快照或图片任一步失败，
+      # 连日报本身都进不了仓库 —— 2026-09-24 实测：快照拉分类数据撞上一次 502，当期日报
+      # 整期没提交，07:30 无东西可发。**附件失败不该连累日报存在。**
+      - name: 提交日报并推送
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # 来源层可能顺手修复更早的缺口，因此提交所有来源的日分区目录。
           git add "知识/大家都在做什么/raw/$TARGET.md" "知识/大家都在做什么/raw/$TARGET.json" "知识/大家都在做什么/source-raw/"
-          git add assets/images/
-          git add data/comment-counts.json
-          git add data/catalog/site-snapshot/ worker/catalog-version.mjs
+          git add assets/images/ data/comment-counts.json
           git commit -m "docs: $TARGET 大家都在做什么日报(raw)" || echo "无变更可提交"
           # 并发 push 可能冲突: pull --rebase 后再推 (最多重试 3 次)
           for i in 1 2 3; do
@@ -210,7 +207,31 @@ jobs:
             fi
           done
 
-      # **必须在「提交并推送」之后**：这一步是核对，不是门禁闸门 —— 数据该落的先落下，
+      - name: 从 MySQL 生成版本化站点快照
+        run: |
+          # 公共趋势与全部受控分类页只读这份可重建快照；来源自定义才走实时 API。
+          # 快照生成器会分页拉取固定 12 周分类列表，并同时更新 Worker 的缓存版本；
+          # 全历史与任意日期范围保留给实时 API，避免把数百 MB 数据重复提交到 Git。
+          # 排在日报提交**之后**：这一步失败只损失一次窗口刷新（可用 catalog-refresh.yml 补），
+          # 不该把当天的日报挡在门外。
+          npm run catalog:snapshot -- --to "${{ steps.setdate.outputs.date }}"
+
+      - name: 提交站点快照并推送
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          git add data/catalog/site-snapshot/ worker/catalog-version.mjs
+          git commit -m "data(catalog): $TARGET 站点快照" || echo "无变更可提交"
+          for i in 1 2 3; do
+            if git push; then
+              break
+            else
+              echo "push 冲突, 第 ${i} 次 pull --rebase 后重试"
+              git pull --rebase origin main || true
+              sleep 2
+            fi
+          done
+
+      # **必须在「提交日报并推送」之后**：这一步是核对，不是门禁闸门 —— 数据该落的先落下，
       # 身份漂移单独变红。它排在推送之前时，一条行算错就把整期日报挡在门外
       # （2026-09-23 实测：门禁自己算出的假漂移让当期 raw / final / 站点全部缺失）。
       - name: 核对日报行与产品库的身份一致

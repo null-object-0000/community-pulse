@@ -58,8 +58,12 @@ async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Pro
       if (!response.ok || !/\bjson\b/i.test(contentType)) {
         const ray = response.headers.get('cf-ray');
         const message = `${route}: HTTP ${response.status}, ${contentType || 'unknown content type'}${ray ? `, cf-ray ${ray}` : ''}`;
-        // A challenge page cannot be solved by retrying and must never be printed into CI logs.
-        if (response.status === 403 || /html/i.test(contentType)) throw Object.assign(new Error(`${message}; expected catalog JSON (possible Cloudflare challenge)`), { permanent: true });
+        // **「是不是 HTML」不能用来判「永久」**：Cloudflare 的验证页是 HTML（403），但 502/503/504
+        // 的源站错误页**也是 HTML** —— 而那些是暂时的，必须重试。2026-09-24 实测踩到：`502, text/html`
+        // 被判成永久 → 整批快照丢弃 → 当期日报没提交（那时的 run 35937702792）。
+        // 判据改成**按状态码**：403 与 4xx（429 除外）是永久；5xx 一律重试。
+        const permanent = response.status === 403
+          || (response.status >= 400 && response.status < 500 && response.status !== 429);
         let errorCode = '';
         if (/\bjson\b/i.test(contentType)) {
           try {
@@ -67,8 +71,12 @@ async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Pro
             if (/^[a-z_]{1,80}$/.test(body?.error || '')) errorCode = `, catalog error ${body.error}`;
           } catch (_) {}
         }
-        const error = new Error(`${message}${errorCode}; expected catalog JSON`);
-        if (response.status >= 400 && response.status < 500 && response.status !== 429) error.permanent = true;
+        const suffix = permanent ? '（永久，不重试）' : '（暂时，将重试）';
+        // 403 保留「possible Cloudflare challenge」这个措辞：它是验证页的特征，也是既有测试
+        // 与运维习惯认的信号。**响应体一律不进错误消息**（可能含 challenge token）。
+        const hint = response.status === 403 ? '; expected catalog JSON (possible Cloudflare challenge)' : `; expected catalog JSON${suffix}`;
+        const error = new Error(`${message}${errorCode}${hint}`);
+        if (permanent) error.permanent = true;
         throw error;
       }
       return response.json();
