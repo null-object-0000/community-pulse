@@ -86,9 +86,16 @@ function checkReportIdentity(date) {
   const { loadItems, loadGithubRepositories, attachRepositoryFacts, attachDescriptionFallback } =
     require('../../.agents/skills/community-pulse/scripts/source_raw_items.js');
   const { identityFor, productId } = require('./identity.js');
+  const { repositoryEvidenceDate } = require('./build-mysql-import.js');
   const config = JSON.parse(fs.readFileSync(path.join(ROOT, '.agents', 'skills', 'community-pulse', 'config', 'sources.json'), 'utf8'));
 
   // 与导入链逐字同源：loadItems → attachRepositoryFacts → attachDescriptionFallback → identitiesFor。
+  //
+  // **快照日期必须走 `repositoryEvidenceDate`（导入链的同一函数）**，不能按字面日期取。
+  // 2026-09-23 的假漂移就是这么来的：导入链对「09-23」回落到仓库里最近的一份快照（09-22），
+  // 而这里当时用字面日期 `loadGithubRepositories(ROOT, cursor)`，观测日 09-24 那份快照还没
+  // 提交进仓库 → 抛错 → 整批不挂仓库事实 → githubUrl 与报告行不同 → 同一行算出两个 product_id。
+  // **它不是数据漂移，是核对方自己换了输入。**
   const projected = new Map();
   for (const source of config.sources.filter((item) => item.enabled)) {
     for (let cursor = start; cursor <= end; cursor = shiftDate(cursor, 1)) {
@@ -99,7 +106,11 @@ function checkReportIdentity(date) {
         continue;
       }
       let repositories = null;
-      try { repositories = loadGithubRepositories(SOURCE_RAW, cursor).repositories; } catch { repositories = null; }
+      // 与导入链同源：先算这一期的证据日，再按证据日取快照（取不到就 null，与导入链一致）。
+      const evidenceDate = repositoryEvidenceDate(SOURCE_RAW, cursor);
+      if (evidenceDate) {
+        try { repositories = loadGithubRepositories(SOURCE_RAW, evidenceDate).repositories; } catch { repositories = null; }
+      }
       const items = attachDescriptionFallback(attachRepositoryFacts(loaded.items, repositories), { repositories, descriptions: null });
       for (const item of items) projected.set(`${source.id}|${item.externalId}`, productId(identityFor(item)));
     }
