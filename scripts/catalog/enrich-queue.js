@@ -12,7 +12,7 @@
  * 配 `--dry-run`，该函数会把本该执行的语句**收集**进 `sqlOut` 而不是执行。所以离线补跑与
  * 日更链的输入哈希、批次形状、`content_source` 命名天然同源，将来改那条链这里自动跟上。
  *
- * 假 db 只回答两个查询：`newBucketSql`（喂离线行）与 `runStatusSql`（该 run 的既有状态）。
+ * 假 db 只回答两个查询：`queueSql`（喂离线行）与 `runStatusSql`（该 run 的既有状态）。
  * **状态必须来自离线文件**：本机查不到库，而状态决定「0 请求续跑」—— 若假装没有状态行，
  * 每个产品都会被当成新的重新付费。所以 `--status <file>` 是必需的（由导出器一并产出，
  * 见 `export-queue.js` 的 `--status-out`）。
@@ -24,7 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const {
-  runEnrichment, newBucketSql, runStatusSql, stableRunId, PROCESSOR_VERSION, MODE,
+  runEnrichment, newBucketSql, queueSql, runStatusSql, stableRunId, PROCESSOR_VERSION, MODE,
 } = require('./enrich-products.js');
 
 function parseArgs(argv) {
@@ -59,7 +59,8 @@ function fakeDb({ rows, statusRows, log }) {
   return {
     async select(sql) {
       const q = normalize(sql);
-      if (q === normalize(newBucketSql('__probe__')) || /FROM products p JOIN product_details d/.test(q)) {
+      if (q === normalize(newBucketSql('__probe__')) || q === normalize(queueSql({ date: '__probe__' }))
+        || /FROM products p JOIN product_details d/.test(q)) {
         log(`[db] 喂离线队列 ${rows.length} 行`);
         return rows;
       }
@@ -139,7 +140,10 @@ async function main(options) {
   };
   console.error(`[queue] run id: ${stableRunId(runOptions)}（与日更链同源：date+mode+版本）`);
   const summary = await runEnrichment(runOptions, { db });
-  const statements = db.executed.length;
+  // 语句数取 `summary.sqlStatements`（runEnrichment 在 dry-run 下把语句收进 `executedSql` 后写的），
+  // **不是** `db.executed.length` —— dry-run 根本不走 fakeDb.execute/batch，那个数永远是 0，
+  // 会在「明明生成了 10 条语句」时打印「0 条语句」，把成功误报成空跑。
+  const statements = summary.sqlStatements != null ? summary.sqlStatements : db.executed.length;
   console.error(`[queue] 待加工 ${summary.requestedCount}，跳过 ${summary.skippedNoInputCount}，续跑 ${summary.resumedCount}，失败 ${summary.failedCount}`);
   console.error(`[queue] ${statements} 条语句 → ${options.out}`);
   return summary;

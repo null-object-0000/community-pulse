@@ -10,10 +10,15 @@
  * `localize()` / 提示词 / 受控词表校验 / `sourceHash`。**这里不写第二套 prompt，也不定第二套词表** ——
  * 分叉出第二套语义正是当初删掉它的原因。日报链在跑，所以对 `enhance.js` 零改动，只调用它导出的函数。
  *
- * 队列口径（2026-09-21 拍板，见 CHANGELOG）：
+ * 队列口径（2026-09-21 拍板，2026-10-07 加旅行臂，见 CHANGELOG）：
  *   新增桶   products.first_seen_date = target_date   —— 全局首次出现，互斥、恰好一次
+ *   旅行臂   first_seen_date <= target_date 且本次导入**初次**打上 useCases=travel-mobility
+ *            （assignment_source 规则或 LLM 都算）—— 「当天初次打标为旅行」不因不在新增桶而漏
  *   重入臂   终态是 skipped_no_input 且输入哈希已变    —— 「跳过必须可重入」的实现
  *   0 请求   终态且输入哈希未变                        —— 续跑不重发
+ * 旅行臂为什么必要：新增桶只覆盖「首次出现」，「早就存在、今天才第一次被判为旅行」的产品不在里面
+ * （规则标签按观测内容重算，内容一变就会新增一条 useCases 行）。它和新增桶合成**同一条 SELECT**
+ * （`queueSql` 的 UNION），日更链与离线补跑共用，不另造第二套队列。
  * 为什么不用 `product_source_first_seen.first_seen_date`（来源级首见）：输入取的是**全局唯一**的
  * `product_details` 行，边界必须和输入同源，否则「某个新来源又看到它了」会被选中而输入没变，
  * 那次选择只是空转，还污染成本口径。
@@ -170,13 +175,95 @@ function localizationInput(row) {
 // 队列与状态都是**单条 SELECT**：生产只读通道（worker/catalog-read.mjs）只放行单条 SELECT，
 // 而这一层的读取正好只需要三条。
 
-function newBucketSql(date) {
+function newBucketBody(date) {
   return `SELECT p.id AS product_id, p.first_seen_date, p.title AS product_title,
        d.observed_date, d.content_score, d.item_json
   FROM products p
   JOIN product_details d ON d.product_id = p.id
-  WHERE p.first_seen_date = ${sqlValue(date)}
-  ORDER BY p.id`;
+  WHERE p.first_seen_date = ${sqlValue(date)}`;
+}
+
+function newBucketSql(date) {
+  return `${newBucketBody(date)}\n  ORDER BY p.id`;
+}
+
+/**
+ * 目标 B：当天**初次**被打上 `useCases: travel-mobility` 的产品，也要像当天新增一样立即增强。
+ *
+ * **为什么不是「在新增桶里再筛一次 travel」**：新增桶（`newBucketSql`）本来就含当天全部新产品，
+ * 再按标签筛只会得到它的真子集 —— 一行都不多，等于没加。用户要的是「某个产品第一次被打上
+ * travel-mobility 的那一天就增强它」，而那个产品**可以是早就存在、今天才第一次被打上旅行标签的**
+ * （规则标签由 `D.itemTaxonomy` 在导入时按观测内容重算，内容变了就会新增一条 useCases 行）。
+ *
+ * **判据用 `taxonomy_assignments.created_at`**：该表的规则标签是 `INSERT IGNORE`（见
+ * `build-mysql-import.js`），所以 created_at 就是 (产品, 分面, 词条, 来源, 版本) **第一次**落库的
+ * 时间 —— 这正是「初次打标」。窗口下界锚定到**本次导入**：取当天新增产品**规则**标签里最早的
+ * created_at。**刻意不写「某天零点」**：那要假设 RDS 会话时区等于北京时区（日更在 00:07 北京
+ * 触发，DB 若按 UTC 记时间，边界正好差一天），写错就是静默漏掉或静默多付。锚点值只由 DB 自己的
+ * 时钟产生，比较也在 DB 内完成，时区无关。锚点只取**规则**标签：新产品的规则标签必然是本次导入
+ * 写的，而 LLM 标签可能是更早手工跑出来的，用它当锚会把历史行卷进来、把已加工的产品重付一次。
+ *
+ * **`first_seen_date <= target`**：当天导入的是 TARGET..OBSERVED 两天，首见日 = OBSERVED 的产品
+ * 明天才轮到它的新增桶。今天就把它们卷进旅行臂，它们明天会在自己的新增桶里被**再付一次**
+ * （run id 按天不同，续跑判定读不到今天的 status）。所以只捞「今天及以前首见」的。
+ *
+ * **两种来源都算**：`assignment_source IN ('rule','llm')`。规则打标由导入写、LLM 打标由上一轮
+ * 增强写，用户要的就是「初次打标是谁给的都算」。
+ *
+ * 边界：新增桶为空时锚点是 NULL，旅行臂随之取空集。那一天本来也没有新产品，可以接受。
+ *
+ * **用 `EXISTS` 逐条 assignment 命中**，不是对某个把 useCases 拼起来的字符串做等值：一个产品可以
+ * 同时属于多个业务场景（`['travel-mobility','business-growth']`），等值会漏掉它。
+ */
+function travelBucketBody(options) {
+  const anchor = `(SELECT MIN(ta2.created_at)
+        FROM products p2
+        JOIN taxonomy_assignments ta2 ON ta2.product_id = p2.id
+        WHERE p2.first_seen_date = ${sqlValue(options.date)} AND ta2.assignment_source = 'rule')`;
+  return `SELECT p.id AS product_id, p.first_seen_date, p.title AS product_title,
+       d.observed_date, d.content_score, d.item_json
+  FROM products p
+  JOIN product_details d ON d.product_id = p.id
+  WHERE p.first_seen_date <= ${sqlValue(options.date)}
+    AND EXISTS (
+      SELECT 1 FROM taxonomy_assignments ta
+      WHERE ta.product_id = p.id
+        AND ta.facet = 'useCases'
+        AND ta.term_id = 'travel-mobility'
+        AND ta.assignment_source IN ('rule','llm')
+        AND ta.is_current = 1
+        AND ta.created_at >= ${anchor}
+    )`;
+}
+
+function travelBucketSql(options) {
+  return `${travelBucketBody(options)}\n  ORDER BY p.id`;
+}
+
+/**
+ * **日更链与离线补跑共用的唯一队列**：当天新增桶 ∪ 当天初次打上 travel-mobility 的旅行臂。
+ *
+ * 两臂合成**一条 SELECT**（UNION，按整行去重），所以：
+ *   · 日更链（`enrich-products.js --channel`）与离线补跑（`export-queue.js` + `enrich-queue.js`）
+ *     取的是同一份队列，不存在「本机补的队列和日更改了哪一条」的分叉；
+ *   · 生产只读通道只放行单条 SELECT，UNION 仍是单条；
+ *   · 新增桶里的旅行产品被两臂同时命中，UNION 自动去重，不会重复加工。
+ */
+function queueSql(options) {
+  return `SELECT * FROM (
+${newBucketBody(options.date)}
+  UNION
+${travelBucketBody(options)}
+) AS q ORDER BY product_id`;
+}
+
+/**
+ * 「含 travel-mobility」的纯函数口径：`useCases` 是**多值**列表，用 `includes` 而不是等值。
+ * 与 `travelBucketBody` 的 `EXISTS` 是同一件事的两种表达 —— 测试与可观测性用这一份。
+ */
+function isTravelMobility(taxonomy) {
+  const useCases = taxonomy && taxonomy.useCases;
+  return Array.isArray(useCases) && useCases.includes('travel-mobility');
 }
 
 function runStatusSql(runId) {
@@ -505,11 +592,11 @@ async function runEnrichment(options, dependencies = {}) {
     await run(startRunSql(options, runId));
     await runBatch(seedSql());
 
-    const newRows = await db.select(newBucketSql(options.date));
+    const newRows = await db.select(queueSql(options));
     const statusRows = await db.select(runStatusSql(runId));
     const reentryRows = options.reentry ? await db.select(reentrySql(options)) : [];
     const plan = planQueue(options, newRows, statusRows, reentryRows);
-    log(`[enrich] run=${runId} 新增桶 ${plan.newProductCount} + 重入臂 ${plan.reentryCount} → 待加工 ${plan.pending.length}，`
+    log(`[enrich] run=${runId} 队列 ${plan.newProductCount}（新增桶 ∪ 旅行臂）+ 重入臂 ${plan.reentryCount} → 待加工 ${plan.pending.length}，`
       + `0 请求续跑 ${plan.resumedCount}，门禁跳过 ${plan.skipped.length}，失败未重试 ${plan.skippedFailedCount}`);
 
     await runBatch(queueStatusSql(runId, plan.pending));
@@ -657,6 +744,9 @@ module.exports = {
   hasEvidence,
   planQueue,
   newBucketSql,
+  travelBucketSql,
+  queueSql,
+  isTravelMobility,
   reentrySql,
   runStatusSql,
   seedSql,
