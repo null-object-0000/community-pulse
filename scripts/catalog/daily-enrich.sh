@@ -27,6 +27,29 @@
 # `--force` 显式覆盖两者（换了模型/prompt、想在同一版本内重算时用）。
 set -euo pipefail
 
+# cron 的 PATH 极简（通常只有 /usr/bin:/bin），而本机 node 来自 nvm ⇒ crontab 里若不带
+# nvm 的 bin 目录，脚本会在第一步就 `node: command not found`。这里自己把 node 补进 PATH：
+# 先看常见位置，再问 nvm 的 alias 目录。找不到就显式报错，而不是让后续步骤以怪样子失败。
+# （实测：`env -i PATH=/usr/bin:/bin node` → No such file or directory。）
+ensure_node() {
+  command -v node >/dev/null 2>&1 && return 0
+  local candidate
+  for candidate in \
+    "$HOME/.nvm/versions/node"/*/bin \
+    "$HOME/.local/share/fnm/node-versions"/*/installation/bin \
+    /usr/local/bin /opt/homebrew/bin; do
+    if [[ -x "$candidate/node" ]]; then
+      PATH="$candidate:$PATH"
+      export PATH
+      return 0
+    fi
+  done
+  echo "[daily-enrich] 找不到 node；请把它的 bin 目录写进 crontab 的 PATH（node 来自 nvm 时" >&2
+  echo "  cron 默认看不到）。当前 PATH=$PATH" >&2
+  exit 127
+}
+ensure_node
+
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 TARGET=""
 DRY_RUN=false
