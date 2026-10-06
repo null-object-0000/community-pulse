@@ -15,7 +15,8 @@ const test = require('node:test');
 const D = require('../web/shared.js');
 const {
   parseArgs, stableRunId, inputHashFor, localizationInput, hasEvidence,
-  planQueue, newBucketSql, reentrySql, runStatusSql, seedSql, resultSql, resultBatchSql, skipStatusSql, finishRunSql,
+  planQueue, newBucketSql, travelBucketSql, queueSql, isTravelMobility,
+  reentrySql, runStatusSql, seedSql, resultSql, resultBatchSql, skipStatusSql, finishRunSql,
   runEnrichment, PROCESSOR_VERSION,
 } = require('../scripts/catalog/enrich-products.js');
 const { sourceHash, PROMPT_VERSION, translationInput } = require('../.agents/skills/community-pulse/scripts/enhance.js');
@@ -267,6 +268,45 @@ test('enrichment queue SQL keys on first_seen_date and seeds the controlled voca
   assert.match(seed, /ON DUPLICATE KEY UPDATE/);
   for (const category of D.categories) assert.ok(seed.includes(`'${category.id}'`), `缺主分类 ${category.id}`);
   for (const facet of Object.keys(D.taxonomyFacets)) assert.ok(seed.includes(`'${facet}'`), `缺分面 ${facet}`);
+});
+
+test('enrichment queue is the new bucket UNION the freshly travel-tagged arm', () => {
+  const options = parseArgs(baseArgs());
+  const queue = queueSql(options);
+  // 新增桶仍然只按 first_seen_date —— 绝不出现 last_seen / observed_date 当队列边界（它们会被改写）
+  assert.match(queue, /p\.first_seen_date = '2026-09-19'/);
+  assert.doesNotMatch(queue, /p\.last_seen_date/);
+  assert.doesNotMatch(queue, /p\.observed_date\s*=/);
+  // 两臂合成**一条** SELECT：只读通道只放行单条语句
+  assert.doesNotMatch(queue, /;/);
+  assert.match(queue, /UNION/);
+
+  const travel = travelBucketSql(options);
+  assert.doesNotMatch(travel, /;/);
+  // 旅行臂：EXISTS 逐条 assignment 命中「useCases 含 travel-mobility」，两种来源都算
+  assert.match(travel, /ta\.facet = 'useCases'/);
+  assert.match(travel, /ta\.term_id = 'travel-mobility'/);
+  assert.match(travel, /ta\.assignment_source IN \('rule','llm'\)/);
+  assert.match(travel, /ta\.is_current = 1/);
+  // 「初次打标」锚定到本次导入的**规则**标签（created_at 是 INSERT IGNORE 后的首次落库时间），
+  // 不写死某天零点 —— 那要假设 RDS 会话时区是北京时区，写错就是静默漏或多付
+  assert.match(travel, /MIN\(ta2\.created_at\)/);
+  assert.match(travel, /ta2\.assignment_source = 'rule'/);
+  // 只捞「今天及以前首见」：首见日 = OBSERVED 的产品明天归它的新增桶，今天捞会重复付费
+  assert.match(travel, /p\.first_seen_date <= '2026-09-19'/);
+  // 不是对拼起来的 useCases 串做等值（那会漏掉多业务场景的产品）
+  assert.doesNotMatch(travel, /useCases\s*=/);
+});
+
+test('travel-mobility matching is containment, not equality', () => {
+  assert.equal(isTravelMobility({ useCases: ['travel-mobility'] }), true);
+  // 一个产品可以同时属于多个业务场景 —— 含 travel 就必须命中
+  assert.equal(isTravelMobility({ useCases: ['business-growth', 'travel-mobility'] }), true);
+  assert.equal(isTravelMobility({ useCases: ['business-growth'] }), false);
+  assert.equal(isTravelMobility({}), false);
+  assert.equal(isTravelMobility(null), false);
+  // 字符串不是受控词表里的形状：列表口径要求 Array，避免 `'travel-mobility'.includes` 的巧合
+  assert.equal(isTravelMobility({ useCases: 'travel-mobility' }), false);
 });
 
 test('no migration uses SQL-level PREPARE, because Hyperdrive rejects it', () => {
@@ -712,6 +752,64 @@ test('enrichment integration: migration applier is idempotent and bootstraps an 
     const [columns] = await connection.query(`SELECT COUNT(*) AS n FROM information_schema.COLUMNS
       WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='enrichment_runs' AND COLUMN_NAME='model_request_count'`);
     assert.equal(columns[0].n, 1);
+  } finally {
+    await connection.end();
+  }
+});
+
+test('enrichment integration: queue adds freshly travel-tagged products beyond the new bucket', async (t) => {
+  const handle = await withDatabase(t);
+  if (!handle) return;
+  const { connection } = handle;
+  const options = { date: '2026-09-19' };
+  try {
+    // taxonomy_assignments 有外键指向 taxonomy_terms，先把受控词表种子落库（与生产同一份 seedSql）
+    for (const statement of seedSql()) await connection.query(statement);
+
+    const products = [
+      { id: 'prd_new_travel', first: '2026-09-19' },      // 当天新增 + 规则旅行
+      { id: 'prd_new_nontravel', first: '2026-09-19' },   // 当天新增但非旅行（只该因新增桶进）
+      { id: 'prd_old_fresh_travel', first: '2026-09-01' },// 老产品，今天初次被规则打上旅行
+      { id: 'prd_old_stale_travel', first: '2026-09-01' },// 老产品，旅行标签是上个月打的
+      { id: 'prd_today_travel', first: '2026-09-20' },    // 首见日 = OBSERVED，明天才轮到它
+      { id: 'prd_multi_travel', first: '2026-09-01' },    // 多业务场景（含旅行）
+      { id: 'prd_llm_fresh_travel', first: '2026-09-01' },// 今天初次被 LLM 打上旅行
+    ];
+    for (const product of products) {
+      await connection.query(`INSERT INTO products (id, canonical_key, title, first_seen_date, last_seen_date)
+        VALUES ('${product.id}', 'key-${product.id}', '${product.id}', '${product.first}', '${product.first}')`);
+      await connection.query(`INSERT INTO product_details (product_id, observed_date, content_score, item_json, content_hash)
+        VALUES ('${product.id}', '${product.first}', 10, '{}', REPEAT('a',64))`);
+    }
+    const assign = (product, term, source, created) => connection.query(
+      `INSERT INTO taxonomy_assignments (product_id, facet, term_id, assignment_source, processor_version, is_current, created_at)
+       VALUES ('${product}', 'useCases', '${term}', '${source}', 'test-v1', 1, '${created}')`);
+    // 本次导入的锚点 = 当天新增产品规则标签里最早的 created_at（这里就是这两个 16:10:00）
+    await assign('prd_new_travel', 'travel-mobility', 'rule', '2026-09-19 16:10:00');
+    await assign('prd_new_nontravel', 'business-growth', 'rule', '2026-09-19 16:10:00');
+    await assign('prd_old_fresh_travel', 'travel-mobility', 'rule', '2026-09-19 16:10:01');
+    await assign('prd_old_stale_travel', 'travel-mobility', 'rule', '2026-08-01 10:00:00');
+    await assign('prd_today_travel', 'travel-mobility', 'rule', '2026-09-19 16:10:02');
+    await assign('prd_multi_travel', 'travel-mobility', 'rule', '2026-09-19 16:10:03');
+    await assign('prd_multi_travel', 'business-growth', 'rule', '2026-09-19 16:10:03');
+    await assign('prd_llm_fresh_travel', 'travel-mobility', 'llm', '2026-09-19 16:10:04');
+
+    const [queueRows] = await connection.query(queueSql(options));
+    const ids = queueRows.map(row => row.product_id).sort();
+    assert.deepEqual(ids, [
+      'prd_llm_fresh_travel', 'prd_multi_travel', 'prd_new_nontravel', 'prd_new_travel', 'prd_old_fresh_travel',
+    ]);
+    // 不该进的：非旅行的当天新增已在（prd_new_nontravel）；不该进的是陈旧旅行标签与首见日=OBSERVED 的
+    assert.ok(!ids.includes('prd_old_stale_travel'), '陈旧旅行标签不该被重新付费');
+    assert.ok(!ids.includes('prd_today_travel'), '首见日 = OBSERVED 的产品明天归它的新增桶，今天不该捞');
+
+    // 旅行臂单独看：当天新增里的旅行产品 + 新增桶之外的初次打标旅行产品（规则与 LLM 都算）
+    const [travelRows] = await connection.query(travelBucketSql(options));
+    assert.deepEqual(travelRows.map(row => row.product_id).sort(), [
+      'prd_llm_fresh_travel', 'prd_multi_travel', 'prd_new_travel', 'prd_old_fresh_travel',
+    ]);
+    // 每个产品只出现一次（UNION 去重，不会因为两臂同时命中而重复加工）
+    assert.equal(new Set(ids).size, ids.length);
   } finally {
     await connection.end();
   }

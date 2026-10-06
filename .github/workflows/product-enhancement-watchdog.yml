@@ -1,0 +1,55 @@
+name: 产品级增强覆盖巡检
+
+# 产品级增强（分类页 / 详情页的正文与标签）曾经从 2026-09-23 断到 10-06 无人发现 ——
+# 那段时间 `enrichment_runs` 里根本没有对应日期的运行行，而「某天没跑」不发任何信号。
+# 日报级增强早有 enhancement-watchdog.yml，这里照它的形状补产品级：某天的运行缺失或覆盖率
+# 低于阈值就退出码 1（GitHub 失败通知就是告警）。**只读**，不写库、不修数据。
+#
+# 为什么必须跑在 Actions：本机连不上 RDS 3306，读也走 Cloudflare 临时通道。
+on:
+  schedule:
+    # 每 6 小时一次：日更在北京 00:07 触发，宽限期设在北京 D+1 12:00（见脚本 enhancementDue），
+    # 所以最迟当天 18:00 北京那次一定会覆盖到。
+    - cron: '40 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: '只检查某一天 YYYY-MM-DD（留空则检查宽限期内全部日期）'
+        required: false
+        default: ''
+      threshold:
+        description: '覆盖率告警阈值 0..1（默认取 CP_ENRICHMENT_COVERAGE_MIN 或 0.8）'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: 安装项目依赖
+        run: npm ci
+
+      - name: 检查产品级增强覆盖率
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "缺少 CLOUDFLARE_API_TOKEN：无法经临时通道读运行记录。"
+            exit 1
+          fi
+          ARGS=()
+          if [ -n "${{ github.event.inputs.date }}" ]; then ARGS+=(--date "${{ github.event.inputs.date }}"); fi
+          if [ -n "${{ github.event.inputs.threshold }}" ]; then ARGS+=(--threshold "${{ github.event.inputs.threshold }}"); fi
+          node scripts/catalog/check-product-enhancement.js --channel "${ARGS[@]}"

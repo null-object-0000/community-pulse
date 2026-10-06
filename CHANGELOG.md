@@ -29,6 +29,7 @@
 | 09-22 | 3（本轮） | 23 文件（含 4 个测试、1 个回填脚本；`worker/render-version.mjs` 是构建生成） | 28 文件（13 期日报的地址与身份）+ 14 期日报的 `vibecafeStatus` + 252 个 site-logos 日文件去本机路径 + 1,873 个迁移旧副本移出 Git | 投稿地址的 **markdown 装饰尾巴**漏进 `url`（线上「官网」指向 `https://seichigo.com**/`）：边界规则收敛成唯一一份 `bareUrls`、`safeUrl` 拒掉不像 host 的 host、13 行回填 + 撤销旧身份；同日再补三条线上反馈 —— **同产品重复行合并**、**纯内容投稿不进列表**、**VibeCafé 策划中不收录**，并让**准入规则同时管产品库**；同日追加**仓库公开前的 README 重写与公开面审计** | community-pulse |
 | 09-23 | 16（本轮） | 11 文件（含 2 个新脚本、4 个新测试、1 个新 workflow） | 6 文件（2 份回放 SQL + 标签/正文激活稿与回滚稿） | **让库里的中文真正显示出来**：给 `product_content` 接读取端（分类页/详情页读的 `item_json` 从不含 LLM 结果）+ 激活 21,450 行 + 加索引；**离线补跑链**（队列在 RDS、模型网关在本机，拆三跳）+ 补 09-21/09-22 的 1,975 个产品；修通道中途失联不重连（长批次写到一半 404 中断）；**标签激活的优先级保护改成自动推导**（此前靠调用方记得传全，漏传就整闸失效）+ 补激活 35,893 条从未生效的标签；**上架改成默认自动**（用户拍板）；**修身份门禁自己造出假漂移**（按字面日期取仓库快照 vs 导入链回落到最近一份）**并把它挪到提交之后** —— 它排在推送前，一条算错就把整期日报挡在门外（09-23 期整期缺失的真因） | community-pulse |
 | 10-06 | 2（本轮） | 5 文件 +35/-12（含 1 个新测试） | 0 | **详情页两处缺陷（真实 GSC 数据驱动）**：详情页占全站搜索曝光 69%，排名第一的页面正文 992 字符里 300+ 是同一段描述的复制。① **描述去重** —— 页首 `project-summary` 与 About 面板引用同一个 `summary` 变量，改成 About 承载全文、页首只放截断导语（`detailLead` / `DETAIL_LEAD_MAX=220`），短描述不放导语以免整页只剩一句；GitHub 项目页同一条规则。② **标签复用列表层过滤** —— 两个详情页渲染端各自造轮子、都没走 `sourceScaffoldTags` / `collectionStatusTags`，于是 `producthunt`（来源名）、`new`（采集簿记）直接进了详情页标签行；改为复用 `D.visibleTagEntries`（详情页 limit=12、列表仍 3）并走 `D.tagHtml` 保留 DT/原始/语言 标记，顺带修正该函数内部把 `taxonomyTagEntries` 上限写死为 3、导致详情页丢语义标签的问题 | community-pulse |
+| 10-07 | 1（本轮） | 12 文件（4 个新文件：本机 runner、巡检脚本、巡检 workflow、测试；另 5 条改动的脚本/工作流/文档 + 2 个测试文件） | 0（补历史缺口的 208 产品 SQL 在另一分支，见下） | **把产品级 LLM 增强接进日更链**：队列改用 `queueSql` = 新增桶（`first_seen_date`）∪ **旅行臂**（本次导入初次打上 `useCases=travel-mobility`，规则/LLM 来源都算）；日更链在「写入 MySQL」后导出队列 artifact，**本机** `daily-enrich.sh` 拉取→跑模型→提交 SQL 到分支，Actions `apply-catalog-sql.yml` 写库+自动上架；新增产品级覆盖巡检 `product-enhancement-watchdog.yml`（缺运行/低覆盖即报警）—— 09-23..10-06 那种「某天整批没跑」不再静默 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 > 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
@@ -858,6 +859,47 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 - **OAuth 被「应用处于测试状态」挡住时，附着已登录浏览器比申请权限快得多**：`gsc-cli` 的 403 是同意屏幕没发布导致的，改这个要走 Google 后台、还要等审核；而 CDP 读已登录会话当场就拿到了全周期数据。
 - **同一份规则在两个渲染端各写一遍，必然只在一个地方生效**：列表层过滤了脚手架标签，详情页没过滤 —— 同一批数据、同一个站点，用户看到的却是两套规则。修法不是补一份黑名单，是让第二处复用第一处。
 - **66.7% 的条目描述 ≤220 字**（12,108 条里 8,071 条），所以 A 方案下**三分之二的详情页首屏不再显示摘要行**（描述仍在 About 里）。这是**观感变化，不只是去重** —— 属于「去重的代价」，当时已如实告知并由用户拍板接受。
+
+## 2026-10-07 · 把产品级 LLM 增强接进日更链（travel-mobility 优先）
+
+**背景：站点两条内容链互不相通** —— 日报页读 `final/<date>.md`（报告级增强，日更 workflow 在跑），分类页/详情页读 MySQL `product_content`（**产品级**增强，此前**没有任何定时任务**）。产品级只被手工跑过两次（`catalog-localize-v1` 覆盖 09-14..09-20，`travel-localize-v1` 是 09-22 按标签全历史那批），09-23 之后断到 10-06，travel-mobility 分类页成片没有中文。**「某天没跑」这件事此前不发任何信号** —— 这次就是靠用户发现，不是告警。本轮做三件事：日更自动跑当天新增、当天初次打标为旅行也立即跑、覆盖率低了报警。**同日早些时候用另一分支（`data/travel-gap-enrich-1006`）补完历史缺口**：只读 API 拉 `term=travel-mobility` 全历史 3,256 个 → `summaryZh` 空值筛出 248 个缺中文 → 本机跑模型 208 完成 / 2 失败 / 36 无描述被门禁跳过 → Actions 写库并自动上架；travel-mobility 3,124/3,164 = 98.7% 有中文（此前 92.3%），与 9-23 那批 4,107 个零重叠。
+
+### 目标 B 的语义：不是「在新增桶里筛 travel」（那是真子集，等于没加）
+
+- **先想清楚用户要什么**：字面「当天新增里只要 useCases 含 travel-mobility」如果照做，只是在新增桶上再筛一次 —— 新增桶本来就含当天全部新产品，筛完一行都不多，是**空实现**。用户原话「某个产品**第一次**被打上旅行标签的当天就要像今日发现一样增强」，所以那个产品可以是**早就存在、今天内容变了才第一次被判为旅行**的（`D.itemTaxonomy` 按每次观测的内容重算，规则标签走 `INSERT IGNORE`，内容一变就会新增一条 `useCases` 行）。据此把队列定成 `queueSql` = **新增桶 ∪ 旅行臂**。
+- **判据用 `taxonomy_assignments.created_at`**：规则标签是 `INSERT IGNORE`，所以 created_at 就是 (产品, 分面, 词条, 来源, 版本) **首次**落库的时间 —— 正是「初次打标」。`assignment_source IN ('rule','llm')` 两种来源都算，因为初次打标既可能是导入期的规则给的、也可能是上一轮增强的 LLM 给的。
+- **试过又放弃：写死「某天零点」**。第一版想用 `DATE(ta.created_at) = TARGET`，随即发现日更在 **00:07 北京**触发：RDS 若按北京时区记时间就是 D 日、按 UTC 记就是 D-1 日，边界正好差一天，写错就是**静默漏掉或静默多付**。改成**锚定本次导入**：取当天新增产品**规则**标签里最早的 `created_at` 作下界，比较全在 DB 内完成，与会话时区无关。锚点只取规则标签（新产品的规则标签必然是本次导入写的），不取 LLM（可能是更早手工跑的，会把历史行卷进来重付）。
+- **试过又放弃：不限 `first_seen_date`**。当天导入的是 TARGET..OBSERVED 两天，首见日 = OBSERVED 的产品明天才轮到它的新增桶。不限日期会今天就把它们捞进来，明天又在自己的新增桶里**再付一次**（run id 按天不同，续跑判定读不到今天的 status）。所以旅行臂限定 `first_seen_date <= TARGET`。
+- **「含而非等于」**：用 `EXISTS` 逐条 assignment 命中，而不是对某个把 `useCases` 拼起来的字符串做等值 —— 一个产品可以同时属于多个业务场景（`['travel-mobility','business-growth']`），等值会漏掉它。纯函数口径 `isTravelMobility` 用 `Array.isArray && includes`，测试锁死。
+
+### 不分叉第二套语义：两臂合成同一条 SELECT
+
+- `enrich-products.js` 新增 `queueSql`（UNION）、`travelBucketSql`、`isTravelMobility`；`runEnrichment` 改读 `queueSql`。这样**日更链（`--channel`）与离线补跑（`export-queue.js` + `enrich-queue.js`）取的是同一份队列**，不存在「本机补的队列和日更改了哪一条」的分叉；UNION 仍是单条 SELECT，生产只读通道只放行单条。
+- `export-queue.js` 额外单独跑一次 `travelBucketSql` 不是另取一套，而是把「这批有几条是当天初次打上 travel-mobility」落成可观测数字，并**硬校验**它们确实都在队列里 —— 将来谁把旅行臂删了，导出会先炸，而不是静默少跑。新增桶里的旅行产品被两臂同时命中，UNION 自动去重。
+
+### 日更三段式：读在 Actions、模型在本机、写回 Actions
+
+- **触发点必须在「将全量产品观察增量写入 MySQL」之后**：早于它，当天新产品的 `taxonomy_assignments` 还没落库，旅行臂查不到。`daily-report.yml` 在导入步骤后新增「导出当天产品增强队列」+ artifact 上传（`enrich-queue-<date>`，保留 14 天）。这一步带 `continue-on-error: true`：读队列只是日报的**附件**，失败不该连累日报存在（与 09-24 两次整期缺失的教训同一条纪律：先落盘，再做周边）。
+- **本机 runner `scripts/catalog/daily-enrich.sh`**：`gh run download` 拉当天 artifact → `enrich-queue.js` 跑模型出 SQL → gzip 后用**临时 git worktree** 提交到 `data/product-enrich-<date>` 分支（**不动主 checkout 的当前分支**）→ `gh workflow run apply-catalog-sql.yml`。装到 crontab/launchd 是宿主机上的一次性动作，仓库无法代替安装（脚本头部写了 cron 行）。**本机没有稳定跑 `enrich-queue.js` 的守护进程，是这套方案唯一需要运维介入的地方**，如实记下。
+- **artifact 的边界**：GitHub artifact 是 run 产物、不占仓库，但**默认保留期有限**（这里设 14 天）；超期本机还没取走就得用 `catalog-queue-export.yml` 重新导一次（它本就是为此存在的）。**没有把「跑模型」放进 Actions**（到不了 `127.0.0.1:18640`），也**没有让本机直连 3306**（协议层被重置）。
+- 顺手修一个真缺陷：`enrich-queue.js` 打印 `db.executed.length` 作为语句数，而 dry-run 把语句收进 `executedSql`、根本不走 fakeDb，于是「生成了 10 条语句」被误报成「0 条语句」—— 改成 `summary.sqlStatements`。
+
+### 可观测性：照日报级的形状补产品级
+
+- 新增 `product-enhancement-watchdog.yml` + `scripts/catalog/check-product-enhancement.js`（每 6 小时，Actions 侧带 CF 凭据**只读**）。判据是点查 `enrichment_runs`：run id 由 `stableRunId({date,mode,processorVersion})` 稳定算出，「这一天该有的 run 在不在」是一次主键点查；覆盖率取运行行自己的 `completed_count / product_count`（与 `finishRunSql` 写进去的口径同源）。缺运行（09-23..10-06 就是这形状）或覆盖率低于 `CP_ENRICHMENT_COVERAGE_MIN`（默认 0.8）→ 退出码 1 报警。**没改日报级的 `enhancement-watchdog.yml`**，两条链各一个。
+
+### 验收（全部真实执行）
+
+- **真数据端到端**（docker MySQL 8.4，从仓库 `source-raw` 真实构建 2026-09-17..09-19 导入，不是合成数据）：`export-queue.js --date 2026-09-19` → 队列 **841** 个 = 新增桶 **812** + 新增桶之外的旅行产品 **29**；旅行臂 **34** 个**全是**打标为 travel-mobility 的（含 09-17 首见 9 个、09-18 首见 20 个），命中 0 条非旅行产品；跨表核对「所有旅行产品都在队列里」「旅行臂是旅行集合的子集」。不该进的验证：首见日 = 2026-09-20 的产品不进（明天归它的新增桶）、2026-08-01 打的陈旧旅行标签不重付、当天新增但打标不含 travel 的产品**不在旅行臂里**（`prd_0011e9c9…` 等三个抽样 0 命中）。
+- **`--dry-run` 不写库**：`enrich-queue.js --limit 1`（只发 1 次真实模型请求）生成 10 条语句的 SQL；`apply-sql.js --file … --dry-run` 打印「只校验，未写库」且自动上架预告 `catalog-localize-v1`；核对本地库 `enrichment_runs` / `enrichment_product_status` / `product_content` 三表均 **0 行**。
+- **回归测试**：新增/扩充 10 条用例 —— 队列口径（`first_seen_date`，绝不出现 `last_seen_date`/`observed_date` 当边界）、旅行过滤（`EXISTS` 逐条命中、含而非等于、规则/LLM 两来源、锚定 MIN(created_at)、`first_seen_date <=`）、触发点顺序（解析 `daily-report.yml`，导出必须排在导入之后）、巡检判据（缺运行/低覆盖/宽限期）、本地 runner 的 `--dry-run` 边界。
+- **`npm run check`**：`TMPDIR=/tmp/cp-enrich-daily/.scratch-tmp` → **359 pass / 1 fail / 4 skipped（tests 364）**。那 1 个失败是**既有的** `enhancement-identity`「2026-09-24 日报行与产品库身份漂移」（`prd_de077290627d29042ca0ae70` vs `prd_080dd32c56dc53b406c663c7`），测试名与断言与改动前逐字一致，与本次无关，**没有为了刷绿改它**。基线是 350 pass / 1 fail / 3 skipped（354）；本轮 +10 条（9 过 + 1 条集成用例在无 MySQL 时跳过）。
+- **一处发现但不改**：本地起 MySQL 后，`tests/catalog-enrichment.test.js` 的「迁移应用器幂等」用例会红 —— 它硬编码 `first.applied === 5`，而迁移已有 **6** 个（`0006_product_content_read_index`）。这是**既有测试与 0006 的漂移**，无 MySQL 时该用例跳过、所以基线看不到；属另一批，未动（与 `enhancement-identity` 那条同性质，如实记在这里而不是顺手改绿）。
+
+### 试错与教训
+
+- **「覆盖两种打标来源」不是一句废话，它决定了队列什么时候查得到标签**：规则标签由导入写（所以导出必须排在导入后），LLM 标签由上一轮增强写（所以只认窗口内新出现的，不能把历史 LLM 行也扫进来重付）。
+- **凡是拿 `created_at` 当「某天」用的比较，先问一句「谁的时区」**。日更 00:07 北京触发这个时间点，在 UTC 与 UTC+8 下落在两个不同的自然日 —— 这不是边界 case，是每天都会走到的路径。改成 DB 内锚定就没有这个问题。
 
 ## 值得记录的决策
 

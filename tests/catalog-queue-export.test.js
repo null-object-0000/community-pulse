@@ -13,6 +13,8 @@
  * 纯函数层，不需要数据库。
  */
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const test = require('node:test');
 const {
   stableRunId, MODE, PROCESSOR_VERSION,
@@ -51,4 +53,12 @@ test('假 db 的重入臂返回空集（离线不重放历史跳过项）', asyn
   const db = fakeDb({ rows: [], statusRows: [], log: () => {} });
   const rows = await db.select('SELECT s.product_id, s.status AS previous_status, s.input_hash AS previous_input_hash FROM enrichment_product_status s WHERE 1');
   assert.deepEqual(rows, []);
+});
+
+test('enrich-queue 的语句数取规范 summary，而不是 dry-run 下永远为 0 的 fakeDb.executed', () => {
+  // dry-run 下 runEnrichment 把语句收进 executedSql（写到 summary.sqlStatements），
+  // 不经过 fakeDb.execute/batch —— 读 fakeDb.executed 会把「生成了 N 条语句」误报成 0。
+  const source = fs.readFileSync(path.join(__dirname, '..', 'scripts', 'catalog', 'enrich-queue.js'), 'utf8');
+  assert.match(source, /summary\.sqlStatements/);
+  assert.doesNotMatch(source, /const statements = db\.executed\.length/);
 });

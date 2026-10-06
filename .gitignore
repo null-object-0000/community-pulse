@@ -16,6 +16,9 @@ dist/
 # 从不进入 Git：历史提交里 0 个 .scratch 文件，它只是一直以未跟踪噪音出现在 git status 里。
 # attach_repository_language.js 仍会往 .scratch/backup-language-backfill 写备份，与忽略不冲突。
 .scratch/
+# `npm run check` 的 TMPDIR 落点：本机默认 TMPDIR 指向只读的 hermes cache，批量 mkdtemp 会 EROFS。
+# 与 .scratch/ 一样是本地临时区，不进 Git。
+.scratch-tmp/
 
 # Cloudflare local runtime state
 .wrangler/

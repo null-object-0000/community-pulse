@@ -158,6 +158,38 @@ jobs:
           node scripts/catalog/check-mysql-import.js
           node scripts/catalog/upload-mysql.js
 
+      # 产品级增强的**读队列**这一跳，必须排在「将全量产品观察增量写入 MySQL」之后 ——
+      # 早于它，当天新产品的 taxonomy_assignments 还没落库，旅行臂（useCases 含 travel-mobility）
+      # 查不到，会静默少跑。队列口径与日更链共用 `enrich-products.js` 的 `queueSql`。
+      #
+      # `continue-on-error`：这一跳只是日报的**附件**（模型在本机、写库在后面的 apply workflow），
+      # 失败不该连累日报存在 —— 与「先落盘，再做周边」同一条纪律（见 CHANGELOG 2026-09-24）。
+      # 真失败由 `product-enhancement-watchdog.yml` 报警；本机侧拉不到产物也会停住而不是空跑。
+      - name: 导出当天产品增强队列（供本机跑模型）
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          mkdir -p .scratch
+          node scripts/catalog/export-queue.js \
+            --date "$TARGET" \
+            --out ".scratch/queue-$TARGET.json" \
+            --status-out ".scratch/status-$TARGET.json"
+
+      - name: 上传产品增强队列产物
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: enrich-queue-${{ steps.setdate.outputs.date }}
+          path: |
+            .scratch/queue-${{ steps.setdate.outputs.date }}.json
+            .scratch/status-${{ steps.setdate.outputs.date }}.json
+          # 产物是本机侧唯一能拿到的队列副本；保留 14 天，本机定时任务必须在这个窗口内取走。
+          retention-days: 14
+          if-no-files-found: warn
+
       - name: 持久化站点图片
         run: npm run images:sync
 
