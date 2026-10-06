@@ -546,6 +546,15 @@
     const text = cleanSummaryText(raw);
     return { text: text || t(locale, 'noSummary'), original: Boolean(text && !matches(text)), lang: text && /[\u3400-\u9fff]/u.test(text) ? 'zh-CN' : 'en' };
   }
+  // 详情页正文只能出现一次完整描述：About 面板始终承载全文，页首只放一段「导语」。描述本来就短
+  // （不超过 DETAIL_LEAD_MAX）时不截断，页首不放导语，About 是唯一落点 —— 既不会整页只剩一句，
+  // 也不会把同一段文字印两遍。两个详情页渲染端（worker/project-page.mjs 与 scripts/projects.js）
+  // 共用这一条规则，避免各自造轮子时又长出一个重复版本。
+  const DETAIL_LEAD_MAX = 220;
+  const detailLead = (value, max = DETAIL_LEAD_MAX) => {
+    const text = String(value ?? '');
+    return text.length > max ? `${text.slice(0, max)}…` : '';
+  };
   // 投稿标签描述「这条是怎么来的」，不是产品名的一部分：【开源自荐】、[开源推荐]、〖工具自荐〗
   // 这类前缀本来就该从标题里去掉。老规则只认中文的 自荐/推荐/投稿，所以同一批英文投稿
   // （[Open Source]、[Tool Recommendation]、[Show HN]、[Self-promo]）会原样留在标题里（2026-09 走查）。
@@ -773,7 +782,10 @@
     const taxonomy = itemTaxonomy(item);
     const semanticIds = new Set(Object.values(taxonomy).flat().map(value => String(value).toLowerCase()));
     if (semanticIds.has('mcp-service')) semanticIds.add('mcp');
-    const facetTags = taxonomyTagEntries({ ...item, taxonomy }, locale);
+    // The facet list must honour the caller's limit too: the list row asks for 3, but a detail page
+    // asks for 12 and would otherwise keep only the first three semantic facets (`taxonomyTagEntries`
+    // defaults to 3), silently dropping topics that the old raw-tag renderer used to show.
+    const facetTags = taxonomyTagEntries({ ...item, taxonomy }, locale, limit);
     const originalTags = [];
     for (const tag of [...(item.github?.topics || []), ...(item.tags || [])]) {
       const key = String(tag).trim().toLowerCase();
@@ -1002,5 +1014,5 @@
   function footerHtml({ locale = 'zh-CN', homePath = localPath('/', locale) } = {}) {
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p></footer>`;
   }
-  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

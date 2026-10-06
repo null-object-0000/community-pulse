@@ -69,7 +69,10 @@ function projectPage(project, locale) {
   const language = D.metric(item, ['language', 'lang']);
   const license = typeof item.github?.license === 'string' ? item.github.license : item.github?.license?.spdx_id;
   const snapshotDate = project.snapshotDate;
-  const shortSummary = s.text.length > 220 ? s.text.slice(0, 220) + '…' : s.text;
+  const shortSummary = D.detailLead(s.text);
+  const heroSummary = shortSummary
+    ? `<p class="project-summary" lang="${s.lang}">${e(shortSummary)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}`
+    : '';
   const links = D.itemLinks(item).filter(([label]) => label !== 'source');
   const facts = [['owner', project.owner], ['programmingLanguage', language], ['license', license && license !== 'NOASSERTION' ? license : null], ['stars', stars !== null ? new Intl.NumberFormat(locale).format(Number(stars)) : null], ['forks', forks !== null ? new Intl.NumberFormat(locale).format(Number(forks)) : null]].filter(([, value]) => value !== null && value !== undefined && value !== '');
   const factsHtml = list => `<dl class="facts">${list.map(([key, value]) => `<div><dt>${t(locale, key)}</dt><dd>${e(value)}</dd></div>`).join('')}</dl>`;
@@ -82,15 +85,15 @@ function projectPage(project, locale) {
   const sourceBadge = source?.logo ? `<img src="${e(source.logo)}" alt="${e(sourceName)}" loading="lazy" />` : e(sourceName.slice(0, 2));
   const sourceLine = `<div class="project-source-line"><span class="source-mini" aria-hidden="true">${sourceBadge}</span>${sourceUrl ? `<a href="${e(D.trackedUrl(sourceUrl, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${e(sourceName)} ↗</a>` : `<span>${e(sourceName)}</span>`}<time datetime="${project.lastSeen}">${e(D.dateLabel(project.lastSeen, locale))}</time></div>`;
   const initials = e(project.name.replace(/[^\p{L}\p{N}]/gu, '').slice(0, 2));
-  const seenTags = new Set();
+  // 与 worker 详情页共用同一份过滤规则：visibleTagEntries 已经封好来源脚手架 / 状态标签 /
+  // 语义标签去重（含大小写变体），主语言由列表层与详情页都单独成一枚 chip。
   const detailTags = [
-    ...D.taxonomyTagEntries(item, locale, 8).map(entry => ({ label: entry.label, origin: 'devtrends', path: entry.path })),
     ...(language ? [{ label: language, origin: 'language' }] : []),
-    ...project.topics.map(label => ({ label, origin: 'source' })),
-  ].filter(tag => { const key = String(tag.label).toLowerCase(); if (!key || seenTags.has(key)) return false; seenTags.add(key); return true; }).slice(0, 12);
+    ...D.visibleTagEntries({ ...item, github: { ...(item.github || {}), topics: project.topics } }, locale, 12),
+  ];
   const content = `<nav class="breadcrumb" aria-label="${locale === 'en' ? 'Breadcrumb' : '面包屑导航'}"><a href="${lp('/', locale)}">${t(locale, 'discover')}</a><span>/</span><span>${t(locale, 'details')}</span></nav>
     <article class="project-hero"><div class="project-identity"><span class="project-mark${markUrl ? ` has-logo${markTone}` : ''}" aria-hidden="true">${markUrl ? `<img src="${e(markUrl)}" class="is-logo" alt="${e(`${project.owner}/${project.name}`)}" />` : initials}</span><div class="project-heading"><div>${sourceLine}<p class="project-owner">${e(project.owner)} /</p><h1>${e(project.name)}</h1></div></div></div>
-    <p class="project-summary" lang="${s.lang}">${e(shortSummary)}</p>${s.original ? `<span class="original-label">${t(locale, 'original')}</span>` : ''}
+    ${heroSummary}
     ${detailTags.length ? `<div class="project-tags">${detailTags.map(tag => D.tagHtml(tag, locale)).join('')}</div>` : ''}
     <div class="project-links">${links.map(([label, url], i) => `<a class="button${i === 0 ? ' primary' : ''}" href="${e(D.trackedUrl(url, item, project.lastSeen))}" target="_blank" rel="noopener noreferrer">${t(locale, label)} ${D.icon('arrow')}</a>`).join('')}</div></article>
     <div class="project-layout"><div>
