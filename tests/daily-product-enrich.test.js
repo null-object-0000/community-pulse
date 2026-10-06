@@ -100,6 +100,30 @@ test('本机那一跳：能直连也能走通道，且 --dry-run 不提交/不�
   assert.ok(fs.statSync(path.join(ROOT, 'scripts/catalog/daily-enrich.sh')).mode & 0o111, 'runner 必须可执行');
 });
 
+test('本机 runner 的两道花钱闸门：artifact 的 status 不能当续跑依据', () => {
+  // 这是本链路唯一花钱的一步。artifact 自带的 status 停在**导出那一刻**（那时本轮还没加工过
+  // 任何产品），拿它做续跑判定 ⇒ 同一份产物重跑必然整批重付；cron 每 30 分钟一个 tick，
+  // 后果是每天把整批模型调用重打 48 遍。所以闸门必须落在「已付过的产物」上。
+  assert.match(RUNNER, /复用已付过的 SQL/, 'SQL 已落盘时要跳过模型重跑');
+  assert.match(RUNNER, /-s "\$SQL_GZ"/, '判据用 SQL 是否落盘，而不是 status');
+  assert.match(RUNNER, /DONE_MARK/, '要有整条链完成标记');
+  assert.match(RUNNER, /本日已完成/, '完成标记存在时直接退出');
+  assert.match(RUNNER, /--force\)/, '要有显式重算开关');
+  // 旧注释曾声称「enrich-queue.js 用导出的状态做续跑判定，已加工的产品 0 请求」——
+  // 那句话是错的（实测 3 行队列 + 自带空 status → 待加工 3，0 请求续跑 0），不许回来。
+  assert.ok(!/用导出的状态做续跑判定/.test(RUNNER), '不得再声称用 status 做续跑判定');
+});
+
+test('本机 runner 的完成判据取 run 内的写库步，不取 run 整体结论', () => {
+  // apply-catalog-sql.yml 权限只有 contents: read，末步「提交回滚稿」必然失败 ⇒
+  // **整次 run 的 conclusion 恒为 failure，即使它已经成功写库并上架**
+  // （实测 run 37500132993：写库步 success / 回滚步 failure / run 整体 failure，而 208 产品确实生效）。
+  // 拿 run 结论当闸门就永远不落标记 ⇒ 每 30 分钟重推分支、重触发写库。
+  assert.match(RUNNER, /select\(\.name=="应用到产品库"\)/, '要按 step 名取写库步结论');
+  assert.match(RUNNER, /apply_wrote_data/, '要有取写库步结论的函数');
+  assert.ok(!/--json conclusion --jq '\.conclusion'/.test(RUNNER), '不得用 run 整体 conclusion 当闸门');
+});
+
 test('离线导出 workflow 与本机 runner 共用同一套三跳，不另造队列', () => {
   // 日更/导出走 export-queue.js（queueSql）；本机 runner 走 enrich-queue.js（与日更逐字相同的
   // runEnrichment 路径）。两边都引用「队列口径」的同一个模块，不出现第二套拼 SQL 的实现。

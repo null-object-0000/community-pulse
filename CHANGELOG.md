@@ -881,6 +881,10 @@ Codex 会话那份五阶段收尾计划里还剩两条「结构性」缺口，�
 
 - **触发点必须在「将全量产品观察增量写入 MySQL」之后**：早于它，当天新产品的 `taxonomy_assignments` 还没落库，旅行臂查不到。`daily-report.yml` 在导入步骤后新增「导出当天产品增强队列」+ artifact 上传（`enrich-queue-<date>`，保留 14 天）。这一步带 `continue-on-error: true`：读队列只是日报的**附件**，失败不该连累日报存在（与 09-24 两次整期缺失的教训同一条纪律：先落盘，再做周边）。
 - **本机 runner `scripts/catalog/daily-enrich.sh`**：`gh run download` 拉当天 artifact → `enrich-queue.js` 跑模型出 SQL → gzip 后用**临时 git worktree** 提交到 `data/product-enrich-<date>` 分支（**不动主 checkout 的当前分支**）→ `gh workflow run apply-catalog-sql.yml`。装到 crontab/launchd 是宿主机上的一次性动作，仓库无法代替安装（脚本头部写了 cron 行）。**本机没有稳定跑 `enrich-queue.js` 的守护进程，是这套方案唯一需要运维介入的地方**，如实记下。
+- **复核时抓到两个会真花钱/真空转的缺陷（本轮修掉，非 DSH 自述）**：
+  ① **artifact 自带的 status 不能当续跑依据 —— 否则每天把整批模型调用重打 48 遍**。`export-queue.js` 导出的 status 记录的是**导出那一刻**（日更 00:0x 之后、本轮尚未加工任何产品）的库状态，所以它对 `planQueue` 永远显示「全部待加工」。原脚本注释声称「`enrich-queue.js` 用导出的状态做续跑判定，已加工的产品 0 请求」——**实测证伪**：3 行队列 + 该产物自带的空 status → `待加工 3，0 请求续跑 0`。配上 `*/30` 的 cron，等于整批重新付费。改成**以已付过的产物为闸门**：SQL 落盘即跳过模型重跑（`--force` 显式覆盖），并加整链完成标记；两个闸门都已实测（SQL 已在 → 不出模型请求；标记在 → 直接退出；`--force` → 越过两者）。
+  ② **完成判据不能用 run 的整体 conclusion**。`apply-catalog-sql.yml` 权限只有 `contents: read`，末步「提交回滚稿」必然失败，所以**整次 run 的 conclusion 恒为 `failure`，即使它已经成功写库并上架**（实测 run `37500132993`：写库步 `success`、回滚步 `failure`、run 整体 `failure`，而 208 个产品确实生效）。拿 run 结论当闸门就永远不落标记 ⇒ 每 30 分钟重推分支、重触发写库。改为**按 step 名取「应用到产品库」那一步的结论**（对真实 run 复验：写库步 `success`、dry-run 那次为 `skipped`）。两条都加了回归测试锁住，并禁止旧的错误说法回到注释里。
+  - 附注（未改，留给下一轮）：`apply-catalog-sql.yml` 的 `contents: read` 使「提交回滚稿」永久失败，**回滚稿因此从未落进仓库** —— 上架的唯一退路目前只存在于工作流日志里。这是独立的权限问题，与本次链路无关。
 - **artifact 的边界**：GitHub artifact 是 run 产物、不占仓库，但**默认保留期有限**（这里设 14 天）；超期本机还没取走就得用 `catalog-queue-export.yml` 重新导一次（它本就是为此存在的）。**没有把「跑模型」放进 Actions**（到不了 `127.0.0.1:18640`），也**没有让本机直连 3306**（协议层被重置）。
 - 顺手修一个真缺陷：`enrich-queue.js` 打印 `db.executed.length` 作为语句数，而 dry-run 把语句收进 `executedSql`、根本不走 fakeDb，于是「生成了 10 条语句」被误报成「0 条语句」—— 改成 `summary.sqlStatements`。
 
