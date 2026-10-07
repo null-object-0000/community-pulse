@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "v2ex",
+  "sourceName": "V2EX · 分享创造",
+  "targetDate": "2026-10-08",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "fetchedAt": "2026-10-07T21:14:21.824Z",
+  "itemCount": 10,
+  "contentSha256": "2cdb9b8fb040765f065deef018cb8b8e042e3dbb6ae80e0ac56cfe7941623f65",
+  "capture": {
+    "mode": "observed-snapshot",
+    "historicalBackfillSupported": false,
+    "endpoint": "https://www.v2ex.com/api/topics/show.json",
+    "requestUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "effectiveUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "httpStatus": 200,
+    "contentType": "application/json;charset=UTF-8",
+    "nodeName": "create",
+    "nodeTitle": "分享创造",
+    "apiReturnsLatestOnly": true,
+    "topicsCreatedOnObservedDay": 5,
+    "bodyByteLength": 71017,
+    "topicIds": [
+      1246870,
+      1246869,
+      1246867,
+      1246864,
+      1246858,
+      1246852,
+      1246848,
+      1246847,
+      1246846,
+      1246840
+    ]
+  },
+  "records": [
+    {
+      "topicId": 1246870,
+      "title": "Mistral Large 4：免费多模态 AI Playground 与 OpenAI 兼容 API",
+      "url": "https://www.v2ex.com/t/1246870",
+      "author": "jiames1969",
+      "createdAt": "2026-10-07T18:37:20.000Z",
+      "createdAtEpoch": 1791398240,
+      "replies": 0,
+      "content": "最近在整理多模态 AI 工具时，发现了 Mistral Large 4 。它面向文本和图像任务，适合用来做编码、文档问答、写作、工具调用和结构化 JSON 输出。\r\n\r\n官网提供免费的登录后 Playground ，可以先直接试用；同时有产品文档和 OpenAI 兼容 API ，模型 ID 是 mistral-large-4-0 。公开规格列出的上下文窗口是 1M tokens ，官网集成文档说明支持 524,288 tokens 和公开图片 URL 。\r\n\r\n如果想体验一下，可以从这里开始：\r\nhttps://mistrallarge4.com/\r\n\r\n产品是 freemium 模式，付费访问通过一次性 credit packs 和月度订阅提供，最低价格为 $10 。对我来说，它比较适合先拿一个真实任务验证，再决定是否通过 API 接入自己的工作流。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246869,
+      "title": "在浏览器里骑摩托逛台北，做了个《台北狂飙》的游玩入口",
+      "url": "https://www.v2ex.com/t/1246869",
+      "author": "littlebena",
+      "createdAt": "2026-10-07T18:10:35.000Z",
+      "createdAtEpoch": 1791396635,
+      "replies": 3,
+      "content": "分享一个台北开放世界小游戏《台北狂飙》，可以走路、骑摩托、开车逛城市，打开浏览器就能玩。\r\n\r\n游戏是 aicodewithme 做的，我做了个游玩入口，加了操作说明和新手指南：\r\n\r\nhttps://taipeigta.online/\r\n\r\n不用安装，不用注册。欢迎大家玩玩，提提意见～",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246867,
+      "title": "[自荐] 大家都在把 AI 塞进 Obsidian，我却反过来把 Obsidian 接进 AI 官网",
+      "url": "https://www.v2ex.com/t/1246867",
+      "author": "errah",
+      "createdAt": "2026-10-07T17:15:54.000Z",
+      "createdAtEpoch": 1791393354,
+      "replies": 0,
+      "content": "最近这两年，Obsidian 结合 AI 的主流方向基本都很一致：把 AI 接进 Obsidian 。\r\n做聊天侧栏、模型选择、API Key 、RAG 、Agent 、知识库……\r\n\r\n这个方向当然没问题，而且有些开源插件确实也做得非常强。但我自己折腾了一圈以后才发现：**我其实并不想在 Obsidian 里养 AI 。**\r\n\r\n我平时本来就在高频用 ChatGPT 、Claude 、Gemini 的官方网页版。那里有我最习惯的 UI 、历史对话记录、文件上传功能，我也已经付了订阅费。而本地的额度很宝贵，我可不敢在 codex 随便喂几篇 ob 笔记然后聊上半个钟头。\r\n\r\n所以对我来说，要在 Obsidian 里再维护一套 API Key 、Token 额度、模型配置和新的聊天入口，并没有让我很踏实。因为我总要考虑很多：这插件走哪个接口？这模型支持多模态传图吗？账户余额还有多少？ token 够不够？...\r\n\r\n所以，**我真正想要的不是“把 AI 搬进 Obsidian”，而是我已经整理进 Obsidian 里的资料和附件，能不能一键丝滑的丢到 AI 官网里？**\r\n\r\n---\r\n\r\n### 随后问题就来了\r\n\r\n如果只是纯文本笔记，直接复制 md 文件也能凑合用。但让我抓狂的是带图片和各种附件的笔记。\r\n\r\n比如我的很多笔记，下面挂着十几张图片，有时还挂着 PDF 或视频。\r\n\r\n![图片描述]( https://i.imgur.com/Ndx6MvG.png)\r\n\r\n现在我要把它丢给 Gemini 或 ChatGPT ，不管全选复制还是干脆目录里 copy md 文件，附件内容只有本地路径：\r\n\r\n![图片描述]( https://i.imgur.com/GvAzPV1.png)\r\n\r\n然后我只能苦逼的回到 attachment 文件夹，从文件堆里把它们一张张翻出来，再拖进浏览器。\r\n\r\n![图片描述]( https://i.imgur.com/hXXVEnq.png)\r\n\r\n搞了几次后，我觉得这个流程太反人类了。于是就自己写了一个小工具：**NoteFerry**。\r\n\r\n### 核心思路：只搭桥，不改造 Obsidian\r\n\r\n它的理念和当下众多 Obsidian AI 插件刚好相反：\r\n\r\n**不把 AI 搬进 Obsidian ，而是把 Obsidian 搬进网页 AI 对话框。**\r\n\r\n使用非常简单。打开 ChatGPT / Claude / Gemini 网页：\r\n点击输入框旁边的 `+` 号 → `从 Obsidian 添加` → 选笔记 → 添加。结束。\r\n\r\n![图片描述]( https://i.imgur.com/KGrceJX.gif)\r\n\r\nNoteFerry 会把笔记正文、图片甚至里面引用的 PDF 、Word 、表格等附件，一次性打包塞进 AI 的输入框里。每次最多可以选 10 篇。\r\n\r\n![图片描述]( https://i.imgur.com/wcXX9Oi.png)\r\n\r\n没有第三方 AI 聊天窗口，不做整库 RAG ，不做代理自动发消息。\r\n\r\n**Obsidian 继续负责存，AI 官网继续负责聊。我只负责把中间那段最恶心的“搬运动作”给干掉。**\r\n\r\n---\r\n\r\n### 技术实现\r\n\r\n系统由两部分组成：Chrome 或 Edge 浏览器扩展 (NoteFerry) + Obsidian 社区插件 (NoteFerry Companion)。\r\n\r\n![图片描述]( https://i.imgur.com/oRvPl54.png)\r\n\r\n当然，隐私和机制是必须说清楚的：\r\n\r\n**纯本地通信**\r\n浏览器扩展和 Obsidian 插件之间是通过本地协议直接通信的。完全没有中间服务器参与。\r\n\r\n**不收集数据**\r\n没有账号系统，没有 Telemetry 。我不会收到你的 Vault 路径、搜索词、文件名或笔记内容。\r\n\r\n**只读不写**\r\n原始 Obsidian 文件绝对不会被修改，仅仅是读取并注入到你当前打开的 AI 网页前端。\r\n\r\n---\r\n\r\n### 获取与定价\r\n\r\n因为实在受够了万物皆订阅，所以我设定了**一次性买断**（国内 ¥49 ），可以在 2 台机器使用，没有连续包月包年。\r\n安装后，前 10 次成功添加免费（搜索、预览都不扣次数，只有文件真正进入 AI 对话框才算一次）。\r\n\r\n**官网下载**\r\nhttps://noteferry.dev/zh\r\n\r\n**Obsidian 插件**\r\nhttps://community.obsidian.md/plugins/noteferry-companion\r\n\r\n**GitHub**\r\nhttps://github.com/lancelee2026/Obsidian-Companion\r\n*(注：为保证本地读取的安全性，Companion 插件是完全开源的，接受社区 Review ；浏览器扩展暂不开源)*\r\n\r\n---\r\n\r\n最后，发在 V 站也是想看看，有没有一批和我一样的人：\r\n**重度使用 Obsidian ，同时重度依赖网页端 AI ，但就是不想在笔记软件里再套娃一个 AI 。**\r\n\r\n如果大家平时有其他高效率的 “Obsidian → 网页 AI” 工作流，非常欢迎在帖子里交流。我越来越觉得：AI 和笔记软件，有时候不一定非得谁吞并谁，把中间那座桥修好，可能就够了。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246864,
+      "title": "[Caplo] Mac 录屏软件",
+      "url": "https://www.v2ex.com/t/1246864",
+      "author": "cloudza",
+      "createdAt": "2026-10-07T16:47:13.000Z",
+      "createdAtEpoch": 1791391633,
+      "replies": 0,
+      "content": "佬友们好，分享一个我自己写的 Mac 录屏软件 [Caplo]( https://caplo.app) 。\r\n\r\n录软件演示时，录完还要在剪辑软件里对着时间线，给每次点击手动加放大，一段几分钟的视频经常要调半个小时。Screen Studio 、FocuSee 能自动做这件事，但都收费，所以我自己写了一个。\r\n\r\n![Caplo|1200x630]( https://caplo.app/og.png)\r\n\r\n## 自动镜头\r\n\r\n这是 Caplo 最核心的部分。\r\n\r\n- 录制时记录每次点击和鼠标轨迹，录完打开编辑器，放大镜头已经按点击位置生成好\r\n- 放大的时机跟着操作节奏走，操作快镜头就快，停顿时镜头也会停住\r\n- 放大期间画面跟随鼠标移动，用弹簧曲线过渡，不会跳\r\n- 挨得近的几次点击合并成一个镜头，不会反复推拉\r\n- 镜头会提前移向下一个操作的位置，不会落后于鼠标\r\n- 每个镜头都是时间线上独立的一段，长度、位置、缩放倍数、过渡都能单独调\r\n- 不想要自动生成，可以关掉，在时间线上手动添加\r\n\r\n## 录制\r\n\r\n- 全屏、单个窗口、自定义区域三种方式\r\n- 摄像头、麦克风、系统声音各自独立开关、独立选设备，各占一条轨道\r\n- 30 / 60 fps ，预览和导出一致\r\n- 暂停期间不写入任何内容，继续录制接在同一个工程里，没有断点\r\n- 录制浮层本身不会出现在画面里\r\n\r\n## 光标\r\n\r\n- 多套光标样式，包括 macOS 系统光标和一个折射效果的玻璃样式，大小、角度可调\r\n- 轨迹平滑、点击高亮（颜色可自定义）、静止时自动淡出\r\n- 也可以在成片里完全去掉光标\r\n\r\n## 编辑\r\n\r\n- 多轨时间线：画面、摄像头、系统声音、麦克风分开编辑\r\n- 分割、删除、移动，支持撤销和重做\r\n- 背景、边距、圆角、阴影、裁剪，画布比例有 16:9 、9:16 、1:1 等常用比例和平台预设\r\n- 遮罩打码，用来遮住密码、账号这类敏感信息\r\n- 文字层和章节卡片，卡片插入后，后面的内容自动后移\r\n- 字幕用 macOS 自带的语音识别在本机转写，可以逐条修改\r\n- 麦克风降噪、回声消除，每段可以单独调音量\r\n- 原始素材不会被修改，只在导出时生成新文件\r\n\r\n## 导出\r\n\r\n- MP4 （ H.264 / HEVC ）、MOV （ ProRes 422 ）、GIF\r\n- 720p 到 4K ，导出前能看到最终参数和预估文件大小\r\n- 预览和导出用的是同一套渲染，看到什么就导出什么\r\n\r\n## 隐私\r\n\r\n- 素材和工程只存在本机，不需要账号，不上传\r\n- 没有统计和崩溃上报，唯一的联网是每天检查一次更新，可以在设置里关掉\r\n- 每个工程是一个 .caplo 文件包，素材、鼠标数据和所有编辑都在里面，换电脑直接拷走\r\n\r\n\r\n**下载**： https://caplo.app\r\n**源码**： https://github.com/icloudza/caplo\r\n\r\n当前版本 0.1.3 ，还在持续更新。有问题可以在帖子里反馈，或者到仓库提 issue 。觉得有用的话欢迎点个 star 。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246858,
+      "title": "Vibe Coding 了个 Mihomo 的 Outline 工具",
+      "url": "https://www.v2ex.com/t/1246858",
+      "author": "Jobin0528",
+      "createdAt": "2026-10-07T16:03:03.000Z",
+      "createdAtEpoch": 1791388983,
+      "replies": 0,
+      "content": "# 可以快速导航到需要查询修改的项\r\n\r\nhttps://marketplace.visualstudio.com/items?itemName=TomatoFryEggs.mihomo-yaml-navigator\r\n\r\n```\r\nproxy-providers\r\n  示例订阅              http\r\nrule-providers\r\n  示例规则              http\r\nproxies\r\n  🇭🇰 示例节点           socks5\r\n  行内节点              http\r\nproxy-groups\r\n  🚀 节点选择            select\r\n    DIRECT\r\n    🇭🇰 示例节点\r\n  🤖 AI                 select\r\n    🚀 节点选择\r\n    DIRECT\r\ndns\r\nrules\r\n```",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246852,
+      "title": "Built an AI zombie hug tool — aizombie.app: 2 photos → ~20s vertical clip, guest checkout $9.90",
+      "url": "https://www.v2ex.com/t/1246852",
+      "author": "boisy",
+      "createdAt": "2026-10-07T15:22:46.000Z",
+      "createdAtEpoch": 1791386566,
+      "replies": 0,
+      "content": "Site: https://aizombie.app\r\n\r\nTurned the viral “Zombie Love Story” trend into a small paid product.\r\n\r\nHow it works:\r\n1. Upload two different photos (couple / parent-child / you + cat or dog)\r\n2. Pick a template (Love Story, Match Cut, Trend, Last Hug, Cat, Dog, …)\r\n3. Get ~20s, 15 shots, 9:16 vertical video with sound — ready for TikTok / Reels / Shorts\r\n\r\nOne-time credits, no subscription required:\r\n- Single $9.90 (one 720p render)\r\n- Trio $24.90\r\n- Creator $69.90\r\nGuests can pay via Stripe — no account needed.\r\n\r\nStack: Seedance 2.5 + Cloudflare Workers.\r\nDemo: https://aizombie.app/samples/sample.mp4\r\nTemplates: https://aizombie.app/effects\r\nHow-to / why the two photos must be different people: https://aizombie.app/blog\r\nGitHub: https://github.com/xianyu110/aizombie\r\n\r\nFeedback welcome — quality, checkout flow, or copy.",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246848,
+      "title": "分享个给 AI 写页面用的 React 组件库",
+      "url": "https://www.v2ex.com/t/1246848",
+      "author": "stdout",
+      "createdAt": "2026-10-07T15:02:21.000Z",
+      "createdAtEpoch": 1791385341,
+      "replies": 1,
+      "content": "最近写了个 React Auto Components ，主要是给 AI 写页面用的，开源分享下。\r\n\r\n把表单、表格和增删改查这些常用功能封装好，AI 配字段、配列、接业务接口就能搭页面。也准备了 AI 可读的文档、组件行为约定和错误码，方便它查用法、定位问题。\r\n\r\n都 AI 时代了还写组件库，我的想法是，常用交互和细节固定下来，AI 专心写业务，少重复生成一堆 JSX ，改需求也不用每个页面重新修一遍。希望能省点 token ，少来回折腾。\r\n\r\n还在完善，感兴趣的朋友可以拿去让 AI 试试，有什么不好用的地方欢迎提意见。\r\n\r\nDemo： https://zeroman.github.io/react-auto-components/\r\n\r\n源码： https://github.com/Zeroman/react-auto-components",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246847,
+      "title": "我讨厌输入验证码...于是我开发了这个小工具： SmsPop",
+      "url": "https://www.v2ex.com/t/1246847",
+      "author": "stobacco",
+      "createdAt": "2026-10-07T15:02:18.000Z",
+      "createdAtEpoch": 1791385338,
+      "replies": 2,
+      "content": "## 一、先看演示视频（ 18 秒）\r\nhttps://vimeo.com/1233745344\r\n\r\n\r\n## 二、一句话介绍\r\n一个 Windows 小工具 SmsPop ，让手机通知来到电脑上，自动识别短信验证码，在输入框附近显示候选条，点击即可填入，少一次拿手机的操作。基于 Rust ，大小仅 3.46 MB\r\n\r\n![截图]( https://files.catbox.moe/futi7b.png)\r\n![截图]( https://files.catbox.moe/3ves2w.png)\r\n![截图]( https://files.catbox.moe/789naf.png)\r\n\r\n## 三、它能做什么\r\n- 通过蓝牙接收手机通知/短信，在电脑右下角弹出通知。\r\n- 自动识别短信验证码，支持自动复制，并在输入框附近显示验证码候选条\r\n- 支持 HTTP 接入，Android 可配合 SmsForwarder 等第三方工具转发短信和通知；\r\n- iPhone 无需下载任何其他 App ，只需要蓝牙连接 Windows 。\r\n\r\n## 四、使用前注意\r\n1. 如果你的手机是安卓：只能走 HTTP 接入\r\n2. 如果你的手机是 iPhone：要求电脑的蓝牙适配器支持 BLE 外设角色，并且需要在 iPhone 蓝牙设置中开启“共享系统通知”。并不是所有蓝牙适配器都支持，具体连接步骤见项目 README 。\r\n3. 目前仍处于早期开发阶段，不同适配器、驱动和 iOS 版本的表现可能有所不同，欢迎反馈兼容性情况。\r\n\r\n## 四、项目地址\r\n如果觉得不错，欢迎点个 star ，提交反馈。可去 Releases 下载最新版本\r\n\r\nhttps://github.com/fxaxg/sms-pop-rs",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246846,
+      "title": "[分享创造] 启视 BootScope：一个能看到任务管理器看不到的启动项的 Windows 小工具，单文件 PowerShell，零依赖",
+      "url": "https://www.v2ex.com/t/1246846",
+      "author": "geshint",
+      "createdAt": "2026-10-07T14:54:28.000Z",
+      "createdAtEpoch": 1791384868,
+      "replies": 1,
+      "content": "大家好，分享一个自己写的 Windows 自启动项管理工具：启视 BootScope 。\r\n\r\n起因是清理电脑时发现，任务管理器和 msconfig 只能看到一部分启动项。像 HKU\\S-1-5-18 （ SYSTEM 账户）和 HKU\\.DEFAULT （新用户模板）这两处，它们都不显示，但恰恰是卸载残留和持久化程序爱藏的地方。Autoruns 很强，但对普通用户有点重，所以自己做了一个。\r\n\r\n主要功能：\r\n- 覆盖注册表 Run / RunOnce （含 WOW6432Node 和上面两个隐藏位置）、启动文件夹、计划任务、自动启动的服务\r\n- 增删改查都能做，支持批量勾选\r\n- 启用/禁用用的是 Windows 原生 StartupApproved 机制，和任务管理器「启动」页完全互通\r\n- 每一步可撤销：删除和编辑前都会写回滚日志，一次批量操作一键整批还原；启动文件夹里的文件删除时送回收站\r\n- 风险自动分四档（危险 / 关注 / 残留 / 正常），结合 Authenticode 签名校验，判断依据写在详情里\r\n- 可选 AI 研判：把选中条目的元数据发给大模型，判断是什么软件、能不能安全禁用。支持 Anthropic 、OpenAI 兼容和 Responses 三种协议，国内中转站、Ollama 都能接。默认脱敏用户名和主机名，不配置也不影响其他功能\r\n- 枚举和签名校验都在后台跑，界面不卡\r\n\r\n使用：\r\nWindows 10/11 ，PowerShell 7 或系统自带 5.1 都行。下载后双击「启视.vbs 」，确认 UAC 就能用。不装任何东西，删掉目录就算卸载干净。\r\n\r\n项目地址： https://github.com/suimi8/bootscope\r\n\r\n还在持续改，欢迎试用、提 issue 、拍砖。觉得有用的话点个 Star 就是最大的支持 🙏",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1246840,
+      "title": "一个品牌官网，如果看完还不知道它具体卖什么，设计再好看是不是也没用？",
+      "url": "https://www.v2ex.com/t/1246840",
+      "author": "websitetools",
+      "createdAt": "2026-10-07T14:18:51.000Z",
+      "createdAtEpoch": 1791382731,
+      "replies": 4,
+      "content": "最近有个朋友在做 Brandeliv ，她想让我借助社群的朋友，帮忙看一个挺实际的问题：品牌官网的第一屏，到底应该先传达风格，还是先把业务讲明白？\r\n\r\n她在做的是帮内容创作者建立自己的产品品牌，涉及品牌定位、视觉、产品方向，以及后续运营。\r\n\r\n网站在这里：[Brandeliv]( https://brandeliv.com/)\r\n\r\n现在页面比较强调视觉和创作者的个人风格。\r\n\r\n但站在第一次访问的人的角度，她想验证：看完以后，能不能理解我们到底帮谁、解决什么问题，以及为什么需要我们。",
+      "nodeName": "create"
+    }
+  ],
+  "response": {
+    "transferEncoding": "base64",
+    "contentEncoding": "gzip",
+    "body": "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"
+  }
+}
