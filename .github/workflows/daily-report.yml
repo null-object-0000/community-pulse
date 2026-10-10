@@ -141,6 +141,42 @@ jobs:
           node scripts/collect.js --strict --require-github-repositories --date "$TARGET" --observed-date "$OBSERVED" --markdown --out "../../../知识/大家都在做什么/raw/$TARGET.md" --json-out "../../../知识/大家都在做什么/raw/$TARGET.json"
           ls -la "../../../知识/大家都在做什么/raw/$TARGET."*
 
+      # 图片清单与评论数快照都是**要随这次提交进仓库**的产物，所以必须排在提交之前。
+      - name: 持久化站点图片
+        run: npm run images:sync
+
+      - name: 同步历史日报评论数
+        run: npm run comments:sync
+
+      # **日报产物在这里先落地**：日报需要的是 `raw/<date>.md|json` + 图片来源 + 评论数，
+      # 下面这些（R2 上传、MySQL 导入、站点快照）都是**外围**。
+      #
+      # 顺序理由（两次实测教训）：原来「提交日报」排在「将全量产品观察增量写入 MySQL」之后，
+      # 于是那条通道一失败，**当期日报整期进不了仓库**——
+      #   · 2026-09-24：快照拉分类数据撞 502 ⇒ 当期日报没提交，07:30 无东西可发；
+      #   · 2026-10-09：MySQL 通道撞 HTML 404、`Uploaded 0/7` ⇒ 同样下场。
+      # 反过来说，MySQL 导入失败是可以事后幂等补的（`catalog-refresh.yml`），而**日报没提交
+      # 就等于那一期不存在**。所以「先落盘，再做周边」：日报先提交，外围步骤排在它后面。
+      - name: 提交日报并推送
+        run: |
+          TARGET="${{ steps.setdate.outputs.date }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 来源层可能顺手修复更早的缺口，因此提交所有来源的日分区目录。
+          git add "知识/大家都在做什么/raw/$TARGET.md" "知识/大家都在做什么/raw/$TARGET.json" "知识/大家都在做什么/source-raw/"
+          git add assets/images/ data/comment-counts.json
+          git commit -m "docs: $TARGET 大家都在做什么日报(raw)" || echo "无变更可提交"
+          # 并发 push 可能冲突: pull --rebase 后再推 (最多重试 3 次)
+          for i in 1 2 3; do
+            if git push; then
+              break
+            else
+              echo "push 冲突, 第 ${i} 次 pull --rebase 后重试"
+              git pull --rebase origin main || true
+              sleep 2
+            fi
+          done
+
       - name: 将全量产品观察增量写入 MySQL
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -190,12 +226,6 @@ jobs:
           retention-days: 14
           if-no-files-found: warn
 
-      - name: 持久化站点图片
-        run: npm run images:sync
-
-      - name: 同步历史日报评论数
-        run: npm run comments:sync
-
       # 镜像已移出 Git（见 .gitignore）：这一步必须成功，否则当天新增的标志只存在于 runner 上，
       # 线上会引用 R2 里不存在的对象而破图。因此不再静默跳过，缺凭证直接失败。
       - name: 上传新图片到 R2
@@ -211,33 +241,6 @@ jobs:
             exit 1
           fi
           npm run images:upload
-
-      # **日报产物在这里就先落地**，不等后面的站点快照。
-      #
-      # 为什么把提交提前：日报需要的是 `raw/<date>.md|json` + 图片来源 + 评论数，而站点快照
-      # 只是**分类页的窗口刷新**（缺一天不致命，实时 API 兜得住，也可以事后
-      # `catalog-refresh.yml` 补）。原来全部挤在一次提交里，于是快照或图片任一步失败，
-      # 连日报本身都进不了仓库 —— 2026-09-24 实测：快照拉分类数据撞上一次 502，当期日报
-      # 整期没提交，07:30 无东西可发。**附件失败不该连累日报存在。**
-      - name: 提交日报并推送
-        run: |
-          TARGET="${{ steps.setdate.outputs.date }}"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # 来源层可能顺手修复更早的缺口，因此提交所有来源的日分区目录。
-          git add "知识/大家都在做什么/raw/$TARGET.md" "知识/大家都在做什么/raw/$TARGET.json" "知识/大家都在做什么/source-raw/"
-          git add assets/images/ data/comment-counts.json
-          git commit -m "docs: $TARGET 大家都在做什么日报(raw)" || echo "无变更可提交"
-          # 并发 push 可能冲突: pull --rebase 后再推 (最多重试 3 次)
-          for i in 1 2 3; do
-            if git push; then
-              break
-            else
-              echo "push 冲突, 第 ${i} 次 pull --rebase 后重试"
-              git pull --rebase origin main || true
-              sleep 2
-            fi
-          done
 
       - name: 从 MySQL 生成版本化站点快照
         run: |

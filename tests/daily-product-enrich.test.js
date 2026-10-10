@@ -24,8 +24,10 @@ const {
 const { parseArgs: parseExportArgs } = require('../scripts/catalog/export-queue.js');
 
 function lineOf(source, needle) {
-  const index = source.split('\n').findIndex(line => line.includes(needle));
-  assert.ok(index >= 0, `找不到：${needle}`);
+  // 只匹配**步骤名**那一行（`- name: X`），不匹配注释/正文里出现的同名文字 ——
+  // 下面那段说明「原来提交排在 MySQL 之后」的注释里就含这些字符串，用 includes 会早匹配到注释。
+  const index = source.split('\n').findIndex(line => line.trimStart().startsWith(`- name: ${needle}`));
+  assert.ok(index >= 0, `找不到步骤：${needle}`);
   return index;
 }
 
@@ -41,6 +43,33 @@ test('日更链在「写入 MySQL」之后导出产品增强队列（晚了没�
   // 附件失败不该连累日报存在（与「先落盘，再做周边」同一条纪律）
   const exportBlock = DAILY.split('\n').slice(exportLine - 3, uploadLine).join('\n');
   assert.match(exportBlock, /continue-on-error: true/);
+});
+
+test('日报提交排在所有外围步骤之前（MySQL / 快照失败不得吞掉整期日报）', () => {
+  // 两次实测教训，都是「外围失败 ⇒ 整期日报没提交」：
+  //   · 2026-09-24：站点快照拉分类数据撞 502 ⇒ 当期日报没进仓库，07:30 无东西可发；
+  //   · 2026-10-09：MySQL 通道撞 HTML 404、`Uploaded 0/7` ⇒ 同样下场，10-09 整期丢失。
+  // MySQL 导入失败可以事后幂等补（catalog-refresh.yml），日报没提交则那一期不存在。
+  const commitLine = lineOf(DAILY, '提交日报并推送');
+  for (const peripheral of [
+    '将全量产品观察增量写入 MySQL',
+    '从 MySQL 生成版本化站点快照',
+    '上传新图片到 R2',
+  ]) {
+    assert.ok(commitLine < lineOf(DAILY, peripheral), `${peripheral} 必须排在「提交日报并推送」之后`);
+  }
+  // 反过来：**要随这次提交进仓库**的产物必须排在提交之前，否则永远进不了仓库。
+  for (const producer of ['持久化站点图片', '同步历史日报评论数']) {
+    assert.ok(lineOf(DAILY, producer) < commitLine, `${producer} 必须排在「提交日报并推送」之前`);
+  }
+  // 提交那一步必须真的 add 评论数快照（它由上面的 comments:sync 产出）。
+  const commitBlock = DAILY.split('\n').slice(commitLine, commitLine + 12).join('\n');
+  assert.match(commitBlock, /git add assets\/images\/ data\/comment-counts\.json/);
+  // 每个步骤只能出现一次（重排时最容易留下重复块）。
+  for (const name of ['提交日报并推送', '持久化站点图片', '同步历史日报评论数', '将全量产品观察增量写入 MySQL']) {
+    const count = DAILY.split('\n').filter(line => line.trimStart().startsWith(`- name: ${name}`)).length;
+    assert.equal(count, 1, `${name} 应恰好出现一次，实际 ${count} 次`);
+  }
 });
 
 test('产品级增强巡检：缺运行 / 低覆盖率都告警，健康运行不告警', () => {
