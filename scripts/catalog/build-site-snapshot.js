@@ -52,6 +52,12 @@ async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Pro
   // discard the whole daily batch; 4 quick retries were insufficient on the ATL runner.
   const maxAttempts = 8;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    // 每次尝试都留痕。**为什么必须打**：`TypeError: terminated` 这类**连接层**错误在
+    // 2026-09-30 ~ 10-07 让快照步死了 3 次（栈只有 undici/net 内部帧，没有我们的帧），
+    // 而这之前重试是**完全静默**的 —— 日志里只有最后一次成功的 `Fetched …`，于是
+    // 「到底是超时、被掐断，还是重试耗尽」无法从日志分辨（GitHub 侧的时间戳还会因
+    // stdout 缓冲而漂移，我一度据此得出错误推论）。这行输出让下一次复现自带答案。
+    const startedAt = Date.now();
     try {
       const response = await fetcher(new URL(route, origin), { headers: { accept: 'application/json' }, signal: AbortSignal.timeout(60000) });
       const contentType = response.headers.get('content-type') || '';
@@ -79,10 +85,18 @@ async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Pro
         if (permanent) error.permanent = true;
         throw error;
       }
-      return response.json();
+      return await response.json();
     } catch (error) {
       lastError = error;
-      if (error.permanent) break;
+      const elapsed = Date.now() - startedAt;
+      // 用 stderr：诊断必须在**进程硬崩**时也不丢。stdout 走管道时是异步的，
+      // 未刷出的内容会随崩溃一起消失 —— 而我们要诊断的正是「崩掉的那一次」。
+      // elapsed 用进程内的 Date.now()，不受 GitHub 日志时间戳的缓冲漂移影响。
+      if (error.permanent) {
+        console.error(`[snapshot] ${route} 第 ${attempt}/${maxAttempts} 次失败（${elapsed}ms，永久不重试）：${error.message}`);
+        break;
+      }
+      console.error(`[snapshot] ${route} 第 ${attempt}/${maxAttempts} 次失败（${elapsed}ms）：${error.name}: ${error.message}`);
       if (attempt < maxAttempts) await sleep(Math.min(30000, 1000 * 2 ** (attempt - 1)));
     }
   }

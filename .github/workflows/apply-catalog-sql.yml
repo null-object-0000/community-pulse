@@ -27,7 +27,10 @@ on:
         default: false
 
 permissions:
-  contents: read
+  # `contents: write` 是「提交回滚稿」那一步需要的：回滚稿是这次上架的唯一退路，
+  # 长期因为这里只有 `read` 而提交失败（`git push` 权限不足），于是每次上架的退路
+  # 都只存在于工作流日志里。给 write 之后它才真的落进仓库。
+  contents: write
 
 concurrency:
   group: catalog-sql-apply
