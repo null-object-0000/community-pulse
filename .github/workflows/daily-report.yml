@@ -148,8 +148,7 @@ jobs:
       - name: 同步历史日报评论数
         run: npm run comments:sync
 
-      # **日报产物在这里先落地**：日报需要的是 `raw/<date>.md|json` + 图片来源 + 评论数，
-      # 下面这些（R2 上传、MySQL 导入、站点快照）都是**外围**。
+      # **日报产物在这里先落地**：日报需要的是 `raw/<date>.md|json` + 图片来源 + 评论数。
       #
       # 顺序理由（两次实测教训）：原来「提交日报」排在「将全量产品观察增量写入 MySQL」之后，
       # 于是那条通道一失败，**当期日报整期进不了仓库**——
@@ -157,6 +156,13 @@ jobs:
       #   · 2026-10-09：MySQL 通道撞 HTML 404、`Uploaded 0/7` ⇒ 同样下场。
       # 反过来说，MySQL 导入失败是可以事后幂等补的（`catalog-refresh.yml`），而**日报没提交
       # 就等于那一期不存在**。所以「先落盘，再做周边」：日报先提交，外围步骤排在它后面。
+      #
+      # **R2 上传不算「外围」，它紧跟提交、排在 MySQL 之前**（2026-10-15 的教训）：产品标志
+      # 能从源站重下，但**官网首屏截图的字节只存在于采集它的那台 runner 上**
+      # （`source-raw/screenshots-files/`，按内容寻址且不入 Git），runner 一销毁就再也补不回来。
+      # 旧版本把它排在 MySQL 之后，2026-10-14 那期 MySQL 一挂它就被 skip ⇒ 51 张截图随 runner
+      # 永久丢失（补传 workflow 只能重下标志、拿不到截图字节）。凡是**没有第二份字节**的产物，
+      # 都不能排在会失败的通道后面。
       - name: 提交日报并推送
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"
@@ -176,6 +182,24 @@ jobs:
               sleep 2
             fi
           done
+
+      # 镜像已移出 Git（见 .gitignore）：这一步必须成功，否则当天新增的图片只存在于 runner 上，
+      # 线上会引用 R2 里不存在的对象而破图。因此不再静默跳过，缺凭证直接失败。
+      # **排在 MySQL 导入 / 站点快照之前**：截图那类资产没有第二份字节，不能被别的通道连累
+      # （详见上面「R2 上传不算外围」的注释）。
+      - name: 上传新图片到 R2
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          IMAGE_BASE: ${{ vars.IMAGE_BASE || 'https://img.devtrends.site' }}
+          R2_BUCKET: ${{ vars.R2_BUCKET || 'community-pulse-images' }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "缺少 CLOUDFLARE_API_TOKEN：镜像已移出 Git，不上传会导致线上破图。"
+            echo "请在仓库 Settings → Secrets 配置 CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID 后重跑。"
+            exit 1
+          fi
+          npm run images:upload
 
       - name: 将全量产品观察增量写入 MySQL
         env:
@@ -225,22 +249,6 @@ jobs:
           # 产物是本机侧唯一能拿到的队列副本；保留 14 天，本机定时任务必须在这个窗口内取走。
           retention-days: 14
           if-no-files-found: warn
-
-      # 镜像已移出 Git（见 .gitignore）：这一步必须成功，否则当天新增的标志只存在于 runner 上，
-      # 线上会引用 R2 里不存在的对象而破图。因此不再静默跳过，缺凭证直接失败。
-      - name: 上传新图片到 R2
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          IMAGE_BASE: ${{ vars.IMAGE_BASE || 'https://img.devtrends.site' }}
-          R2_BUCKET: ${{ vars.R2_BUCKET || 'community-pulse-images' }}
-        run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
-            echo "缺少 CLOUDFLARE_API_TOKEN：镜像已移出 Git，不上传会导致线上破图。"
-            echo "请在仓库 Settings → Secrets 配置 CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID 后重跑。"
-            exit 1
-          fi
-          npm run images:upload
 
       - name: 从 MySQL 生成版本化站点快照
         run: |

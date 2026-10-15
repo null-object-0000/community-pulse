@@ -46,17 +46,27 @@ test('日更链在「写入 MySQL」之后导出产品增强队列（晚了没�
 });
 
 test('日报提交排在所有外围步骤之前（MySQL / 快照失败不得吞掉整期日报）', () => {
-  // 两次实测教训，都是「外围失败 ⇒ 整期日报没提交」：
+  // 三次实测教训，都是「别的步骤失败 ⇒ 产物没落地」：
   //   · 2026-09-24：站点快照拉分类数据撞 502 ⇒ 当期日报没进仓库，07:30 无东西可发；
-  //   · 2026-10-09：MySQL 通道撞 HTML 404、`Uploaded 0/7` ⇒ 同样下场，10-09 整期丢失。
-  // MySQL 导入失败可以事后幂等补（catalog-refresh.yml），日报没提交则那一期不存在。
+  //   · 2026-10-09：MySQL 通道撞 HTML 404、`Uploaded 0/7` ⇒ 同样下场，10-09 整期丢失；
+  //   · 2026-10-14：同一条 MySQL 通道失败 ⇒ 排在它后面的「上传新图片到 R2」被 skip，
+  //     51 张官网首屏截图随 runner 销毁永久丢失（截图字节按内容寻址、不入 Git，没有第二份，
+  //     补传 workflow 只能重下产品标志）。
+  // MySQL 导入失败可以事后幂等补（catalog-refresh.yml），日报没提交则那一期不存在；
+  // 而图片上传连「事后补」都不成立，所以它紧跟提交、排在 MySQL / 快照之前。
   const commitLine = lineOf(DAILY, '提交日报并推送');
   for (const peripheral of [
     '将全量产品观察增量写入 MySQL',
     '从 MySQL 生成版本化站点快照',
-    '上传新图片到 R2',
   ]) {
     assert.ok(commitLine < lineOf(DAILY, peripheral), `${peripheral} 必须排在「提交日报并推送」之后`);
+  }
+  // 图片上传排在提交之后（manifest 要先随这次提交进仓库），但必须早于 MySQL 与快照：
+  // 它产出的是**没有第二份字节**的资产，不能被会失败的通道连累。
+  const r2Line = lineOf(DAILY, '上传新图片到 R2');
+  assert.ok(commitLine < r2Line, '「上传新图片到 R2」必须排在「提交日报并推送」之后');
+  for (const blocker of ['将全量产品观察增量写入 MySQL', '从 MySQL 生成版本化站点快照']) {
+    assert.ok(r2Line < lineOf(DAILY, blocker), `「上传新图片到 R2」必须排在「${blocker}」之前`);
   }
   // 反过来：**要随这次提交进仓库**的产物必须排在提交之前，否则永远进不了仓库。
   for (const producer of ['持久化站点图片', '同步历史日报评论数']) {
@@ -66,7 +76,7 @@ test('日报提交排在所有外围步骤之前（MySQL / 快照失败不得吞
   const commitBlock = DAILY.split('\n').slice(commitLine, commitLine + 12).join('\n');
   assert.match(commitBlock, /git add assets\/images\/ data\/comment-counts\.json/);
   // 每个步骤只能出现一次（重排时最容易留下重复块）。
-  for (const name of ['提交日报并推送', '持久化站点图片', '同步历史日报评论数', '将全量产品观察增量写入 MySQL']) {
+  for (const name of ['提交日报并推送', '持久化站点图片', '同步历史日报评论数', '将全量产品观察增量写入 MySQL', '上传新图片到 R2']) {
     const count = DAILY.split('\n').filter(line => line.trimStart().startsWith(`- name: ${name}`)).length;
     assert.equal(count, 1, `${name} 应恰好出现一次，实际 ${count} 次`);
   }

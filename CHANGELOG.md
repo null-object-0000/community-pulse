@@ -31,6 +31,7 @@
 | 10-06 | 2（本轮） | 5 文件 +35/-12（含 1 个新测试） | 0 | **详情页两处缺陷（真实 GSC 数据驱动）**：详情页占全站搜索曝光 69%，排名第一的页面正文 992 字符里 300+ 是同一段描述的复制。① **描述去重** —— 页首 `project-summary` 与 About 面板引用同一个 `summary` 变量，改成 About 承载全文、页首只放截断导语（`detailLead` / `DETAIL_LEAD_MAX=220`），短描述不放导语以免整页只剩一句；GitHub 项目页同一条规则。② **标签复用列表层过滤** —— 两个详情页渲染端各自造轮子、都没走 `sourceScaffoldTags` / `collectionStatusTags`，于是 `producthunt`（来源名）、`new`（采集簿记）直接进了详情页标签行；改为复用 `D.visibleTagEntries`（详情页 limit=12、列表仍 3）并走 `D.tagHtml` 保留 DT/原始/语言 标记，顺带修正该函数内部把 `taxonomyTagEntries` 上限写死为 3、导致详情页丢语义标签的问题 | community-pulse |
 | 10-07 | 1（本轮） | 12 文件（4 个新文件：本机 runner、巡检脚本、巡检 workflow、测试；另 5 条改动的脚本/工作流/文档 + 2 个测试文件） | 0（补历史缺口的 208 产品 SQL 在另一分支，见下） | **把产品级 LLM 增强接进日更链**：队列改用 `queueSql` = 新增桶（`first_seen_date`）∪ **旅行臂**（本次导入初次打上 `useCases=travel-mobility`，规则/LLM 来源都算）；日更链在「写入 MySQL」后导出队列 artifact，**本机** `daily-enrich.sh` 拉取→跑模型→提交 SQL 到分支，Actions `apply-catalog-sql.yml` 写库+自动上架；新增产品级覆盖巡检 `product-enhancement-watchdog.yml`（缺运行/低覆盖即报警）—— 09-23..10-06 那种「某天整批没跑」不再静默 | community-pulse |
 | 10-10 | 2（本轮） | 3 文件（1 个工作流重排、1 个脚本换通道、1 个测试文件 +1 用例） | 1 文件（归档 travel-gap 回放 SQL） | **10-09 整期日报丢失的根因修复（日报先落盘 + MySQL 通道复用 `createChannelDb`）**：10-09 那期前 13 步全成功、日报已生成，死在第 14 步「写入 MySQL」，而「提交日报并推送」排在它之后 ⇒ 全被 skip、raw 从未进仓库、07:30 无东西可发；12 次日更 4 次失败、失败点全在这条通道上。① **重排**：提交提到 MySQL 导入 / 站点快照 / R2 上传之前（日报没提交 = 那期不存在，而 MySQL 导入可事后 `catalog-refresh.yml` 幂等补）——同时保住反向约束：`images:sync` / `comments:sync` 产出的是**要随这次提交进仓库**的清单与评论数快照，仍留在提交之前。② **换通道**：`upload-mysql.js` 原先自己 `wrangler deploy` + 裸 `curl`（`--retry 5 --retry-delay 2`），在刚部署的路由生效前 10 秒内撞完 HTML 404 就放弃（`Uploaded 0/7`）；改为复用 `createChannelDb` 的 `waitForRoute`（`SELECT 1` 探测、10 次、退避至 8 秒）与 `withReconnect`（只在响应体不是 JSON 时重试）。同日补发 10-09：`catalog-refresh` 重跑全 22 步 success，raw + final + 快照三件均落 main。另收尾三件 —— ③ 快照抓取加**重试留痕**（诊断，走 stderr；`terminated` 栈只有 undici/net 帧、无我们的帧，本地 4 个复现假设全被证伪，故不给根因结论，只让下次复现自带答案）；④ `apply-catalog-sql.yml` 权限补 `contents: write`（末步「提交回滚稿」此前从未成功，退路只存在于日志里）；⑤ 归档 `data/travel-gap-enrich-1006` 的回放 SQL 到 `enrich-replay/` 后删除该分支（它未并入 main，直接删会丢唯一副本） | community-pulse |
+| 10-15 | 2（另有同日的数据修复提交） | 3 文件（1 个工作流重排、1 个测试文件改断言、1 个本文件） | 0（数据侧修复经 workflow 落地，见下节） | **10-14 那期 51 张截图永久丢失的根因：R2 上传排在 MySQL 之后**：用户报「今天好多图片访问不了」，逐个 HEAD 过 4,683 个镜像对象，**138 个在 R2 上 404**（桶与域名都正常），线上首页与 `/reports/2026-10-14/` 各引用 57 张镜像、43 张破图。因果链 = 凌晨那次日更死在「写入 MySQL」（临时导入 Worker 部署后报 `code: 10007`），排在它后面的「上传新图片到 R2」被 skip ⇒ 新增图片只进了 manifest、没进桶。**关键区分**：138 个里 87 个是产品标志、51 个是官网首屏截图 —— 标志能从源站重下（手动补传 91 个后页面 0 破图），而**截图文件名是缩略图字节的 sha256、字节又只存在于采集它的那台 runner 上**（不入 Git），runner 一销毁就没有第二份 ⇒ 51 个截图对象永久丢失。改法：把「上传新图片到 R2」提到**提交之后、MySQL 之前**，回归断言锁「提交 < R2 上传 < MySQL/快照」；纪律由「能不能幂等重跑」改成「**产物有没有第二份字节**」 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 > 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
@@ -961,6 +962,47 @@ Uploaded 0/7 MySQL chunks.
 
 - **「覆盖两种打标来源」不是一句废话，它决定了队列什么时候查得到标签**：规则标签由导入写（所以导出必须排在导入后），LLM 标签由上一轮增强写（所以只认窗口内新出现的，不能把历史 LLM 行也扫进来重付）。
 - **凡是拿 `created_at` 当「某天」用的比较，先问一句「谁的时区」**。日更 00:07 北京触发这个时间点，在 UTC 与 UTC+8 下落在两个不同的自然日 —— 这不是边界 case，是每天都会走到的路径。改成 DB 内锚定就没有这个问题。
+
+## 2026-10-15 · 10-14 那期 51 张截图永久丢失 —— R2 上传排在 MySQL 之后的代价
+
+**事故**：用户报「今天好多图片都访问不了」。逐个 HEAD 过 `assets/images/manifest.json` 的 4,683 个镜像对象：**138 个在 R2 上返回 404**（其余 4,530 个正常，所以不是桶坏了、也不是域名掉了）；线上首页与 `/reports/2026-10-14/` 各引用 57 张镜像，其中 **43 张破图**。用户报的那张（源 `https://copyla.elazer.wang/assets/copyla-icon.png`）正是新增批次里的一张。
+
+**因果链（每一步都有日志/实测证据）**：
+
+1. 2026-10-15 凌晨 04:08（北京）的那次日更 run（`38629570125`）第 16 步「将全量产品观察增量写入 MySQL」失败。失败日志的形状值得记住 —— `Uploaded devtrends-mysql-import (1.40 sec)` **之后**才报
+   `A request to the Cloudflare API (/accounts/***/workers/workers/devtrends-mysql-import) failed. This Worker does not exist on your account. [code: 10007]`，
+   即**上传成功、后续 API 调用失败**（与 workers-sdk#2218 那类「publish 成功却报 script_not_found」同形）。`mysql-channel.js` 用的是**不锁版本**的 `npx wrangler`（这次是 4.151.0），版本漂移是唯一已知变量；但证据只到这里，不下定论。
+2. 而「提交日报并推送」（第 14 步）**已经成功** ⇒ `assets/images/manifest.json` 连同 10-14 新增的 150 个镜像路径进了仓库，但第 20 步「上传新图片到 R2」被 skip ⇒ 这些对象**从没进桶**。
+3. 线上于是引用了一批 R2 里不存在的对象 → Cloudflare 返回 HTML 404，且带 `cache-control: max-age=14400`，会被边缘缓存 4 小时（用户看到的那次响应就是 `cf-cache-status: HIT, age: 49`）。
+
+**这次和 10-09 不是同一件事**：10-09 也发生过同样的 skip，但被 10-10 的成功运行**顺手补齐**了 —— 因为 `images:upload` 每次探测**整个** manifest，任何一次成功运行都会填掉历史缺口。这次失败的就是最新一次运行，没有后来者补，缺口就一直开着。也就是说，这条「可事后幂等补」的退路依赖「明天还会成功」，而它并不保证。
+
+**关键区分（手动补传过程中才浮出来）**：138 个缺口里 **87 个是产品标志、51 个是官网首屏截图**。
+
+- **标志能从源站重下**。手动 `images-r2.yml`（run `38695839141`）把 **91 个对象**传了上去，之后首页 / 日报页的 57 张镜像 **0 破图**。
+- **截图不能**。`screenshots-files/<name>` 的 name 是**缩略图字节的 sha256**（内容寻址，`capture_screenshots_raw.js` 的 `thumbSha256`），而字节只存在于采集它的那台 runner 上（`source-raw/screenshots-files/`，不入 Git）。10-14 的 runner 早已销毁，补传 workflow 又只有 `images:sync`、拿不到这些字节，于是那 51 个对象**永久丢失** —— 正好是 10-14 每条一张的官网首屏。补传 run 的收尾行 `Images: 91 uploaded, 51 failed.` 就是这条分界线，而每个失败项都印着 `Missing mirror file for /images/<sha>.webp; … run npm run images:sync before uploading` —— 那句提示对截图是**误导**的：`images:sync` 再跑一百遍也变不出字节。
+
+**改了什么**：
+
+- `daily-report.yml`：把「上传新图片到 R2」从 MySQL 导入之后挪到**「提交日报并推送」之后、MySQL 之前**（步骤序：提交 → R2 上传 → MySQL → 快照）。它排在提交之后是必须的（manifest 要随这次提交进仓库），排在 MySQL 之前是这次学到的新约束。
+- `tests/daily-product-enrich.test.js`：排序用例从「把 R2 上传列进外围」改成显式锁「提交 < R2 上传 < MySQL 导入」且「提交 < R2 上传 < 站点快照」，并要求该步骤恰好出现一次（重排最容易留下重复块）。
+- **纪律的改写**：原文写的是「外围失败可以事后幂等补」。它对产品标志成立、对截图不成立。判据应该是「**这个产物有没有第二份字节**」—— 有的可以排在任何地方，没有的必须排在所有会失败的通道之前。
+
+### 验收
+
+- `npm run check`：**367 tests / 361 pass / 2 fail**，与既有基线逐条一致。两个失败都是既有的（`enhancement-identity` 的 2026-09-24 身份漂移、`site.test.js` 那条窗口滚动导致的分类页日期断言）；用 `git stash` 只排除本次两个文件后复跑，同样 361 pass / 2 fail、同样两条 `not ok`，确认本次改动**零净增失败**。
+- 工作流 YAML 用 `yaml.safe_load` 解析确认步骤序为 提交(14) → R2 上传(15) → MySQL(16) → 快照(19)，且「上传新图片到 R2」全文件只出现一次。
+- 顺序回归用例 9/9 通过。
+
+### 顺带发现：同一根因的第二个受害者
+
+MySQL 那步失败还让 **10-14 的产品没进产品库** ⇒ 那一期的项目详情页是 404（实测 `/projects/kuxiaowo/to-do-list/` 404，而 10-13 的 `/projects/tancky777/ai-image-combiner/` 与 `/projects/hebi8/hebi8-market/` 都是 200），趋势 / 分类页也缺这一期 —— 这一条比 51 张截图影响更大，且它是**可以**事后补的（`catalog-refresh.yml`）。
+
+### 试错与教训
+
+- **「可事后幂等补」是个有前提的结论，写纪律时要把前提一起写下来**。10-10 那次把 R2 上传归进「外围」，理由是「幂等、能补」；一周后同一个位置以另一种方式咬回来：补得回来的是标志，补不回来的是截图。两次事故的根因是同一句话，只是当时只验了一半。
+- **报警的缺失让这次靠用户发现**。MySQL 步骤失败是「响的」（run 红），但**被它 skip 的那些步骤是静默的** —— 没有任何检查在比对「manifest 里有的对象，桶里是否都有」。`images:verify` 早就是那条检查（本次也确认它能在 10 分钟内扫完 4,683 个对象），只是它平时只作为手动 workflow 的一步存在；下次若要再收紧，它应该成为日更失败后的兜底而非等人发现。
+- **排查顺序上，先分「是不是全挂」再定位**：抽样 40 张得 38 个 200，这个动作立刻排除了「R2 桶 / 域名 / 绑定」这类全站性故障，把范围压到「某个批次新增的对象」，比直接读 workflow 日志快得多。
 
 ## 值得记录的决策
 
