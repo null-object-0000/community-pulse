@@ -101,3 +101,17 @@ test('the screenshot capture validates the rendered DOM instead of trusting the 
   // Nothing may re-fetch the page: one response feeds the icons, the description and the og:image.
   assert.equal((source.match(/--screenshot=/g) || []).length, 1);
 });
+
+test('the screenshot capture never re-derives a historical thumbnail from a PNG it no longer has', () => {
+  // 2026-10-15 的真实事故：回填 10-14 时，写回循环对**全部**记录（含 112 条历史保留记录）重建缩略图，
+  // 而历史记录的 PNG 只存在于采集它的那次进程里 ⇒ `fs.readFileSync(png)` 抛 ENOENT，脚本在最后一步
+  // FATAL，51 张刚采好的截图连同日文件一起丢失（workflow 那句 `|| true` 让它完全静默）。
+  // 守卫必须在读之前：缺 PNG 就等于「不是本次采的」，交给 CDN / manifest，跳过即可。
+  const source = require('node:fs').readFileSync(path.join(SKILL, 'capture_screenshots_raw.js'), 'utf8');
+  const block = source.slice(source.indexOf('const thumbnailDir ='));
+  const read = block.indexOf('fs.readFileSync(png)');
+  const guard = block.indexOf('fs.existsSync(png)');
+  assert.ok(read >= 0, '写回循环仍应重读本次采集的 PNG');
+  assert.ok(guard >= 0, '写回缩略图前必须先确认 PNG 在本进程的工作目录里');
+  assert.ok(guard < read, '守卫必须排在 fs.readFileSync(png) 之前');
+});

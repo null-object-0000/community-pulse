@@ -196,18 +196,26 @@ async function main() {
   };
   // The bytes ride beside the day file, content-addressed: the same thumbnail is stored once even
   // when two rows share a page.
+  //
+  // **只为本次真正渲染过的记录重建缩略图。** 历史保留记录的 PNG 只存在于采集它的那次进程里
+  // （workDir 是本次进程的临时目录），对它们调 `toThumb` 必然 ENOENT —— 2026-10-15 回填 10-14
+  // 时就是这样：112 条历史记录先被遍历到，`fs.readFileSync(png)` 抛 FATAL，脚本在最后一步死掉，
+  // 51 张刚采好的截图连同日文件一起丢失（workflow 那句 `|| true` 让它完全静默）。历史记录的字节
+  // 归 CDN 与 manifest 管，这里跳过；缺 PNG 就是「不是本次采的」。
   const thumbnailDir = path.join(args.sourceRawRoot, `${SOURCE_ID}-files`);
   fs.mkdirSync(thumbnailDir, { recursive: true });
+  let skippedHistorical = 0;
   for (const record of records) {
     if (record.status !== 'ok') continue;
     const name = `${record.screenshot.thumbSha256}.${record.screenshot.extension}`;
     const target = path.join(thumbnailDir, name);
-    if (!fs.existsSync(target)) {
-      const png = path.join(workDir, `${crypto.createHash('sha256').update(record.pageUrl).digest('hex').slice(0, 24)}.png`);
-      const thumb = await toThumb(fs.readFileSync(png), workDir, crypto.createHash('sha256').update(record.pageUrl).digest('hex').slice(0, 24));
-      fs.writeFileSync(target, thumb.bytes);
-    }
+    if (fs.existsSync(target)) continue;
+    const png = path.join(workDir, `${crypto.createHash('sha256').update(record.pageUrl).digest('hex').slice(0, 24)}.png`);
+    if (!fs.existsSync(png)) { skippedHistorical += 1; continue; }
+    const thumb = await toThumb(fs.readFileSync(png), workDir, crypto.createHash('sha256').update(record.pageUrl).digest('hex').slice(0, 24));
+    fs.writeFileSync(target, thumb.bytes);
   }
+  if (skippedHistorical) console.error(`[screenshots] ${args.date}: ${skippedHistorical} 条历史记录的字节不在本机，跳过重建（以 CDN / manifest 为准）`);
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(`${file}.tmp`, `${JSON.stringify(document, null, 2)}\n`);
   fs.renameSync(`${file}.tmp`, file);
