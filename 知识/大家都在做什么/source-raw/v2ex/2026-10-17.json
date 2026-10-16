@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "v2ex",
+  "sourceName": "V2EX · 分享创造",
+  "targetDate": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "fetchedAt": "2026-10-16T19:32:31.613Z",
+  "itemCount": 10,
+  "contentSha256": "5240a93edb724d081c619d6d476c7e1978a929eb723a3aa1ede196968dd3a728",
+  "capture": {
+    "mode": "observed-snapshot",
+    "historicalBackfillSupported": false,
+    "endpoint": "https://www.v2ex.com/api/topics/show.json",
+    "requestUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "effectiveUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "httpStatus": 200,
+    "contentType": "application/json;charset=UTF-8",
+    "nodeName": "create",
+    "nodeTitle": "分享创造",
+    "apiReturnsLatestOnly": true,
+    "topicsCreatedOnObservedDay": 1,
+    "bodyByteLength": 43184,
+    "topicIds": [
+      1249500,
+      1249490,
+      1249488,
+      1249486,
+      1249473,
+      1249464,
+      1249448,
+      1249446,
+      1249433,
+      1249432
+    ]
+  },
+  "records": [
+    {
+      "topicId": 1249500,
+      "title": "做了个 NFL 网页小游戏：比赛最后两分钟，换你来当主教练",
+      "url": "https://www.v2ex.com/t/1249500",
+      "author": "fusheng0304",
+      "createdAt": "2026-10-16T18:46:20.000Z",
+      "createdAtEpoch": 1792176380,
+      "replies": 1,
+      "content": "最近折腾了一个美式橄榄球战术小游戏，叫 Two-Minute Drill ，想来 V 站分享一下。\r\n\r\n玩法可以用一句话概括：把一场真实 NFL 比赛的最后阶段交给你，看看换你指挥，能不能把比赛赢下来。\r\n\r\n体验地址： https://two-minutedrillgame.com/\r\n\r\n你需要根据比分、剩余时间、场上位置和暂停次数做选择：跑球还是传球？稳稳推进还是赌一记长传？现在叫暂停，还是再抢一档？\r\n\r\n传球时还能调整接球手的跑动路线，选择传球目标。球权交给对手后，也要自己安排防守。\r\n\r\n我觉得这个玩法最有意思的地方，是把决策质量和最终结果分开评价。\r\n\r\n一次战术没打成，不一定说明选错了；一次冒险侥幸成功，也不一定就是好决策。游戏会根据各个选择对应的预估胜率，给你的指挥打分。有点像把“这教练怎么想的，换我上都行”变成了一道可以自己作答的题。\r\n\r\n目前有两种模式：\r\n\r\n• Daily：每天一个相同的比赛残局，大家面对同一道题。\r\n• Survivor：连续挑战随机第四节局面，赢了继续，输一次结束。\r\n\r\n每日挑战免费，浏览器打开就能玩。比赛情境使用 nflverse 的公开数据，成绩和挑战记录保存在当前设备。\r\n\r\n这个题材在国内比较小众，目前界面也主要是英文，想听听大家的意见：对不熟悉橄榄球的人来说，第一局最需要什么引导？如果你平时看 NFL ，也欢迎试试，看看自己的临场指挥水平如何 😂",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249490,
+      "title": "分享一个 Python 音频转文字命令行工具，支持 Whisper 本地转录",
+      "url": "https://www.v2ex.com/t/1249490",
+      "author": "yongkunchen",
+      "createdAt": "2026-10-16T15:09:22.000Z",
+      "createdAtEpoch": 1792163362,
+      "replies": 1,
+      "content": "最近整理并发布了一个 Python 音频转文字命令行工具，主要用于将音频文件转换成文本或字幕文件。\r\n\r\n项目支持本地 Whisper 模型，也可以使用 OpenAI 语音 API，方便根据自己的环境和需求选择转录方式。\r\n\r\n目前支持的功能包括：\r\n\r\n- 使用 Whisper 进行本地语音转录\r\n- 支持 OpenAI 语音 API\r\n- 支持导出 TXT、SRT、VTT、TSV、JSON 等格式\r\n- 可选使用 DeepL 进行转录文本翻译\r\n\r\n**安装方式：**\r\n\r\n```bash\r\npip install \"cykk-audio-transcriber[all]\"\r\n```\r\n\r\n**使用示例：**\r\n\r\n```bash\r\naudiototext interview.mp3 --model small --output-formats txt,srt\r\n```\r\n\r\n项目需要 Python 3.11+ 和 FFmpeg，采用 MIT 开源许可证。\r\n\r\n相关链接：\r\n\r\n- GitHub： https://github.com/cykk/audiototext-pypi\r\n- PyPI： https://pypi.org/project/cykk-audio-transcriber/\r\n- Zenodo： https://zenodo.org/records/22139346\r\n\r\n欢迎大家试用，也想听听大家对长音频转录、识别准确率和字幕分段处理方面的经验与建议。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249488,
+      "title": "宝可梦塔防",
+      "url": "https://www.v2ex.com/t/1249488",
+      "author": "mqx",
+      "createdAt": "2026-10-16T15:02:35.000Z",
+      "createdAtEpoch": 1792162955,
+      "replies": 0,
+      "content": "宝可梦版本的塔防 td 游戏，哈哈哈，欢迎来玩\r\n\r\n游戏地址：\r\nhttps://pokemon-td.pages.dev/",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249486,
+      "title": "做了个会喷气起飞的 Roadster 网页小游戏，欢迎试玩",
+      "url": "https://www.v2ex.com/t/1249486",
+      "author": "fatelei",
+      "createdAt": "2026-10-16T14:45:49.000Z",
+      "createdAtEpoch": 1792161949,
+      "replies": 0,
+      "content": "把“堵车了就飞过去”的脑洞做成了一个横版小游戏，用 Codex 边聊边改出来的。\r\n玩法很简单：地面来车就起飞，空中来车就降落。按空格或 E 切换起降，手机点按钮即可。\r\n每次只能飞 6 秒，地面和空中的车会成组出现，速度也会越来越快。画面用 Three.js 做的，部署在 Cloudflare ，打开网页就能玩。\r\n试玩：roadster.white-box.cc\r\n目前还是个小原型，想听听大家对操作手感和难度的建议。纯脑洞作品，非官方游戏。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249473,
+      "title": "新做了个小程序，叫一句话小岛，简简单单",
+      "url": "https://www.v2ex.com/t/1249473",
+      "author": "figurant",
+      "createdAt": "2026-10-16T13:23:54.000Z",
+      "createdAtEpoch": 1792157034,
+      "replies": 0,
+      "content": "每天一句话，可画图导出，欢迎大家来玩\r\n![IMG_1008.PNG]( https://picui.ogmua.cn/s1/2026/10/16/6ad22559390b3.webp)\r\n![IMG_1006.PNG]( https://picui.ogmua.cn/s1/2026/10/16/6ad225598db3f.webp)\r\n![IMG_1010.PNG]( https://picui.ogmua.cn/s1/2026/10/16/6ad22559915ab.webp)\r\n![IMG_1027.PNG]( https://picui.ogmua.cn/s1/2026/10/16/6ad2255a08163.webp)\r\n![IMG_1026.PNG]( https://picui.ogmua.cn/s1/2026/10/16/6ad2255a13e58.webp)",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249464,
+      "title": "NanaZip Rev - NanaZip 社区分支，新增主题切换与代码页切换",
+      "url": "https://www.v2ex.com/t/1249464",
+      "author": "zsxdc",
+      "createdAt": "2026-10-16T12:48:28.000Z",
+      "createdAtEpoch": 1792154908,
+      "replies": 0,
+      "content": "NanaZip 的非官方社区分支，跟随上游同步，上游功能一个不少。做了两个上游长期没做的痛点：\r\n\r\n**主题切换**：跟随系统 / 始终浅色 / 始终深色，实时应用到已打开的窗口（含 XAML 岛屿）。\r\n\r\n**代码页切换**：文件名以旧编码存储时按需重新解码，选择按归档记忆、切换目录后保留，压缩包注释同样有效。\r\n\r\n另外补了几个小功能：文件大小按 IEC 单位（ KiB / MiB ）显示、Modern 文件管理器设置页可选界面语言、7z 选用 ZS 压缩方法时提示上游 7-Zip 读不了、Ctrl+W 关闭文件管理器窗口。\r\n\r\nfork 使用独立包名 `Kaesinol.NanaZipRev`，可与官方版并存安装，设置分别存放、互不干扰；两者会竞争资源管理器右键菜单等注册项，同时只有一个生效。\r\n\r\nWindows 10 / 11 ，x64 与 ARM64 ，MIT ，免费。\r\n\r\n**安装**（需能访问 GitHub ）\r\n\r\nTUN 模式下直接运行；其他模式先设代理环境变量，端口换成自己的：\r\n\r\n```powershell\r\n$env:HTTP_PROXY  = \"http://127.0.0.1:7890\"\r\n$env:HTTPS_PROXY = \"http://127.0.0.1:7890\"\r\nirm https://raw.githubusercontent.com/kaixinol/NanaZipRev/refs/heads/nanazip-rev/Install.ps1 | iex\r\n```\r\n\r\nRelease 中的包未签名，脚本会在本机生成自签证书、信任后安装；系统可能需开启「开发者模式」或允许旁加载。\r\n\r\n**卸载**\r\n\r\n```powershell\r\n& ([scriptblock]::Create((irm https://raw.githubusercontent.com/kaixinol/NanaZipRev/refs/heads/nanazip-rev/Install.ps1))) -Uninstall\r\n```\r\n\r\n连包、自签证书和备份一起清除。\r\n\r\nhttps://github.com/kaixinol/NanaZipRev\r\n\r\n有问题欢迎回帖。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249448,
+      "title": "我开发了一个免费决策模型 api ： 包青天",
+      "url": "https://www.v2ex.com/t/1249448",
+      "author": "dkhcyx",
+      "createdAt": "2026-10-16T11:14:12.000Z",
+      "createdAtEpoch": 1792149252,
+      "replies": 0,
+      "content": "https://cassiangroup.uk/baoqingtian/\r\n\r\n模型在一块集显上使用不到 1ms 训练完成，取得了 jev benchmark 上 38.10% 成绩\r\n\r\n采用完全随机数算法实现，兜底保证多个 choices 的概率和为 1\r\n\r\n开放两个 api key：\r\n\r\nkaifengyougebaoqingtian\r\ntiemianwusibianzhongjian\r\n\r\n ![]( https://i.imgur.com/Y6daMR7.png)",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249446,
+      "title": "用 Codex 几天 Vibe 了个单机游戏下载站，无需登录",
+      "url": "https://www.v2ex.com/t/1249446",
+      "author": "emtry7jp",
+      "createdAt": "2026-10-16T10:52:32.000Z",
+      "createdAtEpoch": 1792147952,
+      "replies": 0,
+      "content": "Vite + React + TypeScript + Tailwind CSS v4\r\n\r\nhttps://wuhu.games",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249433,
+      "title": "做了个有点偏门的小网站，用两张照片生成丧尸情侣重逢视频",
+      "url": "https://www.v2ex.com/t/1249433",
+      "author": "Tim99",
+      "createdAt": "2026-10-16T09:49:29.000Z",
+      "createdAtEpoch": 1792144169,
+      "replies": 0,
+      "content": "给大家看看我做的小项目，叫 Zombie Couple Video 。\r\n上传两个人的照片，选好谁是幸存者、谁变成了丧尸，就能生成一段重逢短片。剧情大概是末日里认出对方，走过去拥抱，然后画面切回两个人以前在一起的时候。整个视频只有 10 秒或 15 秒。\r\n题材确实有点怪，丧尸加情侣，最后还要来一段回忆。\r\n网站在这里，zombiecouplevideoai.app\r\n目前是英文界面，接了 MiniMax H3 和 Seedance 2.0 Mini 。技术上用 TanStack Start 、Cloudflare Workers 、D1 和 R2 。\r\n费用提前说一下，生成要登录、买积分，目前没有免费试用。最小积分包是 6.99 美元，每次生成扣多少会先显示，没有订阅和自动续费。人脸、手部和拥抱动作也可能跑偏，效果不能保证每次都满意。\r\n首页那几段是其他创作者的参考短片，标了来源。想看具体怎么写这种剧情的，也放了一份可以直接看的提示词和分镜说明。\r\n发出来想听听大家的直觉，这种视频，你会想换成自己和对象的照片试一次吗？还是看别人生成的就够了？不用专门花钱测试，看看页面，聊聊想法就行。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249432,
+      "title": "claude 在 github codespace 上使用，是不是就不会触发封号？",
+      "url": "https://www.v2ex.com/t/1249432",
+      "author": "fingerxie",
+      "createdAt": "2026-10-16T09:47:11.000Z",
+      "createdAtEpoch": 1792144031,
+      "replies": 1,
+      "content": "目前 codex 太 fw 了，还是得用 cc ，但是 cc 封了我好几个号了。\r\n\r\n\r\n我想到是如果以后，所有项目都在 github 上开发，配合着外部的 codespace ，是不是就好了？",
+      "nodeName": "create"
+    }
+  ],
+  "response": {
+    "transferEncoding": "base64",
+    "contentEncoding": "gzip",
+    "body": "H4sIAAAAAAACA+09a5PctpF/hZm6S/mhnQFIPHWSrhI7D18ixyUpdmKPSwJJcJfeWXLCIbW7zvm/XwENkOC8d6X41tF82KlZDtkE0I1+o/u7f06qOteTx9E/J+qtalXzeqGac3NhctG2y9Xj2SzLq+nbWN9Ms/pqVsFdM450McuLWM8wh0emy+r8v6+eYsZQgjDGcvIomlTqysLKGq1aba64t1R1c6UWd3sNPLP1PW3ZLuyL5h2NEZt3RKvUfMfpvJMoRuamrhm98Pr6enjheT0bxtjWyzJbTR5HCedSPoomRV23ujEPm58vtMrhv3nH0jied6LI9LwjBUPzjvJYmCu5nHcSZ9m8o0mO5x3VKJl3Ams172he4HnHmSDzjnGE5h2jKTIQqLmfZHjeFQXC/dReq0Wrm0q15Vs7zc/W1/OqrMq7raZ5YutarlrVmMmzOEF27l2V6+Z1mU8eR+aCWpRqpc0d333/KJo0dd1OHkeFWqz0o2hib8P8UTRZqkZX7WtDX689HZxrfTn56VE0udJXqV3Df8ITBDGMhUHSyswT7i661YWuzlGCyCH8dbO1m691uipbA6bqFguzjtdlC0h0F5aravjnvGwvunT4P22z4Z9Fnam2rIPbW3W+KKsAelrWwz/H4OS8cUhhuohxpgVBMUqKlEoZsxRzJCWnsc75f6+exuTX+dNGt019/A66C3witsDfzwfuAp4nIXjYZpZKKGVYGLIza6xW7eurOi+LEn7kAkuCGTc/Lhuzuugnf1+jl4vb1+mtGd5zdXOtsd0q9re27rILB0LGmHNKxBqHQFQZDiEsn4hV9OXv/xzNO15QPO+k4HTe0QwV847pRMw7FpvvRYGV2e45mXcip6nfuJQgbcEQz3okkfZ+lM07lrDYMwbGmYFc0MTcnxgIlMp5x3WWHCLvdoZjIilCaytoZ8gSYfZlrhcaLpv/srpqddU6LmWHKgrDh1gsDX/CXA9rYH41K2EWQWgzSDt9RQx/koZLcWK4F4uxWRAeF9uXCFlup9Po1XV99rysulZHnzflYhH1C4KKBJYi+tqsuTJsMmTZfjAonXcJQvG8mVf2r+OJkvOOZTm1LynMXZrOO04Nw4XnaGKuiDTP7cBjMzSd9diLherv5ImZLsdmKqnUjghCBIf8GdAsWcLMPSm1wzXros0EAMEwQ87N0OFzhP4EcfMZU3+nQEVuh5P77zDAcAwitxDscgABjReFWHKSSmR2SnZiBMGEI09K7XV9dmWxkRtknKsrbakqBGOGKIFMpDBkIhJpJ6D9gABLCUJGmMXMTtvQL6OFoXpakP5Xu7ZEI/NZkNyQlYFDiRkmYwYvFBlRx9LYvIty5LelREharEmPNZEbsgUCFEVuyI0ZAiRFjPz1ojB45CpJ/CdLFIjhdPyUyEnmaUCkRuhKyntoDk6S9oLckPN4zA55AUyKhUWeij1kJpgfVbDGw3hhzQAGoF5kcJ0TO3Y6bDnSkyKsBI3tzHKzA7hO+40Xrlz4Ls60waEw5GeJx0PmJBmTMU0L6d8IBA+QiaaFp4tQgaGpsDQiY7s1YntFrJMoi7F5TmbmDYXkXjlyDCfY1U4V4nYe2LIXhHM/eyBvRlPZMxO7+rBpKE7NXFNq1jU3mJM4K3qas5C5zoSdq529zDxN0wKoISNmVAXf2GSAU6DVgAWyTNkrFFgjGtYL5T2fSaWh4dTsDsYsE7F4khRLz4CLAqfjt1AMawq7zFAD1Vz4t9B4kDCAm8030izBPX1Kno9XCOggZN4EOGSw6ylBxGMppC2gEqol8ZiRwnySwuBHoNwwwUTwniEGLNKx1IAVwur1vCX2+OfI4JmirMdwjHDmaWeQnIZGQAIT4cULvCWUwECDwJEk7Ddh+EBs6Ysmeb+2oUiUyI4tkDUh9YOyzlMarIPcoH7YfTQ2XBBmBroCl5m5oiy2i17D6J+LURxHn6tycTvoHpaeZSzXRDYrhMVW1q9vqKWkwuzmjPTUSWXMDRZTw7U5i3uMEpSNZ742HxjTy655W76tm549F7k2qNBmOgnut4hkwqAOxGwamxczy4xjy0rtgOD1jqE6SWeWn2vNPUzPbmUy3iJ+GxvyX2M4dqEYNQgLR0SxQYLIk4GB5MQyNsMWKGOiJ0fLEGALAXsGNuUINFxelJnNKYQZXWEEiVFHoqpYvNXNSkc988Is83BB3MEmc+OwpMe13V7AsIJxg5iiBTVaR2FUG5pS0QuoAjaQnVuaGmKTaIOFhSwX0Mo4HYQcKyyDELSfXWFmBDoeKfCwmQNy5tRsIcChZ0NGrXUKBIjbuLACfmAHsEUpsRQBnwFBOgK2zF9IsIMNlQGJApvjWFrRYIXPho4KEIhOldeYgPm68VtKdIzS0iCIhlD1ITpDnqHQAlP79swrBxTUSis+nMWveS/Sjd7nVMmQP4duApHm1H9uqoybDgKiE+J1qhHnzOx1+3IYFCkojeZdLpJ83uUaxZPBEHjdaGPGW/vgl20RPEmbaPYMPk9WQWAVjBdmr2XwREWtse/bp/PJ63Shqsv5JLpodPF0PjloNUyiRi+ezidVXdSLRX0dVXW91JVu5pNnhx5+MlPP1sd5Mj3+NabH+jp/SObHeO6/VBNkDYMnM+RkhtzJDFkTlXcyRcbPPixzZDSqh2qQrLGgk1GylamdDJMP1TDZjPgEwQwT4SltkBH3QUWIgPz0KDoFrU9B64cQtBYYxYlcC1rf1tX5ZVdlF7o6HLReu3kIWvcPqOq2rdtGVausKZetfW4yCmdb9EIw237tQ9mT7PbyctIHs+2PQSjbEEKWWs2CckNwFuF5DtTUB7jtYxDetoSqlNX80rQrF/nATBT3NACqhfdmHprHnWLlWpEUZTiLmSgKGWtFdcFYgVMtUiGkeNdY+RHw3yVWfgT4nbFyzkWCaSJ3xMo5FlRKdiBW3ujqqtsVKWcEYbabLQ06XvTVbXtRV5ERTgXoZUYlKYwyAQKVptSSA7fWgCZez6W5UX8o5oPQpdaCSRCOvrkoV0vdRNas6Z0WANboGcfFyIncFiNnScLiO8TIrR3MibXMNGdjdrjuI3uf6xEqKt6FZf1vmU0tCOADZKLBkmehjYH8r7CQLMasH4M2Clv47NhPLAWXvc3e4yZESYgnMBm4UelDpSI0VQL98y9LXf3mi8ioGEaPNpOJfvPVFwMppNZAMy6F0ADclD48UYXXb0EzBS2JZSQeG4kD9Xj4YODsidEEk3ZasjVzQeOmCaIj76GDcRaNZjoskfMCWWyPyLpfgtEgHahgV+xatI07vTJIcaGiV397BR6xly/cl69fuS+vXn4NX/7n5V++NKZASqRd8MwtjoMMSITFDKb2udbLP69NbLzKA+HxokitQon9On3yiXfbCJGt4cSs5yef+DvfvHmTqtWF+bosl1FZrVplvMZWqJ2pLi/rMy9OUt18pxaL7+cT92T4umHsxtK13sECCHbH6yzstm71TRuVVaubt6W+nl4tk+js7KrO9SJaXZmhnJ3VXbvs2rPCSJd2FbU37aNV066NYbynBnXec41kivGnERBy9PvfXy31ee9Swxl3y/78i1dRb6ppCR5E4bEkUiN414na2uHYaOGSFNr79cZk+4ey/WOXruWLgAZhmapZ7VmwImfL22UJj351C3s3eND8OK2b89myqX/QWTvbjqwZAPhWV3Ver4H40V60QBqd1U2+msUxTmRCWBjhGxTY0EgD2wVwPbJy9pp2YMKBL3aTgwNZg3dZpJm5P46Nmo7Ndy4MiwI/E7CikM+C/ITIAJWolylA9mCgOpamjXsAvPVEG08S1YX12CkNmN0Vy3myfPZhC68ns+WzeWWX4QOSXsGs7y++HJBuYT4X5bP3IsSezAwkB++wJNtx+/sSZyPw71WmecgzWL7lsyertqmr82f7RdyTmbvNY7DRz55kda6jbKFWq6fzyUJV550612dWIk2e3UX+VU9mBpYB3uj1Ye0ThXcf1jvLyS1j/XmF5WgP7ZaW67tkJDOfqPW46UHpuR4/DcKmh5614dOBogMRvDmOo4XxnvEcC2NtXCPJvjmyfTJ+z2D2PBa+v9+PH6aeANS608HKEoKS3Q5WIk8O1pOD9aE4WBlPOI7XHKxX/7g57Fh1N+05BbTbbVqt4piiOKa7fafv7RiQwwEuaDFTXKAZTHmEBy6xZAmPyfE7ZRfY8WbZBnj/Rt8Fd7TXt4G9uR/cm8OA7wv5GND3hr0HeOiZRIwQIeLtPl3/0AGf7k53biwkXWOCqcy9FsSEMiJKmLQBkzxzpHdViG3e1VhSut+7uvlqHhPRK9VgqfSDido82ppJSGxQPPh0xlfAbyG0akPjg78ggLSeCxcGKZb1pb6qq7M2ny7VuV5Nc/12tjuJ8v9jUmtZBXsm5u48ItNv67SPSvPb+qRRxnbrH45WBv0DjfQPIU76x0n/eCD6R4wk2jiUrFq90OURB5KHG38xh5FTncaCKIE4yXCSCo4YyhJKuEpQTlD2rgHWI+C/S4D1CPA7A6xJwjFnFOFtnCv88V7CGEsi959C9rmPlKbG2ZRhm85lnKtS2IQ2Jkj0olb5qrVOuUPHlddFiLN5EyWPFfVsm6h3E9kXSA3SJKlIqDWQmZ8q5K/BlERhXDY0SVOfAukSjbHNM8ux9su0mRQJS8aUTTm0UnfXIliX0Gd1rm+si89Y1AIR5b8zapy1xs3Yi1k7iOHY0+iIQWEyjHkq7LECSvs0MCt8wVJ3yV120i5dL8CjG5TiFvtxvu1+yWziHDHpUi69L7HZqPYpcG4ax3j0u8iKFu795+5F9nGfxUfSPuvRJrMCKEmMw4AmvE8tHSbschUhBTgxogHcx2YCETO0J/M+TTKcOXg2wrk5hAIBuOMWkFaYEb/qkPPus8htKptWrE/dc5n4Ykibs99podM+o5yawIPzkxh0v7potJ7+sIo8AYW5uBJpg8OCxyAXo88WdZcXC9Xo4VRKkHI53mlb0y/hjFW/w4AqGrdZp9cXZavP0vpmmmWbEefRwQJL1UDJNJHFOD5xjHuKEZPMCyLb4R7jPgldMpuLaZfX6adr7iODGhOfCPfgmgJgIxZUW/1XeCdVuO8Oh6v+jVjEB8YgTuzhHuxhC3MYe8Ufz2bbucUWd/jWG43N9WEwlkP+baeg7LQv2cm+PNmXD6bqVcwRWjcwy/OuUVV7hIUZ3PnQTUyHDERQPotVgmYw9zVHd4wpkxLf2dG9AXbd0b0J+CjX7gbcNb9uAHZU14pSJGMqdzEp+9A9TUkSs4SMNz9so02DEtg9V+b4BtVidCB729loJx4ymQ6nUoweE2oz5vNIA5InWwxIypEd/j4DcuNkWTjIfgqFF+yUFTpMF9lm/YbybOwh/tV3Xzz/w2uMkJh+9eUfvv9oSGYrs66c1udXnZpm1WyFZzGK2QyjGWYzpvI4plQmEqXJ9Fqny49HwNh9gIk8TYpNYBjdB5jEVKWbwGJ+D2AKCcy2TDO+zzQVTjQVAGy/lfDz0UH1pLw6j9TCeMlDcphP+vQXw7rzXOevyyt1rueTaFGrvKzObWbMj7dWUyt00+hmWS/K7NYqbWf+WqDIBZdWTRa64e9GcPPJ7Nm2gbOHOfCBuHcMHMj84Q182Eg7Bg5b6sENPNi0uwb+MEklYBBm4AcUfi9Qdin8PDkp/CeF/6EktCDBrOYXKvw/rm7y7LC23992r6SWS1XelFW9+PlyWmSu0IzHSM1g1mNVnxHGEYMYw51U/Q2wa6r+FsBHqfobcMeq/hawN/eDe3MY8H0h7wEdqOGMx4TGPEm2slT/0D3NE0rEuN7ul6pS35bL6IV+G51F/j+bgGz9i4nq8x9t8nefTm+YjJDaHyuA4gChLxPyH4nW5nC9QIMTrr/nSEOFkW2GCoHY705DJZgKlN3YcF3tn6LI88JXpYCSIODqgsIXLGU0KOQy/Bqk84dubqhAQDPsDwKt24MkuLOHBsmszNa7gjIyoT+UU5MPD07h8NiQPVa1FSnml750Uj87npmcea7zIpoZl6vMUl8Jh+XEaPQxj7f8ZKSH+alX9lOpfT0DV/jFpvDS2Ga+5EW85pmFWShpQwjalkVCdoXjNPrbb56bnH+wdmnGAS9yfIwKZrqbwIb5hqdSKIEyOLbWB7WVQwrMPAxXJwMp4efiHO5Q7wHbYiyW/IUc3rxZZAmeogWNfdEnX5MjC4plDdvFuYZtmrKrWm3rdnBbxMabU8YpzAtjcrnDIpmGQkaqp0yR8L5EEiUbFS9pos0aSDNjIRjtwzpYozVHdEDLW1YRTDUI2SRIRl/87rPIuyGgtpdBZ/Sn8rfRLHpe/jbyGGTM7Ds44WDW4Xmd66aKxuB5qnB/TMqWWYFCJVAvzCE6OC8SFhWBEyxCGYSZF/Afo+G2WETfvozGa+lc2VBiyuE8R/0pjH5HRvwMWIpIi3SopyQcQj9rm8Wn30T9QQVqa9zsnVRI/SGeirq5jNaOhNhzQVyZLQjIN4QcvfmT0iujOkwdx3uh374Z298uEz1kfRBvg+NnQPDBmRjHAIP1dlWwIGPe3s9ooj0ZEy3jnsVpbrc5R0PFKsPcBELUh4O4yqGWobRV14g/BrK5PDSxefw0NrHGJM88fbljRJb4KbYRDnswxafsgYyyZGojYL6eUlAHiVqmurFBvimrvL5eRRhFswhjF1K6YSSCdYx+8+K5/cdchpMs7qVBpaB1HjUsLnAkw+Xc6RkoM5Wac2mSau1OfPq94mC8+uuX0bgEFBQX5KzoC8KJwlAsnI6ChaeYW9mSs/GzFJN+OznuaZd8dPLNFruCAmk+4qkLT6nhacBNWyKURW/evFnW17pZXejFwlz4D129ffzHV6++ev3Vi7/87e9R9DTqY2w45lM0RVP8mAuJ4Lhwf/9L98CB+8vmqnd3Nep6Ciq20eedbmA1C69uz4Y9M2t0sZoZq2o1q1SlfiyXZ41+O/sCjnZNlysc/W9U6pu1A8Qv9EIrW7UpjJk67swtqaVce6njtha23NTmobq0ImuvuTOVEOwFAg3WGODA+SiiWS9FSKHtlaIvzDfezIYWBhnfn7OCoDAUyoTaVSSGIF5fdQpsRti6IQUlCOX92U9MsD/BxWgGJQjtaVeeb9kJCRfw2+hw95hGfh199B3UIUkXdXb5/ePHYGl+9NG/Ersff/xxdPbXyh3l2zgmDnXLAK/uGNEOrLgDRLaiFtGDJgjBfaYNBMkYGa/OljNmW+YRJE1zKBBoT+JBZa7QkcrsaDVmB/M9PjxFuT9YGJy93Kov96cu/z3U5q3z3q09b8z+Q1eigwOpJy36IWvRPaKOV6PtYepnW3Rpdwr6pFHfVaPukfDeVOot/GtY5BG3OlbB7iH+8jTsw4UAAqVq8uxOevfdtO6fQ+feUozgpHgfUry37Zde/75DRYkRIf1aXS3/6yEo6FvrU/yrtPRhKfcVlNimsB9XTmLLk1A0odc47qbvH4rKOu/5rqgsI6eo7Ckq+0CishyThNC1qGx+eZHdHlFpYLgvqN46eW8JmJPd1VjvXD410THSRRGnOM0k4aLIWZwWiVI61jpT9F1P9x0B/11O9x0Bfnf51FiwhBGxPSUz+PFeKZkSy3gtJdNW+g9l7ebJlFD7DLsiDIXJIrUsI1dGxwsd01cVsuKOjG6SbUf2iYzp3oKoPSrUalWq6rypu+W0u5ylqv5HWZ23paqC/pFhLTXgQb6fji0tzIwxDfakb80y2EvOCIkTFOGrlbXaVO67KtBUZOOuFjTJme/iYdY0+kG/jVJdZRdXCmwxjVSUiClG/xmNqtgPBRn7UlH+BRSztQ4BUA+fp5L3J3usGyU8jUKx5Zha9jXwQf5TiZWrrpdd1GWmV73vC9oPhXWAiE5UhIPwmSvHn+jQG2Up4VLfjp3fl6osdHV+W3fnOkCM+akt9VWpqutuVaalqn68qKvzH9xv5i/61XdB3mY5La/Ou8aSzd9Zrp6/4IY978vP3NRT9pLKHi1l33PrOsovgM7CeoQPj9BCF9MRlNbfvovUdhLaoNAOaYc/a6rhDpo+IqXQM8ddyis51ag4Ka8PpkYFZyJma8qrvmqbW/7D8rD6Gt75iylToTPJKM4FTzTKcyTyohCKFyQXlGGUvXOZiiPgv1MfgMPgdyqyxikjhJRbk/fCH++lyHJJ1xTZ0dFoCD4Y3TP6ukzBMxYcN7J+XifVwp5e1tEJXiNo7+hz/HTf4IYznt6pzD/ZVp3Cj3+nVvt12ero0+iFVlkbfRq9ul3ql9bNZP5R5eK6rPLos5cvo7dkPWx63V10U9PHcLVHKboD/D0On+FV+9Sm4a5BSdot0tzK7BRpp2OxJ5H2YPwxQsDhyVCkvSqvpDwsz/rbtvTSWdartlHlVC2XswfloXEoIaQgM50lYgYrsHE4lhBM754xvwF283DsOuCj8s834G4cjl0He3M/uDeHAd8X8jGg7w17D/BRZx9k+mzGO08L24fuK9ETKQ4Wnhq3uiQQyBR9wAtOEdsqF6H49la1MRwpNHzFjNtANR8HuYiGHASrEtjehKRQiU/TkMhyTWlsd1NQ+UgFINl2upgQzA6Up3K9ZsPWfmFvZvDbBbk9MP2wLHnQ1frb+iotdfRZ3S0XOvq6zHUdhSWBvBciRuupRemQPBSsWpigAu1SRYaGBqq2+SoE8yF05yJQ9p5t7UOHdXeDDuuTjDAEfSxNAeoQK5yb3AgYm0uWis1oXYdJu4iuozY0wuUm3QC6XIK8E6nqK7m4QiJB+1yRczQu8sNim/ATp326DscJ8+HPsJILpOVAXGpzbSFxCAqhhJ4iiL45aQvpBggPXTRt7wyAM1BkmJJgkgx8hRtbYQfT/v8B72EnSyj97ZKwgp3GUKyGxLUBUxBkDfeJU5eDluOudTP0s+SQHTRg0MXqfAqTL2MW7OBNvcS840dLzZkl5reGlkFWbmmStNFCM8zr8R1vlUtaip6XVflc3UR/THzp/pda56rKdBRPkf056jEQC+QbG8PugYo9qnrZquwyetmqpo1cIs9QmOeburnUzcr98Dn2L3oRj/YjONuBc0HukO9RWpBxp3nP44JQPfQ16Q2VIZXGOvCkza2w+uZmR1LXotliP3T7h4Xo+7bDqOe5AUyXdsDiImJTKW0BQNtbBZOBQoLCTOHIWcwS7yyExEeXmmCzSMI8LwcnGK1IlW0BDXlMIuu1VtsGHDriBjnpbvcJnAi/PlAsCKoquT6ywR4HOKDrhv1XXFoNtBy3MskbjVBhV/YNrl2KZ+AWDdcB2iwzbRIpoHtrsEulZD5JTSKz08DAhV3kG6wPGThgQcBYgf/6lJAstleSMcd0IxaIe44MexVSpxy+oVW0FT7QS4fY3rlhO2mKpfS7FZo1h1w4rF3l2hg4l24YcCrycWebMO/ICUDXFHvIqBOpfRfkMVgqlNTOPWgjPqyms2yCKmnHdNSFcUBr9r69fT/PkAe7GVq7ytUKs/B3ZTL5NgtG5oiM4W3yFvbfqOU5gZ7CZveEBbQchmw6nZPewQ7zqkICTvkiaKnet0X3+hJOvH4l7A6QJLUFsUi6u/muo9GwOzXUp7Ofbh0geAAS3uaQ7cvL/tkUoaB7/UkV+qBUIY/5h6UM+VEdVocOlU43LWl2aEz7aqfveMY68fzYftm6Vt/b/aRtnbStkBGc9K33om/59TxpXA9V49rlx2P7SpMmp0pFpxjMQ4nBUJkIvNH7oqzOdXNT6mNqkwa3bonFpIv6fJqXq7asMrOI06KrHmbWLEZUI5zlqSKCY4p0wTLGEeZJQkXOxbsmGxwB/12SDY4AvzPZgBldJpa2j9QmSxOJJJjz+EBo4kLf/gBtULYGKChHozZV2UJ1uUktsLW3AeGROYexWqpMR9sy+5zcd4WuUa80A2d2x//geK3UQz9kZyoWTvocG3eIt8YdUIIPxB16BdXOxqZTyFhFxXU0yC4njXsZCOmHVivPsmiQyIQ57dRehZk4jQfsdmswj86K2nn2hyCHei2Qv2ufctqDPRbs3g8GrdP/dH/otS8dj/pzI2HfVmg2HODPYy1MiPZtW61ZSsyBOm57V8GZV1eF3TQ9CZG/H9Uw7UER2Fte9IEhJMxy/ffExqEUFbeHdnUmTeKfvv8/J6ieObCoAAA="
+  }
+}
