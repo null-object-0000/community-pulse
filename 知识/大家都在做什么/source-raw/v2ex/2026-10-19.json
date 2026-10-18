@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "v2ex",
+  "sourceName": "V2EX · 分享创造",
+  "targetDate": "2026-10-19",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "fetchedAt": "2026-10-18T18:35:46.841Z",
+  "itemCount": 10,
+  "contentSha256": "b36d875c54b2d0de5bc2ef2589f2c169403f005504ec03d07411c3d1e095ab70",
+  "capture": {
+    "mode": "observed-snapshot",
+    "historicalBackfillSupported": false,
+    "endpoint": "https://www.v2ex.com/api/topics/show.json",
+    "requestUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "effectiveUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "httpStatus": 200,
+    "contentType": "application/json;charset=UTF-8",
+    "nodeName": "create",
+    "nodeTitle": "分享创造",
+    "apiReturnsLatestOnly": true,
+    "topicsCreatedOnObservedDay": 4,
+    "bodyByteLength": 60201,
+    "topicIds": [
+      1249845,
+      1249844,
+      1249840,
+      1249839,
+      1249820,
+      1249813,
+      1249807,
+      1249806,
+      1249803,
+      1249799
+    ]
+  },
+  "records": [
+    {
+      "topicId": 1249845,
+      "title": "Play Martin:No Filter Fighters",
+      "url": "https://www.v2ex.com/t/1249845",
+      "author": "langren",
+      "createdAt": "2026-10-18T18:06:43.000Z",
+      "createdAtEpoch": 1792346803,
+      "replies": 0,
+      "content": "Martin Fighters \r\nhttps://martinfighters.com/\r\nis an online gaming website dedicated to Martin No Filter Fighters, a fast-paced browser fighting game inspired by the Martin universe. Visitors can play directly in their browser without downloading additional software. The site provides game screenshots, gameplay information, video content, and helpful details for new players. This website is an unofficial fan project created for entertainment and informational purposes.",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249844,
+      "title": "分享一个开源项目 Agent8：让只有 Java 8 的 AIX / HP-UX / Solaris 继续当新版 Jenkins 的 agent",
+      "url": "https://www.v2ex.com/t/1249844",
+      "author": "xianpengshen",
+      "createdAt": "2026-10-18T17:48:47.000Z",
+      "createdAtEpoch": 1792345727,
+      "replies": 0,
+      "content": "传统行业（银行、电信、制造）的 CI 里一个很常见的老问题：软件要支持 AIX 、HP-UX 、Solaris ，构建机都挂在 Jenkins 上，但这些系统上的 Java 基本停在 8 （ AIX 7.1 和 HP-UX 最高 Java 8 ，Solaris 最高 11 ）。\r\n\r\nJenkins 这几年把 Java 要求从 8 抬到 11 、17 ，现在是 21 ，而且 agent 也一样要满足。安全扫描一来 controller 必须升级，升级完这些老机器就连不上了。常见的做法是再养一套老 Jenkins ，或者这些平台手动构建，或者从新机器 ssh 过去执行命令，但那样老机器就不再是一个真正的节点了。\r\n\r\n所以做了 Agent8：把官方的 agent.jar 用 JvmDowngrader 降级成 Java 8 字节码，再处理掉 controller 运行时发过来的新版本 class 、serialVersionUID 变化、OpenJ9 （ IBM Java ）和签名安全 provider 这几类兼容问题。老机器还是一个普通节点，sh 、junit 、stash 、中断、Git checkout 都能用。\r\n\r\nhttps://github.com/keelinfra/agent8 （ MIT ，免费）\r\n\r\n装法（ inbound agent ）：\r\n\r\n```\r\nsh install.sh --url <controller 地址> --replace /path/to/agent.jar\r\n```\r\n\r\n它会问 controller 要 remoting 版本、下载匹配的 jar 、校验 sha256 、备份原 jar ，然后用原来的命令重启就行。SSH 节点用 `--dir /opt/agent8`，再把节点的 Java Path 改成 `/opt/agent8/java`。\r\n\r\n现在的状态：\r\n\r\n* Linux 上 HotSpot 8 （ CentOS 6.10 ）、OpenJ9 8 、Java 11/17 每次改动都在 CI 里跑 Pipeline 、Git checkout 、凭据、中断、agent 重启。\r\n* 真机 Solaris （ Oracle Java 8u60 ）和 HP-UX 安腾（ HP Java 8 ）能装上、通过自检、作为 SSH agent 连上，完整构建还没确认。\r\n* AIX 7.1 真机跑过一次，发现 IBMJCE 签名 provider 的问题，已修，构建还没确认。\r\n\r\n最想要的是 AIX 上的反馈。手上有 AIX / HP-UX / Solaris 构建机的朋友如果愿意试一下，issue 或者直接在这里回复都行，踩到的坑我来修。也想听听大家现在是怎么处理这些老平台的。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249840,
+      "title": "一个在线挂机修仙网页小游戏",
+      "url": "https://www.v2ex.com/t/1249840",
+      "author": "T800ai",
+      "createdAt": "2026-10-18T17:09:02.000Z",
+      "createdAtEpoch": 1792343342,
+      "replies": 1,
+      "content": "https://fsxm.funnyai.wiki\r\n通关一次大约要一周",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249839,
+      "title": "一个台词和名言的时间博物馆",
+      "url": "https://www.v2ex.com/t/1249839",
+      "author": "alexjoker467",
+      "createdAt": "2026-10-18T17:06:32.000Z",
+      "createdAtEpoch": 1792343192,
+      "replies": 1,
+      "content": "想给喜欢的电影台词留个位置，最好能一起放上出处和画面，于是做了 ShotECHO 。\r\n\r\n首页按北京时间每天换一句，背景图跟着切换，同一天刷新保持不变。往下只放 6 条精选，完整内容在「回响博物馆」里，能按分类、原文或译文找，也能随机看一句。当前初始内容有 26 条。\r\n\r\n![ShotECHO 真实界面]( https://alexjoker-blog.oss-cn-guangzhou.aliyuncs.com/%E6%8E%A8%E5%B9%BF/v2ex/01-overview.jpg)\r\n\r\n托管条件是只能上传静态文件，所以用了原生 HTML / CSS / JavaScript 。解压后放进博客子目录就能用，服务器不需要 Node 或数据库； Node 只在本地维护和打包时使用。\r\n\r\n相应的取舍是，投稿保存在访客当前浏览器的 IndexedDB ，收藏保存在本机，不同访客之间不会自动同步。可以把句子和图片一起导出，交给站长审核后再加入公共句库。它目前更适合个人收藏馆。\r\n\r\n界面里的 IP 属地和收录时间是模拟展陈记录，页面已注明，不是真实用户数据。图片来源也有记录，公开展示时需要确认相应用途。预览地址： http://alexjoker.top/projects/ShotECHO/index.html",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249820,
+      "title": "原生 ios 和 macos 斗鱼直播 app",
+      "url": "https://www.v2ex.com/t/1249820",
+      "author": "rladmsrl",
+      "createdAt": "2026-10-18T14:28:13.000Z",
+      "createdAtEpoch": 1792333693,
+      "replies": 0,
+      "content": "之前一直在用 GitHub - xiaoyaocz/dart_simple_live: 简简单单的看直播 · GitHub 最近发现看着看着莫名其妙老是自己断线，由于自己现在是 apple 全家桶，索性让 ai 改了一个 Swift 原生的版本，然后只保留了斗鱼渠道。支持查看录像的功能，而且完美的保留了弹幕+AI 时间轴。自己让 ai 打包哈，大佬不敢放 Realsee 我也不敢放。\r\nhttps://github.com/Rladmsrl/SwiftPeek",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249813,
+      "title": "[开源求 Star] FrpcDeck - 一款界面美观功能完备的 frpc 管理工具",
+      "url": "https://www.v2ex.com/t/1249813",
+      "author": "Hengtang",
+      "createdAt": "2026-10-18T13:38:30.000Z",
+      "createdAtEpoch": 1792330710,
+      "replies": 0,
+      "content": "周末天气不好，困在家里没事干。正好梁圣周四赔了我 30 多块钱，周六又发布 DeepSeek V4.1-Flash 1017 ，就趁周末试了下，让它写了个 frpc 的 web 管理工具。体验很不错，审美也在线。搭配 DeepSeek Harness Desktop ，token 生成速度起飞，平均稳定在 260~280 tokens/S 。梁圣的恩情还不完啊。\r\n求各位大佬走过路过留个小星星，祝各位早日肉身成圣！\r\nhttps://github.com/Luqijian/FrpcDeck",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249807,
+      "title": "我做了一个背单词的小工具，现在扩展成了记忆知识的框架",
+      "url": "https://www.v2ex.com/t/1249807",
+      "author": "long2alfred",
+      "createdAt": "2026-10-18T12:50:15.000Z",
+      "createdAtEpoch": 1792327815,
+      "replies": 0,
+      "content": "我自己用好几年的记单词工具，用它记了 1 万多单词。正好赶上 vibe coding ，就顺带把它重构成了一个通用的记忆卡片工具，能放各种内容。我自己还是只用来背单词，不过也许别人有别的用法。\r\n\r\n\r\n### 怎么用的\r\n\r\n- 每天固定时间，做完就走，不追加任务\r\n- 数量弹性：比如设个 100–200 的目标，看当天时间安排来定\r\n- 一整张有序列表，不认识的标一下，过完一轮重排，再来一轮\r\n- 没有每日到期队列，也没有连续打卡惩罚\r\n\r\n跟 Anki 最大的区别在调度单元：Anki 是单卡独立算下次复习日期，这里是整张列表当调度单元，靠重排表达优先级。代价是不会在遗忘临界点精准提醒你，好处是随时中断随时续上——断一周回来没有欠账。\r\n\r\n**UI 是我自己设计的**，这点对我挺重要。卡面长什么样、按钮放哪、字号多大，全按自己的习惯和审美来。用别人的工具，界面总有一处让你别扭，别扭久了就不想打开。这个小工具改了很多次 UI 了，有时候有了新的想法就改下，不习惯再改回来，所以我把 UI 做成动态的了，这样每个人就可以按照自己的喜好来改，可以发挥自己的创意。\r\n\r\n不是三个月速成，是每天一点点，做了好几年。不追求短期效果，看的是能不能长期坚持。\r\n\r\n### 它不是一个应用\r\n\r\n只是电脑上的一个工具。Flask + SQLite ，本地跑，没有账号没有云。\r\n\r\n也**没有移动端**——我认为手机不是学习的好工具，屏幕小，表达也受限。学习这件事我留给坐在电脑前的时间。\r\n\r\n卡面是纯 HTML/CSS/JS ，每套卡面就是一个独立的小工具，所以二十多个卡组能长得完全不一样：周易是 8×8 方图，五十音是 5×10 表，元素周期表 18 列，音标是点一下直接发音的宫格。\r\n\r\n丢给 AI 说「照这个格式再做一个」，基本能直接跑。**代码免费开源，clone 下来让 AI 帮你启动就行，不用懂 Python 。**\r\n\r\n这种「固定时间、弹性量、不看短期效果」的用法，感兴趣的可以来试下。\r\n\r\ndemo 页： https://dragoncard.top/\r\n\r\nGitHub： https://github.com/crazy-dragon/dragon_card",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249806,
+      "title": "[分享] 自己重做了一个简洁 & 使用的新标签页书签看板",
+      "url": "https://www.v2ex.com/t/1249806",
+      "author": "promisesaybye",
+      "createdAt": "2026-10-18T12:48:54.000Z",
+      "createdAtEpoch": 1792327734,
+      "replies": 1,
+      "content": "我试过不少浏览器新标签页扩展，比较喜欢原版 Qlearly 简单直观的看板，也喜欢 Panda 把 RSS 阅读放进新标签页的做法。\r\n\r\n后来我没法继续使用原版 Qlearly ，而 Panda 的一些功能我日常又不太用得到，于是想按自己的习惯做一版，把看板式整理和订阅阅读放在一起。\r\n\r\n想解决的主要是两个问题：查资料时开了一堆网页，下次还要重新找；收藏了不少链接，却很少再打开。\r\n\r\n所以我希望打开新标签页，就能看到正在用的资料和接下来要做的事；不注册也能先在本地用起来，需要跨设备使用时再登录同步。\r\n\r\n项目目前暂用 Qlearly 这个名字，后续会更名。下面介绍的是我做的这个版本。\r\n\r\n## 书签和标签页怎么整理\r\n\r\n![新标签页看板全景]( https://files.catbox.moe/1da31v.png)\r\n\r\n基本结构是看板、列和卡片。比如，把项目文档、常用工具、稍后阅读分别放成几列，打开新标签页就能看到。\r\n\r\n除了书签，也能放待办和笔记，让项目资料与接下来要做的事待在一起。\r\n\r\n![同一看板里的待办和笔记（左）、网页书签（右）]( https://files.catbox.moe/elrq22.png)\r\n\r\n浏览网页时，可以通过扩展弹窗保存当前页，也能批量保存当前窗口的标签页。下次需要继续查资料时，点一下列上的 Open ，就能重新打开这一列里的网页。\r\n\r\n![保存当前页与批量保存已打开标签]( https://files.catbox.moe/cu987w.png)\r\n\r\n![跨列拖动书签卡片]( https://files.catbox.moe/6ue4yu.png)\r\n\r\n卡片可以跨列拖动，列本身也能调整顺序。比如，把看完的资料从「稍后读」移到「项目参考」，顺手就完成了整理。\r\n\r\n![浏览器原有书签与右键归档]( https://files.catbox.moe/t8yxls.png)\r\n\r\n已有的浏览器书签可以导入，原来的资料能接着用。浏览时也可以右键选择目标看板和列，直接把网页或链接收进去。\r\n\r\n## RSS 和研究情报阅读\r\n\r\n![Research Reader 的信息源、文章列表和原始摘要]( https://files.catbox.moe/mittpv.png)\r\n\r\nReader 采用三栏布局：左侧选信息源或主题，中间浏览文章列表，右侧阅读内容。\r\n\r\n可以添加自己的 RSS 订阅，也支持 OPML 导入和导出。研究情报部分目前主要围绕具身智能、机器人和自动驾驶等方向，可以查看来源摘要、切换到阅读正文，或打开原文。\r\n\r\n看到值得留下的内容，可以直接保存到看板，归到正在做的项目或稍后阅读里。\r\n\r\n## 本地使用和会员功能\r\n\r\n书签整理是这个扩展的主要用途，不注册也能在当前浏览器中本地使用。\r\n\r\n- 免费版：1 个看板、5 列，支持书签、待办、笔记和浏览器书签导入。\r\n- 云同步：登录并验证邮箱后可以使用。\r\n- Reader：需要登录并验证邮箱。免费用户首次启用时可开启 7 天试用，试用结束后需要 Premium 会员继续使用。\r\n\r\n会员还提供更多看板、分享等功能，具体方案可以在[官网]( https://qlearly.space)查看。\r\n\r\n## 安装和演示\r\n\r\n目前已上架 Edge Add-ons：\r\n\r\n[前往 Edge Add-ons 安装 Qlearly]( https://microsoftedge.microsoft.com/addons/detail/qlearly/laocaaedcjbkjndokejllpdplenlgpgh)\r\n\r\n[B 站演示视频（约 4 分钟）]( https://www.bilibili.com/video/BV1CAH16WEDX/)\r\n\r\n欢迎试用，也想听听大家的使用习惯：平时怎么处理还没看完的标签页？如果试了这个扩展，哪一步最不顺手，或者还缺什么功能，欢迎在楼里反馈。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249803,
+      "title": "[开源] SciForge：本地优先的深度学习科研 Agent Harness",
+      "url": "https://www.v2ex.com/t/1249803",
+      "author": "shunwoit",
+      "createdAt": "2026-10-18T12:35:07.000Z",
+      "createdAtEpoch": 1792326907,
+      "replies": 0,
+      "content": "做这个的初衷是：LLM 写代码已经够强，但科研工作流仍然割裂——文献在一个工具、实验在 SSH 、画图在另一个脚本。\r\n\r\nSciForge 的做法是把科研拆成四层：\r\n- Skill：方法论（ 24 个，兼容 DSH / Claude Code 规范）\r\n- Tool：46 个确定性能力（检索/精读/SSH/实验/配图/写作）\r\n- Pipeline：7 条 Recipe （ full / survey / experiment / paper / daily / figure / litreview ）\r\n- GUI：8 个本地网页页面，无构建、无 CDN\r\n\r\n技术栈：Python 3.12 + Typer + FastAPI + 原生前端；默认 deepseek-flash / deepseek-v4-pro ，也支持 OpenAI 兼容 API ； 355 个离线测试，CI 覆盖 Python 3.10/3.12 。\r\n\r\nMIT ，欢迎 star / issue / PR：\r\nhttps://github.com/sddzlsc/SciForge",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1249799,
+      "title": "DLNA 镜流 V1.1 电脑通过 DLNA 投屏",
+      "url": "https://www.v2ex.com/t/1249799",
+      "author": "TonyGong",
+      "createdAt": "2026-10-18T12:19:32.000Z",
+      "createdAtEpoch": 1792325972,
+      "replies": 0,
+      "content": "前几天出差，发现酒店电视只支持 DLNA 投屏，无法电脑投屏，遂用 AI 写了一个小工具，耗费 50$的 token\r\n一个功能完整的 Windows 桌面应用程序，可以将电脑屏幕和音频实时推送到 HTTP-TS 流，并支持发现局域网内的 DLNA 播放器进行屏幕镜像。\r\n推流延迟大概 3-4 秒，播放电影没问题。\r\n还有幻灯片模式，抓屏为图片投屏，延迟 1 秒，可以用于 ppt 。\r\n无任何广告 全免费\r\nDLNA 镜流 V1.1.zip 链接: https://pan.baidu.com/s/1oMxKVGuKUr_gCraU0sLWag?pwd=wgqx 提取码: wgqx",
+      "nodeName": "create"
+    }
+  ],
+  "response": {
+    "transferEncoding": "base64",
+    "contentEncoding": "gzip",
+    "body": "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"
+  }
+}
