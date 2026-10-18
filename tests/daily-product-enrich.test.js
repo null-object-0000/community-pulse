@@ -82,6 +82,31 @@ test('日报提交排在所有外围步骤之前（MySQL / 快照失败不得吞
   }
 });
 
+test('不产出日报内容的步骤不得挡住「提交日报并推送」（否则外围故障会吞掉整期）', () => {
+  // 2026-10-17 实测：`同步历史日报评论数` 连 GitHub API 抽风（`fetch failed`），
+  // 而它排在提交之前 ⇒ 后面全部 skipped，**当期日报整期进仓库失败**，07:30 无东西可发。
+  // 它的产物 `data/comment-counts.json` 只被 build-site 读来显示日历上的评论数，
+  // 拉不到沿用上一份完全够用。同类还有「预检产品库读入口」（只尽早上报，不产出内容）。
+  // 判据：凡是「失败只损失一份展示数据、且每天会自愈」的步骤，都必须 continue-on-error。
+  const block = (name) => {
+    const lines = DAILY.split('\n');
+    const start = lines.findIndex(line => line.trimStart().startsWith(`- name: ${name}`));
+    assert.ok(start >= 0, `找不到步骤：${name}`);
+    // 取这一步自己的片段（到下一个 `- name:` 之前）
+    const rest = lines.slice(start + 1);
+    const end = rest.findIndex(line => /^\s*- name: /.test(line));
+    return (end < 0 ? rest : rest.slice(0, end)).join('\n');
+  };
+  for (const name of ['同步历史日报评论数', '预检产品库读入口']) {
+    assert.match(block(name), /continue-on-error: true/, `${name} 必须 continue-on-error，否则会吞掉整期日报`);
+  }
+  // 反过来：真正产出日报内容的步骤**不能**带它，否则数据坏了也当没事发生。
+  // `生成日报` 是日报本身；`补齐并校验来源层原始日数据` 是它的输入 —— 两者都必须硬失败。
+  for (const name of ['生成日报 (md + json, 存 raw/)', '补齐并校验来源层原始日数据']) {
+    assert.ok(!/continue-on-error/.test(block(name)), `${name} 产出日报内容，必须硬失败`);
+  }
+});
+
 test('产品级增强巡检：缺运行 / 低覆盖率都告警，健康运行不告警', () => {
   // 整批没跑：正是 2026-09-23..10-06 的形状
   assert.equal(evaluateCoverage(null).alert, true);

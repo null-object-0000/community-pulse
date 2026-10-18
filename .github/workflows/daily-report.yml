@@ -44,7 +44,10 @@ jobs:
       - name: 安装项目依赖
         run: npm ci
 
+      # 预检只是**尽早上报**读通道有问题；它不产出日报的任何内容，因此失败不该挡住日报。
+      # 真坏了下游的 MySQL / 快照步骤仍会红（它们现在都排在提交之后），不会静默。
       - name: 预检产品库读入口
+        continue-on-error: true
         run: |
           node -e 'const { fetchJson } = require("./scripts/catalog/build-site-snapshot"); fetchJson(process.env.CATALOG_API_ORIGIN, "/api/v1/sources").then(data => { if (!Array.isArray(data.sources) || !data.sources.length) throw Error("Catalog API returned no sources"); console.log("Catalog API ready:", data.sources.length, "sources"); }).catch(error => { console.error(error.message); process.exitCode = 1; })'
 
@@ -145,7 +148,12 @@ jobs:
       - name: 持久化站点图片
         run: npm run images:sync
 
+      # 评论数只是日历上的**展示数字**（`data/comment-counts.json` 仅被 build-site 读），
+      # 拉不到就沿用上一份，绝不该因此丢掉整期日报 —— 2026-10-17 就是这么丢的：
+      # 这一步连 GitHub API 抽风 `fetch failed`，而它排在提交之前，后面全部 skipped。
+      # 它每天都会重跑，失败即自愈；步骤本身在 UI 里仍显示为红，不会静默。
       - name: 同步历史日报评论数
+        continue-on-error: true
         run: npm run comments:sync
 
       # **日报产物在这里先落地**：日报需要的是 `raw/<date>.md|json` + 图片来源 + 评论数。
