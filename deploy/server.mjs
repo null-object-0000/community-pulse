@@ -222,7 +222,14 @@ async function handle(request) {
   if (url.pathname === '/healthz') return new Response('ok', { status: 200, headers: { 'content-type': 'text/plain' } });
   const binding = dbBinding();
   if (UPSTREAM_ORIGIN && !binding && DYNAMIC_PATH.test(url.pathname)) return proxyToUpstream(request, url);
-  return worker.fetch(request, { ...STATIC_ENV, HYPERDRIVE_READ: binding }, ctx);
+  // HEAD 先按 GET 走一遍再丢掉 body：HTTP 语义要求 HEAD 与 GET 的头部/状态一致，而 worker 里
+  // 详情页对「非 GET」直接 `return null`（见 worker/index.js 的 dynamicProductPage），原样透传
+  // 会把 null 丢给上层 —— 实测 `curl -I /products/…` 因此报 500。
+  const inner = request.method === 'HEAD' ? new Request(request, { method: 'GET' }) : request;
+  const response = await worker.fetch(inner, { ...STATIC_ENV, HYPERDRIVE_READ: binding }, ctx);
+  // worker 对「不属于自己的路径」返回 null，在 Cloudflare 上由静态资源兜住；自建环境里手动兜，
+  // 与 run_worker_first 的语义一致：worker 不处理就交给静态资源，找不到就是站点自己的 404 页。
+  return response || assetsFetch(request);
 }
 
 function needsGzip(request, response) {
