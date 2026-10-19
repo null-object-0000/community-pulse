@@ -80,10 +80,11 @@ docker image inspect devtrends-site:local >/dev/null 2>&1 \
 if docker compose -f deploy/compose.yaml up -d --build >>"$LOG" 2>&1; then
   if selfcheck; then
     echo "$(date '+%F %T') 更新完成：$(docker ps --filter name=devtrends-site --format '{{.Status}}')" >>"$LOG"
-    # 回收：一周前的旧镜像与构建缓存。这台机器只有 40 GB 盘，每次重建会留 1~3 GB 中间层
-    # （实测构建缓存已累计 5.7 GB、可回收 3.3 GB），不回收迟早撑满；保留一周则重建不必从零开始。
-    docker image prune -f --filter until=168h >>"$LOG" 2>&1 || true
-    docker builder prune -f --filter until=168h >>"$LOG" 2>&1 || true
+    # 回收：三天前的旧镜像与构建缓存。这台机器只有 40 GB 盘，每次重建会留 1~3 GB 中间层
+    # （实测构建缓存累计 5.7 GB、可回收 3.3 GB，且每次重建后磁盘 48% → 54%），保留三天足够
+    # 让每天的例行重建复用缓存、又不让缓存无限长胖。
+    docker image prune -f --filter until=72h >>"$LOG" 2>&1 || true
+    docker builder prune -f --filter until=72h >>"$LOG" 2>&1 || true
   else
     echo "$(date '+%F %T') 自检失败（健康检查/首页不通），回退到上一版镜像" >>"$LOG"
     docker tag devtrends-site:previous devtrends-site:local
