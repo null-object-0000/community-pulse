@@ -11,6 +11,7 @@
 set -eu
 
 REPO_DIR=${REPO_DIR:-/root/devtrends-site}
+REPO_SLUG=${REPO_SLUG:-null-object-0000/community-pulse}
 BRANCH=${BRANCH:-$(git -C "$REPO_DIR" rev-parse --abbrev-ref HEAD)}
 LOG=$REPO_DIR/update.log
 PATH=/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -18,9 +19,29 @@ export PATH
 
 cd "$REPO_DIR"
 
-if ! git -c http.version=HTTP/1.1 fetch --quiet --depth 1 origin "$BRANCH" 2>>"$LOG"; then
-  echo "$(date '+%F %T') fetch 失败（网络抖动？），本轮跳过" >>"$LOG"
-  exit 0
+# 取远端：直连 GitHub 会间歇性 `GnuTLS recv error (-110)`（实测有一轮就撞上、被优雅跳过），
+# 所以备几个国内可达的镜像。只用来取公开代码，不涉及任何凭据；第一个成功的就用它 reset。
+# 直连成功时不写日志（否则每 30 分钟一行噪音），只有走镜像或失败才留痕。
+if git -c http.version=HTTP/1.1 fetch --quiet --depth 1 origin "$BRANCH" 2>>"$LOG"; then
+  :
+else
+  echo "$(date '+%F %T') 直连 GitHub 失败，试镜像通道" >>"$LOG"
+  fetched=0
+  for url in \
+    "https://ghfast.top/https://github.com/$REPO_SLUG.git" \
+    "https://gitclone.com/github.com/$REPO_SLUG.git" \
+    "https://ghproxy.net/https://github.com/$REPO_SLUG.git"; do
+    if git -c http.version=HTTP/1.1 fetch --quiet --depth 1 "$url" "$BRANCH" 2>>"$LOG"; then
+      fetched=1
+      echo "$(date '+%F %T') 已从 $url 取到远端" >>"$LOG"
+      break
+    fi
+    echo "$(date '+%F %T') $url 也失败" >>"$LOG"
+  done
+  if [ "$fetched" != 1 ]; then
+    echo "$(date '+%F %T') 所有通道都取不到代码，本轮跳过（30 分钟后再试）" >>"$LOG"
+    exit 0
+  fi
 fi
 
 LOCAL=$(git rev-parse HEAD)
@@ -59,8 +80,10 @@ docker image inspect devtrends-site:local >/dev/null 2>&1 \
 if docker compose -f deploy/compose.yaml up -d --build >>"$LOG" 2>&1; then
   if selfcheck; then
     echo "$(date '+%F %T') 更新完成：$(docker ps --filter name=devtrends-site --format '{{.Status}}')" >>"$LOG"
-    # 只清一周前的旧镜像，留几代用于回退。
+    # 回收：一周前的旧镜像与构建缓存。这台机器只有 40 GB 盘，每次重建会留 1~3 GB 中间层
+    # （实测构建缓存已累计 5.7 GB、可回收 3.3 GB），不回收迟早撑满；保留一周则重建不必从零开始。
     docker image prune -f --filter until=168h >>"$LOG" 2>&1 || true
+    docker builder prune -f --filter until=168h >>"$LOG" 2>&1 || true
   else
     echo "$(date '+%F %T') 自检失败（健康检查/首页不通），回退到上一版镜像" >>"$LOG"
     docker tag devtrends-site:previous devtrends-site:local

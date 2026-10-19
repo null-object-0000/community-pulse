@@ -1097,6 +1097,16 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 
 > 自动更新首次实跑的坑（已修）：机器正确发现了新提交，但浅克隆之间 `git merge --ff-only` 报
 > `refusing to merge unrelated histories` —— 部署克隆本就该与远端一致，改成 `reset --hard FETCH_HEAD`。
+>
+> 另两条加固（同样来自实跑观察）：① 有一轮直连 GitHub 撞上 `GnuTLS recv error (-110)`，脚本按设计
+> 跳过、站点照常服务 —— 但单通道不够稳，于是加镜像备选（ghfast.top / gitclone / ghproxy.net，
+> 只取公开代码、不涉凭据；直连成功时不写日志）；② 构建缓存实测累计 5.7 GB，更新脚本顺带回收
+> 一周前的镜像与构建缓存（这台机器只有 40 GB 盘）。
+
+**顺手量的容量账（回答「要不要升 4C8G」）**：内存 4 GB 用 1.38 GB、available 2.1 GB，8 个容器合计约
+790 MB（站点容器 51 MB = 1.46%）；2 核 load 0.58/0.83/0.62，平时 idle、尖峰只在每天一次构建（约 80 s）；
+**磁盘才是接近上限的那项**（40 GB 用 18 GB = 48%）；带宽 3 Mbps 峰值只用 1.8%，且**升 CPU/内存不改变
+带宽**（华东2 公网带宽单独计费）⇒ 现在没必要升，等「内存持续 >70%」或「磁盘 >80%」再按瓶颈升。
 
 ---
 
