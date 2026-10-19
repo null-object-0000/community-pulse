@@ -181,23 +181,39 @@ const ctx = { waitUntil: promise => { if (promise && typeof promise.catch === 'f
  */
 const UPSTREAM_ORIGIN = (process.env.UPSTREAM_ORIGIN || '').replace(/\/+$/, '');
 const DYNAMIC_PATH = /^\/(?:en\/)?(?:api\/v1\/|projects\/|products\/)/i;
+// 上游首字节实测 0.3~1.2 秒，给 8 秒足够宽松；再加一次重试 —— 国内出口到 Cloudflare 会间歇性
+// ETIMEDOUT（实测撞到一次，用户看到的就是 502），重试一次能把大多数抖动挡在用户之外。
+const UPSTREAM_TIMEOUT_MS = Number(process.env.UPSTREAM_TIMEOUT_MS || 8000);
 
 async function proxyToUpstream(request, url) {
   const target = new URL(url.pathname + url.search, UPSTREAM_ORIGIN);
-  try {
-    const upstream = await fetch(target, {
-      method: request.method,
-      headers: { accept: request.headers.get('accept') || '*/*', 'user-agent': request.headers.get('user-agent') || 'devtrends-site' },
-      redirect: 'manual',
-    });
-    return new Response(upstream.body, {
-      status: upstream.status,
-      headers: { ...Object.fromEntries(upstream.headers), 'x-devtrends-upstream': 'cloudflare-worker' },
-    });
-  } catch (error) {
-    console.error('[site] upstream proxy failed:', error);
-    return textResponse('上游暂时不可用', 502);
+  const init = {
+    method: request.method,
+    headers: {
+      accept: request.headers.get('accept') || '*/*',
+      'user-agent': request.headers.get('user-agent') || 'devtrends-site',
+    },
+    redirect: 'manual',
+  };
+  let lastError = null;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    try {
+      const upstream = await fetch(target, { ...init, signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS) });
+      const headers = { ...Object.fromEntries(upstream.headers), 'x-devtrends-upstream': 'cloudflare-worker' };
+      // ⚠ 必须摘掉这两个头：undici 的 fetch 会把上游的压缩体**自动解压**，却不一定把
+      // `content-encoding` 摘干净。原样转发会让客户端再解一次压 —— 实测报
+      // `incorrect header check` 并让请求崩掉；浏览器全都带 accept-encoding，等于每个产品页都坏。
+      // 拿到的是明文，就按明文转发，需要压缩时由外层 `needsGzip` 统一重压。
+      delete headers['content-encoding'];
+      delete headers['content-length'];
+      return new Response(upstream.body, { status: upstream.status, headers });
+    } catch (error) {
+      lastError = error;
+      if (attempt === 1) console.warn(`[site] 上游第 1 次失败（${error?.cause?.code || error.name}），重试一次`);
+    }
   }
+  console.error('[site] upstream proxy failed:', lastError);
+  return textResponse('上游暂时不可用', 502);
 }
 
 async function handle(request) {

@@ -1095,6 +1095,12 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 
 **尚未完成**：只读数据库账号（拿到即自动切换本地渲染）、NPM vhost 或阿里云 CDN + 解析（只有账号持有人能操作）、切 DNS 与备案「申请复查」。
 
+> 本地测试逮到一个自己刚引入的 bug（**未上线**）：给上游请求显式加 `accept-encoding: gzip` 之后，
+> undici 会把上游的压缩体自动解压、却仍转发 `content-encoding: gzip` 头，客户端再解一次压就崩
+> （`incorrect header check`）—— 浏览器全都带 accept-encoding，等于每个产品页都会坏。修法：不显式
+> 要压缩，转发时摘掉 `content-encoding` / `content-length`，需要压缩时由外层统一重压。
+> 同时给过渡反代加 8 秒超时 + 一次重试（实测撞到过 `ETIMEDOUT` 直接给用户 502）。
+
 > 自动更新首次实跑的坑（已修）：机器正确发现了新提交，但浅克隆之间 `git merge --ff-only` 报
 > `refusing to merge unrelated histories` —— 部署克隆本就该与远端一致，改成 `reset --hard FETCH_HEAD`。
 >
