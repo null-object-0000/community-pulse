@@ -1095,6 +1095,9 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 
 **尚未完成**：只读数据库账号（拿到即自动切换本地渲染）、NPM vhost 或阿里云 CDN + 解析（只有账号持有人能操作）、切 DNS 与备案「申请复查」。
 
+> 自动更新首次实跑的坑（已修）：机器正确发现了新提交，但浅克隆之间 `git merge --ff-only` 报
+> `refusing to merge unrelated histories` —— 部署克隆本就该与远端一致，改成 `reset --hard FETCH_HEAD`。
+
 ---
 
 ## 维护约定
