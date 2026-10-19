@@ -97,7 +97,7 @@ test('不产出日报内容的步骤不得挡住「提交日报并推送」（�
     const end = rest.findIndex(line => /^\s*- name: /.test(line));
     return (end < 0 ? rest : rest.slice(0, end)).join('\n');
   };
-  for (const name of ['同步历史日报评论数', '预检产品库读入口']) {
+  for (const name of ['同步历史日报评论数', '预检产品库读入口', '抓取官网 Logo 兜底层（没有产品标志的行）', '准备截图环境（CJK 字体 + webp 工具）']) {
     assert.match(block(name), /continue-on-error: true/, `${name} 必须 continue-on-error，否则会吞掉整期日报`);
   }
   // 反过来：真正产出日报内容的步骤**不能**带它，否则数据坏了也当没事发生。

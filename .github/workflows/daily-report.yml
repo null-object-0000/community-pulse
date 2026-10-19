@@ -104,7 +104,12 @@ jobs:
           node scripts/capture_github_repositories_raw.js --date "$TARGET" --observed-date "$OBSERVED"
           node scripts/validate_github_repositories_raw.js --date "$TARGET"
 
+      # 官网 Logo 兜底层是**增强层**，不是日报的必需输入：`source_raw_items.js` 的
+      # `loadSiteLogos` 在文件缺失时返回 null ——「没有这一天文件」只意味着那些行继续用
+      # 文字头像（脚本内注释原话）。而 `--strict` 会让任一源站抽风就整步失败。
+      # 所以它失败时应当降级为「少一些 logo」，而不是丢掉整期日报。
       - name: 抓取官网 Logo 兜底层（没有产品标志的行）
+        continue-on-error: true
         run: |
           TARGET="${{ steps.setdate.outputs.date }}"
           OBSERVED="$(TZ=Asia/Shanghai date +%F)"
@@ -115,7 +120,9 @@ jobs:
           node scripts/capture_site_logos_raw.js --date "$TARGET" --observed-date "$OBSERVED" --strict
           node scripts/validate_site_logos_raw.js --date "$TARGET"
 
+      # 纯环境准备：只服务下一步截图，而截图步自己已经 `|| true`。apt 镜像抽风不该挡住日报。
       - name: 准备截图环境（CJK 字体 + webp 工具）
+        continue-on-error: true
         run: |
           # runner 镜像只带 fonts-noto-color-emoji，中文官网会渲成方框；webp 工具没有就只能
           # 落 PNG（每期 8.7MB 而不是 0.6MB），所以两者都装。
