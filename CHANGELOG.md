@@ -1091,7 +1091,7 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 
 ### 落地状态
 
-镜像 `devtrends-site:local` 1.37 GB，容器 `Up (healthy)`，静态由本机服务、动态走过渡反代（命中 CF 缓存、`catalog-version 2026-10-18`）。新增 `deploy/update.sh` + `/etc/cron.d/devtrends-site`（每 30 分钟 `fetch`，有新提交才重建，失败时容器保持旧版本）—— 「站点别停更」从此不依赖某个人记得手动跑。
+镜像 `devtrends-site:local` 1.37 GB，容器 `Up (healthy)`，静态由本机服务、动态走过渡反代（命中 CF 缓存、`catalog-version 2026-10-18`）。新增 `deploy/update.sh` + `/etc/cron.d/devtrends-site`（每 30 分钟 `fetch`，有新提交才重建；**起不来则自检失败并回退到上一版镜像**）—— 「站点别停更」从此不依赖某个人记得手动跑。首次实跑已验证：发现新提交 → 重建 → 容器重建且 healthy → 站点自检全 200。
 
 **尚未完成**：只读数据库账号（拿到即自动切换本地渲染）、NPM vhost 或阿里云 CDN + 解析（只有账号持有人能操作）、切 DNS 与备案「申请复查」。
 
