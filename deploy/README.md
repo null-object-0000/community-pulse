@@ -84,6 +84,17 @@ webhook 需要公网入口与额外凭据，反而多一处会坏的地方。
 2. Stacks → 新建 Git 栈，composePath 填 `deploy/compose.yaml`，开启自动更新
    （注意 Dockhand 在容器里跑，构建上下文必须是它能读到的路径 —— snap docker 的路径限制见上文）
 
+## 部署状态（2026-10-19 首次落地）
+
+| 项 | 状态 |
+|---|---|
+| 镜像 / 容器 | `devtrends-site:local`（1.37 GB）；容器 `devtrends-site` healthy，监听 8080 |
+| 静态 | 由本机 Node 服务：首页、日报、`/en/`、`/cards/`、数据 JSON、`robots.txt`、百度验证文件 |
+| 动态 | **仍走过渡反代**（响应头 `x-devtrends-upstream: cloudflare-worker`）—— 等只读库账号 |
+| 自动更新 | `/etc/cron.d/devtrends-site` 每 30 分钟跑一次 `deploy/update.sh` |
+| 对外访问 | **未接** —— 需阿里云 CDN（或 NPM vhost）+ 解析指向本机，只有账号持有人能操作 |
+| 图片 | 仍在 Cloudflare R2（`img.devtrends.site`），内地访问偏慢，后续可换阿里云 OSS |
+
 ## 注意事项
 
 - **`dist/` 不进 Git**，所以镜像构建必须在容器内跑 `npm run build`（Dockerfile 已这么做）。
