@@ -1,0 +1,39 @@
+# devtrends.site 在阿里云 ECS 上的编排。
+#
+# 用法（在仓库根目录）：
+#   docker compose -f deploy/compose.yaml up -d --build
+#
+# 数据库凭据放 deploy/.env（不进 Git，见 .env.example）。缺凭据时静态页面照常服务，
+# 只有 /products/* 与 /api/v1/* 返回 503 —— 这样「先把站点搬过来」和「接上产品库」可以分两步做。
+services:
+  site:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: devtrends-site:local
+    container_name: devtrends-site
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      # 允许缺失：没有数据库凭据时静态页照常服务，动态路径走下面的 UPSTREAM_ORIGIN。
+      - path: .env
+        required: false
+    environment:
+      - TZ=Asia/Shanghai
+      # 过渡反代：数据库只读账号到位前，动态路径转给现有 Cloudflare Worker。
+      # 一旦 deploy/.env 里配好 DB_*，本地渲染自动接管，这条不再生效。
+      - UPSTREAM_ORIGIN=${UPSTREAM_ORIGIN:-https://community-pulse.nichangen.workers.dev}
+    networks:
+      - snewbie-net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  # 与 NPM（nginx-proxy-manager）等现有服务共用的一张外部网络：NPM 加一条 vhost 就能
+  # 按容器名 `devtrends-site:8080` 反代，不需要把端口暴露到公网。
+  snewbie-net:
+    external: true
