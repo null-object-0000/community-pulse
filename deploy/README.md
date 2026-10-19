@@ -58,14 +58,31 @@ CDN 源站填 `47.103.155.183:8080`，安全组放行该端口。适合「不想
 
 ## 每日自动更新（「站点别停更」）
 
-站点内容每天由日报流程产出，所以部署链必须自己会跑，不能依赖某个人。
+站点内容每天由日报流程写进仓库，所以部署链必须自己会跑，不能依赖某个人记得手动部署。
+`deploy/update.sh` 干这件事：`fetch` 当前分支 → 有新提交就 `pull --ff-only` + 重建镜像 + 滚动
+重启容器（失败时容器保持旧版本继续服务，日志留在仓库根的 `update.log`）。
 
-**推荐：Dockhand Git 栈**（本机已在运行）
-1. Dockhand → Git → 添加仓库：`https://github.com/null-object-0000/community-pulse.git`，分支按需（当前是 `main`），公开仓库免凭据
-2. Stacks → 新建 Git 栈，composePath 填 `deploy/compose.yaml`，开启自动更新（cron 或 push webhook）
-3. 之后 `main` 一旦有新提交 → Dockhand 拉取并重建容器 → 站点更新
+```bash
+# 安装（一次性）：脚本随仓库来，这里只装 cron
+chmod +x /root/devtrends-site/deploy/update.sh
+cat >/etc/cron.d/devtrends-site <<'EOF'
+SHELL=/bin/sh
+PATH=/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+*/30 * * * * root /root/devtrends-site/deploy/update.sh
+EOF
+chmod 644 /etc/cron.d/devtrends-site
 
-也可以手工触发：`docker compose -f deploy/compose.yaml up -d --build`。
+# 手工触发一次（等价于 cron 那一跑）
+/root/devtrends-site/deploy/update.sh && tail -5 /root/devtrends-site/update.log
+```
+
+为什么轮询而不是 webhook：日报落地时间在凌晨，误差以十分钟计，一次 `git fetch` 的成本可以忽略；
+webhook 需要公网入口与额外凭据，反而多一处会坏的地方。
+
+**替代方案：Dockhand Git 栈**（本机已在运行，若想让更新也走 Dockhand 的可视化界面）
+1. Dockhand → Git → 添加仓库 `https://github.com/null-object-0000/community-pulse.git`
+2. Stacks → 新建 Git 栈，composePath 填 `deploy/compose.yaml`，开启自动更新
+   （注意 Dockhand 在容器里跑，构建上下文必须是它能读到的路径 —— snap docker 的路径限制见上文）
 
 ## 注意事项
 

@@ -32,10 +32,12 @@
 | 10-07 | 1（本轮） | 12 文件（4 个新文件：本机 runner、巡检脚本、巡检 workflow、测试；另 5 条改动的脚本/工作流/文档 + 2 个测试文件） | 0（补历史缺口的 208 产品 SQL 在另一分支，见下） | **把产品级 LLM 增强接进日更链**：队列改用 `queueSql` = 新增桶（`first_seen_date`）∪ **旅行臂**（本次导入初次打上 `useCases=travel-mobility`，规则/LLM 来源都算）；日更链在「写入 MySQL」后导出队列 artifact，**本机** `daily-enrich.sh` 拉取→跑模型→提交 SQL 到分支，Actions `apply-catalog-sql.yml` 写库+自动上架；新增产品级覆盖巡检 `product-enhancement-watchdog.yml`（缺运行/低覆盖即报警）—— 09-23..10-06 那种「某天整批没跑」不再静默 | community-pulse |
 | 10-10 | 2（本轮） | 3 文件（1 个工作流重排、1 个脚本换通道、1 个测试文件 +1 用例） | 1 文件（归档 travel-gap 回放 SQL） | **10-09 整期日报丢失的根因修复（日报先落盘 + MySQL 通道复用 `createChannelDb`）**：10-09 那期前 13 步全成功、日报已生成，死在第 14 步「写入 MySQL」，而「提交日报并推送」排在它之后 ⇒ 全被 skip、raw 从未进仓库、07:30 无东西可发；12 次日更 4 次失败、失败点全在这条通道上。① **重排**：提交提到 MySQL 导入 / 站点快照 / R2 上传之前（日报没提交 = 那期不存在，而 MySQL 导入可事后 `catalog-refresh.yml` 幂等补）——同时保住反向约束：`images:sync` / `comments:sync` 产出的是**要随这次提交进仓库**的清单与评论数快照，仍留在提交之前。② **换通道**：`upload-mysql.js` 原先自己 `wrangler deploy` + 裸 `curl`（`--retry 5 --retry-delay 2`），在刚部署的路由生效前 10 秒内撞完 HTML 404 就放弃（`Uploaded 0/7`）；改为复用 `createChannelDb` 的 `waitForRoute`（`SELECT 1` 探测、10 次、退避至 8 秒）与 `withReconnect`（只在响应体不是 JSON 时重试）。同日补发 10-09：`catalog-refresh` 重跑全 22 步 success，raw + final + 快照三件均落 main。另收尾三件 —— ③ 快照抓取加**重试留痕**（诊断，走 stderr；`terminated` 栈只有 undici/net 帧、无我们的帧，本地 4 个复现假设全被证伪，故不给根因结论，只让下次复现自带答案）；④ `apply-catalog-sql.yml` 权限补 `contents: write`（末步「提交回滚稿」此前从未成功，退路只存在于日志里）；⑤ 归档 `data/travel-gap-enrich-1006` 的回放 SQL 到 `enrich-replay/` 后删除该分支（它未并入 main，直接删会丢唯一副本） | community-pulse |
 | 10-15 | 6 | 5 文件（1 个工作流重排、1 个采集脚本修 FATAL、2 个测试文件、1 个本文件） | 3 文件（截图源层摘 51 条记录、manifest 摘 51 条死条目、重跑日更重采 159 张） | **10-14 那期 51 张截图永久丢失 + 该期产品库缺一期：都是「MySQL 步骤失败 ⇒ 排在它后面的步骤被 skip」**：用户先报「今天好多图片访问不了」，逐个 HEAD 过 4,683 个镜像对象，**138 个在 R2 上 404**（桶与域名都正常），线上首页与 `/reports/2026-10-14/` 各引用 57 张镜像、43 张破图；随后又报「点产品详情页 404」（同一根因的第二个受害者：10-14 的产品没进产品库）。因果链 = 凌晨那次日更死在「写入 MySQL」（临时导入 Worker 部署后报 `code: 10007`），排在它后面的「上传新图片到 R2」与「站点快照」被 skip ⇒ 图片只进了 manifest 没进桶、产品没进库。**关键区分**：138 个里 87 个是产品标志、51 个是官网首屏截图 —— 标志能从源站重下（补传 91 个后页面 0 破图），**截图不能**（文件名是缩略图字节的 sha256，字节只在采集它的那台 runner 上，不入 Git）⇒ 51 个永久丢失。① 改法：把「上传新图片到 R2」提到**提交之后、MySQL 之前**，断言锁顺序，纪律由「能不能幂等重跑」改成「**产物有没有第二份字节**」；② 修复过程中又挖出 `capture_screenshots_raw.js` 在**回填已有日文件的日期时必定 FATAL**（写回循环对历史记录也重建缩略图，PNG 早已不在），而 `\|\| true` 把崩溃吞成 success ⇒ 先把 51 条记录摘掉让它重采，并给写回加守卫；③ 数据修复：重跑日更 `DATE=2026-10-14` 后 **22 步全 success**（重采 159 成功/4 失败、上传 51 个 0 失败、MySQL 导入、站点快照），全量校验 **4684 个对象 0 不可达**、10-14 的 **55 个详情页全部 200** | community-pulse |
+| 10-19 | 6（本轮，在 `feat/aliyun-site-hosting` 分支） | 8 文件（`deploy/` 6 个 + `.dockerignore` + 本文件） | 0 | **为备案核查把站点搬去自建服务器**：`deploy/` 让站点在阿里云 ECS 上跑起来（零改动复用 worker 渲染），并把 snap docker 的路径约束与「`.agents` 不能整条排除」逐个实测钉死 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 > 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
 > 注：**09-24 ~ 10-05 的行未记录**（那段时间的改动由其他工作线落地）；「范围」与「合计」两行仍停在 09-23 的口径。
+> 注：**10-16 ~ 10-18 的行未记录**（那三天是日更的数据提交与另一条工作线的改动）。
 
 ---
 
@@ -1052,6 +1054,48 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 - **移动端不做列表**：09-11 卡片替换列表 → 09-12 独立卡片页 + 堆叠滑动 → 移动端列表彻底隐藏。
 - **图片不进 Git**：先外置 R2，再把镜像移出仓库并清理历史（本地 `.git` 493MB → 415MB）。
 - **没有预览环境**：push `main` 即发布，且部署前一步测试都不跑（Build command 是 `npm run build`，不含 test）。
+
+## 2026-10-19 · 站点搬去自建服务器（ICP 备案核查驱动）
+
+**主线：让 devtrends.site 能在自己的阿里云 ECS（上海，`47.103.155.183`）上服务 —— 备案接入准确性核查要求域名解析到阿里云内地节点（苏ICP备2024114357号-6，deadline 2026-11-05 00:00，延期申请已批）。本轮只做「能在自有机器上跑起来」这一件事，不动任何渲染逻辑，也不切 DNS。**
+
+### 先量一量，再决定值不值得搬
+
+| 数据源 | 观测量 | 结论 |
+|---|---|---|
+| Cloudflare 原始请求 | 空 UA 52.5% + `node` 14.9% + SemrushBot 12.1% + `nginx-ssl` 9.0% + AhrefsBot 1.7% | **约 90% 是机器人**，`US 74.7%` 是爬虫造成的假象 |
+| Clarity 真人会话（近 3 天 92 场） | **China 52 / Japan 10 / US 9 / India 4 / PK 3 / HK 2** | 真人主力恰恰在中国 ⇒ 迁到上海对他们是**改善**，海外那 44% 略变慢是代价 |
+| 峰值小时流量 | 24.4 MB = 6.9 KB/s ≈ **3 Mbps 上限的 1.8%** | 带宽从来不是瓶颈，不需要为它设计 |
+| 动态路由 | 37,450 条，其中可索引 **36,112** 条 | 全静态化要造 3.6 万页 ≈ 1.8 GB、每天重建 ⇒ **否掉，保留动态渲染** |
+
+### 形状：零改动复用 worker 渲染
+
+`deploy/server.mjs` 直接调用 `worker/index.js` 的默认 `fetch`，只补两个运行时绑定：`env.ASSETS`（从 `dist/` 读静态文件，含 `_headers` 的 25 条缓存规则、目录索引、404-page 回退）与 `env.HYPERDRIVE_READ`（从环境变量读 MySQL 参数）。之所以能这样复用：worker 对运行时的依赖只有 ASSETS / HYPERDRIVE / `caches` 三处，而 `caches` 在 Node 里本就不存在，worker 自身有 `typeof caches === 'undefined'` 分支 ⇒ 缓存退化为「每次查库」，以本站量级（同 VPC）完全够用，还少一层键失效的坑。
+
+单容器同时承担静态与动态（不拆 nginx + node）：峰值只占出网上限 1.8%，不值得多一个组件。
+
+**过渡反代**：只读数据库账号到位前，动态路径转给现有 Worker（`x-devtrends-upstream: cloudflare-worker` 可观测），让「站点先可用」与「接上产品库」分两步；`DB_*` 一配齐，本地渲染自动接管，不改代码。
+
+### 本地验证（对构建出的 `dist/`）
+
+- 静态 11 条路由全 200（含 `/reports/<date>/`、`/en/`、`/cards/`、百度验证 `.html`）；404 走站点自己的 404 页；
+- 动态 `/products/prd_*/` 无库时 503、配 `UPSTREAM_ORIGIN` 后 200 且抓到真实产品页；`/api/v1/*` 反代 200；
+- **路径穿越两种写法（`/../`、`%2e%2e/`）均 404**；首页 **gzip 317,959 → 55,832 字节**；`ETag`/`304` 与缓存头均继承 `dist/_headers`。
+
+### 机器上踩到、并写进 README 的四条环境事实（都不是站点代码的问题）
+
+1. **直连 GitHub 会间歇性 `GnuTLS recv error (-110)`**（TLS 被非正常终止），加 `-c http.version=HTTP/1.1` 后 clone 成功；出口可达性实测 —— `github.com`/`codeload`/npm registry/`devtrends.site`/`img.devtrends.site` 都通，**`*.workers.dev` 8 s 超时** ⇒ 过渡反代必须用域名，且**解析切到本机前必须关掉它，否则自己反代自己**。
+2. **这台机器的 docker 是 snap 安装的**，snap 的 AppArmor 放行很挑（同一个最小构建实测）：`/root/…` ✅、`/var/snap/docker/common/…` ✅、`/home/…` ❌（`open .hidden: permission denied`，首次构建就是死在 `.agents` 上）、`/srv` `/opt` `/mnt` `/media` ❌（客户端解析成 `/var/lib/snapd/void/…`，完全看不见）。**部署目录因此定为 `/root/devtrends-site`** —— 别照搬「放 `/srv`」的常规习惯。
+3. **`.agents` 不能整条排除**：`scripts/build-site.js` 第 5 行就 require 它的 `issue-admission.js`。第一版 `.dockerignore` 整条排除后构建报 `MODULE_NOT_FOUND`，改成「排除子项 + 逐级放行」只留 `scripts/` 子树（`data/` 有 56 MB，构建用不到）。
+4. 此前**没有** `.dockerignore` ⇒ 每次构建都把 `.git` 与 290 MB 的 `dist` 当上下文发；补上后上下文从 GB 级降到几十 MB（这台机器只有 3 Mbps 出网，白传不是零成本）。
+
+### 落地状态
+
+镜像 `devtrends-site:local` 1.37 GB，容器 `Up (healthy)`，静态由本机服务、动态走过渡反代（命中 CF 缓存、`catalog-version 2026-10-18`）。新增 `deploy/update.sh` + `/etc/cron.d/devtrends-site`（每 30 分钟 `fetch`，有新提交才重建，失败时容器保持旧版本）—— 「站点别停更」从此不依赖某个人记得手动跑。
+
+**尚未完成**：只读数据库账号（拿到即自动切换本地渲染）、NPM vhost 或阿里云 CDN + 解析（只有账号持有人能操作）、切 DNS 与备案「申请复查」。
+
+---
 
 ## 维护约定
 
