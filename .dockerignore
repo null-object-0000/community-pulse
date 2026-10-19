@@ -1,13 +1,23 @@
 # 镜像构建只需要构建站点所需的输入（知识/ 日报、data/ 快照、web/ 源码、scripts/、worker/、
 # site.config.json、package*.json）。其余一律不进构建上下文。
 #
-# 两条真实理由，不是洁癖：
-#   1) `.agents` 在仓库里是软链（指向仓库外的技能目录），构建发送上下文时会跟着走，
-#      在服务器上直接 `permission denied` 让构建失败；
-#   2) 本地仓库含 .git 与 290 MB 的 dist，全塞进上下文会让每次构建白传 1 GB 以上。
+# 三条真实理由，都不是洁癖：
+#   1) `.git` 占了服务器上克隆的大半体积，本地 `dist/` 还有 290 MB —— 全塞进上下文等于每次
+#      构建白传 1 GB 以上，而这台机器只有 3 Mbps 出网。
+#   2) `.agents/data/` 有 56 MB，而**站点构建只用到 `.agents/skills/community-pulse/scripts/`**
+#      （`scripts/build-site.js` 直接 require 其 `issue-admission.js`，`scripts/catalog/identity.js`
+#      转发 `product-identity.js`；这两个模块自己不再读 data/ 或 config/）。所以下面用
+#      「排除子项 + 逐级放行」的写法只留下 scripts 子树。
+#   3) ⚠ 别把 `.agents` 整条排除 —— `build-site.js` 需要它，排除后构建直接失败
+#      （`MODULE_NOT_FOUND: product-identity.js`）。这条是实测踩出来的。
 .git
 .gitignore
-.agents
+.agents/*
+!.agents/skills
+.agents/skills/*
+!.agents/skills/community-pulse
+.agents/skills/community-pulse/*
+!.agents/skills/community-pulse/scripts
 node_modules
 dist
 .tmp

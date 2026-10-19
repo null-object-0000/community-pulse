@@ -15,14 +15,22 @@
 
 ## 跑起来
 
-```bash
-# 1) 数据库凭据（只读账号；不填也能跑，只是 /products/* 与 /api/v1/* 返回 503）
-cp deploy/.env.example deploy/.env && vi deploy/.env
+> **部署目录不要放在 `/home` 下。** 这台机器的 docker 是 snap 安装的，snap 的 AppArmor
+> 限制读不到 `/home` 里的**隐藏目录**（构建报 `open …/.agents: permission denied`，而权限位
+> 明明是 755 root:root）。放到 `/srv/devtrends-site` 这类路径下即可 —— 已经实测。
 
-# 2) 构建并启动（在仓库根目录）
+```bash
+# 1) 取代码（直连 GitHub 会间歇性 GnuTLS 报错，带上 HTTP/1.1 更稳）
+git -c http.version=HTTP/1.1 clone --depth 1 --branch main \
+  https://github.com/null-object-0000/community-pulse.git /srv/devtrends-site
+
+# 2) 数据库凭据（只读账号；不填也能跑，动态路径走过渡反代）
+cd /srv/devtrends-site && cp deploy/.env.example deploy/.env && vi deploy/.env
+
+# 3) 构建并启动
 docker compose -f deploy/compose.yaml up -d --build
 
-# 3) 验证
+# 4) 验证
 curl -sI http://127.0.0.1:8080/ | head -3          # 首页 200
 curl -s  http://127.0.0.1:8080/healthz              # ok
 curl -sI http://127.0.0.1:8080/products/prd_xxxxxxxxxxxxxxxxxxxxxxxx/ | head -3
