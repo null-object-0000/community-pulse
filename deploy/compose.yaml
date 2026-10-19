@@ -23,7 +23,13 @@ services:
       - TZ=Asia/Shanghai
       # 过渡反代：数据库只读账号到位前，动态路径转给现有 Cloudflare Worker。
       # 一旦 deploy/.env 里配好 DB_*，本地渲染自动接管，这条不再生效。
-      - UPSTREAM_ORIGIN=${UPSTREAM_ORIGIN:-https://community-pulse.nichangen.workers.dev}
+      #
+      # ⚠ 两条实测约束：
+      #   1) 不能用 `*.workers.dev` —— ECS 出口访问它 8s 超时（`devtrends.site` 却是 200），
+      #      所以这里用域名。
+      #   2) 域名一旦解析切到本机，这条就会**自环**（自己反代自己），必须在切 DNS 前
+      #      配好 DB_* 或把 UPSTREAM_ORIGIN 置空。
+      - UPSTREAM_ORIGIN=${UPSTREAM_ORIGIN:-https://devtrends.site}
     networks:
       - snewbie-net
     logging:
