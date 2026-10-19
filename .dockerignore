@@ -1,0 +1,20 @@
+# 镜像构建只需要构建站点所需的输入（知识/ 日报、data/ 快照、web/ 源码、scripts/、worker/、
+# site.config.json、package*.json）。其余一律不进构建上下文。
+#
+# 两条真实理由，不是洁癖：
+#   1) `.agents` 在仓库里是软链（指向仓库外的技能目录），构建发送上下文时会跟着走，
+#      在服务器上直接 `permission denied` 让构建失败；
+#   2) 本地仓库含 .git 与 290 MB 的 dist，全塞进上下文会让每次构建白传 1 GB 以上。
+.git
+.gitignore
+.agents
+node_modules
+dist
+.tmp
+.tmp-*
+.scratch
+.scratch-*
+docs
+*.log
+*.tar.gz
+.DS_Store
