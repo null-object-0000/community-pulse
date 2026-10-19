@@ -28,8 +28,11 @@ REMOTE=$(git rev-parse FETCH_HEAD)
 [ "$LOCAL" = "$REMOTE" ] && exit 0
 
 echo "$(date '+%F %T') 发现新提交 $REMOTE（本地 $LOCAL），开始更新" >>"$LOG"
-if ! git -c http.version=HTTP/1.1 merge --ff-only FETCH_HEAD >>"$LOG" 2>&1; then
-  echo "$(date '+%F %T') 本地有分叉，未自动合并（需要人工看一眼）" >>"$LOG"
+# 用 `reset --hard` 而不是 `pull` / `merge --ff-only`：这是浅克隆（服务器上没必要拉全量历史），
+# 而浅克隆之间 `git merge --ff-only FETCH_HEAD` 会报 `refusing to merge unrelated histories`
+# —— 实测踩到。部署克隆本来就该与远端一致、不留本地改动，重置最贴合语义（也顺带容忍 force-push）。
+if ! git reset --hard FETCH_HEAD >>"$LOG" 2>&1; then
+  echo "$(date '+%F %T') 重置失败（远端历史被改写？需要人工看一眼）" >>"$LOG"
   exit 1
 fi
 

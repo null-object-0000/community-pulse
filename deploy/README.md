@@ -59,8 +59,12 @@ CDN 源站填 `47.103.155.183:8080`，安全组放行该端口。适合「不想
 ## 每日自动更新（「站点别停更」）
 
 站点内容每天由日报流程写进仓库，所以部署链必须自己会跑，不能依赖某个人记得手动部署。
-`deploy/update.sh` 干这件事：`fetch` 当前分支 → 有新提交就 `pull --ff-only` + 重建镜像 + 滚动
+`deploy/update.sh` 干这件事：`fetch` 当前分支 → 有新提交就 `reset --hard` + 重建镜像 + 滚动
 重启容器（失败时容器保持旧版本继续服务，日志留在仓库根的 `update.log`）。
+
+> 用 `reset --hard` 而不是 `pull`：这是浅克隆（`--depth 1`），而浅克隆之间
+> `git merge --ff-only FETCH_HEAD` 会报 `refusing to merge unrelated histories` —— 实测踩到。
+> 因此**不要在服务器上改仓库里的文件**（会被下一次更新覆盖），要改就改仓库、推上去。
 
 ```bash
 # 安装（一次性）：脚本随仓库来，这里只装 cron
