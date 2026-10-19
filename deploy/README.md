@@ -15,17 +15,26 @@
 
 ## 跑起来
 
-> **部署目录不要放在 `/home` 下。** 这台机器的 docker 是 snap 安装的，snap 的 AppArmor
-> 限制读不到 `/home` 里的**隐藏目录**（构建报 `open …/.agents: permission denied`，而权限位
-> 明明是 755 root:root）。放到 `/srv/devtrends-site` 这类路径下即可 —— 已经实测。
+> **部署目录必须放在 `/root` 下**（本文用 `/root/devtrends-site`）。这台机器的 docker 是
+> snap 安装的，snap 的 AppArmor 对路径放行很挑。同一个最小构建（`COPY . /x` 后读 `.hidden/f`）
+> 实测：
+>
+> | 路径 | buildkit 读构建上下文（含隐藏目录） |
+> |---|---|
+> | `/root/…` | ✅ 可读 |
+> | `/var/snap/docker/common/…` | ✅ 可读 |
+> | `/home/…` | ❌ `open .hidden: permission denied` —— `.agents` 就是这么失败的 |
+> | `/srv`、`/opt`、`/mnt`、`/media` | ❌ 客户端根本看不见（被解析成 `/var/lib/snapd/void/…`）|
+>
+> 注意 `/srv` 看着「正规」但完全不可见，别照搬常规习惯。
 
 ```bash
 # 1) 取代码（直连 GitHub 会间歇性 GnuTLS 报错，带上 HTTP/1.1 更稳）
 git -c http.version=HTTP/1.1 clone --depth 1 --branch main \
-  https://github.com/null-object-0000/community-pulse.git /srv/devtrends-site
+  https://github.com/null-object-0000/community-pulse.git /root/devtrends-site
 
 # 2) 数据库凭据（只读账号；不填也能跑，动态路径走过渡反代）
-cd /srv/devtrends-site && cp deploy/.env.example deploy/.env && vi deploy/.env
+cd /root/devtrends-site && cp deploy/.env.example deploy/.env && vi deploy/.env
 
 # 3) 构建并启动
 docker compose -f deploy/compose.yaml up -d --build
