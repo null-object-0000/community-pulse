@@ -77,6 +77,16 @@ selfcheck() {
 docker image inspect devtrends-site:local >/dev/null 2>&1 \
   && docker tag devtrends-site:local devtrends-site:previous
 
+# 磁盘守卫：这台机器只有 40 GB，构建缓存会随每次重建长胖 —— 实测多轮重建后到 73%，而
+# 「磁盘满」的后果是构建失败 = 站点停更，正是这条链最不能出的事。超过阈值先清空缓存
+# （代价只是下一次构建慢一两分钟），清完再建。
+disk_used() { df / | awk 'NR==2 {gsub(/%/,"",$5); print $5}'; }
+if [ "$(disk_used)" -ge 70 ]; then
+  echo "$(date '+%F %T') 磁盘 $(disk_used)% ≥ 70%，先清空构建缓存再更新" >>"$LOG"
+  docker builder prune -a -f >>"$LOG" 2>&1 || true
+  echo "$(date '+%F %T') 清理后磁盘 $(disk_used)%" >>"$LOG"
+fi
+
 if docker compose -f deploy/compose.yaml up -d --build >>"$LOG" 2>&1; then
   if selfcheck; then
     echo "$(date '+%F %T') 更新完成：$(docker ps --filter name=devtrends-site --format '{{.Status}}')" >>"$LOG"

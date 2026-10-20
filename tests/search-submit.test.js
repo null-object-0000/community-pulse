@@ -98,9 +98,13 @@ test('Baidu stops at the daily quota instead of failing the whole submission', a
   if (previous === undefined) delete process.env.BAIDU_SITE_TOKEN; else process.env.BAIDU_SITE_TOKEN = previous;
 });
 
-test('the deploy check polls the Worker entry point before the public zone', () => {
+test('the deploy check polls the self-hosted production domain first, Worker as fallback', () => {
   const workflow = fs.readFileSync(path.join(__dirname, '..', '.github', 'workflows', 'search-index.yml'), 'utf8');
-  assert.match(workflow, /- name: 等待 Cloudflare 部署包含该日报/);
-  assert.match(workflow, /CHECK_ORIGINS: https:\/\/community-pulse\.nichangen\.workers\.dev https:\/\/devtrends\.site/);
+  assert.match(workflow, /- name: 等待线上包含该日报/);
+  // 主域已由自建节点（阿里云 ECS）服务，没有 Cloudflare 的浏览器验证、CI 能直接读到，所以排在前面；
+  // workers.dev 只作兜底 —— 顺序反过来就等于「在等一个不是线上入口的部署」。
+  assert.match(workflow, /CHECK_ORIGINS: https:\/\/devtrends\.site https:\/\/community-pulse\.nichangen\.workers\.dev/);
+  // 窗口要覆盖自建节点的更新间隔（30 分钟轮询 + 约 3 分钟构建）；退回 600 秒会让这步在切换后稳定超时。
+  assert.match(workflow, /deadline=\$\(\(SECONDS \+ 2700\)\)/);
   assert.match(workflow, /\$origin\/data\/index\.json\?deploy-check=/);
 });

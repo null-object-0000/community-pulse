@@ -27,7 +27,7 @@ jobs:
   submit:
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
     steps:
       - name: 检出最新主分支
         uses: actions/checkout@v4
@@ -56,17 +56,19 @@ jobs:
           fi
           echo "date=$TARGET" >> "$GITHUB_OUTPUT"
 
-      - name: 等待 Cloudflare 部署包含该日报
+      - name: 等待线上包含该日报
         if: inputs.dry_run != true
         env:
           TARGET_DATE: ${{ steps.target.outputs.date }}
-          # 公开主域对 CI 出口会返回 Cloudflare 浏览器验证（HTTP 403，不是部署未完成），
-          # 与日更快照同因，所以先轮询同一个生产 Worker 的 workers.dev 备用入口；
-          # 主域留作兜底，两个入口都是这份部署，主域仍只面向用户访问。
-          CHECK_ORIGINS: https://community-pulse.nichangen.workers.dev https://devtrends.site
+          # 主域 devtrends.site 现在由自建节点（阿里云 ECS）服务，不再有 Cloudflare 的浏览器验证，
+          # 因此直接以主域为准；workers.dev 只作兜底（它由 Cloudflare 从同一份 main 构建，通常先上线）。
+          # ⚠ 窗口必须覆盖自建节点的更新间隔：那边是「每 30 分钟 fetch、有新提交才重建」，构建约 3 分钟，
+          # 所以给 45 分钟（2700 秒）。历史上这里是 10 分钟（对应 Cloudflare 的分钟级部署），
+          # 域名切到自建节点后会稳定超时 —— 回归测试锁住这个数值。
+          CHECK_ORIGINS: https://devtrends.site https://community-pulse.nichangen.workers.dev
         run: |
           set -euo pipefail
-          deadline=$((SECONDS + 600))
+          deadline=$((SECONDS + 2700))
           attempt=0
           while [ "$SECONDS" -lt "$deadline" ]; do
             attempt=$((attempt + 1))
