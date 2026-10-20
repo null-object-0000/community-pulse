@@ -1197,6 +1197,10 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
   `deploy/update.sh` 每次重建前调用同步，**超时/失败都不阻塞站点更新**（图片缺失不该让整站停更）。
   `scripts/build-site.js` 的 `/images/*` 缓存头改为无条件生成（此前只在「仓库内镜像模式」下才有，
   导致这条新路径会丢掉一年 immutable 长缓存与 sandbox CSP）。**页面 URL 未做任何改动。**
+- **验收（落地当天）**：4 张基线图**逐字节 sha256 一致**（内容寻址，字节相同才算过）；今日日报引用的图
+  抽查 20/20 已在机器上；国内访问耗时从 **0.7~1.4s 降到 0.05~0.16s**（首次含握手 0.55s，之后约 0.05s）；
+  `Server: openresty`（NPM 反代）、`cache-control: immutable`、HTTP/2 均正确；首次同步 5,321 张 / 295MB、
+  **0 失败**。DNS 只动了 `img.devtrends.site` 一条（A → ECS，DNS only），页面引用一个字未改。
 
 ## 维护约定
 
