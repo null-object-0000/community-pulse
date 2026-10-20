@@ -1156,6 +1156,21 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 - **磁盘**：多轮重建把构建缓存顶到 **73%**（40 GB 盘），而「磁盘满」= 构建失败 = 站点停更。
   更新脚本加**磁盘守卫**（≥70% 时先清空构建缓存再更新），并一次性回收 15 GB（73% → 40%）。
 
+### 磁盘扩容与 NPM 长期接入（同日追加）
+
+- **磁盘 40 GiB → 80 GiB**（控制台在线扩容 + 宿主侧 `growpart /dev/vda 3` + 在线 `resize2fs`，
+  全程站点 200、容器 healthy、零停机）。扩容前它到过 **73%**，而「磁盘满 = 构建失败 = 站点停更」
+  是这条链最不能出的事；现在 **20%**，构建缓存可以放心留存（守卫从此只在异常时才触发）。
+- **NPM 长期接入打通**：它的令牌载荷固定为 `{ iss: "api", attrs: { id: <用户 id> }, scope: ["user"] }`，
+  用容器内 `/data/keys.json` 的 RSA 私钥 RS256 签发（`/app/models/token.js`）—— 所以**令牌现签现用**，
+  不碰账号密码、不存长期令牌、令牌不进命令行与日志（`~/.hermes/profiles/communitypulse/scripts/npm-api.sh`，
+  机理与三个坑写进 `deploy/README.md`）。
+- 用它做的两件：`devtrends.site` 那条 vhost 打开 **Force SSL + HTTP/2**（复核：`http://` → 301、
+  `https://` → HTTP/2 200、产品页 0.146 s）；另外 6 条指向已下线服务的 vhost 准备停用时发现
+  **已是 `is_deleted=1`**（软删除，列表接口不返回它们）—— 也就是说用户已自行清理，未做重复改动。
+- 顺带记下：`GET /api/nginx/proxy-hosts` **不返回软删除条目**，「API 里没看到」不等于不存在，
+  核实要看 `/data/database.sqlite` 的 `proxy_host` 表 —— 我第一版批量脚本就栽在这里。
+
 ## 维护约定
 
 **这个文件要跟着仓库一起更新，是项目开发史的唯一落点。**

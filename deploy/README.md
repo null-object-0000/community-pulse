@@ -99,6 +99,32 @@ webhook 需要公网入口与额外凭据，反而多一处会坏的地方。
 | 对外访问 | **未接** —— 需阿里云 CDN（或 NPM vhost）+ 解析指向本机，只有账号持有人能操作 |
 | 图片 | 仍在 Cloudflare R2（`img.devtrends.site`），内地访问偏慢，后续可换阿里云 OSS |
 
+## 操作 NPM（长期接入方式）
+
+NPM 有完整 REST API（`/api/`，OpenAPI 定义在 `/api/schema`，**无需鉴权即可读**）。它的令牌正常
+要用邮箱+密码去换（默认 1 天过期），但那一步不需要也不应该走：令牌载荷是固定的
+`{ iss: "api", attrs: { id: <用户 id> }, scope: ["user"] }`，用容器内 `/data/keys.json` 的 RSA 私钥
+以 **RS256** 签发、公钥验签（实现见 `/app/models/token.js` 与 `/app/lib/access.js`；少一个字段就 403）。
+
+所以接入方式是**令牌现签现用**：
+
+```bash
+~/.hermes/profiles/communitypulse/scripts/npm-api.sh GET /api/nginx/proxy-hosts
+~/.hermes/profiles/communitypulse/scripts/npm-api.sh GET /api/nginx/proxy-hosts/16
+~/.hermes/profiles/communitypulse/scripts/npm-api.sh PUT /api/nginx/proxy-hosts/16 @body.json
+```
+
+脚本在 NPM 容器内签一个短时（默认 1 小时）令牌、就地发请求，**令牌不落到本机、不进命令行、
+不进日志**；宿主机访问仍走既有的 workbench 通道。
+
+- PUT 必须发**完整的可写字段集**（`domain_names`/`forward_*`/`certificate_id`/`ssl_forced`/
+  `http2_support`/`block_exploits`/`advanced_config`/`locations`…）—— 只传改动字段会被校验拒绝；
+  先 `GET` 一条拿到现状，改完整体发回去最稳。
+- 列表接口**不返回软删除的条目**（`is_deleted=1`，UI 里删过的），所以「API 里没看到某条」不等于
+  它不存在，要核实得看 `/data/database.sqlite` 的 `proxy_host` 表。
+- **不存长期令牌**：令牌等价于管理员凭据，短时现签的暴露面最小；而签发密钥本来就在机器上，
+  能力不受影响。撤销 = 换 `keys.json`（或重建/升级 NPM），既有令牌全部失效。
+
 ## 注意事项
 
 - **`dist/` 不进 Git**，所以镜像构建必须在容器内跑 `npm run build`（Dockerfile 已这么做）。
