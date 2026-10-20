@@ -125,6 +125,21 @@ NPM 有完整 REST API（`/api/`，OpenAPI 定义在 `/api/schema`，**无需鉴
 - **不存长期令牌**：令牌等价于管理员凭据，短时现签的暴露面最小；而签发密钥本来就在机器上，
   能力不受影响。撤销 = 换 `keys.json`（或重建/升级 NPM），既有令牌全部失效。
 
+## 图片为什么由本机直接提供
+
+产品标志镜像（`/images/<sha>.<ext>`，内容寻址）不放在 CDN 后面，而是由这台机器直接对外提供：
+
+- `deploy/sync-images.sh` 按 `assets/images/manifest.json` 把缺的文件从对象存储拉到
+  `/root/devtrends-site-images/`（幂等、带锁、可重复跑），`deploy/update.sh` 在每次重建前调用它。
+- `deploy/compose.yaml` 用只读卷把这个目录挂到容器的 `/app/dist/images`，站点服务器照常按路径提供。
+- 页面里的 URL 因此一个字都不用改（仍是 `https://img.devtrends.site/images/…`），只是它解析到这台
+  机器而不是 CDN —— 国内访客从上海同城直取。
+
+**为什么不走 CDN**：同一套配置在阿里云 CDN 上实测**回源不通** —— HTTPS 与 HTTP 两种回源、源站换成
+阿里云内的另一台机器，全部 502（节点 8~12ms 即放弃，`Via` 里是 `502-1281` / `502001`），而同一源站
+在浏览器与这台服务器上都是 200，属 CDN 域名侧的服务状态问题。而镜像总量只有几十 MB、站点本身
+（HTML/JS/CSS）早就由这台机器直供，多这一层静态图片毫无压力 —— 少一个组件，就少一处会坏的地方。
+
 ## 注意事项
 
 - **`dist/` 不进 Git**，所以镜像构建必须在容器内跑 `npm run build`（Dockerfile 已这么做）。

@@ -87,6 +87,14 @@ if [ "$(disk_used)" -ge 70 ]; then
   echo "$(date '+%F %T') 清理后磁盘 $(disk_used)%" >>"$LOG"
 fi
 
+# 镜像文件（/images/*）由这台机器直接提供：重建前先同步一次，新日报里新增的图片才会就位。
+# 首次全量要几十分钟；之后每次只拉新增的几张。带锁（脚本内 flock）+ 超时 + 失败不阻塞 ——
+# 图片没同步到不该让整站更新停下来（顶多某张图裂，站点其它部分照常）。
+if [ -x "$(dirname "$0")/sync-images.sh" ]; then
+  timeout 900 "$(dirname "$0")/sync-images.sh" >>"$LOG" 2>&1 \
+    || echo "$(date '+%F %T') 图片同步未正常结束（不影响本次站点更新）" >>"$LOG"
+fi
+
 if docker compose -f deploy/compose.yaml up -d --build >>"$LOG" 2>&1; then
   if selfcheck; then
     echo "$(date '+%F %T') 更新完成：$(docker ps --filter name=devtrends-site --format '{{.Status}}')" >>"$LOG"

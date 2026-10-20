@@ -15,6 +15,13 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
+    volumes:
+      # 图片由这台机器直接对外提供（/images/*）：deploy/sync-images.sh 把镜像文件从对象存储同步到
+      # 宿主这个目录，再挂进容器取代 dist/images。这样页面里的图片 URL
+      # （https://img.devtrends.site/images/<sha>.<ext>）一个字都不用改，也不必再经过任何境外 CDN ——
+      # 国内访客从上海同城直取，而不是被 Cloudflare 甩到亚特兰大/洛杉矶边缘（实测单张 0.7~1.4s）。
+      # 只读挂载：内容寻址的静态文件，容器永远不该写。
+      - /root/devtrends-site-images:/app/dist/images:ro
     env_file:
       # 允许缺失：没有数据库凭据时静态页照常服务，动态路径走下面的 UPSTREAM_ORIGIN。
       - path: .env

@@ -90,8 +90,10 @@ const browserCached = ['theme.js', 'token.css', 'styles.css', 'shared.js', 'app.
 const headerRules = browserCached.map(name => `/${name}\n  Cache-Control: public, max-age=31536000, immutable\n`).join('');
 // Source badges have stable unversioned URLs; keep their TTL short enough for an icon update.
 const sourceBadgeRules = staticFiles.filter(name => /^source-/.test(name)).map(name => `/${name}\n  Cache-Control: public, max-age=86400\n`).join('');
-// The sandboxing header rule only matters while this site serves the mirrored files itself.
-const imageRules = images.imageOrigin() ? '' : '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n';
+// `/images/*` 的头不再依赖「仓库内镜像模式」：镜像文件现在由部署机把宿主目录挂进容器直接对外
+// 提供（见 deploy/compose.yaml 的 volumes），两种模式下都该发这两条 —— 少了它们，图片会丢掉
+// 一年 immutable 的长缓存，也会丢掉 sandbox CSP 那道额外隔离。
+const imageRules = '/images/*\n  Cache-Control: public, max-age=31536000, immutable\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: sandbox; default-src \'none\'; style-src \'unsafe-inline\'\n';
 // Cloudflare resolves directory indexes itself (`/` → `/index.html`) and attaches neither `ETag` nor
 // `Last-Modified` to those responses — every other content type gets one, and the asset worker does
 // implement `If-None-Match` → 304, it is only the HTML navigation path that never advertises a
