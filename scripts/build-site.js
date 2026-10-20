@@ -110,7 +110,15 @@ const htmlCacheRule = 'Cache-Control: public, max-age=300, stale-while-revalidat
 // English rules deliberately stop short of the `/en/feed.xml` asset.
 const htmlRules = ['/', '/en/', '/404/', '/en/404/', '/cards/', '/en/cards/', '/reports/*', '/en/reports/*', '/trends/*', '/en/trends/*']
   .map(pattern => `${pattern}\n  ${htmlCacheRule}`).join('');
-write('_headers', headerRules + sourceBadgeRules + imageRules + htmlRules);
+// 数据 JSON 原先没有任何缓存头 ⇒ 每次请求都回源。爬虫抓这些文件的频率远高于人（实测全站约 90%
+// 的流量是机器人），所以它们是最该被边缘缓存的一类。TTL 分两档：`/data/index.json`（日报清单，
+// 每天一变）5 分钟；`/data/reports/<date>.json`（已发布那期的载荷）1 小时 —— 不用更长是因为报告
+// 偶尔会被重建（例如回填插图后重跑某个日期），一年 immutable 会让那次重建传不出去。
+const dataRules = [
+  ['/data/*', 'public, max-age=300, stale-while-revalidate=86400'],
+  ['/data/reports/*', 'public, max-age=3600, stale-while-revalidate=604800'],
+].map(([pattern, value]) => `${pattern}\n  Cache-Control: ${value}\n`).join('');
+write('_headers', headerRules + sourceBadgeRules + imageRules + htmlRules + dataRules);
 // Keep the recent GitHub aggregation only for report continuation rows. Product detail HTML is
 // never emitted here: every product route is rendered by the Worker from MySQL.
 const projects = require('./projects.js').buildProjects(reports);
