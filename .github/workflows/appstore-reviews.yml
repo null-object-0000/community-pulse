@@ -49,12 +49,34 @@ jobs:
             [ -f "$f" ] && cp "$f" "/tmp/backup/$(basename "$f")" && echo "已备份 $f" || true
           done
 
+      - name: 今天的采集切片（轮转，避开 Apple 每轮约 20 请求的限流）
+        id: slice
+        run: |
+          set -euo pipefail
+          node -e '
+          const fs = require("fs");
+          const d = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+          const CHART_PICK = 2;                       // 每榜 2 个 = 24 个 app/轮
+          const day = Math.floor(Date.now() / 864e5); // 按天轮转，覆盖全量约 10 天
+          const out = { ...d, charts: [] };
+          for (const c of d.charts || []) {
+            const all = c.entries || [];
+            if (!all.length) continue;
+            const start = (day * CHART_PICK) % all.length;
+            const entries = [];
+            for (let i = 0; i < CHART_PICK; i++) entries.push(all[(start + i) % all.length]);
+            out.charts.push({ ...c, entries });
+          }
+          fs.writeFileSync("/tmp/slice.json", JSON.stringify(out));
+          console.log("切片 app 数: " + out.charts.reduce((s, c) => s + c.entries.length, 0));
+          ' "${{ steps.snap.outputs.snapshot }}"
+
       - name: 采集（页 1、90 天窗口、2 秒间隔）
         run: |
           node scripts/demand/appstore-reviews.js \
-            --snapshot "${{ steps.snap.outputs.snapshot }}" \
+            --snapshot /tmp/slice.json \
             --outdir demand/appstore-reviews \
-            --top 20 --pages 1 --days 90 --interval 2000 --max-requests 400
+            --top 2 --pages 1 --days 90 --interval 2000 --max-requests 30
 
       - name: 护栏：本次为空则恢复备份
         run: |
