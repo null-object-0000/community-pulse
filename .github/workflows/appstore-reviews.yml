@@ -1,0 +1,102 @@
+name: App Store 差评采集
+
+# 需求侧基建 ① 的第二条：差评原料。
+#
+# 为什么放在 Actions 而不是本机：itunes.apple.com 会对固定出口 IP 限流（本机实测拿到 5,237 条之后
+# 立刻 403，换代理节点无效）。GitHub Runner 是另一个出口，且天然"每天一次"，符合慢采集的节奏。
+#
+# 两条硬约束（都踩过）：
+#   1) 抓到的数据不许被空结果覆盖 —— 限流后重跑一次，5000 多条就被抹掉了，所以这里先备份再比对
+#   2) 只留最近 90 天 —— 差评的价值在"最近在骂什么"，历史归 archive，不无限长胖
+
+on:
+  schedule:
+    - cron: '20 2 * * *' # 10:20 CST，紧跟在榜单快照之后
+  workflow_dispatch:
+
+concurrency:
+  group: appstore-reviews
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: 取最新一天的榜单快照
+        id: snap
+        run: |
+          set -euo pipefail
+          latest=$(ls -1 demand/appstore-rankings/*.json | sort | tail -1)
+          echo "snapshot=$latest" >> "$GITHUB_OUTPUT"
+          echo "day=$(basename "$latest" .json)" >> "$GITHUB_OUTPUT"
+
+      - name: 备份既有输出（防止空结果覆盖）
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/backup
+          day="${{ steps.snap.outputs.day }}"
+          for f in "demand/appstore-reviews/reviews-${day}.jsonl" "demand/appstore-reviews/apps-${day}.json"; do
+            [ -f "$f" ] && cp "$f" "/tmp/backup/$(basename "$f")" && echo "已备份 $f" || true
+          done
+
+      - name: 采集（页 1、90 天窗口、2 秒间隔）
+        run: |
+          node scripts/demand/appstore-reviews.js \
+            --snapshot "${{ steps.snap.outputs.snapshot }}" \
+            --outdir demand/appstore-reviews \
+            --top 20 --pages 1 --days 90 --interval 2000 --max-requests 400
+
+      - name: 护栏：本次为空则恢复备份
+        run: |
+          set -euo pipefail
+          day="${{ steps.snap.outputs.day }}"
+          new="demand/appstore-reviews/reviews-${day}.jsonl"
+          bak="/tmp/backup/reviews-${day}.jsonl"
+          lines=$([ -f "$new" ] && wc -l < "$new" || echo 0)
+          if [ "$lines" -eq 0 ] && [ -f "$bak" ] && [ -s "$bak" ]; then
+            echo "本次拿到 0 条，恢复备份（$(wc -l < "$bak") 条）"
+            cp "$bak" "$new"
+          fi
+          echo "本次输出 ${lines} 条"
+          if [ "$lines" -eq 0 ]; then
+            echo "::warning::本次没有抓到任何差评，可能是被限流"
+          fi
+
+      - name: 压缩 + 只保留最近 90 天
+        run: |
+          set -euo pipefail
+          cd demand/appstore-reviews
+          for f in reviews-*.jsonl apps-*.json; do
+            [ -f "$f" ] || continue
+            gzip -9 -f "$f"
+          done
+          # 90 天前的删掉（文件名是日期，可直接比较）
+          cutoff=$(date -u -d '-90 days' +%F)
+          for f in reviews-*.jsonl.gz apps-*.json.gz; do
+            [ -e "$f" ] || continue
+            day=$(echo "$f" | sed -E 's/^(reviews|apps)-([0-9]{4}-[0-9]{2}-[0-9]{2}).*/\2/')
+            if [[ "$day" < "$cutoff" ]]; then rm -f "$f"; echo "删除过期 $f"; fi
+          done
+
+      - name: 提交
+        run: |
+          set -euo pipefail
+          git config user.name "devtrends-bot"
+          git config user.email "bot@devtrends.site"
+          git add demand/appstore-reviews
+          if git diff --staged --quiet; then
+            echo "没有变化，跳过提交"
+            exit 0
+          fi
+          git commit -m "data(demand): ${{ steps.snap.outputs.day }} App Store 差评快照"
+          git push
