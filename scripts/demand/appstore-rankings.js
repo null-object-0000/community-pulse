@@ -48,6 +48,15 @@ async function fetchJson(url, attempt = 1) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } catch (err) {
+    const msg = String((err && err.message) || err);
+    // 403 是限流：短退避重试只会让封得更久，只重试一次且等 30 秒
+    if (msg.includes('403')) {
+      if (attempt < 2) {
+        await new Promise((r) => setTimeout(r, 30000));
+        return fetchJson(url, attempt + 1);
+      }
+      throw err;
+    }
     if (attempt < 3) {
       await new Promise((r) => setTimeout(r, 1000 * attempt));
       return fetchJson(url, attempt + 1);
@@ -103,6 +112,16 @@ async function main() {
         }
         await new Promise((r) => setTimeout(r, 250));
       }
+    }
+  }
+
+  // 全失败时不许覆盖既有快照 —— 一次限流不该把已经抓到的历史数据抹掉
+  if (ok === 0) {
+    let prev = null;
+    try { prev = JSON.parse(fs.readFileSync(path.join(OUT_DIR, `${date}.json`), 'utf8')); } catch { /* 没有既存文件 */ }
+    if (prev && ((prev.counts || {}).entries || 0) > 0) {
+      process.stderr.write(`  本次 0 个 feed 成功，保留既有快照（${prev.counts.entries} 条）不覆盖\n`);
+      process.exit(1);
     }
   }
 
