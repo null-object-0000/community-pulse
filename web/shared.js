@@ -654,6 +654,30 @@
   // 判据用 `productId`：它本来就是「这一行是哪个产品」的唯一实现（仓库 → 官网 URL → 来源）。
   // 保留规则与 collect.js 的去重一致 —— **留最新的一条**（publishedAt 降序），并列时留摘要更长的
   // 那条。没有 `productId` 的行（历史产物）原样保留，不猜。
+  // 投稿人事后撤回的 issue 投稿：issue 不删，但标题会被改成「已撤回」「（已撤回）」「撤回投稿」，
+  // 正文改成「作者已撤回此投稿 / 请勿收录 / 原项目介绍和链接已移除」。
+  // 这类条目没有任何可用内容（标题只是状态词），日报里会变成一条叫「已撤回」的产品，必须剔除。
+  // 原始层 raw 不改写 —— 在聚合/构建时过滤，历史日报重建后同样生效。
+  function withdrawnSubmission(item) {
+    const title = String(item?.title || '').trim();
+    // 只有「整个标题就是撤回状态词」才算撤回；产品名叫「撤回助手」这类不能误杀。
+    const bare = title.replace(/^[\[［【(（\s]+|[\]］】)）\s]+$/g, '');
+    if (/^(?:已)?撤回(?:投稿|自荐|推荐)?$/.test(bare)) return true;
+    const body = String(item?.content || item?.summary || '').slice(0, 800);
+    return /(?:作者|项目方|投稿人)?已撤回|撤回此投稿|请勿收录|已移除/.test(body);
+  }
+
+  function dropWithdrawnSubmissions(report) {
+    if (!report || !Array.isArray(report.results)) return report;
+    return {
+      ...report,
+      results: report.results.map((source) => ({
+        ...source,
+        items: (source.items || []).filter((item) => !withdrawnSubmission(item)),
+      })),
+    };
+  }
+
   function collapseProductDuplicates(report) {
     const results = (report?.results || []).map(source => {
       const keep = new Map();
@@ -1022,5 +1046,5 @@
       : '';
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p>${icpLink}</footer>`;
   }
-  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, withdrawnSubmission, dropWithdrawnSubmissions, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

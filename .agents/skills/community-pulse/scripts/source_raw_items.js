@@ -148,6 +148,16 @@ function issueItems(document, src, options = {}) {
   // 阮一峰周刊用户投稿里混有文章投稿/推荐（非工具/项目），日报不收录。
   // 匹配「文章自荐」「文章推荐」「文章投稿」标签（含全角/半角括号变体）。
   const isArticleSubmission = (title) => /[\[［【(（]?\s*文章\s*(?:自荐|推荐|投稿)\s*[\]］】)）]?|文章投稿\s*[:：]/.test(title || '');
+  // 投稿人可以事后撤回：issue 不会删，但标题会被改成「已撤回」「（已撤回）」「撤回投稿」，
+  // 正文改成「作者已撤回此投稿 / 请勿收录 / 原项目介绍和链接已移除」。
+  // 这类条目没有任何可用内容（标题只是状态词，链接指向 issue 本身），必须剔除，
+  // 否则日报里会出现一条标题叫「已撤回」的产品。历史 raw 不改写，靠这层过滤在重建时生效。
+  const isWithdrawnSubmission = (title, body) => {
+    const bare = String(title || '').trim().replace(/^[\[［【(（\s]+|[\]］】)）\s]+$/g, '');
+    if (/^(?:已)?撤回(?:投稿|自荐|推荐)?$/.test(bare)) return true;
+    const head = String(body || '').slice(0, 800);
+    return /(?:作者|项目方|投稿人)?已撤回|撤回此投稿|请勿收录|已移除/.test(head);
+  };
   return (document.records || [])
     .filter(issue => {
       const decision = issueAdmission({ title: issue.title, sourceId: src.id });
@@ -155,6 +165,7 @@ function issueItems(document, src, options = {}) {
       return decision.status !== 'excluded';
     })
     .filter((issue) => src.id !== 'weekly-issues' || !isArticleSubmission(issue.title || ''))
+    .filter((issue) => !isWithdrawnSubmission(issue.title, issue.body))
     .map((issue) => {
     const issueUrl = issue.html_url || `https://github.com/${repository}/issues/${issue.number}`;
     // 作者自己在正文里贴的插图 → 产品的「原始配图」（见 issue-media.js）。与简介同源同规则：
