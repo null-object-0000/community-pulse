@@ -94,3 +94,28 @@ test('rows that resolve to the same product collapse to the newest one', () => {
   const legacy = { results: [{ sourceId: 'x', items: [{ externalId: 'a', title: 'A' }, { externalId: 'b', title: 'B' }] }] };
   assert.equal(D.collapseProductDuplicates(legacy).results[0].items.length, 2);
 });
+
+// 投稿人事后撤回：issue 不删，标题/正文被改成撤回状态。这类行没有内容，必须剔除；
+// 但产品名里带「撤回」二字的不能误杀（判据是「整个标题就是状态词」或正文明确写撤回）。
+test('withdrawn submissions are dropped, products merely named after undo are not', () => {
+  const D = require('../web/shared.js');
+  const dropped = [
+    { title: '已撤回' },
+    { title: '（已撤回）' },
+    { title: '撤回投稿' },
+    { title: '【撤回】' },
+    { title: '明显无关的标题', content: '此投稿已撤回，请勿收录。' },
+    { title: '另一个标题', summary: '项目方已撤回此投稿。' },
+  ];
+  for (const item of dropped) assert.equal(D.withdrawnSubmission(item), true, `${item.title} 应判为撤回`);
+
+  const kept = [
+    { title: '撤回助手：一键撤销误操作' },
+    { title: '【工具自荐】支持撤回操作的编辑器' },
+    { title: '正常项目', content: '支持撤回上一步操作，可配置快捷键。' },
+  ];
+  for (const item of kept) assert.equal(D.withdrawnSubmission(item), false, `${item.title} 不应被剔除`);
+
+  const report = { results: [{ sourceId: 'weekly-issues', items: [...dropped, ...kept] }] };
+  assert.equal(D.dropWithdrawnSubmissions(report).results[0].items.length, kept.length);
+});
