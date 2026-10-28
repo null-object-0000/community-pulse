@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "v2ex",
+  "sourceName": "V2EX · 分享创造",
+  "targetDate": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "fetchedAt": "2026-10-28T20:58:23.987Z",
+  "itemCount": 10,
+  "contentSha256": "5f4dc486afca55d0e6a7e06a2f77d61f2a6d055507c0a8cfa94dd1511dbdebbc",
+  "capture": {
+    "mode": "observed-snapshot",
+    "historicalBackfillSupported": false,
+    "endpoint": "https://www.v2ex.com/api/topics/show.json",
+    "requestUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "effectiveUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "httpStatus": 200,
+    "contentType": "application/json;charset=UTF-8",
+    "nodeName": "create",
+    "nodeTitle": "分享创造",
+    "apiReturnsLatestOnly": true,
+    "topicsCreatedOnObservedDay": 5,
+    "bodyByteLength": 86295,
+    "topicIds": [
+      1252707,
+      1252706,
+      1252701,
+      1252690,
+      1252689,
+      1252686,
+      1252684,
+      1252682,
+      1252678,
+      1252677
+    ]
+  },
+  "records": [
+    {
+      "topicId": 1252707,
+      "title": "因为受够了手动更新 IIS 证书，我花了半年时间做了一个自动托管平台，想听听大家的意见",
+      "url": "https://www.v2ex.com/t/1252707",
+      "author": "netlichun",
+      "createdAt": "2026-10-28T20:55:37.000Z",
+      "createdAtEpoch": 1793220937,
+      "replies": 0,
+      "content": "作为一个独立开发者，我平时会做一些小项目，其中主要是 Web 项目，也有时候会接点小活，帮客户做一些小网站。这些网站基本上都是使用阿里云或腾讯云的云服务器进行部署，因为现在的浏览器对于 SSL 证书的要求越来越严格，所以基本每个站点都要部署 SSL 证书，这在前几年也不是个事，因为阿里云和腾讯云都提供免费的一年期证书，每隔一年部署一次，也还能承受。\r\n\r\n但是最近几年越来越吃力，阿里云和腾讯云的免费证书，都开始减少有效期，一开始从一年减到 6 个月，还勉强凑合用，后来减到 3 个月，就感觉有点顾不过来了，因为虽然免费，但每个证书都要申请、下载、导入到证书管理、绑定到 IIS……站点多了，操作还是挺繁琐的。三个月就到期，经常会忘记更新证书，导致网站打开就是大大的风险提示，有时候还是客户发现了告诉我，我才知道。\r\n\r\n虽然这两家都还提供一年期的证书，但是那价格，我确实有点难以承受。\r\n\r\n后来我就开始研究证书这个事，才发现其实可以从第三方申请免费的证书，比如 Let's Encrypt ，我也了解到 win-acme 这类成熟的开源工具，它本身就能够实现 IIS 证书自动申请和续期。不过我个人更习惯图形化管理，而且有时候需要维护多台服务器上的多个网站，希望能通过一个 Web 工作台统一查看证书状态、集中管理部署目标，而不是分别登录每台服务器进行配置和维护。所以现有工具虽然不错，但还是没能完全满足我自己的使用习惯。\r\n\r\n国内也找到了一些提供证书自动化服务的平台，不过我试用之后感觉，大部分还是更偏向 Linux 、Nginx 等环境，或者需要通过脚本进行部署，与我平时使用 Windows Server + IIS 的习惯不太一致。\r\n\r\n就有了自己开发一个工具的想法，并且我研究了一下发现，这个技术条件还很现成，Let's Encrypt 提供了一个叫做 ACME 的协议，可以通过编程的方式自动申请证书，这不就正好可以发挥咱程序员的特长嘛，于是开始着手鼓捣这个东西。做的过程中，我又觉得这个东西可以搞成一个平台，比搞个单机版工具更有价值，因为单机版工具，还是需要远程到服务器上维护，搞一个平台，可以在浏览器上操作，并且把多台服务器集中到统一界面来管理。不但可以解决我的问题，我还可以把这个做成一个 Saas ，帮别人解决问题，同时自己也能有点小收益。\r\n\r\n经过了小半年的产品设计以及开发，各种反复尝试与推倒重来，我终于把这个产品做出来了，这就是现在我要隆重推介给大家的：SSLThink - IIS 网站证书托管与自动化部署平台，鼓掌！！！\r\n\r\n网址： https://www.sslthink.com\r\n\r\n平台的主要功能，就是帮你申请 Let's Encrypt 证书，以及把证书部署到 IIS 网站。当然，平台干了这个活，也适当收点辛苦费。目前是公测期，每张证书的价格是 10 元/年，当然说「每张证书」不够严谨，这个价格其实是一年的证书订阅费用，在订阅期内，证书会自动更新。目前 Let's Encrypt 的证书有效期是 90 天，而且未来还会进一步缩短到 64 天、45 天。也就是说，证书更新会越来越频繁。不过对于 SSLThink 用户来说，这些更新由平台按照证书实际有效期自动处理，不需要手动重新申请和部署。\r\n\r\n有同学就问了，Let's Encrypt 证书不是免费的嘛，你怎么还收费呢？其实收费的不是证书本身，而是 SSLThink 围绕证书搭建了一整套自动签发、自动更新、自动部署的全流程体系，如果你的网站用的是 IIS ，那么购买了这一年的证书订阅服务，进行初始的配置之后，往后你就不用操心证书这回事了，然后一年到期之后你再续订，那就继续不用操心，也不用重新配置。\r\n\r\n具体怎么实现的呢？证书的签发与更新，是在 SSLThink 的服务端进行的，这个自然不在话下。在域名验证方面，SSLThink 采用的是 ACME 协议中的 DNS-01 验证方式。我把这部分也自动化了，用户只需要按照平台提供的记录，初始配置一次 CNAME 委托，之后证书签发和更新所需的 DNS 验证就由 SSLThink 自动处理，不需要每次更新时再去修改 DNS 记录。\r\n\r\n关键是证书的部署，我开发了一个「托管节点程序」，把这个托管节点程序安装到 Windows 服务器，它会自动同步你的 IIS 站点和 https 绑定信息到 Web 工作台，然后在工作台对相应站点的 https 绑定与你购买的证书进行关联绑定，这个托管节点程序就会自动帮你把证书部署好，并且之后服务端的证书更新了，它也会自动更新 IIS 上对应的证书。\r\n\r\n考虑到很多使用 IIS 部署网站的同学，除了网站，还有可能会使用一些云服务产品，比如 CDN 、阿里云的 OSS 等，这些云产品往往也有部署证书的需求，既然网站的证书都自动化了，没道理还要手动再搞这些云产品的部署，好在阿里云和腾讯云都提供了给云产品部署证书的接口，所以 SSLThink 的证书还可以自动部署到阿里云和腾讯云的一些云产品上，当然这个还是需要一些初始配置以及授权，具体的操作我都整理了详细的帮助文档，根据文档一步一步来就行，并不复杂。并且，如果你没有使用 IIS ，只是需要用 SSLThink 进行阿里云和腾讯云的云产品自动部署，那就无需安装 Windows 托管节点程序。\r\n\r\n如果对于同时管理多台服务器，以及多个网站的同学，SSLThink 的价值体现就更大了，因为可以直接从 Web 工作台，就可以全局随时查看证书的更新和部署情况，如果哪个证书有问题，平台还会及时发送消息提醒。\r\n\r\n当然，目前这个平台的自动部署功能主要围绕 Windows Server + IIS 环境设计，暂时不支持 Linux 、Nginx 或宝塔面板等环境的自动部署。不过通过平台签发的证书仍然可以下载，手动部署到其他支持的服务器环境。\r\n\r\n另外提前说明一下：SSLThink 的托管节点是需要安装在 Windows Server 上的程序，目前安装包已经使用 Certum 企业代码签名证书完成数字签名，并且带有可信时间戳，签名发布者为济南善思信息科技有限公司。由于软件刚刚发布、下载量较少，如果使用微软的 Edge 浏览器下载，可能仍会遇到 SmartScreen 信誉提示。官网下载页面提供了 SHA-256 校验值，大家可以自行核对安装包的来源和数字签名。\r\n\r\n由于程序需要操作 IIS 证书和 HTTPS Binding ，我知道大家可能会对安装第三方程序有顾虑。如果有关于权限、安全边界或运行机制的问题，也欢迎直接提出，我会尽量解释清楚。\r\n\r\n最后也想听听各位同学们的真实意见：现在还有多少人在用 Windows Server + IIS 部署网站？大家平时是怎么解决 SSL 证书自动续期和部署问题的？\r\n\r\n我知道 win-acme 等免费工具已经可以很好地解决不少场景，所以也挺想了解，对于需要管理多台服务器、多个网站的用户，像 SSLThink 这种集中托管的平台到底有没有价值。\r\n\r\n这是我第一次认真把一个自用工具做成 SaaS ，目前才刚上线，还没有经过多少真实用户的检验。欢迎大家拍砖，尤其是对功能、安全性和收费模式有什么建议，我都很愿意听听。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252706,
+      "title": "给 Codex 做了块画布，随手试了下，它一笔画完了一只猫",
+      "url": "https://www.v2ex.com/t/1252706",
+      "author": "KohoJ",
+      "createdAt": "2026-10-28T19:57:20.000Z",
+      "createdAtEpoch": 1793217440,
+      "replies": 0,
+      "content": "最近在做 Galta ，一块开在网页旁边、可以和 agent 一起用的画布。\r\n\r\n一直觉得，这些模型不该只待在聊天框里。把参考、草图和结果放在同一个地方，让它能看到，也能直接动手改，应该会有些不一样的事情发生。\r\n\r\n于是随手试了下：把 Pinterest 上一张西装猫的梗图拖进画布，让 GPT-6-Astra 用画笔换个风格画一遍。它画了 620 笔，都是可以继续编辑的矢量笔画。\r\n\r\n然后又加了个要求：“再来一次，一笔画完，中途不要抬笔。”\r\n\r\n最后是一条包含 70,722 个点的连续笔画。最意外的是，加了这个限制，画出来的猫依然挺像样，效果超过了我的预期。\r\n\r\n演示： https://x.com/Koho_Z/status/2115504320712171614\r\n\r\n视频由实际笔画数据回放制作，做了剪辑和加速。\r\n\r\n画完以后，结果仍然留在画布上，可以自己接着改，也可以指着某个地方让 agent 继续。画猫只是随手一试，我更好奇的是：当人和 agent 能在同一块画布上轮流动手，还能做出什么？\r\n\r\n我是 Galta 的开发者。它通过 MCP 连接 Codex 、Claude Code 等 agent ；画布可在 Chrome / Dia 中使用，目前连接 AI 需要 Apple silicon Mac 。\r\n\r\n产品： https://galta.art/\r\n\r\n想找已经在用 Codex 或 Claude Code 的朋友试试。你会拿这样的画布做什么？",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252701,
+      "title": "做了个 MiniCPM OCR 在线工具：把图片和 PDF 转成可编辑的文字、表格和公式",
+      "url": "https://www.v2ex.com/t/1252701",
+      "author": "fusheng0304",
+      "createdAt": "2026-10-28T18:15:39.000Z",
+      "createdAtEpoch": 1793211339,
+      "replies": 0,
+      "content": "大家好，分享一个最近做的文档识别网站：MiniCPM OCR 。\r\n\r\n地址： https://minicpmocr.com/\r\n\r\n想解决的事情很具体：拿到一份扫描版 PDF 、论文截图或带表格的图片后，能把里面的内容提取出来，少一些手动抄写和重新排版。\r\n\r\n目前支持：\r\n\r\n- 上传图片或 PDF ，识别中英文文字、段落和页面布局。\r\n- 提取表格结构，将数学公式转成 LaTeX 。\r\n- 原文和识别结果对照查看，点击原文区域或结果块可以互相定位，也能直接修改识别出的文字。\r\n- 导出可编辑的 Word 、Markdown ，或带区域坐标的 JSON ，方便继续整理文档、做笔记或接入后续流程。\r\n\r\n我比较在意的是识别后的校对和使用体验：得到结果后，可以对照原图改一改，再带到自己的工作流里。复杂表格、模糊扫描件和公式仍然建议人工检查，不保证每份文档都能完整还原。\r\n\r\n底层基于 OpenBMB 的 MiniCPM-OCR-1.0 ；这个网站是我们做的独立服务，并非 ModelBest 官方网站。\r\n\r\n欢迎大家试试，也想听听大家平时最难处理的是哪类文档，以及对结果编辑、导出格式有什么建议。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252690,
+      "title": "能让 flash 模型表现得极其专业的提示词",
+      "url": "https://www.v2ex.com/t/1252690",
+      "author": "yidinghe",
+      "createdAt": "2026-10-28T16:51:56.000Z",
+      "createdAtEpoch": 1793206316,
+      "replies": 6,
+      "content": "本人二十年后端开发和架构经验，对 coding agent 的要求就是稳、准、慎三个字。我现在的 AI 工具搭建很简单，就是先装一个 pi ，里面装一个记忆插件（尝试过一些，最后选择用 Magic-Context ），然后配置一个全局的系统提示词。就这些。然后我用的模型就是各类 flash 模型，最便宜的。我一直专注于把最便宜的模型用到极致。\r\n\r\n要想把最便宜的模型用好，系统提示词很重要，它决定了 agent 的思考风格和基调。我们是小公司，没有测试环境，没有测试流程，改完了就上线。我的 pi 是可以直接访问生产环境的，但凡出现报错日志，我只要粘贴日志内容，然后说“分析一下原因”，agent 就会翻日志、翻代码、翻数据库，翻配置文件，最后把横跨多个数据库和多个模块调用的来龙去脉讲清楚，最后还给出建议。\r\n\r\n总之，就我的体验，这套提示词配合项目具体的 skill ，我用起来还是比较满意的。我现在唯一不让 agent 做的就是数据库修改操作。\r\n\r\n提示词大小 7K 左右，具体内容 https://gist.github.com/yiding-he/9d02d5bba749a854ac1bfe75769619d5\r\n\r\n希望对大家有用。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252689,
+      "title": "做了个把照片变成说唱 MV 的小站，咪咪也能来段说唱 😂（送兑换码）",
+      "url": "https://www.v2ex.com/t/1252689",
+      "author": "ruguodev",
+      "createdAt": "2026-10-28T16:50:19.000Z",
+      "createdAtEpoch": 1793206219,
+      "replies": 0,
+      "content": "大家好，最近业余时间做了个小站： https://rap-video.ai\r\n\r\n玩法很简单：上传一张照片 → 选个说唱风格 → 等一会儿，就能拿到一段这个人（或宠物）在说唱的短视频。\r\n\r\n先看效果（点图片可以看视频）：\r\n\r\n**Rap Battle 风格**\r\n\r\n[![Rap Battle]( https://rap-video.ai/previews/rap-battle.webp)]( https://rap-video.ai/rap-battle)\r\n\r\n**宠物说唱风格**\r\n\r\n[![Pet Rapper]( https://rap-video.ai/previews/pet-rapper.webp)]( https://rap-video.ai/pet-rapper)\r\n\r\n目前有这几种风格（点名字可以看各自的示例）：\r\n- [酒店大堂说唱]( https://rap-video.ai/hotel-lobby)\r\n- [Rap Battle]( https://rap-video.ai/rap-battle)\r\n- [生日说唱]( https://rap-video.ai/birthday-rap)（可以填名字，适合给朋友整活）\r\n- [UK Drill]( https://rap-video.ai/uk-drill)\r\n- [90s Old School]( https://rap-video.ai/old-school-90s)\r\n- [宠物说唱]( https://rap-video.ai/pet-rapper)（猫狗专用）\r\n\r\n## 技术栈\r\n简单说一下，没什么高深的：\r\n- 全栈框架用的 TanStack Start + React 19\r\n- 整站跑在 Cloudflare Workers 上，数据库 D1 、存储 R2\r\n- 视频生成走的 Veo 3.1 ，用 Cloudflare Workflow 做异步任务\r\n\r\n整套 Cloudflare 下来，除了视频模型本身，基础设施成本几乎可以忽略，独立开发挺省心的。\r\n\r\n## 关于收费\r\n视频模型每次调用都有实打实的成本，所以没做注册赠送，这点先坦白一下。\r\n\r\n给 V2EX 的朋友准备了 5 个兑换码，每个可免费生成 1 个 720p 视频，一码一人：\r\n\r\n- V2EX-9SGB\r\n- V2EX-SWGN\r\n- V2EX-SDVK\r\n- V2EX-H8UY\r\n- V2EX-V9GH\r\n\r\n注册后在「设置 → 积分」里兑换。**兑换后麻烦回帖说一声「 XXXX 已用」**，免得后面的朋友白试。\r\n\r\n如果大家喜欢，可以留言，用完了我再补一批，祝大家玩的开心。\r\n\r\n## 求反馈\r\n\r\n第一次做这种 AI 视频类的东西，欢迎吐槽：\r\n- 生成效果怎么样\r\n- 还想要什么风格\r\n- 页面体验哪里不顺手\r\n\r\n谢谢各位大哥，祝各位大哥发大财 🙏",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252686,
+      "title": "做了个招聘网站",
+      "url": "https://www.v2ex.com/t/1252686",
+      "author": "AlangHa",
+      "createdAt": "2026-10-28T15:50:03.000Z",
+      "createdAtEpoch": 1793202603,
+      "replies": 0,
+      "content": "主站目前有上千活跃用户\r\n\r\n欢迎各位老板来发布自己的招聘需求\r\n\r\n找工作的也可以关注，以后职位信息会越来越多\r\n\r\nhttps://wodegongzi.com/jobs",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252684,
+      "title": "做了个多 harness 共用一套规则和记忆的工具 aivault",
+      "url": "https://www.v2ex.com/t/1252684",
+      "author": "jxherc",
+      "createdAt": "2026-10-28T15:44:56.000Z",
+      "createdAtEpoch": 1793202296,
+      "replies": 0,
+      "content": "我平时 claude code 、codex 、opencode 、kimi code 换着用，每个工具都有自己的规则文件、自己的 skill 文件夹、自己的记忆。在一个工具里说过的偏好，换个工具又得重新说一遍，所以写了个叫 aivault 的小工具。\r\n\r\n它把规则、skill 和记忆都放进一个文件夹，然后把这个文件夹接进你电脑上的 ai 编程工具，目前支持 21 个，包括 claude code 、codex 、opencode 、gemini cli 、qwen code 、kimi code 和 deepseek harness 。在 claude code 里说“记住我用 pnpm”，下次打开 codex 它就知道了。skill 写一次，所有工具都能用。\r\n\r\n支持 mcp 的工具还会多两个工具：vault_search 用来搜你以前跟 ai 说过的东西，vault_remember 用来存新的。claude code 、codex 、qwen code 这些有自己记忆功能的工具，它们自己存的记忆在 sync 的时候也会收进来。\r\n\r\n我最想要的一个功能：你报一个 bug ，ai 要先找到根本原因，把同一个原因造成的地方全部修好，再把教训写进 mistakes.md 。每个工具都会读这个文件，所以同样的错误换个工具也不该再犯。\r\n\r\n文件夹就是普通的 markdown ，可以直接用 obsidian 打开，放 icloud 或者 git 里就能多台电脑同步。直接敲 aivault 会显示接了哪些工具、存了多少东西，aivault doctor 会检查每个工具是不是都接好了。改过的文件都会先备份，aivault remove 能全部撤销。\r\n\r\n免费开源，MIT 协议，mac 、linux 、windows 都能用。一行命令安装，readme 里有，中文 readme 也有。还很新，有 bug 欢迎告诉我。\r\n\r\nhttps://github.com/jxherc/aivault",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252682,
+      "title": "一个人做开源 AI 桌面办公助手： 7 天初版， 6 个月还在迭代",
+      "url": "https://www.v2ex.com/t/1252682",
+      "author": "FixFuture",
+      "createdAt": "2026-10-28T15:44:40.000Z",
+      "createdAtEpoch": 1793202280,
+      "replies": 0,
+      "content": "先说结论：阿布是我一个人从需求、设计、开发、Agent 、测试发布、运维到社区都扛下来的开源桌面办公助手。\r\n\r\n想做的不是又一个聊天框，而是真能在电脑上干活的东西——你一句话说完（比如把发票汇总成表、按纪要写周报），它自己拆步骤，在本机读写文件、调工具，最后给你可编辑的文件。模型可以接云端，也可以 Ollama 全本地。\r\n\r\n因为只有我一个人，没人可交班，需求到运维只能自己串成一条环。7 天做出能用的初版，后面大概 6 个月主要在打磨多 Agent 、权限、测试复审这些「能长期养」的部分。期间累计砸了数万美元，平均每月大概消耗 300 亿 tokens——不是晒成绩，就是这行真实成本。\r\n\r\n产品开源了，我这套用来一人扛产品的 Harness 也一并开源了（任务描述、多 Agent 、自动测试、独立复审、权限、项目记忆）。\r\n\r\nGitHub： https://github.com/PM-Shawn/Abu-Cowork\r\n官网： https://abuwork.com\r\n我自己的站： https://pmshawn.com\r\n\r\n欢迎试用和拍砖。觉得有用点个 Star ，就当给这家一人公司发工资了。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252678,
+      "title": "Windows 微信电脑版消息通知灵动岛",
+      "url": "https://www.v2ex.com/t/1252678",
+      "author": "liKeYunKeji",
+      "createdAt": "2026-10-28T15:19:52.000Z",
+      "createdAtEpoch": 1793200792,
+      "replies": 0,
+      "content": "微信电脑版消息通知灵动岛提醒（ Windows ）。程序监听 Windows Shell Hook 的任务栏闪烁事件，在屏幕顶部显示提醒胶囊；不读取聊天内容，也不统计未读条数。\r\n\r\n## 功能\r\n\r\n- 微信请求任务栏关注时显示动画胶囊和绿点。\r\n- 微信窗口激活后自动清除提醒。\r\n- 空闲时显示拟物化镜头孔圆点；提醒胶囊带柔和阴影。\r\n- 通知区托盘图标提供“恢复胶囊位置”和“退出”菜单。\r\n- 支持拖动位置、自定义微信图标和事件诊断模式。\r\n\r\n提醒依赖微信和 Windows 发出任务栏闪烁事件。若微信没有发出该事件，程序无法保证显示提醒。\r\n\r\n![image]( https://p3.ssl.qhimg.com/t11b673bcd618a51fb3dc3432ed.gif)\r\n\r\n## 运行\r\n\r\n仅支持 Windows 。使用 Python 运行时，Pillow 用于更精细的动画和透明渲染；没有 Pillow 时会回退到简易界面。\r\n\r\n```powershell\r\npython -m pip install Pillow\r\npythonw .\\wechat_capsule.py\r\n```\r\n\r\n`pythonw` 会隐藏控制台；点击右下角托盘图标，在菜单中选择“退出”即可关闭后台进程。调试时可改用 `python .\\wechat_capsule.py` 保留控制台。\r\n\r\nhttps://github.com/likeyun/WeixinMsgIsland",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1252677,
+      "title": "一键 12345 skill",
+      "url": "https://www.v2ex.com/t/1252677",
+      "author": "johamwon",
+      "createdAt": "2026-10-28T15:18:52.000Z",
+      "createdAtEpoch": 1793200732,
+      "replies": 2,
+      "content": "有烦心事？填写 12345 投诉单很麻烦？不存在的，一个 skill 搞定。\r\n\r\n先开放了云南版，简单说出你的问题及诉求，skill 帮你全搞定！亲测 agent 可用（移动端、电脑端），workbuddy 的免费版 hy3 亦可。\r\n\r\nhttps://github.com/johamwon/yunnan-12345-oneclick",
+      "nodeName": "create"
+    }
+  ],
+  "response": {
+    "transferEncoding": "base64",
+    "contentEncoding": "gzip",
+    "body": "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"
+  }
+}
