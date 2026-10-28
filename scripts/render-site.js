@@ -81,7 +81,7 @@ function searchableRow(item, locale, date, index) {
     .filter(Boolean).join(' ').toLocaleLowerCase(locale);
   const score = Number(D.metric(item, ['stars', 'stargazers_count', 'totalStars', 'votes', 'votesCount']) || 0);
   return D.renderItem(item, locale, { date, index }).replace(/^<article /,
-    `<article data-category="${e(D.itemCategory(item))}" data-search="${e(search)}" data-score="${Number.isFinite(score) ? score : 0}" `);
+    `<article data-author-display="${e(JSON.stringify(item.authorDisplay || null))}" data-author="${e(item.author || '')}" data-category="${e(D.itemCategory(item))}" data-search="${e(search)}" data-score="${Number.isFinite(score) ? score : 0}" `);
 }
 function discoverySidebar(items, locale, date, hasMarkdown) {
   const en = locale === 'en', sources = new Map();
@@ -169,7 +169,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
     ? homeEntries(date, cardsTotal, locale, cardsDate, home && trendsAvailable)
     : '';
   const content = `<div class="discovery-layout"><div class="discovery-main">` + (home ? discoveryHero(items, locale) : heading(locale, headingText, t(locale, 'intro'))) + entry + `<section id="discoveries" class="discovery-results">` + filters(items, locale) +
-    `<div id="feed" class="feed" data-sort="default">${items.map((item, index) => searchableRow(item, locale, date, index)).join('')}</div>` + empty(locale) + `</section>${trendingContinuation(report, date, locale, projectIndex)}${commentsSection({ term: `report:${date}`, locale })}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
+    `<div id="feed" class="feed" data-sort="default">${D.renderAuthorFeed(items, locale, { render: (item, index) => searchableRow(item, locale, date, index) })}</div>` + empty(locale) + `</section>${trendingContinuation(report, date, locale, projectIndex)}${commentsSection({ term: `report:${date}`, locale })}</div>${discoverySidebar(items, locale, date, hasMarkdown)}</div>`;
   const canonical = D.origin + lp(route, locale);
   const website = D.origin + '/#website', organization = D.origin + '/#organization';
   const page = { '@type': 'CollectionPage', '@id': canonical, name: title, description, url: canonical, inLanguage: locale,
@@ -194,7 +194,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
   return shell({ locale, view: 'report', route, title, description, content, data: { date, feedMode: 'dom' }, structured, bodyAttrs });
 }
 function cardsPage(report, date, locale) {
-  const items = D.reportItems(report), title = `${t(locale, 'cardsTitle')} | DevTrends`;
+  const items = D.readerItems(report), title = `${t(locale, 'cardsTitle')} | DevTrends`;
   // Mobile cards are an immersive reader: the global header and a second page heading would both
   // compete with the deck. Keep only two quiet floating controls and retain the full labelling for
   // screen readers.

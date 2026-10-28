@@ -683,3 +683,18 @@ html.lightbox-open { overflow: hidden; }
 .load-more { display: block; width: 100%; margin: 18px 0 0; padding: 12px 16px; border-radius: 10px; font: inherit; font-size: .875rem; font-weight: 600; cursor: pointer; }
 .load-more:hover { border-color: var(--accent-line); color: var(--accent); }
 @media (max-width: 600px) { .cluster-range { align-items: flex-start; }.cluster-range-buttons { flex-wrap: wrap; } }
+
+/* A representative keeps the regular row layout; all other products remain reachable. */
+.author-entry { min-width: 0; border-bottom: 1px solid var(--line); }
+.author-entry > .feed-item { border-bottom: 0; }
+.author-fold { margin: 0 0 12px 44px; border-left: 2px solid var(--line); }
+.author-fold > summary { cursor: pointer; padding: 9px 14px; color: var(--muted); font-size: .85rem; }
+.author-fold > summary:hover { color: var(--text); }
+.author-fold-items { padding-left: 14px; }
+.author-more { display: block; margin-top: 8px; font-size: .85rem; }
+@media (max-width: 600px) { .author-fold { margin-left: 0; }.author-fold-items { padding-left: 8px; } }
+
+/* A card's "more by this author" link opens the full searchable feed on phones too. */
+@media (max-width: 600px) {
+  body[data-feed-requested] .discovery-results, body[data-feed-requested] .header-search { display: revert; }
+}

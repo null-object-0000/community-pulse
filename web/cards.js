@@ -10,7 +10,7 @@
   const page = JSON.parse(document.getElementById('page-data').textContent);
   const locale = page.locale;
   const t = (key, args) => D.t(locale, key, args);
-  const items = D.reportItems(page.report);
+  const items = D.readerItems(page.report);
   const stage = document.querySelector('.swipe-stage');
   const position = document.querySelector('.swipe-position');
   const close = document.querySelector('.cards-close');

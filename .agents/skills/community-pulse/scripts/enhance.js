@@ -333,9 +333,11 @@ async function main() {
   // 原始 JSON 默认按同目录同名推断（raw/<date>.md → raw/<date>.json）；缺了不报错，
   // 只是这一期没有 productId，消费端会退回标题匹配。
   const jsonFile = getArg('--json') || inFile.replace(/\.md$/, '.json');
+  let report = null;
   let productIds = new Map();
   if (fs.existsSync(jsonFile)) {
-    productIds = productIdsForItems(items, JSON.parse(fs.readFileSync(jsonFile, 'utf8')));
+    report = JSON.parse(fs.readFileSync(jsonFile, 'utf8'));
+    productIds = productIdsForItems(items, report);
     for (const item of items) if (productIds.has(item.idx)) item.productId = productIds.get(item.idx);
     console.error(`产品身份: ${productIds.size}/${items.length} 条对齐到 productId（来源 ${jsonFile}）`);
   } else {
@@ -405,6 +407,8 @@ async function main() {
     if (hollow.length) {
       throw new Error(`摘要缺失：${hollow.length} 条源描述非空却产出空摘要（${hollow.slice(0, 3).map((item) => item.title.slice(0, 24)).join(' / ')}）`);
     }
+    const { foldAuthorMarkdown } = require('../../../../scripts/author-markdown.js');
+    fs.writeFileSync(checkpointFile, foldAuthorMarkdown(fs.readFileSync(checkpointFile, 'utf8'), report));
     fs.renameSync(checkpointFile, outFile);
   }
   const emptySummaries = items.filter((item) => {

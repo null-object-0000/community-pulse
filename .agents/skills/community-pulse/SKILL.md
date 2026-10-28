@@ -110,6 +110,14 @@ node scripts/validate_github_repositories_raw.js --date 2026-09-07
 - `daily` 是滚动热度窗口，同一个仓库连续多日出现是源站事实。原始快照始终完整保留；`collect.js` 只在发布层按规范化 `owner/repo` 与过去 3 份已发布 `raw/*.json` 比较，主列表不重复展示冷却期内已发仓库。全球榜与中文榜同日重合时全球榜优先，先对完整榜单排重再执行 `max_items` 截断；未展示的低排名项目以后升榜仍可进入日报。
 - 被冷却的项目不进入日报/今日发现的普通卡片；按 `stars today` 取最多 3 个写进顶层 `trendingPolicy.continuedItems`，Markdown 与网站以折叠的「持续热门」摘要展示。报告历史不足 3 天时只使用实际存在的历史文件，来源层不受影响。
 
+## 同作者批量作品的发布展示
+
+- `collect.js` 在去重、挂仓库事实与 `productId` 后调用 `D.applyAuthorPolicy`，只给行加 `authorDisplay` 和顶层 `authorPolicy`，不删项目、不改来源快照、产品身份或增强匹配。
+- 同作者的照片生成短视频工具按明确的输入/输出类型收成一组；其他系列要求去掉价格/非官方套话后的有效简介至少 40 字、三元组 Dice 相似度 ≥0.82，仅与代表项比对，避免链式误合并。分类、标签相同本身不构成同类。作者按来源命名空间隔离（中国独立开发者三个版面共用命名空间），无作者不归组。
+- 每作者每期最多 3 个主列表位置，一组算一个；超过的作品挂在第 3 个位置的「更多作品」，仍可展开。搜索和分类先匹配完整项目再重组，命中的折叠项可成为代表项；有搜索/筛选时默认展开。
+- `results[].items` 永远是完整平面数组；详情页、产品库与趋势统计仍消费完整记录。网站列表用 `D.renderAuthorFeed`，手机划卡用 `D.readerItems`，卡片提供查看同作者更多作品的日报入口。
+- **raw Markdown 保持原始顺序**（增强按来源分区与位置绑定身份）；只折叠增强完成后的 final 和网站中英文下载文件，入口 `scripts/author-markdown.js`。切勿在增强前重排 raw Markdown。历史日期不自动回写，本次仅修正 2026-10-27。
+
 ## GitHub 开源项目信息补全（已移出主链路）
 
 采集阶段对**URL 是 `github.com/owner/repo`** 的条目，调 GitHub API 补仓库基础信息（star/fork/语言/license/描述/创建时间/更新时间/archived），存进 item 的 `github` 字段；md 渲染时在描述下方加一行小字。

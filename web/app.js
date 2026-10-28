@@ -16,7 +16,7 @@
   const search = document.getElementById('search');
   const feed = document.getElementById('feed');
   const domFeed = page.feedMode === 'dom';
-  const feedRows = domFeed && feed ? [...feed.querySelectorAll(':scope > .feed-item')] : [];
+  const feedRows = domFeed && feed ? [...feed.querySelectorAll('.feed-item')] : [];
   let items = domFeed ? [] : D.reportItems(page.report);
   // ---- comments: one stable GitHub Discussion per report, shared by home/archive and zh/en routes ----
   const comments = document.querySelector('[data-giscus-comments]');
@@ -234,20 +234,16 @@
   }
   function renderFeed(resetPage = true) {
     if (!feed) return;
+    if (page.view === 'report') document.body.toggleAttribute('data-feed-requested', Boolean(query || category !== 'all'));
     const q = query.trim().toLocaleLowerCase(locale);
     if (domFeed) {
-      if (sort !== feed.dataset.sort) {
-        const ordered = sort === 'popular'
-          ? feedRows.map((row, index) => ({ row, index })).sort((a, b) => Number(b.row.dataset.score) - Number(a.row.dataset.score) || a.index - b.index).map(entry => entry.row)
-          : feedRows;
-        feed.append(...ordered);
-        feed.dataset.sort = sort;
-      }
-      let visible = 0;
-      for (const row of feedRows) {
-        row.hidden = (category !== 'all' && row.dataset.category !== category) || Boolean(q && !row.dataset.search.includes(q));
-        if (!row.hidden) visible++;
-      }
+      const ordered = sort === 'popular'
+        ? [...feedRows].sort((a, b) => Number(b.dataset.score) - Number(a.dataset.score)) : feedRows;
+      const matched = ordered.filter(row => (category === 'all' || row.dataset.category === category) && (!q || row.dataset.search.includes(q)));
+      const rows = matched.map(row => ({ row, author: row.dataset.author, authorDisplay: JSON.parse(row.dataset.authorDisplay || 'null') }));
+      feed.innerHTML = D.renderAuthorFeed(rows, locale, { render: item => item.row.outerHTML, expanded: Boolean(q || category !== 'all') });
+      feed.dataset.sort = sort;
+      const visible = matched.length;
       feed.hidden = visible === 0;
       document.getElementById('empty').hidden = visible > 0;
       document.getElementById('empty-title').textContent = t('empty');

@@ -4,6 +4,7 @@ const D = require('../web/shared.js');
 const { applyEnhancedMarkdown } = require('./enhanced-report.js');
 const { admitReport } = require('../.agents/skills/community-pulse/scripts/issue-admission.js');
 const R = require('./render-site.js');
+const { foldAuthorMarkdown, englishReportMarkdown } = require('./author-markdown.js');
 const images = require('./image-store.js');
 const { writeRenderVersion } = require('./render-version.js');
 const imageManifest = images.readManifest();
@@ -46,8 +47,8 @@ const reports = dates.map(date => {
   report.date = date;
   const markdownPath = finalExists ? finalPath : rawMarkdown;
   report.hasMarkdown = fs.existsSync(markdownPath);
-  if (report.hasMarkdown) write(`data/markdown/${date}.md`, fs.readFileSync(markdownPath, 'utf8'));
-  const englishMarkdown = `# ${D.t('en', 'slogan')} · ${date}\n\n` + D.reportItems(report).map(item => `## ${D.displayTitle(item, 'en')}\n\n${D.summary(item, 'en').text}\n\n${D.safeUrl(item.githubUrl || item.websiteUrl || item.url)}\n`).join('\n');
+  if (report.hasMarkdown) write(`data/markdown/${date}.md`, foldAuthorMarkdown(fs.readFileSync(markdownPath, 'utf8'), report));
+  const englishMarkdown = englishReportMarkdown(report, date);
   if (report.hasMarkdown) write(`data/markdown/${date}.en.md`, englishMarkdown);
   return report;
 });
@@ -132,7 +133,7 @@ for (const report of reports) for (const source of report.results || []) for (co
 // detail pages use: the report's own `continuedItems` only keep identity and today's stars.
 const projectIndex = new Map(projects.map(project => [project.key, project]));
 const latest = dates[0] || null;
-const latestTotal = D.reportItems(reports[0] || { results: [] }).length;
+const latestTotal = D.readerItems(reports[0] || { results: [] }).length;
 const trends = siteSnapshot.trends;
 const catalogClusters = trends.catalogClusters || trends.clusters;
 for (const cluster of catalogClusters) {

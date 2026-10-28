@@ -548,6 +548,8 @@ async function main() {
     for (const item of result.items || []) item.productId = productId(identityFor(item));
   }
 
+  const authorPolicy = D.applyAuthorPolicy({ results }).authorPolicy;
+
   // 发布记录：这一期日报「由哪些来源文件、按哪个加工版本产出」的可复核凭据。
   // 选品与顺序就是 results 本身（含 trendingPolicy 的冷却与持续热门），这里补上不可变输入。
   const publication = {
@@ -573,7 +575,7 @@ async function main() {
     // 一次抓取同时输出 JSON (供存档/回溯/分析)
     if (jsonOut) {
       const generatedAt = new Date().toISOString();
-      const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, publication, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
+      const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, publication, authorPolicy, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
       fs.writeFileSync(jsonOut, JSON.stringify(out, null, 2));
       console.log(`written to ${jsonOut}`);
     }
@@ -593,7 +595,7 @@ async function main() {
     }
   } else {
     const generatedAt = new Date().toISOString();
-    const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, publication, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
+    const out = { generatedAt, fetchedAt: generatedAt, inputMode: 'source-raw', date: dateFilter || null, observedDate: observedDate || null, publication, authorPolicy, results, ...(trendingPolicy ? { trendingPolicy } : {}) };
     const text = JSON.stringify(out, null, 2);
     if (outFile) {
       fs.writeFileSync(outFile, text);

@@ -8,4 +8,4 @@
 // build-site.js writes this file on every build, so it always matches the static pages. It is
 // committed (unlike `dist/`) because the Worker is deployed by Cloudflare from the repo, with no
 // build step of its own.
-export const ASSET_VERSION = 'd689b38bbe89b76f';
+export const ASSET_VERSION = 'da58aaf09e999da9';

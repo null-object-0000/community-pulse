@@ -644,6 +644,114 @@
     return fallback ? { ...item, titleFallback: fallback.value, titleFallbackSource: fallback.source } : item;
   }
   const reportItems = report => (report?.results || []).flatMap(source => (source.items || []).map(item => ({ ...item, sourceId: item.sourceId || source.sourceId, sourceName: source.sourceName })));
+  // Publication annotations are computed from raw descriptions once. Translation and
+  // taxonomy changes must not silently change which products belong to a series.
+  const AUTHOR_DISPLAY_LIMIT = 3;
+  function authorKey(item) {
+    const author = String(item.author || '').normalize('NFKC').trim().toLowerCase();
+    if (!author || /^(?:unknown|anonymous|匿名|未知|[-—])$/.test(author)) return '';
+    const source = String(item.sourceId || '').replace(/^chinese-indie-dev-(?:programmer|game)$/, 'chinese-indie-dev');
+    return source ? `${source}:${author}` : '';
+  }
+  function templateFamily(item) {
+    const text = String(item.summary || '').toLowerCase();
+    // A narrow input/output family, not the broad "content creation" category.
+    // Distinct editors, cameras, writing tools etc. must not merge just for sharing tags.
+    return /照片|自拍|人像|全身照|photos?|selfies?|portraits?/i.test(text)
+      && /生成.{0,100}(?:短视频|短片)|(?:generate|create|turn).{0,100}(?:video|clip)/i.test(text)
+      ? 'photo-video' : '';
+  }
+  function authorToolSimilarity(left, right) {
+    const grams = item => {
+      const text = String(item.summary || '').normalize('NFKC').toLowerCase()
+        .replace(/https?:\/\/\S+|[（(][^）)]{0,100}(?:非官方|unofficial)[^）)]{0,100}[）)]|[;；].*$/g, '')
+        .replace(/[^\p{L}\p{N}]+/gu, '');
+      if (text.length < 40) return new Set();
+      return new Set(Array.from({ length: text.length - 2 }, (_, i) => text.slice(i, i + 3)));
+    };
+    const a = grams(left), b = grams(right);
+    if (!a.size || !b.size) return 0;
+    let overlap = 0;
+    for (const gram of a) if (b.has(gram)) overlap++;
+    return 2 * overlap / (a.size + b.size);
+  }
+  function applyAuthorPolicy(report) {
+    const items = reportItems(report);
+    const counts = new Map(), families = new Map();
+    for (const item of items) {
+      const key = authorKey(item);
+      if (!key) continue;
+      counts.set(key, (counts.get(key) || 0) + 1);
+      const family = templateFamily(item);
+      if (family) families.set(`${key}:${family}`, (families.get(`${key}:${family}`) || 0) + 1);
+    }
+    for (const source of report.results || []) for (const item of source.items || []) {
+      delete item.authorDisplay;
+      const row = { ...item, sourceId: item.sourceId || source.sourceId };
+      const key = authorKey(row), family = templateFamily(row);
+      if ((counts.get(key) || 0) < 2) continue;
+      item.authorDisplay = { key, limit: AUTHOR_DISPLAY_LIMIT };
+      if (family && families.get(`${key}:${family}`) >= 2) item.authorDisplay.group = `${key}:${family}`;
+    }
+    // Conservative fallback for other product series: compare substantive descriptions,
+    // never just category/tags, price or the "unofficial" boilerplate. No transitive chaining.
+    const representatives = new Map();
+    for (const source of report.results || []) for (const item of source.items || []) {
+      if (!item.authorDisplay || item.authorDisplay.group) continue;
+      const key = item.authorDisplay.key;
+      const candidates = representatives.get(key) || [];
+      const similar = candidates.find(other => authorToolSimilarity(item, other) >= 0.82);
+      if (similar) {
+        similar.authorDisplay.group ||= `${key}:similar:${candidates.indexOf(similar)}`;
+        item.authorDisplay.group = similar.authorDisplay.group;
+      } else { candidates.push(item); representatives.set(key, candidates); }
+    }
+    report.authorPolicy = { version: 1, maxVisiblePerAuthor: AUTHOR_DISPLAY_LIMIT };
+    return report;
+  }
+  function authorEntries(items) {
+    const entries = [], groups = new Map();
+    for (const item of items) {
+      const key = item.authorDisplay?.group;
+      if (key && groups.has(key)) { groups.get(key).related.push(item); continue; }
+      const entry = { item, related: [], overflow: [] };
+      entries.push(entry);
+      if (key) groups.set(key, entry);
+    }
+    const visible = [], authors = new Map();
+    for (const entry of entries) {
+      const policy = entry.item.authorDisplay;
+      if (!policy?.key) { visible.push(entry); continue; }
+      const prior = authors.get(policy.key) || [];
+      if (prior.length >= AUTHOR_DISPLAY_LIMIT) {
+        prior[prior.length - 1].overflow.push(entry.item, ...entry.related);
+      } else {
+        prior.push(entry); authors.set(policy.key, prior); visible.push(entry);
+      }
+    }
+    return visible;
+  }
+  function authorFoldLabel(item, count, locale, overflow = false) {
+    const author = item.author || '';
+    return locale === 'en'
+      ? (overflow ? `More by ${author} · ${count} projects` : `Similar tools by ${author} · ${count} more`)
+      : (overflow ? `${author} 的更多作品 · ${count} 项` : `${author} 的同类工具 · 另 ${count} 项`);
+  }
+  function renderAuthorFeed(items, locale, { render = (item, index) => renderItem(item, locale, { index }), expanded = false } = {}) {
+    const positions = new Map(items.map((item, index) => [item, index]));
+    return authorEntries(items).map(entry => {
+      const draw = item => render(item, positions.get(item));
+      const fold = (rows, overflow) => rows.length
+        ? `<details class="author-fold"${expanded ? ' open' : ''}><summary>${escapeHtml(authorFoldLabel(entry.item, rows.length, locale, overflow))}</summary><div class="author-fold-items">${rows.map(draw).join('')}</div></details>` : '';
+      return entry.related.length || entry.overflow.length
+        ? `<div class="author-entry">${draw(entry.item)}${fold(entry.related, false)}${fold(entry.overflow, true)}</div>` : draw(entry.item);
+    }).join('');
+  }
+  function readerItems(report) {
+    return authorEntries(reportItems(report)).map(entry => ({ ...entry.item,
+      ...(entry.related.length + entry.overflow.length ? { authorMoreCount: entry.related.length + entry.overflow.length } : {}),
+    }));
+  }
   // 一个产品在列表里只出现一次。
   //
   // 同一产品被多条来源观察收录是常态（跨源、跨日合并本来就是设计的一部分），而 VibeCafé 这种
@@ -951,7 +1059,7 @@
     return `<article class="swipe-item" data-depth="${depth}"${deferred} data-source-id="${escapeHtml(item.sourceId)}" data-item-id="${escapeHtml(item.externalId || itemId(item))}">
       <header class="swipe-source"><span class="source-mini source-mini-${escapeHtml(String(item.sourceId || '').toLowerCase())}" aria-hidden="true">${sourceBadge}</span><span>${escapeHtml(sourceName(item, locale))}</span></header>
       ${visual}
-      <div class="swipe-copy"><h2>${titleTag}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${s.original ? `<span class="swipe-original">${t(locale, 'original')}</span>` : ''}</div>
+      <div class="swipe-copy"><h2>${titleTag}</h2><p class="summary" lang="${s.lang}">${escapeHtml(s.text)}</p>${item.authorMoreCount && interactive ? `<a class="author-more" href="${localPath(`/reports/${date}/`, locale)}?q=${encodeURIComponent(item.author || '')}">${escapeHtml(authorFoldLabel(item, item.authorMoreCount, locale))} →</a>` : ''}${s.original ? `<span class="swipe-original">${t(locale, 'original')}</span>` : ''}</div>
       <div class="swipe-meta">${metadata}</div>
       ${openLink}
     </article>`;
@@ -1046,5 +1154,5 @@
       : '';
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p>${icpLink}</footer>`;
   }
-  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, withdrawnSubmission, dropWithdrawnSubmissions, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, AUTHOR_DISPLAY_LIMIT, authorKey, templateFamily, authorToolSimilarity, applyAuthorPolicy, authorEntries, authorFoldLabel, renderAuthorFeed, readerItems, withdrawnSubmission, dropWithdrawnSubmissions, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
