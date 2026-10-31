@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "v2ex",
+  "sourceName": "V2EX · 分享创造",
+  "targetDate": "2026-11-01",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "fetchedAt": "2026-10-31T19:54:18.155Z",
+  "itemCount": 10,
+  "contentSha256": "71637f18d0ee38e98219b598e4281712a8f16af8b1927f2b8ced61e413212eae",
+  "capture": {
+    "mode": "observed-snapshot",
+    "historicalBackfillSupported": false,
+    "endpoint": "https://www.v2ex.com/api/topics/show.json",
+    "requestUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "effectiveUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "httpStatus": 200,
+    "contentType": "application/json;charset=UTF-8",
+    "nodeName": "create",
+    "nodeTitle": "分享创造",
+    "apiReturnsLatestOnly": true,
+    "topicsCreatedOnObservedDay": 3,
+    "bodyByteLength": 66602,
+    "topicIds": [
+      1253472,
+      1253464,
+      1253461,
+      1253460,
+      1253455,
+      1253452,
+      1253448,
+      1253442,
+      1253433,
+      1253432
+    ]
+  },
+  "records": [
+    {
+      "topicId": 1253472,
+      "title": "Make V2EX Clean Again，纯粹简单的内容屏蔽插件",
+      "url": "https://www.v2ex.com/t/1253472",
+      "author": "Need4more",
+      "createdAt": "2026-10-31T18:21:54.000Z",
+      "createdAtEpoch": 1793470914,
+      "replies": 0,
+      "content": "市面上已经有了很多 V2EX 的插件，但是它们的功能太多，如果你和我一样，只是想屏蔽一些内容，但是又保持\r\n一定粒度的控制，可以看看我的这个油猴脚本。\r\n\r\n脚本只做好两件事：浏览、发帖。\r\n\r\n1. 拉黑帖子的关键词后，可以设置三种模式：隐藏、折叠、模糊。\r\n2. Base64 自动解码\r\n3. 回复/发帖框预览与图片上传（支持移动端）\r\n4. 所有的操作都在本地，数据不出浏览器。\r\n\r\n电脑端效果：\r\n\r\n\r\nhttps://i.imgur.com/gBYHZPw.png\r\n\r\n手机端效果（需要先安装脚本管理器）：\r\n\r\n\r\nhttps://i.imgur.com/lciGB2r.jpeg\r\n\r\n下载地址： https://greasyfork.org/scripts/594946\r\n\r\n之前的帖子： https://www.v2ex.com/t/1141541#reply14",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253464,
+      "title": "大家用 DSH 这么久，不觉得插件一多左边栏就很乱吗？",
+      "url": "https://www.v2ex.com/t/1253464",
+      "author": "exoticknight",
+      "createdAt": "2026-10-31T16:27:30.000Z",
+      "createdAtEpoch": 1793464050,
+      "replies": 0,
+      "content": "大家用 DSH 这么久，不觉得插件一多，左边栏就很乱吗！最重要的对话区域也太少了！\r\n\r\n我实在受不了，自己做了个插件解决这个问题：把全局导航收进左边一条窄栏，工作区和会话列表留在旁边。鼠标移过去就能展开导航，展开时不会挤占对话区。还可以改成点击展开，调整布局，加时钟和插件小组件。\r\n\r\n![默认布局]( https://raw.githubusercontent.com/exoticknight/dsh-better-left-sidebar/main/docs/images/sidebar.png)\r\n![展开导航]( https://raw.githubusercontent.com/exoticknight/dsh-better-left-sidebar/main/docs/images/sidebar-hover.png)\r\n\r\n安装后重启 DSH：\r\n\r\n`dsh plugin --profile web add dsh-better-left-sidebar`\r\n\r\n项目地址： https://github.com/exoticknight/dsh-better-left-sidebar\r\n\r\n如果帮到你，请点点 Star ～",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253461,
+      "title": "做了个给 2D 游戏用的 AI 精灵图生成器：一张角色图生成待机、攻击动画，直接导出精灵图和 JSON",
+      "url": "https://www.v2ex.com/t/1253461",
+      "author": "bobo20240310",
+      "createdAt": "2026-10-31T16:14:45.000Z",
+      "createdAtEpoch": 1793463285,
+      "replies": 0,
+      "content": "大家好，距离上次发帖已经过去挺久了。原因是 7 月底，我又失业了，哈哈哈。\r\n\r\n不过这次失业我到没有那么焦虑了，原因是通过这一年的折腾，副业还是有了点成果。\r\n\r\n然后就是哪怕失业了，我跟朋友那边也在合作做一些游戏项目，目前有稳定的订单，虽然赚的不多，但是起码饿不死。\r\n\r\n然后我最近几个月呢，也在打磨自己的全新的产品[SpriteCanvas]( https://spritecanvas.com/zh/?utm_source=v2ex&utm_medium=social&utm_campaign=v2ex-create)，一个给 2D 游戏做角色动画的工具。\r\n\r\n起因是自己做小游戏：角色立绘用 AI 很快就能出，但一到“让它动起来”就卡住。逐帧手画不现实；用视频模型生成一段动画，又得自己抽帧、抠背景、对齐脚底、拼成图集、写每帧时长，一套下来比做游戏还累。SpriteCanvas 就是把这条链路做完，最后给你一张游戏引擎能直接用的精灵图。\r\n\r\n## 效果\r\n\r\n一张参考图，生成待机和攻击动画（ 35 帧，透明背景）：\r\n\r\n![一张参考图生成待机和攻击动画]( https://spritecanvas.com/media/v2ex/witch-reference-to-animation.gif)\r\n\r\n剑士三连击，38 帧：\r\n\r\n![剑士三连击]( https://spritecanvas.com/media/v2ex/swordsman-combo.gif)\r\n\r\n技能特效也能单独生成，每个 6 帧、透明背景：\r\n\r\n![火球、闪电、爆炸特效]( https://spritecanvas.com/media/v2ex/effects.gif)\r\n\r\n导出时可以勾“像素风”，每帧重绘到小像素网格上，整张精灵图共用一套 32 色调色板，帧与帧之间颜色不闪：\r\n\r\n![普通导出和像素风导出对比]( https://spritecanvas.com/media/v2ex/pixel-export.gif)\r\n\r\n## 怎么用\r\n\r\n1. 描述角色，或者上传你已有的角色图。一次出几张候选，挑一张。\r\n2. 选动作：待机、行走、奔跑、攻击、跳跃是内置的，也可以自己写动作描述。所有动作都从同一个角色生成，造型不会跑偏。\r\n3. 逐帧检查，选帧范围和帧数。\r\n4. 导出 PNG 精灵图和 JSON 图集。JSON 是 Phaser 、PixiJS 能直接读的 JSON Hash 格式，带每帧时长和脚底锚点。\r\n\r\n做完还能在内置试玩场里用键盘跑、跳、打几下，先看看手感：\r\n\r\n![工作台]( https://spritecanvas.com/media/v2ex/app.jpg)\r\n\r\n首页就有一个能玩的示例场景，不用注册：\r\n\r\n![首页]( https://spritecanvas.com/media/v2ex/home.jpg)\r\n\r\n视频演示（ YouTube Shorts ）： https://youtube.com/shorts/vfHBoUoWIm4\r\n\r\n## 不用登录的免费工具\r\n\r\n顺手做了几个小工具，都在浏览器里本地处理，不用注册：\r\n\r\n- [精灵图切片]( https://spritecanvas.com/zh/sprite-sheet-slicer/?utm_source=v2ex&utm_medium=social&utm_campaign=v2ex-create)：把一张精灵图切成单帧\r\n- [GIF 转精灵图]( https://spritecanvas.com/zh/gif-to-sprite-sheet/?utm_source=v2ex&utm_medium=social&utm_campaign=v2ex-create)、[精灵图转 GIF]( https://spritecanvas.com/zh/sprite-sheet-to-gif/?utm_source=v2ex&utm_medium=social&utm_campaign=v2ex-create)\r\n- [视频转精灵图]( https://spritecanvas.com/zh/video-to-sprite-sheet/?utm_source=v2ex&utm_medium=social&utm_campaign=v2ex-create)\r\n\r\n还有一套 [CC0 免费素材包]( https://spritecanvas.com/zh/free-sprite-sheets/?utm_source=v2ex&utm_medium=social&utm_campaign=v2ex-create)（苔藓骑士 5 个动作、剑士，加史莱姆、蘑菇怪、哥布林、石头巨人几个怪物和一组特效），可商用，拿去测试游戏代码也行。\r\n\r\n## 价格\r\n\r\n- 邮箱验证后送 40 积分，7 天内有效；之后每天送 3 积分，最多攒到 12 ，免费积分只能用于标准画质。\r\n- 每个任务开始前会显示要花多少积分；任务失败、没有产出时，积分会退回。\r\n- 付费套餐 Starter 起步价 $12/月；也可以不订阅，单独买积分包。\r\n\r\n## 目前的不足\r\n\r\n- 它不是逐像素的像素画编辑器。像素风是在导出时重绘的，单个像素还得去 Aseprite 这类编辑器里修。\r\n- 动画是排队生成的，要等一会儿，不是秒出。\r\n- Unity 、Godot 的导入流程还没正式验证。现在确定能直接用的是 PNG 精灵图加 JSON （ Phaser 、PixiJS 已验证）。\r\n\r\n想听听大家的意见：你做游戏时最缺哪类动作或素材？想要哪个引擎的导出？用下来哪里卡住了？评论区或者站内反馈都可以，谢谢！",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253460,
+      "title": "分享最近做的两个小程序 - 心愿档案室 & 本地工具箱",
+      "url": "https://www.v2ex.com/t/1253460",
+      "author": "thinkwei2012",
+      "createdAt": "2026-10-31T14:54:34.000Z",
+      "createdAtEpoch": 1793458474,
+      "replies": 0,
+      "content": "1 、心愿档案室\r\n\r\n起因是今年 6 月份身边的人突发恶疾，想着人生短暂，总有一些期待完成的事情会给人以希望。\r\n\r\nhttps://i.imgur.com/83Ifs9L.jpeg\r\n\r\n\r\n2 、本地工具箱\r\n\r\n这个工具很早就做了。最近经常坐火车，但是信号非常不好，加了几个娱乐工具。\r\n\r\n当然也有一些实用工具，有 v 友需要的工具也可以酌情添加上去。\r\n\r\nhttps://i.imgur.com/WyyJUig.jpeg",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253455,
+      "title": "写了一个纸质书籍扫描成 PDF 的 app，大家帮忙做下内测",
+      "url": "https://www.v2ex.com/t/1253455",
+      "author": "hanzhang1024",
+      "createdAt": "2026-10-31T14:00:02.000Z",
+      "createdAtEpoch": 1793455202,
+      "replies": 1,
+      "content": "点击链接即可参与 [https://play.google.com/store/apps/details?id=cn.yuanye.scan]( https://play.google.com/store/apps/details?id=cn.yuanye.scan)",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253452,
+      "title": "支持图片显示以及 ssh 的情况图片粘贴的跨平台终端",
+      "url": "https://www.v2ex.com/t/1253452",
+      "author": "wynemo",
+      "createdAt": "2026-10-31T13:40:48.000Z",
+      "createdAtEpoch": 1793454048,
+      "replies": 0,
+      "content": "https://github.com/wynemo/yiterm\r\n\r\n基于 Alacritty 的，\r\n\r\n发现 windows 上好像号称支持 ssh 粘贴图片的终端都用不了，于是弄了一个\r\n\r\n还支持显示图片，搭配 codex herdr 这种，走的 kitty 协议\r\n\r\n支持 macos arm64 ，windows 10/11 ，linux x64 的 centos7.8\r\n\r\nwindows 上有一个内置浏览器以及 vnc 查看器\r\n\r\n基本上按照自己的使用习惯弄的。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253448,
+      "title": "给 Tesla 做车衣涂装网站还蛮好玩的，不过这么一个小需求现在也这么卷了",
+      "url": "https://www.v2ex.com/t/1253448",
+      "author": "ShawnHacks",
+      "createdAt": "2026-10-31T13:15:41.000Z",
+      "createdAtEpoch": 1793452541,
+      "replies": 2,
+      "content": "在独立开发群里看到有人发了个网站，https://teslawrap.online/ 玩了下感觉还挺好玩，然后深入看了下发现现在给 Tesla 做车衣涂装网站这么一个小需求也很卷了，随便搜一下就可以看到很多类似网站\r\nhttps://www.tesla-wrap.com/\r\nhttps://teslawrapgallery.com/visualizer/\r\n...\r\n\r\n想请教一下这种是如何做出来的，我知道现在不用了解原理也可以让 AI 做出来，但我还是希望可以系统了解一下大概的原理是怎样的。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253442,
+      "title": "[分享创造] 让 agent 反复渲染比对，是我目前找到的最笨但最稳的办法",
+      "url": "https://www.v2ex.com/t/1253442",
+      "author": "weishao666",
+      "createdAt": "2026-10-31T12:35:19.000Z",
+      "createdAtEpoch": 1793450119,
+      "replies": 0,
+      "content": "做图片转 PPT 最难的不是生成第一版，而是让第一版和原图对得上。\r\n\r\n我的做法是让 agent 反复做同一件事：渲染成图、和原图逐块比对、找出最差的一块、改、再渲染。单张通常要十几轮。\r\n\r\n笨的地方是慢，每轮都要真渲染，不能只看模型自述。稳的地方也是这里：差异是量出来的，不是猜出来的。\r\n\r\n现在主要卡在两类图：超大图渲染慢，长条图分块后对齐容易错。前者在考虑分区降采样，后者在试按格拆页。\r\n\r\n有没有人做过类似的渲染比对流程？想听听怎么控制轮数和成本。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253433,
+      "title": "ghostwire:在 Linux 上伪造 ping、TCP、UDP、DNS 的回应,用来测试依赖网络状态的程序",
+      "url": "https://www.v2ex.com/t/1253433",
+      "author": "tarsxiaode",
+      "createdAt": "2026-10-31T11:27:31.000Z",
+      "createdAtEpoch": 1793446051,
+      "replies": 0,
+      "content": "做了一个小工具,解决一个很具体的问题:你的程序会 ping 服务器、连数据库、解析域名,然后根据结果做决策——选最快的节点、重试、故障切换、显示\"离线\"。测试这些逻辑,需要网络在你想要的时刻变慢、变通或者直接不可达,而且要能复现。\r\n\r\nghostwire 用一个 TUN 设备接管你指定的地址段,程序完全不用改代码——不管它是跑 `ping` 命令还是自己发原始 ICMP 包,都能被模拟。规则按地址/端口设置,运行中可以用 HTTP API 实时改,还支持设随机种子让结果可复现。\r\n\r\n```bash\r\nghostwire exec -rule 10.99.0.1=50ms -rule 10.99.0.2=unreachable -- ./my-app\r\n```\r\n\r\n对比 `tc netem`:它是按网卡整形,这个是按目标地址;对比 Toxiproxy:它是 TCP 代理需要改程序指向,这个是透明的,程序不用做任何改动。\r\n\r\nGo 写的,依赖只有标准库加一个 YAML 解析库,`exec` 模式不需要 root 。有中英双语文档。欢迎试用和提意见:\r\nhttps://github.com/nanmuyao-tools/ghostwire",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1253432,
+      "title": "测速 500 兆，打游戏照样卡。我做了个网站，专门查「卡在哪」",
+      "url": "https://www.v2ex.com/t/1253432",
+      "author": "yt1988",
+      "createdAt": "2026-10-31T11:00:41.000Z",
+      "createdAtEpoch": 1793444441,
+      "replies": 1,
+      "content": "![]( https://i.v2ex.co/G1PKbH4d.png)\r\n\r\n上个月，我的网卡得离谱。\r\n\r\n打游戏延迟忽高忽低，开视频会议对面说我声音一顿一顿的，GitHub 拉个仓库能拉一顿饭的工夫。\r\n\r\n打电话给运营商，客服很熟练：「您先测个速。」\r\n\r\n测了，500 兆，满速。\r\n\r\n「那就没问题哦。」\r\n\r\n……问题是，我缺的根本不是带宽。我卡在每点一下都要等，而测速网站从来不测这个。\r\n\r\nping ？浏览器发不了，好多服务也不回 ping 。查 IP 的网站呢？只告诉你一个 IP ，然后就没了。\r\n\r\n查了一圈也没找到顺手的工具，那就自己写一个。\r\n\r\n👉 **https://1ms.dog**\r\n\r\n打开就开始测，什么都不用点。\r\n\r\n一只柴犬从你的浏览器出发，跑去 40 多个常用网站「捡球」：视频、游戏、社交、开发工具、AI 、CDN ，再加上你所在地区最常用的几个（国内就是百度、B 站、微信、抖音）。**延迟越高，球扔得越远**，一眼就看出谁快谁慢。\r\n\r\n![]( https://i.v2ex.co/2461fpwn.png)\r\n\r\n### 它不光告诉你多少 ms ，还告诉你问题在哪\r\n\r\n这是我最想要的部分。它把「国内常用」和「海外服务」分开算：\r\n\r\n- 国内快、海外慢：是线路的问题，换个 Wi‑Fi 也没用\r\n- 国内也慢：先别骂运营商，重启一下路由器，或者离它近一点\r\n- 都很快：恭喜，你的网没毛病，卡的是对面\r\n\r\n再往下，打游戏、视频通话、看视频、写代码分别能打几分，也都给你写好了。点一下「视频通话」，它会把参考的那几个网站高亮出来。结论有来源，不是拍脑袋给的。\r\n\r\n### 你的网，可能不止一个出口\r\n\r\n很多人不知道，你家的 IPv4 和 IPv6 走的可能是两条完全不同的路，公司网络、双线宽带也常常有好几个出口。\r\n\r\n它会同时问一圈分布在不同地方的检测点，把你所有的出口按运营商列出来：在哪个城市、哪家运营商、哪个 AS 。移到旁边的小「!」上，还能看到是哪几个检测点发现的。\r\n\r\n### 一个让我自己都吓一跳的坑\r\n\r\n刚写好那会儿，有个服务永远是 700 多 ms ，我还以为是自己家线路太烂。\r\n\r\n查下来才发现，测试地址打到的是人家的业务服务器，对面先慢悠悠算了 400 多 ms ，然后把我重定向到了人机验证页。\r\n\r\n**测出来的根本不是网速，是对面后台的加班时长。**\r\n\r\n后来我把每个测试地址都换成了「由离你最近的节点直接回应」的那种，那个服务一下就从 700 掉到了 100 出头。现在每天都有自动巡检在跑，哪家偷偷改了接口，第二天就能发现。\r\n\r\n![]( https://i.v2ex.co/4onB1x7A.png)\r\n\r\n### 还有几个小东西\r\n\r\n- **只测一个**：`1ms.dog/zh-cn/github/` 只测 GitHub ，连测 10 次，告诉你中位数、首次连接要多久、抖得厉不厉害\r\n- **只测一类**：`/zh-cn/game/` 只测游戏，开黑前点一下，心里有个数\r\n- **一键分享**：生成图片或链接，**不带 IP**，放心发群里\r\n- **不收你的数据**：所有请求都是你的浏览器直接发出去的，网站本身就是一堆静态文件，你测了什么它一个字节都不知道\r\n- **彩蛋**：快速连点狗狗 5 下 🐕\r\n\r\n### 开源，MIT\r\n\r\nhttps://github.com/yt1988/1ms-index\r\n\r\n纯静态，一行 `npx wrangler deploy` 就能部署到你自己的 Cloudflare ，免费。\r\n\r\n有 bug 、想加哪个网站，或者觉得它的结论不对，都欢迎提 issue ，回帖说也行。\r\n\r\n最后，回帖晒晒你的狗跑多快？我的是 133 ms ，「小跑」，说好的 1ms 呢 😂",
+      "nodeName": "create"
+    }
+  ],
+  "response": {
+    "transferEncoding": "base64",
+    "contentEncoding": "gzip",
+    "body": "H4sIAAAAAAACA+19+3Mbt9Xov7JV7nS+ZCxxgQWwQD7bncRpE/drcz2T9Pb2hh17H1iJDUVq+LCldPq/38E5APbsgxQly4mc0D9wZBKLBQ4Ozvvxw79PFsvannye/PukeFtsitXrebE6d1+cXGw2V+vPJ5OqXpy95fb6rFpeThY4apKntpnUDbcTluMjZ1eL8z9cPmNKpVnKGDMnT5KTRXEJc1UrW2ys+8a/ZbFcXRbzu70Gnxl9z2a2mcOLplvJUzXdCluU7m9WTrcm5akbtF11Xvju3bv2hefLSbvGzfJqVq1PPk8yLTL9JDlplsuNXbmH3c8Xtqjxf9OtKjmfbnVT2elWNCqdbmXOtfumNtOtYVU13cqsZtOttGk23Wpmi+lW1g2bbnOlxXSr8jSdbpUsUzeDdONFxabbpklZ3NrrYr6xq0Wxmb2Fbb7ow/NytpjdDZruiVFYrjfFym1ecclh79tFbVevZ/XJ50nq3jifFWvrRvzwzyfJyWq53Jx8njTFfG2fJCcwjOVPkpOrYmUXm9cOv14HPDi39seT/zxJTi7tZQkw/Dc+kaVSZ9Id0trtE0d/a20tLpcre9vpbSedoe9suZ5tbDivzbvZBo9vsZ3P3crWi/Y/57PNxbZs/19uqvY/82VVbGbLRZyqOJ/PFnHmcrYMfx5yDv4YmKnspMlYMcFdd44iNzzVjIvs8Muya9rufRmbeP9d3zVv57qPTXt9v3mvb5/4vjMfMvW9594zOdIUuBKS81wpnTsknxfrzevLZT1rZvhjfMhh58ohVfqfMG5lr+Y3r8ubgGnw5Wa5rS7Cs5mQSjJB6eBfix9t8n/4H/9v8mJui0XyxXkxWwBRqabb3BbNdJtXpZlu81I7opVJGQiSZFpOt7J0v8pKNNOtllk93aqs5o6wNuq267iZMC4zkfMeCNxK89TASms7t/i1oynVcrGxi42n4Dbl063JFbwuRXrJ3bKrBuilcd9rNd3KRuvpVhpW4F4jTY1LDVsWjVDTrVK8cVvTmfvVVnHL3Lhtpk3tZuMFzhmelUZz915TRRovdDXdKs4YrNDRb53lcXzmaDy+S6VN1gUjjhfWlF1Qj6wzq7T7pgbgp2y6mi7C87I0hTtCwx28CtXuvMjdfjJFVtPAbt0B52kZPnH1+BRyK2HdzhWiRZa575mDgsp5Nd1macphBbAK+gvuV6YS4JbDHrkI8BdWl24tML4GOBi3ryxNWcsbmeq+gZ0lbomVY6K2HSJLmbZ4mmfTrZHcTre6rNzRidSObVuXpZ1u80ZZAJ/bnnHjVcHdzE3ahAUaZVJ3UA7RcIGKGw2zpfEbeCqvqqJdMj9LvizWVokksnheODHA2Gy6zTUeXuY2JVVtHZzSetLdvtLu6I2GAwEQCev2I1XjVs9FHq6DaHgK+9ROcAA0c+ixzU1ThjfnhYVdpca9WSA4RRruj8cW4cCAUodB7AfpxZ9rnqUBnErm7tnMg9CNZE3vRKVSuo8nucwkYAsLS1JS6HCbAOhh7Gq6CNRkdja7PN+uUDL78h/f/L9X7xx5badVXDgUzrNifFoHGQOClTbaQZi5X2WpzXSrdSW7CJyXhVuecIIjbgLgdtDy5tXs6y/56uxfV5asT1h3xXST1wGMMhcpzpiEac5XtljfNMvVj2fL1flkXa1mV5v1RBphhKJzCThVUUfMJ3ehM2OfCjPBpGCfAAdh4qQltK9X1gl1QH+PFHcnxX1arpLJ81+W5uIawko+FN2lb/mIaC8u+Hbqi+N+GfqL7/6ZKXAXa26nwnS8/yySjZNrN8+mJ6/LebH4cXqSXKxs82x6chudPklWdv5serJYNsv5fPkuWSyXV3ZhV9OT4aTPn84uz5P1qjpo4mperNfPpidOf6xrW7+eXRbnlrxxZRu7WrlXPX86KZ53AfHz8Y33B2iHszwoRHszvx9I97K6Q/a8nw3u2fjzg2YYW/GtDPWQde9ntmR5+we69Z2M64SZyFnGmTOy2Kv5DGwuabSxoIr1nyfJ0YZ3tOE9ChuelICs1IRnr5ebWfXjYnZ+sbnditcfTQx55Xx5fmZZujlb2E3XqnfyR/LYVyfRwAcHHc17g6WgoQ9NKh/CzJfJWk94VooJAKZr5dOG80xpdmcrX3/WnpFvZN6DzFr9absmLTorsedkiueSS2ZGyVd46J4mLSVSmfbIguE5CO9O9JZcJ199903SStICRDYho2QPUpI2TpCVjcm7WoqX6UHrkLVVbh4nhSvtRFJZZSxoO8Lm7m/BQN9gzYHmLyVGzF9hV/vMXx9ql144v8NeQeQG2mZYVQehyPPMsnFCUel0JZk5gUrmNYj9sok6XYX6mlZ+NqLAu19kaWygtjKr87Cb+ETVpbao6+CvXnMie0VxX7Iy62pXRlrrBHujoz7EtZuTOZFNVgJ0u8a9i8OcMgMI1WUXWl7vzBVI0UD3NaovHq4yUn+EB+isAt7o4cQdXLV2782lNFHal45b4FvAfrI1oGIoneZBrdBN5dAiK8twYl57rpzpVjZpbxd+VeRXJT1G1GFVKnP6osxUOnaeuBLd1Lqr0imZGThBpw6mYCZmoPiQd/mzqxy/VDIXgXcitP3aeBFXZYSzB3gtn5yprByEc1tFvZbal373A6iojleXRecd//yvaBRZFe/OkAs4xuSvGlxUyhEm9fritLSOpZzObbM5Xc9qWxaryWUxW0zqZbWegFi8nvgfHHH8NCxi/BA+/CJOL5ZvbbsUvFtUXUG1HG+vFLxxxKRr2HpTry+Sq/n2fLZITk+vVstmNrfJO1smRV0nOxb0pn2b0Tlos9buM3XB1g/eL9kLsQRJ68wNkmdpkNM8lpVNHjDRfSbfbYpV4n6VdpfN6+nV8181pX06uXo+XcAuj6T2SGrvT2ojIoFNoZg7jXgX0d1nS5gvi3q2OH82PZkXP92AWo9GhavlfFbdgIZ/2hoaRmwPPYPGByTr05OJ2zPd8I6j/xVsuGUhbtuEbhzGRlr8qJa1fX4fZvJ0Ao+SV+/lKU+LgQXpjtylb1OipqS7TQXGJQKy9+RWONVOa5ASTGd7rEFKHK1BR2vQI7EGqdyogTmoXJZLnnKRZiy93RzUH92ag3x41sNEdoXJotEnjAezj//PHQw/sizqiW4aNUEY9OK7MqE4F3e3/Aym7cd3DSc+yPQzmLcXzjSc9vp+817fPvF9Zz5k6nvPvWdyat1haSrTNM93Um/30H2NYRnnskcVBwJ6bmuT8K+cn9FmTtTlINBJR70cZUq+eJlA2JdzZ6a5jK5NyZogZAY3FiuiRgPisTZOUNQ856NPNc6rjm4176iVWRmFVXSIwjc+AE016DeXQZpCX+ZwbU5MTf783f/+9lCjGxszumVcy8ONbuhL99y6dkJ6bpwqgM5fVfKe/5zGSlDVQYFojxoknhOK+TIDAVw5t7aLO0jyBJiGk/2tieqm19sgJEGaDNQ7VnQ1NingV/LZDb/xKissChmYXz6Zz78HBBVVFSw4qE1aZEENzhl3upmSrPf+3lbcU6CDkTd6NLJOM/EMEvz6muVtxABXTVgPakE+mIOEnqDIhAiHIlYv1Ig5XRIlVdTafFCHgOCQlMndcEQY6LrGd5YA9zLAIOikoG6jBi1SHZm7v4htkAm9flSUDcgPYi24H30oQJFlMbwEg0PKgoeoTI+IyiEl7lHXMo70oQDE7EADWnSd5z7+bGtM3oTxqszLffBDeKAgoxtAdWbTaAlAXBUuXCiYRlrYKC4h6sLqMeEILQEoHIUdQPiMqNgP312tZhv7oli8LdbEeLaGryv4Gi77TxeTP2w3l6/Xy+2qss8cEfi9+/+lrWfby2frZTUr5vBNVVxeFbPzBYw5RbrwKTHopPuJJ55th/gRYuZ3BNYIyRyke0GSAH16O4YWFtS66TuR+NJ35oXDxRx0brBTASH3oViN7VspgJRSXPA3EG44TxkoIYUJYVk+VgbWqnIlYUwdjVWZs8GIRjTRXpICybeOYGI8BUIDMSvPyjRYm5qGlYEBaVNBdI2JUTwy12WXjXirT1nKMabhKSEY3igcFS/rsJ4QN+SsHTp1orpSKsYTod3FNM7Nj3EcSG/DU03VskHHfIyqVHyWGaCejsj7vaM1ReZNF5+kkXkIi0B4qrIW4bzpSSOly2vuYUvRP+kSMTSjeRIOZjEj3BJ1bSOaylJXkaDB1cXL7FA76DKUp3cQvXHkUQmn9SAaUR7dyhBjPJoi/SefJJ2YGsqJ4otlVjncTsFuBFN4yrhDpPC2qt0ihU4ymYRzwblMCvdKpbaLCcPITme/37+6+6xrH/lyZKqYOIo0eTfbVBdoBrKLyp5ulqfFYnYJqsnZ+ayhZn3uuK/UtgyRdLqBUDZ4s9t1pgkQuhvc9/CBS12/W67q9WWxOK2Wl+WytzrFdRpRhzueh1iAnMFTJswy4LZ31h5l4W45apyopHuhdx9md5d5qkoIyMrik9IRCox/w29ysCbkaanpQg+EgW0aW23W/ZMhIixSBWrDldzhENJdmbo95rXDM6MrG2gthQBuHG1tSPORciOnoDPkjTtUpbMqCKcxVFAEbB4RqZlzPOCVbilWkvEk8Bu0JePfKm/pG67MR0X6vx39N9KRCqNNFZ5CXoDA7x+SUi6EEeVECjm8TUMIdcYABXf09MADu5pd2/mpvb5arjadU0NClaY2irgOIJ3sgwwF+qan/kSJUQGVkN2oUG8yApWABnoOFSjkpoHnAUfEPYKk5WlRykAST2O4ssraEGgcQ3IQwlAkQyieojgx1NC0FqDf5DG4VhopQAhmY1qcf6p20dW6rrIoXkNENQb44lY7IiENBabCD7BTuk4KbgQNjZalIzFOVlhADtEX5DqC04DIOMthED2oewZ3LdMo5oR0jY60oytYkJWEy5jwq848xxARl72ckJNTgjjgFqWTV99+nexVfJOBNML916A7vroo1tbZj935vJpdz/78XTLGwnXZeIkVZ/2mWF8kgXiEMGx/ydVuQQc3RoUnI93fqJx1xV8qlaCoo0mEM8UbXdbu7wyEUsBRtLMikcIw81zBDAQ7EReD8CazVklJW6ERAni7MfgQAszYCP/oOhab9EAiU1xdnf3rirrgjTEg7cJ5ohjnNVmCqHhGsGkvWhkwGDQOOREMUWaJ7mcEiaosgrAabqJ994HLv1he2t76O9J6w+LaQNb6x3L7/ba0yXcXy9VmnVCZKr7vZrndbEsLr1rDuMnb5psvl39b/v3lpegQYbqvXDm9VDY0G9Hpybp2flCiadHwgyIcKjWJUX3Vc06ip4XbSwLuB2H0iII0EF+aVIR478PP5DT5YfSCc3A4c5Hfounid6frC2s3p+v5rLKr99Z+W8885SS7FuklX5DegCTgrr5++SeIllDV8NFb9nQ+a5yoS7f2nntyZGAUzm59ydcv/3QXKG+Wp+ez5v1WFE6eXqV7wertrLbLh4VWe8/R1kZoE8iCP7x4kSbdu4cSmcolYEIqb1l0s7K2s+D1+1tsHPnnTpPWsnbZR4XxKk0ik3jViZzgpRqi+dBgCJk5EU1nJUg+raKvFZgCM2fAVCmP8pIUQD7A56dyE3WTPId8M5OhKQiE6rLoGcxgnpwrE0NVANgYbEHVpUBK2zQqKYUKJCaInk0Tbcy1I3zIP6k+L2xMPA0qGMh7A11d2Cb3YkCkV2D3dChaOuCYAhh4WbEYB5CmLBEOQ3IDS+SBIjpLtjTcBPaOmBW2xsqYfIFWRhQyYDzMmY1MGW0ZYOJUknFUiBLGE8LlW0Qlz2OGnGe0XuHRNgT7SFapYETQNSfGcweCVh0FIKFyz2IMiKliDokP8FGZDWwSo7c0R9xiMT6ruzcEB5kZjNO65q1JipjjvZmUKJneaELmxJWYFFYIeW50RwKDdpCVgpHKGJZC/MEGREhvAyyVRLxI/hfjk2DuDevtS/XexQAGa6NS2WJvq+wL60Tg7smkcgQbqW2c2rd1XWYUP0NCKdiyg98h7WnHKD/Qb9Bq24Dm1gD1aFOWRzRPr+CguDrQ8amGThUf3LgnR2ROH90F9kt3eZMv1hYIZAw5zKt8dH0oiYjG9g6UWsG8mTAzcAys6So/dH0+tLAUrTyKKiLLerImzpmDQoU7b9/+t8Vsc+PVjq+X9XKTkHBFgBRYPmsBEXyYIga8BlG6VFlQOyh9wZPwNmSAe66VDb6R/YZJVId2qVO8SIM6BULsuN6EejtdERLkrmLjU4wFSIb4SSNJcTUsRXmSRXcqWgYGVmDEJiRyeYN2RTBaATZ0VGSwOVBO7NIRwnp8xiI867GPGHW7Z4MeAtYQO1C0VuMMIdCltf4Hf5l7SpcVeKmA0YGbk9pD8qKOHEBm7pYY43wVXt4mxCPELkLIDXyGIJmDgnY/ek8tiR379btqyWaPvtr7+Gp3APCXcdYOwzAPctMWl1f/PRT8w7djwv9YuCb1lLkYzA/r0SVwP7p0jy7d34hL12P9BX9OPbpPJ+6LyLIemU93PFvh4b27P2vg//v4j/sx/Xf1IY8DdO80jwU0I/7qHjR+MZ/1OFTv771+NDAn/vFBNsnRR77fRz6OFA/jLX80CNL3xxMsQUbT88gHdrOcu8/57PnH5Zd/OnFL9gs/+uYfxjffA+rD+ec7E/+affRhoxO8VkCfPwpn/Q5xpOe2fzTUzgcG9Fjhzx0csCOFt13FYwFXCETowevewQhDE8UtYQl7EkP3P0nyQIGN3SemgWpWjzeqwe9yG/jxYWagg2IYHsY0tD/WIhiL3i8AgjCKw/Z/ULzDw+x/X1QG7t4R4Xsc266giA93bCF0A2/XHUF+YNjEQ63+9jAPuovJNjLeHSEYh23ykDCLh9nh7REh0Q57jNN4mDiNLkMJYRqBTWznRAb+zUZrdET2X0/IRmdbjzNuo0fKAEv3hW+M4O1vO4qjq23+IqEcZAm/vXiOEV58DOz4sIEdt9W3ybJM7atvw471bY71bR5JfRuWa2l0r77N5mK2+PGdnfGU8dvr2/RH7+xbdrKzqPG/rJ0tFnvKGbvDZOCFKKrdpY3h+CuCCuAhKaPxyXNScHrTXxXQbvwmlFu8Q6WcqmJskjZGTxCag0o5MjfC3LlSzmDaYaWc/sQH1YYZzDsoDBOnJRVIhFJSS8P0LrIHD9238ZcWudhNTjpBQSmNRMJGIa0dCXm6tLpJILS0AS8CyBFKO+auNLZCKETy+6RnQSI2KKeFHFqrJR2p1RI2tLNWC0uiprdnjfuKMAhbFRjlBk5bFJOFdSxMA9QwhixAqoReETqGEqo0B0WkjDEOyKZzKFHnx4PAlucWRC/deqfSrOybeyEKLWdNcAShDZ4Ke9jKRaWVDAKej/+Ad3kPqkXli/Xqeoz1f9DZy2Zt/tLtWeQySCNo951uJ3skVv6kozCMSUlrYsgRsWF6BxLBTAzIlCA6SRB/0BWuGzXaTkg0Fk7DqcQmlzY8G+Lr2qBQNCGM2E4LjC2U6b76HbKB4DgItUMFanhyGBaFwtbQFuvGJ2+TGKJIWosMQ82GOpphogoHr2qvdqaxRxNYFm477L/f3Pz5b7NzOOxdgbWH3aleJ6Lf5r16n44unXv3oB1dejO/T0cX31LpIFLQw4hfJTno7vGjIQnvg6eUZDwsnvZmviue7tQcpVZS7tMc06PmeNQcH4nmKPJUSdXTHC+KxU8XxeKcpVzcrjn2Rz/2yqjnq6BC2aoWrscfL2yqjS2dzbtqmC6Va0Jp/rB+xsXv62cru1ktD79Dd5lf6JH591OCu0yfZ3R62gBac5ZnqWE7iFjKOZf5LXpg/+BHdULJU94jFBDSFYqF0hyJUgd3irCOveYV5LpwVYawLycxJa+++pM3CCfF1VXbp5PkYmG9a6AFMc0mdtx0/q8D1UIpx9RCv6c9JTxpfXyMpPcFRjPXq9I76SD620VnJj+ENVzNi5uz8+XyfO6jOzbLlXWhO+tJbTfFbL7+w6x+Vi3ObrbF4saeratiQbLf7/P4p7tbsd51F4fw9vss8aDGe/eZ2PHxf/5X8lGu+9PdAojHz1YAYR0BRMqjAHIUQB6JACLztC9+vLtZ2Mvl7YJHO+4exur24Z3GalTPnT/pwfrwGaPSSS4Um7h9d03MIs2lzDN9ZxNzb9KegXlk2oMMzL1Zu+blkUmv7zPr9e5pCdPlJheCSzPe2y88dF+rtUiF7lIS2keZdlymMRreIpNVRbKGyGh/qUEZlqyU3UfzymDcRMxm1hD3Iy2y0gYje3yz5kOlEz4mnfj97JRORtqL4GWY3Mw2dnVJbI55g6YRm3wxL6rVbANueeL1b4cCqXPO9eTdbFEv362TaAcAowfGLaBhJDdNSqEcIEhg1IEdxhxH6AQfb/Qq91pH+UgdDLVoUjEibPaLDpEDp4dMV+EtJoLXYPioE9co5jq5sKt61cZbQD/xUAQg99a95EcPOZlBCGxZWFLAoQXDZVEt10mxuoTu4W6WAEuWThjz381ni+11cg1jYPbKLjbLdX4WS0b2T2AY0k1j6IdxuQS33y6qJKQxYBg8DOmhCNrl/MsySGhhKh9jeqLJSTyAY5sqtfGccIwzGe0pu7C3504Xkw9rrtN5pt9F57YrQMd+VHeABrX/QpeApj8+3C2Is37wazDAk4e/B7dEqQRiv8vWKI89uY+i/mMR9XPhwnl7wv53F8W7xTdF9eP6doG/O5YI/TEsvVpZu9jY+dw9cfJgtseTL+3sz7PF+YPpAWWW84kwvJkgUAbBJsKkIr2zJjCYdhhs0p/4IKl9MO8g2KQ/7fX95r2+feL7znzI1Peee8/kVDwXikmhsp3RN/DQLXpMtVwt7OZFsdmp0KhM5F16CeVnvrfreZHEqjPgwNToVq+d9xq7K2KOOgZX+txLDKQGCYYmAXYa0XYKNwndY7MQ1YPeRVWJXhSuTzUgz8oM/Y1aHagICT2mCHEJPa72dVrCMGAsqABVcHx4PkpyjWsp6hNKkeljtSsvR2Bcas16na8IAB2Iwro3DvzvVsXV2XLhCMgkCeCMkllML8W+vl4sw6ayBPw+cJ9WXfK50iqKJ3TOVi7thT/fGysOPGXvMcZCQvFMY26g0uAwL53gJxhJz07LtjxQ622mR+DnhNwIDGEWjUtMJuskISgOZQD8pwB/hzj053gy58V8blc3MODtbL0t5rOf7ArGnp2d9WvuYfNMBf186cqpEOwFcGjFKSDr0uc2Y9Q/hELT24Tls3KQM00K7v3OTUlpOkrb+xjKqWHW5Eg6fVkYX9Jp8O5OAAPWMiNl1Gi8SeckqgYLRjXddXTOD9wxCnbuYwnIKn1aARRYUDrLD1T9fp4bO1QwB3d3n2Y5GOxUyuNl/6CXfTE8s7FLv+fURoZDEuFiDzbsoheHIMeOZ/GdZ2dnVDc+kpsPSG5u07C9FNFq2LyjYQt91LCPGvYj0bAzlad84E6zs/VFsVRKHeBS64zd6VZ7L136/ZXoGAKjTNpoZlKuDWtYWea8LBupmrSUkulMv28EzwHzv08EzwHT747gEZk0XOvxCB7BtJLc8Pv6xFLGDCUIP+yiCP9MPMUvzu1ik4RUPGkg0dNmEE7rMu99kUqoAuaZj688CSyI1rbleWxWTy93XgIjQuaB30D9W0/uuQt0VVUtD9UZR51nfuP7dEbkasQoDqUhXr36PgnrMqq03aRjn/JKU2dL3qb0cxET9XXawgbLqA5H+opRvohyYwNcMRMYzc+9KuEeyrotFFpB+n98z+gB+r12amc1KgSr+8ol9JBJddNQAaG/VJ9Wncu8ixShHFNuW5khxRhoCsz4bKw8ZtoaqrqHdKFyNkhCUFXFF6+DmGyfy5qJWKVYgyeg14q2bNOAMfI8pJsB+rK2ljGm/OMc6J3xodQQ+E/X1TGdhHzVIhaaIvVrkdPRamcdpCfr8RHgeKCEb/q6bgBF2UB8O6a3M3BG7ZAMO2ibsWpsZA9OHckRKiN4+CrWfs9FzDn2hVmxqhokRWAEH3zfwSoCY6wqhiVqY1UcFXDCF/EmdXhliWfFMqg8ZiJOAKnBTGIva0AZVqxVHuoLQEExJcDZVeVBdgxF1LGaJpkBK2qA3wfrpClexepavQuJ5S06BRpAO/WaWZX3dB0khDsIKk2Fp9naNHucVjNUGRSD4FAUHL1fUHjOl5n1tdJ5dYhC/vGQw0611SM9vBM9pOXejwRxD0GkgDpSxFspIr2THxFJvM1o4MXIXW55cXTLH40GjyYFKDMZ5/3iEcVqfT0rHILeXjqiM/ajSf8pC6MaXgrpOF5e5dIWeZVpbspC86ao39d4cMD872M8OGD63cYDlYssN1DcYEDA6I/3MR4IlUpGCcP5xXK9eTdb2c/xiiZ/gdgtUhO7QEqRXM0W5yi9fP/iFf7xt6/8H199+11bBgqKk0lrxJNYGzT3NaFiaTvRGCj3JVV0FVhXGyTnLkVIYSE+DKuL9SYOtB1k2YjtIOz7VtvBMPWpXz71STS1szLrDUVnCGbkYgIwVkWRTp4x2ujPAznsbw4TywHIKJvXsXRcKFrGQvcEZH4qUwjnWC4Zl6VyA+S2hgrPaf2k56HSTgjFh3NbZ6HxUnAIuD3lpTsXnroSuviJ9bG9kAttZ3ygNAejfigYzUKdNDzlIPa6dllGwVuwTGrmRCT/axvNeBLacuW2bNz/fMo3wZvg8jLAv0Bsawx70kuPJgjlJbkGo/jaKlmeyWCDAZ6hc04H6c3L6PANSuGd6lakEJnPHQePiG5K+ySoRcIyEasFotRs2iY5VOGMVzDpdhKAbhHf/+1bsOKVEOaBwIMCaGXB4r4yqHtIWk35LHwoiOB66jzpohpWOMCmTZ0avqCg0FKTFAf8SHgxVuQL/ahqlrxxmPvGqWQih3BXK7oOpE7heOT8qGiZqkxevvjrqwSLBj6J6gh+6iIqGYrXsRORNhUYFpkJMmy750kIw5WZzQLwXCDpE1hSGmpnCst71cigw9I333//KvniFXjJIEPf12eTmXkyFo+L86MTFYvzo8NPltBsCBVjetMwN28HNrx586Ys1hddxLDXtkpOV9u5TVh6ZsxZesaeyfRy3fuSP9suVraoLopybpPT0+Rscnlz6hIxcWYSGx5bPiRvNlWysBt7+ebz7sH6KFm4TagXhWYYij/plnHoPAD2Yl+MMx7Kf3fe+f3yena1Wl7fdF6ZfP/iVRIRELyD9F4jelJE9pgvGBtdD22t4i5G7xpQ1A/UvymDdxbfhtX36AF9vUxCnqyfkzIzVI29ukTqkSKdjiUYwvX+xxd//UvSo9zWZE/euBN318mr100a19tCJHEyZkIqY5iA05rjNaugnCEUQZE6D5Va/HgiovtS/QgJVKoyd0/aGoaf06AcEp+/KBaX25vCFVBezteTiLIH2KWOrPbIan8mVhstGb8KXvvUJXY8d/j7dAJ/HtnuvdluwIyVfQ5gjaVm5sXifFuc21PgxifPH5IZL/y5PZ2497aNrwJ3xAMObNkPPjLnPcw5XvCfhTvj+Tg8aC/g42HUi71JeLsY9oH5eLseb1Pzdhpegw6+y/CaZUfD69Hw+liq9vKUpT27682GGa1vt7m24+5R++B+JXpn62SxdGWCz++f91SJkk1S3cgJbL6f9sSUkIzdvcZub9ZB1tNg3sNK7Pam7ef4DGa9vte017fPe8+JD5n5vlPvmZvYRTOmpOY84zsINj50i6H5j2yx09asU8F6xRtAvzApaxKZ+j4xpF+7U+NoYXxM0EU3Jso4oakgY30tcixZAFQDcKVaHTKEszStum5eLHefpWl9qIV5LDrN/dtrYf7dD6QY1CxMOvmavfqf8htRu9P6tLXPePM76czeiQpHlZYIfxhPgTqdhoj9fpBZH7gSoiN0A8pr44R+U2DLCujM2IhYXhWzOGjjIt9v0dVKCP7r3ClzugR1DY9HuzAAA910UKYy2jerj3+3TvyvZ5tvtmUCTmjT9mZx4jsKZ6iXhF/bKYxRda8ipuHl+PaxQa4u6zpUcPV6iXB9WbAxj98ytDvxtgEwNeQMQtZtlYUwAMQklRY6dCRE9Ma1OyQP+Opwi6zFjwoJGCM3wVrWmSE+i+80aZHFloDgk2/NHoDPavzNPOUqfNInUCDvIBi0ofACAZoxQvp8m8oAzSVl6Vqwd+4luVsYZYJGC5oS0Ik4gbYknZCiSCa6dxrbhaI3ya8EDRZEuaDw8iYeH2IwqCEQso369Rl8QQjsTETMQxi04s0QqrbBhBTEeiuTl6+S7u30nTAExoSwJuggUgi4QVWvPTvoHTDLMLmIHjipiUvi1rBfT2tWk760MgTbYPAGCeClzQOHJWVDk8AW1Ya9X6lFrruWWmf1dFtXwiSffRaoHrtcn9XL888+619MnyeGmUakCRMebyDlVRoCQkL3WNI8MfYs7dDQtNX5GujMVVQBjahxcAQ3sJUvYEioloHWk7LEJlmIH94aCXTVr4ScuycRcCFiv+46xhERiuotdIQ++25kJoMwmEK0lbfbnLpeDWIGqT3ujxdffUvaaOm6W/3Xm7KgNa/ngWgKwEYuaHqkW/LdKNtCyNi9TSowtmGbF0ROjMFSgGS28E3YvkwIQGALhQ3lmEMoHTQZBWbRdt757LMum9K1a8SIbMpfDwCq4lIEFohjXKcJ93SMD3NHnUN7XFinT2GDQ9YVrsmW4e9omYzItIN5c6FYc/Vu0WHen3zySdLtWSWZMGNXvu0fllyu43n5zlGD0R0a30ouvSr7NHLfq3IDW6xJobwVKKY+wAzNPNDo0ktI9GwJLiACo+3BozcWeDdMdcmlH4nBaQ1mCZjcI79f9WnSexOcgscJOq8PqmPRfASGa1eoqxma/tte24p7kvr3GZhW2Z9mSZcgwq5GVuLHkPcij5fcSRemgJTMHdIDGual4E0vHRBXK7Poaxj2IkcRDs8Dy5x77HUEzq/Tt1FCF0hj2/DW1MlCUpqqTecjHhDscO/7cNWO6MuKtHNTjHbU6gh2rdsQaUmjex2Zh+Jl8JO0JA6t+yh9hVaLAJUBGQzMpbWNeywC2AdJsO0NTdsK4rn5AkxYpR/vGjYrN3ndLSg/lE0Qq/esvC0Tj3ecNInFiqsYnBnuWpF1aSdlEEjLhC1sN2bVrw3kX2yy5Y2WGEljTToW+6o4OIQYJG9qXQYIDFMCkEYNsYM2qtSEyapS8X55JmSQNqN9MNpk4NAbAVg0SWKleNm2S0tevnorEt8p/eWrtyqh5am6KwpNJLiIobUDHwuGgcdifm1DdKaw97fu+q6CFwqS04GyoFyLMq5PpMVGA4jj2NAeBUXaIKCFSr9HCMEVXF1oxW5tV1zzuA7mOZrsi0/RKOogn0M3exCVEJvDndQ9Xo+rDty8XSm6BobUTHKW95OEYf1Eb/b7zivg+Ckn7VWLcMLDmekYoM9ffBcF6dw0bXEAWbFuPxD0Ebs7+rtwGVGooczTNwykVQaQpOGiaCfXAfA6Sfq7Lg7twA6eJp8xTSRkT6QFi/ovtrYPXkNJGuRIjgymJVFINoZdGqPzoKebqCprG3I5b02eBiGVyhY0sTu098yKUWch3k3CZaUB6pVWfJfi0bYQVBCwTkHp308czB3HKVJzmlfob3lZdNsqCsuKuOmB7z7Q5dYk4TVz4OMqLdLwibKI4wSJGAVVx5MPVwmB55k7eICdcyssO+hdSKwhFp+0kxzmGTnxFMExTFbYpXIjyULFmCZqdjaMuiJWLfXpl7DhDN1LSHTyJorYLRbiXv0BggCJ+ybtcncdIGI7ClwYkB+ZbBVEHhRtPEGifVwG8Q3U7d/Gk4b7ThkrrWfo78zgbgyrWTgN0N8QlWlDjzBh3hwD5BG6QA+bk3ZbHMPO4V76CwRuSVk79Qbpi/fB1K02ScmjTEHQhc8QFuBgFwq628g2Q36VrmJDZtTMfVpOe90OUF7EcvElu86/GFFeaK/xDnur0L3JQEDKm1aMB1UNNW1v3goUEtUwVrzx2v/kp4vTauF9ihMIGYzPJdEMGKm59b8wOKySEwgOLSgcLZd1CNzxcTLGKZf4rJ8RIOszfry4ImRXGQ2te7VpQ08AVcoy27dnlwYT9xw2W1za3la70jI1tBoLqj02Rx5Ip2Gks0OiO6/DEty24+K8nVRyS92QYXHdJL9OLWXQR2hXAfdWP6OXipKXr1oFW8nMhkUNqv3Q5cDJQE8kan2JQVbt0qjA4qurQCUbQ0XAvRacDg1Ba4kXecqymz5GBXKkudiGjJo0vICmMezB1XlRPuJK5yHTkIq21MhLLVfRLNDeqdLlgiH169i1WqG5xbbGdZzXqiKHiAog8gTEbk9DeZ3jZyJRZHH3KtjlmOyZKwD1WsXiry+/7zeLI1EA6OF09rzT2aK21yTT2BZNF0LUBOMCgJI3i6vr5N2qWJzP7Sqp7dV8eQN3g5AytFDkTc4jbQaw9t3VyYv5cls38wIiuoZt44eJvUm5PW97lmHaGfBHKs4OHUlURceiUJ4+wHmGCsCtuuYvCimp4DGX+Odd6EYyW6+3ZO2e2cHLwJniK/BB5NRgN2lg2sOnlZI8fHb0PEALb8w0LQJ5IzlxL4EYybKMCkXeNgRsAOeg+jCu2FfIcqfD4FFn/W5Rz+4vIO36ghVz1+1jX9+v+bKoZ4tziNP66QZiV7AB2NVyPqtuIIzltG0KNtInbNB8bMwhNz2Z0ILTD+OU66Q6/wa9coP9/5JuObqYO/vlyMP3ccyRx38rnrm45d+Ea66TQP1L++bIYohz7ul6s1ouzp/3XHRPJ/77wWV9SFddl7QefXUfs68uINL7eOwi1r2/4y6i1i8vUFAnIREoLrLnP5+X8OnEvS52lPho/IQeVtu5+5zPnj8Gb+HTiVvIyHIeo8uws9if228YXj7B84Msh6MD8aN2IFLi9TDuQ0qajg7EvgORtrE5ehA/Zg9i5+Y8iP+wc3M+Rg/iiH50dCEe4EJshdsoL//ynsQxlfHoUfx1eRQfkVZFvZd9repQ92UgoFG9IErsqC+zo6CyAvNAR/2aJDP7o/NuEp1hH0Cco3MUINTpOQaHD+f6HF35uBe0t/K7OkM707cu0YEFY59ndNdqb3GSDlZ+9JW2+sE47ka36QB29/We9lRbNOYMfaitiLY3KXvgTz0sGbv/WK8/6gG+WLywIw5Zcm8/kFu2V130Y/fLdrfzkTpmb8vg9zmObQY/62bw8//88/8DbMN+lCoEAQA="
+  }
+}
