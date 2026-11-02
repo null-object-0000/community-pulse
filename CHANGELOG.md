@@ -35,6 +35,7 @@
 | 10-19 | 6（本轮，在 `feat/aliyun-site-hosting` 分支） | 8 文件（`deploy/` 6 个 + `.dockerignore` + 本文件） | 0 | **为备案核查把站点搬去自建服务器**：`deploy/` 让站点在阿里云 ECS 上跑起来（零改动复用 worker 渲染），并把 snap docker 的路径约束与「`.agents` 不能整条排除」逐个实测钉死；同批把 ICP 备案号落到每个页面（含 Worker 详情页，单一来源 = `site.config.json`）、修掉详情页硬编码资源版本号的老问题 | community-pulse |
 | 10-20 | 3（本轮） | 3 文件（`deploy/update.sh`、`search-index.yml`、`tests/search-submit.test.js` + 本文件） | 0 | **devtrends.site 正式切到自建节点**：解析改指阿里云 ECS（DNS only）+ NPM vhost；对外实测 20 条关键路由全 200、产品页 0.10 s、零 5xx；同批修两个切换后才暴露的后遗症（搜索推送等待窗口 10 分钟→45 分钟、更新脚本加磁盘守卫）| community-pulse |
 | 10-28 | 本轮 | 日报发布分组、展示上限与回归验证 | 10-27 日报展示元数据与 final 折叠 | 同作者同类工具合并折叠，每作者最多 3 个主列表位置，保留全部记录与产品身份 | community-pulse |
+| 11-02 | 本轮 | 7 文件（规则、队列/叠加脚本、快照构建、localize 契约、测试） | 2 文件（travel-mobility 分类快照 + overlay）+ 其余 27 个分类文件未变 | **travel-mobility 中文覆盖与误分类清理**：规则改成「标题/标签主判据 + 正文高特异性短语」，并从 localize 契约里补出 `titleZh`；596 条交模型复核，分类 1121 → 863，`titleZh` 100% / `summaryZh` 99.0% | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 > 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
@@ -1202,6 +1203,45 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
   抽查 20/20 已在机器上；国内访问耗时从 **0.7~1.4s 降到 0.05~0.16s**（首次含握手 0.55s，之后约 0.05s）；
   `Server: openresty`（NPM 反代）、`cache-control: immutable`、HTTP/2 均正确；首次同步 5,321 张 / 295MB、
   **0 失败**。DNS 只动了 `img.devtrends.site` 一条（A → ECS，DNS only），页面引用一个字未改。
+
+## 2026-11-02 · travel-mobility 中文覆盖与误分类清理
+
+**问题**：分类页 1,121 条里只有 611 条有中文；`inferTaxonomy` 把 title/summary/tags 拼成一段后用
+`hotel|travel|trip|flight` 匹配，于是「Hotel Lobby」AI 视频模板（42 条）、正文里一句
+「on a recent trip ... hotel Wi-Fi」的 SSH 工具、举例「旅行视频」的 Mac 播放器、招生简章里
+列了 hostel 模块的学校 ERP 都被收进旅行。10-07 那次 LLM 重打标只修了当时的历史数据，日更
+导入继续按旧正则打标签，于是又长回来了。
+
+- **规则（代码）**：`web/shared.js` 新增 `travelMobility` 证据分层 —— 标题/标签命中即收；
+  正文只认高特异性短语（itinerary、travel eSIM、flight tracker、行程规划…）或 ≥2 个不同旅行词；
+  匹配前剔除视频模板名（Hotel Lobby / Raindance / Danse / Alps 仅视频语境）、`time travel`、
+  `travel rule`、`tour diary` 等陷阱，并挡掉 hotel PMS / hostel management 这类行业软件。
+  规则版本升到 `legacy-infer-v2`（旧标签行与新规则不可比）。
+- **中文标题（代码）**：此前 `localize()` 只产 `summaryZh` / `titleEn`，英文源的 `titleZh`
+  永远是空。提示词升级到 `enhance-localize-v4`，英文源要求输出 `titleZh`；纯品牌名（Tripboard、
+  Enviaje）允许原样回传，但英文描述不能冒充中文标题。`enhanced-report.js` 同步合并这个字段。
+- **为什么走构建层叠加（决策）**：本机没有 Cloudflare 凭据、也不该在未受审的情况下写生产 RDS，
+  所以模型结论落成 `data/catalog/travel-mobility-overlay.json`，由 `build-site-snapshot.js`
+  在聚合时应用：`drops` 只在标题/摘要指纹一致时生效（内容一变旧结论自动失效），
+  `translations` 只在库/快照缺中文时补齐。**DB 补跑并激活后删除这个文件即可**，
+  构建行为回到纯 MySQL 投影；它不是一个永久黑名单。
+- **队列与续跑（代码）**：新增 `scripts/catalog/travel-mobility-review.js`（只做队列与结果消费，
+  **不写第二套 prompt**），模型调用完全复用 `enrich-travel.js --run`（同一个 `localize`、
+  同一套输入哈希与续跑）。`enrich-travel.js` 加 `--flush`，每 50 条把进度与已生成结果写进
+  `.scratch/travel-progress.json`；被杀掉后重跑会按 `productId` 跳过已完成项，只补未完成的。
+- **数据（实测）**：1121 → **863** 条；移出 **258** 条（规则 50：视频模板 42、time-travel 2、
+  偶发提及 1、复核失败 5；模型按目标场景改判 208：生活娱乐 89、商业增长 36、内容创作 23、
+  研究学习 22、桌面效率 18 等）。`titleZh` **863/863（100%）**、`summaryZh` **854/863（99.0%）**；
+  缺的 9 条是 Show HN 空摘要，模型只给得出分类给不出描述。
+- **验收**：固定抽样 30 条人工核对，28 条确实与旅行/出行相关（2 条边缘：露营车洗碗机、通用
+  GPS 定位收藏）；`npm test` **383 个测试 / 375 通过 / 4 跳过 / 4 失败**，失败项与改动前完全
+  相同（日报产品身份、图片头 `/images/*`、db transport 配置、趋势测试写死 `2026-09-`），
+  没有新增失败。
+- **未做 / 卡点**：生产 MySQL 的 `product_content` 与 `taxonomy_assignments` 没有写（本机无
+  Cloudflare 凭据，写库是需要凭据的受审操作）；因此线上 `/api/v1/*` 与 Worker 详情页仍是旧
+  投影，分类页的中文来自本轮快照 + overlay。下一步用 `enrich-travel --sql` + `apply-catalog-sql.yml`
+  写 shadow、`activate-enrichment.js --content/--taxonomy` 激活，再跑一次 `catalog:snapshot --refresh`
+  并把 overlay 删掉。
 
 ## 维护约定
 

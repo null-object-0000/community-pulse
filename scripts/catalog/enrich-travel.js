@@ -50,7 +50,7 @@ const PAGE_SIZE = 300;
 const DESCRIPTION_MIN_LENGTH = D.DETAIL_SUMMARY_MIN;
 
 function parseArgs(argv) {
-  const options = { pull: false, run: false, sql: false, in: null, out: null, queue: null, limit: 0, concurrency: 5 };
+  const options = { pull: false, run: false, sql: false, in: null, out: null, queue: null, limit: 0, concurrency: 5, flush: 25 };
   const booleans = new Set(['--pull', '--run', '--sql']);
   for (let i = 0; i < argv.length; i += 1) {
     const [name, inline] = argv[i].split('=', 2);
@@ -63,6 +63,9 @@ function parseArgs(argv) {
     else if (name === '--queue') options.queue = path.resolve(value);
     else if (name === '--limit') options.limit = Number(value);
     else if (name === '--concurrency') options.concurrency = Number(value);
+    // 落盘间隔。默认 25；长跑（超过单次 50 分钟上限）时用 50，让 `.scratch/travel-progress.json`
+    // 既是进度条也是续跑输入 —— `run` 启动时按 productId 跳过文件里已有的结果。
+    else if (name === '--flush') options.flush = Math.max(1, Number(value) || 25);
     else throw new Error(`unknown argument: ${argv[i]}`);
   }
   return options;
@@ -171,7 +174,7 @@ async function run(options) {
         results.failed.push({ productId: entry.productId, error: String(error.message || error).slice(0, 300), requestCount: productRequests });
       }
       finished += 1;
-      if (finished % 25 === 0 || finished === pending.length) {
+      if (finished % options.flush === 0 || finished === pending.length) {
         flush();
         const rate = (Date.now() - startedAt) / finished;
         console.log(`[run] ${finished}/${pending.length}  请求 ${requests}  均 ${Math.round(rate)}ms/条  预计剩余 ${Math.round(rate * (pending.length - finished) / 60000)} 分钟`);

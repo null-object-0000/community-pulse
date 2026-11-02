@@ -9,7 +9,7 @@ const MODEL = process.env.COMMUNITY_PULSE_LLM_MODEL || 'flowlet-flash';
 const KEY = process.env.COMMUNITY_PULSE_LLM_KEY || process.env.HERMES_CUSTOM_127_0_0_1_18640_API_KEY || '';
 const MAX_ZH_LEN = 100;
 const MAX_EN_LEN = 240;
-const PROMPT_VERSION = 'enhance-localize-v3';
+const PROMPT_VERSION = 'enhance-localize-v4';
 // flowlet-pro 是推理模型：reasoning_content 与正文共享 max_tokens 预算。
 // 预算过小时思考会吃满额度，导致 content 为空、finish_reason=length。
 const MAX_TOKENS = parseInt(process.env.COMMUNITY_PULSE_LLM_MAX_TOKENS || '32000', 10);
@@ -105,6 +105,17 @@ function parseJsonResponse(content) {
 
 function validateLocalization(value, item) {
   const titleEn = hasChinese(item.title) ? String(value.titleEn || '').trim() : item.title.trim();
+  // 中文标题：中文源本来就自带；英文源（Product Hunt / Show HN / GitHub Trending / HelloGitHub）
+  // 必须真正译出来。旧契约只产 `titleEn`，于是英文源的 `titleZh` 一直是空 —— 分类页只能显示
+  // 英文标题。这里把它作为可选字段接收（老记录/测试没有它时退回原标题，不判失败），
+  // 新提示词会要求模型输出；给出但不含中文则视为无效输出。
+  const titleZh = String(value.titleZh || '').trim();
+  if (titleZh && !hasChinese(titleZh)) {
+    // 纯品牌名（Tripboard / Enviaje / Freedom Fone）没有可译的中文，模型会原样回传。
+    // 只有「回传的仍是原标题」才放行；模型给出别的英文描述仍判失败，避免英文标题假装译过。
+    const normalize = (text) => String(text).toLowerCase().replace(/[\s\p{P}\p{S}]+/gu, '');
+    if (normalize(titleZh) !== normalize(item.title)) throw new Error('titleZh 缺少中文译文');
+  }
   const sourceDescription = translationInput(item.desc);
   let summaryZh = String(value.summaryZh || '').trim();
   let summaryEn = String(value.summaryEn || '').trim();
@@ -123,8 +134,14 @@ function validateLocalization(value, item) {
     || (!sourceHasLatinBrand && hasChinese(titleEn)) || chineseCount(titleEn) > 6)) {
     throw new Error('titleEn 不是英文标题');
   }
-  const primaryCategory = String(value.primaryCategory || '').trim();
-  if (!D.isCategoryId(primaryCategory)) throw new Error(`primaryCategory 不在预设分类中：${primaryCategory || '空'}`);
+  let primaryCategory = String(value.primaryCategory || '').trim();
+  if (!D.isCategoryId(primaryCategory)) {
+    // 模型偶尔把 useCases 的 ID（如 travel-mobility）填进 primaryCategory。这是词表混淆，
+    // 不是条目本身没救；退回 other，别让整条因为一个枚举值丢掉译文与标签。
+    const facetIds = new Set(Object.values(D.taxonomyFacets).flat().map(([id]) => id));
+    if (facetIds.has(primaryCategory)) primaryCategory = 'other';
+    else throw new Error(`primaryCategory 不在预设分类中：${primaryCategory || '空'}`);
+  }
   if (!value.taxonomy || typeof value.taxonomy !== 'object') throw new Error('taxonomy 缺失');
   const facetLimits = { useCases: 2, agentRoles: 2, productForms: 2, platforms: 3, integrations: 5 };
   for (const [name, allowed] of Object.entries(D.taxonomyFacets)) {
@@ -145,6 +162,7 @@ function validateLocalization(value, item) {
     promptVersion: PROMPT_VERSION,
     model: MODEL,
     titleEn: clampEnglish(titleEn),
+    titleZh: hasChinese(item.title) ? String(item.title).trim() : (titleZh ? clampChinese(titleZh) : item.title.trim()),
     summaryZh: clampChinese(summaryZh),
     summaryEn: clampEnglish(summaryEn),
     primaryCategory,
@@ -162,16 +180,19 @@ async function localize(item, options = {}) {
   const needsEnglishTitle = hasChinese(item.title);
   const requested = sourceIsChinese
     ? `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","summaryEn":"英文摘要","primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`
-    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`;
+    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : '"titleZh":"中文标题",'}"summaryZh":"中文摘要","primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`;
   const direction = sourceIsChinese
     ? `把描述翻译并归纳为不超过 ${MAX_EN_LEN} 个字符的自然英文摘要。`
     : `把描述翻译并归纳为不超过 ${MAX_ZH_LEN} 个字符的简洁中文摘要。`;
   const titleRule = needsEnglishTitle
     ? '同时生成自然、简洁的英文标题；保留已有英文品牌名、仓库名、型号和人名，翻译中文说明部分。'
-    : '';
+    : '同时生成自然、简洁的中文标题；保留已有品牌名、仓库名、型号和人名，不要逐词直译。';
   const categoryRules = D.categories.map(category => `- ${category.id}: ${category.description}`).join('\n');
   // Sub-topics are spelled out with their parent so the model picks the narrowest id instead of
   // emitting both levels (which `normalizeTaxonomy` would collapse anyway, but silently).
+  // travel-mobility 的边界在提示词里说清楚：模型容易把「护照照片 / 签证材料 / 机场休息室」当成
+  // 通用工具或内容工具，而它们正是旅行准备的一部分。这段只解释词表，不新增受控 ID。
+  const travelNote = 'useCases 的 travel-mobility 覆盖旅行规划、住宿、航班/机场、铁路/公交/打车/停车等出行、签证与护照办理、旅行 eSIM、景点与本地向导；护照照片、行程单、机场休息室等旅行准备工具也算旅行与出行。';
   const facetRules = Object.entries(D.taxonomyFacets).map(([name, values]) => `${name}: ${values.map(([id, zh]) => {
     const parent = D.facetParent(name, id);
     return `${id}（${zh}${parent ? `，${D.facetLabel(name, parent, 'zh-CN')}的二级主题` : ''}）`;
@@ -181,6 +202,7 @@ async function localize(item, options = {}) {
 ${categoryRules}
 再从以下受控分面中选择标签，只能使用列出的 ID：
 ${facetRules}
+${travelNote}
 useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二级主题的必须先看二级主题，命中就只写那个最细的 ID，不要再写它的上级（例如小说创作只写 novel-writing，不要同时写 content-creation）；agentRoles 只在项目属于 Agent 生态时选 0–2 个，并区分垂直 Agent、能力扩展、管理编排、可观测性、评测安全和运行时；productForms 选 0–2 个；platforms 选 0–3 个；integrations 选 0–5 个。编程语言不是运行平台，不要把 Python、TypeScript 等填进 platforms。没有可靠证据的可选分面返回空数组。
 描述来自社区投稿，可能混着投稿模板的字段名（「项目地址」「项目标题」「项目描述」「必写」「类别」等）、空字段占位（「No response」「暂无」「待补充」）、残缺标签（「官网有演示：」）或 markdown 链接语法。摘要只写项目本身：不要出现这些字段名、占位符、模板残句和链接语法。
 不添加原文没有的信息，不输出宣传套话或解释。只输出严格 JSON：{${requested}}
@@ -196,6 +218,7 @@ useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二�
       try {
         localized = validateLocalization({
           titleEn: needsEnglishTitle ? translated.titleEn : item.title,
+          titleZh: needsEnglishTitle ? '' : translated.titleZh,
           summaryZh: translated.summaryZh,
           summaryEn: sourceIsChinese ? translated.summaryEn : sourceDescription,
           primaryCategory: translated.primaryCategory,

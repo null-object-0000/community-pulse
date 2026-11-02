@@ -100,6 +100,8 @@ function applyEnhancedMarkdown(report, markdown, date) {
         item.summaryZh = entry.localized?.summaryZh || (hasFinalSummary ? entry.summary : item.summary);
         if (entry.localized?.summaryEn) item.summaryEn = entry.localized.summaryEn;
         if (entry.localized?.titleEn) item.titleEn = entry.localized.titleEn;
+        // 英文源的中文标题（2026-11 起 localize 产出）；中文源的值就是原标题，写回也无害。
+        if (entry.localized?.titleZh) item.titleZh = entry.localized.titleZh;
         if (D.isCategoryId(entry.localized?.primaryCategory)) item.primaryCategory = entry.localized.primaryCategory;
         const taxonomy = D.normalizeTaxonomy(entry.localized?.taxonomy);
         if (D.taxonomyHasValues(taxonomy)) item.taxonomy = taxonomy;

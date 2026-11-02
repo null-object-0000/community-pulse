@@ -158,7 +158,7 @@
   // 规则分类（`inferTaxonomy` / `itemTaxonomy`）的版本号：产品库把它写进
   // `taxonomy_assignments.processor_version`，日报的发布记录也记它 —— 规则一改，旧行存的标签
   // 与新行不可比，必须能一眼看出这一批是哪个版本产出的。
-  const taxonomyVersion = 'legacy-infer-v1';
+  const taxonomyVersion = 'legacy-infer-v2';
   // The trend page treats the primary implementation language as a third analytical lens. Keep it
   // deterministic and separate from editorial taxonomy so old reports participate immediately and
   // a model cannot turn synonymous spellings into incompatible time-series buckets.
@@ -221,6 +221,53 @@
     });
     return [item.title, item.titleEn, item.summary, item.summaryZh, item.summaryEn, item.content, item.description, item.github?.description, ...contentTags, ...(item.github?.topics || [])].filter(Boolean).join(' ').toLowerCase();
   }
+  // ── 旅行/出行（travel-mobility）规则 ─────────────────────────────────────
+  // 旧规则把 title / tags / summary 拼成一整段再匹配 `hotel|travel|trip|flight`，于是正文里
+  // 一句「on a recent trip ... hotel Wi-Fi」的 SSH 工具、把「旅行视频」当举例的 Mac 播放器、
+  // 招生简章里列了 hostel 模块的学校 ERP 全被收进旅行。这里把证据分层：
+  //   · 标题 / 标签是**主判据**：命中即收（视频模板名例外，见 travelVideoTemplates）；
+  //   · 正文只有命中**高特异性短语**（itinerary、travel eSIM、flight tracker、行程规划…）
+  //     或至少 2 个不同旅行词时才收 —— 单说一次 travel / hotel 不算；
+  //   · 「Hotel Lobby」这类 AI 视频模板名、`time travel`、「Travel Rule」（加密合规术语）
+  //     在匹配前剔除，避免模板名把整条视频工具拖进旅行。
+  // 规则版本升级时同步 `taxonomyVersion`（旧标签行与新规则不可比，必须能分辨）。
+  const travelVideoTemplates = /\b(?:hotel[ -]?lobby|raindance|(?:alors on )?danse|bulin ?47|rumpelstiltskin|burning bridges|zombie ai|fireline|migos)\b/gi;
+  const travelTraps = /\b(?:time[ -]?travel(?:l?ing|l?er|l?ed)?|travel rule|travel groups?|tour diary|office trip|on a recent trip|hotel wi-?fi|travel[ -]?vlogs?|while travel(?:l?ing)?)\b/gi;
+  const travelVideoContext = /ai video|video generator|video template|template|effect|特效|模板|短视频|rap video/i;
+  const travelHospitalityOps = /\b(?:hotel|hostel|resort)\s+(?:management|pms|software|operations|owners?|spend|procurement|marketing)|\bpg management\b|\bproperty management\b|\bvacation rental\b|\brental management\b|\bco-?living\b|\bguest messaging\b|\bchannel manager\b/i;
+  const travelTitleTerms = /\btravell?(?:er|ers|ing|ed|s)?\b|\btrips?\b|\btour(?:s|ism|ist|ists)?\b|\bitinerar(?:y|ies)\b|\b(?:holiday|vacation|getaway|staycation)s?\b|\bhotels?\b|\bhostels?\b|\bresorts?\b|\bhomestays?\b|\bguest ?houses?\b|\bairbnb\b|\bflights?\b|\bairlines?\b|\bairfare\b|\bairports?\b|\bboarding pass(?:es)?\b|\bsightseeing\b|\bdestinations?\b|\bcity guides?\b|\broad[ -]?trips?\b|\besims?\b|\bpacking list\b|\bpacklist\b|\b(?:taxi|cab)s?\b|\bride[ -]?hail(?:ing)?\b|\bride[ -]?sharing\b|\bcarpool(?:ing)?\b|\b(?:transit|metro|subway)\s+(?:app|tracker|planner|map|route|ticket|pass|guide)\b|\b(?:train|rail(?:way)?)\s+(?:tracker|ticket|tickets|schedule|route|travel|planner|map|guide)\b|\bparking\b|\b(?:navigation|navigator|route planner)\b|\b(?:rental car|car rental|rent a car)\b|\b(?:scooter|bike share|bikeshare)\b|\b(?:ev charging|charging station)\b|\b(?:visa|passport)\b.{0,32}\b(?:photo|application|requirements?|appointment|free|on arrival|checker|assistant)\b|旅游|旅行|旅拍|出游|自驾|行程规划|行程安排|行程助手|行程管理|行程分享|行程单|旅游攻略|旅行攻略|出游攻略|路书|游记|景点|门票|机票|航班|机场|酒店|民宿|客栈|青旅|住宿|签证|护照|境外上网|出境游|跟团|包车|租车|接送机|导游|目的地|城市指南|圣地巡礼|朝圣|入境(?:卡|游|指南|政策|要求|准备)|来华|免签/i;
+  const travelBodyCore = /\bitinerar(?:y|ies)\b|\btrip planner\b|\btrip planning\b|\bplan(?:ning)? (?:a|your|the) trip\b|\bplan trips?\b|\bgroup travel\b|\b(?:book|booking) flights? (?:for|to|from)\b|\btravel (?:app|planner|planning|esim|sim|guide|agency|insurance|companion|concierge|journal|map|booking|itinerary|budget|assistant|platform|experiences?)\b|\b(?:prepaid|global|international) (?:travel )?esim\b|\btravel esim\b|\besim\b.{0,24}\b(?:travel|abroad|roaming)\b|\bflight (?:tracker|tracking|booking|deals?|search|status|route|matcher|comparison|compare|compensation)\b|\bbook(?:ing)? (?:a )?flight\b|\bcheap flights?\b|\bdirect flights?\b|\bmulti-city\b|\bhotel (?:booking|deals?|search|reservation|finder)\b|\bbook(?:ing)? (?:a )?hotel\b|\bdestination guide\b|\bcity guide\b|\bsightseeing\b|\bwalking tour\b|\bguided tour\b|\baudio tour\b|\broad trip\b|\btour package\b|\bholiday package\b|\btravel agency\b|\btravel insurance\b|\bpilgrimage\b|\bdarshan\b|\b(?:visa|passport) (?:photo|application|requirements?|appointment|assistant|checker|renewal|free)\b|\bvisa[- ]?free\b|\bpacking list\b|\bpacklist\b|\bride[- ]?hail(?:ing)?\b|\bride[- ]?sharing\b|\bcarpool(?:ing)?\b|\btaxi (?:dispatch|booking|app|service|transfer|sharing)\b|\bshare a (?:licensed )?taxi\b|\bairport transfer\b|\bparking (?:app|finder|spot|garage|map)\b|\btransit (?:app|tracker|planner)\b|\btrain (?:ticket|tracker|schedule)\b|\brail(?:way)? travel(?:er|ers)?\b|\brail (?:travel|ticket|pass)\b|\bev charging\b|\bcharging station\b|\btrip tracker\b|\bmileage tracker\b|\btravel per diem\b|\btravel rewards?\b|\bsee the sights\b|\bphoto spots?\b|\btravell?ers?\b|\bairport lounge\b|\bshort[- ]stay\b|\bpet travel\b|\bnational park\b|\btrip to\b|\bpersonal driver\b|\bdriver marketplace\b|\bbook seats\b|\bhotel (?:ranking|review|comparison)\b|\besims?\b.{0,40}\b(?:countries|data plans?|connectivity|worldwide)\b|\b行程规划|行程安排|行程助手|行程管理|行程分享|行程单|旅游攻略|旅行攻略|出游攻略|旅行规划|旅游规划|旅行助手|旅游助手|旅行指南|旅游指南|旅行eSIM|旅游eSIM|旅行SIM|机票预订|航班查询|酒店预订|民宿预订|签证办理|签证申请|签证要求|签证查询|护照照片|护照办理|护照申请|景点门票|自驾游|旅行保险|旅行社|跟团游|接送机|导游服务|目的地指南|城市指南|出境游|境外上网|圣地巡礼|朝圣|入境卡|免签/i;
+  const travelBodyTerms = /\btravell?(?:er|ers|ing|ed|s)?\b|\btrips?\b|\bjourneys?\b|\btour(?:s|ism|ist|ists)?\b|\bitinerar(?:y|ies)\b|\b(?:holiday|vacation|getaway|staycation)s?\b|\bhotels?\b|\bhostels?\b|\bresorts?\b|\bhomestays?\b|\bguest ?houses?\b|\bairbnb\b|\bflights?\b|\bairlines?\b|\bairfare\b|\bairports?\b|\bboarding pass(?:es)?\b|\bsightseeing\b|\bdestinations?\b|\bcity guides?\b|\broad[ -]?trips?\b|\besims?\b|\bpacking list\b|\bpacklist\b|\b(?:taxi|cab)s?\b|\bride[ -]?hail(?:ing)?\b|\bride[ -]?sharing\b|\bcarpool(?:ing)?\b|\b(?:transit|metro|subway)\b|\bparking\b|\bnavigation\b|\bnavigator\b|\b(?:rental car|car rental)\b|\b(?:scooter|bike share|bikeshare)\b|\b(?:ev charging|charging station)\b|\bvisas?\b|\bpassports?\b|\b(?:pilgrimage|darshan)\b|\bsights?\b/gi;
+  const travelChineseTerms = /旅游|旅行|旅拍|出游|自驾|行程|攻略|路书|游记|景点|门票|机票|航班|机场|酒店|民宿|客栈|青旅|住宿|签证|护照|境外|出境|跟团|包车|租车|接送机|导游|目的地|城市指南|圣地巡礼|朝圣|入境卡|免签|来华/g;
+  function travelLayers(item = {}) {
+    const clean = (values) => values.filter(Boolean).join(' ').toLowerCase();
+    return {
+      title: clean([item.title, item.titleZh, item.titleEn]),
+      tags: clean([...(item.tags || []), ...(item.github?.topics || [])]),
+      body: clean([item.summary, item.summaryZh, item.summaryEn, item.content, item.description, item.github?.description]),
+    };
+  }
+  function travelMobility(item = {}) {
+    const layers = travelLayers(item);
+    const scrub = (value) => {
+      let text = value.replace(travelVideoTemplates, ' ').replace(travelTraps, ' ');
+      // `alps` 只在 AI 视频语境里是模板名（雪山模板）；阿尔卑斯旅行产品要保留。
+      if (travelVideoContext.test(value)) text = text.replace(/\balps\b/gi, ' ');
+      return text;
+    };
+    const head = scrub(`${layers.title} ${layers.tags}`);
+    const body = scrub(layers.body);
+    const all = `${head} ${body}`;
+    const strongHead = /\b(?:travel (?:app|planner|planning|guide|agency|insurance|booking|esim)|itinerary|flight (?:tracker|booking)|trip planner|tour package)\b/i.test(head);
+    if (travelHospitalityOps.test(all) && !strongHead) return { relevant: false, reason: 'hospitality-operations', head, body };
+    if (travelTitleTerms.test(head)) return { relevant: true, reason: 'title-or-tags', head, body };
+    if (travelBodyCore.test(body)) return { relevant: true, reason: 'body-core', head, body };
+    const chinese = [...new Set(body.match(travelChineseTerms) || [])];
+    if (chinese.length >= 2) return { relevant: true, reason: 'body-chinese-terms', head, body, matches: chinese };
+    const terms = [...new Set(body.match(travelBodyTerms) || [])];
+    if (terms.length >= 2) return { relevant: true, reason: 'body-terms', head, body, matches: terms };
+    return { relevant: false, reason: 'no-travel-evidence', head, body, matches: terms };
+  }
   function inferTaxonomy(item) {
     const text = taxonomyText(item), useCases = [], agentRoles = [], productForms = [], platforms = [], integrations = [];
     const add = (list, id, pattern) => { if (pattern.test(text) && !list.includes(id)) list.push(id); };
@@ -231,11 +278,9 @@
     add(useCases, 'data-operations', /database|infrastructure|devops|deploy|network|proxy|observability|数据库|基础设施|运维|部署|网络|代理环境/i);
     add(useCases, 'business-growth', /\b(?:marketing|sales|seo|crm|recruit(?:ing|ment)?|finance|business growth)\b|营销|销售|增长|招聘|求职|财务|商业增长/i);
     add(useCases, 'desktop-productivity', /desktop (?:app|tool|client|utility|workflow|pet)|menu bar|menubar|shortcut|clipboard|window manager|桌面(?:应用|工具|客户端|效率|宠物)|菜单栏|快捷键|剪贴板|窗口管理|效率工具/i);
-    // Keep the top-level scene broad enough to include supporting travel utilities; narrower
-    // distinctions such as travel imagery will live in its second-level topics. Exclude the
-    // unrelated engineering phrase "time travel" used by replay/debugging tools.
-    const travelText = text.replace(/\btime[ -]?travel(?:ling|ing)?\b/gi, '');
-    if (/\b(?:travell?er|travell?ing|travel|tourism|tourist|road[ -]?trip|trip planner|trip planning|itinerary|destination guide|city guide|sightseeing|hotel|hostel|airfare|airline|flight (?:tracker|tracking|booking)|travel eSIM)\b|\b(?:visa|passport).{0,28}(?:photo|travel|application|ocr|verification|immigration|interview)\b|\b(?:photo|travel|application|ocr|verification|immigration|interview).{0,28}(?:visa|passport)\b|旅游|旅行|行程规划|出行规划|机票|航班|酒店|民宿|青旅|景点|签证|护照|圣地巡礼|旅拍|旅行.{0,20}足迹|足迹.{0,20}旅行|游记|自驾|包车|旅行社|境外上网/i.test(travelText)) useCases.push('travel-mobility');
+    // 顶层场景保持足够宽（含旅行 eSIM、签证、行程工具等支撑性工具），但证据分层见
+    // travelMobility：标题/标签优先，正文只认高特异性短语或多个不同词。
+    if (travelMobility(item).relevant) useCases.push('travel-mobility');
     add(useCases, 'lifestyle-entertainment', /game|health|fitness|social|music|游戏|健康|健身|社交|音乐|娱乐/i);
     add(useCases, 'software-development', /\b(?:developer|coding|programming|code review|terminal|git|ide|sdk)\b|开发|编程|代码|终端|调试|测试/i);
     const agent = /\b(ai[- ]?agents?|agents?|agentic|coding agents?|claude code|codex|opencode|openclaw|deepseek harness|mcp)\b|\b(?:token|nerf)\s*(?:tracker|meter)\b|智能体|编程\s*agent/i.test(text);
@@ -1154,5 +1199,5 @@
       : '';
     return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p>${icpLink}</footer>`;
   }
-  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, AUTHOR_DISPLAY_LIMIT, authorKey, templateFamily, authorToolSimilarity, applyAuthorPolicy, authorEntries, authorFoldLabel, renderAuthorFeed, readerItems, withdrawnSubmission, dropWithdrawnSubmissions, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
+  return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, travelMobility, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, AUTHOR_DISPLAY_LIMIT, authorKey, templateFamily, authorToolSimilarity, applyAuthorPolicy, authorEntries, authorFoldLabel, renderAuthorFeed, readerItems, withdrawnSubmission, dropWithdrawnSubmissions, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });

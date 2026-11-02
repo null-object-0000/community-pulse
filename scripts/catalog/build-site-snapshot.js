@@ -11,6 +11,51 @@ const FACETS = ['useCases', 'agentRoles', 'languages'];
 const WINDOW_DAYS = { recent: 7, '4w': 28, '12w': 84 };
 const imageManifest = images.readManifest();
 const lightMarks = images.readTones().light;
+const { contentHash: travelContentHash } = require('./travel-mobility-review.js');
+
+// travel-mobility 的复核叠加（见 scripts/catalog/travel-mobility-review.js）：本机连不上 RDS，
+// 模型结论先落成构建层文件，由聚合时应用。drops 只在内容指纹一致时生效 —— 条目被编辑后
+// 旧结论自动失效，不会变成一条永远甩不掉的静态黑名单；translations 只在快照缺中文时补齐，
+// 库里有更新值时以库为准。DB 补跑并激活后删除这个文件即可，构建行为回到纯 MySQL 投影。
+const TRAVEL_OVERLAY_PATH = path.join(ROOT, 'data', 'catalog', 'travel-mobility-overlay.json');
+let travelOverlayCache;
+function travelOverlay() {
+  if (travelOverlayCache !== undefined) return travelOverlayCache;
+  travelOverlayCache = fs.existsSync(TRAVEL_OVERLAY_PATH)
+    ? JSON.parse(fs.readFileSync(TRAVEL_OVERLAY_PATH, 'utf8'))
+    : null;
+  return travelOverlayCache;
+}
+
+function applyTravelOverlay(type, id, products) {
+  if (type !== 'useCases' || id !== 'travel-mobility') return products;
+  const overlay = travelOverlay();
+  if (!overlay) return products;
+  const kept = [];
+  let dropped = 0;
+  let translated = 0;
+  for (const product of products || []) {
+    const drop = overlay.drops?.[product.productId];
+    if (drop) {
+      const hash = travelContentHash({ title: product.title, summary: product.summary });
+      if (!drop.contentHash || drop.contentHash === hash) { dropped += 1; continue; }
+    }
+    const translation = overlay.translations?.[product.productId];
+    if (translation) {
+      if (!String(product.titleZh || '').trim() && translation.titleZh) {
+        product.titleZh = translation.titleZh;
+        translated += 1;
+      }
+      if (!String(product.summaryZh || '').trim() && translation.summaryZh) {
+        product.summaryZh = translation.summaryZh;
+        translated += 1;
+      }
+    }
+    kept.push(product);
+  }
+  if (dropped || translated) console.log(`[travel] overlay: dropped ${dropped}, filled zh ${translated}`);
+  return kept;
+}
 
 // 分类库/趋势快照里的条目是 MySQL `item_json` 的投影，图片地址必须和日报行走同一条本地化：同一张
 // 官网图标在日报行上是 R2 地址、在分类页上是官网原始地址的话，消费端的 D.localImage 只认镜像与
@@ -105,6 +150,18 @@ async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Pro
 
 function segment(type) {
   return { useCases: 'use-cases', agentRoles: 'agent-roles', languages: 'programming-languages' }[type];
+}
+
+function weeklyCounts(products, latest, weeks = 12) {
+  const start = offsetDate(latest, -(weeks * 7 - 1));
+  const buckets = Array.from({ length: weeks }, (_, index) => ({
+    start: offsetDate(start, index * 7), end: offsetDate(start, index * 7 + 6), count: 0,
+  }));
+  for (const product of products) {
+    const index = Math.floor((Date.parse(`${product.trendDate}T00:00:00Z`) - Date.parse(`${start}T00:00:00Z`)) / 604800000);
+    if (buckets[index]) buckets[index].count += 1;
+  }
+  return buckets;
 }
 
 function rangeStats(products, latest) {
@@ -210,6 +267,8 @@ async function buildSiteSnapshot(options) {
       products = await categoryProducts(options, type, id, earliest, latest);
       console.log(`Fetched ${type}:${id} (${products.length} products)`);
     }
+    // 复核叠加要先于本地化：被移出的条目不该再进 ranges / productRoutes。
+    products = applyTravelOverlay(type, id, products);
     // 复用上一份快照时也要过一遍：那份缓存可能是本地化之前生成的。
     localizeSnapshotProducts(products);
     for (const product of products) if (product.projectPath) productRoutes.set(product.projectPath, {
@@ -228,6 +287,27 @@ async function buildSiteSnapshot(options) {
       growth: null, isNew: ranges.recent.count > 0, path: `/trends/${segment(type)}/${id}/`, weekly: [], examples: [],
     };
     const recent = products.filter((product) => product.trendDate >= ranges.recent.start);
+    // travel-mobility 有构建层复核（overlay），DB 的 trend 行仍是复核前的计数。分类库的数字
+    // 已经按过滤后的 products 算过，趋势卡必须同源，否则同一页会同时出现 141 与 85 两个数。
+    if (type === 'useCases' && id === 'travel-mobility') {
+      const baselineStart = offsetDate(ranges.recent.start, -WINDOW_DAYS['4w']);
+      const baselineEnd = offsetDate(ranges.recent.start, -1);
+      const baselineCount = products.filter((product) => product.trendDate >= baselineStart && product.trendDate <= baselineEnd).length;
+      const adjusted = {
+        ...row,
+        currentCount: ranges.recent.count,
+        previousCount: baselineCount,
+        sourceCount: ranges.recent.sources,
+        growth: baselineCount ? (ranges.recent.count - baselineCount) / baselineCount : null,
+        isNew: ranges.recent.count > 0 && baselineCount === 0,
+        weekly: weeklyCounts(products, latest),
+        examples: recent.slice(0, 3).map((product) => ({
+          title: product.title, url: product.projectPath || product.url,
+          internal: Boolean(product.projectPath), date: product.trendDate,
+        })),
+      };
+      return buildCluster(adjusted, type, ranges, recent);
+    }
     return buildCluster(row, type, ranges, recent);
   });
   const first = trendModels.useCases;
