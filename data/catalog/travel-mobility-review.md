@@ -2,7 +2,7 @@
 
 生成时间：2026-11-02。数据来源：`data/catalog/site-snapshot/categories/use-cases/travel-mobility.json`（2026-11-01 快照，1,121 条）与本地模型复核（`enrich-travel.js --run`，596 条）。
 
-**结果**：1121 → 863 条；移出 258 条。规则类 50 条（视频模板名 42、time-travel 2、偶发提及 1、复核失败且规则也不认 5）；模型按目标业务场景改判 208 条。机器可读版本见 `travel-mobility-overlay.json` 的 `drops`，构建时按标题/摘要指纹生效。
+**结果**：1121 → 863 条；移出 258 条。规则类 50 条（视频模板名 42、time-travel 2、偶发提及 1、复核失败且规则也不认 5）；模型按目标业务场景改判 208 条。2026-11-03 这批结论已通过 `data/catalog/enrich-replay/travel-2026-11-02.sql.gz` 写进产品库并上架；构建层 `travel-mobility-overlay.json` 已删除，分类页重新回到纯 MySQL 投影。
 
 ## 分组计数
 
