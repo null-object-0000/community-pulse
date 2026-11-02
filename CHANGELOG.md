@@ -36,6 +36,7 @@
 | 10-20 | 3（本轮） | 3 文件（`deploy/update.sh`、`search-index.yml`、`tests/search-submit.test.js` + 本文件） | 0 | **devtrends.site 正式切到自建节点**：解析改指阿里云 ECS（DNS only）+ NPM vhost；对外实测 20 条关键路由全 200、产品页 0.10 s、零 5xx；同批修两个切换后才暴露的后遗症（搜索推送等待窗口 10 分钟→45 分钟、更新脚本加磁盘守卫）| community-pulse |
 | 10-28 | 本轮 | 日报发布分组、展示上限与回归验证 | 10-27 日报展示元数据与 final 折叠 | 同作者同类工具合并折叠，每作者最多 3 个主列表位置，保留全部记录与产品身份 | community-pulse |
 | 11-02 | 本轮 | 7 文件（规则、队列/叠加脚本、快照构建、localize 契约、测试） | 2 文件（travel-mobility 分类快照 + overlay）+ 其余 27 个分类文件未变 | **travel-mobility 中文覆盖与误分类清理**：规则改成「标题/标签主判据 + 正文高特异性短语」，并从 localize 契约里补出 `titleZh`；596 条交模型复核，分类 1121 → 863，`titleZh` 100% / `summaryZh` 99.0% | community-pulse |
+| 11-03 | 本轮 | 1 文件（快照构建撤 overlay）+ 1 份复核报告 | 19 个分类快照 + manifest + `catalog-version` + 删除 overlay（2,867 行）+ 2 份回放 SQL | **travel-mobility 结论正式写库并撤 overlay**：Actions 应用 126 条语句（589 个产品正文 / 2,353 行标签 / 258 个产品移出），分类仍 863 条、`titleZh` 100% / `summaryZh` 98.96%，快照回到纯 MySQL 投影 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 > 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
@@ -1242,6 +1243,17 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
   投影，分类页的中文来自本轮快照 + overlay。下一步用 `enrich-travel --sql` + `apply-catalog-sql.yml`
   写 shadow、`activate-enrichment.js --content/--taxonomy` 激活，再跑一次 `catalog:snapshot --refresh`
   并把 overlay 删掉。
+
+## 2026-11-03 · travel-mobility 结论写库、重跑快照并撤 overlay
+
+**主线：把 11-02 的模型复核结论从「构建层补丁」变成「产品库事实」。**
+
+- **写库（数据）**：`enrich-travel.js --sql` 生成内容与标签的 shadow 写入，另补一条 `DELETE` 移出 overlay 的 258 个 `useCases/travel-mobility`。合并后 126 条语句（25 条正文 INSERT / 24 条标签 INSERT / 24 条状态 / 1 条词表 / run 起止 / 1 条移出），gzip 后 197 KB，提交到 `data/travel-sql-2026-11-02` 并由 `apply-catalog-sql.yml` 应用（run `41479395923`，success，约 1m30s），写库后自动上架 `travel-localize-v1`。
+- **生成器打的两个补丁（决策）**：① 同一 `processor_version` 重跑时，旧 current 行会占住 `UNIQUE(product_id, facet, term_id, source, processor_version)`，而 `resultBatchSql` 只删 shadow 行 —— 直接 INSERT 会整批 duplicate-key；对 24 条标签 INSERT 补 `ON DUPLICATE KEY UPDATE is_current=0, ...`，让冲突行先落 shadow 再由上架步骤提回 current。② `--sql` 只收有中英摘要的结果，9 条只有 `titleZh` 的 Show HN 产品会被整条跳过；按同一张表结构补 18 行 title-only 正文（summary 为空，读取端不会用它覆盖旧摘要），撤 overlay 后标题中文才不会掉。
+- **验证（数据）**：经 `/api/v1/products` 绕缓存抽查 3 个产品，`DocPixelKB` / `ONE eSIM` / `Tripboard` 的 `titleZh`、`summaryZh` 均已从英文变为中文；抽查 3 个 drop（Evaporate、Trail & Tide、Time Traveler's Receipt）已不在 `term=travel-mobility`，Trail & Tide 在 `business-growth` 命中。
+- **快照（数据）**：`catalog:snapshot --refresh` 后 travel 分类 **863** 条，`titleZh` **863/863**、`summaryZh` **854/863（98.96%）**；撤 overlay 后再重建，`catalogVersion` 仍为 `2026-11-01-090ff4e2f74aeca5`，与带 overlay 时逐字节一致 —— 说明分类页已经完全由新库供给，overlay 不再产生任何效果。
+- **撤 overlay（代码）**：删除 `data/catalog/travel-mobility-overlay.json` 与 `build-site-snapshot.js` 里的读取/应用逻辑，去掉 travel 的 trend 计数特判；`travel-mobility-review.md` 补一句「已写库并撤 overlay」。目标测试 26/26 通过。
+- **未做**：没有合 `main`、没有 push `main`；分支等人工验收。
 
 ## 维护约定
 
