@@ -88,9 +88,16 @@ function productGallery(item, locale) {
 
 export function renderProductPage(model, locale = 'zh-CN') {
   const item = model.product.item || {};
-  // 目录里的 title 是发布时的原始投稿标题，投稿标签不该进 SEO 标题（`开源自荐】PiX: …`）：
-  // 这里只剥掉开头的标签，保留产品自己的名字，不换成 LLM 译文、也不退到 owner/repo。
-  const product = { ...model.product, title: D.titleFallback(item)?.value || D.stripTitleLabel(model.product.title) || model.product.title };
+  // 目录里的 title 是发布时的原始投稿标题，投稿标签不该进 SEO 标题（`开源自荐】PiX: …`）。
+  // 中文页优先用库里写入的 `titleZh`（英文源的产品名需要翻译，否则详情页标题永远是英文）；
+  // 没有译文时退回「剥掉投稿标签的原始标题」，不退到 owner/repo。
+  const product = {
+    ...model.product,
+    title: D.displayTitle(item, locale)
+      || D.titleFallback(item)?.value
+      || D.stripTitleLabel(model.product.title)
+      || model.product.title,
+  };
   const en = locale === 'en';
   const route = product.route;
   const canonical = ORIGIN + localPath(route, locale);
