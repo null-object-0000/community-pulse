@@ -22,6 +22,19 @@ test('an empty source description yields empty summaries instead of invented cop
   assert.deepEqual(result.taxonomy.useCases, ['software-development']);
 });
 
+// travel 增量补跑的无源描述条目走显式 titleOnly 臂：标题只作输入证据，不能当摘要回填。
+// 这条路径必须与上面的默认行为分开 —— 默认仍然「空描述 -> 空摘要」，不能把标题抄成摘要。
+test('title-only fallback keeps the generated summaries instead of blanking them', () => {
+  const title = 'Show HN: A calculator for gas costs';
+  const result = validateLocalization(
+    { titleZh: '油费计算器', summaryZh: '按路线估算油费。', summaryEn: 'Estimate fuel costs.', primaryCategory: CATEGORY, taxonomy: TAXONOMY },
+    { title, desc: '', section: 'Hacker News·Show HN' },
+    { titleOnly: true, sourceDescription: title });
+  assert.equal(result.titleZh, '油费计算器');
+  assert.equal(result.summaryZh, '按路线估算油费。');
+  assert.equal(result.summaryEn, 'Estimate fuel costs.');
+});
+
 // The regression the assertion in main() guards: a non-empty source description must produce a
 // non-empty summary. Before the guard, this shape passed silently all the way into the daily report.
 test('a non-empty source description must not come back with an empty summary', () => {
