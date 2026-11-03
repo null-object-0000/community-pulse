@@ -25,20 +25,23 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const D = require('../../web/shared.js');
+const { plainDescription } = require('../../.agents/skills/community-pulse/scripts/enhance.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const SNAPSHOT = path.join(ROOT, 'data', 'catalog', 'site-snapshot');
 const CATEGORY = path.join(SNAPSHOT, 'categories', 'use-cases', 'travel-mobility.json');
+const SOURCE_RAW = path.join(ROOT, '知识', '大家都在做什么', 'source-raw');
 const TERM = 'travel-mobility';
 
 function parseArgs(argv) {
-  const options = { queue: false, apply: false, in: null, out: null, results: null, category: CATEGORY };
-  const booleans = new Set(['--queue', '--apply']);
+  const options = { queue: false, apply: false, gaps: false, in: null, out: null, results: null, category: CATEGORY };
+  const booleans = new Set(['--queue', '--apply', '--gaps']);
   for (let index = 0; index < argv.length; index += 1) {
     const [name, inline] = argv[index].split('=', 2);
     const value = inline === undefined && !booleans.has(name) ? argv[++index] : inline;
     if (name === '--queue') options.queue = true;
     else if (name === '--apply') options.apply = true;
+    else if (name === '--gaps') options.gaps = true;
     else if (name === '--in') options.in = path.resolve(value);
     else if (name === '--out') options.out = path.resolve(value);
     else if (name === '--results') options.results = path.resolve(value);
@@ -83,6 +86,48 @@ function ruleDrop(item) {
   return null;
 }
 
+
+function offsetDate(date, days) {
+  if (!date) return null;
+  const value = new Date(`${date}T00:00:00Z`);
+  if (Number.isNaN(value.getTime())) return null;
+  value.setUTCDate(value.getUTCDate() + days);
+  return value.toISOString().slice(0, 10);
+}
+
+/**
+ * 取源记录里的正文。快照只保留 summary；Show HN 的 summary 为空、V2EX 的 summary 只有截图和
+ * 一条链接（`translationInput` 剥掉后为空）。这两种情况都只能回源：按 sourceId + externalId
+ * 从 source-raw 的当天文件取 `content` / `storyText`，再交给 enrich-travel 的标题兜底。
+ */
+function sourceContent(item) {
+  const sourceId = String(item.sourceId || '');
+  const externalId = String(item.externalId || '');
+  if (!sourceId || !externalId) return '';
+  const dir = path.join(SOURCE_RAW, sourceId);
+  if (!fs.existsSync(dir)) return '';
+  const dates = [item.trendDate, offsetDate(item.trendDate, -1), offsetDate(item.trendDate, 1)].filter(Boolean);
+  for (const date of dates) {
+    const file = path.join(dir, `${date}.json`);
+    if (!fs.existsSync(file)) continue;
+    let document;
+    try {
+      document = JSON.parse(fs.readFileSync(file, 'utf8'));
+    } catch {
+      continue;
+    }
+    const records = document.records || document.items || [];
+    const record = records.find((candidate) => [candidate.objectID, candidate.externalId, candidate.topicId, candidate.id]
+      .some((value) => String(value || '') === externalId));
+    if (!record) continue;
+    const candidates = [record.content, record.storyText, record.body, record.text, record.description]
+      .map((value) => String(value || '').trim()).filter(Boolean);
+    candidates.sort((a, b) => b.length - a.length);
+    return candidates[0] || '';
+  }
+  return '';
+}
+
 function buildQueue(options) {
   const category = readCategory(options.category);
   const entries = [];
@@ -95,15 +140,32 @@ function buildQueue(options) {
       droppedByRule.push({ productId: item.productId, title: item.title, reason, contentHash: contentHash(item) });
       continue;
     }
-    // 规则确认为旅行、且已有中文的条目不用再花模型调用；其余（规则否 / 缺中文）都交给模型。
-    if (rule.relevant && hasText(item.summaryZh) && hasText(item.titleZh)) {
+    const missingTitle = !hasText(item.titleZh);
+    const missingSummary = !hasText(item.summaryZh);
+    if (options.gaps) {
+      // 增量补跑只碰缺口：已有中英标题 + 描述的条目一条都不该进队列，否则会把全分类重跑一遍。
+      if (!missingTitle && !missingSummary) {
+        keptWithoutCall.push({ productId: item.productId, title: item.title, reason: 'zh-complete' });
+        continue;
+      }
+    } else if (rule.relevant && hasText(item.summaryZh) && hasText(item.titleZh)) {
+      // 规则确认为旅行、且已有中文的条目不用再花模型调用；其余（规则否 / 缺中文）都交给模型。
       keptWithoutCall.push({ productId: item.productId, title: item.title, reason: 'rule+zh' });
       continue;
     }
+    const summary = String(item.summary || '');
+    const content = sourceContent(item).slice(0, 8000);
+    // localize() 只吃 desc；summary 是截图/链接时 translationInput 会剥成空，所以这里如实记下
+    // 证据来自哪一层，run 阶段再决定是否用标题兜底（validateLocalization 看的是传入的 desc）。
+    const evidence = plainDescription(summary) ? 'summary' : plainDescription(content) ? 'content' : 'title';
     entries.push({
       productId: item.productId,
       title: String(item.title || ''),
-      desc: String(item.summary || ''),
+      desc: summary,
+      content,
+      evidence,
+      missingTitle,
+      missingSummary,
       sourceName: String(item.sourceName || ''),
       sourceId: String(item.sourceId || ''),
       url: String(item.url || item.websiteUrl || ''),
@@ -120,12 +182,15 @@ function buildQueue(options) {
     latest: category.latest,
     generatedAt: new Date().toISOString(),
     fetched: (category.projects || []).length,
+    gapsOnly: Boolean(options.gaps),
     keptWithoutCall,
     droppedByRule,
     entries,
   };
   fs.writeFileSync(options.out, `${JSON.stringify(queue, null, 2)}\n`);
-  console.log(`[queue] ${queue.fetched} 条：直接保留 ${keptWithoutCall.length}，规则移出 ${droppedByRule.length}，待模型复核 ${entries.length} → ${options.out}`);
+  const evidence = entries.reduce((counts, entry) => ({ ...counts, [entry.evidence]: (counts[entry.evidence] || 0) + 1 }), {});
+  console.log(`[queue] ${queue.fetched} 条：直接保留 ${keptWithoutCall.length}，规则移出 ${droppedByRule.length}，待模型 ${entries.length}`
+    + `（证据 ${JSON.stringify(evidence)}）→ ${options.out}`);
 }
 
 function buildOverlay(options) {

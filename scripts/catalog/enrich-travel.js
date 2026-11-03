@@ -50,14 +50,16 @@ const PAGE_SIZE = 300;
 const DESCRIPTION_MIN_LENGTH = D.DETAIL_SUMMARY_MIN;
 
 function parseArgs(argv) {
-  const options = { pull: false, run: false, sql: false, in: null, out: null, queue: null, limit: 0, concurrency: 5, flush: 25 };
-  const booleans = new Set(['--pull', '--run', '--sql']);
+  const options = { pull: false, run: false, sql: false, contentOnly: false, in: null, out: null, queue: null, limit: 0, concurrency: 5, flush: 25 };
+  const booleans = new Set(['--pull', '--run', '--sql', '--content-only']);
   for (let i = 0; i < argv.length; i += 1) {
     const [name, inline] = argv[i].split('=', 2);
     const value = inline === undefined && !booleans.has(name) ? argv[++i] : inline;
     if (name === '--pull') options.pull = true;
     else if (name === '--run') options.run = true;
     else if (name === '--sql') options.sql = true;
+    // 增量补中文时只写正文，不重算归属/标签：这次队列只按「缺中文」取，不是分类复核。
+    else if (name === '--content-only') options.contentOnly = true;
     else if (name === '--in') options.in = path.resolve(value);
     else if (name === '--out') options.out = path.resolve(value);
     else if (name === '--queue') options.queue = path.resolve(value);
@@ -155,14 +157,39 @@ async function run(options) {
       const entry = pending[cursor++];
       let productRequests = 0;
       try {
-        const localized = await localize(
-          { heading: entry.title, title: entry.title, desc: entry.desc, section: entry.sourceName, productId: entry.productId },
-          { onRequest: () => { productRequests += 1; requests += 1; } },
-        );
+        let localized;
+        let lastError;
+        // localize 内部已对网络/限流重试 5 次；这里再补 2 次外层次数，只重试非条目级错误
+        // （校验层拒绝重试不会变好，直接交给 failed）。
+        for (let attempt = 1; attempt <= 3; attempt += 1) {
+          try {
+            localized = await localize(
+              {
+                heading: entry.title,
+                // 投稿标签（Show HN: / 【开源自荐】）不进译文；否则 titleZh 会变成
+                // 「Show HN：…」，列表行再 strip 一次也回不到干净的品牌名。
+                title: D.stripTitleLabel(entry.title),
+                desc: entry.desc,
+                // 源没有摘要时把正文带上；localize({ allowTitleOnly: true }) 会再退到标题。
+                content: entry.content || '',
+                section: entry.sourceName,
+                productId: entry.productId,
+              },
+              { onRequest: () => { productRequests += 1; requests += 1; }, allowTitleOnly: true },
+            );
+            break;
+          } catch (error) {
+            lastError = error;
+            if (error.itemLevel || attempt === 3) throw error;
+            await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+          }
+        }
+        if (!localized) throw lastError || new Error('没有结果');
         results.results.push({
           productId: entry.productId,
           title: entry.title,
           desc: entry.desc,
+          evidence: entry.evidence || (entry.desc ? 'summary' : 'title'),
           sourceName: entry.sourceName,
           ruleTaxonomy: entry.ruleTaxonomy,
           inputHash: inputHashOf(entry),
@@ -213,8 +240,11 @@ function buildSql(options) {
     if (r.desc !== undefined) return inputHashOf(r);
     return r.inputHash || '';
   };
+  // 日期进哈希：同一加工版本在 11-02 已有一整轮 589 条的结果，增量轮若复用同一个 run id，
+  // 会把那一行 enrichment_runs 的 target_date/计数覆盖成本轮的小数字。内容与标签仍共用
+  // travel-localize-v1（激活按 processor_version 走，不能换版本，否则同分面双计数）。
   const runId = `enr_${require('crypto').createHash('sha256')
-    .update([TERM, PROCESSOR_VERSION, PROMPT_VERSION, D.taxonomyVersion].join('\u0000')).digest('hex').slice(0, 24)}`;
+    .update([TERM, PROCESSOR_VERSION, PROMPT_VERSION, D.taxonomyVersion, TO].join('\u0000')).digest('hex').slice(0, 24)}`;
   const runOptions = { date: TO, mode: MODE, processorVersion: PROCESSOR_VERSION, writeBatch: 25 };
   const statements = [];
   statements.push(startRunSql(runOptions, runId));
@@ -240,11 +270,13 @@ function buildSql(options) {
 
   // 逐条包成规范构造函数要求的 entry 形状：row.product_id 是唯一被读的字段，
   // entry.input 提供中文标题兜底（与 enrich-products.js 的 resultBatchSql 一致）。
+  // 有摘要的走完整两行；只有 titleZh 的也保留 —— 过去这里只认 summaryZh/summaryEn，
+  // 把「标题补上了但摘要没生成」的结果整条丢掉，分类页标题依然是英文。
   const usable = succeeded.filter((r) => {
     const l = r.localized || {};
-    return String(l.summaryZh || '').trim() || String(l.summaryEn || '').trim();
+    return String(l.summaryZh || '').trim() || String(l.summaryEn || '').trim() || String(l.titleZh || '').trim();
   });
-  const noSummary = succeeded.length - usable.length;
+  const noContent = succeeded.length - usable.length;
   const items = usable.map((r) => {
     const entry = byId.get(r.productId);
     const input = localizationInput({
@@ -258,10 +290,22 @@ function buildSql(options) {
     });
     return { entry: { row: { product_id: r.productId }, input, inputHash: hashFor(r) }, localized: r.localized, requestCount: r.requestCount || 0 };
   });
+  // 同一 (product, facet, term, source, processor_version) 在 taxonomy_assignments 上有唯一键，
+  // 而 resultBatchSql 只删 shadow 行。增量轮会命中 11-02 那轮留下的 current 行（例如 9 条
+  // title-only 的标签），不先清掉就会在 INSERT 时撞唯一键；product_content 的 current 行不删
+  // 则会在激活时与新行同时 current。两处都只清本轮成功的 productId，失败条目保留旧数据。
+  if (items.length) {
+    const ids = items.map((item) => sqlValue(item.entry.row.product_id)).join(',');
+    statements.push(`DELETE FROM product_content WHERE content_source=${sqlValue(`llm:${PROCESSOR_VERSION}`)} AND product_id IN (${ids})`);
+    if (!options.contentOnly) statements.push(`DELETE FROM taxonomy_assignments WHERE assignment_source='llm' AND processor_version=${sqlValue(PROCESSOR_VERSION)} AND product_id IN (${ids})`);
+  }
   // 规范实现按 writeBatch=25 切批（两条 DELETE 按 IN、content 与 assignments 多行 INSERT、
   // status 多行 upsert）—— 同样的批次形状在这里照搬，避免逐产品写把通道额度打满。
   for (let i = 0; i < items.length; i += runOptions.writeBatch) {
-    statements.push(...resultBatchSql(runId, runOptions, items.slice(i, i + runOptions.writeBatch)));
+    const batch = resultBatchSql(runId, runOptions, items.slice(i, i + runOptions.writeBatch));
+    // --content-only：resultBatchSql 会连带写 primaryCategory + 全部受控分面。本轮只补中文，
+    // 不重算归属，所以把标签 INSERT 去掉；正文与状态行照旧。
+    statements.push(...(options.contentOnly ? batch.filter((statement) => !/taxonomy_assignments/i.test(statement)) : batch));
   }
 
   const summary = {
@@ -283,6 +327,7 @@ function buildSql(options) {
     failedCount: stillFailed.length,
     skippedNoInputCount: 0,
     skippedFailedCount: 0,
+    contentOnly: Boolean(options.contentOnly),
     resumedCount: 0,
     modelRequests: succeeded.reduce((n, r) => n + (r.requestCount || 0), 0),
     wallClockMs: data.wallClockMs || 0,
@@ -294,7 +339,7 @@ function buildSql(options) {
 
   fs.writeFileSync(options.out, `${statements.join(';\n')};\n`);
   console.log(`[sql] ${statements.length} 条语句（${usable.length} 个产品 → ${usable.length * 2} 行 content + 标签）→ ${options.out}`);
-  if (noSummary) console.log(`[sql] 跳过 ${noSummary} 个「无中英摘要」的结果（模型没给出可用译文）`);
+  if (noContent) console.log(`[sql] 跳过 ${noContent} 个「无标题也无摘要」的结果（模型没给出可用译文）`);
   if (stillFailed.length) console.log(`[sql] ${stillFailed.length} 个产品最终仍失败，写进 run 的 failed_count`);
   console.log(`[sql] run id: ${runId}`);
   return { runId, statements: statements.length, products: usable.length, failed: stillFailed.length };

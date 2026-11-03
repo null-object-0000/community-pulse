@@ -103,7 +103,8 @@ function parseJsonResponse(content) {
   return JSON.parse(clean.slice(start, end + 1));
 }
 
-function validateLocalization(value, item) {
+function validateLocalization(value, item, options = {}) {
+  const titleOnly = Boolean(options.titleOnly);
   const titleEn = hasChinese(item.title) ? String(value.titleEn || '').trim() : item.title.trim();
   // 中文标题：中文源本来就自带；英文源（Product Hunt / Show HN / GitHub Trending / HelloGitHub）
   // 必须真正译出来。旧契约只产 `titleEn`，于是英文源的 `titleZh` 一直是空 —— 分类页只能显示
@@ -116,7 +117,9 @@ function validateLocalization(value, item) {
     const normalize = (text) => String(text).toLowerCase().replace(/[\s\p{P}\p{S}]+/gu, '');
     if (normalize(titleZh) !== normalize(item.title)) throw new Error('titleZh 缺少中文译文');
   }
-  const sourceDescription = translationInput(item.desc);
+  const sourceDescription = options.sourceDescription !== undefined
+    ? options.sourceDescription
+    : translationInput(item.desc);
   let summaryZh = String(value.summaryZh || '').trim();
   let summaryEn = String(value.summaryEn || '').trim();
   const chineseCount = (text) => (String(text).match(/[\u3400-\u9fff]/gu) || []).length;
@@ -124,8 +127,12 @@ function validateLocalization(value, item) {
   if (sourceDescription) {
     if (!hasChinese(summaryZh)) throw new Error('summaryZh 缺少中文译文');
     if (!/[A-Za-z]{3}/.test(summaryEn) || chineseCount(summaryEn) > 8) throw new Error('summaryEn 不是英文译文');
-    if (hasChinese(sourceDescription) && sourceDescription.length <= MAX_ZH_LEN) summaryZh = sourceDescription;
-    if (!hasChinese(sourceDescription) && sourceDescription.length <= MAX_EN_LEN) summaryEn = sourceDescription;
+    // 标题兜底（源没有摘要）时不能把标题当摘要回填：中文标题会被当成 summaryZh，
+    // 英文标题会被当成 summaryEn，看起来补齐了、实际只是把标题抄了一遍。
+    if (!titleOnly) {
+      if (hasChinese(sourceDescription) && sourceDescription.length <= MAX_ZH_LEN) summaryZh = sourceDescription;
+      if (!hasChinese(sourceDescription) && sourceDescription.length <= MAX_EN_LEN) summaryEn = sourceDescription;
+    }
   } else {
     summaryZh = '';
     summaryEn = '';
@@ -175,12 +182,19 @@ async function localize(item, options = {}) {
   const sourceNote = productHunt
     ? '这段简介优先来自 Product Hunt 产品主页。概括产品本身，不要把某次发布更新误当成整体定位。'
     : '准确保留项目的用途、关键功能和有区分度的信息。';
-  const sourceDescription = plainDescription(item.desc);
+  let sourceDescription = plainDescription(item.desc);
+  // 源没有摘要（Show HN 的 storyText 为空、V2EX 正文只有截图/链接）时，日报链会跳过；
+  // travel 增量补跑要求「从标题 + 正文生成」，所以显式允许用正文，再退到标题。
+  let titleOnly = false;
+  if (!sourceDescription && options.allowTitleOnly) {
+    sourceDescription = translationInput(item.content) || String(item.title || '').trim();
+    titleOnly = Boolean(sourceDescription);
+  }
   const sourceIsChinese = hasChinese(sourceDescription);
   const needsEnglishTitle = hasChinese(item.title);
   const requested = sourceIsChinese
     ? `${needsEnglishTitle ? '"titleEn":"英文标题",' : ''}"summaryZh":"中文摘要","summaryEn":"英文摘要","primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`
-    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : '"titleZh":"中文标题",'}"summaryZh":"中文摘要","primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`;
+    : `${needsEnglishTitle ? '"titleEn":"英文标题",' : '"titleZh":"中文标题",'}"summaryZh":"中文摘要",${titleOnly ? '"summaryEn":"英文摘要",' : ''}"primaryCategory":"分类ID","taxonomy":{"useCases":["ID"],"agentRoles":["ID"],"productForms":["ID"],"platforms":["ID"],"integrations":["ID"]}`;
   const direction = sourceIsChinese
     ? `把描述翻译并归纳为不超过 ${MAX_EN_LEN} 个字符的自然英文摘要。`
     : `把描述翻译并归纳为不超过 ${MAX_ZH_LEN} 个字符的简洁中文摘要。`;
@@ -208,7 +222,7 @@ useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二�
 不添加原文没有的信息，不输出宣传套话或解释。只输出严格 JSON：{${requested}}
 
 标题：${item.title}
-描述：${sourceDescription}`;
+描述：${titleOnly ? '（源没有摘要，只有标题；请仅根据标题谨慎概括，不要编造价格、功能或事实细节）' : sourceDescription}`;
 
   let lastError;
   for (let attempt = 1; attempt <= 5; attempt += 1) {
@@ -220,10 +234,10 @@ useCases 表示项目解决的业务场景，必须选 1–2 个；标注了二�
           titleEn: needsEnglishTitle ? translated.titleEn : item.title,
           titleZh: needsEnglishTitle ? '' : translated.titleZh,
           summaryZh: translated.summaryZh,
-          summaryEn: sourceIsChinese ? translated.summaryEn : sourceDescription,
+          summaryEn: sourceIsChinese || titleOnly ? translated.summaryEn : sourceDescription,
           primaryCategory: translated.primaryCategory,
           taxonomy: translated.taxonomy,
-        }, item);
+        }, item, { titleOnly, sourceDescription: titleOnly ? sourceDescription : undefined });
       } catch (error) {
         // 校验层拒绝是**条目本身的属性**：模型读完这段描述仍给不出受控业务场景
         // （典型是「标题 lost、正文 good」这类垃圾投稿），重试 5 次也不会变好。
