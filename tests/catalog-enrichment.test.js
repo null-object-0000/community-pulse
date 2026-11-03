@@ -814,3 +814,122 @@ test('enrichment integration: queue adds freshly travel-tagged products beyond t
     await connection.end();
   }
 });
+
+// ---- 分类回写（`enrich-travel.js --taxonomy-writeback`）-------------------------------------
+// 增量任务只补正文时，模型对归属的判断过去被丢掉（`--content-only` 压掉标签），误分类
+// 因此天天累积。这组用例守三件事：判非 travel → 只删；判 travel 且原来没有 → 补入
+// current 行；没有变化 → 一条语句都不生成。
+
+const {
+  buildTaxonomyWriteback, buildSql: buildTravelSql, parseArgs: parseTravelArgs,
+  WRITEBACK_PROCESSOR_VERSION,
+} = require('../scripts/catalog/enrich-travel.js');
+
+function travelResult(overrides = {}) {
+  return {
+    productId: 'prd_travel_1',
+    title: 'diff-tour',
+    desc: '把 git diff 变成逐步导览的开发者工具',
+    ruleTaxonomy: ['travel-mobility'],
+    localized: {
+      titleZh: 'diff-tour',
+      summaryZh: '把 git diff 变成逐步导览',
+      taxonomy: { useCases: ['software-development'] },
+      primaryCategory: 'software-development',
+    },
+    requestCount: 1,
+    ...overrides,
+  };
+}
+
+test('taxonomy writeback: 模型判非 travel 时只生成移出 DELETE', () => {
+  const { statements, changes } = buildTaxonomyWriteback([travelResult()], { runId: 'enr_test' });
+  assert.equal(statements.length, 1);
+  assert.match(statements[0], /^DELETE FROM taxonomy_assignments WHERE product_id='prd_travel_1'/);
+  assert.match(statements[0], /facet='useCases'/);
+  assert.match(statements[0], /term_id='travel-mobility'/);
+  assert.equal(changes.length, 1);
+  assert.equal(changes[0].reason, 'model:non-travel');
+  assert.deepEqual(changes[0].from, ['travel-mobility']);
+  assert.deepEqual(changes[0].to, ['software-development']);
+});
+
+test('taxonomy writeback: 模型判 travel 且原来没有时生成补入 INSERT（先删旧行保证幂等）', () => {
+  const result = travelResult({
+    productId: 'prd_new_travel',
+    title: 'Atlas Bird',
+    ruleTaxonomy: ['software-development'],
+    localized: { taxonomy: { useCases: ['travel-mobility', 'lifestyle-entertainment'] } },
+  });
+  const { statements, changes } = buildTaxonomyWriteback([result], { runId: 'enr_test' });
+  assert.equal(statements.length, 2);
+  assert.match(statements[0], /^DELETE FROM taxonomy_assignments/);
+  assert.match(statements[1], /^INSERT INTO taxonomy_assignments/);
+  assert.match(statements[1], /'travel-mobility'/);
+  assert.match(statements[1], new RegExp(`'${WRITEBACK_PROCESSOR_VERSION}'`));
+  assert.match(statements[1], /, 1\)$/);
+  assert.equal(changes[0].reason, 'model:travel');
+});
+
+test('taxonomy writeback: 归属没有变化时不生成任何语句', () => {
+  const unchanged = [
+    travelResult(),
+    travelResult({ productId: 'prd_travel_2', ruleTaxonomy: ['travel-mobility'], localized: { taxonomy: { useCases: ['travel-mobility'] } } }),
+    travelResult({ productId: 'prd_other', ruleTaxonomy: ['software-development'], localized: { taxonomy: { useCases: ['software-development'] } } }),
+  ];
+  // 第一条属于「原来 travel、模型判非 travel」，会生成语句；这里只取后两条的「无变化」。
+  const { statements, changes } = buildTaxonomyWriteback(unchanged.slice(1), { runId: 'enr_test' });
+  assert.deepEqual(statements, []);
+  assert.deepEqual(changes, []);
+});
+
+test('taxonomy writeback: 缺少原归属或模型分类时不动库', () => {
+  const noOriginal = travelResult({ ruleTaxonomy: undefined });
+  const noModel = travelResult({ localized: { titleZh: 'x' } });
+  const noLocalized = travelResult({ localized: undefined });
+  assert.deepEqual(buildTaxonomyWriteback([noOriginal, noModel, noLocalized], { runId: 'enr_test' }).statements, []);
+});
+
+test('taxonomy writeback: CSV 含转义后的标题与完整变更字段', () => {
+  const result = travelResult({ title: 'Atlas, "Bird"' });
+  const { csv, changes } = buildTaxonomyWriteback([result], { runId: 'enr_csv' });
+  assert.equal(changes.length, 1);
+  const lines = csv.trimEnd().split('\n');
+  assert.equal(lines[0], 'product_id,title,from,to,reason,run_id');
+  assert.equal(lines.length, 2);
+  assert.ok(lines[1].includes('"Atlas, ""Bird"""'), lines[1]);
+  assert.match(lines[1], /,enr_csv$/);
+});
+
+test('taxonomy writeback 默认关闭，显式 --taxonomy-writeback 才开启', () => {
+  assert.equal(parseTravelArgs(['--sql', '--in', 'a.json', '--out', 'b.sql']).taxonomyWriteback, false);
+  assert.equal(parseTravelArgs(['--sql', '--taxonomy-writeback', '--in', 'a.json', '--out', 'b.sql']).taxonomyWriteback, true);
+});
+
+test('enrich-travel --sql 只在开关打开时写入回写语句和 CSV', () => {
+  // TMPDIR 在某些沙箱里是只读的；测试产物落在仓库的 .scratch-tmp（已 gitignore）更稳。
+  const tmpRoot = path.join(ROOT, '.scratch-tmp');
+  fs.mkdirSync(tmpRoot, { recursive: true });
+  const dir = fs.mkdtempSync(path.join(tmpRoot, 'travel-writeback-'));
+  const queuePath = path.join(dir, 'queue.json');
+  const resultsPath = path.join(dir, 'results.json');
+  const csvPath = path.join(dir, 'writeback.csv');
+  fs.writeFileSync(queuePath, JSON.stringify({ entries: [{ productId: 'prd_travel_1', title: 'diff-tour', desc: '把 git diff 变成逐步导览的开发者工具', sourceName: 'Show HN' }] }));
+  fs.writeFileSync(resultsPath, JSON.stringify({ results: [travelResult()], failed: [] }));
+
+  const offOut = path.join(dir, 'off.sql');
+  buildTravelSql({ in: resultsPath, out: offOut, queue: queuePath, contentOnly: true });
+  assert.doesNotMatch(fs.readFileSync(offOut, 'utf8'), /DELETE FROM taxonomy_assignments WHERE product_id='prd_travel_1'/);
+
+  const onOut = path.join(dir, 'on.sql');
+  buildTravelSql({
+    in: resultsPath, out: onOut, queue: queuePath, contentOnly: true,
+    taxonomyWriteback: true, writebackCsv: csvPath,
+  });
+  const sql = fs.readFileSync(onOut, 'utf8');
+  assert.match(sql, /DELETE FROM taxonomy_assignments WHERE product_id='prd_travel_1' AND facet='useCases' AND term_id='travel-mobility'/);
+  assert.doesNotMatch(sql, /INSERT INTO taxonomy_assignments .*travel-mobility/);
+  const csv = fs.readFileSync(csvPath, 'utf8');
+  assert.match(csv, /^product_id,title,from,to,reason,run_id\n/);
+  assert.match(csv, /prd_travel_1,diff-tour,travel-mobility,software-development,model:non-travel,/);
+});

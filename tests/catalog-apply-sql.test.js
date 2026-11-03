@@ -182,3 +182,44 @@ test('summarize 按语句种类计数', () => {
   assert.equal(summary.kinds.terms, 1);
   assert.equal(summary.file, path.basename('x.sql'));
 });
+
+// ── 分类回写（enrich-travel --taxonomy-writeback）────────────────────────────
+// 回写行是**直接 current** 的受审写入（只改一个 product/facet/term，没有正文批次可激活）。
+// 这两个用例守住出口的形状：只有 `taxonomy-writeback-v1` 的单行 INSERT 能在显式开关下
+// 通过，且它不会被 detectVersions 当成增强批次去自动上架（那会顺手撤掉规则分面）。
+
+const WRITEBACK_INSERT = "INSERT INTO taxonomy_assignments (product_id, facet, term_id, assignment_source, confidence, processor_version, enrichment_run_id, is_current) "
+  + "VALUES ('prd_a','useCases','travel-mobility','llm',NULL,'taxonomy-writeback-v1','enr_wb',1)";
+
+test('分类回写的 current 行需要显式开关，且只放行 writeback 版本的单行 INSERT', () => {
+  // 默认（两个开关都不传）→ 拒绝。
+  assert.throws(() => assertShadowOnly([WRITEBACK_INSERT]), /--allow-activation/);
+  // 只开 writeback 闸 → 放行这一种形状。
+  assert.doesNotThrow(() => assertShadowOnly([WRITEBACK_INSERT], { allowTaxonomyWriteback: true }));
+  // 换个版本号/别的表 → 仍然拒绝（开关不是万能钥匙）。
+  assert.throws(
+    () => assertShadowOnly([WRITEBACK_INSERT.replace('taxonomy-writeback-v1', 'catalog-localize-v1')],
+      { allowTaxonomyWriteback: true }),
+    /不是受审的激活形状/,
+  );
+  assert.throws(
+    () => assertShadowOnly(["UPDATE products SET is_current=1 WHERE id='x'"], { allowTaxonomyWriteback: true }),
+    /不是受审的激活形状/,
+  );
+  // 同一批里混入越界语句，整批拒绝。
+  assert.throws(
+    () => assertShadowOnly([WRITEBACK_INSERT, "UPDATE sources SET is_current=1 WHERE id='x'"],
+      { allowTaxonomyWriteback: true }),
+    /不是受审的激活形状/,
+  );
+});
+
+test('detectVersions 不把分类回写当成可自动上架的增强批次', () => {
+  const statements = splitSql([
+    CONTENT_INSERT.replace(/catalog-localize-v1/g, 'travel-localize-v1'),
+    WRITEBACK_INSERT,
+  ].join(';\n'));
+  assert.deepEqual(detectVersions(statements), ['travel-localize-v1']);
+  // 只有回写语句时没有任何版本可上架（写库后保持原样，不做规则分面撤换）。
+  assert.deepEqual(detectVersions([WRITEBACK_INSERT]), []);
+});

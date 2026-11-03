@@ -41,11 +41,11 @@ function parseArgs(argv) {
   const options = {
     file: null, channel: false, mysqlUrl: process.env.CATALOG_MYSQL_URL || '',
     dryRun: false, batch: STATEMENTS_PER_BATCH, allowActivation: false,
-    hold: false, rollbackOut: null,
+    allowTaxonomyWriteback: false, hold: false, rollbackOut: null,
   };
   // 布尔开关必须在这里列出：否则 `--allow-activation` 会被当成「取值开关」，
   // 把下一个参数（这里是 `--dry-run`）吃掉当值 —— 与 enrich-travel.js 的 `--pull` 同一个坑。
-  const booleans = new Set(['--channel', '--dry-run', '--allow-activation', '--hold']);
+  const booleans = new Set(['--channel', '--dry-run', '--allow-activation', '--allow-taxonomy-writeback', '--hold']);
   for (let i = 0; i < argv.length; i += 1) {
     const [name, inline] = argv[i].split('=', 2);
     const value = inline === undefined && !booleans.has(name) ? argv[++i] : inline;
@@ -55,6 +55,7 @@ function parseArgs(argv) {
     else if (name === '--dry-run') options.dryRun = true;
     else if (name === '--batch') options.batch = Number(value);
     else if (name === '--allow-activation') options.allowActivation = true;
+    else if (name === '--allow-taxonomy-writeback') options.allowTaxonomyWriteback = true;
     else if (name === '--hold') options.hold = true;
     else if (name === '--rollback-out') options.rollbackOut = path.resolve(value);
     else throw new Error(`unknown argument: ${argv[i]}`);
@@ -104,17 +105,52 @@ const ACTIVATION_SHAPES = [
   /^\s*UPDATE\s+product_content\b/i,
 ];
 
-function assertShadowOnly(statements, { allowActivation = false } = {}) {
-  const offenders = statements.filter((statement) => /is_current\s*=\s*1/.test(statement));
+/**
+ * 分类回写（`enrich-travel.js --taxonomy-writeback`）是**直接写 current** 的受审形状：
+ * 它只补/删一个 (product, facet, term)，没有对应的正文批次可以「写 shadow 再激活」。
+ * 为了不让这个出口变成万能钥匙，只放行 `taxonomy-writeback-v1` 的单行 INSERT，
+ * 且必须是 llm 来源 + is_current=1；其它任何 is_current=1 仍然被挡住。
+ */
+const TAXONOMY_WRITEBACK_VERSION = 'taxonomy-writeback-v1';
+
+function isTaxonomyWritebackInsert(statement) {
+  return /^\s*INSERT\s+INTO\s+taxonomy_assignments\b/i.test(statement)
+    && /'llm'\s*,\s*NULL\s*,\s*'taxonomy-writeback-v1'/i.test(statement)
+    && /is_current\s*\)\s*VALUES/i.test(statement)
+    && /,\s*1\s*\)\s*$/i.test(statement);
+}
+
+/**
+ * 一条语句是否写了 current 行。除了 `UPDATE … is_current=1`，还要认
+ * `INSERT … (…, is_current) VALUES (…, 1)` —— 只认前者会让带 current 值的 INSERT
+ * 从闸门旁边走过去（分类回写正是这种形状）。这里宁可误拦（字符串里恰好有 `,1)`），
+ * 也不放过一条没经过开关的 current 写入。
+ */
+function writesCurrent(statement) {
+  if (/is_current\s*=\s*1/.test(statement)) return true;
+  return /^\s*INSERT\s+INTO\s+(?:taxonomy_assignments|product_content)\b/i.test(statement)
+    && /,\s*1\s*\)/i.test(statement);
+}
+
+function assertShadowOnly(statements, { allowActivation = false, allowTaxonomyWriteback = false } = {}) {
+  const offenders = statements.filter(writesCurrent);
   if (!offenders.length) return;
-  if (!allowActivation) {
+  if (!allowActivation && !allowTaxonomyWriteback) {
     throw new Error(`拒绝应用：${offenders.length} 条语句含 is_current=1，激活需要显式 --allow-activation`);
   }
-  const unexpected = offenders.filter((statement) => !ACTIVATION_SHAPES.some(shape => shape.test(statement)));
-  if (unexpected.length) {
-    throw new Error(`拒绝应用：${unexpected.length} 条激活语句不是受审的激活形状（只允许 taxonomy_assignments / product_content）`);
+  const unexpected = [];
+  let activationCount = 0;
+  let writebackCount = 0;
+  for (const statement of offenders) {
+    if (allowActivation && ACTIVATION_SHAPES.some(shape => shape.test(statement))) activationCount += 1;
+    else if (allowTaxonomyWriteback && isTaxonomyWritebackInsert(statement)) writebackCount += 1;
+    else unexpected.push(statement);
   }
-  console.log(`[apply] --allow-activation：放行 ${offenders.length} 条激活语句`);
+  if (unexpected.length) {
+    throw new Error(`拒绝应用：${unexpected.length} 条激活语句不是受审的激活形状（只允许 taxonomy_assignments / product_content，或 --allow-taxonomy-writeback 的单行回写）`);
+  }
+  if (activationCount) console.log(`[apply] --allow-activation：放行 ${activationCount} 条激活语句`);
+  if (writebackCount) console.log(`[apply] --allow-taxonomy-writeback：放行 ${writebackCount} 条分类回写 current 行`);
 }
 
 /**
@@ -128,6 +164,9 @@ function assertShadowOnly(statements, { allowActivation = false } = {}) {
 function detectVersions(statements) {
   const versions = new Set();
   for (const statement of statements) {
+    // 分类回写是「直接 current」的受审写入，不属于可自动上架的增强批次：把它当成批次去激活，
+    // buildStatements 会顺手撤掉该产品全部规则分面（不止 travel），代价远大于这次单标签回写。
+    if (/'taxonomy-writeback-v1'/.test(statement)) continue;
     if (/INSERT INTO product_content/i.test(statement)) {
       for (const match of statement.matchAll(/'llm:([a-z0-9][a-z0-9._-]*)'/gi)) versions.add(match[1]);
     }
@@ -200,7 +239,10 @@ function summarize(file, sql, statements) {
 async function main(options) {
   const sql = readSql(options.file);
   const statements = splitSql(sql);
-  assertShadowOnly(statements, { allowActivation: options.allowActivation });
+  assertShadowOnly(statements, {
+    allowActivation: options.allowActivation,
+    allowTaxonomyWriteback: options.allowTaxonomyWriteback,
+  });
   const summary = summarize(options.file, sql, statements);
   console.log(`[apply] ${summary.file}: ${summary.bytes} 字节 / ${statements.length} 条语句`);
   console.log(`[apply] ${JSON.stringify(summary.kinds)}`);
@@ -272,5 +314,5 @@ if (require.main === module) {
 
 module.exports = {
   parseArgs, splitSql, assertShadowOnly, summarize, main, applyStatements, readSql,
-  detectVersions, activateVersions, buildRollbackFor,
+  detectVersions, activateVersions, buildRollbackFor, isTaxonomyWritebackInsert, writesCurrent, TAXONOMY_WRITEBACK_VERSION,
 };

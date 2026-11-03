@@ -25,6 +25,11 @@ on:
         type: boolean
         required: false
         default: false
+      taxonomy_writeback:
+        description: '允许 taxonomy-writeback-v1 的分类回写 current 行（只有分类回写 SQL 才开）'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   # `contents: write` 是「提交回滚稿」那一步需要的：回滚稿是这次上架的唯一退路，
@@ -61,7 +66,11 @@ jobs:
           echo "文件: $SQL ($(wc -c < "$SQL") 字节)"
           # 安全闸：这份 SQL 只该写 shadow 行（is_current=0），不该出现任何激活语句 ——
           # 上架走的是「写库后由 activate-enrichment.js 现算」那条路，不靠文件里带激活语句。
-          node scripts/catalog/apply-sql.js --file "$SQL" --dry-run || { echo "校验失败（见上）"; exit 1; }
+          EXTRA_FLAGS=""
+          if [ "${{ github.event.inputs.taxonomy_writeback }}" = "true" ]; then
+            EXTRA_FLAGS="--allow-taxonomy-writeback"
+          fi
+          node scripts/catalog/apply-sql.js --file "$SQL" --dry-run $EXTRA_FLAGS || { echo "校验失败（见上）"; exit 1; }
 
       - name: 应用到产品库
         if: ${{ github.event.inputs.dry_run != 'true' }}
@@ -74,10 +83,14 @@ jobs:
             exit 1
           fi
           # 写库后顺手上架（默认）。回滚稿落在 SQL 旁边，与它一起提交才有退路。
+          EXTRA_FLAGS=""
+          if [ "${{ github.event.inputs.taxonomy_writeback }}" = "true" ]; then
+            EXTRA_FLAGS="--allow-taxonomy-writeback"
+          fi
           if [ "${{ github.event.inputs.hold }}" = "true" ]; then
-            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel --hold
+            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel --hold $EXTRA_FLAGS
           else
-            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel
+            node scripts/catalog/apply-sql.js --file "${{ github.event.inputs.sql_path }}" --channel $EXTRA_FLAGS
           fi
 
       - name: 提交回滚稿

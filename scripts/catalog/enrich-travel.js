@@ -14,6 +14,9 @@
  *   node scripts/catalog/enrich-travel.js --run --in .scratch/travel-queue.json --out .scratch/travel-results.json
  *   # 3) 生成回放 SQL（由 Actions 或任何有凭据的通道应用）
  *   node scripts/catalog/enrich-travel.js --sql --in .scratch/travel-results.json --out .scratch/travel.sql
+ *   # 增量任务：补正文的同时把模型判定的 travel 归属回写（默认关闭，需显式开关）
+ *   node scripts/catalog/enrich-travel.js --sql --content-only --taxonomy-writeback \
+ *     --in .scratch/travel-results.json --out .scratch/travel.sql
  *
  * 只有第 2 步需要模型；第 1、3 步不联网到模型，可在任何环境跑。
  */
@@ -43,6 +46,10 @@ const PROCESSOR = 'enhance.travel';
 // `content_source='llm:<版本>'` —— 用同一个版本号会让这批的 DELETE 顺手删掉日更链写下的
 // shadow 行（那一行的输入可能比这里拉到的更新）。版本分开，两批互不覆盖。
 const PROCESSOR_VERSION = 'travel-localize-v1';
+// 标签回写用**单独的加工版本**：正文是 `llm:travel-localize-v1`，回写行是
+// `taxonomy-writeback-v1`。两者必须能分开回滚 —— 正文按 content_source 删，
+// 标签按 processor_version 删，混在一个版本里就只能整批退。
+const WRITEBACK_PROCESSOR_VERSION = 'taxonomy-writeback-v1';
 const MODE = 'shadow';
 const PAGE_SIZE = 300;
 
@@ -50,8 +57,11 @@ const PAGE_SIZE = 300;
 const DESCRIPTION_MIN_LENGTH = D.DETAIL_SUMMARY_MIN;
 
 function parseArgs(argv) {
-  const options = { pull: false, run: false, sql: false, contentOnly: false, in: null, out: null, queue: null, limit: 0, concurrency: 5, flush: 25 };
-  const booleans = new Set(['--pull', '--run', '--sql', '--content-only']);
+  const options = {
+    pull: false, run: false, sql: false, contentOnly: false, taxonomyWriteback: false,
+    writebackCsv: null, in: null, out: null, queue: null, limit: 0, concurrency: 5, flush: 25,
+  };
+  const booleans = new Set(['--pull', '--run', '--sql', '--content-only', '--taxonomy-writeback']);
   for (let i = 0; i < argv.length; i += 1) {
     const [name, inline] = argv[i].split('=', 2);
     const value = inline === undefined && !booleans.has(name) ? argv[++i] : inline;
@@ -60,6 +70,10 @@ function parseArgs(argv) {
     else if (name === '--sql') options.sql = true;
     // 增量补中文时只写正文，不重算归属/标签：这次队列只按「缺中文」取，不是分类复核。
     else if (name === '--content-only') options.contentOnly = true;
+    // 默认关闭：只有分类复核/增量任务显式开启时才回写标签。普通补中文队列（--gaps）不改归属，
+    // 一条模型判断就删标签的风险不该默认承担。
+    else if (name === '--taxonomy-writeback') options.taxonomyWriteback = true;
+    else if (name === '--writeback-csv') options.writebackCsv = path.resolve(value);
     else if (name === '--in') options.in = path.resolve(value);
     else if (name === '--out') options.out = path.resolve(value);
     else if (name === '--queue') options.queue = path.resolve(value);
@@ -214,6 +228,63 @@ async function run(options) {
   return results;
 }
 
+/** CSV 字段：标题里逗号、引号、换行都常见，按 RFC 4180 转义，别让一行变更被拆成两行。 */
+function csvField(value) {
+  const text = String(value ?? '');
+  return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
+}
+
+/**
+ * 分类回写：模型判「不是 travel」而原分类是 → 生成移出 SQL；反过来 → 生成补入 SQL。
+ *
+ * 为什么补入要 DELETE + INSERT 而不是单纯 INSERT：`(product_id, facet, term_id,
+ * assignment_source, processor_version)` 有唯一键，重跑同一份结果会撞键；先删掉同
+ * (product, facet, term) 的旧行（含规则行）才能保证「补入后只有一条 current」。
+ * 移出同样按 (product, facet, term) 删，不按 assignment_source 删 —— 规则与 LLM 两套
+ * 行都指向同一个分类，漏掉任何一套都会让产品继续留在 travel。
+ *
+ * `ruleTaxonomy` 是**拉队列时库里的归属**，不是标题猜的；没有这个字段就跳过（不能把
+ * 「不知道原来是什么」当成「原来不是 travel」，否则增量队列里每条都会被补一遍）。
+ */
+function buildTaxonomyWriteback(results, { runId, term = TERM } = {}) {
+  const statements = [];
+  const changes = [];
+  for (const result of results || []) {
+    if (!result || !result.productId || !result.localized) continue;
+    const modelTaxonomy = result.localized.taxonomy;
+    // 模型没返回 useCases 数组 = 没有可用的分类判断，不动库（与「明确判空」区分开）。
+    if (!modelTaxonomy || !Array.isArray(modelTaxonomy.useCases)) continue;
+    if (!Array.isArray(result.ruleTaxonomy)) continue;
+    const from = [...new Set(result.ruleTaxonomy)];
+    const to = [...new Set(modelTaxonomy.useCases)];
+    const wasTravel = from.includes(term);
+    const isTravel = to.includes(term);
+    if (wasTravel === isTravel) continue;
+    const id = sqlValue(result.productId);
+    statements.push(`DELETE FROM taxonomy_assignments WHERE product_id=${id} AND facet='useCases' AND term_id=${sqlValue(term)}`);
+    if (isTravel) {
+      // is_current=1：回写本身就是结论，不走 shadow→激活两跳。版本号独立（见顶部常量），
+      // 回滚时按 `processor_version='taxonomy-writeback-v1'` 精确删除这一批。
+      statements.push(`INSERT INTO taxonomy_assignments (product_id, facet, term_id, assignment_source, confidence, processor_version, enrichment_run_id, is_current) `
+        + `VALUES (${id}, 'useCases', ${sqlValue(term)}, 'llm', NULL, ${sqlValue(WRITEBACK_PROCESSOR_VERSION)}, ${sqlValue(runId)}, 1)`);
+    }
+    changes.push({
+      productId: result.productId,
+      title: result.title || '',
+      from,
+      to,
+      reason: isTravel ? 'model:travel' : 'model:non-travel',
+    });
+  }
+  const lines = ['product_id,title,from,to,reason,run_id'];
+  for (const change of changes) {
+    lines.push([
+      change.productId, change.title, change.from.join('|'), change.to.join('|'), change.reason, runId || '',
+    ].map(csvField).join(','));
+  }
+  return { statements, changes, csv: `${lines.join('\n')}\n` };
+}
+
 /**
  * 第 3 步：把结果翻成回放 SQL（shadow：is_current=0，激活是单独的受审操作）。
  *
@@ -308,6 +379,21 @@ function buildSql(options) {
     statements.push(...(options.contentOnly ? batch.filter((statement) => !/taxonomy_assignments/i.test(statement)) : batch));
   }
 
+  // 分类回写是**独立的写入语义**：正文仍按 `llm:travel-localize-v1`，回写行按
+  // `taxonomy-writeback-v1`。`--content-only` 只压掉 resultBatchSql 的全分面重算，
+  // 不压这里 —— 增量任务的正文与归属本来就是两件事，回滚也要能分开做。
+  let writeback = null;
+  if (options.taxonomyWriteback) {
+    writeback = buildTaxonomyWriteback(succeeded, { runId, term: TERM });
+    statements.push(...writeback.statements);
+    const csvPath = options.writebackCsv || path.resolve('.scratch', `taxonomy-writeback-${TO}.csv`);
+    fs.mkdirSync(path.dirname(csvPath), { recursive: true });
+    fs.writeFileSync(csvPath, writeback.csv);
+    const movedOut = writeback.changes.filter((change) => change.reason === 'model:non-travel').length;
+    console.log(`[sql] taxonomy writeback：${writeback.changes.length} 条变更`
+      + `（移出 ${movedOut} / 补入 ${writeback.changes.length - movedOut}）→ ${csvPath}`);
+  }
+
   const summary = {
     runId,
     date: TO,
@@ -328,6 +414,8 @@ function buildSql(options) {
     skippedNoInputCount: 0,
     skippedFailedCount: 0,
     contentOnly: Boolean(options.contentOnly),
+    taxonomyWriteback: Boolean(options.taxonomyWriteback),
+    taxonomyWritebackCount: writeback ? writeback.changes.length : 0,
     resumedCount: 0,
     modelRequests: succeeded.reduce((n, r) => n + (r.requestCount || 0), 0),
     wallClockMs: data.wallClockMs || 0,
@@ -354,4 +442,7 @@ if (require.main === module) {
   Promise.resolve(action(options)).catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
 }
 
-module.exports = { parseArgs, pull, run, buildSql, PROCESSOR_VERSION, PROMPT_VERSION, TERM };
+module.exports = {
+  parseArgs, pull, run, buildSql, buildTaxonomyWriteback,
+  PROCESSOR_VERSION, WRITEBACK_PROCESSOR_VERSION, PROMPT_VERSION, TERM,
+};
