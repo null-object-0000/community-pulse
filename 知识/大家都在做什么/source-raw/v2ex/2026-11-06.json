@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "v2ex",
+  "sourceName": "V2EX · 分享创造",
+  "targetDate": "2026-11-06",
+  "timezone": "Asia/Shanghai",
+  "status": "ok",
+  "complete": true,
+  "fetchedAt": "2026-11-05T21:56:23.791Z",
+  "itemCount": 10,
+  "contentSha256": "5f7911b4c18ef54e53f3339cf5312a934efbdea7dac2f1c0ec24e7884e58def0",
+  "capture": {
+    "mode": "observed-snapshot",
+    "historicalBackfillSupported": false,
+    "endpoint": "https://www.v2ex.com/api/topics/show.json",
+    "requestUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "effectiveUrl": "https://www.v2ex.com/api/topics/show.json?node_name=create",
+    "httpStatus": 200,
+    "contentType": "application/json;charset=UTF-8",
+    "nodeName": "create",
+    "nodeTitle": "分享创造",
+    "apiReturnsLatestOnly": true,
+    "topicsCreatedOnObservedDay": 3,
+    "bodyByteLength": 56987,
+    "topicIds": [
+      1254858,
+      1254855,
+      1254853,
+      1254843,
+      1254841,
+      1254840,
+      1254829,
+      1254819,
+      1254796,
+      1254790
+    ]
+  },
+  "records": [
+    {
+      "topicId": 1254858,
+      "title": "花了 6 年搭了一个去中心化的社交网络作品",
+      "url": "https://www.v2ex.com/t/1254858",
+      "author": "printfcoder",
+      "createdAt": "2026-11-05T17:29:51.000Z",
+      "createdAtEpoch": 1793899791,
+      "replies": 7,
+      "content": "AI 真的要淘汰传统的程序员角色了。我大概是在 2019 年有这个想法，那个时候对各大厂商的 App 后台数据上报非常不爽，就想未来有没有一种可能，每个人掌握自己的社交关系？而不是被几个大厂拿去当成护城河。\r\n\r\n所以这些年就慢慢找时间往这个方向靠，期间探索、架构、实现都搞过一些玩具版本。进展非常慢，一方面确实是时间不够；另一方面是需要相大量的技术储备，前后端、Mobile App 、架构、网络、设计等，都要自己来一个一个去摸索，尝试找了一些朋友，都对这个场景兴趣不是很大，基本只有极少人对隐私、数据保护有相当的诉求，大部分朋友还是习惯于让大公司掌握、管理自己的数据资源，故而在前期找到志合的朋友比较困难。\r\n\r\n但是，我们的这些身外之物，我真的认为个人未来最重要的东西就是数据，而不再只是金钱。\r\n\r\n我搞的这套方案，是一个去中心化的社交网络。可以简单看看 Desktop 端的运行效果：三个人，三台各自独立部署的节点，没有中心服务器，消息直接在节点之间联邦送达。下面是三个独立节点第一次联邦跑通时的对话。\r\n\r\n\r\n\r\n我暂时给这个方案起名叫 Peers-Touch ，意为大家可以直接轻碰接触。整体思考是通过一个去中心化（联邦式）网络框架，在上头先长了这个社交产品。每个人跑自己的 Home Station ，可以运行在 NAS 、树莓派、云主机都行；身份、关系、消息全在自己手里（也就是个人 Station 上），Station 之间像邮件一样联邦互连，端到端加密，规划中，我也做了 Agent 、小程序和区块链，都跑在自己的 Station 上，作为智能时代和扩展方向的预留。\r\n\r\n下图是大体的产品架构\r\n\r\nhttps://i.imgur.com/HNzSw2V.png\r\n\r\n\r\n再说怎么做出来的。\r\n\r\n这个项目 6 年前开工。前几年是传统写法，一个模块一个模块地做；后面基本是我带着 Trae 完成的——一个人，Go / Rust / TS / Kotlin / Swift 五个栈，80 多万行，从架构到真机验收。不是我突然变猛了，是干法变了：做什么、架构怎么定、人怎么排，AI 给；具体写，AI 也给。\r\n\r\n视频在这，2 分 52 秒，从节点部署、联邦互联、端到端加密到 Agent 都过了一遍（播放器可能默认压到 360p ，点右下角齿轮切 1080p ）：\r\n\r\nhttps://www.youtube.com/watch?v=ZU6kMt3BQrs\r\n\r\n代码在这： https://github.com/peers-labs/peers-touch ，还在成长，欢迎拍砖，欢迎 Star 。\r\n一些目前的设想： https://peers-touch.vercel.app/\r\n\r\n最后说点感想。\r\n\r\n我当程序员第 14 个年头了，从传统行业、金融、互联网都干过，现在团队正在转行做 Agent 相关的事，虽然也是趋势所迫，不过我也认为 Agent 本身也是过滤，一方面传统行业的技能、知识等，会慢慢向大模型基建下沉，这是已经能看到的事实，未来这个协作过程会从现在的“领域-Agent-LLM”的路径，直接转成“领域-LLM-Infra”，LLM 平台会进一步泛化现在 Agent 的能力变成口语就能驱动的万物即可 Agent 的样子，讲几句话就能做一个自己的 Agent ，当全部都是 Agent 的时候，约等于没有 Agent ，当然只是我的观点。\r\n\r\n未来 Idea 到实现会是个比较廉价的过程，AI 挤压我们传统就业空间的矛盾总会有利的一面，大家都可以大胆去选择探索未来。“因为生命有限的，所以我们的选择，都被赋予了重量”。\r\n\r\n程序员转不转型，已经不用讨论了。一个人端到端干完这几年，我反而觉得有三样东西更值钱：\r\n\r\n1. 想得出新东西。做什么比怎么做稀缺，这轮 AI 替不了。\r\n2. 学得动。新东西到手，几天之内得能拿它干活。\r\n3. 落得了地。从想法到真机跑通、能交付，结果和锅还是你的。\r\n\r\n造的过程，也在体验生命的厚度，哪怕失败了也是能接受的。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254855,
+      "title": "最近做了个 MOSS-Image 在线生图工具，可以拖框指定海报上的文字位置",
+      "url": "https://www.v2ex.com/t/1254855",
+      "author": "longhe336",
+      "createdAt": "2026-11-05T17:07:36.000Z",
+      "createdAtEpoch": 1793898456,
+      "replies": 0,
+      "content": "最近没事做了个网站 MossImage Studio ，把 OpenMOSS 开源的 MOSS-Image 模型接到了网页上，打开浏览器就能试，不用装 ComfyUI 或下载模型。\r\n\r\n有时候做海报时，光在提示词里写「标题放顶部，日期放右下角」，生成出来的位置还是会跑。所以做了个布局编辑器，可以先在画布上拖几个框，把标题、日期和主图的位置摆好，再按这个布局生成。只想试试中文出字效果的话，也可以直接在首页写提示词，把要出现在图里的字放进引号。\r\n\r\n目前网站可以免费生成 3 张图，想请 V 友帮忙试试中文海报。如果遇到漏字、错字，或者文字没落在预期位置，欢迎把提示词和结果贴在评论里。如果拖框排版用起来有哪里别扭，也欢迎直接说。\r\n\r\nhttps://mossimage.studio/?utm_source=v2ex",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254853,
+      "title": "做了个 5 MB 的原生 API 客户端 CurlGo，不自动装插件",
+      "url": "https://www.v2ex.com/t/1254853",
+      "author": "echoVic",
+      "createdAt": "2026-11-05T17:01:08.000Z",
+      "createdAtEpoch": 1793898068,
+      "replies": 0,
+      "content": "最近 Postman 12.33.4 在后台给 Codex 和 Claude Code 装插件、改配置的 issue 挺火（ postmanlabs/postman-app-support#14370 ），而且又慢又卡，因为想着自己做一简易的，面向 Agent 的 API 工具。\r\n\r\nCurlGo 是 macOS 上的原生 API 客户端，安装包 4.97 MB 。\r\nHTTP / SSE / WebSocket 在同一个工作台，草稿、收藏和历史都保存在本机，不用账号；\r\n能贴 curl ，也能导入 Postman v2.1 、Bruno 集合（先预览再保存，集合脚本不执行）；\r\n断言检查状态码、响应头、JSON 字段，全部通过才把变量写进环境。桌面端不自动安装技能、插件或 MCP ，不修改 Codex / Claude Code / Copilot 配置，不注册启动 Hook ；\r\n可选 CLI 和 API Test Skill 由你自己单独装，--dry-run 只做本地预检。MIT 开源。\r\n\r\n目前只有 macOS Apple 芯片的安装包。\r\n\r\n官网： https://curlgo.echovic.com\r\nGitHub： https://github.com/echoVic/curlgo\r\n\r\n哪里用着不顺手、或者觉得缺什么，回帖说，我改。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254843,
+      "title": "用 MyGo 写了个 Windows 便携式应用启动器，原生界面，无 WebView",
+      "url": "https://www.v2ex.com/t/1254843",
+      "author": "mailx3",
+      "createdAt": "2026-11-05T15:25:03.000Z",
+      "createdAtEpoch": 1793892303,
+      "replies": 2,
+      "content": "参考了 CLaunch 的交互，也支持导入 Claunch.ini 配置文件。\r\n\r\n支持把常用的程序、文件 按页面分类，点击启动，支持搜索、托拽，列表、网格视图。\r\n\r\n用来收纳和启动一些单机游戏和程序非常方便。支持自动累计运行时长，也可手动修正。\r\n\r\n截图：\r\n\r\n![截图]( https://raw.githubusercontent.com/canwdev/mygo-launcher/master/docs/screenshot.webp)\r\n\r\n- 仓库： https://github.com/canwdev/mygo-launcher\r\n- 下载： https://github.com/canwdev/mygo-launcher/releases\r\n\r\n欢迎使用和反馈！",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254841,
+      "title": "GPT image 2.6 生成 GIF 动图在线工具来了",
+      "url": "https://www.v2ex.com/t/1254841",
+      "author": "FengNianIndie",
+      "createdAt": "2026-11-05T15:23:17.000Z",
+      "createdAtEpoch": 1793892197,
+      "replies": 0,
+      "content": "昨天 chatgpt 发了新模型 image2.6 ；可以生 GIF 和 SVG 图；\r\n\r\n\r\n今天 X 上很多人分享了很多好玩的提示词，这里也按场景也一并整理了，方便开盒即用。欢迎大家体验，可以免费试用；\r\n\r\n输入文字描述，就可以生成图片、GIF 循环动图或 SVG 矢量图；生成图片和 GIF 时，还能上传参考图，并按需调整画面比例、尺寸和质量。做社交媒体配图、创意素材，或者尝试游戏原型里的视觉元素，都可以试试。\r\n\r\n\r\n感兴趣的朋友欢迎体验，也欢迎反馈建议～\r\n👉 [体验 GPT Image 2.6]( https://gptimage26.ai)\r\n\r\nhttps://gptimage26.ai",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254840,
+      "title": "国行 Apple Intelligence 11 月 4 日实测：首批功能逐项结果",
+      "url": "https://www.v2ex.com/t/1254840",
+      "author": "zbp102487",
+      "createdAt": "2026-11-05T15:22:36.000Z",
+      "createdAtEpoch": 1793892156,
+      "replies": 1,
+      "content": "11 月 4 日开发者测试版一开，我按清单逐项测了国行 Apple Intelligence 首批功能，包括核心功能表现、千问接入时的同意弹窗原文、翻译相关项，以及此前存疑的缺席项。\r\n\r\n完整实测与截图在文章里： https://mp.weixin.qq.com/s/llNlutAbMOvU1PAFO0amtg\r\n最值得先看的一条：国区 AI 迟到两年，首批更像把琐事做顺手，不是科幻助理上线。\r\n欢迎对照自己的机型复核——有出入的地方我再补测。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254829,
+      "title": "Windows 微信电脑版消息通知灵动岛提醒",
+      "url": "https://www.v2ex.com/t/1254829",
+      "author": "liKeYunKeji",
+      "createdAt": "2026-11-05T14:46:15.000Z",
+      "createdAtEpoch": 1793889975,
+      "replies": 0,
+      "content": "微信电脑版消息通知灵动岛提醒（ Windows ）。程序监听 Windows Shell Hook 的任务栏闪烁事件，在屏幕顶部显示提醒胶囊；不读取微信聊天内容，也不统计微信未读条数。程序还可同时启动局域网消息接收接口，将外部软件发送的消息摘要显示在灵动岛，并保存完整原文到本机。\r\n\r\n![image]( https://p4.ssl.qhimg.com/t11b673bcd6262202ac8de44b5e.gif)\r\n\r\n![image]( https://p3.ssl.qhimg.com/t11b673bcd6b08f5715a899ebf8.png)\r\n\r\n![image]( https://p5.ssl.qhimg.com/t11b673bcd61031472fe62295be.png)\r\n\r\nhttps://github.com/likeyun/WeixinMsgIsland",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254819,
+      "title": "做了一款极简的文本记录小程序 LiteNoteGo",
+      "url": "https://www.v2ex.com/t/1254819",
+      "author": "lssvip",
+      "createdAt": "2026-11-05T13:32:56.000Z",
+      "createdAtEpoch": 1793885576,
+      "replies": 4,
+      "content": "嗨，大家好，最近又做了一个小东西。这次没有选择做网站，而是做了一款微信小程序。\r\n\r\n受一句话影响：如果你想快速验证你的想法能不能行，就是收费。如果有人愿意付费，那就说明你的这个项目创意是可以的，如果没有，就要及时止损，停止开发，果断放弃。\r\n\r\n正巧又看到微信文章说个人开发者可以开通虚拟支付通道。这就是把所有链路都打通了，就等着验证你的想法了。\r\n\r\n想法来源：最近自己不是用 AI 做了一些小网站吗？经常有些小文本需要经常的复制粘贴，比如网站统计代码，我的网站只有前端，没有后端，每次新增页面都是 AI 给写好了，手动添加统计代码的。需要经常用到这个代码，每次用我就登录一次网站获取统计代码，后来我就保存在了 TXT ，每次复制还是麻烦，于是就有了这个保存在小程序里。可以快速的复制，然后去黏贴。\r\n\r\n就这样，这个重复的动作在一次一次的优化下，越来越简单，链路越来越少，到最后直接 0 链路了，解决的方法就是不在添加新页面了。\r\n\r\n网站不添加新页面了，但是想法不能停。于是就做了这个小程序-LiteNoteGo,已经上架好几天。主打短文本记录，本地存储。想邀请大家体验一下的。\r\n\r\n谢谢。\r\n\r\n我的账号里还有点铜板。",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254796,
+      "title": "写了个 Cursor Style 的 Typora Theme，喜欢自取",
+      "url": "https://www.v2ex.com/t/1254796",
+      "author": "Folayi",
+      "createdAt": "2026-11-05T11:20:55.000Z",
+      "createdAtEpoch": 1793877655,
+      "replies": 0,
+      "content": "https://github.com/folay-git/typora-cursor-theme\r\n\r\n![]( https://i.imgur.com/GJ8JfkY.png)",
+      "nodeName": "create"
+    },
+    {
+      "topicId": 1254790,
+      "title": "做了个头像小程序，可以捏猫狗、搭情侣头像，也能给自己的头像加节日装饰",
+      "url": "https://www.v2ex.com/t/1254790",
+      "author": "AdNoCarry",
+      "createdAt": "2026-11-05T10:30:46.000Z",
+      "createdAtEpoch": 1793874646,
+      "replies": 0,
+      "content": "最近做了一个微信小程序，叫「搭搭头像」，想把挑头像、自己搭配和节日换装放在一起。\r\n\r\n整体偏清爽、可爱的风格，还在持续调整素材和交互。想请大家试试看，也欢迎直接吐槽：哪些功能有用，哪些入口不好找，以及还想要什么画风。\r\n体验入口见下方小程序码。\r\n\r\n\r\n![搭搭头像界面]( https://dada-avatar-1258204940.cos.ap-guangzhou.myqcloud.com/gh_ea1845f1449d_344.jpg)",
+      "nodeName": "create"
+    }
+  ],
+  "response": {
+    "transferEncoding": "base64",
+    "contentEncoding": "gzip",
+    "body": "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"
+  }
+}
