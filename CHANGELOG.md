@@ -37,6 +37,7 @@
 | 10-28 | 本轮 | 日报发布分组、展示上限与回归验证 | 10-27 日报展示元数据与 final 折叠 | 同作者同类工具合并折叠，每作者最多 3 个主列表位置，保留全部记录与产品身份 | community-pulse |
 | 11-02 | 本轮 | 7 文件（规则、队列/叠加脚本、快照构建、localize 契约、测试） | 2 文件（travel-mobility 分类快照 + overlay）+ 其余 27 个分类文件未变 | **travel-mobility 中文覆盖与误分类清理**：规则改成「标题/标签主判据 + 正文高特异性短语」，并从 localize 契约里补出 `titleZh`；596 条交模型复核，分类 1121 → 863，`titleZh` 100% / `summaryZh` 99.0% | community-pulse |
 | 11-03 | 本轮 | 快照构建撤 overlay + 分类回写模式与写入闸 + 2 个测试文件 | 19 个分类快照 + manifest + `catalog-version` + 删除 overlay（2,867 行）+ 3 份回放 SQL | **travel-mobility 结论正式写库并撤 overlay**：Actions 应用 126 条语句（589 个产品正文 / 2,353 行标签 / 258 个产品移出），分类仍 863 条、`titleZh` 100% / `summaryZh` 98.96%，快照回到纯 MySQL 投影；随后恢复误杀的 SMRTROOM，travel 863→864；再清理 3 条误分类（877→874）并加 `--taxonomy-writeback` 防复发 | community-pulse |
+| 11-14 | 本轮 | 共享导航与页脚 | 0 | 接入 DevTrends 模型价格子站，保留 models-cn 独立数据发布与 GitHub Pages 镜像 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 > 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
@@ -1263,6 +1264,12 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 - **回写写入闸（决策）**：回写行直接 `is_current=1`，没有正文批次可「写 shadow 再激活」。`apply-sql.js` 增加 `--allow-taxonomy-writeback`，只放行 `taxonomy-writeback-v1` 的单行 INSERT（llm 来源、current），其它 current 写入仍拒绝；`detectVersions` 显式跳过回写行 —— 若把回写当成增强批次自动上架，`buildStatements` 会撤掉该产品**全部**规则分面（不止 travel）。顺带修了 shadow 闸只认 `is_current=1`、放过 `INSERT … VALUES (…,1)` 的漏洞。`apply-catalog-sql.yml` 加同名布尔输入，普通 SQL 不开。
 - **回写测试（代码）**：`catalog-enrichment` 新增 7 条（移出 / 补入 / 无变化 / 缺字段 / CSV 转义 / 默认关闭 / `--sql` 集成），`catalog-apply-sql` 新增 2 条（闸门形状、`detectVersions` 跳过）；目标文件 32 通过 / 1 条环境失败（`CATALOG_MYSQL_URL` 让 db transport 用例读到非空配置，与本次改动无关）。
 - **未做**：没有合 `main`、没有 push `main`；分支等人工验收。
+
+## 2026-11-14 · 接入模型价格子站
+
+- **代码**：共享顶栏与页脚增加中英文「模型价格 / Model pricing」入口，指向 `https://models.devtrends.site/`，静态页面与动态产品页共用；手机隐藏顶栏导航时仍可从页脚进入。
+- **决策**：models-cn 以 DevTrends 子站呈现，部署到 EdgeOne 大陆区域。主站继续原部署，模型数据与构建继续由 models-cn 仓库维护，GitHub Pages 和原 API 地址保留，避免已有客户端迁移。
+- **文档**：本条记录入口与发布边界；本仓库不修改 DNS、邮箱、主域名或历史日报数据。
 
 ## 维护约定
 

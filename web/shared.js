@@ -14,7 +14,7 @@
   const DETAIL_SUMMARY_MIN = 20;
   const messages = {
     'zh-CN': {
-      discover: '今日发现', trends: '趋势洞察', archive: '历史日报', slogan: '大家都在做什么',
+      discover: '今日发现', trends: '趋势洞察', archive: '历史日报', modelPricing: '模型价格', slogan: '大家都在做什么',
       intro: '每天发现开发者社区的新项目、新产品与开源趋势。', all: '全部来源', search: '搜索项目、作者或标签',
       language: '语言', theme: '外观', system: '跟随系统', light: '浅色', dark: '深色', accentTheme: '主题色', neutralAccent: '无主色', blueAccent: '蓝色', forestAccent: '墨绿', violetAccent: '紫罗兰',
       count: '{n} 个项目', sources: '{n} 个来源',
@@ -44,7 +44,7 @@
       trendsLoadMore: '显示更多（还有 {n} 个项目）', trendsSubTopics: '子主题', trendsSubTopicOf: '{parent}的子主题', tagDevTrends: 'DT', tagSource: '原始', tagLanguage: '语言', tagDevTrendsTitle: 'DevTrends 归类', tagSourceTitle: '项目或来源原始标签', tagLanguageTitle: '编程语言',
     },
     en: {
-      discover: 'Discover', trends: 'Trends', archive: 'Archive', slogan: 'What developers are building',
+      discover: 'Discover', trends: 'Trends', archive: 'Archive', modelPricing: 'Model pricing', slogan: 'What developers are building',
       intro: 'Daily discoveries from developer communities, independent makers, and open source.', all: 'All sources', search: 'Search projects, authors, or tags',
       language: 'Language', theme: 'Appearance', system: 'System', light: 'Light', dark: 'Dark', accentTheme: 'Accent color', neutralAccent: 'Neutral', blueAccent: 'Blue', forestAccent: 'Forest', violetAccent: 'Violet',
       count: '{n} projects', sources: '{n} sources',
@@ -1156,7 +1156,7 @@
     const label = key => t(locale, key);
     return `<header class="topbar"><div class="topbar-inner">
       <a class="brand" href="${homePath}" aria-label="DevTrends"><svg class="brand-logo" width="34" height="34" viewBox="0 0 48 48" role="img" aria-label="DevTrends"><rect x="1" y="1" width="46" height="46" rx="12" fill="#161b22"/><path fill="#fff" fill-rule="evenodd" d="M9.5 9h12c9.39 0 17 6.72 17 15s-7.61 15-17 15h-12V9Zm8 8v14h4c4.97 0 9-3.13 9-7s-4.03-7-9-7h-4Z"/><path d="m15.5 30.51 5.8-5.81 3.7 2.8 6.7-7.7M27.48 20.62 31.7 19.8 31.47 24.09" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DevTrends<small>${label('brandLabel')}</small></span></a>
-      <nav class="main-nav" aria-label="${locale === 'en' ? 'Main navigation' : '主导航'}">${navigation}</nav>
+      <nav class="main-nav" aria-label="${locale === 'en' ? 'Main navigation' : '主导航'}">${navigation}<a href="https://models.devtrends.site/">${label('modelPricing')}</a></nav>
       ${headerSearch}
       <div class="preferences">
         <details class="theme-picker" id="theme-picker">
@@ -1197,7 +1197,7 @@
     const icpLink = filing
       ? `<a class="footer-icp" href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer nofollow">${escapeHtml(filing)}</a>`
       : '';
-    return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p>${icpLink}</footer>`;
+    return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p><a href="https://models.devtrends.site/">${t(locale, 'modelPricing')}</a>${icpLink}</footer>`;
   }
   return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, travelMobility, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, AUTHOR_DISPLAY_LIMIT, authorKey, templateFamily, authorToolSimilarity, applyAuthorPolicy, authorEntries, authorFoldLabel, renderAuthorFeed, readerItems, withdrawnSubmission, dropWithdrawnSubmissions, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
