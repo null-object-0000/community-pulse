@@ -178,7 +178,7 @@ function reportPage(report, date, locale, home = false, hasMarkdown = false, car
   if (!home) page.breadcrumb = { '@id': canonical + '#breadcrumb' };
   const graph = [page];
   if (home) graph.unshift(
-    { '@type': 'WebSite', '@id': website, url: D.origin + '/', name: 'DevTrends', alternateName: ['开发者趋势', 'devtrends.site'], inLanguage: ['zh-CN', 'en'], publisher: { '@id': organization } },
+    { '@type': 'WebSite', '@id': website, url: D.origin + '/', name: 'DevTrends', alternateName: ['开发者趋势', 'devtrends.site'], inLanguage: ['zh-CN', 'en'], publisher: { '@id': organization }, hasPart: [{ '@type': 'WebSite', '@id': 'https://models.devtrends.site/#website', name: 'DevTrends 模型价格', url: 'https://models.devtrends.site/' }, { '@type': 'WebSite', '@id': 'https://umanager.devtrends.site/#website', name: 'UManager', url: 'https://umanager.devtrends.site/' }] },
     { '@type': 'Organization', '@id': organization, url: D.origin + '/', name: 'DevTrends', alternateName: '开发者趋势', logo: { '@type': 'ImageObject', url: D.origin + '/logo-512.png', width: 512, height: 512 } },
   ); else graph.push({ '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [
     { '@type': 'ListItem', position: 1, name: t(locale, 'discover'), item: D.origin + lp('/', locale) },

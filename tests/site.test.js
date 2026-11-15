@@ -723,7 +723,9 @@ test('enumerable pages are static while sitemap product routes are reserved for 
   assert.match(clusterPage, new RegExp(`${contentCreation.recentCount} 个新项目`));
   assert.equal((clusterPage.match(/class="feed-item"/g) || []).length, contentCreation.recentCount);
   assert.match(clusterPage, /data-tag-origin="devtrends"/);
-  assert.match(clusterPage, /class="tag tag-date item-discovery-date" datetime="2026-09-/);
+  // Live category windows roll forward with the published reports; verify the
+  // rendered ISO date rather than requiring a project from September forever.
+  assert.match(clusterPage, /class="tag tag-date item-discovery-date" datetime="\d{4}-\d{2}-\d{2}"/);
   // A published sub-topic must be reachable from its parent and route back: novel-writing sits under
   // content-creation (see web/shared.js `taxonomyParents`). The sub-topic itself is data-gated, so these
   // assertions only run while the window carries enough novel-writing projects.

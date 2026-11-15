@@ -38,6 +38,7 @@
 | 11-02 | 本轮 | 7 文件（规则、队列/叠加脚本、快照构建、localize 契约、测试） | 2 文件（travel-mobility 分类快照 + overlay）+ 其余 27 个分类文件未变 | **travel-mobility 中文覆盖与误分类清理**：规则改成「标题/标签主判据 + 正文高特异性短语」，并从 localize 契约里补出 `titleZh`；596 条交模型复核，分类 1121 → 863，`titleZh` 100% / `summaryZh` 99.0% | community-pulse |
 | 11-03 | 本轮 | 快照构建撤 overlay + 分类回写模式与写入闸 + 2 个测试文件 | 19 个分类快照 + manifest + `catalog-version` + 删除 overlay（2,867 行）+ 3 份回放 SQL | **travel-mobility 结论正式写库并撤 overlay**：Actions 应用 126 条语句（589 个产品正文 / 2,353 行标签 / 258 个产品移出），分类仍 863 条、`titleZh` 100% / `summaryZh` 98.96%，快照回到纯 MySQL 投影；随后恢复误杀的 SMRTROOM，travel 863→864；再清理 3 条误分类（877→874）并加 `--taxonomy-writeback` 防复发 | community-pulse |
 | 11-14 | 本轮 | 共享导航与页脚 | 0 | 接入 DevTrends 模型价格子站，保留 models-cn 独立数据发布与 GitHub Pages 镜像 | community-pulse |
+| 11-15 | 本轮 | 共享导航、页脚与结构化数据 | 0 | 将 UManager 作为 DevTrends 开发者工具关联，保持个人入口与开发者产品品牌的边界 | community-pulse |
 | **合计** | **276** | **591 文件 +29,178/-4,535** | **14,737 文件 +9,847,613/-174,269** | | |
 
 > 注：09-15 / 09-16 / 09-18 / 09-20 的部分计数当时未记录，表中以 `—` 表示。
@@ -1270,6 +1271,13 @@ FATAL ENOENT: no such file or directory, open '/tmp/cp-shot-mqTWHQ/a25ae461a653f
 - **代码**：共享顶栏与页脚增加中英文「模型价格 / Model pricing」入口，指向 `https://models.devtrends.site/`，静态页面与动态产品页共用；手机隐藏顶栏导航时仍可从页脚进入。
 - **决策**：models-cn 以 DevTrends 子站呈现，部署到 EdgeOne 大陆区域。主站继续原部署，模型数据与构建继续由 models-cn 仓库维护，GitHub Pages 和原 API 地址保留，避免已有客户端迁移。
 - **文档**：本条记录入口与发布边界；本仓库不修改 DNS、邮箱、主域名或历史日报数据。
+
+## 2026-11-15 · 串联 DevTrends 开发者产品
+
+- **代码**：共享顶栏和页脚增加 UManager 官网入口，说明它是 Ubuntu 软件与开发环境管家；复用同一渲染器覆盖中英文静态页面及动态详情。WebSite 结构化数据用 hasPart 关联模型价格与 UManager 两个子站，不更改已有 canonical、hreflang、站点地图或索引策略。
+- **决策**：DevTrends 承担开发者趋势与工具产品品牌，UManager、models-cn 保留独立产品名、源码和发布流程；Super Newbie 保留个人入口角色。使用有语义的普通链接串联，不把所有页面改成关键词入口。
+- **文档 / 数据**：记录品牌与导航边界；不修改日报、模型价格、现有 DNS 或服务部署配置。
+- **验证**：修正分类页测试写死 2026 年 9 月的日期断言，继续检查 ISO 日期标签，允许随日报滚动到新的月份。
 
 ## 维护约定
 

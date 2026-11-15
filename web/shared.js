@@ -1156,7 +1156,7 @@
     const label = key => t(locale, key);
     return `<header class="topbar"><div class="topbar-inner">
       <a class="brand" href="${homePath}" aria-label="DevTrends"><svg class="brand-logo" width="34" height="34" viewBox="0 0 48 48" role="img" aria-label="DevTrends"><rect x="1" y="1" width="46" height="46" rx="12" fill="#161b22"/><path fill="#fff" fill-rule="evenodd" d="M9.5 9h12c9.39 0 17 6.72 17 15s-7.61 15-17 15h-12V9Zm8 8v14h4c4.97 0 9-3.13 9-7s-4.03-7-9-7h-4Z"/><path d="m15.5 30.51 5.8-5.81 3.7 2.8 6.7-7.7M27.48 20.62 31.7 19.8 31.47 24.09" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DevTrends<small>${label('brandLabel')}</small></span></a>
-      <nav class="main-nav" aria-label="${locale === 'en' ? 'Main navigation' : '主导航'}">${navigation}<a href="https://models.devtrends.site/">${label('modelPricing')}</a></nav>
+      <nav class="main-nav" aria-label="${locale === 'en' ? 'Main navigation' : '主导航'}">${navigation}<a href="https://models.devtrends.site/">${label('modelPricing')}</a><a href="https://umanager.devtrends.site/" title="${locale === 'en' ? 'Ubuntu software and development environment manager' : 'Ubuntu 软件与开发环境管家'}">UManager</a></nav>
       ${headerSearch}
       <div class="preferences">
         <details class="theme-picker" id="theme-picker">
@@ -1197,7 +1197,7 @@
     const icpLink = filing
       ? `<a class="footer-icp" href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer nofollow">${escapeHtml(filing)}</a>`
       : '';
-    return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p><a href="https://models.devtrends.site/">${t(locale, 'modelPricing')}</a>${icpLink}</footer>`;
+    return `<footer class="footer"><a class="footer-brand" href="${homePath}">DevTrends <span>↗</span></a><p>${t(locale, 'footer')}</p><a href="https://models.devtrends.site/">${t(locale, 'modelPricing')}</a><a href="https://umanager.devtrends.site/">${locale === 'en' ? 'UManager · Ubuntu software' : 'UManager · Ubuntu 软件管家'}</a>${icpLink}</footer>`;
   }
   return { titleFallback, withTitleFallback, origin, DETAIL_SUMMARY_MIN, DETAIL_LEAD_MAX, detailLead, messages, topbarHtml, footerHtml, categories, taxonomyFacets, taxonomyParents, taxonomyVersion, languageFacets, normalizeTaxonomy, taxonomyHasValues, facetLabel, facetParent, facetChildren, facetAncestors, facetDescendants, facetLineage, facetPathLabel, itemLanguages, travelMobility, inferTaxonomy, itemTaxonomy, taxonomyTagEntries, taxonomyTags, visibleTagEntries, tagHtml, isCategoryId, t, escapeHtml, json, localPath, sourceName, sourceInfo, chipFilterMeta, chipFilterHtml, fitChipCount, safeUrl, managedImage, localImage, localImages, itemMark, markClass, hotlinkable, galleryHtml, mediaEntries, sameImageAsMark, repository, itemId, isClipped, canStickSidebar, visibleTags, summary, displayTitle, stripTitleLabel, reportItems, AUTHOR_DISPLAY_LIMIT, authorKey, templateFamily, authorToolSimilarity, applyAuthorPolicy, authorEntries, authorFoldLabel, renderAuthorFeed, readerItems, withdrawnSubmission, dropWithdrawnSubmissions, collapseProductDuplicates, itemCategory, itemCategories, metric, compact, dateLabel, trackedUrl, itemLinks, icon, renderItem, renderSwipeItem, boundedIndex, swipeStep, CARDS_STACK_DEPTH, swipeCommitDistance, swipeFlicked, swipeStackGeometry, swipeDeck, cardsProgressKey, readCardsProgress, writeCardsProgress };
 });
