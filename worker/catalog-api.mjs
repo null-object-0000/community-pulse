@@ -431,14 +431,14 @@ async function productRows(db, rows, filters, term, page, pageSize, cursorMode =
     }
     detail = mergeContent(detail, row);
     const projectPath = row.githubRepo ? `/projects/${String(row.githubRepo).toLowerCase()}/` : `/products/${row.id}/`;
-    return {
-      ...detail, sourceId: detail.sourceId || sourceIds[0] || 'catalog', sourceIds,
+    return Object.assign(detail, {
+      sourceId: detail.sourceId || sourceIds[0] || 'catalog', sourceIds,
       externalId: detail.externalId || row.id, productId: row.id, title: detail.title || row.title,
       url: row.url || (row.githubRepo ? `https://github.com/${row.githubRepo}` : ''),
       githubUrl: row.githubRepo ? `https://github.com/${row.githubRepo}` : undefined,
       projectPath, trendDate: String(row.date).slice(0, 10),
       taxonomy: { ...(detail.taxonomy || {}), [filters.facet]: [term] },
-    };
+    });
   });
   const last = products.at(-1);
   return { schemaVersion: 2, filters: { ...filters, term }, count: products.length, sourceCount: sources.size,

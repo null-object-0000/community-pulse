@@ -14,7 +14,7 @@
  */
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { fetchJson } = require('../scripts/catalog/build-site-snapshot.js');
+const { fetchJson, categoryProducts } = require('../scripts/catalog/build-site-snapshot.js');
 
 function jsonResponse(body) {
   return {
@@ -109,4 +109,23 @@ test('网络异常（fetch 直接抛）也会重试', async () => {
   const result = await fetchJson('https://example.test', '/x', fetcher, noSleep);
   assert.deepEqual(result, { ok: true });
   assert.equal(calls, 3);
+});
+
+test('分类快照遇到 503 或响应中断时缩页，并从同一个游标继续', async () => {
+  const calls = [];
+  const fetcher = async (url) => {
+    calls.push([url.searchParams.get('cursor'), url.searchParams.get('pageSize')]);
+    switch (calls.length) {
+      case 1: return jsonResponse({ products: [{ productId: 'a' }], hasMore: true, nextCursor: 'a' });
+      case 2: return response(503, 'text/html');
+      case 3: return { ...jsonResponse({}), json: async () => { throw new TypeError('terminated'); } };
+      case 4: return response(502, 'text/html');
+      case 5: return jsonResponse({ products: [{ productId: 'b' }], hasMore: true, nextCursor: 'b' });
+      default: return jsonResponse({ products: [{ productId: 'c' }], hasMore: false });
+    }
+  };
+  const rows = await categoryProducts({ origin: 'https://example.test' }, 'useCases', 'business-growth',
+    '2026-09-01', '2026-11-23', fetcher, noSleep);
+  assert.deepEqual(calls, [[null, '50'], ['a', '50'], ['a', '25'], ['a', '12'], ['a', '12'], ['b', '12']]);
+  assert.deepEqual(rows.map((row) => row.productId), ['a', 'b', 'c']);
 });

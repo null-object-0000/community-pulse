@@ -9,6 +9,8 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_OUT = path.join(ROOT, 'data', 'catalog', 'site-snapshot');
 const FACETS = ['useCases', 'agentRoles', 'languages'];
 const WINDOW_DAYS = { recent: 7, '4w': 28, '12w': 84 };
+const CATEGORY_PAGE_SIZE = 50;
+const MIN_CATEGORY_PAGE_SIZE = 12;
 const imageManifest = images.readManifest();
 const lightMarks = images.readTones().light;
 
@@ -46,7 +48,7 @@ function offsetDate(date, days) {
   return value.toISOString().slice(0, 10);
 }
 
-async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))) {
+async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)), retryRoute = null) {
   let lastError;
   // A snapshot pages through thousands of products. One transient edge/Hyperdrive 5xx must not
   // discard the whole daily batch; 4 quick retries were insufficient on the ATL runner.
@@ -82,6 +84,7 @@ async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Pro
         // 与运维习惯认的信号。**响应体一律不进错误消息**（可能含 challenge token）。
         const hint = response.status === 403 ? '; expected catalog JSON (possible Cloudflare challenge)' : `; expected catalog JSON${suffix}`;
         const error = new Error(`${message}${errorCode}${hint}`);
+        error.status = response.status;
         if (permanent) error.permanent = true;
         throw error;
       }
@@ -97,7 +100,10 @@ async function fetchJson(origin, route, fetcher = fetch, sleep = (ms) => new Pro
         break;
       }
       console.error(`[snapshot] ${route} 第 ${attempt}/${maxAttempts} 次失败（${elapsed}ms）：${error.name}: ${error.message}`);
-      if (attempt < maxAttempts) await sleep(Math.min(30000, 1000 * 2 ** (attempt - 1)));
+      if (attempt < maxAttempts) {
+        if (retryRoute) route = retryRoute(error);
+        await sleep(Math.min(30000, 1000 * 2 ** (attempt - 1)));
+      }
     }
   }
   throw lastError;
@@ -129,13 +135,22 @@ function rangeStats(products, latest) {
   return stats;
 }
 
-async function categoryProducts(options, type, id, earliest, latest) {
+async function categoryProducts(options, type, id, earliest, latest, fetcher, sleep) {
   const products = [];
   let cursor = '';
+  let pageSize = CATEGORY_PAGE_SIZE;
   for (;;) {
-    const query = new URLSearchParams({ facet: type, term: id, from: earliest, to: latest, pageSize: '100' });
+    const query = new URLSearchParams({ facet: type, term: id, from: earliest, to: latest, pageSize: String(pageSize) });
     if (cursor) query.set('cursor', cursor);
-    const data = await fetchJson(options.origin, `/api/v1/products?${query}`);
+    const data = await fetchJson(options.origin, `/api/v1/products?${query}`, fetcher, sleep, (error) => {
+      // A Worker can exceed its CPU budget before sending headers (503) or while streaming the body.
+      // Keep the cursor at the last successful item and use the smaller batch for the rest of this category.
+      if (error.status === 503 || (error instanceof TypeError && error.message === 'terminated')) {
+        pageSize = Math.max(MIN_CATEGORY_PAGE_SIZE, Math.floor(pageSize / 2));
+        query.set('pageSize', String(pageSize));
+      }
+      return `/api/v1/products?${query}`;
+    });
     products.push(...(data.products || []).map((product) => {
       const productId = product.productId || product.externalId;
       let projectPath = product.projectPath;
@@ -268,4 +283,4 @@ if (require.main === module) {
   }).catch((error) => { console.error(error.stack || error.message); process.exitCode = 1; });
 }
 
-module.exports = { parseArgs, offsetDate, fetchJson, rangeStats, buildCluster, buildSiteSnapshot, localizeSnapshotProducts };
+module.exports = { parseArgs, offsetDate, fetchJson, categoryProducts, rangeStats, buildCluster, buildSiteSnapshot, localizeSnapshotProducts };
