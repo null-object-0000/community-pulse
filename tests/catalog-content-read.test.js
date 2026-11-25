@@ -24,32 +24,68 @@ const WORKER = path.join(__dirname, '..', 'worker', 'catalog-api.mjs');
 /** 读源码断言「某段实现存在」—— 读取端是模块内私有函数，没有导出面可测。 */
 const source = fs.readFileSync(WORKER, 'utf8');
 
-test('列表查询一次批量取 product_content，不逐产品查询（N+1）', () => {
-  // attachProductContent 必须在 productRows 的 map 之外调用。
-  assert.match(source, /async function productRows\(db, rows/);
-  assert.match(source, /await attachProductContent\(db, rows\.slice\(0, pageSize\), timings\);/);
-  // 批量形状：IN (?, ?, …) + 单次 all()，而不是在 map 里 prepare。
-  assert.match(source, /WHERE product_id IN \(\$\{placeholders\}\) AND is_current = 1/);
-  assert.doesNotMatch(source, /products\.map\(async/);
-});
-
-test('两处列表查询与详情查询都接上了读取端', () => {
-  const calls = source.match(/attachProductContent\(/g) || [];
-  // 一处定义 + 三处调用（productRows 内、详情查询内）。
-  assert.equal(calls.length, 3, `attachProductContent 调用点应为 2 处 + 定义 1 处，实际 ${calls.length}`);
-  const awaited = source.match(/await productRows\(db, rows/g) || [];
-  assert.equal(awaited.length, 2, '两处 productRows 调用都必须 await（它现在是 async）');
-});
-
-test('合并只写 D.displayTitle / D.summary / summaryOf 认得的字段名', () => {
-  // 这些是渲染层唯一的取值键；改名等于静默不显示。
-  for (const key of ['titleZh', 'summaryZh', 'titleEn', 'summaryEn']) {
-    assert.match(source, new RegExp(`merged\\.${key} = row\\.content`), `mergeContent 必须写 ${key}`);
+test('两种分页模式都在一次查询中取得当前双语内容', async () => {
+  const { queryProducts } = await import('../worker/catalog-api.mjs');
+  const ids = ['prd_000000000000000000000001', 'prd_000000000000000000000002'];
+  const date = '2026-11-24';
+  const item = { title: 'Original', summaryZh: '保留原始摘要', summaryEn: 'Old summary' };
+  const rows = [
+    { id: ids[0], date, itemJson: JSON.stringify(item), sourceIds: 'showhn', titleZh: '中文标题',
+      summaryZh: '', titleEn: null, summaryEn: 'Current summary' },
+    { id: ids[1], date },
+  ];
+  const filters = { sources: ['showhn'], facet: 'useCases', from: '2026-09-02', to: date };
+  for (const allSources of [true, false]) {
+    const statements = [];
+    const db = { prepare(sql) {
+      statements.push(sql);
+      return { bind: () => ({ all: async () => ({ results: rows }) }) };
+    } };
+    const result = await queryProducts(db, filters, 'data-operations', [], { allSources, pageSize: 1 });
+    assert.equal(statements.length, 1);
+    const sql = statements[0];
+    for (const locale of ['zh-CN', 'en']) {
+      assert.ok(sql.includes(`locale = '${locale}' AND is_current = 1`));
+    }
+    assert.equal((sql.match(/ORDER BY created_at DESC LIMIT 1/g) || []).length, 2);
+    assert.equal(result.count, 1);
+    assert.equal(result.hasMore, true);
+    assert.deepEqual(result.products.map(({ productId, title, titleZh, titleEn, summaryZh, summaryEn }) =>
+      ({ productId, title, titleZh, titleEn, summaryZh, summaryEn })), [{
+      productId: ids[0], title: 'Original', titleZh: '中文标题', titleEn: undefined,
+      summaryZh: '保留原始摘要', summaryEn: 'Current summary',
+    }]);
+    assert.equal(result.nextCursor, allSources ? btoa(`${date}|${ids[0]}`) : null);
+    assert.equal(result.nextPage, allSources ? null : 2);
   }
-  // 不能被 item_json 里的空值顶掉：只在有值时才覆盖。
-  assert.match(source, /if \(row\.contentZh\) \{/);
-  assert.match(source, /if \(row\.contentZh\.title\) merged\.titleZh/);
-  assert.match(source, /if \(row\.contentZh\.summary\) merged\.summaryZh/);
+});
+
+test('显式结束日期只查启用来源和空库状态，默认日期沿用最新观测', async () => {
+  const { productFilters } = await import('../worker/catalog-api.mjs');
+  const statements = [];
+  let rows = [{ id: 'showhn', hasProducts: 1 }, { id: 'producthunt', hasProducts: 0 }];
+  const db = { prepare(sql) {
+    statements.push(sql);
+    return { bind: () => ({ all: async () => ({ results: rows }) }) };
+  } };
+  const explicit = new URL('https://devtrends.site/api/v1/products?to=2026-11-24&sources=showhn');
+  const selected = await productFilters(db, explicit);
+  assert.equal(selected.filters.to, '2026-11-24');
+  assert.equal(selected.filters.from, '2026-11-18');
+  assert.deepEqual(selected.filters.sources, ['showhn']);
+  assert.equal(selected.allSources, false);
+  assert.match(statements[0], /EXISTS.*product_source_first_seen/);
+  assert.doesNotMatch(statements[0], /COUNT|MIN|MAX/);
+  assert.match(statements[0], /WHERE s.enabled = 1/);
+  const unknown = new URL(explicit);
+  unknown.searchParams.set('sources', 'unknown');
+  await assert.rejects(() => productFilters(db, unknown), /unknown sources/);
+  rows = [{ id: 'showhn', hasProducts: '0' }];
+  assert.equal(await productFilters(db, explicit), null);
+  rows = [{ id: 'showhn', lastSeenDate: '2026-11-23' }];
+  const defaults = await productFilters(db, new URL('https://devtrends.site/api/v1/products'));
+  assert.equal(defaults.filters.to, '2026-11-23');
+  assert.equal(defaults.allSources, true);
 });
 
 test('一次取回中英两行（缓存键只有 pathname，同一份数据要能渲染两种语言）', () => {
@@ -66,7 +102,7 @@ test('同产品同 locale 多行时取 created_at 最新的那行', () => {
 
 test('读取端只认 is_current=1 —— 不自己发明「读 shadow」的第二套语义', () => {
   const block = source.slice(source.indexOf('async function attachProductContent'),
-    source.indexOf('/** 把 attachProductContent 取到的两行并进 detail item'));
+    source.indexOf('/** 把当前生效的双语字段并进 item'));
   assert.match(block, /AND is_current = 1/);
   assert.doesNotMatch(block, /is_current = 0/, 'shadow 行不该被读取端直接放出去');
 });

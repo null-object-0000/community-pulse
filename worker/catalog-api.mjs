@@ -129,26 +129,34 @@ async function attachProductContent(db, rows, timings = null) {
   for (const row of rows) {
     const zh = byProduct.get(`${row.id}\0zh-CN`);
     const en = byProduct.get(`${row.id}\0en`);
-    if (!zh && !en) continue;
-    row.contentZh = zh || null;
-    row.contentEn = en || null;
+    row.titleZh = zh?.title;
+    row.summaryZh = zh?.summary;
+    row.titleEn = en?.title;
+    row.summaryEn = en?.summary;
   }
   return rows;
 }
 
-/** 把 attachProductContent 取到的两行并进 detail item（`titleZh`/`summaryZh`/`titleEn`/`summaryEn`）。 */
+/** 把当前生效的双语字段并进 item，空字段沿用原始值。 */
 function mergeContent(detail, row) {
   const merged = { ...detail };
-  if (row.contentZh) {
-    if (row.contentZh.title) merged.titleZh = row.contentZh.title;
-    if (row.contentZh.summary) merged.summaryZh = row.contentZh.summary;
-  }
-  if (row.contentEn) {
-    if (row.contentEn.title) merged.titleEn = row.contentEn.title;
-    if (row.contentEn.summary) merged.summaryEn = row.contentEn.summary;
-  }
+  if (row.titleZh) merged.titleZh = row.titleZh;
+  if (row.summaryZh) merged.summaryZh = row.summaryZh;
+  if (row.titleEn) merged.titleEn = row.titleEn;
+  if (row.summaryEn) merged.summaryEn = row.summaryEn;
   return merged;
 }
+
+// Keep the two indexed lookups inside the page query. Only the latest active row per language
+// leaves MySQL, and the Worker does not have to send and decode a second result set for every page.
+const PAGE_CONTENT_COLUMNS = `zh.title AS titleZh, zh.summary AS summaryZh,
+  en.title AS titleEn, en.summary AS summaryEn`;
+const PAGE_CONTENT_JOINS = [['zh', 'zh-CN'], ['en', 'en']].map(([alias, locale]) => `
+  LEFT JOIN LATERAL (
+    SELECT title, summary FROM product_content
+    WHERE product_id = page.id AND locale = '${locale}' AND is_current = 1
+    ORDER BY created_at DESC LIMIT 1
+  ) ${alias} ON TRUE`).join('');
 
 export async function availableSources(db, timings = null) {
   return all(db, `SELECT s.id, s.name, s.description,
@@ -160,6 +168,21 @@ export async function availableSources(db, timings = null) {
     WHERE s.enabled = 1
     GROUP BY s.id
     ORDER BY s.sort_order, s.id`, [], timings, 'sources');
+}
+
+export async function productFilters(db, url, timings = null) {
+  const requestedTo = url.searchParams.get('to');
+  // The daily snapshot supplies its end date on every request. It only needs the enabled source
+  // IDs and the empty-catalog guard, so avoid counting and dating each source's entire history.
+  const sources = requestedTo ? await all(db, `SELECT s.id,
+    EXISTS (SELECT 1 FROM product_source_first_seen f WHERE f.source_id = s.id) AS hasProducts
+    FROM sources s WHERE s.enabled = 1`, [], timings, 'sources') : await availableSources(db, timings);
+  const latest = requestedTo
+    ? sources.some((source) => Number(source.hasProducts)) && requestedTo
+    : sources.map((source) => source.lastSeenDate).filter(Boolean).sort().at(-1);
+  if (!latest) return null;
+  const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
+  return { filters, allSources: filters.sources.length === sources.length };
 }
 
 export async function queryTrends(db, filters, timings = null, options = {}) {
@@ -354,7 +377,7 @@ export async function queryProducts(db, filters, term, timings = null, options =
         SELECT t.id FROM taxonomy_terms t JOIN descendants d ON t.parent_id = d.id
         WHERE t.facet = ? AND t.active = 1
       )
-      SELECT page.id, page.title, page.url, page.githubRepo, pd.item_json AS itemJson,
+      SELECT page.id, page.title, page.url, page.githubRepo, pd.item_json AS itemJson, ${PAGE_CONTENT_COLUMNS},
         page.date,
         (SELECT GROUP_CONCAT(sf.source_id) FROM product_source_first_seen sf
           WHERE sf.product_id = page.id AND sf.first_seen_date = page.date) AS sourceIds
@@ -371,9 +394,9 @@ export async function queryProducts(db, filters, term, timings = null, options =
         ORDER BY p.first_seen_date DESC, p.id
         LIMIT ${pageSize + 1}
       ) page
-      LEFT JOIN product_details pd ON pd.product_id = page.id
+      LEFT JOIN product_details pd ON pd.product_id = page.id${PAGE_CONTENT_JOINS}
       ORDER BY page.date DESC, page.id`, [term, filters.facet, filters.from, filters.to, ...cursorBindings, filters.facet], timings, 'productsAllSources');
-    return await productRows(db, rows, filters, term, page, pageSize, true, timings);
+    return productRows(rows, filters, term, page, pageSize, true);
   }
   const selected = selectedPlan(filters, false, filters.from);
   const cte = selected.cte;
@@ -394,7 +417,7 @@ export async function queryProducts(db, filters, term, timings = null, options =
       JOIN ancestors a ON a.facet = ta.facet AND a.leaf_id = ta.term_id
       WHERE ta.facet = ? AND ta.is_current = 1
     )
-    SELECT page.id, page.title, page.url, page.githubRepo, pd.item_json AS itemJson,
+    SELECT page.id, page.title, page.url, page.githubRepo, pd.item_json AS itemJson, ${PAGE_CONTENT_COLUMNS},
       page.date,
       (SELECT GROUP_CONCAT(sf.source_id) FROM product_source_first_seen sf
         WHERE sf.product_id = page.id AND sf.first_seen_date = page.date
@@ -409,19 +432,17 @@ export async function queryProducts(db, filters, term, timings = null, options =
       ORDER BY sp.selected_first_seen DESC, p.id
       LIMIT ${pageSize + 1} OFFSET ${offset}
     ) page
-    LEFT JOIN product_details pd ON pd.product_id = page.id
+    LEFT JOIN product_details pd ON pd.product_id = page.id${PAGE_CONTENT_JOINS}
     ORDER BY page.date DESC, page.id`, [
     ...selected.bindings, filters.facet, filters.facet, ...filters.sources,
     term, filters.from, filters.to,
   ], timings, 'products');
-  return await productRows(db, rows, filters, term, page, pageSize, false, timings);
+  return productRows(rows, filters, term, page, pageSize);
 }
 
-async function productRows(db, rows, filters, term, page, pageSize, cursorMode = false, timings = null) {
+function productRows(rows, filters, term, page, pageSize, cursorMode = false) {
   const hasMore = rows.length > pageSize;
   const sources = new Set();
-  // 先按 product_id 一次取回当前生效的双语正文，再逐行合并 —— 不能放在 map 里逐条查（N+1）。
-  await attachProductContent(db, rows.slice(0, pageSize), timings);
   const products = rows.slice(0, pageSize).map(row => {
     const sourceIds = String(row.sourceIds || '').split(',').filter(Boolean);
     sourceIds.forEach(source => sources.add(source));
@@ -504,8 +525,17 @@ export async function handleCatalogApi(request, env, ctx) {
     timings.push(`connect;dur=${(performance.now() - connectStarted).toFixed(1)}`);
     db = opened.db;
     closes.push(opened.close);
-    const sources = await availableSources(db, timings);
     const headers = () => ({ 'server-timing': timings.join(', ') });
+    if (url.pathname === '/api/v1/products') {
+      const selection = await productFilters(db, url, timings);
+      if (!selection) return json({ error: 'catalog_is_empty' }, { status: 503, cacheControl: 'no-store' });
+      const data = await queryProducts(db, selection.filters, url.searchParams.get('term'), timings, {
+        allSources: selection.allSources,
+        page: url.searchParams.get('page'), pageSize: url.searchParams.get('pageSize'), cursor: url.searchParams.get('cursor'),
+      });
+      return json(data, { headers: headers() });
+    }
+    const sources = await availableSources(db, timings);
     if (url.pathname === '/api/v1/sources') {
       return json({ schemaVersion: 1, sources }, { headers: headers() });
     }
@@ -524,16 +554,6 @@ export async function handleCatalogApi(request, env, ctx) {
       const data = await queryTrends(db, filters, timings, {
         allSources: filters.sources.length === sources.length,
         databases: [db, ...extras.map((extra) => extra.db)],
-      });
-      return json(data, { headers: headers() });
-    }
-    if (url.pathname === '/api/v1/products') {
-      const latest = sources.map((source) => source.lastSeenDate).filter(Boolean).sort().at(-1);
-      if (!latest) return json({ error: 'catalog_is_empty' }, { status: 503, cacheControl: 'no-store' });
-      const filters = parseTrendFilters(url, sources.map((source) => source.id), latest);
-      const data = await queryProducts(db, filters, url.searchParams.get('term'), timings, {
-        allSources: filters.sources.length === sources.length,
-        page: url.searchParams.get('page'), pageSize: url.searchParams.get('pageSize'), cursor: url.searchParams.get('cursor'),
       });
       return json(data, { headers: headers() });
     }
