@@ -10,6 +10,10 @@ services:
     build:
       context: ..
       dockerfile: deploy/Dockerfile
+      args:
+        # 站点部署默认也严格；遇到图片同步没跑完时，用 ALLOW_UNSYNCED_IMAGES=1 重建，
+        # 宁可少一张图标也不让整站停在旧版本。
+        ALLOW_UNSYNCED_IMAGES: ${ALLOW_UNSYNCED_IMAGES:-0}
     image: devtrends-site:local
     container_name: devtrends-site
     restart: unless-stopped

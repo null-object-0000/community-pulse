@@ -7,6 +7,9 @@
 # 构建阶段不需要数据库：dist/ 全部来自仓库里已提交的日报、快照与清单。
 FROM node:24-alpine AS build
 WORKDIR /app
+# 站点部署侧允许「丢掉未同步的图片」而不是整站构建失败（见 scripts/image-store.js）。
+ARG ALLOW_UNSYNCED_IMAGES=0
+ENV ALLOW_UNSYNCED_IMAGES=${ALLOW_UNSYNCED_IMAGES}
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .

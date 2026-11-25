@@ -22,7 +22,7 @@ cd "$REPO_DIR"
 # 取远端：直连 GitHub 会间歇性 `GnuTLS recv error (-110)`（实测有一轮就撞上、被优雅跳过），
 # 所以备几个国内可达的镜像。只用来取公开代码，不涉及任何凭据；第一个成功的就用它 reset。
 # 直连成功时不写日志（否则每 30 分钟一行噪音），只有走镜像或失败才留痕。
-if git -c http.version=HTTP/1.1 fetch --quiet --depth 1 origin "$BRANCH" 2>>"$LOG"; then
+if timeout 45 git -c http.version=HTTP/1.1 fetch --quiet --depth 1 origin "$BRANCH" 2>>"$LOG"; then
   :
 else
   echo "$(date '+%F %T') 直连 GitHub 失败，试镜像通道" >>"$LOG"
@@ -31,7 +31,7 @@ else
     "https://ghfast.top/https://github.com/$REPO_SLUG.git" \
     "https://gitclone.com/github.com/$REPO_SLUG.git" \
     "https://ghproxy.net/https://github.com/$REPO_SLUG.git"; do
-    if git -c http.version=HTTP/1.1 fetch --quiet --depth 1 "$url" "$BRANCH" 2>>"$LOG"; then
+    if timeout 120 git -c http.version=HTTP/1.1 fetch --quiet --depth 1 "$url" "$BRANCH" 2>>"$LOG"; then
       fetched=1
       echo "$(date '+%F %T') 已从 $url 取到远端" >>"$LOG"
       break

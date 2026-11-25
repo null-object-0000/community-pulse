@@ -187,7 +187,15 @@ function localizeUrl(value, manifest) {
   }
   // A URL is buildable when it is mapped to a managed file or when its source CDN is
   // trusted for direct hotlinking (older reports). Anything else must be synced first.
+  //
+  // 部署侧的例外：CI 上宁可失败（坏的提交不进 main），但站点每次重建都卡在同一张图上，
+  // 代价是整站停在旧版本 —— 比少一张图标严重得多。所以 ECS 部署时设
+  // `ALLOW_UNSYNCED_IMAGES=1`，这里降级成「丢掉这张图并留一行警告」。
   if (D.safeUrl(value) && !Object.hasOwn(manifest, value) && !D.hotlinkable(value)) {
+    if (process.env.ALLOW_UNSYNCED_IMAGES === '1') {
+      console.warn(`[images] 未同步，构建降级跳过：${value}`);
+      return null;
+    }
     throw new Error('Image has not been synced; run npm run images:sync before building');
   }
   return mirrorUrl(D.localImage(value, manifest));
