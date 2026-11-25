@@ -10,6 +10,12 @@
 # 日志留下失败原因。
 set -eu
 
+# 站点侧默认容忍「未同步的图片」：CI 上严格（坏的提交进不了 main），但这台机器每次重建都卡在
+# 同一张外链图上时，代价是整站停在旧版本 —— 那比少一张图标严重得多。要恢复严格：
+# ALLOW_UNSYNCED_IMAGES=0 bash deploy/update.sh
+ALLOW_UNSYNCED_IMAGES=${ALLOW_UNSYNCED_IMAGES:-1}
+export ALLOW_UNSYNCED_IMAGES
+
 REPO_DIR=${REPO_DIR:-/root/devtrends-site}
 REPO_SLUG=${REPO_SLUG:-null-object-0000/community-pulse}
 BRANCH=${BRANCH:-$(git -C "$REPO_DIR" rev-parse --abbrev-ref HEAD)}
